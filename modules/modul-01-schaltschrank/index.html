@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>h_ke Rechner · Modul 1 · GA-Planungstool</title>
+<style>
+:root{
+  --bg:    #1A1A18;
+  --bg2:   #222220;
+  --bg3:   #2A2A28;
+  --bg4:   #303030;
+  --bord:  #3A3835;
+  --bords: #5A5855;
+  --tx:    #E0DED8;
+  --tx2:   #9A9890;
+  --tx3:   #666460;
+  --green: #2DBD8E;
+  --orange:#C8720E;
+  --blue:  #7A74CC;
+  --font:  system-ui,-apple-system,sans-serif;
+  --mono:  'Courier New',Courier,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;}
+
+/* ── Header ── */
+header{
+  background:#111110;color:#E0DED8;
+  padding:10px 22px;display:flex;align-items:center;gap:18px;
+  border-bottom:1px solid var(--bord);
+}
+header h1{font-size:15px;font-weight:700;letter-spacing:-.01em;}
+header p{font-size:11px;color:var(--tx3);margin-top:1px;}
+header .title{flex:1;}
+header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;}
+header a:hover{color:var(--tx2);}
+
+/* ── Layout ── */
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 46px);}
+
+/* ── Input panel ── */
+.panel-in{
+  background:var(--bg2);border-right:1px solid var(--bord);
+  padding:18px 16px;overflow-y:auto;
+}
+.panel-in h2{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tx3);margin-bottom:14px;
+}
+
+fieldset{
+  border:1px solid var(--bord);border-radius:4px;
+  padding:10px 12px 8px;margin-bottom:12px;background:var(--bg3);
+}
+legend{
+  font-size:10px;font-weight:700;color:var(--tx3);
+  padding:0 5px;text-transform:uppercase;letter-spacing:.04em;
+}
+.field{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 0;border-bottom:.5px solid var(--bord);gap:8px;
+}
+.field:last-child{border-bottom:none;}
+.field .lbl{font-size:12px;color:var(--tx2);flex:1;min-width:0;}
+.field .var{
+  font-family:var(--mono);font-size:9.5px;color:var(--tx3);
+  display:block;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.field input,.field select{
+  width:96px;padding:3px 7px;border:1px solid var(--bords);border-radius:3px;
+  background:var(--bg);color:var(--tx);font-size:13px;text-align:right;flex-shrink:0;
+}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green);}
+.field input[disabled]{
+  background:var(--bg2);color:var(--tx3);text-align:left;
+  font-size:11px;cursor:default;border-color:var(--bord);
+}
+.field select{text-align:left;cursor:pointer;}
+
+/* Preset buttons */
+.preset-btn{
+  display:block;width:100%;padding:7px 11px;background:var(--bg3);
+  border:1px solid var(--bord);border-radius:4px;font-size:11px;cursor:pointer;
+  color:var(--tx2);margin-bottom:10px;text-align:left;
+  transition:border-color .12s,background .12s;
+}
+.preset-btn:hover{background:var(--bg4);border-color:var(--bords);}
+.preset-btn strong{color:var(--tx);}
+.preset-btn small{color:var(--tx3);}
+
+/* ── Result panel ── */
+.panel-out{padding:20px;overflow-y:auto;}
+
+#svg-wrap{background:#FDFCF8;border:1px solid #C8C6C0;border-radius:5px;padding:12px;}
+#svg-wrap svg{display:block;max-width:100%;height:auto;}
+
+/* Results table */
+.rtable{width:100%;border-collapse:collapse;font-size:12px;margin-top:18px;}
+.rtable th{
+  background:var(--bg3);color:var(--tx2);font-weight:600;
+  padding:6px 10px;text-align:left;border-bottom:1.5px solid var(--bords);
+}
+.rtable td{padding:5px 10px;border-bottom:.5px solid var(--bord);vertical-align:middle;}
+.rtable tr:last-child td{border-bottom:none;}
+.rtable tr:hover td{background:var(--bg3);}
+.vname{font-family:var(--mono);font-size:10.5px;font-weight:700;}
+.val{font-family:var(--mono);font-size:12px;font-weight:600;text-align:right;white-space:nowrap;}
+.formula-cell{font-family:var(--mono);font-size:10px;color:var(--tx3);}
+
+.formula-box{
+  background:var(--bg3);border-left:3px solid var(--bords);
+  padding:8px 12px;font-family:var(--mono);font-size:12px;
+  margin-bottom:10px;border-radius:0 3px 3px 0;color:var(--tx);
+}
+.note-line{font-size:10px;color:var(--tx3);margin-top:8px;padding-top:6px;border-top:.5px solid var(--bord);}
+
+@media(max-width:760px){
+  .layout{grid-template-columns:1fr;}
+  .panel-in{border-right:none;border-bottom:1px solid var(--bord);}
+}
+
+/* ── Footer ── */
+.site-footer{
+  background:#111110;border-top:1px solid var(--bord);
+  padding:8px 22px;
+  font-size:11px;color:var(--tx3);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.site-footer a{color:var(--tx3);text-decoration:none;}
+.site-footer a:hover{color:var(--tx2);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">
+    <h1>Modul 1 · Wandschrank · Kabeleinführungszone h_ke</h1>
+    <p>GA-Planungstool · Schaltschrank-Dimensionierung</p>
+  </div>
+  <a href="../../index.html">← Startseite</a>
+</header>
+
+<div class="layout">
+
+  <!-- ═══ INPUTS ═══ -->
+  <aside class="panel-in">
+    <h2>Eingaben</h2>
+
+    <button class="preset-btn" onclick="loadPreset('rittal_ax_1213')">
+      ▶ Beispiel: <strong>Rittal AX 1213.000</strong><br>
+      <small>1000 × 1200 × 300 mm · MP 945 × 1175 mm</small>
+    </button>
+    <button class="preset-btn" onclick="loadPreset('rittal_ax_1209')">
+      ▶ Beispiel: <strong>Rittal AX 1209.000</strong><br>
+      <small>600 × 1000 × 300 mm · MP 545 × 975 mm</small>
+    </button>
+
+    <fieldset>
+      <legend>Schrank-Außenmaße</legend>
+      <div class="field">
+        <div class="lbl">Breite B (mm)<span class="var">b_gehaeuse_aussen_mm</span></div>
+        <input id="B" type="number" value="1000" min="300" max="2000" step="50" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Höhe H (mm)<span class="var">h_gehaeuse_aussen_mm</span></div>
+        <input id="H" type="number" value="1200" min="400" max="2500" step="50" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Montageplatte</legend>
+      <div class="field">
+        <div class="lbl">Breite (mm)<span class="var">b_mplatte_mm</span></div>
+        <input id="mp_b" type="number" value="945" min="100" max="1900" step="5" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Höhe (mm)<span class="var">h_mplatte_mm</span></div>
+        <input id="mp_h" type="number" value="1175" min="100" max="2400" step="5" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Kabeleinführung</legend>
+      <div class="field">
+        <div class="lbl">Position<span class="var">ke_position</span></div>
+        <select id="ke_pos" onchange="calculate()">
+          <option value="oben">oben</option>
+          <option value="unten">unten</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Max. Kabel-∅ außen (mm)<span class="var">d_max_kabel_ke_mm</span></div>
+        <input id="d_max" type="number" value="16" min="5" max="60" step="0.5"
+               oninput="updateKabelTyp();calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Leitungstyp (Richtwert)<span class="var">–</span></div>
+        <input id="kabel_typ" type="text" value="NYM-J 5×6 mm²" disabled>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Kabelkanal</legend>
+      <div class="field">
+        <div class="lbl">Höhe h_kanal_ke (mm)<span class="var">h_kanal_ke_mm</span></div>
+        <input id="h_kanal" type="number" value="60" min="25" max="150" step="5" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Schriftgrößen SVG</legend>
+      <div class="field">
+        <div class="lbl">Bemaßungstext (pt)<span class="var">H =, B = …</span></div>
+        <input id="fs_dim" type="number" value="7" min="4" max="14" step="0.5" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Bemaßungsvariable (pt)<span class="var">h_handling_ke …</span></div>
+        <input id="fs_var" type="number" value="6" min="4" max="14" step="0.5" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Zonenbeschreibung (pt)<span class="var">Kabelkanal …</span></div>
+        <input id="fs_zone" type="number" value="7" min="4" max="14" step="0.5" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Festwerte · Wandschrank</legend>
+      <div class="field">
+        <div class="lbl">h_handling_ke (mm)<span class="var">h_handling_ke_mm</span></div>
+        <input type="number" value="15" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">h_zug_ke (mm)<span class="var">h_zug_ke_mm</span></div>
+        <input type="number" value="0" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Biegeradius-Faktor (VDE 0298-4)<span class="var">–</span></div>
+        <input type="number" value="4" disabled>
+      </div>
+    </fieldset>
+  </aside>
+
+  <!-- ═══ OUTPUT ═══ -->
+  <section class="panel-out">
+    <div id="svg-wrap"><div id="svg-inner"></div></div>
+    <div id="results-area"></div>
+  </section>
+
+</div>
+
+<script>
+// ── SVG-Farbpalette (Papier-Stil, hell) ──────────────────────
+const C = {
+  bg:        '#FDFCF8',
+  schrank:   '#111111',
+  mp:        '#444444',
+  zH_fill:   '#E2E0D8',
+  zB_fill:   '#FAEEDA',
+  zK_fill:   '#C4C4BA',
+  zK_stroke: '#555555',
+  zK_lines:  '#999999',
+  nutz:      '#1D9E75',
+  nutz_tx:   '#0F6E56',
+  guide:     '#3366BB',
+  arr_h:     '#3366BB',
+  arr_b:     '#3366BB',
+  arr_k:     '#3366BB',
+  arr_ke:    '#3366BB',
+  lbl_h:     '#3366BB',
+  lbl_b:     '#3366BB',
+  lbl_k:     '#3366BB',
+  lbl_ke:    '#3366BB',
+  zone_tx_h: '#555555',
+  zone_tx_b: '#854F0B',
+  zone_tx_k: '#333333',
+  dim:       '#3366BB',
+  bma:       '#3366BB',
+  cable:     '#222222',
+  cable_dash:'#777777',
+  pg_top:    '#C0BEB8',
+  pg_mid:    '#D0CEC8',
+  pg_bot:    '#B8B6B0',
+  inner_tx:  '#CCCCCC',
+  arrow_mk:  '#3366BB',
+};
+
+// ── Presets ───────────────────────────────────────────────────
+const PRESETS = {
+  rittal_ax_1213: { B:1000, H:1200, mp_b:945, mp_h:1175, d_max:16, h_kanal:60, ke_pos:'oben' },
+  rittal_ax_1209: { B:600,  H:1000, mp_b:545, mp_h:975,  d_max:16, h_kanal:60, ke_pos:'oben' }
+};
+
+function loadPreset(name) {
+  const p = PRESETS[name];
+  _v('B',p.B); _v('H',p.H); _v('mp_b',p.mp_b); _v('mp_h',p.mp_h);
+  _v('d_max',p.d_max); _v('h_kanal',p.h_kanal);
+  document.getElementById('ke_pos').value = p.ke_pos;
+  updateKabelTyp(); calculate();
+}
+
+function _v(id, val) { document.getElementById(id).value = val; }
+const g  = id => +document.getElementById(id).value;
+const gs = id =>  document.getElementById(id).value;
+
+// ── Kabeltyp-Lookup ───────────────────────────────────────────
+function updateKabelTyp() {
+  const d = g('d_max');
+  const t = d<=9  ? 'NYM-J 3×1,5 mm²'
+           :d<=11 ? 'NYM-J 3×2,5 mm²'
+           :d<=13 ? 'NYM-J 5×1,5 mm²'
+           :d<=15 ? 'NYM-J 5×4 mm²'
+           :d<=17 ? 'NYM-J 5×6 mm²'
+           :d<=21 ? 'NYM-J 5×10 mm²' : 'Sonderkabel';
+  document.getElementById('kabel_typ').value = t;
+}
+
+// ── Berechnung ────────────────────────────────────────────────
+function calculate() {
+  const B = g('B'), H = g('H'), mp_b = g('mp_b'), mp_h = g('mp_h');
+  const d_max = g('d_max'), h_kanal = g('h_kanal'), ke_pos = gs('ke_pos');
+  const fs_dim = g('fs_dim'), fs_var = g('fs_var'), fs_zone = g('fs_zone');
+
+  const b_abst = (B - mp_b) / 2;
+  const h_abst = (H - mp_h) / 2;
+  const h_hand = 15;
+  const h_zug  = 0;
+  const h_bieg = 4 * d_max;
+  const h_ke   = h_hand + h_zug + h_bieg + h_kanal;
+
+  const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_bieg, h_ke, ke_pos, fs_dim, fs_var, fs_zone };
+  document.getElementById('svg-inner').innerHTML  = buildSVG(p);
+  document.getElementById('results-area').innerHTML = buildTable(p);
+}
+
+// ── SVG-Generator ─────────────────────────────────────────────
+function buildSVG(p) {
+  const SH = 390, sc = SH / p.H, SW = Math.round(p.B * sc);
+  const PL = 56, PT = 52, PR = 195, PB = 55;
+  const VW = PL + SW + PR, VH = PT + SH + PB;
+
+  const sx = PL, sy = PT, sw = SW, sh = SH;
+  const mx = sx + p.b_abst * sc,  my = sy + p.h_abst * sc;
+  const mw = p.mp_b * sc,         mh = p.mp_h * sc;
+
+  const hh = Math.max(p.h_hand * sc, 3);
+  const hb = p.h_bieg  * sc;
+  const hk = p.h_kanal * sc;
+
+  let yH, yH_bot, yB, yK;
+  if (p.ke_pos === 'oben') {
+    yH = sy; yH_bot = sy + hh; yB = yH_bot; yK = yB + hb;
+  } else {
+    yH_bot = sy + sh; yH = yH_bot - hh; yB = yH - hb; yK = yB - hk;
+  }
+
+  const yKe0 = p.ke_pos === 'oben' ? yH    : yK;
+  const yKe1 = p.ke_pos === 'oben' ? yK+hk : yH_bot;
+  const nutz_y = p.ke_pos === 'oben' ? yKe1 : yKe0;
+
+  const ax1 = sx+sw+22, ax = sx+sw+26, lx = sx+sw+31, bx = lx+82;
+  const pg1x = Math.round(mx + mw*0.27);
+  const pg2x = Math.round(mx + mw*0.50);
+
+  const r  = v => Math.round(v*10)/10;
+  const ln = (x1,y1,x2,y2,col,w,dash='') =>
+    `<line x1="${r(x1)}" y1="${r(y1)}" x2="${r(x2)}" y2="${r(y2)}"
+           stroke="${col}" stroke-width="${w}"${dash?` stroke-dasharray="${dash}"`:''}/>\n`;
+  const tx = (x,y,s,o={}) => {
+    const {anchor='start',size=9,weight=400,fill='#888',rotate=''}=o;
+    return `<text x="${r(x)}" y="${r(y)}" text-anchor="${anchor}"
+                  font-family="sans-serif" font-size="${size}" font-weight="${weight}"
+                  fill="${fill}"${rotate?` transform="${rotate}"`:''}>${s}</text>\n`;
+  };
+  const arr = (x,y1,y2,col) => {
+    if (Math.abs(y2-y1) < 4) return '';
+    return `<line x1="${r(x)}" y1="${r(Math.min(y1,y2)+0.8)}" x2="${r(x)}" y2="${r(Math.max(y1,y2)-0.8)}"
+            stroke="${col}" stroke-width="0.8"
+            marker-start="url(#da)" marker-end="url(#da)"/>\n`;
+  };
+
+  // PG-Körper (beide Verschraubungen identisch, Ausrichtung je nach KE-Position)
+  function pgBody(cx, bodyY) {
+    let pg = '';
+    if (p.ke_pos === 'oben') {
+      pg += `<path d="M${cx-8},${r(bodyY+8)} Q${cx},${r(bodyY)} ${cx+8},${r(bodyY+8)} Z"
+                fill="${C.pg_top}" stroke="${C.schrank}" stroke-width="1"/>
+             <rect x="${cx-8}" y="${r(bodyY+8)}" width="16" height="8"
+                fill="${C.pg_mid}" stroke="${C.schrank}" stroke-width="1"/>
+             <rect x="${cx-5}" y="${r(bodyY+16)}" width="10" height="5"
+                fill="${C.pg_bot}" stroke="${C.schrank}" stroke-width="1"/>\n`;
+    } else {
+      pg += `<rect x="${cx-5}" y="${r(bodyY)}" width="10" height="5"
+                fill="${C.pg_bot}" stroke="${C.schrank}" stroke-width="1"/>
+             <rect x="${cx-8}" y="${r(bodyY+5)}" width="16" height="8"
+                fill="${C.pg_mid}" stroke="${C.schrank}" stroke-width="1"/>
+             <path d="M${cx-8},${r(bodyY+13)} Q${cx},${r(bodyY+21)} ${cx+8},${r(bodyY+13)} Z"
+                fill="${C.pg_top}" stroke="${C.schrank}" stroke-width="1"/>\n`;
+    }
+    return pg;
+  }
+
+  // ── Aufbau SVG-String ──
+  let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="da" viewBox="0 0 8 8" refX="7" refY="4"
+          markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M1 1.5 L7 4 L1 6.5" fill="none" stroke="${C.arrow_mk}"
+          stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<rect width="${VW}" height="${VH}" fill="${C.bg}"/>
+`;
+
+  // Schrank + MP
+  s += `<rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" fill="none" stroke="${C.schrank}" stroke-width="3"/>\n`;
+  s += `<rect x="${r(mx)}" y="${r(my)}" width="${r(mw)}" height="${r(mh)}" fill="none" stroke="${C.mp}" stroke-width="1.5"/>\n`;
+
+  // Zonen-Rechtecke
+  s += `<rect x="${r(mx)}" y="${r(yH)}" width="${r(mw)}" height="${r(hh)}" fill="${C.zH_fill}"/>\n`;
+  s += `<rect x="${r(mx)}" y="${r(yB)}" width="${r(mw)}" height="${r(hb)}" fill="${C.zB_fill}"/>\n`;
+  s += `<rect x="${r(mx)}" y="${r(yK)}" width="${r(mw)}" height="${r(hk)}" fill="${C.zK_fill}" stroke="${C.zK_stroke}" stroke-width="1.2"/>\n`;
+  for (let i=1; i<4; i++) s += ln(mx+3, yK+hk*i/4, mx+mw-3, yK+hk*i/4, C.zK_lines, 0.7);
+
+  // Zonen-Labels + Nutzfläche (ausgeblendet wenn fs_zone = 0)
+  const midH = yH+hh/2, midB = yB+hb/2, midK = yK+hk/2;
+  if (p.fs_zone > 0) {
+    s += tx(mx+mw/2, midB+3.5, 'Kabeleinführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
+    s += tx(mx+mw*0.58, midK+3.5, 'Kabelkanal Einführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_k});
+    s += ln(mx, nutz_y, mx+mw, nutz_y, C.nutz, 1.2, '8 5');
+    if (p.ke_pos === 'oben')
+      s += tx(mx+mw/2, nutz_y+10, '▼ Beginn Nutzfläche', {anchor:'middle',size:p.fs_zone,fill:C.nutz_tx});
+    else
+      s += tx(mx+mw/2, nutz_y-4, '▲ Ende Nutzfläche', {anchor:'middle',size:p.fs_zone,fill:C.nutz_tx});
+  }
+
+  // PG + Kabel
+  if (p.ke_pos === 'oben') {
+    const pgY = sy - 21;          // PG-Unterseite liegt direkt auf sy (Gehäuseoberkante)
+    s += tx(pg2x+14, pgY+10, 'PG-Verschraubungen', {anchor:'start',size:p.fs_var,fill:C.zone_tx_k});
+    s += ln(pg1x, sy, pg1x, pgY-10, C.cable, 4);   // Kabelstub: Gehäusewand → durch PG → 10 px über Nase
+    s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
+    s += ln(pg1x, sy, pg1x, yB, C.cable_dash, 4, '3 2');
+    const bxo = pg1x + 20;
+    s += `<path d="M ${pg1x},${r(yB)} C ${pg1x},${r(yB+hb*0.55)} ${bxo},${r(yK-hb*0.05)} ${bxo},${r(yK)}"
+               fill="none" stroke="${C.cable}" stroke-width="4" stroke-linecap="round"/>\n`;
+    s += ln(bxo, yK, bxo, yK+hk, C.cable, 4);
+  } else {
+    const pgY = sy + sh;
+    s += tx(pg2x+14, pgY+16, 'PG-Verschraubungen', {anchor:'start',size:p.fs_var,fill:C.zone_tx_k});
+    const bxo = pg1x + 20;
+    s += ln(pg1x, pgY, pg1x, pgY+31, C.cable, 4);  // Kabelstub: Gehäusewand → durch PG → 10 px unter Nase
+    s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
+    s += ln(pg1x, yH, pg1x, yH_bot, C.cable_dash, 4, '3 2');
+    s += ln(bxo, yK, bxo, yB, C.cable, 4);
+    s += `<path d="M ${bxo},${r(yB)} C ${bxo},${r(yB+hb*0.45)} ${pg1x},${r(yB+hb*0.55)} ${pg1x},${r(yH)}"
+               fill="none" stroke="${C.cable}" stroke-width="4" stroke-linecap="round"/>\n`;
+  }
+
+  // Guide-Linien + Maßpfeile + h_ke-Klammer (ausgeblendet wenn fs_var = 0)
+  if (p.fs_var > 0) {
+    const guideYs = p.ke_pos === 'oben'
+      ? [yH, yH_bot, yK, yK+hk]
+      : [yK, yK+hk, yH, yH_bot];
+    for (const y of guideYs)
+      s += ln(sx+sw, y, ax1+2, y, C.guide, 0.5);
+
+    const zones = p.ke_pos === 'oben'
+      ? [
+          {y0:yH,    y1:yH_bot, col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke'},
+          {y0:yB,    y1:yK,     col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg' },
+          {y0:yK,    y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke'  },
+        ]
+      : [
+          {y0:yK,    y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke'  },
+          {y0:yB,    y1:yB+hb,  col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg' },
+          {y0:yH,    y1:yH_bot, col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke', dy:-2},
+        ];
+    for (const z of zones) {
+      s += ln(ax1, z.y0, ax+3, z.y0, z.col, 0.8);
+      s += ln(ax1, z.y1, ax+3, z.y1, z.col, 0.8);
+      s += arr(ax, z.y0, z.y1, z.col);
+      s += tx(lx, (z.y0+z.y1)/2+3.5+(z.dy||0), z.lbl, {size:p.fs_var,weight:400,fill:z.lcol});
+    }
+
+    s += ln(lx, yKe0, bx+2, yKe0, C.arr_ke, 0.8);
+    s += ln(lx, yKe1, bx+2, yKe1, C.arr_ke, 0.8);
+    s += arr(bx, yKe0, yKe1, C.arr_ke);
+    s += tx(bx+6, (yKe0+yKe1)/2+3.5, 'h_ke', {size:p.fs_var,weight:700,fill:C.lbl_ke});
+  }
+
+  // H + B Maße (ausgeblendet wenn fs_dim = 0)
+  if (p.fs_dim > 0) {
+    const hx = sx - 16;
+    s += ln(hx,sy,hx+6,sy,C.dim,0.8); s += ln(hx,sy+sh,hx+6,sy+sh,C.dim,0.8);
+    s += arr(hx+3, sy, sy+sh, C.dim);
+    s += tx(hx+1, sy+sh/2, `H = ${p.H} mm`,
+           {anchor:'middle',size:p.fs_dim,fill:C.dim,rotate:`rotate(-90 ${r(hx+1)} ${r(sy+sh/2)})`});
+    if (p.ke_pos === 'oben') {
+      // B-Maß unten
+      const bdy = sy + sh + 16;
+      s += ln(sx,bdy,sx,bdy-6,C.dim,0.8); s += ln(sx+sw,bdy,sx+sw,bdy-6,C.dim,0.8);
+      s += `<line x1="${sx+1}" y1="${r(bdy-3)}" x2="${r(sx+sw-1)}" y2="${r(bdy-3)}"
+                 stroke="${C.dim}" stroke-width="0.8"
+                 marker-start="url(#da)" marker-end="url(#da)"/>\n`;
+      s += tx(sx+sw/2, bdy-5, `B = ${p.B} mm`, {anchor:'middle',size:p.fs_dim,fill:C.dim});
+    } else {
+      // B-Maß oben (vermeidet Überschneidung mit PG unten)
+      const tdy = sy - 16;
+      s += ln(sx,tdy,sx,tdy+6,C.dim,0.8); s += ln(sx+sw,tdy,sx+sw,tdy+6,C.dim,0.8);
+      s += `<line x1="${sx+1}" y1="${r(tdy+3)}" x2="${r(sx+sw-1)}" y2="${r(tdy+3)}"
+                 stroke="${C.dim}" stroke-width="0.8"
+                 marker-start="url(#da)" marker-end="url(#da)"/>\n`;
+      s += tx(sx+sw/2, tdy+1, `B = ${p.B} mm`, {anchor:'middle',size:p.fs_dim,fill:C.dim});
+    }
+  }
+
+
+  // Innen-Labels (dekorativ)
+  s += tx(sx+sw/2, sy+sh/2-8,  `${p.B} × ${p.H} mm`,      {anchor:'middle',size:7,fill:C.inner_tx});
+  s += tx(sx+sw/2, sy+sh/2+6,  '(Außenmaß)',                {anchor:'middle',size:7,fill:C.inner_tx});
+  s += tx(sx+sw/2, sy+sh/2+20, `MP ${p.mp_b} × ${p.mp_h} mm`, {anchor:'middle',size:7,fill:C.inner_tx});
+
+  s += `</svg>`;
+  return s;
+}
+
+// ── Ergebnistabelle ───────────────────────────────────────────
+function buildTable(p) {
+  const fmt = v => typeof v==='number' && v%1!==0 ? v.toFixed(1) : v;
+  const rows = [
+    {var:'b_gehaeuse_aussen_mm',               lbl:'Schrank-Außenbreite',          val:p.B,           unit:'mm', src:'Eingabe',                        col:''},
+    {var:'h_gehaeuse_aussen_mm',               lbl:'Schrank-Außenhöhe',            val:p.H,           unit:'mm', src:'Eingabe',                        col:''},
+    {var:'b_mplatte_mm',                       lbl:'Montageplatte Breite',         val:p.mp_b,        unit:'mm', src:'Eingabe',                        col:''},
+    {var:'h_mplatte_mm',                       lbl:'Montageplatte Höhe',           val:p.mp_h,        unit:'mm', src:'Eingabe',                        col:''},
+    {var:'b_mplatte_abstand_gehaeuse_iw_mm',   lbl:'Seitl. Abstand MP–Innenwand', val:fmt(p.b_abst), unit:'mm', src:`(${p.B}−${p.mp_b})÷2`,          col:''},
+    {var:'h_mplatte_abstand_gehaeuse_iw_mm',   lbl:'Oberer Abstand MP–Innenwand', val:fmt(p.h_abst), unit:'mm', src:`(${p.H}−${p.mp_h})÷2`,          col:''},
+    {var:'d_max_kabel_ke_mm',                  lbl:'Max. Kabel-Außen-∅',          val:p.d_max,       unit:'mm', src:'Eingabe',                        col:''},
+    {sep:true},
+    {var:'h_handling_ke_mm',   lbl:'Freie Kabellänge nach PG',    val:p.h_hand,  unit:'mm', src:'Festwert Wandschrank',           col:'#2DBD8E', note:'konservativ eingerechnet'},
+    {var:'h_zug_ke_mm',        lbl:'Zugentlastung intern',         val:p.h_zug,   unit:'mm', src:'0 · Wandschrank (PG außen)',     col:'#9A9890', note:'kein interner Platzbedarf'},
+    {var:'h_kabel_bieg_mm',    lbl:'Mindestbiegeradius',           val:p.h_bieg,  unit:'mm', src:`4 × ${p.d_max} mm (VDE 0298-4)`,col:'#C8720E'},
+    {var:'h_kanal_ke_mm',      lbl:'Horizontaler Kabelkanal',      val:p.h_kanal, unit:'mm', src:'Eingabe · Standard 60 mm',       col:'#9A94E8'},
+    {sep:true},
+    {var:'h_ke_mm', lbl:'Kabeleinführungszone gesamt', val:p.h_ke, unit:'mm',
+     src:`${p.h_hand} + ${p.h_zug} + ${p.h_bieg} + ${p.h_kanal}`, col:'#E0DED8', hi:true},
+  ];
+
+  let t = `
+<div class="formula-box" style="margin-top:18px">
+  h_ke &nbsp;=&nbsp;
+  <span style="color:#2DBD8E">h_handling_ke</span> &nbsp;+&nbsp;
+  h_zug_ke &nbsp;+&nbsp;
+  <span style="color:#C8720E">h_kabel_bieg</span> &nbsp;+&nbsp;
+  <span style="color:#9A94E8">h_kanal_ke</span>
+  &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_ke} mm</strong>
+  &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
+</div>
+<table class="rtable">
+<thead><tr>
+  <th>Variable</th><th>Bezeichnung</th><th>Formel / Quelle</th>
+  <th style="text-align:right">Wert</th>
+</tr></thead><tbody>`;
+
+  for (const row of rows) {
+    if (row.sep) {
+      t += `<tr><td colspan="4" style="background:#252523;padding:2px 10px;
+                 font-size:9px;color:#4A4846;border-bottom:1px solid #333">───────</td></tr>`;
+      continue;
+    }
+    const bg = row.hi ? 'background:#2A2A1E;' : '';
+    const vs = row.hi ? 'font-size:14px;' : '';
+    t += `<tr style="${bg}">
+      <td><span class="vname" style="color:${row.col||'#9A9890'}">${row.var}</span></td>
+      <td>${row.lbl}${row.note?`<br><span style="font-size:10px;color:#666460">${row.note}</span>`:''}</td>
+      <td class="formula-cell">${row.src}</td>
+      <td class="val" style="${vs}color:${row.col||'#E0DED8'}">${row.val}
+          <span style="font-weight:400;font-size:10px;color:#666460">${row.unit}</span></td>
+    </tr>`;
+  }
+
+  t += `</tbody></table>
+<p class="note-line">
+  h_ke gilt für KE von oben und KE von unten gleichermaßen ·
+  Biegeradius-Faktor 4× nach VDE 0298-4 (fest verlegte Leitungen)
+</p>`;
+  return t;
+}
+
+// ── Init ─────────────────────────────────────────────────────
+updateKabelTyp();
+calculate();
+</script>
+
+<footer class="site-footer">
+  <span>Erstellt von: Stephan Michler · DBACS Planungstool · 2026</span>
+  <a href="../../web/index.html">← Startseite</a>
+</footer>
+
+</body>
+</html>
