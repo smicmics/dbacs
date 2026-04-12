@@ -190,13 +190,33 @@ legend{
         </select>
       </div>
       <div class="field">
-        <div class="lbl">Max. Kabel-∅ außen (mm)<span class="var">d_max_kabel_ke_mm</span></div>
-        <input id="d_max" type="number" value="16" min="5" max="60" step="0.5"
-               oninput="updateKabelTyp();calculate()">
+        <div class="lbl">Aderzahl<span class="var">n_adern</span></div>
+        <select id="n_adern" onchange="lookupKabel();calculate()">
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5" selected>5</option>
+          <option value="7">7</option>
+        </select>
       </div>
       <div class="field">
-        <div class="lbl">Leitungstyp (Richtwert)<span class="var">–</span></div>
-        <input id="kabel_typ" type="text" value="NYM-J 5×6 mm²" disabled>
+        <div class="lbl">Querschnitt (mm²)<span class="var">querschnitt_mm2</span></div>
+        <select id="querschnitt" onchange="lookupKabel();calculate()">
+          <option value="1.5">1,5</option>
+          <option value="2.5">2,5</option>
+          <option value="4">4</option>
+          <option value="6" selected>6</option>
+          <option value="10">10</option>
+          <option value="16">16</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Leitungstyp (aus DB)<span class="var">–</span></div>
+        <input id="kabel_typ" type="text" value="–" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Max. Kabel-∅ außen (mm)<span class="var">d_max_kabel_ke_mm</span></div>
+        <input id="d_max" type="number" value="18" min="5" max="60" step="0.5"
+               oninput="calculate()" title="Aus DB – überschreibbar für Sonderkabel">
       </div>
     </fieldset>
 
@@ -285,35 +305,44 @@ const C = {
   arrow_mk:  '#3366BB',
 };
 
+// ── Kabeldatenbank ────────────────────────────────────────────
+let KABEL_DB = [];
+fetch('../../data/kabel_nym_j.json')
+  .then(r => r.json())
+  .then(data => { KABEL_DB = data; lookupKabel(); calculate(); })
+  .catch(() => { /* DB nicht verfügbar – d_max bleibt manuell */ });
+
+function lookupKabel() {
+  const n = +gs('n_adern');
+  const q = +gs('querschnitt');
+  const entry = KABEL_DB.find(e => e.n_adern === n && e.querschnitt_mm2 === q);
+  if (entry) {
+    document.getElementById('kabel_typ').value = entry.bezeichnung;
+    _v('d_max', entry.d_aussen_mm);
+  } else {
+    document.getElementById('kabel_typ').value = 'Sonderkabel / nicht in DB';
+  }
+}
+
 // ── Presets ───────────────────────────────────────────────────
 const PRESETS = {
-  rittal_ax_1213: { B:1000, H:1200, mp_b:945, mp_h:1175, d_max:16, h_kanal:60, ke_pos:'oben' },
-  rittal_ax_1209: { B:600,  H:1000, mp_b:545, mp_h:975,  d_max:16, h_kanal:60, ke_pos:'oben' }
+  rittal_ax_1213: { B:1000, H:1200, mp_b:945, mp_h:1175, n_adern:5, querschnitt:6, h_kanal:60, ke_pos:'oben' },
+  rittal_ax_1209: { B:600,  H:1000, mp_b:545, mp_h:975,  n_adern:5, querschnitt:6, h_kanal:60, ke_pos:'oben' }
 };
 
 function loadPreset(name) {
   const p = PRESETS[name];
   _v('B',p.B); _v('H',p.H); _v('mp_b',p.mp_b); _v('mp_h',p.mp_h);
-  _v('d_max',p.d_max); _v('h_kanal',p.h_kanal);
+  document.getElementById('n_adern').value    = p.n_adern;
+  document.getElementById('querschnitt').value = p.querschnitt;
+  _v('h_kanal', p.h_kanal);
   document.getElementById('ke_pos').value = p.ke_pos;
-  updateKabelTyp(); calculate();
+  lookupKabel(); calculate();
 }
 
 function _v(id, val) { document.getElementById(id).value = val; }
 const g  = id => +document.getElementById(id).value;
 const gs = id =>  document.getElementById(id).value;
-
-// ── Kabeltyp-Lookup ───────────────────────────────────────────
-function updateKabelTyp() {
-  const d = g('d_max');
-  const t = d<=9  ? 'NYM-J 3×1,5 mm²'
-           :d<=11 ? 'NYM-J 3×2,5 mm²'
-           :d<=13 ? 'NYM-J 5×1,5 mm²'
-           :d<=15 ? 'NYM-J 5×4 mm²'
-           :d<=17 ? 'NYM-J 5×6 mm²'
-           :d<=21 ? 'NYM-J 5×10 mm²' : 'Sonderkabel';
-  document.getElementById('kabel_typ').value = t;
-}
 
 // ── Berechnung ────────────────────────────────────────────────
 function calculate() {
@@ -588,8 +617,7 @@ function buildTable(p) {
 }
 
 // ── Init ─────────────────────────────────────────────────────
-updateKabelTyp();
-calculate();
+calculate(); // Sofortiger Aufruf mit d_max-Defaultwert; fetch() übernimmt DB-Init
 </script>
 
 <footer class="site-footer">

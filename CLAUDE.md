@@ -2,9 +2,13 @@
 
 ## Session-Start-Protokoll
 
-**Beim Start jeder Sitzung zuerst lesen:**
-1. `docs/revison_session.md` – aktueller Projektstand, offene Punkte, gesperrte Entscheidungen
-2. Bei Arbeit an Modul 1: `modules/modul-01-schaltschrank/index.html` ab Zeile 226 (JS/SVG-Teil)
+**Beim Start jeder Sitzung in dieser Reihenfolge ausführen:**
+1. `git log --oneline -5` – prüfen ob seit letzter Sitzung neue Commits über VS Code eingecheckt wurden
+2. `git status` – prüfen ob uncommittete Änderungen vorliegen
+3. `docs/revison_session.md` lesen – aktueller Projektstand, offene Punkte, gesperrte Entscheidungen
+4. Bei Arbeit an Modul 1: `modules/modul-01-schaltschrank/index.html` ab Zeile 226 (JS/SVG-Teil)
+
+**Hinweis:** Commits erfolgen in der Regel über VS Code, nicht über Claude. Der letzte Commit-Stand ist daher maßgeblich für den tatsächlichen Projektstand – nicht der Dokumentationsstand in `revison_session.md`.
 
 ---
 
@@ -69,7 +73,9 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 | `h_mplatte_mm` | Montageplatte Höhe | mm |
 | `b_mplatte_abstand_gehaeuse_iw_mm` | Seitl. Abstand MP–Gehäuseinnenwand | mm |
 | `h_mplatte_abstand_gehaeuse_iw_mm` | Oberer Abstand MP–Gehäuseinnenwand | mm |
-| `d_max_kabel_ke_mm` | Max. Kabel-Außen-∅ in der KE-Zone | mm |
+| `n_adern` | Anzahl Leiter im Kabel | – |
+| `querschnitt_mm2` | Leiterquerschnitt | mm² |
+| `d_max_kabel_ke_mm` | Max. Kabel-Außen-∅ in der KE-Zone (aus DB) | mm |
 | `h_handling_ke_mm` | Freie Kabellänge nach PG (Handling) | mm |
 | `h_zug_ke_mm` | Zugentlastung intern | mm |
 | `h_kabel_bieg_mm` | Mindestbiegeradius (4 × d_max) | mm |
@@ -82,11 +88,12 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 
 Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 
-- **Single-File HTML** pro Modul – CSS und JS eingebettet, keine externen Dateien
+- **Single-File HTML** pro Modul – CSS und JS eingebettet, keine externen Dateien; Datenbankdateien (JSON) sind zulässige externe Abhängigkeiten
 - **Kein Framework** – kein React, Vue, Angular, kein npm, kein Build-Step
 - **GitHub Pages kompatibel** – relative Pfade, kein Server-Backend, offline-fähig
 - **Sprache** – UI-Texte und Dokumentation auf Deutsch
-- **Datenhaltung** – Excel als Source of Truth → Python-Konvertierung → SQLite (`sql.js` im Browser)
+- **Datenhaltung** – Excel als Source of Truth → `data/xlsx_to_json.py` → JSON (committed) → `fetch()` im Browser
+- **Entwickler-Workflow Daten:** `cd data && python xlsx_to_json.py` nach jeder Excel-Änderung, dann JSON committen
 
 ---
 

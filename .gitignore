@@ -15,6 +15,7 @@ __pycache__/
 
 # Data (lokal generiert, nicht versioniert)
 data/*.db
+data/*.xlsx
 
 # Claude local settings
 .claude/settings.local.json
