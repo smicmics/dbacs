@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 06. April 2026
+**Stand:** 12. April 2026
 
 ---
 
@@ -27,9 +27,15 @@ Webbasiertes Planungstool für das Gewerk Gebäudeautomation zur Unterstützung 
 ```
 dbacs/
 ├── CLAUDE.md                               Projektkonventionen für Claude (Session-Start)
-├── web/
-│   ├── index.html                          Startseite / Modulübersicht
-│   └── assets/                             CSS + JS der Startseite
+├── index.html                              Root-Redirect → web/index.html (GitHub Pages)
+├── .gitignore                              OS, Editor, Python, data/*.db, settings.local.json
+├── .claude/
+│   └── launch.json                         Dev-Server-Konfiguration (statischer HTTP-Server Port 8099)
+├── web/                                    ← in Session 2 (12.04.2026) erstellt
+│   ├── index.html                          Startseite / Modulübersicht (Dark Theme)
+│   └── assets/
+│       ├── css/style.css                   Dark Theme Stylesheet
+│       └── js/main.js                      Scroll-Reveal + aktive Nav-Link-Steuerung
 ├── modules/
 │   └── modul-01-schaltschrank/index.html  h_ke-Rechner (aktive Arbeitsdatei)
 ├── drawings/
@@ -41,14 +47,26 @@ dbacs/
     └── *.md                               Projektdokumentation
 ```
 
+**Deployment**
+| | |
+|---|---|
+| Repository | https://github.com/smicmics/dbacs |
+| Live-URL Startseite | https://smicmics.github.io/dbacs/ |
+| Live-URL Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
+| Deploy-Trigger | Push auf `main` Branch → GitHub Pages baut automatisch |
+| Branch / Quelle | `main` / Root (`/`) |
+
 ---
 
 ## Stand heute
 
-**Startseite (web/index.html)**
-- Dark Theme, Modulübersicht mit 6 Karten
-- Modul 1 verlinkt und aktiv, Module 2–6 als "geplant" markiert
+**Startseite (web/index.html)** ← neu erstellt Session 2 (12.04.2026)
+- Dark Theme (`#0d1117` Basis, Blau-Akzente, Grün für aktive Zustände)
+- Sektionen: Hero, Modulübersicht, Architektur, Pflegeworkflow, Projektstatus, Footer
+- Modulübersicht: Modul 1 aktiv verlinkt, Module 2–5 als „Geplant" markiert
+- Scroll-Reveal-Animation, aktive Nav-Link-Hervorhebung via IntersectionObserver
 - Footer: „Erstellt von: Stephan Michler · DBACS Planungstool · 2026"
+- Responsive (mobile: Nav ausgeblendet, einspaltig)
 
 **Modul 1 – Kabeleinführungszone h_ke (Wandschrank)**
 - Eingaben: Schrank-Außenmaße, Montageplatte, KE-Position (oben/unten), Kabel-∅, Kanaltiefe
@@ -86,12 +104,19 @@ dbacs/
 **CLAUDE.md**
 - Session-Start-Protokoll, Architekturregeln, Code-Konventionen, SVG-Konventionen
 - Variablen-Konvention (modulübergreifend), Farbkodierung, Schriftgrößen-Steuerung
+- Deployment-Tabelle mit Live-URLs
 - Gesperrte Entscheidungen
 
+**GitHub Pages Deployment**
+- Repository: https://github.com/smicmics/dbacs (öffentlich)
+- Deployment über GitHub Pages, Branch `main`, Root `/`
+- Root `index.html` leitet per Meta-Refresh auf `web/index.html` weiter
+- `.gitignore` schützt lokale Dateien (data/*.db, .claude/settings.local.json, etc.)
+- Stand 12.04.2026: Änderungen noch nicht gepusht (web/ lokal neu erstellt, kein Commit)
+
 **Noch nicht begonnen**
-- Excel-Datenbankstruktur
-- Python-Konvertierungsskript
-- GitHub Pages Deployment
+- Excel-Datenbankstruktur befüllen
+- Python-Konvertierungsskript implementieren
 
 ---
 
@@ -119,7 +144,7 @@ Verbindliche Variablennamen für alle Module, Ergebnistabellen und SQLite-Felder
 ## Offene Punkte
 
 **Als nächstes (Prio hoch)**
-1. GitHub Pages Deployment – Dateien veröffentlichen, Pfade testen
+1. Git commit + push → GitHub Pages aktualisieren (web/ ist lokal fertig, aber noch nicht deployed)
 2. Modul 2 – Stehender Schrank (wie Modul 1, aber h_zug_ke ≈ 35 mm aktiv)
 
 **Mittelfristig**
@@ -131,9 +156,9 @@ Verbindliche Variablennamen für alle Module, Ergebnistabellen und SQLite-Felder
 
 **Später**
 8. Zonenrechteck h_handling bei KE oben bereinigen (überlappt minimal Gehäusekante)
-9. Responsive Layout / Mobile
-10. CSS @media print für Druckausgabe
-11. Module 3–6 konzipieren
+9. Startseite: Screenshot-Vorschau je Modul ergänzen
+10. CSS @media print für Druckausgabe (Modul 1)
+11. Module 3–5 konzipieren und in Startseite integrieren
 
 ---
 

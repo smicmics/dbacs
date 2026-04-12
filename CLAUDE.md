@@ -12,16 +12,25 @@
 
 DBACS ist ein webbasiertes Planungstool für das Gewerk Gebäudeautomation, das Ingenieure bei der Schaltschrank-Dimensionierung in verschiedenen HOAI-Leistungsphasen unterstützt. Es läuft als statische GitHub Pages Anwendung – kein Server, kein Backend, kein Build-Step. Jedes Modul ist eine eigenständige HTML-Datei mit eingebettetem CSS und JavaScript.
 
+**Live:** https://smicmics.github.io/dbacs/
+**Repository:** https://github.com/smicmics/dbacs
+
 ---
 
 ## Dateistruktur
 
 ```
 dbacs/
+├── .gitignore
 ├── CLAUDE.md                                    diese Datei
+├── index.html                                   Root-Redirect → web/index.html
+├── .claude/
+│   └── launch.json                              Dev-Server-Konfiguration (statisch, Port 8099)
 ├── web/
-│   ├── index.html                               Startseite / Modulübersicht
-│   └── assets/css/style.css · assets/js/main.js
+│   ├── index.html                               Startseite / Modulübersicht (Dark Theme)
+│   └── assets/
+│       ├── css/style.css                        Dark Theme Stylesheet
+│       └── js/main.js                           Scroll-Reveal + Nav-Highlighting
 ├── modules/
 │   └── modul-01-schaltschrank/index.html        h_ke-Rechner (Wandschrank)
 ├── drawings/
@@ -33,6 +42,18 @@ dbacs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
     └── archiv/                                  ältere Session-Dokumentationen
 ```
+
+---
+
+## Deployment
+
+| | |
+|---|---|
+| Repository | https://github.com/smicmics/dbacs |
+| Branch | `main` |
+| GitHub Pages | https://smicmics.github.io/dbacs/ |
+| Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
+| Deploy-Trigger | `git push origin main` → GitHub Pages baut automatisch |
 
 ---
 
