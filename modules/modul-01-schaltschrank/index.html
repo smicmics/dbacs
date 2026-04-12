@@ -321,12 +321,12 @@ fetch('../../data/wandschraenke.json')
     const sel = document.getElementById('preset_schrank');
     data.forEach((s, i) => {
       const opt = document.createElement('option');
-      opt.value = i;
+      opt.value = String(i);
       opt.textContent = `${s.hersteller} ${s.bezeichnung}  (${s.b_gehaeuse_aussen_mm}×${s.h_gehaeuse_aussen_mm} mm)`;
+      if (s.bezeichnung === 'AX 1214.000') opt.selected = true;
       sel.appendChild(opt);
     });
-    const defaultIdx = data.findIndex(s => s.bezeichnung === 'AX 1214.000');
-    if (defaultIdx >= 0) { sel.value = defaultIdx; loadPreset(); }
+    loadPreset();
   })
   .catch(() => { /* DB nicht verfügbar – manuelle Eingabe */ });
 
