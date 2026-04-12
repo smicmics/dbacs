@@ -325,6 +325,8 @@ fetch('../../data/wandschraenke.json')
       opt.textContent = `${s.hersteller} ${s.bezeichnung}  (${s.b_gehaeuse_aussen_mm}×${s.h_gehaeuse_aussen_mm} mm)`;
       sel.appendChild(opt);
     });
+    const defaultIdx = data.findIndex(s => s.bezeichnung === 'AX 1214.000');
+    if (defaultIdx >= 0) { sel.value = defaultIdx; loadPreset(); }
   })
   .catch(() => { /* DB nicht verfügbar – manuelle Eingabe */ });
 
