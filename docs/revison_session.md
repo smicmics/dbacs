@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 12. April 2026
+**Stand:** 12. April 2026 – Session 3
 
 ---
 
@@ -28,10 +28,10 @@ Webbasiertes Planungstool für das Gewerk Gebäudeautomation zur Unterstützung 
 dbacs/
 ├── CLAUDE.md                               Projektkonventionen für Claude (Session-Start)
 ├── index.html                              Root-Redirect → web/index.html (GitHub Pages)
-├── .gitignore                              OS, Editor, Python, data/*.db, settings.local.json
+├── .gitignore                              OS, Editor, Python, data/*.db, data/*.xlsx, settings.local.json
 ├── .claude/
 │   └── launch.json                         Dev-Server-Konfiguration (statischer HTTP-Server Port 8099)
-├── web/                                    ← in Session 2 (12.04.2026) erstellt
+├── web/                                    ← erstellt Session 2 (12.04.2026)
 │   ├── index.html                          Startseite / Modulübersicht (Dark Theme)
 │   └── assets/
 │       ├── css/style.css                   Dark Theme Stylesheet
@@ -41,8 +41,9 @@ dbacs/
 ├── drawings/
 │   └── wandschrank_frontansicht_v7.html   Referenzzeichnung (unverändert)
 ├── data/
-│   ├── ga_komponenten.xlsx                Pflegewerkzeug (Source of Truth, noch leer)
-│   └── ga_komponenten.db                 SQLite, generiert via Python (noch leer)
+│   ├── ga_komponenten.xlsx                Pflegewerkzeug (Source of Truth, lokal – nicht versioniert)
+│   ├── kabel_nym_j.json                   Kabeldatenbank NYM-J (committed, aus Excel generiert)
+│   └── xlsx_to_json.py                    Konvertierungsskript Excel → JSON (WSL: python3)
 └── docs/
     └── *.md                               Projektdokumentation
 ```
@@ -69,13 +70,21 @@ dbacs/
 - Responsive (mobile: Nav ausgeblendet, einspaltig)
 
 **Modul 1 – Kabeleinführungszone h_ke (Wandschrank)**
-- Eingaben: Schrank-Außenmaße, Montageplatte, KE-Position (oben/unten), Kabel-∅, Kanaltiefe
+- Eingaben: Schrank-Außenmaße, Montageplatte, KE-Position (oben/unten), Kanaltiefe
+- Kabelauswahl: Aderzahl (3/4/5/7) + Querschnitt (1,5–16 mm²) → d_max aus JSON-DB
+- d_max bleibt manuell überschreibbar (Sonderkabel)
 - Berechnung vollständig und korrekt implementiert
 - Ergebnistabelle mit standardisierten Variablennamen (siehe Variablen-Konvention)
 - Variablen-Labels im Eingabeformular zeigen kanonische Variablennamen
 - SVG-Zeichnung dynamisch, skaliert auf jede Schrankhöhe
 - Zwei Preset-Schränke (Rittal AX 1213, AX 1209)
 - Footer: „Erstellt von: Stephan Michler · DBACS Planungstool · 2026"
+
+**Kabeldatenbank (Session 3)**
+- `data/kabel_nym_j.json` – 18 NYM-J Typen (3/4/5/7 Adern, 1,5–16 mm²), Richtwerte Draka 2024
+- `data/ga_komponenten.xlsx` – Excel-Pflegedatei (lokal, nicht versioniert)
+- `data/xlsx_to_json.py` – Konvertierungsskript (WSL: `python3 xlsx_to_json.py`)
+- fetch() lädt JSON beim Seitenaufruf; Fallback: d_max manuell eingebbar
 
 **SVG-Zeichnung – Qualität**
 - Zonendarstellung korrekt für KE oben und KE unten
@@ -111,18 +120,14 @@ dbacs/
 - Repository: https://github.com/smicmics/dbacs (öffentlich)
 - Deployment über GitHub Pages, Branch `main`, Root `/`
 - Root `index.html` leitet per Meta-Refresh auf `web/index.html` weiter
-- `.gitignore` schützt lokale Dateien (data/*.db, .claude/settings.local.json, etc.)
-- Stand 12.04.2026: Änderungen noch nicht gepusht (web/ lokal neu erstellt, kein Commit)
-
-**Noch nicht begonnen**
-- Excel-Datenbankstruktur befüllen
-- Python-Konvertierungsskript implementieren
+- `.gitignore` schützt lokale Dateien (data/*.db, data/*.xlsx, .claude/settings.local.json)
+- Stand 12.04.2026 Session 3: alle Änderungen committed und gepusht (Commit e67ef0c)
 
 ---
 
 ## Variablen-Konvention (modulübergreifend)
 
-Verbindliche Variablennamen für alle Module, Ergebnistabellen und SQLite-Felder:
+Verbindliche Variablennamen für alle Module, Ergebnistabellen und JSON-Felder:
 
 | Variable | Bedeutung | Einheit |
 |---|---|---|
@@ -132,7 +137,9 @@ Verbindliche Variablennamen für alle Module, Ergebnistabellen und SQLite-Felder
 | `h_mplatte_mm` | Montageplatte Höhe | mm |
 | `b_mplatte_abstand_gehaeuse_iw_mm` | Seitl. Abstand MP–Gehäuseinnenwand | mm |
 | `h_mplatte_abstand_gehaeuse_iw_mm` | Oberer Abstand MP–Gehäuseinnenwand | mm |
-| `d_max_kabel_ke_mm` | Max. Kabel-Außen-∅ KE-Zone | mm |
+| `n_adern` | Anzahl Leiter im Kabel | – |
+| `querschnitt_mm2` | Leiterquerschnitt | mm² |
+| `d_max_kabel_ke_mm` | Max. Kabel-Außen-∅ KE-Zone (aus DB) | mm |
 | `h_handling_ke_mm` | Freie Kabellänge nach PG | mm |
 | `h_zug_ke_mm` | Zugentlastung intern | mm |
 | `h_kabel_bieg_mm` | Mindestbiegeradius (4 × d_max) | mm |
@@ -144,8 +151,8 @@ Verbindliche Variablennamen für alle Module, Ergebnistabellen und SQLite-Felder
 ## Offene Punkte
 
 **Als nächstes (Prio hoch)**
-1. Git commit + push → GitHub Pages aktualisieren (web/ ist lokal fertig, aber noch nicht deployed)
-2. Modul 2 – Stehender Schrank (wie Modul 1, aber h_zug_ke ≈ 35 mm aktiv)
+1. Modul 2 – Stehender Schrank (wie Modul 1, aber h_zug_ke ≈ 35 mm aktiv)
+2. Außendurchmesser NYM-J in Excel mit echten Herstellerdaten verifizieren und ggf. korrigieren
 
 **Mittelfristig**
 3. Einspeisezone h_einsp erarbeiten (analog zu h_ke)

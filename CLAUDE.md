@@ -40,8 +40,9 @@ dbacs/
 ├── drawings/
 │   └── wandschrank_frontansicht_v7.html         Referenzzeichnung (nicht bearbeiten)
 ├── data/
-│   ├── ga_komponenten.xlsx                      Excel Source of Truth (noch leer)
-│   └── ga_komponenten.db                        SQLite, generiert via Python (noch leer)
+│   ├── ga_komponenten.xlsx                      Excel Source of Truth (lokal, nicht versioniert)
+│   ├── kabel_nym_j.json                         Kabeldatenbank NYM-J (committed, aus Excel generiert)
+│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON
 └── docs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
     └── archiv/                                  ältere Session-Dokumentationen
@@ -93,7 +94,8 @@ Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 - **GitHub Pages kompatibel** – relative Pfade, kein Server-Backend, offline-fähig
 - **Sprache** – UI-Texte und Dokumentation auf Deutsch
 - **Datenhaltung** – Excel als Source of Truth → `data/xlsx_to_json.py` → JSON (committed) → `fetch()` im Browser
-- **Entwickler-Workflow Daten:** `cd data && python xlsx_to_json.py` nach jeder Excel-Änderung, dann JSON committen
+- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → JSON committen
+- **Excel nicht versioniert** – `data/*.xlsx` ist in `.gitignore`, nur JSON wird committed
 
 ---
 
