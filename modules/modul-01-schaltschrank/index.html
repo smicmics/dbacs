@@ -79,15 +79,7 @@ legend{
 .field select{text-align:left;cursor:pointer;}
 
 /* Preset buttons */
-.preset-btn{
-  display:block;width:100%;padding:7px 11px;background:var(--bg3);
-  border:1px solid var(--bord);border-radius:4px;font-size:11px;cursor:pointer;
-  color:var(--tx2);margin-bottom:10px;text-align:left;
-  transition:border-color .12s,background .12s;
-}
-.preset-btn:hover{background:var(--bg4);border-color:var(--bords);}
-.preset-btn strong{color:var(--tx);}
-.preset-btn small{color:var(--tx3);}
+
 
 /* ── Result panel ── */
 .panel-out{padding:20px;overflow-y:auto;}
@@ -147,14 +139,10 @@ legend{
   <aside class="panel-in">
     <h2>Eingaben</h2>
 
-    <button class="preset-btn" onclick="loadPreset('rittal_ax_1213')">
-      ▶ Beispiel: <strong>Rittal AX 1213.000</strong><br>
-      <small>1000 × 1200 × 300 mm · MP 945 × 1175 mm</small>
-    </button>
-    <button class="preset-btn" onclick="loadPreset('rittal_ax_1209')">
-      ▶ Beispiel: <strong>Rittal AX 1209.000</strong><br>
-      <small>600 × 1000 × 300 mm · MP 545 × 975 mm</small>
-    </button>
+    <select id="preset_schrank" onchange="loadPreset()"
+      style="width:100%;padding:6px 8px;background:var(--bg3);border:1px solid var(--bord);border-radius:4px;font-size:11px;color:var(--fg1);cursor:pointer;margin-bottom:4px;">
+      <option value="">— Beispielschrank wählen —</option>
+    </select>
 
     <fieldset>
       <legend>Schrank-Außenmaße</legend>
@@ -324,20 +312,31 @@ function lookupKabel() {
   }
 }
 
-// ── Presets ───────────────────────────────────────────────────
-const PRESETS = {
-  rittal_ax_1213: { B:1000, H:1200, mp_b:945, mp_h:1175, n_adern:5, querschnitt:6, h_kanal:60, ke_pos:'oben' },
-  rittal_ax_1209: { B:600,  H:1000, mp_b:545, mp_h:975,  n_adern:5, querschnitt:6, h_kanal:60, ke_pos:'oben' }
-};
+// ── Wandschrank-Datenbank ─────────────────────────────────────
+let WANDSCHRANK_DB = [];
+fetch('../../data/wandschraenke.json')
+  .then(r => r.json())
+  .then(data => {
+    WANDSCHRANK_DB = data;
+    const sel = document.getElementById('preset_schrank');
+    data.forEach((s, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${s.hersteller} ${s.bezeichnung}  (${s.b_gehaeuse_aussen_mm}×${s.h_gehaeuse_aussen_mm} mm)`;
+      sel.appendChild(opt);
+    });
+  })
+  .catch(() => { /* DB nicht verfügbar – manuelle Eingabe */ });
 
-function loadPreset(name) {
-  const p = PRESETS[name];
-  _v('B',p.B); _v('H',p.H); _v('mp_b',p.mp_b); _v('mp_h',p.mp_h);
-  document.getElementById('n_adern').value    = p.n_adern;
-  document.getElementById('querschnitt').value = p.querschnitt;
-  _v('h_kanal', p.h_kanal);
-  document.getElementById('ke_pos').value = p.ke_pos;
-  lookupKabel(); calculate();
+function loadPreset() {
+  const idx = gs('preset_schrank');
+  if (idx === '') return;
+  const s = WANDSCHRANK_DB[+idx];
+  _v('B',    s.b_gehaeuse_aussen_mm);
+  _v('H',    s.h_gehaeuse_aussen_mm);
+  _v('mp_b', s.b_mplatte_mm);
+  _v('mp_h', s.h_mplatte_mm);
+  calculate();
 }
 
 function _v(id, val) { document.getElementById(id).value = val; }
