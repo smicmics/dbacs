@@ -42,7 +42,8 @@ dbacs/
 ├── data/
 │   ├── ga_komponenten.xlsx                      Excel Source of Truth (lokal, nicht versioniert)
 │   ├── kabel_nym_j.json                         Kabeldatenbank NYM-J (committed, aus Excel generiert)
-│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON
+│   ├── wandschraenke.json                       Wandschrank-DB (committed, aus Excel generiert)
+│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (beide Sheets)
 └── docs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
     └── archiv/                                  ältere Session-Dokumentationen
@@ -94,7 +95,7 @@ Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 - **GitHub Pages kompatibel** – relative Pfade, kein Server-Backend, offline-fähig
 - **Sprache** – UI-Texte und Dokumentation auf Deutsch
 - **Datenhaltung** – Excel als Source of Truth → `data/xlsx_to_json.py` → JSON (committed) → `fetch()` im Browser
-- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → JSON committen
+- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → exportiert `kabel_nym_j.json` + `wandschraenke.json` → beide committen
 - **Excel nicht versioniert** – `data/*.xlsx` ist in `.gitignore`, nur JSON wird committed
 
 ---
@@ -106,14 +107,17 @@ Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 1. HTML + CSS (eingebettet im <style>-Tag)
 2. HTML-Markup (Eingabe-Panel links, Ausgabe-Panel rechts)
 3. JavaScript:
-   const C = {...}        // SVG-Farbpalette – zentral, nie hardcoded im SVG
-   const PRESETS = {...}  // Schrankvorlagen als Key-Value-Objekte
-   g(id)                  // DOM-Getter: +document.getElementById(id).value
-   gs(id)                 // DOM-Getter String: document.getElementById(id).value
-   _v(id, val)            // DOM-Setter: document.getElementById(id).value = val
-   calculate()            // Master-Orchestrator, aufgerufen bei oninput
-   buildSVG(p)            // SVG-String-Generator, bekommt Parameterobjekt p
-   buildTable(p)          // HTML-Tabellen-Generator, bekommt Parameterobjekt p
+   const C = {...}           // SVG-Farbpalette – zentral, nie hardcoded im SVG
+   let KABEL_DB = []         // Kabeldatenbank, per fetch() geladen
+   let WANDSCHRANK_DB = []   // Wandschrank-DB, per fetch() geladen (Modul 1)
+   g(id)                     // DOM-Getter: +document.getElementById(id).value
+   gs(id)                    // DOM-Getter String: document.getElementById(id).value
+   _v(id, val)               // DOM-Setter: document.getElementById(id).value = val
+   lookupKabel()             // Kabel-Lookup aus KABEL_DB nach n_adern + querschnitt
+   loadPreset()              // Schrank-Lookup aus WANDSCHRANK_DB per Dropdown-Index
+   calculate()               // Master-Orchestrator, aufgerufen bei oninput
+   buildSVG(p)               // SVG-String-Generator, bekommt Parameterobjekt p
+   buildTable(p)             // HTML-Tabellen-Generator, bekommt Parameterobjekt p
 ```
 
 ### Kommentarstil
