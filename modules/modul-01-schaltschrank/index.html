@@ -357,8 +357,9 @@ function calculate() {
   const h_zug  = 0;
   const h_bieg = 4 * d_max;
   const h_ke   = h_hand + h_zug + h_bieg + h_kanal;
+  const h_mb   = H - h_ke - h_abst;
 
-  const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_bieg, h_ke, ke_pos, fs_dim, fs_var, fs_zone };
+  const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_bieg, h_ke, h_mb, ke_pos, fs_dim, fs_var, fs_zone };
   document.getElementById('svg-inner').innerHTML  = buildSVG(p);
   document.getElementById('results-area').innerHTML = buildTable(p);
 }
@@ -497,14 +498,14 @@ function buildSVG(p) {
 
     const zones = p.ke_pos === 'oben'
       ? [
-          {y0:yH,    y1:yH_bot, col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke'},
-          {y0:yB,    y1:yK,     col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg' },
-          {y0:yK,    y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke'  },
+          {y0:yH,    y1:yH_bot, col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm'},
+          {y0:yB,    y1:yK,     col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm' },
+          {y0:yK,    y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'  },
         ]
       : [
-          {y0:yK,    y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke'  },
-          {y0:yB,    y1:yB+hb,  col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg' },
-          {y0:yH,    y1:yH_bot, col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke', dy:-2},
+          {y0:yK,    y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'  },
+          {y0:yB,    y1:yB+hb,  col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm' },
+          {y0:yH,    y1:yH_bot, col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm', dy:-2},
         ];
     for (const z of zones) {
       s += ln(ax1, z.y0, ax+3, z.y0, z.col, 0.8);
@@ -516,7 +517,17 @@ function buildSVG(p) {
     s += ln(lx, yKe0, bx+2, yKe0, C.arr_ke, 0.8);
     s += ln(lx, yKe1, bx+2, yKe1, C.arr_ke, 0.8);
     s += arr(bx, yKe0, yKe1, C.arr_ke);
-    s += tx(bx+6, (yKe0+yKe1)/2+3.5, 'h_ke', {size:p.fs_var,weight:700,fill:C.lbl_ke});
+    s += tx(bx+6, (yKe0+yKe1)/2+3.5, 'h_ke_mm', {size:p.fs_var,weight:700,fill:C.lbl_ke});
+
+    // Maßlinie h_mplatte_mbereich_mm (KE-Ende → MP-Ende)
+    const yMb0 = p.ke_pos === 'oben' ? yK+hk : my;
+    const yMb1 = p.ke_pos === 'oben' ? my+mh : yK;
+    const yMbEdge = p.ke_pos === 'oben' ? my+mh : my;
+    s += ln(sx+sw, yMbEdge, ax1+2, yMbEdge, C.guide, 0.5);
+    s += ln(ax1, yMb0, ax+3, yMb0, C.dim, 0.8);
+    s += ln(ax1, yMb1, ax+3, yMb1, C.dim, 0.8);
+    s += arr(ax, yMb0, yMb1, C.dim);
+    s += tx(lx, (yMb0+yMb1)/2+3.5, 'h_mplatte_mbereich_mm', {size:p.fs_var,weight:400,fill:C.dim});
   }
 
   // H + B Maße (ausgeblendet wenn fs_dim = 0)
@@ -574,17 +585,27 @@ function buildTable(p) {
     {sep:true},
     {var:'h_ke_mm', lbl:'Kabeleinführungszone gesamt', val:p.h_ke, unit:'mm',
      src:`${p.h_hand} + ${p.h_zug} + ${p.h_bieg} + ${p.h_kanal}`, col:'#E0DED8', hi:true},
+    {sep:true},
+    {var:'h_mplatte_mbereich_mm', lbl:'Montagebereich auf Montageplatte', val:fmt(p.h_mb), unit:'mm',
+     src:`${p.H} &minus; ${p.h_ke} &minus; (${p.H}&minus;${p.mp_h})&divide;2`, col:'#A8C4E8', hi:true},
   ];
 
   let t = `
 <div class="formula-box" style="margin-top:18px">
-  h_ke &nbsp;=&nbsp;
-  <span style="color:#2DBD8E">h_handling_ke</span> &nbsp;+&nbsp;
-  h_zug_ke &nbsp;+&nbsp;
-  <span style="color:#C8720E">h_kabel_bieg</span> &nbsp;+&nbsp;
-  <span style="color:#9A94E8">h_kanal_ke</span>
+  h_ke_mm &nbsp;=&nbsp;
+  <span style="color:#2DBD8E">h_handling_ke_mm</span> &nbsp;+&nbsp;
+  h_zug_ke_mm &nbsp;+&nbsp;
+  <span style="color:#C8720E">h_kabel_bieg_mm</span> &nbsp;+&nbsp;
+  <span style="color:#9A94E8">h_kanal_ke_mm</span>
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_ke} mm</strong>
   &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
+</div>
+<div class="formula-box" style="margin-top:10px">
+  h_mplatte_mbereich_mm &nbsp;=&nbsp;
+  h_gehaeuse_aussen_mm &nbsp;&minus;&nbsp;
+  <span style="color:#E0DED8">h_ke_mm</span>
+  &nbsp;&minus;&nbsp;(h_gehaeuse_aussen_mm &nbsp;&minus;&nbsp; h_mplatte_mm) &divide; 2
+  &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_mb} mm</strong>
 </div>
 <table class="rtable">
 <thead><tr>
