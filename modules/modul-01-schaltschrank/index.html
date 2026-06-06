@@ -646,7 +646,7 @@ function buildSVG(p) {
       // Alle anderen: dominant-baseline="middle" für exakte vertikale Zentrierung
       const isSmall = z.lbl === 'h_handling_ke_mm';
       const yLbl = isSmall
-        ? (z.y0+z.y1)/2 + (p.ke_pos === 'oben' ? 3.5 : -1.5)
+        ? (z.y0+z.y1)/2 + (p.ke_pos === 'oben' ? 3.5 : -0.5)
         : (z.y0+z.y1)/2;
       s += tx(lx, yLbl, z.lbl, {size:p.fs_var, weight:400, fill:z.lcol, db: isSmall ? '' : 'middle'});
     }
