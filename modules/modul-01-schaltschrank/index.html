@@ -20,6 +20,18 @@
   --blue:  #7A74CC;
   --font:  system-ui,-apple-system,sans-serif;
   --mono:  'Courier New',Courier,monospace;
+  /* ── Zonenfarben SVG / Formel ── */
+  --c-handling:  #2DBD8E;   /* h_handling_ke_mm */
+  --c-bieg:      #C8720E;   /* h_kabel_bieg_mm  */
+  --c-zug:       #D4A84B;   /* h_zug_ke_mm Zone-Füllung */
+  --c-hz:        #4BBECA;   /* h_handling_zug Zone-Füllung */
+  --c-kanal:     #9A94E8;   /* h_kanal_ke_mm    */
+  --c-dim:       #3366BB;   /* Maßketten / h_mplatte_mbereich_mm */
+  --c-result:    #E0DED8;   /* h_ke_mm Ergebnis */
+  --c-mbereich:  #A8C4E8;   /* h_mplatte_mbereich_mm */
+  /* ── Textgrößen Felder ── */
+  --fs-field:    13px;
+  --fs-field-sm: 10px;      /* disabled Textfelder (Typ-Anzeige) */
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;}
@@ -74,7 +86,7 @@ legend{
 .field input:focus,.field select:focus{outline:none;border-color:var(--green);}
 .field input[disabled]{
   background:var(--bg2);color:var(--tx3);text-align:left;
-  font-size:11px;cursor:default;border-color:var(--bord);
+  font-size:var(--fs-field-sm);cursor:default;border-color:var(--bord);
 }
 .field select{text-align:left;cursor:pointer;}
 
@@ -234,7 +246,7 @@ legend{
       </div>
       <div class="field">
         <div class="lbl">Bügelschelle<span class="var">–</span></div>
-        <input id="zug_typ" type="text" value="—" disabled style="font-size:10px;">
+        <input id="zug_typ" type="text" value="—" disabled>
       </div>
       <div class="field">
         <div class="lbl">Schellenhöhe (mm)<span class="var">h_schelle_mm</span></div>
@@ -310,13 +322,15 @@ const C = {
   zone_tx_k: '#333333',
   dim:       '#3366BB',
   bma:       '#3366BB',
-  zZ_fill:   '#FBF0DC',
-  arr_z:     '#D4A84B',
-  lbl_z:     '#D4A84B',
-  zone_tx_z: '#B8881A',
-  zHZ_fill:  '#DCF3F7',
-  arr_hz:    '#4BBECA',
-  lbl_hz:    '#4BBECA',
+  zZ_fill:    '#FBF0DC',
+  zZ_stroke:  '#D4A84B',   // Zonenrechteck-Rahmen h_zug (Amber)
+  arr_z:      '#3366BB',   // Maßkettenpfeil h_zug_ke_mm
+  lbl_z:      '#3366BB',   // Maßkettentext h_zug_ke_mm
+  zone_tx_z:  '#B8881A',
+  zHZ_fill:   '#DCF3F7',
+  zHZ_stroke: '#4BBECA',   // Zonenrechteck-Rahmen h_handling_zug (Teal)
+  arr_hz:     '#3366BB',   // Maßkettenpfeil h_handling_zug_ke_mm
+  lbl_hz:     '#3366BB',   // Maßkettentext h_handling_zug_ke_mm
   cable:     '#222222',
   cable_dash:'#777777',
   pg_top:    '#C0BEB8',
@@ -518,9 +532,9 @@ function buildSVG(p) {
   // Zonen-Rechtecke
   s += `<rect x="${r(mx)}" y="${r(yH)}" width="${r(mw)}" height="${r(hh)}" fill="${C.zH_fill}"/>\n`;
   if (hz > 0)
-    s += `<rect x="${r(mx)}" y="${r(yZ)}" width="${r(mw)}" height="${r(hz)}" fill="${C.zZ_fill}" stroke="${C.arr_z}" stroke-width="0.8" stroke-dasharray="4 3"/>\n`;
+    s += `<rect x="${r(mx)}" y="${r(yZ)}" width="${r(mw)}" height="${r(hz)}" fill="${C.zZ_fill}" stroke="${C.zZ_stroke}" stroke-width="0.8" stroke-dasharray="4 3"/>\n`;
   if (hhz > 0)
-    s += `<rect x="${r(mx)}" y="${r(yHZ)}" width="${r(mw)}" height="${r(hhz)}" fill="${C.zHZ_fill}" stroke="${C.arr_hz}" stroke-width="0.6" stroke-dasharray="3 3"/>\n`;
+    s += `<rect x="${r(mx)}" y="${r(yHZ)}" width="${r(mw)}" height="${r(hhz)}" fill="${C.zHZ_fill}" stroke="${C.zHZ_stroke}" stroke-width="0.6" stroke-dasharray="3 3"/>\n`;
   s += `<rect x="${r(mx)}" y="${r(yB)}" width="${r(mw)}" height="${r(hb)}" fill="${C.zB_fill}"/>\n`;
   if (hk > 0) {
     s += `<rect x="${r(mx)}" y="${r(yK)}" width="${r(mw)}" height="${r(hk)}" fill="${C.zK_fill}" stroke="${C.zK_stroke}" stroke-width="1.2"/>\n`;
@@ -538,7 +552,7 @@ function buildSVG(p) {
 
     // Grundkörper C-Schiene
     s += `<rect x="${r(mx)}" y="${r(ryt)}" width="${r(mw)}" height="${r(rh)}"
-               fill="#CCCAC0" stroke="${C.arr_z}" stroke-width="0.6"/>\n`;
+               fill="#CCCAC0" stroke="${C.zZ_stroke}" stroke-width="0.6"/>\n`;
     // Flanken (dunkler)
     s += `<rect x="${r(mx)}" y="${r(ryt)}" width="${r(fw)}" height="${r(rh)}" fill="#A8A4A0"/>\n`;
     s += `<rect x="${r(mx+mw-fw)}" y="${r(ryt)}" width="${r(fw)}" height="${r(rh)}" fill="#A8A4A0"/>\n`;
@@ -549,7 +563,7 @@ function buildSVG(p) {
     if (rh >= 5) {
       const slot_d = rh * 0.42;
       s += `<rect x="${r(mx+mw/2-sw2)}" y="${r(ryt)}" width="${r(sw2*2)}" height="${r(slot_d)}"
-                 fill="${C.zZ_fill}" stroke="${C.arr_z}" stroke-width="0.4"/>\n`;
+                 fill="${C.zZ_fill}" stroke="${C.zZ_stroke}" stroke-width="0.4"/>\n`;
     }
 
     // Bügelschelle am Kabel (x = bxo)
@@ -558,11 +572,11 @@ function buildSVG(p) {
     const cyt = y_mid - ch / 2;
     // Klammerbügel
     s += `<rect x="${r(bxo-chw)}" y="${r(cyt)}" width="${r(chw*2)}" height="${r(ch)}"
-               fill="none" stroke="${C.arr_z}" stroke-width="1.2" rx="1.5"/>\n`;
+               fill="none" stroke="${C.zZ_stroke}" stroke-width="1.2" rx="1.5"/>\n`;
     // Befestigungsschraube (kleines Rechteck oben am Bügel)
     const bh = Math.max(1.8, 2.2 * sc);
     s += `<rect x="${r(bxo-chw*0.55)}" y="${r(cyt-bh)}" width="${r(chw*1.1)}" height="${r(bh)}"
-               fill="${C.arr_z}" rx="1"/>\n`;
+               fill="${C.zZ_stroke}" rx="1"/>\n`;
   }
 
   // Zonen-Labels + Nutzfläche (ausgeblendet wenn fs_zone = 0)
@@ -720,9 +734,9 @@ function buildTable(p) {
   <span style="color:#E0DED8">h_ke_mm</span> &nbsp;=&nbsp;
   <span style="color:#2DBD8E">h_handling_ke_mm</span> &nbsp;+&nbsp;
   <span style="color:#C8720E">h_kabel_bieg_mm</span> &nbsp;+&nbsp;
-  <span style="color:${p.zug_aktiv ? '#D4A84B' : '#9A9890'}">h_zug_ke_mm</span> &nbsp;+&nbsp;
-  <span style="color:${p.zug_aktiv ? '#4BBECA' : '#9A9890'}">h_handling_zug_ke_mm</span> &nbsp;+&nbsp;
-  <span style="color:${p.kanal_aktiv ? '#9A94E8' : '#9A9890'}">h_kanal_ke_mm</span>
+  <span style="color:#3366BB">h_zug_ke_mm</span> &nbsp;+&nbsp;
+  <span style="color:#3366BB">h_handling_zug_ke_mm</span> &nbsp;+&nbsp;
+  <span style="color:#9A94E8">h_kanal_ke_mm</span>
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_ke} mm</strong>
   &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
 </div>
