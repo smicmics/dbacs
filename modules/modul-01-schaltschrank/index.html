@@ -642,10 +642,12 @@ function buildSVG(p) {
       s += ln(ax1, z.y0, ax+3, z.y0, z.col, 0.8);
       s += ln(ax1, z.y1, ax+3, z.y1, z.col, 0.8);
       s += arr(ax, z.y0, z.y1, z.col);
-      // h_handling_ke_mm: kleines Maß – bleibt an bisheriger Position (nahe obere Linie)
+      // h_handling_ke_mm: kleines Maß – Offset richtungsabhängig (+3.5 KE oben, -3.5 KE unten)
       // Alle anderen: dominant-baseline="middle" für exakte vertikale Zentrierung
       const isSmall = z.lbl === 'h_handling_ke_mm';
-      const yLbl = isSmall ? (z.y0+z.y1)/2+3.5 : (z.y0+z.y1)/2;
+      const yLbl = isSmall
+        ? (z.y0+z.y1)/2 + (p.ke_pos === 'oben' ? 3.5 : -3.5)
+        : (z.y0+z.y1)/2;
       s += tx(lx, yLbl, z.lbl, {size:p.fs_var, weight:400, fill:z.lcol, db: isSmall ? '' : 'middle'});
     }
 
