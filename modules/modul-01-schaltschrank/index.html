@@ -211,8 +211,34 @@ legend{
     <fieldset>
       <legend>Kabelkanal</legend>
       <div class="field">
+        <div class="lbl">Vorhanden<span class="var">–</span></div>
+        <select id="kanal_aktiv" onchange="calculate()">
+          <option value="ja" selected>Ja</option>
+          <option value="nein">Nein</option>
+        </select>
+      </div>
+      <div class="field">
         <div class="lbl">Höhe h_kanal_ke (mm)<span class="var">h_kanal_ke_mm</span></div>
         <input id="h_kanal" type="number" value="60" min="25" max="150" step="5" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Zugentlastung im Schaltschrank</legend>
+      <div class="field">
+        <div class="lbl">Vorhanden<span class="var">h_zug_ke_mm</span></div>
+        <select id="zug_aktiv" onchange="calculate()">
+          <option value="nein" selected>Nein</option>
+          <option value="ja">Ja</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Schelle (aus DB)<span class="var">–</span></div>
+        <input id="zug_typ" type="text" value="—" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Schellenhöhe (mm)<span class="var">h_schelle_mm</span></div>
+        <input id="h_zug_display" type="number" value="0" disabled>
       </div>
     </fieldset>
 
@@ -237,10 +263,6 @@ legend{
       <div class="field">
         <div class="lbl">h_handling_ke (mm)<span class="var">h_handling_ke_mm</span></div>
         <input type="number" value="15" disabled>
-      </div>
-      <div class="field">
-        <div class="lbl">h_zug_ke (mm)<span class="var">h_zug_ke_mm</span></div>
-        <input type="number" value="0" disabled>
       </div>
       <div class="field">
         <div class="lbl">Biegeradius-Faktor (VDE 0298-4)<span class="var">–</span></div>
@@ -284,6 +306,10 @@ const C = {
   zone_tx_k: '#333333',
   dim:       '#3366BB',
   bma:       '#3366BB',
+  zZ_fill:   '#FBF0DC',
+  arr_z:     '#D4A84B',
+  lbl_z:     '#D4A84B',
+  zone_tx_z: '#B8881A',
   cable:     '#222222',
   cable_dash:'#777777',
   pg_top:    '#C0BEB8',
@@ -330,6 +356,13 @@ fetch('../../data/wandschraenke.json')
   })
   .catch(() => { /* DB nicht verfügbar – manuelle Eingabe */ });
 
+// ── Kabelzugschellen-Datenbank ────────────────────────────────
+let KABELZUGSCHELLEN_DB = [];
+fetch('../../data/kabelzugschellen.json')
+  .then(r => r.json())
+  .then(data => { KABELZUGSCHELLEN_DB = data; calculate(); })
+  .catch(() => {});
+
 function loadPreset() {
   const idx = gs('preset_schrank');
   if (idx === '') return;
@@ -348,18 +381,32 @@ const gs = id =>  document.getElementById(id).value;
 // ── Berechnung ────────────────────────────────────────────────
 function calculate() {
   const B = g('B'), H = g('H'), mp_b = g('mp_b'), mp_h = g('mp_h');
-  const d_max = g('d_max'), h_kanal = g('h_kanal'), ke_pos = gs('ke_pos');
+  const d_max = g('d_max'), ke_pos = gs('ke_pos');
   const fs_dim = g('fs_dim'), fs_var = g('fs_var'), fs_zone = g('fs_zone');
+
+  const kanal_aktiv = gs('kanal_aktiv') === 'ja';
+  const h_kanal = kanal_aktiv ? g('h_kanal') : 0;
+  document.getElementById('h_kanal').disabled = !kanal_aktiv;
+
+  const zug_aktiv = gs('zug_aktiv') === 'ja';
+  let h_zug = 0, zug_schelle = null;
+  if (zug_aktiv) {
+    zug_schelle = KABELZUGSCHELLEN_DB.find(e => d_max >= e.d_kabel_min_mm && d_max <= e.d_kabel_max_mm);
+    h_zug = zug_schelle ? zug_schelle.h_schelle_mm : 0;
+  }
+  document.getElementById('h_zug_display').value = h_zug;
+  document.getElementById('zug_typ').value = zug_schelle
+    ? `${zug_schelle.hersteller} ${zug_schelle.bezeichnung}`
+    : (zug_aktiv ? 'nicht in DB' : '—');
 
   const b_abst = (B - mp_b) / 2;
   const h_abst = (H - mp_h) / 2;
   const h_hand = 15;
-  const h_zug  = 0;
   const h_bieg = 4 * d_max;
   const h_ke   = h_hand + h_zug + h_bieg + h_kanal;
   const h_mb   = H - h_ke - h_abst;
 
-  const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_bieg, h_ke, h_mb, ke_pos, fs_dim, fs_var, fs_zone };
+  const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_bieg, h_ke, h_mb, ke_pos, fs_dim, fs_var, fs_zone, zug_aktiv, kanal_aktiv };
   document.getElementById('svg-inner').innerHTML  = buildSVG(p);
   document.getElementById('results-area').innerHTML = buildTable(p);
 }
@@ -375,14 +422,19 @@ function buildSVG(p) {
   const mw = p.mp_b * sc,         mh = p.mp_h * sc;
 
   const hh = Math.max(p.h_hand * sc, 3);
+  const hz = p.h_zug   * sc;
   const hb = p.h_bieg  * sc;
   const hk = p.h_kanal * sc;
 
-  let yH, yH_bot, yB, yK;
+  let yH, yH_bot, yZ, yZ_bot, yB, yK;
   if (p.ke_pos === 'oben') {
-    yH = sy; yH_bot = sy + hh; yB = yH_bot; yK = yB + hb;
+    yH = sy; yH_bot = sy + hh;
+    yZ = yH_bot; yZ_bot = yH_bot + hz;
+    yB = yZ_bot; yK = yB + hb;
   } else {
-    yH_bot = sy + sh; yH = yH_bot - hh; yB = yH - hb; yK = yB - hk;
+    yH_bot = sy + sh; yH = yH_bot - hh;
+    yZ_bot = yH; yZ = yH - hz;
+    yB = yZ - hb; yK = yB - hk;
   }
 
   const yKe0 = p.ke_pos === 'oben' ? yH    : yK;
@@ -449,15 +501,19 @@ function buildSVG(p) {
 
   // Zonen-Rechtecke
   s += `<rect x="${r(mx)}" y="${r(yH)}" width="${r(mw)}" height="${r(hh)}" fill="${C.zH_fill}"/>\n`;
+  if (hz > 0)
+    s += `<rect x="${r(mx)}" y="${r(yZ)}" width="${r(mw)}" height="${r(hz)}" fill="${C.zZ_fill}" stroke="${C.arr_z}" stroke-width="0.8" stroke-dasharray="4 3"/>\n`;
   s += `<rect x="${r(mx)}" y="${r(yB)}" width="${r(mw)}" height="${r(hb)}" fill="${C.zB_fill}"/>\n`;
-  s += `<rect x="${r(mx)}" y="${r(yK)}" width="${r(mw)}" height="${r(hk)}" fill="${C.zK_fill}" stroke="${C.zK_stroke}" stroke-width="1.2"/>\n`;
-  for (let i=1; i<4; i++) s += ln(mx+3, yK+hk*i/4, mx+mw-3, yK+hk*i/4, C.zK_lines, 0.7);
+  if (hk > 0) {
+    s += `<rect x="${r(mx)}" y="${r(yK)}" width="${r(mw)}" height="${r(hk)}" fill="${C.zK_fill}" stroke="${C.zK_stroke}" stroke-width="1.2"/>\n`;
+    for (let i=1; i<4; i++) s += ln(mx+3, yK+hk*i/4, mx+mw-3, yK+hk*i/4, C.zK_lines, 0.7);
+  }
 
   // Zonen-Labels + Nutzfläche (ausgeblendet wenn fs_zone = 0)
-  const midH = yH+hh/2, midB = yB+hb/2, midK = yK+hk/2;
   if (p.fs_zone > 0) {
-    s += tx(mx+mw/2, midB+3.5, 'Kabeleinführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
-    s += tx(mx+mw*0.58, midK+3.5, 'Kabelkanal Einführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_k});
+    s += tx(mx+mw/2, yB+hb/2+3.5, 'Kabeleinführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
+    if (hk > 0)
+      s += tx(mx+mw*0.58, yK+hk/2+3.5, 'Kabelkanal Einführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_k});
     s += ln(mx, nutz_y, mx+mw, nutz_y, C.nutz, 1.2, '8 5');
     if (p.ke_pos === 'oben')
       s += tx(mx+mw/2, nutz_y+10, '▼ Beginn Nutzfläche', {anchor:'middle',size:p.fs_zone,fill:C.nutz_tx});
@@ -482,31 +538,33 @@ function buildSVG(p) {
     const bxo = pg1x + 20;
     s += ln(pg1x, pgY, pg1x, pgY+31, C.cable, 4);  // Kabelstub: Gehäusewand → durch PG → 10 px unter Nase
     s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
-    s += ln(pg1x, yH, pg1x, yH_bot, C.cable_dash, 4, '3 2');
+    s += ln(pg1x, yZ, pg1x, yH_bot, C.cable_dash, 4, '3 2');
     s += ln(bxo, yK, bxo, yB, C.cable, 4);
-    s += `<path d="M ${bxo},${r(yB)} C ${bxo},${r(yB+hb*0.45)} ${pg1x},${r(yB+hb*0.55)} ${pg1x},${r(yH)}"
+    s += `<path d="M ${bxo},${r(yB)} C ${bxo},${r(yB+hb*0.45)} ${pg1x},${r(yB+hb*0.55)} ${pg1x},${r(yZ)}"
                fill="none" stroke="${C.cable}" stroke-width="4" stroke-linecap="round"/>\n`;
   }
 
   // Guide-Linien + Maßpfeile + h_ke-Klammer (ausgeblendet wenn fs_var = 0)
   if (p.fs_var > 0) {
-    const guideYs = p.ke_pos === 'oben'
-      ? [yH, yH_bot, yK, yK+hk]
-      : [yK, yK+hk, yH, yH_bot];
-    for (const y of guideYs)
+    const guideSet = new Set([yH, yH_bot, yB, yB+hb, yKe0, yKe1]);
+    if (hz > 0) { guideSet.add(yZ); guideSet.add(yZ_bot); }
+    if (hk > 0) { guideSet.add(yK); guideSet.add(yK+hk); }
+    for (const y of guideSet)
       s += ln(sx+sw, y, ax1+2, y, C.guide, 0.5);
 
-    const zones = p.ke_pos === 'oben'
-      ? [
-          {y0:yH,    y1:yH_bot, col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm'},
-          {y0:yB,    y1:yK,     col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm' },
-          {y0:yK,    y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'  },
-        ]
-      : [
-          {y0:yK,    y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'  },
-          {y0:yB,    y1:yB+hb,  col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm' },
-          {y0:yH,    y1:yH_bot, col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm', dy:-2},
-        ];
+    const zonesOben = [
+      {y0:yH,    y1:yH_bot,  col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm'},
+      ...(hz>0 ? [{y0:yZ,  y1:yZ_bot, col:C.arr_z, lcol:C.lbl_z, lbl:'h_zug_ke_mm'}]   : []),
+      {y0:yB,    y1:yB+hb,   col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm'},
+      ...(hk>0 ? [{y0:yK,  y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'}] : []),
+    ];
+    const zonesUnten = [
+      ...(hk>0 ? [{y0:yK,  y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'}] : []),
+      {y0:yB,    y1:yB+hb,   col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm'},
+      ...(hz>0 ? [{y0:yZ,  y1:yZ_bot, col:C.arr_z, lcol:C.lbl_z, lbl:'h_zug_ke_mm'}]   : []),
+      {y0:yH,    y1:yH_bot,  col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm', dy:-2},
+    ];
+    const zones = p.ke_pos === 'oben' ? zonesOben : zonesUnten;
     for (const z of zones) {
       s += ln(ax1, z.y0, ax+3, z.y0, z.col, 0.8);
       s += ln(ax1, z.y1, ax+3, z.y1, z.col, 0.8);
@@ -579,9 +637,14 @@ function buildTable(p) {
     {var:'d_max_kabel_ke_mm',                  lbl:'Max. Kabel-Außen-∅',          val:p.d_max,       unit:'mm', src:'Eingabe',                        col:''},
     {sep:true},
     {var:'h_handling_ke_mm',   lbl:'Freie Kabellänge nach PG',    val:p.h_hand,  unit:'mm', src:'Festwert Wandschrank',           col:'#2DBD8E', note:'konservativ eingerechnet'},
-    {var:'h_zug_ke_mm',        lbl:'Zugentlastung intern',         val:p.h_zug,   unit:'mm', src:'0 · Wandschrank (PG außen)',     col:'#9A9890', note:'kein interner Platzbedarf'},
-    {var:'h_kabel_bieg_mm',    lbl:'Mindestbiegeradius',           val:p.h_bieg,  unit:'mm', src:`4 × ${p.d_max} mm (VDE 0298-4)`,col:'#C8720E'},
-    {var:'h_kanal_ke_mm',      lbl:'Horizontaler Kabelkanal',      val:p.h_kanal, unit:'mm', src:'Eingabe · Standard 60 mm',       col:'#9A94E8'},
+    {var:'h_zug_ke_mm',  lbl:'Zugentlastung intern',  val:p.h_zug,   unit:'mm',
+     src:  p.zug_aktiv   ? `Icotek CCL · h_schelle = ${p.h_zug} mm` : '0 · (PG Zugentlastung außen)',
+     col:  p.zug_aktiv   ? '#D4A84B' : '#9A9890',
+     note: p.zug_aktiv   ? null : 'kein interner Platzbedarf'},
+    {var:'h_kabel_bieg_mm', lbl:'Mindestbiegeradius', val:p.h_bieg, unit:'mm', src:`4 × ${p.d_max} mm (VDE 0298-4)`, col:'#C8720E'},
+    {var:'h_kanal_ke_mm', lbl:'Horizontaler Kabelkanal', val:p.h_kanal, unit:'mm',
+     src:  p.kanal_aktiv  ? 'Eingabe · Standard 60 mm' : '0 · (kein Kabelkanal)',
+     col:  p.kanal_aktiv  ? '#9A94E8' : '#9A9890'},
     {sep:true},
     {var:'h_ke_mm', lbl:'Kabeleinführungszone gesamt', val:p.h_ke, unit:'mm',
      src:`${p.h_hand} + ${p.h_zug} + ${p.h_bieg} + ${p.h_kanal}`, col:'#E0DED8', hi:true},
@@ -594,9 +657,9 @@ function buildTable(p) {
 <div class="formula-box" style="margin-top:18px">
   <span style="color:#E0DED8">h_ke_mm</span> &nbsp;=&nbsp;
   <span style="color:#2DBD8E">h_handling_ke_mm</span> &nbsp;+&nbsp;
-  h_zug_ke_mm &nbsp;+&nbsp;
+  <span style="color:${p.zug_aktiv ? '#D4A84B' : '#9A9890'}">h_zug_ke_mm</span> &nbsp;+&nbsp;
   <span style="color:#C8720E">h_kabel_bieg_mm</span> &nbsp;+&nbsp;
-  <span style="color:#9A94E8">h_kanal_ke_mm</span>
+  <span style="color:${p.kanal_aktiv ? '#9A94E8' : '#9A9890'}">h_kanal_ke_mm</span>
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_ke} mm</strong>
   &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
 </div>

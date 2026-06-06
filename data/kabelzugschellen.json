@@ -1,0 +1,58 @@
+[
+  {
+    "hersteller": "Icotek",
+    "bezeichnung": "CCL 6-13",
+    "bestellnummer": "32000",
+    "d_kabel_min_mm": 6.0,
+    "d_kabel_max_mm": 13.0,
+    "h_schelle_mm": 31,
+    "b_schelle_mm": 24,
+    "t_schelle_mm": 19,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Icotek",
+    "bezeichnung": "CCL 12-19",
+    "bestellnummer": "32001",
+    "d_kabel_min_mm": 12.0,
+    "d_kabel_max_mm": 19.0,
+    "h_schelle_mm": 36,
+    "b_schelle_mm": 24,
+    "t_schelle_mm": 22,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Icotek",
+    "bezeichnung": "CCL 18-23",
+    "bestellnummer": "32002",
+    "d_kabel_min_mm": 18.0,
+    "d_kabel_max_mm": 23.0,
+    "h_schelle_mm": 38,
+    "b_schelle_mm": 24,
+    "t_schelle_mm": 26,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Icotek",
+    "bezeichnung": "CCL 22-32",
+    "bestellnummer": "32003",
+    "d_kabel_min_mm": 22.0,
+    "d_kabel_max_mm": 32.0,
+    "h_schelle_mm": 52,
+    "b_schelle_mm": 24,
+    "t_schelle_mm": 38,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  }
+]

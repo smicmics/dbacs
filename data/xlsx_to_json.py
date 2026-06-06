@@ -2,8 +2,9 @@
 DBACS – Excel → JSON Konvertierung
 ===================================
 Exportiert folgende Sheets aus ga_komponenten.xlsx:
-  - kabel_nym_j   → kabel_nym_j.json   (nur aktive Einträge)
-  - wandschraenke → wandschraenke.json  (nur aktive Einträge)
+  - kabel_nym_j       → kabel_nym_j.json       (nur aktive Einträge)
+  - wandschraenke     → wandschraenke.json      (nur aktive Einträge)
+  - kabelzugschellen  → kabelzugschellen.json   (nur aktive Einträge)
 
 Aufruf (aus data/-Verzeichnis):
     python3 xlsx_to_json.py
@@ -90,6 +91,45 @@ def export_wandschraenke(wb):
     print(f'{len(rows)} Wandschraenke exportiert → {JSON_FILE.name}')
 
 
+def export_kabelzugschellen(wb):
+    SHEET = 'kabelzugschellen'
+    JSON_FILE = Path(__file__).parent / 'kabelzugschellen.json'
+
+    if SHEET not in wb.sheetnames:
+        print(f'HINWEIS: Sheet "{SHEET}" nicht gefunden – uebersprungen.')
+        return
+
+    ws = wb[SHEET]
+    headers = [cell.value for cell in next(ws.iter_rows(min_row=1, max_row=1))]
+
+    rows = []
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        if not any(row):
+            continue
+        rec = dict(zip(headers, row))
+        if not rec.get('aktiv'):
+            continue
+        rows.append({
+            'hersteller':          str(rec['hersteller']),
+            'bezeichnung':         str(rec['bezeichnung']),
+            'bestellnummer':       str(rec['bestellnummer']),
+            'd_kabel_min_mm':      float(rec['d_kabel_min_mm']),
+            'd_kabel_max_mm':      float(rec['d_kabel_max_mm']),
+            'h_schelle_mm':        float(rec['h_schelle_mm']),
+            'b_schelle_mm':        float(rec['b_schelle_mm']),
+            't_schelle_mm':        float(rec['t_schelle_mm']),
+            'preis_stueckpreis_eur': float(rec['preis_stueckpreis_eur']) if rec.get('preis_stueckpreis_eur') is not None else None,
+            'preis_lieferung_eur':   float(rec['preis_lieferung_eur'])   if rec.get('preis_lieferung_eur')   is not None else None,
+            'preis_montage_eur':     float(rec['preis_montage_eur'])     if rec.get('preis_montage_eur')     is not None else None,
+            'preis_gesamt_eur':      float(rec['preis_gesamt_eur'])      if rec.get('preis_gesamt_eur')      is not None else None,
+        })
+
+    with open(JSON_FILE, 'w', encoding='utf-8') as f:
+        json.dump(rows, f, ensure_ascii=False, indent=2)
+
+    print(f'{len(rows)} Kabelzugschellen exportiert → {JSON_FILE.name}')
+
+
 def main():
     if not EXCEL_FILE.exists():
         print(f'FEHLER: {EXCEL_FILE} nicht gefunden.')
@@ -98,6 +138,7 @@ def main():
     wb = openpyxl.load_workbook(EXCEL_FILE, data_only=True)
     export_kabel_nym_j(wb)
     export_wandschraenke(wb)
+    export_kabelzugschellen(wb)
 
 
 if __name__ == '__main__':
