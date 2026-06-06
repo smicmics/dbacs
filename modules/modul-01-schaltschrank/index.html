@@ -583,7 +583,7 @@ function buildSVG(p) {
   if (p.fs_zone > 0) {
     s += tx(mx+mw/2, yB+hb/2+3.5, 'Kabeleinführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
     if (hz > 0)
-      s += tx(mx+mw/2, yZ+hz/2, 'C-Schiene mit Bügelschellen', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_h,db:'middle'});
+      s += tx(mx+mw*0.58, yZ+hz/2, 'C-Schiene mit Bügelschellen', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_h,db:'middle'});
     if (hk > 0)
       s += tx(mx+mw*0.58, yK+hk/2+3.5, 'Kabelkanal Einführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_k});
     s += ln(mx, nutz_y, mx+mw, nutz_y, C.nutz, 1.2, '8 5');
