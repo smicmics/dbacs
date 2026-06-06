@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 12. April 2026 – Session 4
+**Stand:** 13. April 2026 – Session 5
 
 ---
 
@@ -70,7 +70,7 @@ dbacs/
 - Footer: „Erstellt von: Stephan Michler · DBACS Planungstool · 2026"
 - Responsive (mobile: Nav ausgeblendet, einspaltig)
 
-**Modul 1 – Kabeleinführungszone h_ke (Wandschrank)**
+**Modul 1 – Kabeleinführungszone h_ke + Montagebereich h_mplatte_mbereich (Wandschrank)**
 - Eingaben: Schrank-Außenmaße, Montageplatte, KE-Position (oben/unten), Kanaltiefe
 - Kabelauswahl: Aderzahl (3/4/5/7) + Querschnitt (1,5–16 mm²) → d_max aus JSON-DB
 - d_max bleibt manuell überschreibbar (Sonderkabel)
@@ -81,6 +81,16 @@ dbacs/
 - Wandschrank-Auswahl: einzelnes Dropdown, befüllt aus `wandschraenke.json`
 - Standardauswahl beim Laden: Rittal AX 1214.000 · KE oben · 5×6 mm²
 - Footer: „Erstellt von: Stephan Michler · DBACS Planungstool · 2026"
+
+**Session 5 – h_mplatte_mbereich_mm (13.04.2026)**
+- Neue Variable `h_mplatte_mbereich_mm` eingeführt: verbleibender Montagebereich auf MP nach Abzug der KE-Zone
+- Formel: `h_mplatte_mbereich_mm = h_gehaeuse_aussen_mm − h_ke_mm − (h_gehaeuse_aussen_mm − h_mplatte_mm) / 2`
+- Neue Formelbox in der Ausgabefläche (unterhalb h_ke-Formelbox), beide im gleichen Bereich
+- Neue hervorgehobene Ergebniszeile `h_mplatte_mbereich_mm` in Hell-Blau `#A8C4E8`
+- Neue SVG-Maßlinie: beginnt wo h_kanal_ke_mm endet, geht bis MP-Ende; korrekt gespiegelt für KE oben/unten
+- SVG-Maßlinie liegt im `if (p.fs_var > 0)`-Block, wird mit fs_var=0 ausgeblendet
+- SVG-Variablenlabels korrigiert: alle tragen nun `_mm`-Suffix (`h_handling_ke_mm`, `h_kabel_bieg_mm`, `h_kanal_ke_mm`, `h_ke_mm`)
+- Farbkodierung Formelboxen: `h_ke_mm` → `#E0DED8`, `h_mplatte_mbereich_mm` → `#A8C4E8` (jeweils identisch zur Tabellenfarbe)
 
 **Kabeldatenbank (Session 3)**
 - `data/kabel_nym_j.json` – 18 NYM-J Typen (3/4/5/7 Adern, 1,5–16 mm²), Richtwerte Draka 2024
@@ -133,10 +143,12 @@ dbacs/
 - Innen-Labels (Maßangaben im Gehäuse): einheitlich 7 pt
 
 **Farbkodierung Ergebnistabelle + Formelzeile**
-- h_handling_ke: Grün `#2DBD8E`
-- h_kabel_bieg: Orange `#C8720E`
-- h_kanal_ke: Lila `#9A94E8`
-- h_zug_ke: Grau `#9A9890` (für Wandschrank nicht relevant, keine Hervorhebung)
+- h_handling_ke_mm: Grün `#2DBD8E`
+- h_kabel_bieg_mm: Orange `#C8720E`
+- h_kanal_ke_mm: Lila `#9A94E8`
+- h_zug_ke_mm: Grau `#9A9890` (für Wandschrank nicht relevant, keine Hervorhebung)
+- h_ke_mm: Hell-Weiß `#E0DED8` (Ergebnis-Zeile)
+- h_mplatte_mbereich_mm: Hell-Blau `#A8C4E8` (Ergebnis-Zeile)
 - Farben in Formelzeile und Tabellenspalten identisch
 
 **GitHub Pages Deployment**
@@ -144,7 +156,7 @@ dbacs/
 - Deployment über GitHub Pages, Branch `main`, Root `/`
 - Root `index.html` leitet per Meta-Refresh auf `web/index.html` weiter
 - `.gitignore` schützt lokale Dateien (data/*.db, data/*.xlsx, .claude/settings.local.json)
-- Stand Session 4: Änderungen noch nicht committed (ausstehend)
+- Stand Session 5: Änderungen noch nicht committed (ausstehend)
 
 ---
 
@@ -168,6 +180,7 @@ Verbindliche Variablennamen für alle Module, Ergebnistabellen und JSON-Felder:
 | `h_kabel_bieg_mm` | Mindestbiegeradius (4 × d_max) | mm |
 | `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
+| `h_mplatte_mbereich_mm` | Verfügbarer Montagebereich auf MP nach Abzug KE-Zone | mm |
 
 ---
 
@@ -177,6 +190,7 @@ Verbindliche Variablennamen für alle Module, Ergebnistabellen und JSON-Felder:
 1. Modul 2 – Stehender Schrank (wie Modul 1, aber h_zug_ke ≈ 35 mm aktiv)
 2. Außendurchmesser NYM-J in Excel mit echten Herstellerdaten verifizieren und ggf. korrigieren
 3. Preisfelder Wandschrank-DB befüllen (Rittal Listenpreise recherchieren)
+4. Änderungen aus Session 5 committen und auf GitHub Pages deployen
 
 **Mittelfristig**
 4. Einspeisezone h_einsp erarbeiten (analog zu h_ke)
@@ -218,6 +232,14 @@ Verbindliche Variablennamen für alle Module, Ergebnistabellen und JSON-Felder:
 **Farbkodierung**
 - h_ke-Komponenten in Tabelle und Formel einheitlich eingefärbt (grün/orange/lila)
 - h_zug_ke bleibt grau (für Wandschrank nicht relevant)
+- Ergebnisvariablen haben eigene Farben: h_ke_mm → `#E0DED8`, h_mplatte_mbereich_mm → `#A8C4E8`
+- Farbe in LHS der Formelbox und Tabellen-Variablenname immer identisch
+
+**h_mplatte_mbereich_mm (Session 5)**
+- Formel: `H − h_ke_mm − (H − h_mplatte_mm) / 2`
+- SVG-Maßlinie im `if (p.fs_var > 0)`-Block, KE-Ende → MP-Ende, blau `#3366BB`
+- Guide-Linie an MP-Unterkante (KE oben) bzw. MP-Oberkante (KE unten) ergänzt
+- SVG-Labels: alle Variablennamen tragen nun vollständig `_mm`-Suffix
 
 **Wandschrank-Dropdown (Session 4)**
 - Einzelnes `<select>`-Dropdown statt Preset-Buttons (kein hardcodiertes `const PRESETS` mehr)

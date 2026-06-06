@@ -83,6 +83,7 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 | `h_kabel_bieg_mm` | Mindestbiegeradius (4 × d_max) | mm |
 | `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
+| `h_mplatte_mbereich_mm` | Verfügbarer Montagebereich auf MP nach Abzug KE-Zone | mm |
 
 ---
 
@@ -141,7 +142,7 @@ Die drei Schriftgrößen sind Nutzereingaben (`fs_dim`, `fs_var`, `fs_zone`) und
 | Zonenbeschreibung | `fs_zone` | `7` | Kabeleinführungszone, Kabelkanal, Nutzfläche-Linie |
 
 ### Farbkodierung Ergebnistabelle + Formel (Modul 01)
-Die h_ke-Komponenten sind in Tabelle und Formelzeile einheitlich eingefärbt:
+Die h_ke-Komponenten und Ergebnisvariablen sind in Tabelle und Formelzeile einheitlich eingefärbt:
 
 | Variable | Farbe | Hex |
 |---|---|---|
@@ -149,6 +150,8 @@ Die h_ke-Komponenten sind in Tabelle und Formelzeile einheitlich eingefärbt:
 | `h_kabel_bieg_mm` | Orange | `#C8720E` |
 | `h_kanal_ke_mm` | Lila | `#9A94E8` |
 | `h_zug_ke_mm` | Grau (inaktiv) | `#9A9890` |
+| `h_ke_mm` | Hell-Weiß (Ergebnis) | `#E0DED8` |
+| `h_mplatte_mbereich_mm` | Hell-Blau (Ergebnis) | `#A8C4E8` |
 
 ---
 
@@ -178,16 +181,24 @@ Die h_ke-Komponenten sind in Tabelle und Formelzeile einheitlich eingefärbt:
 ### h_ke – Kabeleinführungszone
 
 ```
-h_ke = h_handling_ke + h_zug_ke + h_kabel_bieg + h_kanal_ke
+h_ke_mm = h_handling_ke_mm + h_zug_ke_mm + h_kabel_bieg_mm + h_kanal_ke_mm
 
-h_kabel_bieg = 4 × d_max        (VDE 0298-4, fest verlegt)
+h_kabel_bieg_mm = 4 × d_max_kabel_ke_mm        (VDE 0298-4, fest verlegt)
 ```
 
 | Variable | Wandschrank | Standschrank |
 |---|---|---|
-| `h_handling_ke` | 15 mm (Festwert) | 15 mm |
-| `h_zug_ke` | 0 mm (PG außen) | ≈ 35 mm (PG innen) |
-| `h_kanal_ke` | 60 mm (Standard) | 80 mm (ggf.) |
+| `h_handling_ke_mm` | 15 mm (Festwert) | 15 mm |
+| `h_zug_ke_mm` | 0 mm (PG außen) | ≈ 35 mm (PG innen) |
+| `h_kanal_ke_mm` | 60 mm (Standard) | 80 mm (ggf.) |
+
+### h_mplatte_mbereich_mm – Montagebereich auf Montageplatte
+
+```
+h_mplatte_mbereich_mm = h_gehaeuse_aussen_mm - h_ke_mm - (h_gehaeuse_aussen_mm - h_mplatte_mm) / 2
+```
+
+Beschreibt den nach Abzug der Kabeleinführungszone verbleibenden Höhenbereich auf der Montageplatte für die Installation weiterer Schaltschrankkomponenten. Wird in SVG-Zeichnung als Maßlinie (KE-Ende → MP-Ende) und in eigener hervorgehobener Ergebniszeile angezeigt.
 
 ---
 
@@ -204,3 +215,5 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Kabelstub-Richtung: nach oben bei KE oben, nach unten bei KE unten
 - Biegeradiusfaktor 4× (nicht 6×, das gilt nur für flexible Leitungen)
 - Schriftgrößen sind Nutzereingaben, keine Konstanten
+- Alle SVG-Variablenlabels tragen vollständige `_mm`-Suffixe (z.B. `h_ke_mm`, nicht `h_ke`)
+- `h_mplatte_mbereich_mm`-Maßlinie liegt im `if (p.fs_var > 0)`-Block (wird mit fs_var=0 ausgeblendet)

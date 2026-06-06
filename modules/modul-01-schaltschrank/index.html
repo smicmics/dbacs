@@ -403,7 +403,7 @@ function calculate() {
   const h_abst = (H - mp_h) / 2;
   const h_hand = 15;
   const h_bieg = 4 * d_max;
-  const h_ke   = h_hand + h_zug + h_bieg + h_kanal;
+  const h_ke   = h_hand + h_bieg + h_zug + h_kanal;
   const h_mb   = H - h_ke - h_abst;
 
   const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_bieg, h_ke, h_mb, ke_pos, fs_dim, fs_var, fs_zone, zug_aktiv, kanal_aktiv };
@@ -426,15 +426,18 @@ function buildSVG(p) {
   const hb = p.h_bieg  * sc;
   const hk = p.h_kanal * sc;
 
-  let yH, yH_bot, yZ, yZ_bot, yB, yK;
+  // Reihenfolge ab Gehäusekante: handling → bieg → zug → kanal
+  let yH, yH_bot, yB, yZ, yK;
   if (p.ke_pos === 'oben') {
     yH = sy; yH_bot = sy + hh;
-    yZ = yH_bot; yZ_bot = yH_bot + hz;
-    yB = yZ_bot; yK = yB + hb;
+    yB = yH_bot;          // Biegeradius direkt nach Handling
+    yZ = yB + hb;         // Zugentlastung nach Biegeradius
+    yK = yZ + hz;         // Kabelkanal nach Zugentlastung
   } else {
     yH_bot = sy + sh; yH = yH_bot - hh;
-    yZ_bot = yH; yZ = yH - hz;
-    yB = yZ - hb; yK = yB - hk;
+    yB = yH  - hb;        // Biegeradius über Handling
+    yZ = yB  - hz;        // Zugentlastung über Biegeradius
+    yK = yZ  - hk;        // Kabelkanal über Zugentlastung
   }
 
   const yKe0 = p.ke_pos === 'oben' ? yH    : yK;
@@ -529,40 +532,40 @@ function buildSVG(p) {
     s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
     s += ln(pg1x, sy, pg1x, yB, C.cable_dash, 4, '3 2');
     const bxo = pg1x + 20;
-    s += `<path d="M ${pg1x},${r(yB)} C ${pg1x},${r(yB+hb*0.55)} ${bxo},${r(yK-hb*0.05)} ${bxo},${r(yK)}"
+    s += `<path d="M ${pg1x},${r(yB)} C ${pg1x},${r(yB+hb*0.55)} ${bxo},${r(yZ-hb*0.05)} ${bxo},${r(yZ)}"
                fill="none" stroke="${C.cable}" stroke-width="4" stroke-linecap="round"/>\n`;
-    s += ln(bxo, yK, bxo, yK+hk, C.cable, 4);
+    s += ln(bxo, yZ, bxo, yK+hk, C.cable, 4);
   } else {
     const pgY = sy + sh;
     s += tx(pg2x+14, pgY+16, 'PG-Verschraubungen', {anchor:'start',size:p.fs_var,fill:C.zone_tx_k});
     const bxo = pg1x + 20;
     s += ln(pg1x, pgY, pg1x, pgY+31, C.cable, 4);  // Kabelstub: Gehäusewand → durch PG → 10 px unter Nase
     s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
-    s += ln(pg1x, yZ, pg1x, yH_bot, C.cable_dash, 4, '3 2');
+    s += ln(pg1x, yH, pg1x, yH_bot, C.cable_dash, 4, '3 2');
     s += ln(bxo, yK, bxo, yB, C.cable, 4);
-    s += `<path d="M ${bxo},${r(yB)} C ${bxo},${r(yB+hb*0.45)} ${pg1x},${r(yB+hb*0.55)} ${pg1x},${r(yZ)}"
+    s += `<path d="M ${bxo},${r(yB)} C ${bxo},${r(yB+hb*0.45)} ${pg1x},${r(yB+hb*0.55)} ${pg1x},${r(yH)}"
                fill="none" stroke="${C.cable}" stroke-width="4" stroke-linecap="round"/>\n`;
   }
 
   // Guide-Linien + Maßpfeile + h_ke-Klammer (ausgeblendet wenn fs_var = 0)
   if (p.fs_var > 0) {
     const guideSet = new Set([yH, yH_bot, yB, yB+hb, yKe0, yKe1]);
-    if (hz > 0) { guideSet.add(yZ); guideSet.add(yZ_bot); }
+    if (hz > 0) { guideSet.add(yZ); guideSet.add(yZ+hz); }
     if (hk > 0) { guideSet.add(yK); guideSet.add(yK+hk); }
     for (const y of guideSet)
       s += ln(sx+sw, y, ax1+2, y, C.guide, 0.5);
 
     const zonesOben = [
-      {y0:yH,    y1:yH_bot,  col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm'},
-      ...(hz>0 ? [{y0:yZ,  y1:yZ_bot, col:C.arr_z, lcol:C.lbl_z, lbl:'h_zug_ke_mm'}]   : []),
-      {y0:yB,    y1:yB+hb,   col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm'},
-      ...(hk>0 ? [{y0:yK,  y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'}] : []),
+      {y0:yH,   y1:yH_bot,  col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm'},
+      {y0:yB,   y1:yB+hb,   col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm'},
+      ...(hz>0 ? [{y0:yZ,   y1:yZ+hz,   col:C.arr_z, lcol:C.lbl_z, lbl:'h_zug_ke_mm'}]   : []),
+      ...(hk>0 ? [{y0:yK,   y1:yK+hk,   col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'}] : []),
     ];
     const zonesUnten = [
-      ...(hk>0 ? [{y0:yK,  y1:yK+hk,  col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'}] : []),
-      {y0:yB,    y1:yB+hb,   col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm'},
-      ...(hz>0 ? [{y0:yZ,  y1:yZ_bot, col:C.arr_z, lcol:C.lbl_z, lbl:'h_zug_ke_mm'}]   : []),
-      {y0:yH,    y1:yH_bot,  col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm', dy:-2},
+      ...(hk>0 ? [{y0:yK,   y1:yK+hk,   col:C.arr_k, lcol:C.lbl_k, lbl:'h_kanal_ke_mm'}] : []),
+      ...(hz>0 ? [{y0:yZ,   y1:yZ+hz,   col:C.arr_z, lcol:C.lbl_z, lbl:'h_zug_ke_mm'}]   : []),
+      {y0:yB,   y1:yB+hb,   col:C.arr_b, lcol:C.lbl_b, lbl:'h_kabel_bieg_mm'},
+      {y0:yH,   y1:yH_bot,  col:C.arr_h, lcol:C.lbl_h, lbl:'h_handling_ke_mm', dy:-2},
     ];
     const zones = p.ke_pos === 'oben' ? zonesOben : zonesUnten;
     for (const z of zones) {
@@ -637,11 +640,11 @@ function buildTable(p) {
     {var:'d_max_kabel_ke_mm',                  lbl:'Max. Kabel-Außen-∅',          val:p.d_max,       unit:'mm', src:'Eingabe',                        col:''},
     {sep:true},
     {var:'h_handling_ke_mm',   lbl:'Freie Kabellänge nach PG',    val:p.h_hand,  unit:'mm', src:'Festwert Wandschrank',           col:'#2DBD8E', note:'konservativ eingerechnet'},
+    {var:'h_kabel_bieg_mm', lbl:'Mindestbiegeradius', val:p.h_bieg, unit:'mm', src:`4 × ${p.d_max} mm (VDE 0298-4)`, col:'#C8720E'},
     {var:'h_zug_ke_mm',  lbl:'Zugentlastung intern',  val:p.h_zug,   unit:'mm',
      src:  p.zug_aktiv   ? `Icotek CCL · h_schelle = ${p.h_zug} mm` : '0 · (PG Zugentlastung außen)',
      col:  p.zug_aktiv   ? '#D4A84B' : '#9A9890',
      note: p.zug_aktiv   ? null : 'kein interner Platzbedarf'},
-    {var:'h_kabel_bieg_mm', lbl:'Mindestbiegeradius', val:p.h_bieg, unit:'mm', src:`4 × ${p.d_max} mm (VDE 0298-4)`, col:'#C8720E'},
     {var:'h_kanal_ke_mm', lbl:'Horizontaler Kabelkanal', val:p.h_kanal, unit:'mm',
      src:  p.kanal_aktiv  ? 'Eingabe · Standard 60 mm' : '0 · (kein Kabelkanal)',
      col:  p.kanal_aktiv  ? '#9A94E8' : '#9A9890'},
@@ -657,8 +660,8 @@ function buildTable(p) {
 <div class="formula-box" style="margin-top:18px">
   <span style="color:#E0DED8">h_ke_mm</span> &nbsp;=&nbsp;
   <span style="color:#2DBD8E">h_handling_ke_mm</span> &nbsp;+&nbsp;
-  <span style="color:${p.zug_aktiv ? '#D4A84B' : '#9A9890'}">h_zug_ke_mm</span> &nbsp;+&nbsp;
   <span style="color:#C8720E">h_kabel_bieg_mm</span> &nbsp;+&nbsp;
+  <span style="color:${p.zug_aktiv ? '#D4A84B' : '#9A9890'}">h_zug_ke_mm</span> &nbsp;+&nbsp;
   <span style="color:${p.kanal_aktiv ? '#9A94E8' : '#9A9890'}">h_kanal_ke_mm</span>
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_ke} mm</strong>
   &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
