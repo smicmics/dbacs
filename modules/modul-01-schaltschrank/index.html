@@ -480,10 +480,10 @@ function buildSVG(p) {
     `<line x1="${r(x1)}" y1="${r(y1)}" x2="${r(x2)}" y2="${r(y2)}"
            stroke="${col}" stroke-width="${w}"${dash?` stroke-dasharray="${dash}"`:''}/>\n`;
   const tx = (x,y,s,o={}) => {
-    const {anchor='start',size=9,weight=400,fill='#888',rotate=''}=o;
+    const {anchor='start',size=9,weight=400,fill='#888',rotate='',db=''}=o;
     return `<text x="${r(x)}" y="${r(y)}" text-anchor="${anchor}"
                   font-family="sans-serif" font-size="${size}" font-weight="${weight}"
-                  fill="${fill}"${rotate?` transform="${rotate}"`:''}>${s}</text>\n`;
+                  fill="${fill}"${db?` dominant-baseline="${db}"`:''}${rotate?` transform="${rotate}"`:''}>${s}</text>\n`;
   };
   const arr = (x,y1,y2,col) => {
     if (Math.abs(y2-y1) < 4) return '';
@@ -642,7 +642,11 @@ function buildSVG(p) {
       s += ln(ax1, z.y0, ax+3, z.y0, z.col, 0.8);
       s += ln(ax1, z.y1, ax+3, z.y1, z.col, 0.8);
       s += arr(ax, z.y0, z.y1, z.col);
-      s += tx(lx, (z.y0+z.y1)/2+3.5+(z.dy||0), z.lbl, {size:p.fs_var,weight:400,fill:z.lcol});
+      // h_handling_ke_mm: kleines Maß – bleibt an bisheriger Position (nahe obere Linie)
+      // Alle anderen: dominant-baseline="middle" für exakte vertikale Zentrierung
+      const isSmall = z.lbl === 'h_handling_ke_mm';
+      const yLbl = isSmall ? (z.y0+z.y1)/2+3.5 : (z.y0+z.y1)/2;
+      s += tx(lx, yLbl, z.lbl, {size:p.fs_var, weight:400, fill:z.lcol, db: isSmall ? '' : 'middle'});
     }
 
     s += ln(lx, yKe0, bx+2, yKe0, C.arr_ke, 0.8);
