@@ -627,7 +627,8 @@ function buildSVG(p) {
       {y0:yH,   y1:yH_bot,    col:C.arr_h,  lcol:C.lbl_h,  lbl:'h_handling_ke_mm'},
       {y0:yB,   y1:yB+hb,     col:C.arr_b,  lcol:C.lbl_b,  lbl:'h_kabel_bieg_mm'},
       ...(hz>0  ? [{y0:yZ,   y1:yZ+hz,    col:C.arr_z,  lcol:C.lbl_z,  lbl:'h_zug_ke_mm'}]           : []),
-      ...(hhz>0 ? [{y0:yHZ,  y1:yHZ+hhz,  col:C.arr_hz, lcol:C.lbl_hz, lbl:'h_handling_zug_ke_mm'}]  : []),
+      ...(hhz>0 ? [{y0:yHZ,  y1:yHZ+hhz,  col:C.arr_hz, lcol:C.lbl_hz, lbl:'h_handling_zug_ke_mm',
+                    dy: hk > 0 ? 0 : -(hhz * 0.45 + 2)}]  : []),  // KE oben + kein Kanal: Label nach oben
       ...(hk>0  ? [{y0:yK,   y1:yK+hk,    col:C.arr_k,  lcol:C.lbl_k,  lbl:'h_kanal_ke_mm'}]         : []),
     ];
     const zonesUnten = [
