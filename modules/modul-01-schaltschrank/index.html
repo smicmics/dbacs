@@ -713,11 +713,11 @@ function buildTable(p) {
     {var:'h_kabel_bieg_mm', lbl:'Mindestbiegeradius', val:p.h_bieg, unit:'mm', src:`4 × ${p.d_max} mm (VDE 0298-4)`, col:'#C8720E'},
     {var:'h_zug_ke_mm',  lbl:'Zugentlastung · Schellenhöhe',  val:p.h_zug, unit:'mm',
      src:  p.zug_aktiv ? `Icotek CCL · h_schelle = ${p.h_zug} mm` : '0 · (PG Zugentlastung außen)',
-     col:  p.zug_aktiv ? '#D4A84B' : '#9A9890',
+     col:  '#D4A84B',
      note: p.zug_aktiv ? null : 'kein interner Platzbedarf'},
     {var:'h_handling_zug_ke_mm', lbl:'Freiraum nach Schelle', val:p.h_handling_zug, unit:'mm',
      src:  p.zug_aktiv ? 'Festwert · Kabel zu Kanal / Gerät' : '0 · (Zugentlastung inaktiv)',
-     col:  p.zug_aktiv ? '#4BBECA' : '#9A9890'},
+     col:  '#4BBECA'},
     {var:'h_kanal_ke_mm', lbl:'Horizontaler Kabelkanal', val:p.h_kanal, unit:'mm',
      src:  p.kanal_aktiv  ? 'Eingabe · Standard 60 mm' : '0 · (kein Kabelkanal)',
      col:  p.kanal_aktiv  ? '#9A94E8' : '#9A9890'},
@@ -734,8 +734,8 @@ function buildTable(p) {
   <span style="color:#E0DED8">h_ke_mm</span> &nbsp;=&nbsp;
   <span style="color:#2DBD8E">h_handling_ke_mm</span> &nbsp;+&nbsp;
   <span style="color:#C8720E">h_kabel_bieg_mm</span> &nbsp;+&nbsp;
-  <span style="color:#3366BB">h_zug_ke_mm</span> &nbsp;+&nbsp;
-  <span style="color:#3366BB">h_handling_zug_ke_mm</span> &nbsp;+&nbsp;
+  <span style="color:#D4A84B">h_zug_ke_mm</span> &nbsp;+&nbsp;
+  <span style="color:#4BBECA">h_handling_zug_ke_mm</span> &nbsp;+&nbsp;
   <span style="color:#9A94E8">h_kanal_ke_mm</span>
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_ke} mm</strong>
   &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
