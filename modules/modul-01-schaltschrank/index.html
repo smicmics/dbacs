@@ -447,6 +447,7 @@ function buildSVG(p) {
   const ax1 = sx+sw+22, ax = sx+sw+26, lx = sx+sw+31, bx = lx+82;
   const pg1x = Math.round(mx + mw*0.27);
   const pg2x = Math.round(mx + mw*0.50);
+  const bxo  = pg1x + 20;   // x-Position Kabel nach Bogen (beide KE-Positionen gleich)
 
   const r  = v => Math.round(v*10)/10;
   const ln = (x1,y1,x2,y2,col,w,dash='') =>
@@ -512,6 +513,44 @@ function buildSVG(p) {
     for (let i=1; i<4; i++) s += ln(mx+3, yK+hk*i/4, mx+mw-3, yK+hk*i/4, C.zK_lines, 0.7);
   }
 
+  // ── C-Profilschiene + Bügelschelle in h_zug-Zone ─────────────
+  if (hz > 0) {
+    const y_mid = yZ + hz / 2;
+    const rh  = Math.max(4, Math.min(14 * sc, hz * 0.55)); // Schienenhöhe (14 mm real)
+    const ryt = y_mid - rh / 2;
+    const ryb = y_mid + rh / 2;
+    const fw  = Math.max(3.5, 6 * sc);                     // Flankenbreite (6 mm real)
+    const sw2 = Math.max(1.5, 2.5 * sc);                   // C-Nut Halbbreite
+
+    // Grundkörper C-Schiene
+    s += `<rect x="${r(mx)}" y="${r(ryt)}" width="${r(mw)}" height="${r(rh)}"
+               fill="#CCCAC0" stroke="${C.arr_z}" stroke-width="0.6"/>\n`;
+    // Flanken (dunkler)
+    s += `<rect x="${r(mx)}" y="${r(ryt)}" width="${r(fw)}" height="${r(rh)}" fill="#A8A4A0"/>\n`;
+    s += `<rect x="${r(mx+mw-fw)}" y="${r(ryt)}" width="${r(fw)}" height="${r(rh)}" fill="#A8A4A0"/>\n`;
+    // Flanken-Trennlinien
+    s += ln(mx+fw, ryt, mx+fw, ryb, '#888', 0.4);
+    s += ln(mx+mw-fw, ryt, mx+mw-fw, ryb, '#888', 0.4);
+    // C-Nut (Einführungsschlitz in Schienenmitte oben)
+    if (rh >= 5) {
+      const slot_d = rh * 0.42;
+      s += `<rect x="${r(mx+mw/2-sw2)}" y="${r(ryt)}" width="${r(sw2*2)}" height="${r(slot_d)}"
+                 fill="${C.zZ_fill}" stroke="${C.arr_z}" stroke-width="0.4"/>\n`;
+    }
+
+    // Bügelschelle am Kabel (x = bxo)
+    const chw = Math.max(5, 5 * sc);       // halbe Klammerbreite (~5 mm)
+    const ch  = rh * 1.15;                 // Klammerhöhe ≈ Schienenhöhe
+    const cyt = y_mid - ch / 2;
+    // Klammerbügel
+    s += `<rect x="${r(bxo-chw)}" y="${r(cyt)}" width="${r(chw*2)}" height="${r(ch)}"
+               fill="none" stroke="${C.arr_z}" stroke-width="1.2" rx="1.5"/>\n`;
+    // Befestigungsschraube (kleines Rechteck oben am Bügel)
+    const bh = Math.max(1.8, 2.2 * sc);
+    s += `<rect x="${r(bxo-chw*0.55)}" y="${r(cyt-bh)}" width="${r(chw*1.1)}" height="${r(bh)}"
+               fill="${C.arr_z}" rx="1"/>\n`;
+  }
+
   // Zonen-Labels + Nutzfläche (ausgeblendet wenn fs_zone = 0)
   if (p.fs_zone > 0) {
     s += tx(mx+mw/2, yB+hb/2+3.5, 'Kabeleinführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
@@ -531,14 +570,14 @@ function buildSVG(p) {
     s += ln(pg1x, sy, pg1x, pgY-10, C.cable, 4);   // Kabelstub: Gehäusewand → durch PG → 10 px über Nase
     s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
     s += ln(pg1x, sy, pg1x, yB, C.cable_dash, 4, '3 2');
-    const bxo = pg1x + 20;
+    // bxo oben definiert
     s += `<path d="M ${pg1x},${r(yB)} C ${pg1x},${r(yB+hb*0.55)} ${bxo},${r(yZ-hb*0.05)} ${bxo},${r(yZ)}"
                fill="none" stroke="${C.cable}" stroke-width="4" stroke-linecap="round"/>\n`;
     s += ln(bxo, yZ, bxo, yK+hk, C.cable, 4);
   } else {
     const pgY = sy + sh;
     s += tx(pg2x+14, pgY+16, 'PG-Verschraubungen', {anchor:'start',size:p.fs_var,fill:C.zone_tx_k});
-    const bxo = pg1x + 20;
+    // bxo oben definiert
     s += ln(pg1x, pgY, pg1x, pgY+31, C.cable, 4);  // Kabelstub: Gehäusewand → durch PG → 10 px unter Nase
     s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
     s += ln(pg1x, yH, pg1x, yH_bot, C.cable_dash, 4, '3 2');
