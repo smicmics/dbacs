@@ -6,7 +6,7 @@
 1. `git log --oneline -5` – prüfen ob seit letzter Sitzung neue Commits über VS Code eingecheckt wurden
 2. `git status` – prüfen ob uncommittete Änderungen vorliegen
 3. `docs/revison_session.md` lesen – aktueller Projektstand, offene Punkte, gesperrte Entscheidungen
-4. Bei Arbeit an Modul 1: `modules/modul-01-schaltschrank/index.html` ab Zeile 226 (JS/SVG-Teil)
+4. Bei Arbeit an Modul 1: `modules/modul-01-schaltschrank/index.html` – JS beginnt nach dem HTML-Markup (Suche nach `<script>`)
 
 **Hinweis:** Commits erfolgen in der Regel über VS Code, nicht über Claude. Der letzte Commit-Stand ist daher maßgeblich für den tatsächlichen Projektstand – nicht der Dokumentationsstand in `revison_session.md`.
 
@@ -43,7 +43,8 @@ dbacs/
 │   ├── ga_komponenten.xlsx                      Excel Source of Truth (lokal, nicht versioniert)
 │   ├── kabel_nym_j.json                         Kabeldatenbank NYM-J (committed, aus Excel generiert)
 │   ├── wandschraenke.json                       Wandschrank-DB (committed, aus Excel generiert)
-│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (beide Sheets)
+│   ├── kabelzugschellen.json                    Kabelzugschellen-DB Icotek CCL (committed, aus Excel generiert)
+│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (alle 3 Sheets)
 └── docs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
     └── archiv/                                  ältere Session-Dokumentationen
@@ -78,12 +79,15 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 | `n_adern` | Anzahl Leiter im Kabel | – |
 | `querschnitt_mm2` | Leiterquerschnitt | mm² |
 | `d_max_kabel_ke_mm` | Max. Kabel-Außen-∅ in der KE-Zone (aus DB) | mm |
-| `h_handling_ke_mm` | Freie Kabellänge nach PG (Handling) | mm |
-| `h_zug_ke_mm` | Zugentlastung intern | mm |
-| `h_kabel_bieg_mm` | Mindestbiegeradius (4 × d_max) | mm |
-| `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone | mm |
+| `h_handling_ke_mm` | Freie Kabellänge nach PG (Festwert 15 mm) | mm |
+| `h_kabel_bieg_mm` | Mindestbiegeradius (4 × d_max, VDE 0298-4) | mm |
+| `h_zug_ke_mm` | Bügelschellen-Höhe aus DB (Icotek CCL, 0 wenn inaktiv) | mm |
+| `h_handling_zug_ke_mm` | Freiraum nach Schelle bis Kanal/Gerät (Festwert 20 mm, 0 wenn inaktiv) | mm |
+| `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone (0 wenn inaktiv) | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
 | `h_mplatte_mbereich_mm` | Verfügbarer Montagebereich auf MP nach Abzug KE-Zone | mm |
+| `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld in kabelzugschellen.json) | mm |
+| `h_kabel_bieg_faktor` | Biegeradiusfaktor Festwert 4 (VDE 0298-4) | – |
 
 ---
 
@@ -96,7 +100,7 @@ Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 - **GitHub Pages kompatibel** – relative Pfade, kein Server-Backend, offline-fähig
 - **Sprache** – UI-Texte und Dokumentation auf Deutsch
 - **Datenhaltung** – Excel als Source of Truth → `data/xlsx_to_json.py` → JSON (committed) → `fetch()` im Browser
-- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → exportiert `kabel_nym_j.json` + `wandschraenke.json` → beide committen
+- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → exportiert `kabel_nym_j.json` + `wandschraenke.json` + `kabelzugschellen.json` → alle drei committen
 - **Excel nicht versioniert** – `data/*.xlsx` ist in `.gitignore`, nur JSON wird committed
 
 ---
@@ -109,8 +113,9 @@ Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 2. HTML-Markup (Eingabe-Panel links, Ausgabe-Panel rechts)
 3. JavaScript:
    const C = {...}           // SVG-Farbpalette – zentral, nie hardcoded im SVG
-   let KABEL_DB = []         // Kabeldatenbank, per fetch() geladen
-   let WANDSCHRANK_DB = []   // Wandschrank-DB, per fetch() geladen (Modul 1)
+   let KABEL_DB = []              // Kabeldatenbank, per fetch() geladen
+   let WANDSCHRANK_DB = []        // Wandschrank-DB, per fetch() geladen (Modul 1)
+   let KABELZUGSCHELLEN_DB = []   // Kabelzugschellen-DB, per fetch() geladen (Modul 1)
    g(id)                     // DOM-Getter: +document.getElementById(id).value
    gs(id)                    // DOM-Getter String: document.getElementById(id).value
    _v(id, val)               // DOM-Setter: document.getElementById(id).value = val
@@ -142,16 +147,24 @@ Die drei Schriftgrößen sind Nutzereingaben (`fs_dim`, `fs_var`, `fs_zone`) und
 | Zonenbeschreibung | `fs_zone` | `7` | Kabeleinführungszone, Kabelkanal, Nutzfläche-Linie |
 
 ### Farbkodierung Ergebnistabelle + Formel (Modul 01)
-Die h_ke-Komponenten und Ergebnisvariablen sind in Tabelle und Formelzeile einheitlich eingefärbt:
+Farben sind in Tabelle und Formelzeile immer identisch. h_zug und h_handling_zug werden immer farbig dargestellt (kein konditionelles Grau):
 
 | Variable | Farbe | Hex |
 |---|---|---|
 | `h_handling_ke_mm` | Grün | `#2DBD8E` |
 | `h_kabel_bieg_mm` | Orange | `#C8720E` |
-| `h_kanal_ke_mm` | Lila | `#9A94E8` |
-| `h_zug_ke_mm` | Grau (inaktiv) | `#9A9890` |
+| `h_zug_ke_mm` | Amber (immer) | `#D4A84B` |
+| `h_handling_zug_ke_mm` | Teal (immer) | `#4BBECA` |
+| `h_kanal_ke_mm` | Lila (aktiv) / Grau (inaktiv) | `#9A94E8` / `#9A9890` |
 | `h_ke_mm` | Hell-Weiß (Ergebnis) | `#E0DED8` |
 | `h_mplatte_mbereich_mm` | Hell-Blau (Ergebnis) | `#A8C4E8` |
+
+SVG-Zonenrahmen (getrennt von Maßketten-Farben):
+
+| Zone | Rahmenfarbe | C-Palette |
+|---|---|---|
+| h_zug_ke_mm | Amber `#D4A84B` | `C.zZ_stroke` |
+| h_handling_zug_ke_mm | Teal `#4BBECA` | `C.zHZ_stroke` |
 
 ---
 
@@ -180,17 +193,22 @@ Die h_ke-Komponenten und Ergebnisvariablen sind in Tabelle und Formelzeile einhe
 
 ### h_ke – Kabeleinführungszone
 
+Reihenfolge ab Gehäuseinnenwand (fest, nicht ändern):
 ```
-h_ke_mm = h_handling_ke_mm + h_zug_ke_mm + h_kabel_bieg_mm + h_kanal_ke_mm
+h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_mm + h_kanal_ke_mm
 
-h_kabel_bieg_mm = 4 × d_max_kabel_ke_mm        (VDE 0298-4, fest verlegt)
+h_kabel_bieg_mm      = 4 × d_max_kabel_ke_mm   (VDE 0298-4, fest verlegt)
+h_zug_ke_mm          = h_schelle_mm aus kabelzugschellen.json (Lookup via d_max), 0 wenn inaktiv
+h_handling_zug_ke_mm = 20 mm Festwert (Freiraum Schelle → Kanal/Gerät), 0 wenn inaktiv
 ```
 
-| Variable | Wandschrank | Standschrank |
-|---|---|---|
-| `h_handling_ke_mm` | 15 mm (Festwert) | 15 mm |
-| `h_zug_ke_mm` | 0 mm (PG außen) | ≈ 35 mm (PG innen) |
-| `h_kanal_ke_mm` | 60 mm (Standard) | 80 mm (ggf.) |
+| Variable | Wandschrank (Standard) |
+|---|---|
+| `h_handling_ke_mm` | 15 mm (Festwert) |
+| `h_kabel_bieg_mm` | 4 × d_max (dynamisch) |
+| `h_zug_ke_mm` | 0 mm (Nein) oder aus DB (Ja) |
+| `h_handling_zug_ke_mm` | 0 mm (Nein) oder 20 mm (Ja) |
+| `h_kanal_ke_mm` | 0 mm (Nein) oder Eingabe (Ja, Standard 60 mm) |
 
 ### h_mplatte_mbereich_mm – Montagebereich auf Montageplatte
 
@@ -207,13 +225,20 @@ Beschreibt den nach Abzug der Kabeleinführungszone verbleibenden Höhenbereich 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen:
 
 - `h_handling_ke` startet an der **Schaltschrankinnenwand** (nicht an MP-Oberkante)
-- `h_zug_ke = 0` beim Wandschrank (PG-Zugentlastung sitzt außen)
+- Zonenreihenfolge ab Gehäusewand: **handling → bieg → zug → handling_zug → kanal** (fest, nicht ändern)
+- `h_zug_ke_mm` ist dynamisch via `kabelzugschellen.json` (Lookup nach d_max) – Ja/Nein schaltbar
+- `h_handling_zug_ke_mm = 20 mm` Festwert – nur aktiv wenn Zugentlastung = Ja
+- `h_kanal_ke_mm` Ja/Nein schaltbar; bei Nein = 0, Eingabefeld disabled
 - **B-Maßlinie positionsabhängig:** unten bei KE oben, oben bei KE unten
 - `b_mplatte_abstand_gehaeuse_iw_mm` nur in der Ergebnistabelle, nicht in der SVG-Zeichnung
-- Alle Maßketten einheitlich blau `#3366BB` (keine verschiedenen Farben pro Zone)
+- Alle Maßketten-Pfeile/-Labels einheitlich blau `#3366BB` – Zonenrahmen-Farben davon getrennt (`C.zZ_stroke`, `C.zHZ_stroke`)
+- `h_zug_ke_mm` und `h_handling_zug_ke_mm` immer in Amber/Teal (kein konditionelles Grau)
 - PG-Verschraubungen bündig auf Gehäuse, kein Luftabstand
 - Kabelstub-Richtung: nach oben bei KE oben, nach unten bei KE unten
 - Biegeradiusfaktor 4× (nicht 6×, das gilt nur für flexible Leitungen)
-- Schriftgrößen sind Nutzereingaben, keine Konstanten
-- Alle SVG-Variablenlabels tragen vollständige `_mm`-Suffixe (z.B. `h_ke_mm`, nicht `h_ke`)
-- `h_mplatte_mbereich_mm`-Maßlinie liegt im `if (p.fs_var > 0)`-Block (wird mit fs_var=0 ausgeblendet)
+- Schriftgrößen sind Nutzereingaben (`fs_dim=7`, `fs_var=6`, `fs_zone=7`), keine Konstanten
+- Alle SVG-Variablenlabels tragen vollständige `_mm`-Suffixe
+- `h_mplatte_mbereich_mm`-Maßlinie liegt im `if (p.fs_var > 0)`-Block
+- Zonenbeschriftungen linksbündig bei `zoneLblX = bxo + 10` (10 px rechts vom Kabel); ▼/▲ Nutzfläche zentriert bei `mx+mw/2`
+- Teilmaß-Labels vertikal zentriert via `dominant-baseline="middle"` – Ausnahme: `h_handling_ke_mm` (zu kleine Zone, Sonderpositionierung ±0,5 px je KE-Richtung)
+- `tx()`-Funktion unterstützt `db`-Option für `dominant-baseline`
