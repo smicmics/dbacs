@@ -198,7 +198,7 @@ legend{
         </select>
       </div>
       <div class="field">
-        <div class="lbl">Leitungstyp (aus DB)<span class="var">–</span></div>
+        <div class="lbl">Leitungstyp<span class="var">–</span></div>
         <input id="kabel_typ" type="text" value="–" disabled>
       </div>
       <div class="field">
@@ -218,7 +218,7 @@ legend{
         </select>
       </div>
       <div class="field">
-        <div class="lbl">Höhe h_kanal_ke (mm)<span class="var">h_kanal_ke_mm</span></div>
+        <div class="lbl">Höhe Kabelkanal (mm)<span class="var">h_kanal_ke_mm</span></div>
         <input id="h_kanal" type="number" value="60" min="25" max="150" step="5" oninput="calculate()">
       </div>
     </fieldset>
@@ -233,8 +233,8 @@ legend{
         </select>
       </div>
       <div class="field">
-        <div class="lbl">Schelle (aus DB)<span class="var">–</span></div>
-        <input id="zug_typ" type="text" value="—" disabled>
+        <div class="lbl">Bügelschelle<span class="var">–</span></div>
+        <input id="zug_typ" type="text" value="—" disabled style="font-size:10px;">
       </div>
       <div class="field">
         <div class="lbl">Schellenhöhe (mm)<span class="var">h_schelle_mm</span></div>
@@ -261,15 +261,15 @@ legend{
     <fieldset>
       <legend>Festwerte · Wandschrank</legend>
       <div class="field">
-        <div class="lbl">h_handling_ke (mm)<span class="var">h_handling_ke_mm</span></div>
+        <div class="lbl">Handlingzone Kabeleinführung (mm)<span class="var">h_handling_ke_mm</span></div>
         <input type="number" value="15" disabled>
       </div>
       <div class="field">
-        <div class="lbl">Freiraum nach Schelle (mm)<span class="var">h_handling_zug_ke_mm</span></div>
-        <input type="number" value="20" disabled style="color:#4BBECA">
+        <div class="lbl">Handlingzone nach Zugentlastung (mm)<span class="var">h_handling_zug_ke_mm</span></div>
+        <input type="number" value="20" disabled>
       </div>
       <div class="field">
-        <div class="lbl">Biegeradius-Faktor (VDE 0298-4)<span class="var">–</span></div>
+        <div class="lbl">Biegeradius-Faktor VDE 0298-4 (mm)<span class="var">h_kabel_bieg_faktor</span></div>
         <input type="number" value="4" disabled>
       </div>
     </fieldset>
