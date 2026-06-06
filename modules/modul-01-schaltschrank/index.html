@@ -444,7 +444,6 @@ function buildSVG(p) {
   const mx = sx + p.b_abst * sc,  my = sy + p.h_abst * sc;
   const mw = p.mp_b * sc,         mh = p.mp_h * sc;
 
-  const zoneLblX = bxo + 10;   // Zonenbeschriftungen: 10 px rechts vom Kabel (bxo)
   const hh  = Math.max(p.h_hand * sc, 3);
   const hz  = p.h_zug          * sc;
   const hhz = p.h_handling_zug * sc;
@@ -475,6 +474,7 @@ function buildSVG(p) {
   const pg1x = Math.round(mx + mw*0.27);
   const pg2x = Math.round(mx + mw*0.50);
   const bxo  = pg1x + 20;   // x-Position Kabel nach Bogen (beide KE-Positionen gleich)
+  const zoneLblX = bxo + 10;   // Zonenbeschriftungen: 10 px rechts vom Kabel
 
   const r  = v => Math.round(v*10)/10;
   const ln = (x1,y1,x2,y2,col,w,dash='') =>
