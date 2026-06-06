@@ -139,7 +139,7 @@ legend{
 
 <header>
   <div class="title">
-    <h1>Modul 1 · Wandschrank</h1>
+    <h1>Modul 1 · Wandschrank · Kabeleinführung · Nutzfläche</h1>
     <p>GA-Planungstool · Schaltschrank-Dimensionierung</p>
   </div>
   <a href="../../index.html">← Startseite</a>
@@ -444,7 +444,7 @@ function buildSVG(p) {
   const mx = sx + p.b_abst * sc,  my = sy + p.h_abst * sc;
   const mw = p.mp_b * sc,         mh = p.mp_h * sc;
 
-  const zoneLblX = mx + mw * 0.22;   // Gemeinsame Start-X aller Zonenbeschriftungen (linksbündig)
+  const zoneLblX = bxo + 10;   // Zonenbeschriftungen: 10 px rechts vom Kabel (bxo)
   const hh  = Math.max(p.h_hand * sc, 3);
   const hz  = p.h_zug          * sc;
   const hhz = p.h_handling_zug * sc;
@@ -589,9 +589,9 @@ function buildSVG(p) {
       s += tx(zoneLblX, yK+hk/2+3.5, 'Kabelkanal Einführungszone', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_k});
     s += ln(mx, nutz_y, mx+mw, nutz_y, C.nutz, 1.2, '8 5');
     if (p.ke_pos === 'oben')
-      s += tx(zoneLblX, nutz_y+10, '▼ Beginn Nutzfläche', {anchor:'start',size:p.fs_zone,fill:C.nutz_tx});
+      s += tx(mx+mw/2, nutz_y+10, '▼ Beginn Nutzfläche', {anchor:'middle',size:p.fs_zone,fill:C.nutz_tx});
     else
-      s += tx(zoneLblX, nutz_y-4, '▲ Ende Nutzfläche', {anchor:'start',size:p.fs_zone,fill:C.nutz_tx});
+      s += tx(mx+mw/2, nutz_y-4, '▲ Ende Nutzfläche', {anchor:'middle',size:p.fs_zone,fill:C.nutz_tx});
   }
 
   // PG + Kabel
