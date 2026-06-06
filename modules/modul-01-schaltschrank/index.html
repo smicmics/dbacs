@@ -582,7 +582,7 @@ function buildSVG(p) {
 
   // Zonen-Labels + Nutzfläche (ausgeblendet wenn fs_zone = 0)
   if (p.fs_zone > 0) {
-    s += tx(mx+mw/2, yB+hb/2+3.5, 'Kabeleinführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
+    s += tx(mx+mw/2+zoneLblOffX, yB+hb/2+3.5, 'Kabeleinführungszone', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
     if (hz > 0)
       s += tx(mx+mw/2+zoneLblOffX, yZ+hz/2, 'C-Schiene mit Bügelschellen', {anchor:'middle',size:p.fs_zone,weight:400,fill:C.zone_tx_h,db:'middle'});
     if (hk > 0)
