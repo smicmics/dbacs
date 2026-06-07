@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 7. Juni 2026 – Session 7
+**Stand:** 7. Juni 2026 – Session 8
 
 ---
 
@@ -14,40 +14,38 @@ Webbasiertes Planungstool für das Gewerk Gebäudeautomation zur Unterstützung 
 **Technologien**
 - Reines HTML/CSS/JavaScript – kein Framework, kein Build-Step
 - Eine HTML-Datei pro Modul (Self-contained)
-- SVG dynamisch per JavaScript erzeugt
+- SVG dynamisch per JavaScript erzeugt, vollständig maßstäblich (`sc = SH / H_mm`)
 - Datenhaltung: Excel → Python (WSL) → JSON → fetch() im Browser
-
-**Warum so**
-- GitHub Pages kompatibel ohne Server
-- Kein Deployment-Aufwand
-- Offline-fähig
-- Erweiterbar Modul für Modul
 
 **Dateistruktur**
 ```
 dbacs/
 ├── CLAUDE.md                               Projektkonventionen für Claude (Session-Start)
 ├── index.html                              Root-Redirect → web/index.html (GitHub Pages)
-├── .gitignore                              OS, Editor, Python, data/*.db, data/*.xlsx, settings.local.json
+├── .gitignore                              OS, Editor, Python, data/*.db, data/*.xlsx
 ├── .claude/
 │   └── launch.json                         Dev-Server-Konfiguration (statischer HTTP-Server Port 8099)
 ├── web/
-│   ├── index.html                          Startseite / Modulübersicht (Dark Theme)
+│   ├── index.html                          Startseite / Modulübersicht (Dark Theme) – 2 Module aktiv
 │   └── assets/
 │       ├── css/style.css                   Dark Theme Stylesheet
 │       └── js/main.js                      Scroll-Reveal + aktive Nav-Link-Steuerung
 ├── modules/
-│   └── modul-01-schaltschrank/index.html  Modul 1 – vollständig funktionsfähig
+│   ├── modul-01-schaltschrank/index.html   Modul 1 – Wandschrank, vollständig ✅
+│   └── modul-02-standschrank/index.html    Modul 2 – Standschrank, vollständig ✅
 ├── drawings/
-│   └── wandschrank_frontansicht_v7.html   Referenzzeichnung (unverändert)
+│   └── wandschrank_frontansicht_v7.html    Referenzzeichnung (unverändert)
 ├── data/
-│   ├── ga_komponenten.xlsx                Pflegewerkzeug (Source of Truth, lokal – nicht versioniert)
-│   ├── kabel_nym_j.json                   Kabeldatenbank NYM-J (committed)
-│   ├── wandschraenke.json                 Wandschrank-DB Rittal AX (committed)
-│   ├── kabelzugschellen.json              Kabelzugschellen-DB Icotek CCL (committed) ← NEU Session 6
-│   └── xlsx_to_json.py                    Konvertierungsskript Excel → JSON (alle 3 Sheets)
+│   ├── ga_komponenten.xlsx                 Pflegewerkzeug (Source of Truth, lokal – nicht versioniert)
+│   ├── kabel_nym_j.json                    Kabeldatenbank NYM-J (committed)
+│   ├── wandschraenke.json                  Wandschrank-DB Rittal AX (committed)
+│   ├── kabelzugschellen.json               Kabelzugschellen-DB Icotek CCL (committed)
+│   ├── standschraenke.json                 Standschrank-DB Rittal VX25 (committed) ← NEU Session 8
+│   ├── sockel.json                         Sockel-DB Rittal VX (committed) ← NEU Session 8
+│   ├── bodenbleche.json                    Bodenblech-DB Rittal VX (committed) ← NEU Session 8
+│   └── xlsx_to_json.py                     Konvertierungsskript Excel → JSON (6 Sheets)
 └── docs/
-    └── *.md                               Projektdokumentation
+    └── *.md                                Projektdokumentation
 ```
 
 **Deployment**
@@ -56,8 +54,8 @@ dbacs/
 | Repository | https://github.com/smicmics/dbacs |
 | Live-URL Startseite | https://smicmics.github.io/dbacs/ |
 | Live-URL Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
+| Live-URL Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
 | Deploy-Trigger | Push auf `main` Branch → GitHub Pages baut automatisch |
-| Branch / Quelle | `main` / Root (`/`) |
 
 ---
 
@@ -66,60 +64,68 @@ dbacs/
 ### Modul 1 – vollständig funktionsfähig ✅
 **Titel:** „Modul 1 · Wandschrank · Kabeleinführung · Nutzfläche"
 
-**Berechnungsformel h_ke_mm (aktuell)**
+**Berechnungsformel h_ke_mm**
 ```
 h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_mm + h_kanal_ke_mm
 ```
-
-Reihenfolge der Zonen ab Gehäuseinnenwand (fest):
-1. `h_handling_ke_mm` – freie Kabellänge nach PG (Festwert 15 mm)
-2. `h_kabel_bieg_mm` – Mindestbiegeradius (4 × d_max, VDE 0298-4)
-3. `h_zug_ke_mm` – Bügelschellen-Höhe (aus DB, 0 wenn inaktiv)
-4. `h_handling_zug_ke_mm` – Freiraum nach Schelle bis Kabelkanal/Gerät (Festwert 20 mm, 0 wenn inaktiv)
-5. `h_kanal_ke_mm` – horizontaler Kabelkanal (Eingabe, 0 wenn inaktiv)
 
 **Eingabepanel**
 - Schrank-Außenmaße + Montageplatte
 - Wandschrank-Dropdown (Rittal AX, aus `wandschraenke.json`)
 - Kabeleinführung: Position oben/unten, Aderzahl, Querschnitt → d_max aus `kabel_nym_j.json`
-- **Kabelkanal:** Ja/Nein-Toggle + Höheneingabe (bei Nein: h_kanal = 0)
-- **Zugentlastung im Schaltschrank:** Ja/Nein-Toggle → bei Ja: DB-Lookup in `kabelzugschellen.json` nach d_max, Schellentyp und h_schelle_mm werden angezeigt
-- Schriftgrößen SVG (fs_dim, fs_var, fs_zone), Wert 0 blendet Gruppe aus
-- Festwerte (nicht editierbar): h_handling_ke=15 mm, h_handling_zug_ke=20 mm, Biegeradiusfaktor 4×
+- Kabelkanal: Ja/Nein-Toggle + Höheneingabe
+- Zugentlastung: Ja/Nein → DB-Lookup `kabelzugschellen.json`
+- Schriftgrößen SVG: fs_dim=7, fs_var=6, fs_zone=7
+- Festwerte: h_handling_ke=15 mm, h_handling_zug_ke=20 mm, Faktor 4×
+- Projektfelder im Header (Projekt, Projektnummer, ASP, Bearbeitet von, Dokument-Nr.) → localStorage
+- Druckbutton: Ergebnis drucken (float-Layout, Hochformat, 2 Seiten)
 
-**SVG-Zeichnung**
-- Zonendarstellung für KE oben und KE unten korrekt
-- Zonen in SVG (alle nur wenn > 0): Handling (hellgrau), Bieg (warmgelb), Zug/Schelle (amber, gestrichelter Rahmen), Handling-Zug (hellblau, gestrichelter Rahmen), Kabelkanal (grau, Fülllinien)
-- **C-Profilschiene** maßstabsgerecht in h_zug-Zone gezeichnet: Grundkörper + Flanken + C-Nut
-- **Bügelschelle** am Kabel (x = bxo) als U-Bügel mit Schraube
-- Maßketten: alle Teilmaße in einheitlichem Blau `#3366BB` (wie h_mplatte_mbereich_wandschrank_mm)
-- Zonenbeschriftungen (Kabeleinführungszone, C-Schiene mit Bügelschellen, Kabelkanal Einführungszone): linksbündig, 10 px rechts vom Kabel (`zoneLblX = bxo + 10`)
-- ▼/▲ Beginn/Ende Nutzfläche: zentriert bei mx+mw/2
-- Teilmaß-Labels: `dominant-baseline="middle"` für exakte vertikale Zentrierung (außer h_handling_ke_mm)
-- h_mplatte_mbereich_wandschrank_mm: Maßlinie von KE-Ende bis MP-Ende
+**Ergebnisse**
+- `h_ke_mm` – Kabeleinführungszone gesamt
+- `h_mplatte_mbereich_wandschrank_mm` – Höhe Montagebereich MP
+- `b_mplatte_mbereich_wandschrank_mm` = b_mplatte_mm
 
-**Ergebnistabelle + Formelzeile**
+---
 
-Farbkodierung (Formelzeile und Tabellenzeile immer identisch):
+### Modul 2 – vollständig funktionsfähig ✅
+**Titel:** „Modul 2 · Standschrank · Kabeleinführung · Nutzfläche"
+**Datei:** `modules/modul-02-standschrank/index.html`
 
-| Variable | Farbe |
-|---|---|
-| `h_handling_ke_mm` | Grün `#2DBD8E` |
-| `h_kabel_bieg_mm` | Orange `#C8720E` |
-| `h_zug_ke_mm` | Amber `#D4A84B` (immer, auch bei inaktiv) |
-| `h_handling_zug_ke_mm` | Teal `#4BBECA` (immer, auch bei inaktiv) |
-| `h_kanal_ke_mm` | Lila `#9A94E8` (aktiv) / Grau `#9A9890` (inaktiv) |
-| `h_ke_mm` | Hell-Weiß `#E0DED8` (Ergebnis) |
-| `h_mplatte_mbereich_wandschrank_mm` | Hell-Blau `#A8C4E8` (Ergebnis) |
-| `b_mplatte_mbereich_wandschrank_mm` | Hell-Blau `#A8C4E8` (Ergebnis) |
+**Unterschiede zu Modul 1:**
 
-SVG-Zonenrahmen-Farben (von Maßketten-Farben getrennt):
-- h_zug-Zone: Amber-Rahmen `#D4A84B` via `C.zZ_stroke`
-- h_handling_zug-Zone: Teal-Rahmen `#4BBECA` via `C.zHZ_stroke`
+| Merkmal | Modul 1 (Wandschrank) | Modul 2 (Standschrank) |
+|---|---|---|
+| Schrank-DB | `wandschraenke.json` (Rittal AX) | `standschraenke.json` (Rittal VX25) |
+| Sockel | nicht vorhanden | `sockel.json` – Ja/Nein, 100/200 mm |
+| KE Standard | oben | unten |
+| KE unten | mit PG-Verschraubung | freie Einführung, kein PG (Boden offen) |
+| KE oben | mit PG | mit PG (halbe Größe vs. Modul 1) |
+| Schriftgrößen | fs_dim=7, fs_var=6, fs_zone=7 | fs_dim=5, fs_var=5, fs_zone=6 |
+| Ergebnisvariablen | `_wandschrank_` | `_standschrank_` |
 
-**CSS `:root` Variablen** (Session 6 ergänzt):
-- `--c-handling`, `--c-bieg`, `--c-zug`, `--c-hz`, `--c-kanal`, `--c-dim`, `--c-result`, `--c-mbereich`
-- `--fs-field: 13px`, `--fs-field-sm: 10px` (disabled Textfelder)
+**Sockel-Logik:**
+- Sockel Ja/Nein toggle → Höhe 100 oder 200 mm wählbar
+- DB-Lookup: `SOCKEL_DB.find(e => e.b_gehaeuse_aussen_mm === B && e.h_sockel_mm === h_sockel_option)`
+- SVG: Sockel-Rechteck maßstäblich unterhalb des Schranks, Text „Schaltschranksockel" linksbündig bei `zoneLblX`
+- Maßlinie Sockel: gleiche horizontale Position wie H-Maßlinie (`hx = sx - 16`), Label nur Wert (ohne Variablenname)
+- VH = PT + SH + h_sockel_px + PB (SVG-Höhe dynamisch erweitert)
+
+**KE unten ohne PG:**
+- Kabel läuft von KE-Zone durch Schrankinnenraum und Boden in Sockel
+- Text „Freie Kabeleinführung · Boden offen" bei `zoneLblX`, unterhalb Sockeltext, Größe `fs_zone`
+- Kabelstub: 10 px unterhalb Sockel (oder Schrankunterseite wenn kein Sockel)
+
+**SVG Maßstab (beide Module):**
+```js
+const SH = 390;        // SVG-Höhe px (fest)
+const sc  = SH / p.H; // Maßstab px/mm – alle Elemente mit gleichem sc skaliert
+```
+Schrank, Montageplatte, KE-Zonen und Sockel sind immer proportional korrekt dargestellt.
+
+**Ergebnisse**
+- `h_ke_mm` – Kabeleinführungszone gesamt (gleiche Formel wie Modul 1)
+- `h_mplatte_mbereich_standschrank_mm` – Höhe Montagebereich MP
+- `b_mplatte_mbereich_standschrank_mm` = b_mplatte_mm
 
 ---
 
@@ -129,45 +135,42 @@ SVG-Zonenrahmen-Farben (von Maßketten-Farben getrennt):
 
 **`wandschraenke.json`** – 12 Rittal AX-Wandschränke (600×600 bis 1000×1200 mm)
 
-**`kabelzugschellen.json`** – Icotek CCL Bügelschellen für 30 mm C-Schiene ← NEU Session 6
+**`kabelzugschellen.json`** – 4 Icotek CCL Bügelschellen für 30 mm C-Schiene
 
-| Bezeichnung | Art.-Nr. | d_kabel min–max | h_schelle_mm |
-|---|---|---|---|
-| CCL 6-13 | 32000 | 6–13 mm | 31 mm |
-| CCL 12-19 | 32001 | 12–19 mm | 36 mm |
-| CCL 18-23 | 32002 | 18–23 mm | 38 mm |
-| CCL 22-32 | 32003 | 22–32 mm | 52 mm |
+**`standschraenke.json`** – 11 Rittal VX25 Standschränke ← NEU Session 8
 
-Lookup-Logik: `d_max >= d_kabel_min_mm && d_max <= d_kabel_max_mm`
-Deckt alle Kabel in `kabel_nym_j.json` (d = 9,2–25,5 mm) ab.
-
-**Excel-Sheet `kabelzugschellen` (ga_komponenten.xlsx)**
-
-| Spalte | Typ | Beschreibung |
+| Bezeichnung | B×H×T (mm) | MP B×H (mm) |
 |---|---|---|
-| `aktiv` | BOOL | FALSE = nicht exportiert |
-| `hersteller` | TEXT | z.B. „Icotek" |
-| `bezeichnung` | TEXT | z.B. „CCL 12-19" |
-| `bestellnummer` | TEXT | Artikelnummer |
-| `d_kabel_min_mm` | FLOAT | Min. Kabeldurchmesser mm |
-| `d_kabel_max_mm` | FLOAT | Max. Kabeldurchmesser mm |
-| `h_schelle_mm` | FLOAT | Einbauhöhe Schelle mm (= h_zug_ke_mm) |
-| `b_schelle_mm` | FLOAT | Länge Schelle mm |
-| `t_schelle_mm` | FLOAT | Tiefe/Breite Schelle mm |
-| `preis_stueckpreis_eur` | FLOAT | leer (für Kalkulation vorbereitet) |
-| `preis_lieferung_eur` | FLOAT | leer |
-| `preis_montage_eur` | FLOAT | leer |
-| `preis_gesamt_eur` | FLOAT | leer |
+| VX 8686.000 | 600×1800×600 | 499×1696 |
+| VX 8604.000 | 600×2000×400 | 499×1896 |
+| VX 8606.000 | 600×2000×600 | 499×1896 |
+| VX 8880.000 | 800×1800×500 | 699×1696 |
+| VX 8804.000 | 800×2000×400 | 699×1896 |
+| VX 8806.000 | 800×2000×600 | 699×1896 |
+| VX 8826.000 | 800×2200×600 | 699×2096 |
+| VX 8080.000 | 1000×1800×400 | 899×1696 |
+| VX 8006.000 | 1000×2000×600 | 899×1896 |
+| VX 8265.000 | 1200×1600×500 | 1099×1496 |
+| VX 8205.000 | 1200×2000×500 | 1099×1896 |
+
+Formel: MP_B = B − 101 mm, MP_H = H − 104 mm
+
+**`sockel.json`** – 8 Rittal VX Sockel ← NEU Session 8
+B = 600/800/1000/1200 mm × H = 100/200 mm
+
+**`bodenbleche.json`** – 4 Rittal VX Bodenblech-Sätze (je Schrankbreite) ← NEU Session 8
+Bestellnummern noch zu verifizieren (aus Rittal-Katalog ableiten)
 
 ---
 
 ### xlsx_to_json.py
 
-Exportiert alle 3 Sheets in einem Aufruf:
+Exportiert alle 6 Sheets in einem Aufruf:
 ```
 python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 ```
 → `kabel_nym_j.json` + `wandschraenke.json` + `kabelzugschellen.json`
+  + `standschraenke.json` + `sockel.json` + `bodenbleche.json`
 
 ---
 
@@ -184,14 +187,17 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 | `n_adern` | Anzahl Leiter im Kabel | – |
 | `querschnitt_mm2` | Leiterquerschnitt | mm² |
 | `d_max_kabel_ke_mm` | Max. Kabel-Außen-∅ KE-Zone (aus DB) | mm |
-| `h_handling_ke_mm` | Freie Kabellänge nach PG (Festwert 15 mm) | mm |
+| `h_handling_ke_mm` | Freie Kabellänge nach PG / ab Boden (Festwert 15 mm) | mm |
 | `h_kabel_bieg_mm` | Mindestbiegeradius (4 × d_max, VDE 0298-4) | mm |
 | `h_zug_ke_mm` | Bügelschellen-Höhe aus DB (Icotek CCL) | mm |
 | `h_handling_zug_ke_mm` | Freiraum nach Schelle bis Kabelkanal/Gerät (Festwert 20 mm) | mm |
 | `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
-| `h_mplatte_mbereich_wandschrank_mm` | Höhe Montagebereich auf der Montageplatte (nach Abzug KE-Zone) | mm |
-| `b_mplatte_mbereich_wandschrank_mm` | Breite Montagebereich auf der Montageplatte (= b_mplatte_mm) | mm |
+| `h_mplatte_mbereich_wandschrank_mm` | Höhe Montagebereich MP – Wandschrank | mm |
+| `b_mplatte_mbereich_wandschrank_mm` | Breite Montagebereich MP – Wandschrank (= b_mplatte_mm) | mm |
+| `h_mplatte_mbereich_standschrank_mm` | Höhe Montagebereich MP – Standschrank | mm |
+| `b_mplatte_mbereich_standschrank_mm` | Breite Montagebereich MP – Standschrank (= b_mplatte_mm) | mm |
+| `h_sockel_mm` | Sockelhöhe Standschrank (0 wenn inaktiv) | mm |
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor (Festwert 4, VDE 0298-4) | – |
 
@@ -199,55 +205,52 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 
 ## Offene Punkte
 
-**Als nächstes (Prio hoch)**
-1. Preisfelder Wandschrank-DB und Kabelzugschellen-DB befüllen (Listenpreise)
-2. Kabelzugschellen-DB erweitern: Prüfen ob weitere Schellen für spätere Standschrank-Module notwendig
-3. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
+**Daten verifizieren (Prio mittel)**
+1. Bestellnummern `bodenbleche.json` über Rittal-Katalog/Website bestätigen
+2. Bestellnummern `sockel.json` (8660001, 8660004, 8660005, 8660021, 8660024) – bestätigt: 8660003, 8660023, 8660025
+3. Preisfelder aller DBs befüllen (Listenpreise)
 
-**Mittelfristig**
-4. Modul 2 – Stehender Schrank (h_zug_ke aktiv, KE von unten als Standard)
-5. Einspeisezone h_einsp erarbeiten (analog zu h_ke)
-6. Klemmenzone h_klemm erarbeiten
-7. TE-Berechnung pro Reihe und Gesamtkapazität
+**Nächste Module (Prio hoch)**
+4. Modul 3 – Einspeisezone h_einsp (analog h_ke)
+5. Modul 4 – Klemmenzone h_klemm
+6. Startseite: Modul 3–5 Karten aktualisieren wenn Entwicklung beginnt
 
 **Später**
+7. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
 8. Startseite: Screenshot-Vorschau je Modul ergänzen
-9. CSS @media print für Druckausgabe (Modul 1)
-10. Module 3–5 konzipieren und in Startseite integrieren
+9. Module 3–5 konzipieren
 
 ---
 
 ## Entscheidungen (gesperrt)
 
-**Formel h_ke**
-- Reihenfolge: handling → bieg → zug → handling_zug → kanal (physikalisch korrekte Abfolge ab Gehäusewand)
-- Biegeradius-Faktor 4× (VDE 0298-4, fest verlegt; 6× nur für flexible Leitungen)
-- h_handling_ke = 15 mm Festwert (PG außen, Wandschrank)
-- h_handling_zug_ke = 20 mm Festwert (Freiraum Schelle → Kabelkanal/Gerät)
-- Kabelkanal und Zugentlastung einzeln als Ja/Nein schaltbar; bei Nein → Wert = 0
+**Formel h_ke (beide Module)**
+- Reihenfolge: handling → bieg → zug → handling_zug → kanal (fest)
+- Biegeradius-Faktor 4× (VDE 0298-4, fest verlegt)
+- h_handling_ke = 15 mm Festwert
+- h_handling_zug_ke = 20 mm Festwert
+- Kabelkanal und Zugentlastung einzeln Ja/Nein schaltbar
 
-**Zugentlastung**
-- Produkt: Icotek CCL – Bügelschellen für 30 mm C-Profilschiene
-- h_zug_ke_mm = h_schelle_mm (aus DB, vom größten Kabeldurchmesser bestimmt)
-- h_handling_zug_ke_mm = 20 mm zusätzlicher Freiraum (fixer Zuschlag)
-- C-Schiene und Bügelschelle in SVG-Zeichnung dargestellt
+**Modul 2 – Standschrank-spezifisch**
+- KE unten: kein PG (Boden offen), freie Kabeleinführung
+- KE oben: PG halb so groß wie Modul 1 (Dimensionen ÷2, stroke-width 0.7)
+- Sockel-Maßlinie: gleiche horizontale Position wie H-Maßlinie, Label nur Wert (mm)
+- „Schaltschranksockel" + „Freie Kabeleinführung · Boden offen" beide bei zoneLblX linksbündig
+- Schriftgrößen Standschrank: fs_dim=5, fs_var=5, fs_zone=6 (Standardwerte)
 
-**SVG / Darstellung**
-- SVG dynamisch per JavaScript, feste Höhe SH=390 px, sc = SH/H_mm
-- Alle Maßketten einheitlich blau #3366BB (= C.dim)
-- Zonenrahmen-Farben (Amber, Teal) von Maßkettenfarben getrennt (C.zZ_stroke, C.zHZ_stroke)
-- Zonenbeschriftungen linksbündig bei `zoneLblX = bxo + 10` (10 px rechts vom Kabel)
+**SVG / Darstellung (beide Module)**
+- SVG dynamisch per JavaScript, feste Höhe SH=390 px, sc = SH/H_mm (maßstäblich)
+- Alle Maßketten einheitlich blau #3366BB
+- Zonenrahmen-Farben (Amber, Teal) von Maßkettenfarben getrennt
+- Zonenbeschriftungen linksbündig bei `zoneLblX = bxo + 10`
 - Teilmaß-Labels vertikal zentriert via `dominant-baseline="middle"` (außer h_handling_ke_mm)
-- h_handling_ke_mm: Sonderbehandlung (sehr kleine Zone) – Offset ±0.5 je nach KE-Richtung
-- ▼/▲ Beginn/Ende Nutzfläche: anchor:middle bei mx+mw/2
 
-**Farbkodierung**
-- Formelzeile und Tabellenzeile verwenden immer identische Farben pro Variable
-- h_zug_ke_mm und h_handling_zug_ke_mm immer in ihrer Farbe (kein konditionelles Grau)
-- CSS `:root` Custom Properties für alle Zonenfarben definiert
+**Variablen-Trennung Wand- vs. Standschrank**
+- `h/b_mplatte_mbereich_wandschrank_mm` für Modul 1
+- `h/b_mplatte_mbereich_standschrank_mm` für Modul 2
+- Ermöglicht spätere automatische Schrankauswahl auf Basis beider Montagebereich-Ergebnisse
 
 **Daten / Architektur**
 - Single-File HTML pro Modul (GitHub Pages, kein Build-Step)
 - Excel als Pflegewerkzeug (nicht versioniert), JSON als Produktivdatenbank (committed)
-- Python läuft in WSL (kein natives Windows-Python)
-- Aktiv-Flag statt Löschung veralteter Datensätze
+- Python läuft in WSL

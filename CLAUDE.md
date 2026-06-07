@@ -7,6 +7,7 @@
 2. `git status` – prüfen ob uncommittete Änderungen vorliegen
 3. `docs/revison_session.md` lesen – aktueller Projektstand, offene Punkte, gesperrte Entscheidungen
 4. Bei Arbeit an Modul 1: `modules/modul-01-schaltschrank/index.html` – JS beginnt nach dem HTML-Markup (Suche nach `<script>`)
+5. Bei Arbeit an Modul 2: `modules/modul-02-standschrank/index.html` – gleiche Struktur wie Modul 1
 
 **Hinweis:** Commits erfolgen in der Regel über VS Code, nicht über Claude. Der letzte Commit-Stand ist daher maßgeblich für den tatsächlichen Projektstand – nicht der Dokumentationsstand in `revison_session.md`.
 
@@ -36,15 +37,19 @@ dbacs/
 │       ├── css/style.css                        Dark Theme Stylesheet
 │       └── js/main.js                           Scroll-Reveal + Nav-Highlighting
 ├── modules/
-│   └── modul-01-schaltschrank/index.html        h_ke-Rechner (Wandschrank)
+│   ├── modul-01-schaltschrank/index.html        h_ke-Rechner (Wandschrank) ✅
+│   └── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
 ├── drawings/
 │   └── wandschrank_frontansicht_v7.html         Referenzzeichnung (nicht bearbeiten)
 ├── data/
 │   ├── ga_komponenten.xlsx                      Excel Source of Truth (lokal, nicht versioniert)
-│   ├── kabel_nym_j.json                         Kabeldatenbank NYM-J (committed, aus Excel generiert)
-│   ├── wandschraenke.json                       Wandschrank-DB (committed, aus Excel generiert)
-│   ├── kabelzugschellen.json                    Kabelzugschellen-DB Icotek CCL (committed, aus Excel generiert)
-│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (alle 3 Sheets)
+│   ├── kabel_nym_j.json                         Kabeldatenbank NYM-J (committed)
+│   ├── wandschraenke.json                       Wandschrank-DB Rittal AX (committed)
+│   ├── kabelzugschellen.json                    Kabelzugschellen-DB Icotek CCL (committed)
+│   ├── standschraenke.json                      Standschrank-DB Rittal VX25 (committed)
+│   ├── sockel.json                              Sockel-DB Rittal VX (committed)
+│   ├── bodenbleche.json                         Bodenblech-DB Rittal VX (committed)
+│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (6 Sheets)
 └── docs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
     └── archiv/                                  ältere Session-Dokumentationen
@@ -60,6 +65,7 @@ dbacs/
 | Branch | `main` |
 | GitHub Pages | https://smicmics.github.io/dbacs/ |
 | Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
+| Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
 | Deploy-Trigger | `git push origin main` → GitHub Pages baut automatisch |
 
 ---
@@ -85,8 +91,11 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 | `h_handling_zug_ke_mm` | Freiraum nach Schelle bis Kanal/Gerät (Festwert 20 mm, 0 wenn inaktiv) | mm |
 | `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone (0 wenn inaktiv) | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
-| `h_mplatte_mbereich_wandschrank_mm` | Höhe Montagebereich auf der Montageplatte (nach Abzug KE-Zone) | mm |
-| `b_mplatte_mbereich_wandschrank_mm` | Breite Montagebereich auf der Montageplatte (= b_mplatte_mm) | mm |
+| `h_mplatte_mbereich_wandschrank_mm` | Höhe Montagebereich auf der Montageplatte – Wandschrank | mm |
+| `b_mplatte_mbereich_wandschrank_mm` | Breite Montagebereich auf der Montageplatte – Wandschrank (= b_mplatte_mm) | mm |
+| `h_mplatte_mbereich_standschrank_mm` | Höhe Montagebereich auf der Montageplatte – Standschrank | mm |
+| `b_mplatte_mbereich_standschrank_mm` | Breite Montagebereich auf der Montageplatte – Standschrank (= b_mplatte_mm) | mm |
+| `h_sockel_mm` | Sockelhöhe Standschrank (0 wenn inaktiv) | mm |
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld in kabelzugschellen.json) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor Festwert 4 (VDE 0298-4) | – |
 
@@ -101,7 +110,7 @@ Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 - **GitHub Pages kompatibel** – relative Pfade, kein Server-Backend, offline-fähig
 - **Sprache** – UI-Texte und Dokumentation auf Deutsch
 - **Datenhaltung** – Excel als Source of Truth → `data/xlsx_to_json.py` → JSON (committed) → `fetch()` im Browser
-- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → exportiert `kabel_nym_j.json` + `wandschraenke.json` + `kabelzugschellen.json` → alle drei committen
+- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → exportiert alle 6 JSON-Dateien → alle committen
 - **Excel nicht versioniert** – `data/*.xlsx` ist in `.gitignore`, nur JSON wird committed
 
 ---
@@ -113,18 +122,20 @@ Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 1. HTML + CSS (eingebettet im <style>-Tag)
 2. HTML-Markup (Eingabe-Panel links, Ausgabe-Panel rechts)
 3. JavaScript:
-   const C = {...}           // SVG-Farbpalette – zentral, nie hardcoded im SVG
+   const C = {...}                // SVG-Farbpalette – zentral, nie hardcoded im SVG
    let KABEL_DB = []              // Kabeldatenbank, per fetch() geladen
    let WANDSCHRANK_DB = []        // Wandschrank-DB, per fetch() geladen (Modul 1)
-   let KABELZUGSCHELLEN_DB = []   // Kabelzugschellen-DB, per fetch() geladen (Modul 1)
-   g(id)                     // DOM-Getter: +document.getElementById(id).value
-   gs(id)                    // DOM-Getter String: document.getElementById(id).value
-   _v(id, val)               // DOM-Setter: document.getElementById(id).value = val
-   lookupKabel()             // Kabel-Lookup aus KABEL_DB nach n_adern + querschnitt
-   loadPreset()              // Schrank-Lookup aus WANDSCHRANK_DB per Dropdown-Index
-   calculate()               // Master-Orchestrator, aufgerufen bei oninput
-   buildSVG(p)               // SVG-String-Generator, bekommt Parameterobjekt p
-   buildTable(p)             // HTML-Tabellen-Generator, bekommt Parameterobjekt p
+   let STANDSCHRANK_DB = []       // Standschrank-DB, per fetch() geladen (Modul 2)
+   let KABELZUGSCHELLEN_DB = []   // Kabelzugschellen-DB, per fetch() geladen
+   let SOCKEL_DB = []             // Sockel-DB, per fetch() geladen (Modul 2)
+   g(id)                          // DOM-Getter: +document.getElementById(id).value
+   gs(id)                         // DOM-Getter String: document.getElementById(id).value
+   _v(id, val)                    // DOM-Setter: document.getElementById(id).value = val
+   lookupKabel()                  // Kabel-Lookup aus KABEL_DB nach n_adern + querschnitt
+   loadPreset()                   // Schrank-Lookup aus DB per Dropdown-Index
+   calculate()                    // Master-Orchestrator, aufgerufen bei oninput
+   buildSVG(p)                    // SVG-String-Generator, bekommt Parameterobjekt p
+   buildTable(p)                  // HTML-Tabellen-Generator, bekommt Parameterobjekt p
 ```
 
 ### Kommentarstil
@@ -138,14 +149,14 @@ oninput → calculate() → buildSVG(p)   → #svg-inner
                       → buildTable(p) → #results-area
 ```
 
-### Schriftgrößen-Steuerung (Modul 01)
+### Schriftgrößen-Steuerung
 Die drei Schriftgrößen sind Nutzereingaben (`fs_dim`, `fs_var`, `fs_zone`) und werden als `p.fs_*` an `buildSVG()` übergeben. Wert `0` blendet die gesamte Gruppe (Linien, Pfeile, Text) aus:
 
-| Eingabefeld | ID | Standard | Steuert |
-|---|---|---|---|
-| Bemaßungstext | `fs_dim` | `7` | H =, B = Labels + Maßlinien |
-| Bemaßungsvariable | `fs_var` | `6` | Zonenpfeile, h_ke-Klammer, Guide-Linien, PG-Label |
-| Zonenbeschreibung | `fs_zone` | `7` | Kabeleinführungszone, Kabelkanal, Nutzfläche-Linie |
+| Eingabefeld | ID | Standard Modul 1 | Standard Modul 2 | Steuert |
+|---|---|---|---|---|
+| Bemaßungstext | `fs_dim` | `7` | `5` | H =, B = Labels + Maßlinien |
+| Bemaßungsvariable | `fs_var` | `6` | `5` | Zonenpfeile, h_ke-Klammer, Guide-Linien, PG-Label |
+| Zonenbeschreibung | `fs_zone` | `7` | `6` | Kabeleinführungszone, Kabelkanal, Nutzfläche-Linie |
 
 ### Farbkodierung Ergebnistabelle + Formel (Modul 01)
 Farben sind in Tabelle und Formelzeile immer identisch. h_zug und h_handling_zug werden immer farbig dargestellt (kein konditionelles Grau):
@@ -237,9 +248,19 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - PG-Verschraubungen bündig auf Gehäuse, kein Luftabstand
 - Kabelstub-Richtung: nach oben bei KE oben, nach unten bei KE unten
 - Biegeradiusfaktor 4× (nicht 6×, das gilt nur für flexible Leitungen)
-- Schriftgrößen sind Nutzereingaben (`fs_dim=7`, `fs_var=6`, `fs_zone=7`), keine Konstanten
+- Schriftgrößen sind Nutzereingaben, keine Konstanten – Standardwerte je Modul verschieden (Modul 1: 7/6/7; Modul 2: 5/5/6)
 - Alle SVG-Variablenlabels tragen vollständige `_mm`-Suffixe
 - `h_mplatte_mbereich_wandschrank_mm`-Maßlinie liegt im `if (p.fs_var > 0)`-Block
 - Zonenbeschriftungen linksbündig bei `zoneLblX = bxo + 10` (10 px rechts vom Kabel); ▼/▲ Nutzfläche zentriert bei `mx+mw/2`
 - Teilmaß-Labels vertikal zentriert via `dominant-baseline="middle"` – Ausnahme: `h_handling_ke_mm` (zu kleine Zone, Sonderpositionierung ±0,5 px je KE-Richtung)
 - `tx()`-Funktion unterstützt `db`-Option für `dominant-baseline`
+- SVG vollständig maßstäblich: `sc = SH / H_mm` – Schrank, MP, KE-Zonen, Sockel alle mit gleichem Faktor skaliert
+
+### Modul 2 – Standschrank-spezifische Regeln (gesperrt)
+- KE unten: kein PG (Boden offen), Kabel läuft frei durch Schrankunterseite und Sockel
+- KE oben: PG-Verschraubung halb so groß wie Modul 1 (±4 px statt ±8 px, stroke-width 0.7)
+- Sockel-Maßlinie: gleiche horizontale x-Position wie H-Maßlinie (`hx = sx - 16`), Label nur Wert in mm (kein Variablenname)
+- „Schaltschranksockel" linksbündig bei `zoneLblX` (nicht mittig)
+- „Freie Kabeleinführung · Boden offen" bei `zoneLblX`, unterhalb Sockeltext, Größe `fs_zone`
+- VH = PT + SH + h_sockel_px + PB (dynamische SVG-Höhe bei aktivem Sockel)
+- Sockel-Lookup: `SOCKEL_DB.find(e => e.b_gehaeuse_aussen_mm === B && e.h_sockel_mm === h_sockel_option)`
