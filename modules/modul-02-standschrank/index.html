@@ -353,15 +353,15 @@ legend{
       <legend>Schriftgrößen SVG</legend>
       <div class="field">
         <div class="lbl">Bemaßungstext (pt)<span class="var">H =, B = …</span></div>
-        <input id="fs_dim" type="number" value="7" min="4" max="14" step="0.5" oninput="calculate()">
+        <input id="fs_dim" type="number" value="6" min="4" max="14" step="0.5" oninput="calculate()">
       </div>
       <div class="field">
         <div class="lbl">Bemaßungsvariable (pt)<span class="var">h_handling_ke …</span></div>
-        <input id="fs_var" type="number" value="6" min="4" max="14" step="0.5" oninput="calculate()">
+        <input id="fs_var" type="number" value="5" min="4" max="14" step="0.5" oninput="calculate()">
       </div>
       <div class="field">
         <div class="lbl">Zonenbeschreibung (pt)<span class="var">Kabelkanal …</span></div>
-        <input id="fs_zone" type="number" value="7" min="4" max="14" step="0.5" oninput="calculate()">
+        <input id="fs_zone" type="number" value="6" min="4" max="14" step="0.5" oninput="calculate()">
       </div>
     </fieldset>
 
@@ -652,7 +652,7 @@ function buildSVG(p) {
   if (h_sockel_px > 0) {
     const sock_y = sy + sh;
     s += `<rect x="${sx}" y="${r(sock_y)}" width="${sw}" height="${r(h_sockel_px)}" fill="${C.sockel}" stroke="${C.schrank}" stroke-width="3"/>\n`;
-    s += tx(sx+sw/2, sock_y+h_sockel_px/2, 'Schaltschranksockel', {anchor:'middle', size:7, fill:C.sockel_tx, db:'middle'});
+    s += tx(zoneLblX, sock_y+h_sockel_px/2, 'Schaltschranksockel', {anchor:'start', size:7, fill:C.sockel_tx, db:'middle'});
   }
 
   // Zonen-Rechtecke
@@ -731,8 +731,8 @@ function buildSVG(p) {
     const stubEndY = sockBot + 10;
 
     if (p.fs_var > 0)
-      s += tx(pg2x+14, sockBot + 4, 'Freie Kabeleinführung · Boden offen',
-              {anchor:'start', size:p.fs_var, fill:C.zone_tx_k});
+      s += tx(zoneLblX, sockBot + p.fs_zone + 2, 'Freie Kabeleinführung · Boden offen',
+              {anchor:'start', size:p.fs_zone, fill:C.zone_tx_k});
 
     // Kabel im Schrank: von KE-Zone bis Boden
     s += ln(bxo, yK, bxo, yB, C.cable, 4);
@@ -803,15 +803,14 @@ function buildSVG(p) {
     s += tx(hx+1, sy+sh/2, `H = ${p.H} mm`,
            {anchor:'middle',size:p.fs_dim,fill:C.dim,rotate:`rotate(-90 ${r(hx+1)} ${r(sy+sh/2)})`});
 
-    // Sockel-Maßlinie links (falls aktiv)
+    // Sockel-Maßlinie links (gleiche Position wie H-Maßlinie)
     if (h_sockel_px > 0) {
-      const hx2 = sx - 34;
       const sock_y = sy + sh;
-      s += ln(hx2, sock_y, hx2+6, sock_y, C.dim, 0.8);
-      s += ln(hx2, sock_y+h_sockel_px, hx2+6, sock_y+h_sockel_px, C.dim, 0.8);
-      s += arr(hx2+3, sock_y, sock_y+h_sockel_px, C.dim);
-      s += tx(hx2+1, sock_y+h_sockel_px/2, `h_sockel_mm = ${p.h_sockel} mm`,
-             {anchor:'middle',size:p.fs_dim,fill:C.dim,rotate:`rotate(-90 ${r(hx2+1)} ${r(sock_y+h_sockel_px/2)})`});
+      s += ln(hx, sock_y, hx+6, sock_y, C.dim, 0.8);
+      s += ln(hx, sock_y+h_sockel_px, hx+6, sock_y+h_sockel_px, C.dim, 0.8);
+      s += arr(hx+3, sock_y, sock_y+h_sockel_px, C.dim);
+      s += tx(hx+1, sock_y+h_sockel_px/2, `${p.h_sockel} mm`,
+             {anchor:'middle',size:p.fs_dim,fill:C.dim,rotate:`rotate(-90 ${r(hx+1)} ${r(sock_y+h_sockel_px/2)})`});
     }
 
     if (p.ke_pos === 'oben') {
