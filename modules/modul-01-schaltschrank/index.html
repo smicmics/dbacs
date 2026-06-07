@@ -428,8 +428,9 @@ function calculate() {
   const h_bieg = 4 * d_max;
   const h_ke   = h_hand + h_bieg + h_zug + h_handling_zug + h_kanal;
   const h_mb   = H - h_ke - h_abst;
+  const b_mb   = mp_b;
 
-  const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_handling_zug, h_bieg, h_ke, h_mb, ke_pos, fs_dim, fs_var, fs_zone, zug_aktiv, kanal_aktiv };
+  const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_handling_zug, h_bieg, h_ke, h_mb, b_mb, ke_pos, fs_dim, fs_var, fs_zone, zug_aktiv, kanal_aktiv };
   document.getElementById('svg-inner').innerHTML  = buildSVG(p);
   document.getElementById('results-area').innerHTML = buildTable(p);
 }
@@ -734,8 +735,10 @@ function buildTable(p) {
     {var:'h_ke_mm', lbl:'Kabeleinführungszone gesamt', val:p.h_ke, unit:'mm',
      src:`${p.h_hand} + ${p.h_bieg} + ${p.h_zug} + ${p.h_handling_zug} + ${p.h_kanal}`, col:'#E0DED8', hi:true},
     {sep:true},
-    {var:'h_mplatte_mbereich_mm', lbl:'Montagebereich auf Montageplatte', val:fmt(p.h_mb), unit:'mm',
+    {var:'h_mplatte_mbereich_mm', lbl:'Höhe Montagebereich auf der Montageplatte', val:fmt(p.h_mb), unit:'mm',
      src:`${p.H} &minus; ${p.h_ke} &minus; (${p.H}&minus;${p.mp_h})&divide;2`, col:'#A8C4E8', hi:true},
+    {var:'b_mplatte_mbereich_mm', lbl:'Breite Montagebereich auf der Montageplatte', val:p.b_mb, unit:'mm',
+     src:'b_mplatte_mm', col:'#A8C4E8', hi:true},
   ];
 
   let t = `
@@ -755,6 +758,11 @@ function buildTable(p) {
   <span style="color:#E0DED8">h_ke_mm</span>
   &nbsp;&minus;&nbsp;(h_gehaeuse_aussen_mm &nbsp;&minus;&nbsp; h_mplatte_mm) &divide; 2
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_mb} mm</strong>
+</div>
+<div class="formula-box" style="margin-top:10px">
+  <span style="color:#A8C4E8">b_mplatte_mbereich_mm</span> &nbsp;=&nbsp;
+  b_mplatte_mm
+  &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.b_mb} mm</strong>
 </div>
 <table class="rtable">
 <thead><tr>

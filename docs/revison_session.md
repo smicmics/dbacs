@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 6. Juni 2026 – Session 6
+**Stand:** 7. Juni 2026 – Session 7
 
 ---
 
@@ -111,6 +111,7 @@ Farbkodierung (Formelzeile und Tabellenzeile immer identisch):
 | `h_kanal_ke_mm` | Lila `#9A94E8` (aktiv) / Grau `#9A9890` (inaktiv) |
 | `h_ke_mm` | Hell-Weiß `#E0DED8` (Ergebnis) |
 | `h_mplatte_mbereich_mm` | Hell-Blau `#A8C4E8` (Ergebnis) |
+| `b_mplatte_mbereich_mm` | Hell-Blau `#A8C4E8` (Ergebnis) |
 
 SVG-Zonenrahmen-Farben (von Maßketten-Farben getrennt):
 - h_zug-Zone: Amber-Rahmen `#D4A84B` via `C.zZ_stroke`
@@ -189,7 +190,8 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 | `h_handling_zug_ke_mm` | Freiraum nach Schelle bis Kabelkanal/Gerät (Festwert 20 mm) | mm |
 | `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
-| `h_mplatte_mbereich_mm` | Verfügbarer Montagebereich auf MP nach Abzug KE-Zone | mm |
+| `h_mplatte_mbereich_mm` | Höhe Montagebereich auf der Montageplatte (nach Abzug KE-Zone) | mm |
+| `b_mplatte_mbereich_mm` | Breite Montagebereich auf der Montageplatte (= b_mplatte_mm) | mm |
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor (Festwert 4, VDE 0298-4) | – |
 

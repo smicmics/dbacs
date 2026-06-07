@@ -85,7 +85,8 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 | `h_handling_zug_ke_mm` | Freiraum nach Schelle bis Kanal/Gerät (Festwert 20 mm, 0 wenn inaktiv) | mm |
 | `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone (0 wenn inaktiv) | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
-| `h_mplatte_mbereich_mm` | Verfügbarer Montagebereich auf MP nach Abzug KE-Zone | mm |
+| `h_mplatte_mbereich_mm` | Höhe Montagebereich auf der Montageplatte (nach Abzug KE-Zone) | mm |
+| `b_mplatte_mbereich_mm` | Breite Montagebereich auf der Montageplatte (= b_mplatte_mm) | mm |
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld in kabelzugschellen.json) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor Festwert 4 (VDE 0298-4) | – |
 
