@@ -620,15 +620,15 @@ function buildSVG(p) {
             marker-start="url(#da)" marker-end="url(#da)"/>\n`;
   };
 
-  // PG-Körper (nur für KE oben)
+  // PG-Körper (nur für KE oben) – halbe Größe gegenüber Modul 1
   function pgBody(cx, bodyY) {
     let pg = '';
-    pg += `<path d="M${cx-8},${r(bodyY+8)} Q${cx},${r(bodyY)} ${cx+8},${r(bodyY+8)} Z"
-              fill="${C.pg_top}" stroke="${C.schrank}" stroke-width="1"/>
-           <rect x="${cx-8}" y="${r(bodyY+8)}" width="16" height="8"
-              fill="${C.pg_mid}" stroke="${C.schrank}" stroke-width="1"/>
-           <rect x="${cx-5}" y="${r(bodyY+16)}" width="10" height="5"
-              fill="${C.pg_bot}" stroke="${C.schrank}" stroke-width="1"/>\n`;
+    pg += `<path d="M${cx-4},${r(bodyY+4)} Q${cx},${r(bodyY)} ${cx+4},${r(bodyY+4)} Z"
+              fill="${C.pg_top}" stroke="${C.schrank}" stroke-width="0.7"/>
+           <rect x="${cx-4}" y="${r(bodyY+4)}" width="8" height="4"
+              fill="${C.pg_mid}" stroke="${C.schrank}" stroke-width="0.7"/>
+           <rect x="${cx-2.5}" y="${r(bodyY+8)}" width="5" height="2.5"
+              fill="${C.pg_bot}" stroke="${C.schrank}" stroke-width="0.7"/>\n`;
     return pg;
   }
 
@@ -715,10 +715,10 @@ function buildSVG(p) {
   // ── PG + Kabel ────────────────────────────────────────────────
   if (p.ke_pos === 'oben') {
     // KE oben: mit PG-Verschraubungen (wie Wandschrank)
-    const pgY = sy - 21;
+    const pgY = sy - 10.5;
     if (p.fs_var > 0)
-      s += tx(pg2x+14, pgY+10, 'PG-Verschraubungen', {anchor:'start',size:p.fs_var,fill:C.zone_tx_k});
-    s += ln(pg1x, sy, pg1x, pgY-10, C.cable, 4);
+      s += tx(pg2x+14, pgY+5, 'PG-Verschraubungen', {anchor:'start',size:p.fs_var,fill:C.zone_tx_k});
+    s += ln(pg1x, sy, pg1x, pgY-5, C.cable, 4);
     s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
     s += ln(pg1x, sy, pg1x, yB, C.cable_dash, 4, '3 2');
     s += `<path d="M ${pg1x},${r(yB)} C ${pg1x},${r(yB+hb*0.55)} ${bxo},${r(yZ-hb*0.05)} ${bxo},${r(yZ)}"
