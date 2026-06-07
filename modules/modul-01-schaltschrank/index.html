@@ -206,7 +206,11 @@ legend{
     </div>
     <div class="proj-field">
       <label for="proj-asp">ASP</label>
-      <input id="proj-asp" type="text" placeholder="Ansprechpartner" oninput="saveProjFields()">
+      <input id="proj-asp" type="text" placeholder="Automationsschwerpunkt" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-engineer">Bearbeitet von</label>
+      <input id="proj-engineer" type="text" placeholder="Name" oninput="saveProjFields()">
     </div>
     <div class="proj-field">
       <label for="proj-docnr">Dokument-Nr.</label>
@@ -878,15 +882,16 @@ function updateDocNr() {
   document.getElementById('proj-docnr').value = [todayISO(), nr, asp].filter(Boolean).join(' ');
 }
 function saveProjFields() {
-  const fields = ['proj-name','proj-nummer','proj-asp'];
+  const fields = ['proj-name','proj-nummer','proj-asp','proj-engineer'];
   fields.forEach(id => localStorage.setItem(id, document.getElementById(id).value));
-  localStorage.setItem('project_name',   document.getElementById('proj-name').value);
-  localStorage.setItem('project_nummer', document.getElementById('proj-nummer').value);
-  localStorage.setItem('asp',            document.getElementById('proj-asp').value);
+  localStorage.setItem('project_name',     document.getElementById('proj-name').value);
+  localStorage.setItem('project_nummer',   document.getElementById('proj-nummer').value);
+  localStorage.setItem('asp',              document.getElementById('proj-asp').value);
+  localStorage.setItem('project_engineer', document.getElementById('proj-engineer').value);
   updateDocNr();
 }
 function loadProjFields() {
-  ['proj-name','proj-nummer','proj-asp'].forEach(id => {
+  ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id => {
     const val = localStorage.getItem(id);
     if (val !== null) document.getElementById(id).value = val;
   });
