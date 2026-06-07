@@ -1,0 +1,46 @@
+[
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX Bodenblech-Satz B=600",
+    "bestellnummer": "8601060",
+    "b_gehaeuse_aussen_mm": 600,
+    "anzahl_platten": 3,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX Bodenblech-Satz B=800",
+    "bestellnummer": "8601080",
+    "b_gehaeuse_aussen_mm": 800,
+    "anzahl_platten": 3,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX Bodenblech-Satz B=1000",
+    "bestellnummer": "8601100",
+    "b_gehaeuse_aussen_mm": 1000,
+    "anzahl_platten": 3,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX Bodenblech-Satz B=1200",
+    "bestellnummer": "8601120",
+    "b_gehaeuse_aussen_mm": 1200,
+    "anzahl_platten": 3,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  }
+]

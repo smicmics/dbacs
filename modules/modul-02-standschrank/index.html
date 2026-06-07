@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBACS</title>
+<style>
+:root{
+  --bg:    #1A1A18;
+  --bg2:   #222220;
+  --bg3:   #2A2A28;
+  --bg4:   #303030;
+  --bord:  #3A3835;
+  --bords: #5A5855;
+  --tx:    #E0DED8;
+  --tx2:   #9A9890;
+  --tx3:   #666460;
+  --green: #2DBD8E;
+  --orange:#C8720E;
+  --blue:  #7A74CC;
+  --font:  system-ui,-apple-system,sans-serif;
+  --mono:  'Courier New',Courier,monospace;
+  /* ── Zonenfarben SVG / Formel ── */
+  --c-handling:  #2DBD8E;
+  --c-bieg:      #C8720E;
+  --c-zug:       #D4A84B;
+  --c-hz:        #4BBECA;
+  --c-kanal:     #9A94E8;
+  --c-dim:       #3366BB;
+  --c-result:    #E0DED8;
+  --c-mbereich:  #A8C4E8;
+  --fs-field:    13px;
+  --fs-field-sm: 10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;}
+
+/* ── Header ── */
+header{
+  background:#111110;color:#E0DED8;
+  padding:10px 22px 12px;display:flex;align-items:flex-start;gap:18px;
+  border-bottom:1px solid var(--bord);flex-wrap:wrap;
+}
+header h1{font-size:15px;font-weight:700;letter-spacing:-.01em;}
+header p{font-size:11px;color:var(--tx3);margin-top:1px;}
+header .title{flex:1;min-width:200px;}
+header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;margin-top:3px;}
+header a:hover{color:var(--tx2);}
+
+.proj-fields{
+  display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:flex-end;width:100%;
+}
+.proj-field{display:flex;flex-direction:column;gap:3px;}
+.proj-field label{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;}
+.proj-field input{
+  background:var(--bg3);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:12px;padding:3px 8px;
+}
+.proj-field input:focus{outline:none;border-color:var(--green);}
+#proj-name   {width:220px;}
+#proj-nummer {width:130px;}
+#proj-asp    {width:110px;}
+#proj-docnr  {width:280px;color:var(--tx2);}
+
+@media print{
+  .proj-fields{display:flex !important;}
+  .proj-field input{background:#fff;border-color:#ccc;color:#000;font-size:11px;}
+  .proj-field label{color:#666;}
+}
+
+/* ── Layout ── */
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 46px);}
+
+/* ── Input panel ── */
+.panel-in{
+  background:var(--bg2);border-right:1px solid var(--bord);
+  padding:18px 16px;overflow-y:auto;
+}
+.panel-in h2{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tx3);margin-bottom:14px;
+}
+
+fieldset{
+  border:1px solid var(--bord);border-radius:4px;
+  padding:10px 12px 8px;margin-bottom:12px;background:var(--bg3);
+}
+legend{
+  font-size:10px;font-weight:700;color:var(--tx3);
+  padding:0 5px;text-transform:uppercase;letter-spacing:.04em;
+}
+.field{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 0;border-bottom:.5px solid var(--bord);gap:8px;
+}
+.field:last-child{border-bottom:none;}
+.field .lbl{font-size:12px;color:var(--tx2);flex:1;min-width:0;}
+.field .var{
+  font-family:var(--mono);font-size:9.5px;color:var(--tx3);
+  display:block;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.field input,.field select{
+  width:96px;padding:3px 7px;border:1px solid var(--bords);border-radius:3px;
+  background:var(--bg);color:var(--tx);font-size:13px;text-align:right;flex-shrink:0;
+}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green);}
+.field input[disabled]{
+  background:var(--bg2);color:var(--tx3);text-align:left;
+  font-size:var(--fs-field-sm);cursor:default;border-color:var(--bord);
+}
+.field select{text-align:left;cursor:pointer;}
+
+/* ── Print button ── */
+.btn-print{
+  display:block;width:100%;margin-top:4px;padding:9px 12px;
+  background:var(--bg3);color:var(--tx2);
+  border:1px solid var(--bords);border-radius:4px;
+  font-size:12px;font-weight:600;letter-spacing:.04em;
+  cursor:pointer;text-align:center;transition:background .15s,color .15s;
+}
+.btn-print:hover{background:var(--bords);color:var(--tx);}
+
+@media print{
+  body{background:#fff;color:#000;}
+  header{display:block;width:100%;background:#fff !important;border-bottom:1.5px solid #888;padding-bottom:10px;}
+  header .title h1{font-size:16px;color:#000;}
+  header .title p{font-size:11px;color:#444;}
+  header a{display:none;}
+  .site-footer{display:none !important;}
+  .btn-print{display:none !important;}
+  fieldset#fs-schriftgroessen{display:none !important;}
+  .layout{display:block;min-height:0;}
+  .panel-in{float:left;width:280px;background:#fff;border:none;overflow:visible;padding:10px 12px;}
+  .panel-out{margin-left:295px;overflow:visible;padding:10px 12px;}
+  #svg-wrap{border:1px solid #ccc;}
+  #svg-wrap svg{max-height:220px;width:auto;}
+  fieldset{border-color:#ccc;background:#fff;}
+  legend{color:#444;}
+  .field input,.field select{border-color:#ccc;background:#fff;color:#000;}
+  .field .lbl{color:#222;}
+  .field .var{color:#666;}
+  .rtable th{background:#eee;color:#222;}
+  .rtable td{color:#000;}
+  .formula-box{background:#f5f5f5;border-left-color:#999;color:#000;}
+}
+
+/* ── Result panel ── */
+.panel-out{padding:20px;overflow-y:auto;}
+
+#svg-wrap{background:#FDFCF8;border:1px solid #C8C6C0;border-radius:5px;padding:12px;}
+#svg-wrap svg{display:block;max-width:100%;height:auto;}
+
+/* Results table */
+.rtable{width:100%;border-collapse:collapse;font-size:12px;margin-top:18px;}
+.rtable th{
+  background:var(--bg3);color:var(--tx2);font-weight:600;
+  padding:6px 10px;text-align:left;border-bottom:1.5px solid var(--bords);
+}
+.rtable td{padding:5px 10px;border-bottom:.5px solid var(--bord);vertical-align:middle;}
+.rtable tr:last-child td{border-bottom:none;}
+.rtable tr:hover td{background:var(--bg3);}
+.vname{font-family:var(--mono);font-size:10.5px;font-weight:700;}
+.val{font-family:var(--mono);font-size:12px;font-weight:600;text-align:right;white-space:nowrap;}
+.formula-cell{font-family:var(--mono);font-size:10px;color:var(--tx3);}
+
+.formula-box{
+  background:var(--bg3);border-left:3px solid var(--bords);
+  padding:8px 12px;font-family:var(--mono);font-size:12px;
+  margin-bottom:10px;border-radius:0 3px 3px 0;color:var(--tx);
+}
+.note-line{font-size:10px;color:var(--tx3);margin-top:8px;padding-top:6px;border-top:.5px solid var(--bord);}
+
+@media(max-width:760px){
+  .layout{grid-template-columns:1fr;}
+  .panel-in{border-right:none;border-bottom:1px solid var(--bord);}
+}
+
+/* ── Footer ── */
+.site-footer{
+  background:#111110;border-top:1px solid var(--bord);
+  padding:8px 22px;
+  font-size:11px;color:var(--tx3);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.site-footer a{color:var(--tx3);text-decoration:none;}
+.site-footer a:hover{color:var(--tx2);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">
+    <h1>Modul 2 · Standschrank · Kabeleinführung · Nutzfläche</h1>
+    <p>GA-Planungstool · Schaltschrank-Dimensionierung</p>
+  </div>
+  <a href="../../index.html">← Startseite</a>
+  <div class="proj-fields">
+    <div class="proj-field">
+      <label for="proj-name">Projekt</label>
+      <input id="proj-name" type="text" placeholder="Projektbezeichnung" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-nummer">Projektnummer</label>
+      <input id="proj-nummer" type="text" placeholder="z. B. 2024-001" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-asp">ASP</label>
+      <input id="proj-asp" type="text" placeholder="Automationsschwerpunkt" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-engineer">Bearbeitet von</label>
+      <input id="proj-engineer" type="text" placeholder="Name" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-docnr">Dokument-Nr.</label>
+      <input id="proj-docnr" type="text" readonly>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ═══ INPUTS ═══ -->
+  <aside class="panel-in">
+    <h2>Eingaben</h2>
+
+    <select id="preset_schrank" onchange="loadPreset()"
+      style="width:100%;padding:6px 8px;background:var(--bg3);border:1px solid var(--bord);border-radius:4px;font-size:11px;color:var(--fg1);cursor:pointer;margin-bottom:4px;">
+      <option value="">— Beispielschrank wählen —</option>
+    </select>
+
+    <fieldset>
+      <legend>Schrank-Außenmaße</legend>
+      <div class="field">
+        <div class="lbl">Breite B (mm)<span class="var">b_gehaeuse_aussen_mm</span></div>
+        <input id="B" type="number" value="800" min="400" max="2000" step="50" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Höhe H (mm)<span class="var">h_gehaeuse_aussen_mm</span></div>
+        <input id="H" type="number" value="2000" min="600" max="2500" step="50" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Montageplatte</legend>
+      <div class="field">
+        <div class="lbl">Breite (mm)<span class="var">b_mplatte_mm</span></div>
+        <input id="mp_b" type="number" value="699" min="100" max="1900" step="5" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Höhe (mm)<span class="var">h_mplatte_mm</span></div>
+        <input id="mp_h" type="number" value="1896" min="100" max="2400" step="5" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Sockel</legend>
+      <div class="field">
+        <div class="lbl">Vorhanden<span class="var">–</span></div>
+        <select id="sockel_aktiv" onchange="onSockelChange()">
+          <option value="nein">Nein</option>
+          <option value="ja">Ja</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Höhe Sockel (mm)<span class="var">h_sockel_mm</span></div>
+        <select id="h_sockel_option" onchange="calculate()" disabled>
+          <option value="100">100</option>
+          <option value="200">200</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Sockeltyp<span class="var">–</span></div>
+        <input id="sockel_typ" type="text" value="—" disabled>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Kabeleinführung</legend>
+      <div class="field">
+        <div class="lbl">Position<span class="var">ke_position</span></div>
+        <select id="ke_pos" onchange="calculate()">
+          <option value="oben">oben</option>
+          <option value="unten" selected>unten</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Aderzahl<span class="var">n_adern</span></div>
+        <select id="n_adern" onchange="lookupKabel();calculate()">
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5" selected>5</option>
+          <option value="7">7</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Querschnitt (mm²)<span class="var">querschnitt_mm2</span></div>
+        <select id="querschnitt" onchange="lookupKabel();calculate()">
+          <option value="1.5">1,5</option>
+          <option value="2.5">2,5</option>
+          <option value="4">4</option>
+          <option value="6" selected>6</option>
+          <option value="10">10</option>
+          <option value="16">16</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Leitungstyp<span class="var">–</span></div>
+        <input id="kabel_typ" type="text" value="–" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Max. Kabel-∅ außen (mm)<span class="var">d_max_kabel_ke_mm</span></div>
+        <input id="d_max" type="number" value="18" min="5" max="60" step="0.5"
+               oninput="calculate()" title="Aus DB – überschreibbar für Sonderkabel">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Kabelkanal</legend>
+      <div class="field">
+        <div class="lbl">Vorhanden<span class="var">–</span></div>
+        <select id="kanal_aktiv" onchange="calculate()">
+          <option value="ja" selected>Ja</option>
+          <option value="nein">Nein</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Höhe Kabelkanal (mm)<span class="var">h_kanal_ke_mm</span></div>
+        <input id="h_kanal" type="number" value="60" min="25" max="150" step="5" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Zugentlastung im Schaltschrank</legend>
+      <div class="field">
+        <div class="lbl">Vorhanden<span class="var">h_zug_ke_mm</span></div>
+        <select id="zug_aktiv" onchange="calculate()">
+          <option value="nein" selected>Nein</option>
+          <option value="ja">Ja</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Bügelschelle<span class="var">–</span></div>
+        <input id="zug_typ" type="text" value="—" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Schellenhöhe (mm)<span class="var">h_schelle_mm</span></div>
+        <input id="h_zug_display" type="number" value="0" disabled>
+      </div>
+    </fieldset>
+
+    <fieldset id="fs-schriftgroessen">
+      <legend>Schriftgrößen SVG</legend>
+      <div class="field">
+        <div class="lbl">Bemaßungstext (pt)<span class="var">H =, B = …</span></div>
+        <input id="fs_dim" type="number" value="7" min="4" max="14" step="0.5" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Bemaßungsvariable (pt)<span class="var">h_handling_ke …</span></div>
+        <input id="fs_var" type="number" value="6" min="4" max="14" step="0.5" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Zonenbeschreibung (pt)<span class="var">Kabelkanal …</span></div>
+        <input id="fs_zone" type="number" value="7" min="4" max="14" step="0.5" oninput="calculate()">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Festwerte · Standschrank</legend>
+      <div class="field">
+        <div class="lbl">Handlingzone Kabeleinführung (mm)<span class="var">h_handling_ke_mm</span></div>
+        <input type="number" value="15" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Handlingzone nach Zugentlastung (mm)<span class="var">h_handling_zug_ke_mm</span></div>
+        <input type="number" value="20" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Biegeradius-Faktor VDE 0298-4 (mm)<span class="var">h_kabel_bieg_faktor</span></div>
+        <input type="number" value="4" disabled>
+      </div>
+    </fieldset>
+
+    <button class="btn-print" onclick="window.print()">Ergebnis drucken</button>
+
+  </aside>
+
+  <!-- ═══ OUTPUT ═══ -->
+  <section class="panel-out">
+    <div id="svg-wrap"><div id="svg-inner"></div></div>
+    <div id="results-area"></div>
+  </section>
+
+</div>
+
+<script>
+// ── SVG-Farbpalette (Papier-Stil, hell) ──────────────────────
+const C = {
+  bg:        '#FDFCF8',
+  schrank:   '#111111',
+  mp:        '#444444',
+  sockel:    '#333332',
+  sockel_tx: '#888888',
+  zH_fill:   '#E2E0D8',
+  zB_fill:   '#FAEEDA',
+  zK_fill:   '#C4C4BA',
+  zK_stroke: '#555555',
+  zK_lines:  '#999999',
+  nutz:      '#1D9E75',
+  nutz_tx:   '#0F6E56',
+  guide:     '#3366BB',
+  arr_h:     '#3366BB',
+  arr_b:     '#3366BB',
+  arr_k:     '#3366BB',
+  arr_ke:    '#3366BB',
+  lbl_h:     '#3366BB',
+  lbl_b:     '#3366BB',
+  lbl_k:     '#3366BB',
+  lbl_ke:    '#3366BB',
+  zone_tx_h: '#555555',
+  zone_tx_b: '#854F0B',
+  zone_tx_k: '#333333',
+  dim:       '#3366BB',
+  bma:       '#3366BB',
+  zZ_fill:    '#FBF0DC',
+  zZ_stroke:  '#D4A84B',
+  arr_z:      '#3366BB',
+  lbl_z:      '#3366BB',
+  zone_tx_z:  '#B8881A',
+  zHZ_fill:   '#DCF3F7',
+  zHZ_stroke: '#4BBECA',
+  arr_hz:     '#3366BB',
+  lbl_hz:     '#3366BB',
+  cable:     '#222222',
+  cable_dash:'#777777',
+  pg_top:    '#C0BEB8',
+  pg_mid:    '#D0CEC8',
+  pg_bot:    '#B8B6B0',
+  inner_tx:  '#CCCCCC',
+  arrow_mk:  '#3366BB',
+};
+
+// ── Kabeldatenbank ────────────────────────────────────────────
+let KABEL_DB = [];
+fetch('../../data/kabel_nym_j.json')
+  .then(r => r.json())
+  .then(data => { KABEL_DB = data; lookupKabel(); calculate(); })
+  .catch(() => {});
+
+function lookupKabel() {
+  const n = +gs('n_adern');
+  const q = +gs('querschnitt');
+  const entry = KABEL_DB.find(e => e.n_adern === n && e.querschnitt_mm2 === q);
+  if (entry) {
+    document.getElementById('kabel_typ').value = entry.bezeichnung;
+    _v('d_max', entry.d_aussen_mm);
+  } else {
+    document.getElementById('kabel_typ').value = 'Sonderkabel / nicht in DB';
+  }
+}
+
+// ── Standschrank-Datenbank ────────────────────────────────────
+let STANDSCHRANK_DB = [];
+fetch('../../data/standschraenke.json')
+  .then(r => r.json())
+  .then(data => {
+    STANDSCHRANK_DB = data;
+    const sel = document.getElementById('preset_schrank');
+    data.forEach((s, i) => {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = `${s.hersteller} ${s.bezeichnung}  (${s.b_gehaeuse_aussen_mm}×${s.h_gehaeuse_aussen_mm} mm)`;
+      if (s.bezeichnung === 'VX 8806.000') opt.selected = true;
+      sel.appendChild(opt);
+    });
+    loadPreset();
+  })
+  .catch(() => {});
+
+// ── Sockel-Datenbank ──────────────────────────────────────────
+let SOCKEL_DB = [];
+fetch('../../data/sockel.json')
+  .then(r => r.json())
+  .then(data => { SOCKEL_DB = data; calculate(); })
+  .catch(() => {});
+
+// ── Kabelzugschellen-Datenbank ────────────────────────────────
+let KABELZUGSCHELLEN_DB = [];
+fetch('../../data/kabelzugschellen.json')
+  .then(r => r.json())
+  .then(data => { KABELZUGSCHELLEN_DB = data; calculate(); })
+  .catch(() => {});
+
+function loadPreset() {
+  const idx = gs('preset_schrank');
+  if (idx === '') return;
+  const s = STANDSCHRANK_DB[+idx];
+  _v('B',    s.b_gehaeuse_aussen_mm);
+  _v('H',    s.h_gehaeuse_aussen_mm);
+  _v('mp_b', s.b_mplatte_mm);
+  _v('mp_h', s.h_mplatte_mm);
+  calculate();
+}
+
+function onSockelChange() {
+  const aktiv = gs('sockel_aktiv') === 'ja';
+  document.getElementById('h_sockel_option').disabled = !aktiv;
+  calculate();
+}
+
+function _v(id, val) { document.getElementById(id).value = val; }
+const g  = id => +document.getElementById(id).value;
+const gs = id =>  document.getElementById(id).value;
+
+// ── Berechnung ────────────────────────────────────────────────
+function calculate() {
+  const B = g('B'), H = g('H'), mp_b = g('mp_b'), mp_h = g('mp_h');
+  const d_max = g('d_max'), ke_pos = gs('ke_pos');
+  const fs_dim = g('fs_dim'), fs_var = g('fs_var'), fs_zone = g('fs_zone');
+
+  const kanal_aktiv = gs('kanal_aktiv') === 'ja';
+  const h_kanal = kanal_aktiv ? g('h_kanal') : 0;
+  document.getElementById('h_kanal').disabled = !kanal_aktiv;
+
+  const zug_aktiv = gs('zug_aktiv') === 'ja';
+  let h_zug = 0, zug_schelle = null;
+  if (zug_aktiv) {
+    zug_schelle = KABELZUGSCHELLEN_DB.find(e => d_max >= e.d_kabel_min_mm && d_max <= e.d_kabel_max_mm);
+    h_zug = zug_schelle ? zug_schelle.h_schelle_mm : 0;
+  }
+  document.getElementById('h_zug_display').value = h_zug;
+  document.getElementById('zug_typ').value = zug_schelle
+    ? `${zug_schelle.hersteller} ${zug_schelle.bezeichnung}`
+    : (zug_aktiv ? 'nicht in DB' : '—');
+
+  const sockel_aktiv = gs('sockel_aktiv') === 'ja';
+  const h_sockel_option = sockel_aktiv ? g('h_sockel_option') : 0;
+  let h_sockel = h_sockel_option, sockel_entry = null;
+  if (sockel_aktiv) {
+    sockel_entry = SOCKEL_DB.find(e => e.b_gehaeuse_aussen_mm === B && e.h_sockel_mm === h_sockel_option);
+    document.getElementById('sockel_typ').value = sockel_entry
+      ? `${sockel_entry.hersteller} ${sockel_entry.bezeichnung}`
+      : (sockel_aktiv ? 'nicht in DB' : '—');
+  } else {
+    document.getElementById('sockel_typ').value = '—';
+  }
+
+  const b_abst = (B - mp_b) / 2;
+  const h_abst = (H - mp_h) / 2;
+  const h_hand = 15;
+  const H_HANDLING_ZUG = 20;
+  const h_handling_zug = zug_aktiv ? H_HANDLING_ZUG : 0;
+  const h_bieg = 4 * d_max;
+  const h_ke   = h_hand + h_bieg + h_zug + h_handling_zug + h_kanal;
+  const h_mb   = H - h_ke - h_abst;
+  const b_mb   = mp_b;
+
+  const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_handling_zug, h_bieg, h_ke, h_mb, b_mb, ke_pos, fs_dim, fs_var, fs_zone, zug_aktiv, kanal_aktiv, sockel_aktiv, h_sockel };
+  document.getElementById('svg-inner').innerHTML  = buildSVG(p);
+  document.getElementById('results-area').innerHTML = buildTable(p);
+}
+
+// ── SVG-Generator ─────────────────────────────────────────────
+function buildSVG(p) {
+  const SH = 390, sc = SH / p.H, SW = Math.round(p.B * sc);
+  const PL = 56, PT = 52, PR = 195, PB = 55;
+  const h_sockel_px = p.sockel_aktiv ? Math.round(p.h_sockel * sc) : 0;
+  const VW = PL + SW + PR, VH = PT + SH + h_sockel_px + PB;
+
+  const sx = PL, sy = PT, sw = SW, sh = SH;
+  const mx = sx + p.b_abst * sc,  my = sy + p.h_abst * sc;
+  const mw = p.mp_b * sc,         mh = p.mp_h * sc;
+
+  const hh  = Math.max(p.h_hand * sc, 3);
+  const hz  = p.h_zug          * sc;
+  const hhz = p.h_handling_zug * sc;
+  const hb  = p.h_bieg         * sc;
+  const hk  = p.h_kanal        * sc;
+
+  // Reihenfolge ab Gehäusekante: handling → bieg → zug → handling_zug → kanal
+  let yH, yH_bot, yB, yZ, yHZ, yK;
+  if (p.ke_pos === 'oben') {
+    yH = sy; yH_bot = sy + hh;
+    yB  = yH_bot;
+    yZ  = yB  + hb;
+    yHZ = yZ  + hz;
+    yK  = yHZ + hhz;
+  } else {
+    yH_bot = sy + sh; yH = yH_bot - hh;
+    yB  = yH  - hb;
+    yZ  = yB  - hz;
+    yHZ = yZ  - hhz;
+    yK  = yHZ - hk;
+  }
+
+  const yKe0 = p.ke_pos === 'oben' ? yH    : yK;
+  const yKe1 = p.ke_pos === 'oben' ? yK+hk : yH_bot;
+  const nutz_y = p.ke_pos === 'oben' ? yKe1 : yKe0;
+
+  const ax1 = sx+sw+22, ax = sx+sw+26, lx = sx+sw+31, bx = lx+82;
+  const pg1x = Math.round(mx + mw*0.27);
+  const pg2x = Math.round(mx + mw*0.50);
+  const bxo  = pg1x + 20;
+  const zoneLblX = bxo + 10;
+
+  const r  = v => Math.round(v*10)/10;
+  const ln = (x1,y1,x2,y2,col,w,dash='') =>
+    `<line x1="${r(x1)}" y1="${r(y1)}" x2="${r(x2)}" y2="${r(y2)}"
+           stroke="${col}" stroke-width="${w}"${dash?` stroke-dasharray="${dash}"`:''}/>\n`;
+  const tx = (x,y,s,o={}) => {
+    const {anchor='start',size=9,weight=400,fill='#888',rotate='',db=''}=o;
+    return `<text x="${r(x)}" y="${r(y)}" text-anchor="${anchor}"
+                  font-family="sans-serif" font-size="${size}" font-weight="${weight}"
+                  fill="${fill}"${db?` dominant-baseline="${db}"`:''}${rotate?` transform="${rotate}"`:''}>${s}</text>\n`;
+  };
+  const arr = (x,y1,y2,col) => {
+    if (Math.abs(y2-y1) < 4) return '';
+    return `<line x1="${r(x)}" y1="${r(Math.min(y1,y2)+0.8)}" x2="${r(x)}" y2="${r(Math.max(y1,y2)-0.8)}"
+            stroke="${col}" stroke-width="0.8"
+            marker-start="url(#da)" marker-end="url(#da)"/>\n`;
+  };
+
+  // PG-Körper (nur für KE oben)
+  function pgBody(cx, bodyY) {
+    let pg = '';
+    pg += `<path d="M${cx-8},${r(bodyY+8)} Q${cx},${r(bodyY)} ${cx+8},${r(bodyY+8)} Z"
+              fill="${C.pg_top}" stroke="${C.schrank}" stroke-width="1"/>
+           <rect x="${cx-8}" y="${r(bodyY+8)}" width="16" height="8"
+              fill="${C.pg_mid}" stroke="${C.schrank}" stroke-width="1"/>
+           <rect x="${cx-5}" y="${r(bodyY+16)}" width="10" height="5"
+              fill="${C.pg_bot}" stroke="${C.schrank}" stroke-width="1"/>\n`;
+    return pg;
+  }
+
+  // ── Aufbau SVG-String ──
+  let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="da" viewBox="0 0 8 8" refX="7" refY="4"
+          markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M1 1.5 L7 4 L1 6.5" fill="none" stroke="${C.arrow_mk}"
+          stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<rect width="${VW}" height="${VH}" fill="${C.bg}"/>
+`;
+
+  // Schrank + MP
+  s += `<rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" fill="none" stroke="${C.schrank}" stroke-width="3"/>\n`;
+  s += `<rect x="${r(mx)}" y="${r(my)}" width="${r(mw)}" height="${r(mh)}" fill="none" stroke="${C.mp}" stroke-width="1.5"/>\n`;
+
+  // Sockel unterhalb Schrank
+  if (h_sockel_px > 0) {
+    const sock_y = sy + sh;
+    s += `<rect x="${sx}" y="${r(sock_y)}" width="${sw}" height="${r(h_sockel_px)}" fill="${C.sockel}" stroke="${C.schrank}" stroke-width="3"/>\n`;
+    s += tx(sx+sw/2, sock_y+h_sockel_px/2, 'Schaltschranksockel', {anchor:'middle', size:7, fill:C.sockel_tx, db:'middle'});
+  }
+
+  // Zonen-Rechtecke
+  s += `<rect x="${r(mx)}" y="${r(yH)}" width="${r(mw)}" height="${r(hh)}" fill="${C.zH_fill}"/>\n`;
+  if (hz > 0)
+    s += `<rect x="${r(mx)}" y="${r(yZ)}" width="${r(mw)}" height="${r(hz)}" fill="${C.zZ_fill}" stroke="${C.zZ_stroke}" stroke-width="0.8" stroke-dasharray="4 3"/>\n`;
+  if (hhz > 0)
+    s += `<rect x="${r(mx)}" y="${r(yHZ)}" width="${r(mw)}" height="${r(hhz)}" fill="${C.zHZ_fill}" stroke="${C.zHZ_stroke}" stroke-width="0.6" stroke-dasharray="3 3"/>\n`;
+  s += `<rect x="${r(mx)}" y="${r(yB)}" width="${r(mw)}" height="${r(hb)}" fill="${C.zB_fill}"/>\n`;
+  if (hk > 0) {
+    s += `<rect x="${r(mx)}" y="${r(yK)}" width="${r(mw)}" height="${r(hk)}" fill="${C.zK_fill}" stroke="${C.zK_stroke}" stroke-width="1.2"/>\n`;
+    for (let i=1; i<4; i++) s += ln(mx+3, yK+hk*i/4, mx+mw-3, yK+hk*i/4, C.zK_lines, 0.7);
+  }
+
+  // ── C-Profilschiene + Bügelschelle in h_zug-Zone ─────────────
+  if (hz > 0) {
+    const y_mid = yZ + hz / 2;
+    const rh  = Math.max(4, Math.min(14 * sc, hz * 0.55));
+    const ryt = y_mid - rh / 2;
+    const ryb = y_mid + rh / 2;
+    const fw  = Math.max(3.5, 6 * sc);
+    const sw2 = Math.max(1.5, 2.5 * sc);
+
+    s += `<rect x="${r(mx)}" y="${r(ryt)}" width="${r(mw)}" height="${r(rh)}"
+               fill="#CCCAC0" stroke="${C.zZ_stroke}" stroke-width="0.6"/>\n`;
+    s += `<rect x="${r(mx)}" y="${r(ryt)}" width="${r(fw)}" height="${r(rh)}" fill="#A8A4A0"/>\n`;
+    s += `<rect x="${r(mx+mw-fw)}" y="${r(ryt)}" width="${r(fw)}" height="${r(rh)}" fill="#A8A4A0"/>\n`;
+    s += ln(mx+fw, ryt, mx+fw, ryb, '#888', 0.4);
+    s += ln(mx+mw-fw, ryt, mx+mw-fw, ryb, '#888', 0.4);
+    if (rh >= 5) {
+      const slot_d = rh * 0.42;
+      s += `<rect x="${r(mx+mw/2-sw2)}" y="${r(ryt)}" width="${r(sw2*2)}" height="${r(slot_d)}"
+                 fill="${C.zZ_fill}" stroke="${C.zZ_stroke}" stroke-width="0.4"/>\n`;
+    }
+
+    const chw = Math.max(5, 5 * sc);
+    const ch  = rh * 1.15;
+    const cyt = y_mid - ch / 2;
+    s += `<rect x="${r(bxo-chw)}" y="${r(cyt)}" width="${r(chw*2)}" height="${r(ch)}"
+               fill="none" stroke="${C.zZ_stroke}" stroke-width="1.2" rx="1.5"/>\n`;
+    const bh = Math.max(1.8, 2.2 * sc);
+    s += `<rect x="${r(bxo-chw*0.55)}" y="${r(cyt-bh)}" width="${r(chw*1.1)}" height="${r(bh)}"
+               fill="${C.zZ_stroke}" rx="1"/>\n`;
+  }
+
+  // Zonen-Labels + Nutzfläche
+  if (p.fs_zone > 0) {
+    s += tx(zoneLblX, yB+hb/2+3.5, 'Kabeleinführungszone', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
+    if (hz > 0)
+      s += tx(zoneLblX, yZ+hz/2, 'C-Schiene mit Bügelschellen', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_h,db:'middle'});
+    if (hk > 0)
+      s += tx(zoneLblX, yK+hk/2+3.5, 'Kabelkanal Einführungszone', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_k});
+    s += ln(mx, nutz_y, mx+mw, nutz_y, C.nutz, 1.2, '8 5');
+    if (p.ke_pos === 'oben')
+      s += tx(mx+mw/2, nutz_y+10, '▼ Beginn Nutzfläche', {anchor:'middle',size:p.fs_zone,fill:C.nutz_tx});
+    else
+      s += tx(mx+mw/2, nutz_y-4, '▲ Ende Nutzfläche', {anchor:'middle',size:p.fs_zone,fill:C.nutz_tx});
+  }
+
+  // ── PG + Kabel ────────────────────────────────────────────────
+  if (p.ke_pos === 'oben') {
+    // KE oben: mit PG-Verschraubungen (wie Wandschrank)
+    const pgY = sy - 21;
+    if (p.fs_var > 0)
+      s += tx(pg2x+14, pgY+10, 'PG-Verschraubungen', {anchor:'start',size:p.fs_var,fill:C.zone_tx_k});
+    s += ln(pg1x, sy, pg1x, pgY-10, C.cable, 4);
+    s += pgBody(pg1x, pgY);  s += pgBody(pg2x, pgY);
+    s += ln(pg1x, sy, pg1x, yB, C.cable_dash, 4, '3 2');
+    s += `<path d="M ${pg1x},${r(yB)} C ${pg1x},${r(yB+hb*0.55)} ${bxo},${r(yZ-hb*0.05)} ${bxo},${r(yZ)}"
+               fill="none" stroke="${C.cable}" stroke-width="4" stroke-linecap="round"/>\n`;
+    s += ln(bxo, yZ, bxo, yK+hk, C.cable, 4);
+  } else {
+    // KE unten: freie Kabeleinführung, kein PG
+    const cableBottomY = sy + sh;
+    const sockBot = h_sockel_px > 0 ? cableBottomY + h_sockel_px : cableBottomY;
+    const stubEndY = sockBot + 10;
+
+    if (p.fs_var > 0)
+      s += tx(pg2x+14, sockBot + 4, 'Freie Kabeleinführung · Boden offen',
+              {anchor:'start', size:p.fs_var, fill:C.zone_tx_k});
+
+    // Kabel im Schrank: von KE-Zone bis Boden
+    s += ln(bxo, yK, bxo, yB, C.cable, 4);
+    s += `<path d="M ${bxo},${r(yB)} C ${bxo},${r(yB+hb*0.45)} ${pg1x},${r(yB+hb*0.55)} ${pg1x},${r(yH)}"
+               fill="none" stroke="${C.cable}" stroke-width="4" stroke-linecap="round"/>\n`;
+    s += ln(pg1x, yH, pg1x, yH_bot, C.cable_dash, 4, '3 2');
+    // Kabel durch Boden und Sockel (solide)
+    s += ln(pg1x, cableBottomY, pg1x, stubEndY, C.cable, 4);
+  }
+
+  // Guide-Linien + Maßpfeile + h_ke-Klammer
+  if (p.fs_var > 0) {
+    const guideSet = new Set([yH, yH_bot, yB, yB+hb, yKe0, yKe1]);
+    if (hz  > 0) { guideSet.add(yZ);  guideSet.add(yZ+hz);   }
+    if (hhz > 0) { guideSet.add(yHZ); guideSet.add(yHZ+hhz); }
+    if (hk  > 0) { guideSet.add(yK);  guideSet.add(yK+hk);   }
+    for (const y of guideSet)
+      s += ln(sx+sw, y, ax1+2, y, C.guide, 0.5);
+
+    const zonesOben = [
+      {y0:yH,   y1:yH_bot,    col:C.arr_h,  lcol:C.lbl_h,  lbl:'h_handling_ke_mm'},
+      {y0:yB,   y1:yB+hb,     col:C.arr_b,  lcol:C.lbl_b,  lbl:'h_kabel_bieg_mm'},
+      ...(hz>0  ? [{y0:yZ,   y1:yZ+hz,    col:C.arr_z,  lcol:C.lbl_z,  lbl:'h_zug_ke_mm'}]          : []),
+      ...(hhz>0 ? [{y0:yHZ,  y1:yHZ+hhz,  col:C.arr_hz, lcol:C.lbl_hz, lbl:'h_handling_zug_ke_mm'}] : []),
+      ...(hk>0  ? [{y0:yK,   y1:yK+hk,    col:C.arr_k,  lcol:C.lbl_k,  lbl:'h_kanal_ke_mm'}]        : []),
+    ];
+    const zonesUnten = [
+      ...(hk>0  ? [{y0:yK,   y1:yK+hk,    col:C.arr_k,  lcol:C.lbl_k,  lbl:'h_kanal_ke_mm'}]        : []),
+      ...(hhz>0 ? [{y0:yHZ,  y1:yHZ+hhz,  col:C.arr_hz, lcol:C.lbl_hz, lbl:'h_handling_zug_ke_mm'}] : []),
+      ...(hz>0  ? [{y0:yZ,   y1:yZ+hz,    col:C.arr_z,  lcol:C.lbl_z,  lbl:'h_zug_ke_mm'}]          : []),
+      {y0:yB,   y1:yB+hb,     col:C.arr_b,  lcol:C.lbl_b,  lbl:'h_kabel_bieg_mm'},
+      {y0:yH,   y1:yH_bot,    col:C.arr_h,  lcol:C.lbl_h,  lbl:'h_handling_ke_mm'},
+    ];
+    const zones = p.ke_pos === 'oben' ? zonesOben : zonesUnten;
+    for (const z of zones) {
+      s += ln(ax1, z.y0, ax+3, z.y0, z.col, 0.8);
+      s += ln(ax1, z.y1, ax+3, z.y1, z.col, 0.8);
+      s += arr(ax, z.y0, z.y1, z.col);
+      const isSmall = z.lbl === 'h_handling_ke_mm';
+      const yLbl = isSmall
+        ? (z.y0+z.y1)/2 + (p.ke_pos === 'oben' ? 3.5 : -0.5)
+        : (z.y0+z.y1)/2;
+      s += tx(lx, yLbl, z.lbl, {size:p.fs_var, weight:400, fill:z.lcol, db: isSmall ? '' : 'middle'});
+    }
+
+    s += ln(lx, yKe0, bx+2, yKe0, C.arr_ke, 0.8);
+    s += ln(lx, yKe1, bx+2, yKe1, C.arr_ke, 0.8);
+    s += arr(bx, yKe0, yKe1, C.arr_ke);
+    s += tx(bx+6, (yKe0+yKe1)/2+3.5, 'h_ke_mm', {size:p.fs_var,weight:700,fill:C.lbl_ke});
+
+    // Maßlinie h_mplatte_mbereich_standschrank_mm (KE-Ende → MP-Ende)
+    const yMb0 = p.ke_pos === 'oben' ? yK+hk : my;
+    const yMb1 = p.ke_pos === 'oben' ? my+mh : yK;
+    const yMbEdge = p.ke_pos === 'oben' ? my+mh : my;
+    s += ln(sx+sw, yMbEdge, ax1+2, yMbEdge, C.guide, 0.5);
+    s += ln(ax1, yMb0, ax+3, yMb0, C.dim, 0.8);
+    s += ln(ax1, yMb1, ax+3, yMb1, C.dim, 0.8);
+    s += arr(ax, yMb0, yMb1, C.dim);
+    s += tx(lx, (yMb0+yMb1)/2+3.5, 'h_mplatte_mbereich_standschrank_mm', {size:p.fs_var,weight:400,fill:C.dim});
+  }
+
+  // H + B Maße
+  if (p.fs_dim > 0) {
+    // H-Maßlinie links (nur Schrankhöhe)
+    const hx = sx - 16;
+    s += ln(hx,sy,hx+6,sy,C.dim,0.8); s += ln(hx,sy+sh,hx+6,sy+sh,C.dim,0.8);
+    s += arr(hx+3, sy, sy+sh, C.dim);
+    s += tx(hx+1, sy+sh/2, `H = ${p.H} mm`,
+           {anchor:'middle',size:p.fs_dim,fill:C.dim,rotate:`rotate(-90 ${r(hx+1)} ${r(sy+sh/2)})`});
+
+    // Sockel-Maßlinie links (falls aktiv)
+    if (h_sockel_px > 0) {
+      const hx2 = sx - 34;
+      const sock_y = sy + sh;
+      s += ln(hx2, sock_y, hx2+6, sock_y, C.dim, 0.8);
+      s += ln(hx2, sock_y+h_sockel_px, hx2+6, sock_y+h_sockel_px, C.dim, 0.8);
+      s += arr(hx2+3, sock_y, sock_y+h_sockel_px, C.dim);
+      s += tx(hx2+1, sock_y+h_sockel_px/2, `h_sockel_mm = ${p.h_sockel} mm`,
+             {anchor:'middle',size:p.fs_dim,fill:C.dim,rotate:`rotate(-90 ${r(hx2+1)} ${r(sock_y+h_sockel_px/2)})`});
+    }
+
+    if (p.ke_pos === 'oben') {
+      const bdy = sy + sh + h_sockel_px + 16;
+      s += ln(sx,bdy,sx,bdy-6,C.dim,0.8); s += ln(sx+sw,bdy,sx+sw,bdy-6,C.dim,0.8);
+      s += `<line x1="${sx+1}" y1="${r(bdy-3)}" x2="${r(sx+sw-1)}" y2="${r(bdy-3)}"
+                 stroke="${C.dim}" stroke-width="0.8"
+                 marker-start="url(#da)" marker-end="url(#da)"/>\n`;
+      s += tx(sx+sw/2, bdy-5, `B = ${p.B} mm`, {anchor:'middle',size:p.fs_dim,fill:C.dim});
+    } else {
+      const tdy = sy - 16;
+      s += ln(sx,tdy,sx,tdy+6,C.dim,0.8); s += ln(sx+sw,tdy,sx+sw,tdy+6,C.dim,0.8);
+      s += `<line x1="${sx+1}" y1="${r(tdy+3)}" x2="${r(sx+sw-1)}" y2="${r(tdy+3)}"
+                 stroke="${C.dim}" stroke-width="0.8"
+                 marker-start="url(#da)" marker-end="url(#da)"/>\n`;
+      s += tx(sx+sw/2, tdy+1, `B = ${p.B} mm`, {anchor:'middle',size:p.fs_dim,fill:C.dim});
+    }
+  }
+
+  // Innen-Labels
+  s += tx(sx+sw/2, sy+sh/2-8,  `${p.B} × ${p.H} mm`,         {anchor:'middle',size:7,fill:C.inner_tx});
+  s += tx(sx+sw/2, sy+sh/2+6,  '(Außenmaß)',                   {anchor:'middle',size:7,fill:C.inner_tx});
+  s += tx(sx+sw/2, sy+sh/2+20, `MP ${p.mp_b} × ${p.mp_h} mm`, {anchor:'middle',size:7,fill:C.inner_tx});
+
+  s += `</svg>`;
+  return s;
+}
+
+// ── Ergebnistabelle ───────────────────────────────────────────
+function buildTable(p) {
+  const fmt = v => typeof v==='number' && v%1!==0 ? v.toFixed(1) : v;
+  const rows = [
+    {var:'b_gehaeuse_aussen_mm',               lbl:'Schrank-Außenbreite',          val:p.B,           unit:'mm', src:'Eingabe',                        col:''},
+    {var:'h_gehaeuse_aussen_mm',               lbl:'Schrank-Außenhöhe',            val:p.H,           unit:'mm', src:'Eingabe',                        col:''},
+    {var:'b_mplatte_mm',                       lbl:'Montageplatte Breite',         val:p.mp_b,        unit:'mm', src:'Eingabe',                        col:''},
+    {var:'h_mplatte_mm',                       lbl:'Montageplatte Höhe',           val:p.mp_h,        unit:'mm', src:'Eingabe',                        col:''},
+    {var:'b_mplatte_abstand_gehaeuse_iw_mm',   lbl:'Seitl. Abstand MP–Innenwand', val:fmt(p.b_abst), unit:'mm', src:`(${p.B}−${p.mp_b})÷2`,          col:''},
+    {var:'h_mplatte_abstand_gehaeuse_iw_mm',   lbl:'Oberer Abstand MP–Innenwand', val:fmt(p.h_abst), unit:'mm', src:`(${p.H}−${p.mp_h})÷2`,          col:''},
+    {var:'h_sockel_mm',                        lbl:'Sockelhöhe',
+     val: p.sockel_aktiv ? p.h_sockel : 0,    unit:'mm',
+     src: p.sockel_aktiv ? `Sockeltyp ${p.h_sockel} mm` : '0 · (kein Sockel)',    col:''},
+    {var:'d_max_kabel_ke_mm',                  lbl:'Max. Kabel-Außen-∅',          val:p.d_max,       unit:'mm', src:'Eingabe',                        col:''},
+    {sep:true},
+    {var:'h_handling_ke_mm',   lbl:'Freie Kabellänge ab Boden',  val:p.h_hand,  unit:'mm', src:'Festwert Standschrank',          col:'#2DBD8E', note:'konservativ eingerechnet'},
+    {var:'h_kabel_bieg_mm', lbl:'Mindestbiegeradius', val:p.h_bieg, unit:'mm', src:`4 × ${p.d_max} mm (VDE 0298-4)`, col:'#C8720E'},
+    {var:'h_zug_ke_mm',  lbl:'Zugentlastung · Schellenhöhe',  val:p.h_zug, unit:'mm',
+     src:  p.zug_aktiv ? `Icotek CCL · h_schelle = ${p.h_zug} mm` : '0 · (Zugentlastung inaktiv)',
+     col:  '#D4A84B',
+     note: p.zug_aktiv ? null : 'kein interner Platzbedarf'},
+    {var:'h_handling_zug_ke_mm', lbl:'Freiraum nach Schelle', val:p.h_handling_zug, unit:'mm',
+     src:  p.zug_aktiv ? 'Festwert · Kabel zu Kanal / Gerät' : '0 · (Zugentlastung inaktiv)',
+     col:  '#4BBECA'},
+    {var:'h_kanal_ke_mm', lbl:'Horizontaler Kabelkanal', val:p.h_kanal, unit:'mm',
+     src:  p.kanal_aktiv  ? 'Eingabe · Standard 60 mm' : '0 · (kein Kabelkanal)',
+     col:  p.kanal_aktiv  ? '#9A94E8' : '#9A9890'},
+    {sep:true},
+    {var:'h_ke_mm', lbl:'Kabeleinführungszone gesamt', val:p.h_ke, unit:'mm',
+     src:`${p.h_hand} + ${p.h_bieg} + ${p.h_zug} + ${p.h_handling_zug} + ${p.h_kanal}`, col:'#E0DED8', hi:true},
+    {sep:true},
+    {var:'h_mplatte_mbereich_standschrank_mm', lbl:'Höhe Montagebereich auf der Montageplatte', val:fmt(p.h_mb), unit:'mm',
+     src:`${p.H} &minus; ${p.h_ke} &minus; (${p.H}&minus;${p.mp_h})&divide;2`, col:'#A8C4E8', hi:true},
+    {var:'b_mplatte_mbereich_standschrank_mm', lbl:'Breite Montagebereich auf der Montageplatte', val:p.b_mb, unit:'mm',
+     src:'b_mplatte_mm', col:'#A8C4E8', hi:true},
+  ];
+
+  let t = `
+<div class="formula-box" style="margin-top:18px">
+  <span style="color:#E0DED8">h_ke_mm</span> &nbsp;=&nbsp;
+  <span style="color:#2DBD8E">h_handling_ke_mm</span> &nbsp;+&nbsp;
+  <span style="color:#C8720E">h_kabel_bieg_mm</span> &nbsp;+&nbsp;
+  <span style="color:#D4A84B">h_zug_ke_mm</span> &nbsp;+&nbsp;
+  <span style="color:#4BBECA">h_handling_zug_ke_mm</span> &nbsp;+&nbsp;
+  <span style="color:#9A94E8">h_kanal_ke_mm</span>
+  &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_ke} mm</strong>
+  &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
+</div>
+<div class="formula-box" style="margin-top:10px">
+  <span style="color:#A8C4E8">h_mplatte_mbereich_standschrank_mm</span> &nbsp;=&nbsp;
+  h_gehaeuse_aussen_mm &nbsp;&minus;&nbsp;
+  <span style="color:#E0DED8">h_ke_mm</span>
+  &nbsp;&minus;&nbsp;(h_gehaeuse_aussen_mm &nbsp;&minus;&nbsp; h_mplatte_mm) &divide; 2
+  &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_mb} mm</strong>
+</div>
+<div class="formula-box" style="margin-top:10px">
+  <span style="color:#A8C4E8">b_mplatte_mbereich_standschrank_mm</span> &nbsp;=&nbsp;
+  b_mplatte_mm
+  &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.b_mb} mm</strong>
+</div>
+<table class="rtable">
+<thead><tr>
+  <th>Variable</th><th>Bezeichnung</th><th>Formel / Quelle</th>
+  <th style="text-align:right">Wert</th>
+</tr></thead><tbody>`;
+
+  for (const row of rows) {
+    if (row.sep) {
+      t += `<tr><td colspan="4" style="background:#252523;padding:2px 10px;
+                 font-size:9px;color:#4A4846;border-bottom:1px solid #333">───────</td></tr>`;
+      continue;
+    }
+    const bg = row.hi ? 'background:#2A2A1E;' : '';
+    const vs = row.hi ? 'font-size:14px;' : '';
+    t += `<tr style="${bg}">
+      <td><span class="vname" style="color:${row.col||'#9A9890'}">${row.var}</span></td>
+      <td>${row.lbl}${row.note?`<br><span style="font-size:10px;color:#666460">${row.note}</span>`:''}</td>
+      <td class="formula-cell">${row.src}</td>
+      <td class="val" style="${vs}color:${row.col||'#E0DED8'}">${row.val}
+          <span style="font-weight:400;font-size:10px;color:#666460">${row.unit}</span></td>
+    </tr>`;
+  }
+
+  t += `</tbody></table>
+<p class="note-line">
+  h_ke gilt für KE von oben und KE von unten gleichermaßen ·
+  Biegeradius-Faktor 4× nach VDE 0298-4 (fest verlegte Leitungen) ·
+  KE von unten: freie Kabeleinführung, kein PG (Boden offen)
+</p>`;
+  return t;
+}
+
+// ── Projektfelder ─────────────────────────────────────────────
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+function updateDocNr() {
+  const nr  = document.getElementById('proj-nummer').value.trim();
+  const asp = document.getElementById('proj-asp').value.trim();
+  document.getElementById('proj-docnr').value = [todayISO(), nr, asp].filter(Boolean).join(' ');
+}
+function saveProjFields() {
+  const fields = ['proj-name','proj-nummer','proj-asp','proj-engineer'];
+  fields.forEach(id => localStorage.setItem(id, document.getElementById(id).value));
+  localStorage.setItem('project_name',     document.getElementById('proj-name').value);
+  localStorage.setItem('project_nummer',   document.getElementById('proj-nummer').value);
+  localStorage.setItem('asp',              document.getElementById('proj-asp').value);
+  localStorage.setItem('project_engineer', document.getElementById('proj-engineer').value);
+  updateDocNr();
+}
+function loadProjFields() {
+  ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id => {
+    const val = localStorage.getItem(id);
+    if (val !== null) document.getElementById(id).value = val;
+  });
+  updateDocNr();
+}
+loadProjFields();
+
+// ── Init ─────────────────────────────────────────────────────
+calculate();
+</script>
+
+<footer class="site-footer">
+  <span>Erstellt von: Stephan Michler · DBACS GA-Planungstool · 2026</span>
+  <a href="../../web/index.html">← Startseite</a>
+</footer>
+
+</body>
+</html>

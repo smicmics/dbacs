@@ -1,0 +1,90 @@
+[
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX 8660.001",
+    "bestellnummer": "8660001",
+    "b_gehaeuse_aussen_mm": 600,
+    "h_sockel_mm": 100,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX 8660.003",
+    "bestellnummer": "8660003",
+    "b_gehaeuse_aussen_mm": 800,
+    "h_sockel_mm": 100,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX 8660.004",
+    "bestellnummer": "8660004",
+    "b_gehaeuse_aussen_mm": 1000,
+    "h_sockel_mm": 100,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX 8660.005",
+    "bestellnummer": "8660005",
+    "b_gehaeuse_aussen_mm": 1200,
+    "h_sockel_mm": 100,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX 8660.021",
+    "bestellnummer": "8660021",
+    "b_gehaeuse_aussen_mm": 600,
+    "h_sockel_mm": 200,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX 8660.023",
+    "bestellnummer": "8660023",
+    "b_gehaeuse_aussen_mm": 800,
+    "h_sockel_mm": 200,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX 8660.024",
+    "bestellnummer": "8660024",
+    "b_gehaeuse_aussen_mm": 1000,
+    "h_sockel_mm": 200,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  },
+  {
+    "hersteller": "Rittal",
+    "bezeichnung": "VX 8660.025",
+    "bestellnummer": "8660025",
+    "b_gehaeuse_aussen_mm": 1200,
+    "h_sockel_mm": 200,
+    "preis_stueckpreis_eur": null,
+    "preis_lieferung_eur": null,
+    "preis_montage_eur": null,
+    "preis_gesamt_eur": null
+  }
+]
