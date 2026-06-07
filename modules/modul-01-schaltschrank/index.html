@@ -92,6 +92,22 @@ legend{
 
 /* Preset buttons */
 
+/* ── Print button ── */
+.btn-print{
+  display:block;width:100%;margin-top:4px;padding:9px 12px;
+  background:var(--bg3);color:var(--tx2);
+  border:1px solid var(--bords);border-radius:4px;
+  font-size:12px;font-weight:600;letter-spacing:.04em;
+  cursor:pointer;text-align:center;transition:background .15s,color .15s;
+}
+.btn-print:hover{background:var(--bords);color:var(--tx);}
+
+@media print{
+  .panel-in,.site-footer,h1{display:none !important;}
+  .layout{display:block;}
+  .panel-out{padding:0;}
+  #svg-wrap{border:none;padding:0;}
+}
 
 /* ── Result panel ── */
 .panel-out{padding:20px;overflow-y:auto;}
@@ -285,6 +301,9 @@ legend{
         <input type="number" value="4" disabled>
       </div>
     </fieldset>
+
+    <button class="btn-print" onclick="window.print()">Ergebnis drucken</button>
+
   </aside>
 
   <!-- ═══ OUTPUT ═══ -->
