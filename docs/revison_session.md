@@ -92,11 +92,11 @@ Reihenfolge der Zonen ab Gehäuseinnenwand (fest):
 - Zonen in SVG (alle nur wenn > 0): Handling (hellgrau), Bieg (warmgelb), Zug/Schelle (amber, gestrichelter Rahmen), Handling-Zug (hellblau, gestrichelter Rahmen), Kabelkanal (grau, Fülllinien)
 - **C-Profilschiene** maßstabsgerecht in h_zug-Zone gezeichnet: Grundkörper + Flanken + C-Nut
 - **Bügelschelle** am Kabel (x = bxo) als U-Bügel mit Schraube
-- Maßketten: alle Teilmaße in einheitlichem Blau `#3366BB` (wie h_mplatte_mbereich_mm)
+- Maßketten: alle Teilmaße in einheitlichem Blau `#3366BB` (wie h_mplatte_mbereich_wandschrank_mm)
 - Zonenbeschriftungen (Kabeleinführungszone, C-Schiene mit Bügelschellen, Kabelkanal Einführungszone): linksbündig, 10 px rechts vom Kabel (`zoneLblX = bxo + 10`)
 - ▼/▲ Beginn/Ende Nutzfläche: zentriert bei mx+mw/2
 - Teilmaß-Labels: `dominant-baseline="middle"` für exakte vertikale Zentrierung (außer h_handling_ke_mm)
-- h_mplatte_mbereich_mm: Maßlinie von KE-Ende bis MP-Ende
+- h_mplatte_mbereich_wandschrank_mm: Maßlinie von KE-Ende bis MP-Ende
 
 **Ergebnistabelle + Formelzeile**
 
@@ -110,8 +110,8 @@ Farbkodierung (Formelzeile und Tabellenzeile immer identisch):
 | `h_handling_zug_ke_mm` | Teal `#4BBECA` (immer, auch bei inaktiv) |
 | `h_kanal_ke_mm` | Lila `#9A94E8` (aktiv) / Grau `#9A9890` (inaktiv) |
 | `h_ke_mm` | Hell-Weiß `#E0DED8` (Ergebnis) |
-| `h_mplatte_mbereich_mm` | Hell-Blau `#A8C4E8` (Ergebnis) |
-| `b_mplatte_mbereich_mm` | Hell-Blau `#A8C4E8` (Ergebnis) |
+| `h_mplatte_mbereich_wandschrank_mm` | Hell-Blau `#A8C4E8` (Ergebnis) |
+| `b_mplatte_mbereich_wandschrank_mm` | Hell-Blau `#A8C4E8` (Ergebnis) |
 
 SVG-Zonenrahmen-Farben (von Maßketten-Farben getrennt):
 - h_zug-Zone: Amber-Rahmen `#D4A84B` via `C.zZ_stroke`
@@ -190,8 +190,8 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 | `h_handling_zug_ke_mm` | Freiraum nach Schelle bis Kabelkanal/Gerät (Festwert 20 mm) | mm |
 | `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
-| `h_mplatte_mbereich_mm` | Höhe Montagebereich auf der Montageplatte (nach Abzug KE-Zone) | mm |
-| `b_mplatte_mbereich_mm` | Breite Montagebereich auf der Montageplatte (= b_mplatte_mm) | mm |
+| `h_mplatte_mbereich_wandschrank_mm` | Höhe Montagebereich auf der Montageplatte (nach Abzug KE-Zone) | mm |
+| `b_mplatte_mbereich_wandschrank_mm` | Breite Montagebereich auf der Montageplatte (= b_mplatte_mm) | mm |
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor (Festwert 4, VDE 0298-4) | – |
 

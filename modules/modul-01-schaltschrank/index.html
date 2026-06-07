@@ -26,9 +26,9 @@
   --c-zug:       #D4A84B;   /* h_zug_ke_mm Zone-Füllung */
   --c-hz:        #4BBECA;   /* h_handling_zug Zone-Füllung */
   --c-kanal:     #9A94E8;   /* h_kanal_ke_mm    */
-  --c-dim:       #3366BB;   /* Maßketten / h_mplatte_mbereich_mm */
+  --c-dim:       #3366BB;   /* Maßketten / h_mplatte_mbereich_wandschrank_mm */
   --c-result:    #E0DED8;   /* h_ke_mm Ergebnis */
-  --c-mbereich:  #A8C4E8;   /* h_mplatte_mbereich_mm */
+  --c-mbereich:  #A8C4E8;   /* h_mplatte_mbereich_wandschrank_mm */
   /* ── Textgrößen Felder ── */
   --fs-field:    13px;
   --fs-field-sm: 10px;      /* disabled Textfelder (Typ-Anzeige) */
@@ -739,7 +739,7 @@ function buildSVG(p) {
     s += arr(bx, yKe0, yKe1, C.arr_ke);
     s += tx(bx+6, (yKe0+yKe1)/2+3.5, 'h_ke_mm', {size:p.fs_var,weight:700,fill:C.lbl_ke});
 
-    // Maßlinie h_mplatte_mbereich_mm (KE-Ende → MP-Ende)
+    // Maßlinie h_mplatte_mbereich_wandschrank_mm (KE-Ende → MP-Ende)
     const yMb0 = p.ke_pos === 'oben' ? yK+hk : my;
     const yMb1 = p.ke_pos === 'oben' ? my+mh : yK;
     const yMbEdge = p.ke_pos === 'oben' ? my+mh : my;
@@ -747,7 +747,7 @@ function buildSVG(p) {
     s += ln(ax1, yMb0, ax+3, yMb0, C.dim, 0.8);
     s += ln(ax1, yMb1, ax+3, yMb1, C.dim, 0.8);
     s += arr(ax, yMb0, yMb1, C.dim);
-    s += tx(lx, (yMb0+yMb1)/2+3.5, 'h_mplatte_mbereich_mm', {size:p.fs_var,weight:400,fill:C.dim});
+    s += tx(lx, (yMb0+yMb1)/2+3.5, 'h_mplatte_mbereich_wandschrank_mm', {size:p.fs_var,weight:400,fill:C.dim});
   }
 
   // H + B Maße (ausgeblendet wenn fs_dim = 0)
@@ -814,9 +814,9 @@ function buildTable(p) {
     {var:'h_ke_mm', lbl:'Kabeleinführungszone gesamt', val:p.h_ke, unit:'mm',
      src:`${p.h_hand} + ${p.h_bieg} + ${p.h_zug} + ${p.h_handling_zug} + ${p.h_kanal}`, col:'#E0DED8', hi:true},
     {sep:true},
-    {var:'h_mplatte_mbereich_mm', lbl:'Höhe Montagebereich auf der Montageplatte', val:fmt(p.h_mb), unit:'mm',
+    {var:'h_mplatte_mbereich_wandschrank_mm', lbl:'Höhe Montagebereich auf der Montageplatte', val:fmt(p.h_mb), unit:'mm',
      src:`${p.H} &minus; ${p.h_ke} &minus; (${p.H}&minus;${p.mp_h})&divide;2`, col:'#A8C4E8', hi:true},
-    {var:'b_mplatte_mbereich_mm', lbl:'Breite Montagebereich auf der Montageplatte', val:p.b_mb, unit:'mm',
+    {var:'b_mplatte_mbereich_wandschrank_mm', lbl:'Breite Montagebereich auf der Montageplatte', val:p.b_mb, unit:'mm',
      src:'b_mplatte_mm', col:'#A8C4E8', hi:true},
   ];
 
@@ -832,14 +832,14 @@ function buildTable(p) {
   &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
 </div>
 <div class="formula-box" style="margin-top:10px">
-  <span style="color:#A8C4E8">h_mplatte_mbereich_mm</span> &nbsp;=&nbsp;
+  <span style="color:#A8C4E8">h_mplatte_mbereich_wandschrank_mm</span> &nbsp;=&nbsp;
   h_gehaeuse_aussen_mm &nbsp;&minus;&nbsp;
   <span style="color:#E0DED8">h_ke_mm</span>
   &nbsp;&minus;&nbsp;(h_gehaeuse_aussen_mm &nbsp;&minus;&nbsp; h_mplatte_mm) &divide; 2
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_mb} mm</strong>
 </div>
 <div class="formula-box" style="margin-top:10px">
-  <span style="color:#A8C4E8">b_mplatte_mbereich_mm</span> &nbsp;=&nbsp;
+  <span style="color:#A8C4E8">b_mplatte_mbereich_wandschrank_mm</span> &nbsp;=&nbsp;
   b_mplatte_mm
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.b_mb} mm</strong>
 </div>

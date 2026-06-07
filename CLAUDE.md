@@ -85,8 +85,8 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 | `h_handling_zug_ke_mm` | Freiraum nach Schelle bis Kanal/Gerät (Festwert 20 mm, 0 wenn inaktiv) | mm |
 | `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone (0 wenn inaktiv) | mm |
 | `h_ke_mm` | Kabeleinführungszone gesamt | mm |
-| `h_mplatte_mbereich_mm` | Höhe Montagebereich auf der Montageplatte (nach Abzug KE-Zone) | mm |
-| `b_mplatte_mbereich_mm` | Breite Montagebereich auf der Montageplatte (= b_mplatte_mm) | mm |
+| `h_mplatte_mbereich_wandschrank_mm` | Höhe Montagebereich auf der Montageplatte (nach Abzug KE-Zone) | mm |
+| `b_mplatte_mbereich_wandschrank_mm` | Breite Montagebereich auf der Montageplatte (= b_mplatte_mm) | mm |
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld in kabelzugschellen.json) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor Festwert 4 (VDE 0298-4) | – |
 
@@ -158,7 +158,7 @@ Farben sind in Tabelle und Formelzeile immer identisch. h_zug und h_handling_zug
 | `h_handling_zug_ke_mm` | Teal (immer) | `#4BBECA` |
 | `h_kanal_ke_mm` | Lila (aktiv) / Grau (inaktiv) | `#9A94E8` / `#9A9890` |
 | `h_ke_mm` | Hell-Weiß (Ergebnis) | `#E0DED8` |
-| `h_mplatte_mbereich_mm` | Hell-Blau (Ergebnis) | `#A8C4E8` |
+| `h_mplatte_mbereich_wandschrank_mm` | Hell-Blau (Ergebnis) | `#A8C4E8` |
 
 SVG-Zonenrahmen (getrennt von Maßketten-Farben):
 
@@ -211,10 +211,10 @@ h_handling_zug_ke_mm = 20 mm Festwert (Freiraum Schelle → Kanal/Gerät), 0 wen
 | `h_handling_zug_ke_mm` | 0 mm (Nein) oder 20 mm (Ja) |
 | `h_kanal_ke_mm` | 0 mm (Nein) oder Eingabe (Ja, Standard 60 mm) |
 
-### h_mplatte_mbereich_mm – Montagebereich auf Montageplatte
+### h_mplatte_mbereich_wandschrank_mm – Montagebereich auf Montageplatte
 
 ```
-h_mplatte_mbereich_mm = h_gehaeuse_aussen_mm - h_ke_mm - (h_gehaeuse_aussen_mm - h_mplatte_mm) / 2
+h_mplatte_mbereich_wandschrank_mm = h_gehaeuse_aussen_mm - h_ke_mm - (h_gehaeuse_aussen_mm - h_mplatte_mm) / 2
 ```
 
 Beschreibt den nach Abzug der Kabeleinführungszone verbleibenden Höhenbereich auf der Montageplatte für die Installation weiterer Schaltschrankkomponenten. Wird in SVG-Zeichnung als Maßlinie (KE-Ende → MP-Ende) und in eigener hervorgehobener Ergebniszeile angezeigt.
@@ -239,7 +239,7 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Biegeradiusfaktor 4× (nicht 6×, das gilt nur für flexible Leitungen)
 - Schriftgrößen sind Nutzereingaben (`fs_dim=7`, `fs_var=6`, `fs_zone=7`), keine Konstanten
 - Alle SVG-Variablenlabels tragen vollständige `_mm`-Suffixe
-- `h_mplatte_mbereich_mm`-Maßlinie liegt im `if (p.fs_var > 0)`-Block
+- `h_mplatte_mbereich_wandschrank_mm`-Maßlinie liegt im `if (p.fs_var > 0)`-Block
 - Zonenbeschriftungen linksbündig bei `zoneLblX = bxo + 10` (10 px rechts vom Kabel); ▼/▲ Nutzfläche zentriert bei `mx+mw/2`
 - Teilmaß-Labels vertikal zentriert via `dominant-baseline="middle"` – Ausnahme: `h_handling_ke_mm` (zu kleine Zone, Sonderpositionierung ±0,5 px je KE-Richtung)
 - `tx()`-Funktion unterstützt `db`-Option für `dominant-baseline`
