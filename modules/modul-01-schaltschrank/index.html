@@ -39,14 +39,35 @@ body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px
 /* ── Header ── */
 header{
   background:#111110;color:#E0DED8;
-  padding:10px 22px;display:flex;align-items:center;gap:18px;
-  border-bottom:1px solid var(--bord);
+  padding:10px 22px 12px;display:flex;align-items:flex-start;gap:18px;
+  border-bottom:1px solid var(--bord);flex-wrap:wrap;
 }
 header h1{font-size:15px;font-weight:700;letter-spacing:-.01em;}
 header p{font-size:11px;color:var(--tx3);margin-top:1px;}
-header .title{flex:1;}
-header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;}
+header .title{flex:1;min-width:200px;}
+header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;margin-top:3px;}
 header a:hover{color:var(--tx2);}
+
+.proj-fields{
+  display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:flex-end;width:100%;
+}
+.proj-field{display:flex;flex-direction:column;gap:3px;}
+.proj-field label{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;}
+.proj-field input{
+  background:var(--bg3);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:12px;padding:3px 8px;
+}
+.proj-field input:focus{outline:none;border-color:var(--green);}
+#proj-name   {width:220px;}
+#proj-nummer {width:130px;}
+#proj-asp    {width:110px;}
+#proj-docnr  {width:280px;color:var(--tx2);}
+
+@media print{
+  .proj-fields{display:flex !important;}
+  .proj-field input{background:#fff;border-color:#ccc;color:#000;font-size:11px;}
+  .proj-field label{color:#666;}
+}
 
 /* ── Layout ── */
 .layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 46px);}
@@ -174,6 +195,24 @@ legend{
     <p>GA-Planungstool · Schaltschrank-Dimensionierung</p>
   </div>
   <a href="../../index.html">← Startseite</a>
+  <div class="proj-fields">
+    <div class="proj-field">
+      <label for="proj-name">Projekt</label>
+      <input id="proj-name" type="text" placeholder="Projektbezeichnung" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-nummer">Projektnummer</label>
+      <input id="proj-nummer" type="text" placeholder="z. B. 2024-001" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-asp">ASP</label>
+      <input id="proj-asp" type="text" placeholder="Ansprechpartner" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-docnr">Dokument-Nr.</label>
+      <input id="proj-docnr" type="text" readonly>
+    </div>
+  </div>
 </header>
 
 <div class="layout">
@@ -828,6 +867,32 @@ function buildTable(p) {
 </p>`;
   return t;
 }
+
+// ── Projektfelder ─────────────────────────────────────────────
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+function updateDocNr() {
+  const nr  = document.getElementById('proj-nummer').value.trim();
+  const asp = document.getElementById('proj-asp').value.trim();
+  document.getElementById('proj-docnr').value = [todayISO(), nr, asp].filter(Boolean).join(' ');
+}
+function saveProjFields() {
+  const fields = ['proj-name','proj-nummer','proj-asp'];
+  fields.forEach(id => localStorage.setItem(id, document.getElementById(id).value));
+  localStorage.setItem('project_name',   document.getElementById('proj-name').value);
+  localStorage.setItem('project_nummer', document.getElementById('proj-nummer').value);
+  localStorage.setItem('asp',            document.getElementById('proj-asp').value);
+  updateDocNr();
+}
+function loadProjFields() {
+  ['proj-name','proj-nummer','proj-asp'].forEach(id => {
+    const val = localStorage.getItem(id);
+    if (val !== null) document.getElementById(id).value = val;
+  });
+  updateDocNr();
+}
+loadProjFields();
 
 // ── Init ─────────────────────────────────────────────────────
 calculate(); // Sofortiger Aufruf mit d_max-Defaultwert; fetch() übernimmt DB-Init
