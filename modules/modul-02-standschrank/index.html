@@ -259,12 +259,12 @@ legend{
         <div class="lbl">Vorhanden<span class="var">–</span></div>
         <select id="sockel_aktiv" onchange="onSockelChange()">
           <option value="nein">Nein</option>
-          <option value="ja">Ja</option>
+          <option value="ja" selected>Ja</option>
         </select>
       </div>
       <div class="field">
         <div class="lbl">Höhe Sockel (mm)<span class="var">h_sockel_mm</span></div>
-        <select id="h_sockel_option" onchange="calculate()" disabled>
+        <select id="h_sockel_option" onchange="calculate()">
           <option value="100">100</option>
           <option value="200">200</option>
         </select>
@@ -335,8 +335,8 @@ legend{
       <div class="field">
         <div class="lbl">Vorhanden<span class="var">h_zug_ke_mm</span></div>
         <select id="zug_aktiv" onchange="calculate()">
-          <option value="nein" selected>Nein</option>
-          <option value="ja">Ja</option>
+          <option value="nein">Nein</option>
+          <option value="ja" selected>Ja</option>
         </select>
       </div>
       <div class="field">
