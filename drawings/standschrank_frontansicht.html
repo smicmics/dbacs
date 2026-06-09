@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Standschrank – h_ke Zonendarstellung</title>
+<style>
+  body { background:#FDFCF8; margin:0; padding:24px; font-family:sans-serif; }
+  svg  { display:block; max-width:720px; margin:auto; }
+  .tbl-wrap { max-width:720px; margin:0 auto; padding-top:14px; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  th { background:#EEEEE8; color:#444; font-weight:600; padding:6px 10px;
+       text-align:left; border-bottom:1.5px solid #B4B2A9; }
+  td { padding:5px 10px; border-bottom:0.5px solid #D3D1C7; color:#2C2C2A; vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#F5F4EE; }
+  .var { font-family:monospace; font-size:11px; font-weight:700; color:#1A1A18; }
+  .val { font-family:monospace; font-size:12px; font-weight:600; text-align:right; }
+  .sub { font-size:10px; font-weight:400; color:#888; }
+  .formula { max-width:720px; margin:10px auto 0; background:#F0EEE8;
+             border-left:3px solid #444; padding:8px 12px; font-size:11px; color:#1A1A18; }
+  .caption { font-size:10px; color:#888; margin-top:8px; max-width:720px;
+             margin-left:auto; margin-right:auto;
+             padding-top:6px; border-top:0.5px solid #D3D1C7; }
+</style>
+</head>
+<body>
+
+<svg width="100%" viewBox="0 0 680 640" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="da" viewBox="0 0 8 8" refX="7" refY="4"
+          markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M1 1.5 L7 4 L1 6.5" fill="none" stroke="#333"
+          stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ══ TITEL ══ -->
+<text x="280" y="14" text-anchor="middle"
+      font-family="sans-serif" font-size="11" font-weight="700" fill="#1A1A18">
+  Standschrank · Frontansicht · Kabeleinführung von unten · Kabeleinführungszone h_ke
+</text>
+
+<!-- ══ SCHALTSCHRANK x=100..360  y=50..490 ══ -->
+<rect x="100" y="50" width="260" height="440"
+      fill="none" stroke="#111" stroke-width="3.5"/>
+
+<!-- ══ MONTAGEPLATTE x=112..348  y=55..485 ══ -->
+<rect x="112" y="55" width="236" height="430"
+      fill="none" stroke="#444" stroke-width="1.5"/>
+
+<!-- ══ SOCKEL x=100..360  y=490..525 ══ -->
+<rect x="100" y="490" width="260" height="35"
+      fill="#D8D6CE" stroke="#111" stroke-width="3.5"/>
+<text x="230" y="511" text-anchor="middle"
+      font-family="sans-serif" font-size="7.5" fill="#555">Schaltschranksockel (h_sockel = 100 mm)</text>
+
+<!-- ══ BODEN OFFEN – gestrichelte Linie an Schrankunterseite ══ -->
+<line x1="100" y1="490" x2="360" y2="490" stroke="#888" stroke-width="1.2" stroke-dasharray="5 3"/>
+<text x="230" y="488" text-anchor="middle"
+      font-family="sans-serif" font-size="7" fill="#888">Boden offen · freie Kabeleinführung</text>
+
+<!-- ══ KE-ZONEN (von unten nach oben) ══ -->
+
+<!-- h_handling_ke  y=473..485 (12px) -->
+<rect x="112" y="473" width="236" height="12" fill="#E2E0D8" fill-opacity="0.65"/>
+<text x="230" y="481" text-anchor="middle"
+      font-family="sans-serif" font-size="7" fill="#555">h_handling_ke-Zone</text>
+
+<!-- h_kabel_bieg  y=438..473 (35px) -->
+<rect x="112" y="438" width="236" height="35" fill="#FAEEDA" fill-opacity="0.5"/>
+<text x="230" y="458" text-anchor="middle"
+      font-family="sans-serif" font-size="7.5" fill="#854F0B" fill-opacity="0.85">
+  h_kabel_bieg-Zone
+</text>
+
+<!-- h_zug_ke  y=405..438 (33px) – Zugentlastung -->
+<rect x="112" y="405" width="236" height="33"
+      fill="#FDF4DC" fill-opacity="0.6" stroke="#D4A84B" stroke-width="0.8" stroke-dasharray="4 3"/>
+<text x="230" y="424" text-anchor="middle"
+      font-family="sans-serif" font-size="7.5" fill="#A07820">h_zug_ke-Zone (Bügelschelle)</text>
+
+<!-- h_handling_zug_ke  y=390..405 (15px) -->
+<rect x="112" y="390" width="236" height="15"
+      fill="#E0F7F7" fill-opacity="0.5" stroke="#4BBECA" stroke-width="0.6" stroke-dasharray="3 3"/>
+<text x="230" y="400" text-anchor="middle"
+      font-family="sans-serif" font-size="7" fill="#2A8A96">h_handling_zug_ke</text>
+
+<!-- h_kanal_ke  y=362..390 (28px) – Kabelkanal, gefüllt -->
+<rect x="112" y="362" width="236" height="28" fill="#C4C4BA" stroke="#555" stroke-width="1.4"/>
+<line x1="116" y1="370" x2="344" y2="370" stroke="#999" stroke-width="0.8"/>
+<line x1="116" y1="377" x2="344" y2="377" stroke="#999" stroke-width="0.8"/>
+<line x1="116" y1="384" x2="344" y2="384" stroke="#999" stroke-width="0.8"/>
+<text x="230" y="379" text-anchor="middle"
+      font-family="sans-serif" font-size="7.5" fill="#333">Kabelkanal (h_kanal_ke)</text>
+
+<!-- Trennlinie Nutzfläche  y=362 -->
+<line x1="112" y1="362" x2="348" y2="362"
+      stroke="#1D9E75" stroke-width="1.2" stroke-dasharray="8 5"/>
+<text x="230" y="352" text-anchor="middle"
+      font-family="sans-serif" font-size="7.5" fill="#0F6E56">▲ Beginn Nutzfläche (TE-Reihen)</text>
+
+<!-- ══ KABEL von unten durch Sockel und Schrank ══ -->
+<!-- Stub unterhalb Sockel -->
+<line x1="155" y1="560" x2="155" y2="525"
+      stroke="#222" stroke-width="4" stroke-linecap="round"/>
+<!-- Durch Sockel (gestrichelt) -->
+<line x1="155" y1="525" x2="155" y2="490"
+      stroke="#888" stroke-width="4" stroke-dasharray="4 2" stroke-linecap="round"/>
+<!-- h_handling_ke: gerade nach oben (gestrichelt) -->
+<line x1="155" y1="490" x2="155" y2="473"
+      stroke="#777" stroke-width="4" stroke-dasharray="3 2" stroke-linecap="round"/>
+<!-- h_kabel_bieg: Bogen -->
+<path d="M 155,473 C 155,452 170,443 170,438"
+      fill="none" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+<!-- h_zug_ke + h_handling_zug_ke: gerade weiter nach oben -->
+<line x1="170" y1="438" x2="170" y2="390"
+      stroke="#222" stroke-width="4" stroke-linecap="round"/>
+<!-- In den Kabelkanal -->
+<line x1="170" y1="390" x2="170" y2="362"
+      stroke="#222" stroke-width="4" stroke-linecap="round"/>
+
+<!-- Bügelschelle (Zugentlastung) -->
+<rect x="163" y="413" width="14" height="7"
+      fill="none" stroke="#A07820" stroke-width="1.5" rx="1"/>
+<line x1="163" y1="416" x2="157" y2="416" stroke="#A07820" stroke-width="1"/>
+<line x1="177" y1="416" x2="183" y2="416" stroke="#A07820" stroke-width="1"/>
+
+<!-- ══ BLAUE HILFSLINIEN rechts ══ -->
+<line x1="360" y1="485" x2="408" y2="485" stroke="#3366BB" stroke-width="0.5"/>
+<line x1="360" y1="473" x2="408" y2="473" stroke="#3366BB" stroke-width="0.5"/>
+<line x1="360" y1="438" x2="408" y2="438" stroke="#3366BB" stroke-width="0.5"/>
+<line x1="360" y1="405" x2="408" y2="405" stroke="#3366BB" stroke-width="0.5"/>
+<line x1="360" y1="390" x2="408" y2="390" stroke="#3366BB" stroke-width="0.5"/>
+<line x1="360" y1="362" x2="408" y2="362" stroke="#3366BB" stroke-width="0.5"/>
+
+<!-- ══ MAßKETTE KE-Zonen rechts ══ -->
+<!-- Querstriche -->
+<line x1="408" y1="485" x2="418" y2="485" stroke="#333" stroke-width="0.8"/>
+<line x1="408" y1="473" x2="418" y2="473" stroke="#333" stroke-width="0.8"/>
+<line x1="408" y1="438" x2="418" y2="438" stroke="#333" stroke-width="0.8"/>
+<line x1="408" y1="405" x2="418" y2="405" stroke="#333" stroke-width="0.8"/>
+<line x1="408" y1="390" x2="418" y2="390" stroke="#333" stroke-width="0.8"/>
+<line x1="408" y1="362" x2="418" y2="362" stroke="#333" stroke-width="0.8"/>
+
+<!-- h_handling_ke  y=473..485 -->
+<line x1="422" y1="475" x2="422" y2="483"
+      stroke="#444" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<text x="428" y="481" font-family="sans-serif" font-size="8.5"
+      font-weight="700" fill="#444">h_handling_ke</text>
+
+<!-- h_kabel_bieg  y=438..473 -->
+<line x1="422" y1="440" x2="422" y2="471"
+      stroke="#854F0B" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<text x="428" y="458" font-family="sans-serif" font-size="8.5"
+      font-weight="700" fill="#854F0B">h_kabel_bieg</text>
+
+<!-- h_zug_ke  y=405..438 -->
+<line x1="422" y1="407" x2="422" y2="436"
+      stroke="#A07820" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<text x="428" y="423" font-family="sans-serif" font-size="8.5"
+      font-weight="700" fill="#A07820">h_zug_ke</text>
+
+<!-- h_handling_zug_ke  y=390..405 -->
+<line x1="422" y1="392" x2="422" y2="403"
+      stroke="#2A8A96" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<text x="428" y="399" font-family="sans-serif" font-size="7.5"
+      font-weight="700" fill="#2A8A96">h_handling_zug_ke</text>
+
+<!-- h_kanal_ke  y=362..390 -->
+<line x1="422" y1="364" x2="422" y2="388"
+      stroke="#3C3489" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<text x="428" y="378" font-family="sans-serif" font-size="8.5"
+      font-weight="700" fill="#3C3489">h_kanal_ke</text>
+
+<!-- h_ke Gesamtklammer  y=362..485 -->
+<line x1="608" y1="364" x2="608" y2="483"
+      stroke="#111" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<line x1="418" y1="485" x2="612" y2="485" stroke="#111" stroke-width="0.8"/>
+<line x1="418" y1="362" x2="612" y2="362" stroke="#111" stroke-width="0.8"/>
+<line x1="608" y1="485" x2="614" y2="485" stroke="#111" stroke-width="0.8"/>
+<line x1="608" y1="362" x2="614" y2="362" stroke="#111" stroke-width="0.8"/>
+<text x="618" y="427" font-family="sans-serif" font-size="10"
+      font-weight="700" fill="#111">h_ke</text>
+
+<!-- ══ SOCKEL-MAßLINIE rechts ══ -->
+<line x1="364" y1="490" x2="390" y2="490" stroke="#3366BB" stroke-width="0.5"/>
+<line x1="364" y1="525" x2="390" y2="525" stroke="#3366BB" stroke-width="0.5"/>
+<line x1="380" y1="492" x2="380" y2="523"
+      stroke="#555" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<text x="385" y="511" font-family="sans-serif" font-size="7.5" fill="#555">100 mm</text>
+
+<!-- ══ SCHRANK-MAßE ══ -->
+<!-- Höhe H – links -->
+<line x1="86"  y1="50"  x2="94"  y2="50"  stroke="#333" stroke-width="0.8"/>
+<line x1="86"  y1="490" x2="94"  y2="490" stroke="#333" stroke-width="0.8"/>
+<line x1="90"  y1="52"  x2="90"  y2="488"
+      stroke="#333" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<text x="84" y="270" text-anchor="middle" font-family="sans-serif" font-size="9"
+      fill="#333" transform="rotate(-90 84 270)">H = 2000 mm</text>
+
+<!-- Breite B – unten -->
+<line x1="100" y1="543" x2="100" y2="535" stroke="#333" stroke-width="0.8"/>
+<line x1="360" y1="543" x2="360" y2="535" stroke="#333" stroke-width="0.8"/>
+<line x1="102" y1="539" x2="358" y2="539"
+      stroke="#333" stroke-width="1"
+      marker-start="url(#da)" marker-end="url(#da)"/>
+<text x="230" y="551" text-anchor="middle"
+      font-family="sans-serif" font-size="9" fill="#333">B = 800 mm</text>
+
+<!-- ══ INNEN-LABELS ══ -->
+<text x="230" y="200" text-anchor="middle"
+      font-family="sans-serif" font-size="9" fill="#CCC">800 × 2000 mm</text>
+<text x="230" y="215" text-anchor="middle"
+      font-family="sans-serif" font-size="8" fill="#CCC">(Beispieldarstellung)</text>
+<text x="230" y="230" text-anchor="middle"
+      font-family="sans-serif" font-size="8" fill="#BBBBBB">Montageplatte 699 × 1896 mm</text>
+
+</svg>
+
+<div class="tbl-wrap">
+
+<div class="formula">
+  h_ke &nbsp;=&nbsp; h_handling_ke &nbsp;+&nbsp; h_kabel_bieg &nbsp;+&nbsp; h_zug_ke &nbsp;+&nbsp; h_handling_zug_ke &nbsp;+&nbsp; h_kanal_ke
+</div>
+
+<table style="margin-top:10px">
+  <thead>
+    <tr>
+      <th style="width:22%">Variable</th>
+      <th>Bezeichnung</th>
+      <th style="width:24%">Annahme / Wert</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="var">h_handling_ke</span></td>
+      <td>Freie Kabellänge ab Schrankunterseite bis Biegung beginnt. Festwert</td>
+      <td class="val" style="color:#444">15 mm</td>
+    </tr>
+    <tr>
+      <td><span class="var">d_max_kabel_ke</span></td>
+      <td>Kabelaußendurchmesser des Maximalkabels. Ein einzelnes dickeres Kabel bestimmt h_kabel_bieg für alle</td>
+      <td class="val" style="color:#444">18 mm<br><span class="sub">NYM-J 5×6 mm²</span></td>
+    </tr>
+    <tr>
+      <td><span class="var">h_kabel_bieg</span></td>
+      <td>Mindestbiegeradius nach VDE 0298-4 für fest verlegte Leitungen. Formel: 4 × d_max_kabel_ke</td>
+      <td class="val" style="color:#854F0B">72 mm<br><span class="sub">4 × 18 mm</span></td>
+    </tr>
+    <tr>
+      <td><span class="var">h_zug_ke</span></td>
+      <td>Einbauhöhe der Bügelschelle (Icotek CCL) für Zugentlastung im Schrank. Aus Datenbank, abhängig von d_max</td>
+      <td class="val" style="color:#A07820">35 mm<br><span class="sub">Icotek CCL (Beispiel)</span></td>
+    </tr>
+    <tr>
+      <td><span class="var">h_handling_zug_ke</span></td>
+      <td>Freiraum zwischen Bügelschelle und Kabelkanal/erstem Gerät. Festwert</td>
+      <td class="val" style="color:#2A8A96">20 mm</td>
+    </tr>
+    <tr>
+      <td><span class="var">h_kanal_ke</span></td>
+      <td>Höhe des horizontalen Kabelkanals zur Aufnahme aller eingeführten Leitungen</td>
+      <td class="val" style="color:#3C3489">60 mm<br><span class="sub">Standardgröße Standschrank</span></td>
+    </tr>
+    <tr style="background:#F5F4EE">
+      <td><span class="var" style="font-size:13px">h_ke</span></td>
+      <td><strong>Gesamte Kabeleinführungszone auf der Montageplatte.</strong> Wird von der Schrankunterseite aus nach oben gemessen. Der verbleibende Bereich steht als Nutzfläche zur Verfügung</td>
+      <td class="val" style="color:#111;font-size:14px">202 mm<br><span class="sub">15 + 72 + 35 + 20 + 60 mm</span></td>
+    </tr>
+    <tr>
+      <td><span class="var">h_sockel</span></td>
+      <td>Sockelhöhe. Kabel läuft durch Boden offen und Sockel. Der Sockel verändert h_ke nicht, erhöht aber die nutzbare Gesamthöhe des Standschranks</td>
+      <td class="val" style="color:#666">100 mm<br><span class="sub">Rittal VX (Beispiel)</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="caption">
+  Standschrank Rittal VX25 · KE von unten · Boden offen (keine PG-Verschraubung) ·
+  Sockel überbrückt Bodenabstand · Zugentlastung (h_zug_ke) und Handling-Zone (h_handling_zug_ke) schaltbar
+</p>
+
+</div>
+</body>
+</html>
