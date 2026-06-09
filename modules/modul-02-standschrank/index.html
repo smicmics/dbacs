@@ -46,6 +46,7 @@ header p{font-size:11px;color:var(--tx3);margin-top:1px;}
 header .title{flex:1;min-width:200px;}
 header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;margin-top:3px;}
 header a:hover{color:var(--tx2);}
+.header-logo{height:48px;width:48px;object-fit:contain;flex-shrink:0;}
 
 .proj-fields{
   display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:flex-end;width:100%;
@@ -122,10 +123,11 @@ legend{
 
 @media print{
   body{background:#fff;color:#000;}
-  header{display:block;width:100%;background:#fff !important;border-bottom:1.5px solid #888;padding-bottom:10px;}
+  header{display:flex;align-items:flex-start;gap:12px;width:100%;background:#fff !important;border-bottom:1.5px solid #888;padding-bottom:10px;}
   header .title h1{font-size:16px;color:#000;}
   header .title p{font-size:11px;color:#444;}
   header a{display:none;}
+  .header-logo{height:44px;width:44px;object-fit:contain;}
   .site-footer{display:none !important;}
   .btn-print{display:none !important;}
   fieldset#fs-schriftgroessen{display:none !important;}
@@ -189,6 +191,7 @@ legend{
 <body>
 
 <header>
+  <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
   <div class="title">
     <h1>Modul 2 · Standschrank · Kabeleinführung · Nutzfläche</h1>
     <p>GA-Planungstool · Schaltschrank-Dimensionierung</p>
