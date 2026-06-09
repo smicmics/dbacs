@@ -519,8 +519,8 @@ function buildSVG(p) {
   const SH = 390, sc = SH / p.H, SW = Math.round(p.B * sc);
   const PL = 56, PT = 52, PR = 195, PB = 55;
   const VW = PL + SW + PR, VH = PT + SH + PB;
-  const lw_s  = +Math.max(0.8, sc * 6).toFixed(1);
-  const lw_mp = +Math.max(0.4, sc * 3).toFixed(1);
+  const lw_s  = +Math.max(0.8, sc * 8).toFixed(1);
+  const lw_mp = +Math.max(0.4, sc * 4).toFixed(1);
 
   const sx = PL, sy = PT, sw = SW, sh = SH;
   const mx = sx + p.b_abst * sc,  my = sy + p.h_abst * sc;
