@@ -564,6 +564,8 @@ function calculate() {
 function buildSVG(p) {
   const SH = 390, sc = SH / p.H, SW = Math.round(p.B * sc);
   const PL = 56, PT = 52, PR = 195, PB = 55;
+  const lw_s  = +Math.max(0.8, sc * 6).toFixed(1);
+  const lw_mp = +Math.max(0.4, sc * 3).toFixed(1);
   const h_sockel_px = p.sockel_aktiv ? Math.round(p.h_sockel * sc) : 0;
   const VW = PL + SW + PR, VH = PT + SH + h_sockel_px + PB;
 
@@ -645,13 +647,13 @@ function buildSVG(p) {
 `;
 
   // Schrank + MP
-  s += `<rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" fill="none" stroke="${C.schrank}" stroke-width="3"/>\n`;
-  s += `<rect x="${r(mx)}" y="${r(my)}" width="${r(mw)}" height="${r(mh)}" fill="none" stroke="${C.mp}" stroke-width="1.5"/>\n`;
+  s += `<rect x="${sx}" y="${sy}" width="${sw}" height="${sh}" fill="none" stroke="${C.schrank}" stroke-width="${lw_s}"/>\n`;
+  s += `<rect x="${r(mx)}" y="${r(my)}" width="${r(mw)}" height="${r(mh)}" fill="none" stroke="${C.mp}" stroke-width="${lw_mp}"/>\n`;
 
   // Sockel unterhalb Schrank
   if (h_sockel_px > 0) {
     const sock_y = sy + sh;
-    s += `<rect x="${sx}" y="${r(sock_y)}" width="${sw}" height="${r(h_sockel_px)}" fill="${C.sockel}" stroke="${C.schrank}" stroke-width="3"/>\n`;
+    s += `<rect x="${sx}" y="${r(sock_y)}" width="${sw}" height="${r(h_sockel_px)}" fill="${C.sockel}" stroke="${C.schrank}" stroke-width="${lw_s}"/>\n`;
     s += tx(zoneLblX, sock_y+h_sockel_px/2, 'Schaltschranksockel', {anchor:'start', size:7, fill:C.sockel_tx, db:'middle'});
   }
 
