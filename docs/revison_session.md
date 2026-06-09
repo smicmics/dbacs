@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 7. Juni 2026 – Session 8
+**Stand:** 9. Juni 2026 – Session 9
 
 ---
 
@@ -100,7 +100,7 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 | KE Standard | oben | unten |
 | KE unten | mit PG-Verschraubung | freie Einführung, kein PG (Boden offen) |
 | KE oben | mit PG | mit PG (halbe Größe vs. Modul 1) |
-| Schriftgrößen | fs_dim=7, fs_var=6, fs_zone=7 | fs_dim=5, fs_var=5, fs_zone=6 |
+| Schriftgrößen | fs_dim=7, fs_var=6, fs_zone=7 | fs_dim=5, fs_var=5, fs_zone=5 |
 | Ergebnisvariablen | `_wandschrank_` | `_standschrank_` |
 
 **Sockel-Logik:**
@@ -236,7 +236,7 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 - KE oben: PG halb so groß wie Modul 1 (Dimensionen ÷2, stroke-width 0.7)
 - Sockel-Maßlinie: gleiche horizontale Position wie H-Maßlinie, Label nur Wert (mm)
 - „Schaltschranksockel" + „Freie Kabeleinführung · Boden offen" beide bei zoneLblX linksbündig
-- Schriftgrößen Standschrank: fs_dim=5, fs_var=5, fs_zone=6 (Standardwerte)
+- Schriftgrößen Standschrank: fs_dim=5, fs_var=5, fs_zone=5 (Standardwerte)
 
 **SVG / Darstellung (beide Module)**
 - SVG dynamisch per JavaScript, feste Höhe SH=390 px, sc = SH/H_mm (maßstäblich)

@@ -156,7 +156,7 @@ Die drei Schriftgrößen sind Nutzereingaben (`fs_dim`, `fs_var`, `fs_zone`) und
 |---|---|---|---|---|
 | Bemaßungstext | `fs_dim` | `7` | `5` | H =, B = Labels + Maßlinien |
 | Bemaßungsvariable | `fs_var` | `6` | `5` | Zonenpfeile, h_ke-Klammer, Guide-Linien, PG-Label |
-| Zonenbeschreibung | `fs_zone` | `7` | `6` | Kabeleinführungszone, Kabelkanal, Nutzfläche-Linie |
+| Zonenbeschreibung | `fs_zone` | `7` | `5` | Kabeleinführungszone, Kabelkanal, Nutzfläche-Linie |
 
 ### Farbkodierung Ergebnistabelle + Formel (Modul 01)
 Farben sind in Tabelle und Formelzeile immer identisch. h_zug und h_handling_zug werden immer farbig dargestellt (kein konditionelles Grau):
