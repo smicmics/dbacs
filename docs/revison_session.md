@@ -29,12 +29,14 @@ dbacs/
 │   ├── index.html                          Startseite / Modulübersicht (Dark Theme) – 2 Module aktiv
 │   └── assets/
 │       ├── css/style.css                   Dark Theme Stylesheet
-│       └── js/main.js                      Scroll-Reveal + aktive Nav-Link-Steuerung
+│       ├── js/main.js                      Scroll-Reveal + aktive Nav-Link-Steuerung
+│       └── img/dbacs-logo.png              DBACS Logo (Startseite + Modul-Header)
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html   Modul 1 – Wandschrank, vollständig ✅
 │   └── modul-02-standschrank/index.html    Modul 2 – Standschrank, vollständig ✅
 ├── drawings/
-│   └── wandschrank_frontansicht_v7.html    Referenzzeichnung (unverändert)
+│   ├── wandschrank_frontansicht_v7.html    Referenzzeichnung Wandschrank (unverändert)
+│   └── standschrank_frontansicht.html      Referenzzeichnung Standschrank ← NEU Session 9
 ├── data/
 │   ├── ga_komponenten.xlsx                 Pflegewerkzeug (Source of Truth, lokal – nicht versioniert)
 │   ├── kabel_nym_j.json                    Kabeldatenbank NYM-J (committed)
@@ -79,6 +81,8 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 - Festwerte: h_handling_ke=15 mm, h_handling_zug_ke=20 mm, Faktor 4×
 - Projektfelder im Header (Projekt, Projektnummer, ASP, Bearbeitet von, Dokument-Nr.) → localStorage
 - Druckbutton: Ergebnis drucken (float-Layout, Hochformat, 2 Seiten)
+- DBACS Logo im Header (screen + print), `../../web/assets/img/dbacs-logo.png`
+- Strichstärken proportional: `lw_s = Math.max(0.8, sc*8)`, `lw_mp = Math.max(0.4, sc*4)`
 
 **Ergebnisse**
 - `h_ke_mm` – Kabeleinführungszone gesamt
@@ -102,6 +106,7 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 | KE oben | mit PG | mit PG (halbe Größe vs. Modul 1) |
 | Schriftgrößen | fs_dim=7, fs_var=6, fs_zone=7 | fs_dim=5, fs_var=5, fs_zone=5 |
 | Ergebnisvariablen | `_wandschrank_` | `_standschrank_` |
+| Standardwerte Aufruf | KE oben, Zugentlastung Nein | KE unten, Sockel 100 mm aktiv, Zugentlastung Ja |
 
 **Sockel-Logik:**
 - Sockel Ja/Nein toggle → Höhe 100 oder 200 mm wählbar
@@ -115,12 +120,15 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 - Text „Freie Kabeleinführung · Boden offen" bei `zoneLblX`, unterhalb Sockeltext, Größe `fs_zone`
 - Kabelstub: 10 px unterhalb Sockel (oder Schrankunterseite wenn kein Sockel)
 
-**SVG Maßstab (beide Module):**
+**SVG Maßstab + Strichstärken (beide Module):**
 ```js
-const SH = 390;        // SVG-Höhe px (fest)
-const sc  = SH / p.H; // Maßstab px/mm – alle Elemente mit gleichem sc skaliert
+const SH    = 390;                           // SVG-Höhe px (fest)
+const sc    = SH / p.H;                      // Maßstab px/mm
+const lw_s  = +Math.max(0.8, sc * 8).toFixed(1);  // Gehäuselinie (proportional)
+const lw_mp = +Math.max(0.4, sc * 4).toFixed(1);  // MP-Linie (proportional)
 ```
 Schrank, Montageplatte, KE-Zonen und Sockel sind immer proportional korrekt dargestellt.
+Strichstärken skalieren mit dem Maßstab – kleinere Schrankdarstellungen erhalten dünnere Linien.
 
 **Ergebnisse**
 - `h_ke_mm` – Kabeleinführungszone gesamt (gleiche Formel wie Modul 1)
@@ -219,6 +227,7 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 7. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
 8. Startseite: Screenshot-Vorschau je Modul ergänzen
 9. Module 3–5 konzipieren
+10. Standschrank-Zeichnung: Werte der Beispieldarstellung mit realen DB-Werten abgleichen
 
 ---
 
@@ -240,10 +249,16 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 
 **SVG / Darstellung (beide Module)**
 - SVG dynamisch per JavaScript, feste Höhe SH=390 px, sc = SH/H_mm (maßstäblich)
+- Strichstärken proportional zum Maßstab: `lw_s = max(0.8, sc*8)`, `lw_mp = max(0.4, sc*4)`
 - Alle Maßketten einheitlich blau #3366BB
 - Zonenrahmen-Farben (Amber, Teal) von Maßkettenfarben getrennt
 - Zonenbeschriftungen linksbündig bei `zoneLblX = bxo + 10`
 - Teilmaß-Labels vertikal zentriert via `dominant-baseline="middle"` (außer h_handling_ke_mm)
+
+**Startseite / Branding**
+- DBACS Logo (`web/assets/img/dbacs-logo.png`) in Startseiten-Header und Modul-Headern
+- Logo in Print-CSS explizit gesetzt (44px, display:flex im Header)
+- Modul-Kacheln: Struktur Titel → Untertitel (blau) → Scope (grau) → Beschreibungstext → Features
 
 **Variablen-Trennung Wand- vs. Standschrank**
 - `h/b_mplatte_mbereich_wandschrank_mm` für Modul 1

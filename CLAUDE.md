@@ -35,12 +35,14 @@ dbacs/
 │   ├── index.html                               Startseite / Modulübersicht (Dark Theme)
 │   └── assets/
 │       ├── css/style.css                        Dark Theme Stylesheet
-│       └── js/main.js                           Scroll-Reveal + Nav-Highlighting
+│       ├── js/main.js                           Scroll-Reveal + Nav-Highlighting
+│       └── img/dbacs-logo.png                   DBACS Logo (Startseite + Modul-Header)
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html        h_ke-Rechner (Wandschrank) ✅
 │   └── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
 ├── drawings/
-│   └── wandschrank_frontansicht_v7.html         Referenzzeichnung (nicht bearbeiten)
+│   ├── wandschrank_frontansicht_v7.html         Referenzzeichnung Wandschrank (nicht bearbeiten)
+│   └── standschrank_frontansicht.html           Referenzzeichnung Standschrank (nicht bearbeiten)
 ├── data/
 │   ├── ga_komponenten.xlsx                      Excel Source of Truth (lokal, nicht versioniert)
 │   ├── kabel_nym_j.json                         Kabeldatenbank NYM-J (committed)
@@ -192,7 +194,8 @@ SVG-Zonenrahmen (getrennt von Maßketten-Farben):
 | Maßketten Strich | `0.8 px` |
 | Maßketten Schrift | Bemaßungstext `7 pt` · Bemaßungsvariable `6 pt` · Zonenbeschreibung `7 pt` · Innen-Labels `7 pt` |
 | Maßkettentext Abstand | Baseline **2 px oberhalb** der Maßlinie; Maßlinie **16 px** vom Gehäuse (H-Maß: 2 px rechts von `hx`, Pfeil bei `hx+3`) |
-| Gehäuselinien | `3 px` |
+| Gehäuselinien | `lw_s = Math.max(0.8, sc × 8)` px (proportional zum Maßstab) |
+| Montageplatte Linie | `lw_mp = Math.max(0.4, sc × 4)` px (proportional zum Maßstab) |
 | Kabeldarstellung | `4 px` |
 | SVG-Erzeugung | dynamisch per JS – kein statisches SVG |
 | PG-Verschraubungen | beide identisch (`pgBody` ohne `hasKabel`-Flag), Ausrichtung per `ke_pos` |
@@ -248,7 +251,7 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - PG-Verschraubungen bündig auf Gehäuse, kein Luftabstand
 - Kabelstub-Richtung: nach oben bei KE oben, nach unten bei KE unten
 - Biegeradiusfaktor 4× (nicht 6×, das gilt nur für flexible Leitungen)
-- Schriftgrößen sind Nutzereingaben, keine Konstanten – Standardwerte je Modul verschieden (Modul 1: 7/6/7; Modul 2: 5/5/6)
+- Schriftgrößen sind Nutzereingaben, keine Konstanten – Standardwerte je Modul verschieden (Modul 1: 7/6/7; Modul 2: 5/5/5)
 - Alle SVG-Variablenlabels tragen vollständige `_mm`-Suffixe
 - `h_mplatte_mbereich_wandschrank_mm`-Maßlinie liegt im `if (p.fs_var > 0)`-Block
 - Zonenbeschriftungen linksbündig bei `zoneLblX = bxo + 10` (10 px rechts vom Kabel); ▼/▲ Nutzfläche zentriert bei `mx+mw/2`
@@ -264,3 +267,5 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - „Freie Kabeleinführung · Boden offen" bei `zoneLblX`, unterhalb Sockeltext, Größe `fs_zone`
 - VH = PT + SH + h_sockel_px + PB (dynamische SVG-Höhe bei aktivem Sockel)
 - Sockel-Lookup: `SOCKEL_DB.find(e => e.b_gehaeuse_aussen_mm === B && e.h_sockel_mm === h_sockel_option)`
+- **Standardwerte beim ersten Aufruf:** Sockel 100 mm aktiv, KE-Position unten, Zugentlastung Ja
+- Strichstärken proportional: `lw_s = Math.max(0.8, sc*8)`, `lw_mp = Math.max(0.4, sc*4)` – gilt für beide Module
