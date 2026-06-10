@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBACS · Modul 3 · TE-Berechnung</title>
+<style>
+:root{
+  --bg:    #1A1A18;
+  --bg2:   #222220;
+  --bg3:   #2A2A28;
+  --bg4:   #303030;
+  --bord:  #3A3835;
+  --bords: #5A5855;
+  --tx:    #E0DED8;
+  --tx2:   #9A9890;
+  --tx3:   #666460;
+  --green: #2DBD8E;
+  --orange:#C8720E;
+  --blue:  #7A74CC;
+  --font:  system-ui,-apple-system,sans-serif;
+  --mono:  'Courier New',Courier,monospace;
+  /* ── Ergebnisfarben ── */
+  --c-input:   #9A9890;   /* Eingabewerte */
+  --c-result:  #E0DED8;   /* Fläche cm² / m² */
+  --c-te:      #A8C4E8;   /* n_te Hauptergebnis */
+  /* ── Textgrößen Felder ── */
+  --fs-field:    13px;
+  --fs-field-sm: 10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;}
+
+/* ── Header ── */
+header{
+  background:#111110;color:#E0DED8;
+  padding:10px 22px 12px;display:flex;align-items:flex-start;gap:18px;
+  border-bottom:1px solid var(--bord);flex-wrap:wrap;
+}
+header h1{font-size:15px;font-weight:700;letter-spacing:-.01em;}
+header p{font-size:11px;color:var(--tx3);margin-top:1px;}
+header .title{flex:1;min-width:200px;}
+header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;margin-top:3px;}
+header a:hover{color:var(--tx2);}
+.header-logo{height:48px;width:48px;object-fit:contain;flex-shrink:0;}
+
+.proj-fields{
+  display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:flex-end;width:100%;
+}
+.proj-field{display:flex;flex-direction:column;gap:3px;}
+.proj-field label{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;}
+.proj-field input{
+  background:var(--bg3);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:12px;padding:3px 8px;
+}
+.proj-field input:focus{outline:none;border-color:var(--green);}
+#proj-name   {width:220px;}
+#proj-nummer {width:130px;}
+#proj-asp    {width:110px;}
+#proj-docnr  {width:280px;color:var(--tx2);}
+
+@media print{
+  .proj-fields{display:flex !important;}
+  .proj-field input{background:#fff;border-color:#ccc;color:#000;font-size:11px;}
+  .proj-field label{color:#666;}
+}
+
+/* ── Layout ── */
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 46px);}
+
+/* ── Input panel ── */
+.panel-in{
+  background:var(--bg2);border-right:1px solid var(--bord);
+  padding:18px 16px;overflow-y:auto;
+}
+.panel-in h2{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tx3);margin-bottom:14px;
+}
+
+fieldset{
+  border:1px solid var(--bord);border-radius:4px;
+  padding:10px 12px 8px;margin-bottom:12px;background:var(--bg3);
+}
+legend{
+  font-size:10px;font-weight:700;color:var(--tx3);
+  padding:0 5px;text-transform:uppercase;letter-spacing:.04em;
+}
+.field{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 0;border-bottom:.5px solid var(--bord);gap:8px;
+}
+.field:last-child{border-bottom:none;}
+.field .lbl{font-size:12px;color:var(--tx2);flex:1;min-width:0;}
+.field .var{
+  font-family:var(--mono);font-size:9.5px;color:var(--tx3);
+  display:block;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.field input,.field select{
+  width:96px;padding:3px 7px;border:1px solid var(--bords);border-radius:3px;
+  background:var(--bg);color:var(--tx);font-size:13px;text-align:right;flex-shrink:0;
+}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green);}
+.field input[disabled]{
+  background:var(--bg2);color:var(--tx3);text-align:left;
+  font-size:var(--fs-field-sm);cursor:default;border-color:var(--bord);
+}
+.field select{text-align:left;cursor:pointer;}
+
+.hint{font-size:10px;color:var(--tx3);margin:-6px 0 10px 2px;font-style:italic;}
+
+/* ── Print button ── */
+.btn-print{
+  display:block;width:100%;margin-top:4px;padding:9px 12px;
+  background:var(--bg3);color:var(--tx2);
+  border:1px solid var(--bords);border-radius:4px;
+  font-size:12px;font-weight:600;letter-spacing:.04em;
+  cursor:pointer;text-align:center;transition:background .15s,color .15s;
+}
+.btn-print:hover{background:var(--bords);color:var(--tx);}
+
+@media print{
+  body{background:#fff;color:#000;}
+  header{display:flex;align-items:flex-start;gap:12px;width:100%;background:#fff !important;border-bottom:1.5px solid #888;padding-bottom:10px;}
+  header .title h1{font-size:16px;color:#000;}
+  header .title p{font-size:11px;color:#444;}
+  header a{display:none;}
+  .header-logo{height:44px;width:44px;object-fit:contain;}
+  .site-footer{display:none !important;}
+  .btn-print{display:none !important;}
+  .layout{display:block;min-height:0;}
+  .panel-in{float:left;width:280px;background:#fff;border:none;overflow:visible;padding:10px 12px;}
+  .panel-out{margin-left:295px;overflow:visible;padding:10px 12px;}
+  fieldset{border-color:#ccc;background:#fff;}
+  legend{color:#444;}
+  .field input,.field select{border-color:#ccc;background:#fff;color:#000;}
+  .field .lbl{color:#222;}
+  .field .var{color:#666;}
+  .rtable th{background:#eee;color:#222;}
+  .rtable td{color:#000;}
+  .formula-box{background:#f5f5f5;border-left-color:#999;color:#000;}
+}
+
+/* ── Result panel ── */
+.panel-out{padding:20px;overflow-y:auto;}
+
+/* Results table */
+.rtable{width:100%;border-collapse:collapse;font-size:12px;margin-top:0;}
+.rtable th{
+  background:var(--bg3);color:var(--tx2);font-weight:600;
+  padding:6px 10px;text-align:left;border-bottom:1.5px solid var(--bords);
+}
+.rtable td{padding:5px 10px;border-bottom:.5px solid var(--bord);vertical-align:middle;}
+.rtable tr:last-child td{border-bottom:none;}
+.rtable tr:hover td{background:var(--bg3);}
+.vname{font-family:var(--mono);font-size:10.5px;font-weight:700;}
+.val{font-family:var(--mono);font-size:12px;font-weight:600;text-align:right;white-space:nowrap;}
+.formula-cell{font-family:var(--mono);font-size:10px;color:var(--tx3);}
+
+.formula-box{
+  background:var(--bg3);border-left:3px solid var(--bords);
+  padding:8px 12px;font-family:var(--mono);font-size:12px;
+  margin-top:14px;margin-bottom:10px;border-radius:0 3px 3px 0;color:var(--tx);
+}
+.note-line{font-size:10px;color:var(--tx3);margin-top:8px;padding-top:6px;border-top:.5px solid var(--bord);}
+
+@media(max-width:760px){
+  .layout{grid-template-columns:1fr;}
+  .panel-in{border-right:none;border-bottom:1px solid var(--bord);}
+}
+
+/* ── Footer ── */
+.site-footer{
+  background:#111110;border-top:1px solid var(--bord);
+  padding:8px 22px;
+  font-size:11px;color:var(--tx3);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.site-footer a{color:var(--tx3);text-decoration:none;}
+.site-footer a:hover{color:var(--tx2);}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
+  <div class="title">
+    <h1>Modul 3 · TE-Berechnung &amp; Reihenkapazität</h1>
+    <p>GA-Planungstool · Schaltschrank-Dimensionierung</p>
+  </div>
+  <a href="../../index.html">← Startseite</a>
+  <div class="proj-fields">
+    <div class="proj-field">
+      <label for="proj-name">Projekt</label>
+      <input id="proj-name" type="text" placeholder="Projektbezeichnung" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-nummer">Projektnummer</label>
+      <input id="proj-nummer" type="text" placeholder="z. B. 2024-001" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-asp">ASP</label>
+      <input id="proj-asp" type="text" placeholder="Automationsschwerpunkt" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-engineer">Bearbeitet von</label>
+      <input id="proj-engineer" type="text" placeholder="Name" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-docnr">Dokument-Nr.</label>
+      <input id="proj-docnr" type="text" readonly>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ═══ INPUTS ═══ -->
+  <aside class="panel-in">
+    <h2>Eingaben</h2>
+
+    <!-- Fieldset 1: Schrank-Typ -->
+    <fieldset>
+      <legend>Schrank-Typ</legend>
+      <div class="field">
+        <div class="lbl">Auswahl<span class="var">schrank_typ</span></div>
+        <select id="schrank_typ" onchange="calculate()">
+          <option value="wandschrank">Wandschrank</option>
+          <option value="standschrank">Standschrank</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <!-- Fieldset 2: Montagebereich -->
+    <fieldset>
+      <legend>Montagebereich (aus Modul 1 / 2)</legend>
+      <div class="field">
+        <div class="lbl">Breite (mm)<span class="var">b_mplatte_mbereich_mm</span></div>
+        <input id="b_mplatte_mbereich_mm" type="number" value="600" min="50" max="2500" step="5" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">Höhe (mm)<span class="var">h_mplatte_mbereich_mm</span></div>
+        <input id="h_mplatte_mbereich_mm" type="number" value="800" min="50" max="2500" step="5" oninput="calculate()">
+      </div>
+    </fieldset>
+    <p class="hint">Werte aus Modul 1 oder 2 übernehmen</p>
+
+    <!-- Fieldset 3: Berechnungsergebnisse (read-only) -->
+    <fieldset>
+      <legend>Berechnungsergebnisse</legend>
+      <div class="field">
+        <div class="lbl">Fläche (cm²)<span class="var">A_cm2</span></div>
+        <input id="A_cm2" type="text" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Fläche (m²)<span class="var">A_m2</span></div>
+        <input id="A_m2" type="text" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Verfügbare TE<span class="var">n_te</span></div>
+        <input id="n_te" type="text" disabled>
+      </div>
+    </fieldset>
+
+    <!-- Fieldset 4: Festwerte -->
+    <fieldset>
+      <legend>Festwerte · Norm</legend>
+      <div class="field">
+        <div class="lbl">TE-Breite nach DIN EN 60715 (mm)<span class="var">te_breite_mm</span></div>
+        <input type="number" value="17.5" disabled>
+      </div>
+    </fieldset>
+
+    <button class="btn-print" onclick="window.print()">Ergebnis drucken</button>
+
+  </aside>
+
+  <!-- ═══ OUTPUT ═══ -->
+  <section class="panel-out">
+    <div id="results-area"></div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <span>Erstellt von: Stephan Michler · DBACS GA-Planungstool · 2026</span>
+  <a href="../../web/index.html">← Startseite</a>
+</footer>
+
+<script>
+// ── DOM-Helfer ────────────────────────────────────────────────
+const g  = id => +document.getElementById(id).value;
+const gs = id => document.getElementById(id).value;
+const _v = (id, val) => { document.getElementById(id).value = val; };
+
+// ── Festwert ──────────────────────────────────────────────────
+const TE_BREITE_MM = 17.5;  // DIN EN 60715
+
+// ── Berechnung ────────────────────────────────────────────────
+function calculate() {
+  const b  = g('b_mplatte_mbereich_mm');
+  const h  = g('h_mplatte_mbereich_mm');
+  const typ = gs('schrank_typ');
+
+  const A_cm2 = (b * h) / 100;
+  const A_m2  = (b * h) / 1e6;
+  const n_te  = Math.floor(b / TE_BREITE_MM);
+
+  // Seitenleiste aktualisieren
+  _v('A_cm2', A_cm2.toFixed(1));
+  _v('A_m2',  A_m2.toFixed(4));
+  _v('n_te',  n_te);
+
+  buildTable({ b, h, typ, A_cm2, A_m2, n_te });
+}
+
+// ── Ergebnistabelle ───────────────────────────────────────────
+function buildTable(p) {
+  const CI = '#9A9890';   // Eingabewerte
+  const CR = '#E0DED8';   // Fläche
+  const CT = '#A8C4E8';   // TE-Hauptergebnis
+
+  const typLabel = p.typ === 'wandschrank' ? 'Wandschrank (Modul 1)' : 'Standschrank (Modul 2)';
+
+  const rows = [
+    { v: 'schrank_typ',            label: 'Schrank-Typ',           val: typLabel,                        unit: '–',   formel: 'Auswahl',                     col: CI },
+    { v: 'b_mplatte_mbereich_mm',  label: 'Montagebereich Breite', val: p.b.toFixed(0),                  unit: 'mm',  formel: 'Eingabe aus Modul 1 / 2',     col: CI },
+    { v: 'h_mplatte_mbereich_mm',  label: 'Montagebereich Höhe',   val: p.h.toFixed(0),                  unit: 'mm',  formel: 'Eingabe aus Modul 1 / 2',     col: CI },
+    { v: 'A_cm2',                  label: 'Fläche',                 val: p.A_cm2.toFixed(1),              unit: 'cm²', formel: '(b × h) / 100',               col: CR },
+    { v: 'A_m2',                   label: 'Fläche',                 val: p.A_m2.toFixed(4),               unit: 'm²',  formel: '(b × h) / 1 000 000',         col: CR },
+    { v: 'n_te',                   label: 'Verfügbare TE',          val: p.n_te,                          unit: 'TE',  formel: '⌊ b / 17,5 ⌋',               col: CT },
+  ];
+
+  let tbl = `<table class="rtable">
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Bezeichnung</th>
+      <th style="text-align:right">Wert</th>
+      <th style="text-align:right">Einheit</th>
+      <th>Formel / Quelle</th>
+    </tr>
+  </thead>
+  <tbody>`;
+
+  for (const r of rows) {
+    tbl += `
+    <tr>
+      <td><span class="vname" style="color:${r.col}">${r.v}</span></td>
+      <td style="color:var(--tx2);font-size:12px">${r.label}</td>
+      <td class="val" style="color:${r.col}">${r.val}</td>
+      <td class="val" style="color:var(--tx3);font-weight:400">${r.unit}</td>
+      <td class="formula-cell">${r.formel}</td>
+    </tr>`;
+  }
+
+  tbl += `
+  </tbody>
+</table>`;
+
+  // Formelzeile
+  const fmtB = `<span style="color:${CI};font-weight:700">${p.b.toFixed(0)}</span>`;
+  const fmtH = `<span style="color:${CI};font-weight:700">${p.h.toFixed(0)}</span>`;
+  const fmtTE = `<span style="color:#D4A84B;font-weight:700">17,5</span>`;
+  const fmtN = `<span style="color:${CT};font-weight:700">${p.n_te}</span>`;
+  const fmtA = `<span style="color:${CR};font-weight:700">${p.A_cm2.toFixed(1)}</span>`;
+  const fmtM = `<span style="color:${CR};font-weight:700">${p.A_m2.toFixed(4)}</span>`;
+
+  const formel = `<div class="formula-box">
+  n_te = ⌊ b / te_breite ⌋ = ⌊ ${fmtB} / ${fmtTE} ⌋ = ${fmtN} TE<br>
+  A = ${fmtB} × ${fmtH} = ${fmtA} cm² = ${fmtM} m²
+  <div class="note-line">TE-Breite: 17,5 mm nach DIN EN 60715 · Ergebnis: ganze Zahl (abgerundet)</div>
+</div>`;
+
+  document.getElementById('results-area').innerHTML = tbl + formel;
+}
+
+// ── Projektfelder speichern / laden ───────────────────────────
+function updateDocNr() {
+  const nr  = document.getElementById('proj-nummer').value.trim();
+  const asp = document.getElementById('proj-asp').value.trim();
+  const doc = [nr, asp, 'M03'].filter(Boolean).join('-');
+  document.getElementById('proj-docnr').value = doc || '–';
+}
+function saveProjFields() {
+  ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id => {
+    localStorage.setItem(id, document.getElementById(id).value);
+  });
+  updateDocNr();
+}
+function loadProjFields() {
+  ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id => {
+    const val = localStorage.getItem(id);
+    if (val !== null) document.getElementById(id).value = val;
+  });
+  updateDocNr();
+}
+loadProjFields();
+
+// ── Init ──────────────────────────────────────────────────────
+calculate();
+</script>
+
+</body>
+</html>
