@@ -106,6 +106,7 @@ legend{
   font-size:var(--fs-field-sm);cursor:default;border-color:var(--bord);
 }
 .field select{text-align:left;cursor:pointer;}
+#schrank_typ{width:130px;}
 
 .hint{font-size:10px;color:var(--tx3);margin:-6px 0 10px 2px;font-style:italic;}
 
@@ -307,8 +308,8 @@ function calculate() {
   const n_te  = Math.floor(b / TE_BREITE_MM);
 
   // Seitenleiste aktualisieren
-  _v('A_cm2', A_cm2.toFixed(1));
-  _v('A_m2',  A_m2.toFixed(4));
+  _v('A_cm2', A_cm2.toFixed(0));
+  _v('A_m2',  A_m2.toFixed(3));
   _v('n_te',  n_te);
 
   buildTable({ b, h, typ, A_cm2, A_m2, n_te });
@@ -326,8 +327,8 @@ function buildTable(p) {
     { v: 'schrank_typ',            label: 'Schrank-Typ',           val: typLabel,                        unit: '–',   formel: 'Auswahl',                     col: CI },
     { v: 'b_mplatte_mbereich_mm',  label: 'Montagebereich Breite', val: p.b.toFixed(0),                  unit: 'mm',  formel: 'Eingabe aus Modul 1 / 2',     col: CI },
     { v: 'h_mplatte_mbereich_mm',  label: 'Montagebereich Höhe',   val: p.h.toFixed(0),                  unit: 'mm',  formel: 'Eingabe aus Modul 1 / 2',     col: CI },
-    { v: 'A_cm2',                  label: 'Fläche',                 val: p.A_cm2.toFixed(1),              unit: 'cm²', formel: '(b × h) / 100',               col: CR },
-    { v: 'A_m2',                   label: 'Fläche',                 val: p.A_m2.toFixed(4),               unit: 'm²',  formel: '(b × h) / 1 000 000',         col: CR },
+    { v: 'A_cm2',                  label: 'Fläche',                 val: p.A_cm2.toFixed(0),              unit: 'cm²', formel: '(b × h) / 100',               col: CR },
+    { v: 'A_m2',                   label: 'Fläche',                 val: p.A_m2.toFixed(3),               unit: 'm²',  formel: '(b × h) / 1 000 000',         col: CR },
     { v: 'n_te',                   label: 'Verfügbare TE',          val: p.n_te,                          unit: 'TE',  formel: '⌊ b / 17,5 ⌋',               col: CT },
   ];
 
@@ -363,8 +364,8 @@ function buildTable(p) {
   const fmtH = `<span style="color:${CI};font-weight:700">${p.h.toFixed(0)}</span>`;
   const fmtTE = `<span style="color:#D4A84B;font-weight:700">17,5</span>`;
   const fmtN = `<span style="color:${CT};font-weight:700">${p.n_te}</span>`;
-  const fmtA = `<span style="color:${CR};font-weight:700">${p.A_cm2.toFixed(1)}</span>`;
-  const fmtM = `<span style="color:${CR};font-weight:700">${p.A_m2.toFixed(4)}</span>`;
+  const fmtA = `<span style="color:${CR};font-weight:700">${p.A_cm2.toFixed(0)}</span>`;
+  const fmtM = `<span style="color:${CR};font-weight:700">${p.A_m2.toFixed(3)}</span>`;
 
   const formel = `<div class="formula-box">
   n_te = ⌊ b / te_breite ⌋ = ⌊ ${fmtB} / ${fmtTE} ⌋ = ${fmtN} TE<br>
