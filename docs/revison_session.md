@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 9. Juni 2026 – Session 9
+**Stand:** 10. Juni 2026 – Session 10
 
 ---
 
@@ -26,17 +26,18 @@ dbacs/
 ├── .claude/
 │   └── launch.json                         Dev-Server-Konfiguration (statischer HTTP-Server Port 8099)
 ├── web/
-│   ├── index.html                          Startseite / Modulübersicht (Dark Theme) – 2 Module aktiv
+│   ├── index.html                          Startseite / Modulübersicht (Dark Theme) – 3 Module aktiv
 │   └── assets/
 │       ├── css/style.css                   Dark Theme Stylesheet
 │       ├── js/main.js                      Scroll-Reveal + aktive Nav-Link-Steuerung
 │       └── img/dbacs-logo.png              DBACS Logo (Startseite + Modul-Header)
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html   Modul 1 – Wandschrank, vollständig ✅
-│   └── modul-02-standschrank/index.html    Modul 2 – Standschrank, vollständig ✅
+│   ├── modul-02-standschrank/index.html    Modul 2 – Standschrank, vollständig ✅
+│   └── modul-03-te-berechnung/index.html   Modul 3 – TE-Berechnung, vollständig ✅ ← NEU Session 10
 ├── drawings/
-│   ├── wandschrank_frontansicht_v7.html    Referenzzeichnung Wandschrank (unverändert)
-│   └── standschrank_frontansicht.html      Referenzzeichnung Standschrank ← NEU Session 9
+│   ├── wandschrank_frontansicht.html       Referenzzeichnung Wandschrank (nicht bearbeiten)
+│   └── standschrank_frontansicht.html      Referenzzeichnung Standschrank (nicht bearbeiten)
 ├── data/
 │   ├── ga_komponenten.xlsx                 Pflegewerkzeug (Source of Truth, lokal – nicht versioniert)
 │   ├── kabel_nym_j.json                    Kabeldatenbank NYM-J (committed)
@@ -57,6 +58,7 @@ dbacs/
 | Live-URL Startseite | https://smicmics.github.io/dbacs/ |
 | Live-URL Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
 | Live-URL Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
+| Live-URL Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-te-berechnung/ |
 | Deploy-Trigger | Push auf `main` Branch → GitHub Pages baut automatisch |
 
 ---
@@ -137,6 +139,45 @@ Strichstärken skalieren mit dem Maßstab – kleinere Schrankdarstellungen erha
 
 ---
 
+### Modul 3 – vollständig funktionsfähig ✅ ← NEU Session 10
+**Titel:** „Modul 3 · TE-Berechnung & Reihenkapazität"
+**Datei:** `modules/modul-03-te-berechnung/index.html`
+
+**Zweck:** Berechnung der verfügbaren Teileinheiten auf der Montageplatte, auf Basis der Montagebereich-Maße aus Modul 1 oder 2.
+
+**Eingabepanel**
+- Schrank-Typ: Wandschrank / Standschrank (Pflichtauswahl, Standard „— bitte wählen —")
+- Montagebereich Breite + Höhe: automatisch via localStorage aus Modul 1/2 übernommen (read-only)
+- Festwert: te_breite_mm = 17,5 mm (DIN EN 60715)
+
+**localStorage-Datenaustausch**
+- Modul 1 schreibt bei jeder Berechnung: `m01_b/h_mplatte_mbereich_wandschrank_mm`
+- Modul 2 schreibt bei jeder Berechnung: `m02_b/h_mplatte_mbereich_standschrank_mm`
+- Modul 3 liest je nach Typ-Auswahl den passenden Key
+- Bei fehlendem Key: Felder = 0, Hinweis mit Link zur Startseite
+
+**Ergebnisse**
+- `flaeche_mbereich_cm2` = (b × h) / 100
+- `flaeche_mbereich_m2`  = (b × h) / 1 000 000
+- `n_te`                 = ⌊ b / 17,5 ⌋ (ganze Zahl, abgerundet)
+
+**Farbkodierung**
+| Variable | Farbe | Hex |
+|---|---|---|
+| Eingaben b, h | Sekundär | `#9A9890` |
+| `flaeche_mbereich_cm2` | Grün | `#2DBD8E` |
+| `flaeche_mbereich_m2` | Lila | `#9A94E8` |
+| `n_te` | Hellblau | `#A8C4E8` |
+| `te_breite_mm` (Festwert) | Amber | `#D4A84B` |
+
+**Besonderheiten**
+- Kein SVG – nur Ergebnistabelle und Formelbox
+- Variablennamen in Seitenleiste und Tabelle wechseln dynamisch je Typ (`_wandschrank_mm` / `_standschrank_mm`)
+- Formel-Variablennamen farbig (gleiche Farbe wie Tabellenzeile)
+- Copyright-Zeile (`class="copyright-line"`) in Druckansicht ausgeblendet
+
+---
+
 ### Datenbanken
 
 **`kabel_nym_j.json`** – 18 NYM-J Typen (3/4/5/7 Adern, 1,5–16 mm²)
@@ -208,6 +249,11 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 | `h_sockel_mm` | Sockelhöhe Standschrank (0 wenn inaktiv) | mm |
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor (Festwert 4, VDE 0298-4) | – |
+| `schrank_typ` | Auswahl Wandschrank / Standschrank (Modul 3) | – |
+| `te_breite_mm` | TE-Breite nach DIN EN 60715 (Festwert 17,5 mm) | mm |
+| `flaeche_mbereich_cm2` | Montagefläche Montagebereich | cm² |
+| `flaeche_mbereich_m2` | Montagefläche Montagebereich | m² |
+| `n_te` | Verfügbare Teileinheiten auf Montagebereich-Breite (ganze Zahl) | TE |
 
 ---
 
@@ -219,15 +265,14 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 3. Preisfelder aller DBs befüllen (Listenpreise)
 
 **Nächste Module (Prio hoch)**
-4. Modul 3 – Einspeisezone h_einsp (analog h_ke)
-5. Modul 4 – Klemmenzone h_klemm
-6. Startseite: Modul 3–5 Karten aktualisieren wenn Entwicklung beginnt
+4. Modul 4 – Einspeisezone h_einsp (analog h_ke)
+5. Modul 5 – Klemmenzone h_klemm
+6. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
 
 **Später**
 7. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
 8. Startseite: Screenshot-Vorschau je Modul ergänzen
-9. Module 3–5 konzipieren
-10. Standschrank-Zeichnung: Werte der Beispieldarstellung mit realen DB-Werten abgleichen
+9. Standschrank-Zeichnung: Werte der Beispieldarstellung mit realen DB-Werten abgleichen
 
 ---
 
@@ -263,7 +308,14 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 **Variablen-Trennung Wand- vs. Standschrank**
 - `h/b_mplatte_mbereich_wandschrank_mm` für Modul 1
 - `h/b_mplatte_mbereich_standschrank_mm` für Modul 2
-- Ermöglicht spätere automatische Schrankauswahl auf Basis beider Montagebereich-Ergebnisse
+- Ermöglicht automatische Datenübernahme in Modul 3 via localStorage
+
+**Modul 3 – TE-Berechnung**
+- `te_breite_mm = 17,5 mm` Festwert nach DIN EN 60715 (nicht ändern)
+- `n_te = Math.floor(b / 17.5)` – ganzzahlig abgerundet
+- Datenfluss: Modul 1/2 → localStorage → Modul 3 (kein direkter Aufruf)
+- Standardauswahl `schrank_typ = ""` → alle Felder 0 bis Auswahl erfolgt
+- Copyright: `class="copyright-line"` + `@media print { .copyright-line { display:none !important } }`
 
 **Daten / Architektur**
 - Single-File HTML pro Modul (GitHub Pages, kein Build-Step)

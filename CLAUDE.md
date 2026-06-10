@@ -8,6 +8,7 @@
 3. `docs/revison_session.md` lesen – aktueller Projektstand, offene Punkte, gesperrte Entscheidungen
 4. Bei Arbeit an Modul 1: `modules/modul-01-schaltschrank/index.html` – JS beginnt nach dem HTML-Markup (Suche nach `<script>`)
 5. Bei Arbeit an Modul 2: `modules/modul-02-standschrank/index.html` – gleiche Struktur wie Modul 1
+6. Bei Arbeit an Modul 3: `modules/modul-03-te-berechnung/index.html` – kein SVG, nur Berechnungstabelle; Daten kommen via localStorage aus Modul 1/2
 
 **Hinweis:** Commits erfolgen in der Regel über VS Code, nicht über Claude. Der letzte Commit-Stand ist daher maßgeblich für den tatsächlichen Projektstand – nicht der Dokumentationsstand in `revison_session.md`.
 
@@ -39,7 +40,8 @@ dbacs/
 │       └── img/dbacs-logo.png                   DBACS Logo (Startseite + Modul-Header)
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html        h_ke-Rechner (Wandschrank) ✅
-│   └── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
+│   ├── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
+│   └── modul-03-te-berechnung/index.html        TE-Berechnung & Reihenkapazität ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html            Referenzzeichnung Wandschrank (nicht bearbeiten)
 │   └── standschrank_frontansicht.html           Referenzzeichnung Standschrank (nicht bearbeiten)
@@ -68,6 +70,7 @@ dbacs/
 | GitHub Pages | https://smicmics.github.io/dbacs/ |
 | Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
 | Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
+| Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-te-berechnung/ |
 | Deploy-Trigger | `git push origin main` → GitHub Pages baut automatisch |
 
 ---
@@ -100,6 +103,11 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 | `h_sockel_mm` | Sockelhöhe Standschrank (0 wenn inaktiv) | mm |
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld in kabelzugschellen.json) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor Festwert 4 (VDE 0298-4) | – |
+| `schrank_typ` | Auswahl Wandschrank / Standschrank (Modul 3) | – |
+| `te_breite_mm` | TE-Breite nach DIN EN 60715 (Festwert 17,5 mm) | mm |
+| `flaeche_mbereich_cm2` | Montagefläche Montagebereich | cm² |
+| `flaeche_mbereich_m2` | Montagefläche Montagebereich | m² |
+| `n_te` | Verfügbare Teileinheiten auf Montagebereich-Breite (ganze Zahl) | TE |
 
 ---
 
@@ -258,6 +266,24 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Teilmaß-Labels vertikal zentriert via `dominant-baseline="middle"` – Ausnahme: `h_handling_ke_mm` (zu kleine Zone, Sonderpositionierung ±0,5 px je KE-Richtung)
 - `tx()`-Funktion unterstützt `db`-Option für `dominant-baseline`
 - SVG vollständig maßstäblich: `sc = SH / H_mm` – Schrank, MP, KE-Zonen, Sockel alle mit gleichem Faktor skaliert
+
+### Modul 3 – TE-Berechnung (gesperrt)
+- Kein SVG – nur Ergebnistabelle + Formelbox
+- Datenübernahme ausschließlich via localStorage (kein direkter Modulaufruf):
+  - Modul 1 schreibt: `m01_b/h_mplatte_mbereich_wandschrank_mm`
+  - Modul 2 schreibt: `m02_b/h_mplatte_mbereich_standschrank_mm`
+  - Modul 3 liest je nach `schrank_typ`-Auswahl den passenden Key
+- Standardauswahl beim Start: `— bitte wählen —` (leerer Wert), Felder zeigen 0
+- `te_breite_mm = 17,5 mm` Festwert nach DIN EN 60715
+- `n_te = Math.floor(b / 17.5)` – immer als ganze Zahl (abgerundet)
+- Farbkodierung Ergebnisvariablen:
+  - `flaeche_mbereich_cm2` → Grün `#2DBD8E`
+  - `flaeche_mbereich_m2`  → Lila `#9A94E8`
+  - `n_te`                 → Hellblau `#A8C4E8`
+  - Eingaben (b, h)        → Sekundär `#9A9890`
+- Variablennamen in Seitenleiste und Tabelle wechseln dynamisch je nach Typ (`_wandschrank_mm` / `_standschrank_mm`)
+- Hint-Text bei fehlendem localStorage-Wert: Link zur Startseite
+- `class="copyright-line"` – Copyright-Absatz im Druck ausgeblendet (`display:none !important`)
 
 ### Modul 2 – Standschrank-spezifische Regeln (gesperrt)
 - KE unten: kein PG (Boden offen), Kabel läuft frei durch Schrankunterseite und Sockel
