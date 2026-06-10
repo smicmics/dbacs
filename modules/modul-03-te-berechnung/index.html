@@ -330,9 +330,7 @@ function loadFromModul() {
     hint.textContent = isWand ? 'Automatisch aus Modul 1 übernommen'
                               : 'Automatisch aus Modul 2 übernommen';
   } else {
-    const link = isWand
-      ? '<a href="../modul-01-schaltschrank/" target="_blank" style="color:var(--green)">Modul 1 öffnen →</a>'
-      : '<a href="../modul-02-standschrank/"  target="_blank" style="color:var(--green)">Modul 2 öffnen →</a>';
+    const link = '<a href="../../index.html" style="color:var(--green)">Zur Startseite →</a>';
     hint.innerHTML = `Kein Wert vorhanden &ndash; ${link} und neu berechnen`;
   }
 }
