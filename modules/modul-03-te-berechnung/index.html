@@ -226,6 +226,7 @@ legend{
       <div class="field">
         <div class="lbl">Auswahl<span class="var">schrank_typ</span></div>
         <select id="schrank_typ" onchange="saveInputs();calculate()">
+          <option value="" selected>— bitte wählen —</option>
           <option value="wandschrank">Wandschrank</option>
           <option value="standschrank">Standschrank</option>
         </select>
@@ -306,8 +307,19 @@ const CTE  = '#A8C4E8';  // n_te                 (hellblau)
 // ── Übernahme aus Modul 1 / 2 ────────────────────────────────
 function loadFromModul() {
   const typ = gs('schrank_typ');
-  const isWand = typ === 'wandschrank';
+  const hint = document.getElementById('hint_quelle');
 
+  // Keine Auswahl → alles auf 0, neutrale Anzeige
+  if (!typ) {
+    _v('b_mplatte_mbereich_mm', 0);
+    _v('h_mplatte_mbereich_mm', 0);
+    document.getElementById('var_b').textContent = 'b_mplatte_mbereich_mm';
+    document.getElementById('var_h').textContent = 'h_mplatte_mbereich_mm';
+    hint.textContent = 'Bitte Schrank-Typ auswählen';
+    return;
+  }
+
+  const isWand = typ === 'wandschrank';
   const keyB = isWand ? 'm01_b_mplatte_mbereich_wandschrank_mm'
                       : 'm02_b_mplatte_mbereich_standschrank_mm';
   const keyH = isWand ? 'm01_h_mplatte_mbereich_wandschrank_mm'
@@ -316,16 +328,13 @@ function loadFromModul() {
   const storedB = localStorage.getItem(keyB);
   const storedH = localStorage.getItem(keyH);
 
-  // Immer setzen: Wert aus Modul, sonst 0
   _v('b_mplatte_mbereich_mm', storedB !== null ? +storedB : 0);
   _v('h_mplatte_mbereich_mm', storedH !== null ? +storedH : 0);
 
-  // Variablennamen und Hinweis dynamisch anpassen
   const sfx = isWand ? 'wandschrank_mm' : 'standschrank_mm';
   document.getElementById('var_b').textContent = `b_mplatte_mbereich_${sfx}`;
   document.getElementById('var_h').textContent = `h_mplatte_mbereich_${sfx}`;
 
-  const hint = document.getElementById('hint_quelle');
   if (storedB !== null) {
     hint.textContent = isWand ? 'Automatisch aus Modul 1 übernommen'
                               : 'Automatisch aus Modul 2 übernommen';
@@ -341,7 +350,7 @@ function saveInputs() {
 }
 function loadInputs() {
   const typ = localStorage.getItem('m03_schrank_typ');
-  if (typ) _v('schrank_typ', typ);
+  if (typ !== null) _v('schrank_typ', typ); // '' (keine Wahl) wird bewusst wiederhergestellt
 }
 
 // ── Berechnung ────────────────────────────────────────────────
