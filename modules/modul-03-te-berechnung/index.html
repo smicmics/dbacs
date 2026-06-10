@@ -325,12 +325,16 @@ function loadFromModul() {
   document.getElementById('var_b').textContent = `b_mplatte_mbereich_${sfx}`;
   document.getElementById('var_h').textContent = `h_mplatte_mbereich_${sfx}`;
 
-  const quelle = isWand ? 'Automatisch aus Modul 1 übernommen'
-                        : 'Automatisch aus Modul 2 übernommen';
   const hint = document.getElementById('hint_quelle');
-  hint.textContent = (storedB !== null)
-    ? quelle
-    : 'Noch kein Wert gespeichert – bitte zuerst Modul 1 / 2 öffnen';
+  if (storedB !== null) {
+    hint.textContent = isWand ? 'Automatisch aus Modul 1 übernommen'
+                              : 'Automatisch aus Modul 2 übernommen';
+  } else {
+    const link = isWand
+      ? '<a href="../modul-01-schaltschrank/" target="_blank" style="color:var(--green)">Modul 1 öffnen →</a>'
+      : '<a href="../modul-02-standschrank/"  target="_blank" style="color:var(--green)">Modul 2 öffnen →</a>';
+    hint.innerHTML = `Kein Wert vorhanden &ndash; ${link} und neu berechnen`;
+  }
 }
 
 // ── Schrank-Typ speichern / laden ────────────────────────────
@@ -369,13 +373,19 @@ function buildTable(p) {
   const sfx      = isWand ? 'wandschrank_mm' : 'standschrank_mm';
   const src      = isWand ? 'aus Modul 1' : 'aus Modul 2';
 
+  // Farbige Variablennamen für Formel-Spalte
+  const cb = s => `<span style="color:${CI}">${s}</span>`;
+  const fmtFormelA  = `(${cb('b')} × ${cb('h')}) / 100`;
+  const fmtFormelM  = `(${cb('b')} × ${cb('h')}) / 1 000 000`;
+  const fmtFormelTE = `⌊ ${cb('b')} / 17,5 ⌋`;
+
   const rows = [
-    { v: 'schrank_typ',                        label: 'Schrank-Typ',           val: typLabel,                              unit: '–',   formel: 'Auswahl',           col: CI   },
-    { v: `b_mplatte_mbereich_${sfx}`,          label: 'Montagebereich Breite', val: p.b.toFixed(0),                        unit: 'mm',  formel: src,                 col: CI   },
-    { v: `h_mplatte_mbereich_${sfx}`,          label: 'Montagebereich Höhe',   val: p.h.toFixed(0),                        unit: 'mm',  formel: src,                 col: CI   },
-    { v: 'flaeche_mbereich_cm2',               label: 'Fläche',                val: p.flaeche_mbereich_cm2.toFixed(0),     unit: 'cm²', formel: '(b × h) / 100',     col: CCM2 },
-    { v: 'flaeche_mbereich_m2',                label: 'Fläche',                val: p.flaeche_mbereich_m2.toFixed(3),      unit: 'm²',  formel: '(b × h) / 1 000 000', col: CM2 },
-    { v: 'n_te',                               label: 'Verfügbare TE',         val: p.n_te,                                unit: 'TE',  formel: '⌊ b / 17,5 ⌋',     col: CTE  },
+    { v: 'schrank_typ',                        label: 'Schrank-Typ',           val: typLabel,                              unit: '–',   formel: 'Auswahl',   col: CI   },
+    { v: `b_mplatte_mbereich_${sfx}`,          label: 'Montagebereich Breite', val: p.b.toFixed(0),                        unit: 'mm',  formel: src,         col: CI   },
+    { v: `h_mplatte_mbereich_${sfx}`,          label: 'Montagebereich Höhe',   val: p.h.toFixed(0),                        unit: 'mm',  formel: src,         col: CI   },
+    { v: 'flaeche_mbereich_cm2',               label: 'Fläche',                val: p.flaeche_mbereich_cm2.toFixed(0),     unit: 'cm²', formel: fmtFormelA,  col: CCM2 },
+    { v: 'flaeche_mbereich_m2',                label: 'Fläche',                val: p.flaeche_mbereich_m2.toFixed(3),      unit: 'm²',  formel: fmtFormelM,  col: CM2  },
+    { v: 'n_te',                               label: 'Verfügbare TE',         val: p.n_te,                                unit: 'TE',  formel: fmtFormelTE, col: CTE  },
   ];
 
   let tbl = `<table class="rtable">
@@ -405,17 +415,28 @@ function buildTable(p) {
   </tbody>
 </table>`;
 
-  // Formelzeile
-  const fB   = `<span style="color:${CI};font-weight:700">${p.b.toFixed(0)}</span>`;
-  const fH   = `<span style="color:${CI};font-weight:700">${p.h.toFixed(0)}</span>`;
-  const fTE  = `<span style="color:#D4A84B;font-weight:700">17,5</span>`;
-  const fN   = `<span style="color:${CTE};font-weight:700">${p.n_te}</span>`;
-  const fCM2 = `<span style="color:${CCM2};font-weight:700">${p.flaeche_mbereich_cm2.toFixed(0)}</span>`;
-  const fM2  = `<span style="color:${CM2};font-weight:700">${p.flaeche_mbereich_m2.toFixed(3)}</span>`;
+  // Formelzeile – Variablennamen + Werte farbig
+  const fn = (col, txt) => `<span style="color:${col};font-weight:700">${txt}</span>`;
+
+  // Variablennamen
+  const vnTE  = fn(CTE,      'n_te');
+  const vnB   = fn(CI,       'b');
+  const vnH   = fn(CI,       'h');
+  const vnTEB = fn('#D4A84B','te_breite');
+  const vnCM2 = fn(CCM2,     'flaeche_mbereich_cm2');
+  const vnM2  = fn(CM2,      'flaeche_mbereich_m2');
+  // Werte
+  const fB   = fn(CI,       p.b.toFixed(0));
+  const fH   = fn(CI,       p.h.toFixed(0));
+  const fTE  = fn('#D4A84B','17,5');
+  const fN   = fn(CTE,      p.n_te);
+  const fCM2 = fn(CCM2,     p.flaeche_mbereich_cm2.toFixed(0));
+  const fM2  = fn(CM2,      p.flaeche_mbereich_m2.toFixed(3));
 
   const formel = `<div class="formula-box">
-  n_te = ⌊ b / te_breite ⌋ = ⌊ ${fB} / ${fTE} ⌋ = ${fN} TE<br>
-  A = ${fB} × ${fH} = ${fCM2} cm² = ${fM2} m²
+  ${vnTE} = ⌊ ${vnB} / ${vnTEB} ⌋ &nbsp;=&nbsp; ⌊ ${fB} / ${fTE} ⌋ &nbsp;=&nbsp; ${fN} TE<br>
+  ${vnCM2} = ${vnB} × ${vnH} &nbsp;=&nbsp; ${fB} × ${fH} &nbsp;=&nbsp; ${fCM2} cm²<br>
+  ${vnM2} = ${vnB} × ${vnH} / 1 000 000 &nbsp;=&nbsp; ${fM2} m²
   <div class="note-line">TE-Breite: 17,5 mm nach DIN EN 60715 · Ergebnis: ganze Zahl (abgerundet)</div>
 </div>`;
 
