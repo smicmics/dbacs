@@ -71,7 +71,7 @@ header a:hover{color:var(--tx2);}
 /* ── Input panel ── */
 .panel-in{
   background:var(--bg2);border-right:1px solid var(--bord);
-  padding:18px 16px;overflow-y:auto;
+  padding:18px 16px;overflow-y:auto;overflow-x:hidden;
 }
 .panel-in h2{
   font-size:11px;font-weight:700;text-transform:uppercase;
@@ -237,11 +237,11 @@ legend{
       <legend>Montagebereich (aus Modul 1 / 2)</legend>
       <div class="field">
         <div class="lbl">Breite (mm)<span class="var" id="var_b">b_mplatte_mbereich_wandschrank_mm</span></div>
-        <input id="b_mplatte_mbereich_mm" type="number" value="600" min="50" max="2500" step="5" oninput="saveInputs();calculate()">
+        <input id="b_mplatte_mbereich_mm" type="number" value="0" disabled>
       </div>
       <div class="field">
         <div class="lbl">Höhe (mm)<span class="var" id="var_h">h_mplatte_mbereich_wandschrank_mm</span></div>
-        <input id="h_mplatte_mbereich_mm" type="number" value="800" min="50" max="2500" step="5" oninput="saveInputs();calculate()">
+        <input id="h_mplatte_mbereich_mm" type="number" value="0" disabled>
       </div>
     </fieldset>
     <p class="hint" id="hint_quelle">Automatisch aus Modul 1 übernommen</p>
@@ -316,8 +316,9 @@ function loadFromModul() {
   const storedB = localStorage.getItem(keyB);
   const storedH = localStorage.getItem(keyH);
 
-  if (storedB !== null) _v('b_mplatte_mbereich_mm', +storedB);
-  if (storedH !== null) _v('h_mplatte_mbereich_mm', +storedH);
+  // Immer setzen: Wert aus Modul, sonst 0
+  _v('b_mplatte_mbereich_mm', storedB !== null ? +storedB : 0);
+  _v('h_mplatte_mbereich_mm', storedH !== null ? +storedH : 0);
 
   // Variablennamen und Hinweis dynamisch anpassen
   const sfx = isWand ? 'wandschrank_mm' : 'standschrank_mm';
@@ -329,14 +330,12 @@ function loadFromModul() {
   const hint = document.getElementById('hint_quelle');
   hint.textContent = (storedB !== null)
     ? quelle
-    : 'Kein gespeicherter Wert – bitte Modul 1 / 2 öffnen';
+    : 'Noch kein Wert gespeichert – bitte zuerst Modul 1 / 2 öffnen';
 }
 
-// ── Eingaben speichern / laden ────────────────────────────────
+// ── Schrank-Typ speichern / laden ────────────────────────────
 function saveInputs() {
-  localStorage.setItem('m03_schrank_typ',           gs('schrank_typ'));
-  localStorage.setItem('m03_b_mplatte_mbereich_mm', gs('b_mplatte_mbereich_mm'));
-  localStorage.setItem('m03_h_mplatte_mbereich_mm', gs('h_mplatte_mbereich_mm'));
+  localStorage.setItem('m03_schrank_typ', gs('schrank_typ'));
 }
 function loadInputs() {
   const typ = localStorage.getItem('m03_schrank_typ');
