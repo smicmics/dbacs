@@ -41,7 +41,7 @@ dbacs/
 │   ├── modul-01-schaltschrank/index.html        h_ke-Rechner (Wandschrank) ✅
 │   └── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
 ├── drawings/
-│   ├── wandschrank_frontansicht_v7.html         Referenzzeichnung Wandschrank (nicht bearbeiten)
+│   ├── wandschrank_frontansicht.html            Referenzzeichnung Wandschrank (nicht bearbeiten)
 │   └── standschrank_frontansicht.html           Referenzzeichnung Standschrank (nicht bearbeiten)
 ├── data/
 │   ├── ga_komponenten.xlsx                      Excel Source of Truth (lokal, nicht versioniert)
