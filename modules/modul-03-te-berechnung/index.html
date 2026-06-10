@@ -225,7 +225,7 @@ legend{
       <legend>Schrank-Typ</legend>
       <div class="field">
         <div class="lbl">Auswahl<span class="var">schrank_typ</span></div>
-        <select id="schrank_typ" onchange="calculate()">
+        <select id="schrank_typ" onchange="saveInputs();calculate()">
           <option value="wandschrank">Wandschrank</option>
           <option value="standschrank">Standschrank</option>
         </select>
@@ -236,26 +236,26 @@ legend{
     <fieldset>
       <legend>Montagebereich (aus Modul 1 / 2)</legend>
       <div class="field">
-        <div class="lbl">Breite (mm)<span class="var">b_mplatte_mbereich_mm</span></div>
-        <input id="b_mplatte_mbereich_mm" type="number" value="600" min="50" max="2500" step="5" oninput="calculate()">
+        <div class="lbl">Breite (mm)<span class="var" id="var_b">b_mplatte_mbereich_wandschrank_mm</span></div>
+        <input id="b_mplatte_mbereich_mm" type="number" value="600" min="50" max="2500" step="5" oninput="saveInputs();calculate()">
       </div>
       <div class="field">
-        <div class="lbl">Höhe (mm)<span class="var">h_mplatte_mbereich_mm</span></div>
-        <input id="h_mplatte_mbereich_mm" type="number" value="800" min="50" max="2500" step="5" oninput="calculate()">
+        <div class="lbl">Höhe (mm)<span class="var" id="var_h">h_mplatte_mbereich_wandschrank_mm</span></div>
+        <input id="h_mplatte_mbereich_mm" type="number" value="800" min="50" max="2500" step="5" oninput="saveInputs();calculate()">
       </div>
     </fieldset>
-    <p class="hint">Werte aus Modul 1 oder 2 übernehmen</p>
+    <p class="hint" id="hint_quelle">Automatisch aus Modul 1 übernommen</p>
 
     <!-- Fieldset 3: Berechnungsergebnisse (read-only) -->
     <fieldset>
       <legend>Berechnungsergebnisse</legend>
       <div class="field">
-        <div class="lbl">Fläche (cm²)<span class="var">A_cm2</span></div>
-        <input id="A_cm2" type="text" disabled>
+        <div class="lbl">Fläche (cm²)<span class="var">flaeche_mbereich_cm2</span></div>
+        <input id="flaeche_mbereich_cm2" type="text" disabled>
       </div>
       <div class="field">
-        <div class="lbl">Fläche (m²)<span class="var">A_m2</span></div>
-        <input id="A_m2" type="text" disabled>
+        <div class="lbl">Fläche (m²)<span class="var">flaeche_mbereich_m2</span></div>
+        <input id="flaeche_mbereich_m2" type="text" disabled>
       </div>
       <div class="field">
         <div class="lbl">Verfügbare TE<span class="var">n_te</span></div>
@@ -297,39 +297,86 @@ const _v = (id, val) => { document.getElementById(id).value = val; };
 // ── Festwert ──────────────────────────────────────────────────
 const TE_BREITE_MM = 17.5;  // DIN EN 60715
 
+// ── Farben Ergebnistabelle ────────────────────────────────────
+const CI  = '#9A9890';   // Eingabewerte (sekundär)
+const CCM2 = '#2DBD8E';  // flaeche_mbereich_cm2 (grün)
+const CM2  = '#9A94E8';  // flaeche_mbereich_m2  (lila)
+const CTE  = '#A8C4E8';  // n_te                 (hellblau)
+
+// ── Übernahme aus Modul 1 / 2 ────────────────────────────────
+function loadFromModul() {
+  const typ = gs('schrank_typ');
+  const isWand = typ === 'wandschrank';
+
+  const keyB = isWand ? 'm01_b_mplatte_mbereich_wandschrank_mm'
+                      : 'm02_b_mplatte_mbereich_standschrank_mm';
+  const keyH = isWand ? 'm01_h_mplatte_mbereich_wandschrank_mm'
+                      : 'm02_h_mplatte_mbereich_standschrank_mm';
+
+  const storedB = localStorage.getItem(keyB);
+  const storedH = localStorage.getItem(keyH);
+
+  if (storedB !== null) _v('b_mplatte_mbereich_mm', +storedB);
+  if (storedH !== null) _v('h_mplatte_mbereich_mm', +storedH);
+
+  // Variablennamen und Hinweis dynamisch anpassen
+  const sfx = isWand ? 'wandschrank_mm' : 'standschrank_mm';
+  document.getElementById('var_b').textContent = `b_mplatte_mbereich_${sfx}`;
+  document.getElementById('var_h').textContent = `h_mplatte_mbereich_${sfx}`;
+
+  const quelle = isWand ? 'Automatisch aus Modul 1 übernommen'
+                        : 'Automatisch aus Modul 2 übernommen';
+  const hint = document.getElementById('hint_quelle');
+  hint.textContent = (storedB !== null)
+    ? quelle
+    : 'Kein gespeicherter Wert – bitte Modul 1 / 2 öffnen';
+}
+
+// ── Eingaben speichern / laden ────────────────────────────────
+function saveInputs() {
+  localStorage.setItem('m03_schrank_typ',           gs('schrank_typ'));
+  localStorage.setItem('m03_b_mplatte_mbereich_mm', gs('b_mplatte_mbereich_mm'));
+  localStorage.setItem('m03_h_mplatte_mbereich_mm', gs('h_mplatte_mbereich_mm'));
+}
+function loadInputs() {
+  const typ = localStorage.getItem('m03_schrank_typ');
+  if (typ) _v('schrank_typ', typ);
+}
+
 // ── Berechnung ────────────────────────────────────────────────
 function calculate() {
-  const b  = g('b_mplatte_mbereich_mm');
-  const h  = g('h_mplatte_mbereich_mm');
   const typ = gs('schrank_typ');
+  loadFromModul();
 
-  const A_cm2 = (b * h) / 100;
-  const A_m2  = (b * h) / 1e6;
-  const n_te  = Math.floor(b / TE_BREITE_MM);
+  const b = g('b_mplatte_mbereich_mm');
+  const h = g('h_mplatte_mbereich_mm');
+
+  const flaeche_mbereich_cm2 = (b * h) / 100;
+  const flaeche_mbereich_m2  = (b * h) / 1e6;
+  const n_te                 = Math.floor(b / TE_BREITE_MM);
 
   // Seitenleiste aktualisieren
-  _v('A_cm2', A_cm2.toFixed(0));
-  _v('A_m2',  A_m2.toFixed(3));
-  _v('n_te',  n_te);
+  _v('flaeche_mbereich_cm2', flaeche_mbereich_cm2.toFixed(0));
+  _v('flaeche_mbereich_m2',  flaeche_mbereich_m2.toFixed(3));
+  _v('n_te',                 n_te);
 
-  buildTable({ b, h, typ, A_cm2, A_m2, n_te });
+  buildTable({ b, h, typ, flaeche_mbereich_cm2, flaeche_mbereich_m2, n_te });
 }
 
 // ── Ergebnistabelle ───────────────────────────────────────────
 function buildTable(p) {
-  const CI = '#9A9890';   // Eingabewerte
-  const CR = '#E0DED8';   // Fläche
-  const CT = '#A8C4E8';   // TE-Hauptergebnis
-
-  const typLabel = p.typ === 'wandschrank' ? 'Wandschrank (Modul 1)' : 'Standschrank (Modul 2)';
+  const isWand  = p.typ === 'wandschrank';
+  const typLabel = isWand ? 'Wandschrank (Modul 1)' : 'Standschrank (Modul 2)';
+  const sfx      = isWand ? 'wandschrank_mm' : 'standschrank_mm';
+  const src      = isWand ? 'aus Modul 1' : 'aus Modul 2';
 
   const rows = [
-    { v: 'schrank_typ',            label: 'Schrank-Typ',           val: typLabel,                        unit: '–',   formel: 'Auswahl',                     col: CI },
-    { v: 'b_mplatte_mbereich_mm',  label: 'Montagebereich Breite', val: p.b.toFixed(0),                  unit: 'mm',  formel: 'Eingabe aus Modul 1 / 2',     col: CI },
-    { v: 'h_mplatte_mbereich_mm',  label: 'Montagebereich Höhe',   val: p.h.toFixed(0),                  unit: 'mm',  formel: 'Eingabe aus Modul 1 / 2',     col: CI },
-    { v: 'A_cm2',                  label: 'Fläche',                 val: p.A_cm2.toFixed(0),              unit: 'cm²', formel: '(b × h) / 100',               col: CR },
-    { v: 'A_m2',                   label: 'Fläche',                 val: p.A_m2.toFixed(3),               unit: 'm²',  formel: '(b × h) / 1 000 000',         col: CR },
-    { v: 'n_te',                   label: 'Verfügbare TE',          val: p.n_te,                          unit: 'TE',  formel: '⌊ b / 17,5 ⌋',               col: CT },
+    { v: 'schrank_typ',                        label: 'Schrank-Typ',           val: typLabel,                              unit: '–',   formel: 'Auswahl',           col: CI   },
+    { v: `b_mplatte_mbereich_${sfx}`,          label: 'Montagebereich Breite', val: p.b.toFixed(0),                        unit: 'mm',  formel: src,                 col: CI   },
+    { v: `h_mplatte_mbereich_${sfx}`,          label: 'Montagebereich Höhe',   val: p.h.toFixed(0),                        unit: 'mm',  formel: src,                 col: CI   },
+    { v: 'flaeche_mbereich_cm2',               label: 'Fläche',                val: p.flaeche_mbereich_cm2.toFixed(0),     unit: 'cm²', formel: '(b × h) / 100',     col: CCM2 },
+    { v: 'flaeche_mbereich_m2',                label: 'Fläche',                val: p.flaeche_mbereich_m2.toFixed(3),      unit: 'm²',  formel: '(b × h) / 1 000 000', col: CM2 },
+    { v: 'n_te',                               label: 'Verfügbare TE',         val: p.n_te,                                unit: 'TE',  formel: '⌊ b / 17,5 ⌋',     col: CTE  },
   ];
 
   let tbl = `<table class="rtable">
@@ -360,16 +407,16 @@ function buildTable(p) {
 </table>`;
 
   // Formelzeile
-  const fmtB = `<span style="color:${CI};font-weight:700">${p.b.toFixed(0)}</span>`;
-  const fmtH = `<span style="color:${CI};font-weight:700">${p.h.toFixed(0)}</span>`;
-  const fmtTE = `<span style="color:#D4A84B;font-weight:700">17,5</span>`;
-  const fmtN = `<span style="color:${CT};font-weight:700">${p.n_te}</span>`;
-  const fmtA = `<span style="color:${CR};font-weight:700">${p.A_cm2.toFixed(0)}</span>`;
-  const fmtM = `<span style="color:${CR};font-weight:700">${p.A_m2.toFixed(3)}</span>`;
+  const fB   = `<span style="color:${CI};font-weight:700">${p.b.toFixed(0)}</span>`;
+  const fH   = `<span style="color:${CI};font-weight:700">${p.h.toFixed(0)}</span>`;
+  const fTE  = `<span style="color:#D4A84B;font-weight:700">17,5</span>`;
+  const fN   = `<span style="color:${CTE};font-weight:700">${p.n_te}</span>`;
+  const fCM2 = `<span style="color:${CCM2};font-weight:700">${p.flaeche_mbereich_cm2.toFixed(0)}</span>`;
+  const fM2  = `<span style="color:${CM2};font-weight:700">${p.flaeche_mbereich_m2.toFixed(3)}</span>`;
 
   const formel = `<div class="formula-box">
-  n_te = ⌊ b / te_breite ⌋ = ⌊ ${fmtB} / ${fmtTE} ⌋ = ${fmtN} TE<br>
-  A = ${fmtB} × ${fmtH} = ${fmtA} cm² = ${fmtM} m²
+  n_te = ⌊ b / te_breite ⌋ = ⌊ ${fB} / ${fTE} ⌋ = ${fN} TE<br>
+  A = ${fB} × ${fH} = ${fCM2} cm² = ${fM2} m²
   <div class="note-line">TE-Breite: 17,5 mm nach DIN EN 60715 · Ergebnis: ganze Zahl (abgerundet)</div>
 </div>`;
 
@@ -396,9 +443,10 @@ function loadProjFields() {
   });
   updateDocNr();
 }
-loadProjFields();
 
 // ── Init ──────────────────────────────────────────────────────
+loadProjFields();
+loadInputs();
 calculate();
 </script>
 

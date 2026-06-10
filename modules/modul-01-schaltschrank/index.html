@@ -512,6 +512,10 @@ function calculate() {
   const h_mb   = H - h_ke - h_abst;
   const b_mb   = mp_b;
 
+  // Ergebnisse für Modul 3 verfügbar machen
+  localStorage.setItem('m01_h_mplatte_mbereich_wandschrank_mm', h_mb);
+  localStorage.setItem('m01_b_mplatte_mbereich_wandschrank_mm', b_mb);
+
   const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_handling_zug, h_bieg, h_ke, h_mb, b_mb, ke_pos, fs_dim, fs_var, fs_zone, zug_aktiv, kanal_aktiv };
   document.getElementById('svg-inner').innerHTML  = buildSVG(p);
   document.getElementById('results-area').innerHTML = buildTable(p);
