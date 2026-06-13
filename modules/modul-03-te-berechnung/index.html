@@ -337,21 +337,21 @@ legend{
         <div class="zone-row">
           <span class="zone-dot" style="background:#C84E2E"></span>
           <span class="zone-lbl" title="Leistungsbaugruppen · Schütze · FU · Antriebe">Leistungsbaugr.</span>
-          <input id="pct_leist"  class="zpct" type="number" min="0" max="100" value="20" oninput="saveZoneInputs();calculate()">
+          <input id="pct_leist"  class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
           <span class="zpct-unit">%</span>
           <span id="zmm_leist"  class="zmm">–</span>
         </div>
         <div class="zone-row">
           <span class="zone-dot" style="background:#4BBECA"></span>
           <span class="zone-lbl" title="Steuerbaugruppen · DDC · SPS · I/O-Module">Steuerbaugr./DDC</span>
-          <input id="pct_steuer" class="zpct" type="number" min="0" max="100" value="25" oninput="saveZoneInputs();calculate()">
+          <input id="pct_steuer" class="zpct" type="number" min="0" max="100" value="20" oninput="saveZoneInputs();calculate()">
           <span class="zpct-unit">%</span>
           <span id="zmm_steuer" class="zmm">–</span>
         </div>
         <div class="zone-row">
           <span class="zone-dot" style="background:#2DBD8E"></span>
           <span class="zone-lbl" title="Abgangsklemmen Leistung · 230/400 V Abgänge">Abg.-Kl. Leistung</span>
-          <input id="pct_klemm_l" class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
+          <input id="pct_klemm_l" class="zpct" type="number" min="0" max="100" value="10" oninput="saveZoneInputs();calculate()">
           <span class="zpct-unit">%</span>
           <span id="zmm_klemm_l" class="zmm">–</span>
         </div>
@@ -361,6 +361,13 @@ legend{
           <input id="pct_klemm_f" class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
           <span class="zpct-unit">%</span>
           <span id="zmm_klemm_f" class="zmm">–</span>
+        </div>
+        <div class="zone-row">
+          <span class="zone-dot" style="background:#E8C448"></span>
+          <span class="zone-lbl" title="Anschlussklemmen Feldgeräte und elektrische Betriebsmittel">Anschl.-Kl. Betr.</span>
+          <input id="pct_klemm_e" class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
+          <span class="zpct-unit">%</span>
+          <span id="zmm_klemm_e" class="zmm">–</span>
         </div>
         <div class="zone-sum-row">
           <span style="font-size:11px;color:var(--tx2)">Summe</span>
@@ -414,19 +421,20 @@ const CTE  = '#A8C4E8';
 
 // ── Zonendefinition ───────────────────────────────────────────
 const ZONES = [
-  { id:'einsp',   lbl:'Einspeisezone',        col:'#D4A84B' },
-  { id:'evert',   lbl:'Energieverteilung',     col:'#C8720E' },
-  { id:'leist',   lbl:'Leistungsbaugruppen',   col:'#C84E2E' },
-  { id:'steuer',  lbl:'Steuerbaugr. / DDC',    col:'#4BBECA' },
-  { id:'klemm_l', lbl:'Abgangskl. Leistung',   col:'#2DBD8E' },
-  { id:'klemm_f', lbl:'Abgangskl. Feldgeräte', col:'#9A94E8' },
+  { id:'einsp',   lbl:'Einspeisezone',              col:'#D4A84B' },
+  { id:'evert',   lbl:'Energieverteilung',           col:'#C8720E' },
+  { id:'leist',   lbl:'Leistungsbaugruppen',         col:'#C84E2E' },
+  { id:'steuer',  lbl:'Steuerbaugr. / DDC',          col:'#4BBECA' },
+  { id:'klemm_l', lbl:'Abgangskl. Leistung',         col:'#2DBD8E' },
+  { id:'klemm_f', lbl:'Abgangskl. Feldgeräte',       col:'#9A94E8' },
+  { id:'klemm_e', lbl:'Anschl.-Kl. Betriebsmittel', col:'#E8C448' },
 ];
 
 // Zonenreihenfolge von oben nach unten je KE-Position
 function getZoneOrder(ke_pos) {
   return ke_pos === 'oben'
-    ? ['klemm_f','klemm_l','steuer','leist','evert','einsp']
-    : ['einsp','evert','leist','steuer','klemm_l','klemm_f'];
+    ? ['klemm_e','klemm_f','klemm_l','steuer','leist','evert','einsp']
+    : ['einsp','evert','leist','steuer','klemm_l','klemm_f','klemm_e'];
 }
 
 // ── Übernahme aus Modul 1 / 2 ────────────────────────────────
@@ -694,7 +702,7 @@ function buildZoneSVG(zp) {
     const pE = zp.zoneData.find(z=>z.id==='einsp').pct + zp.zoneData.find(z=>z.id==='evert').pct;
     const pL = zp.zoneData.find(z=>z.id==='leist').pct;
     const pS = zp.zoneData.find(z=>z.id==='steuer').pct;
-    const pK = zp.zoneData.find(z=>z.id==='klemm_l').pct + zp.zoneData.find(z=>z.id==='klemm_f').pct;
+    const pK = zp.zoneData.find(z=>z.id==='klemm_l').pct + zp.zoneData.find(z=>z.id==='klemm_f').pct + zp.zoneData.find(z=>z.id==='klemm_e').pct;
     const tot = pE+pL+pS+pK || 100;
     const bands = [
       { col:'#D4A84B', lbl:'Einsp./Vert.', pct:pE },
