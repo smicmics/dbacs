@@ -227,7 +227,7 @@ legend{
       <legend>Schrank-Typ</legend>
       <div class="field">
         <div class="lbl">Auswahl<span class="var">schrank_typ</span></div>
-        <select id="schrank_typ" onchange="saveInputs();calculate()">
+        <select id="schrank_typ" onchange="calculate()">
           <option value="" selected>— bitte wählen —</option>
           <option value="wandschrank">Wandschrank</option>
           <option value="standschrank">Standschrank</option>
@@ -346,14 +346,7 @@ function loadFromModul() {
   }
 }
 
-// ── Schrank-Typ speichern / laden ────────────────────────────
-function saveInputs() {
-  localStorage.setItem('m03_schrank_typ', gs('schrank_typ'));
-}
-function loadInputs() {
-  const typ = localStorage.getItem('m03_schrank_typ');
-  if (typ !== null) _v('schrank_typ', typ); // '' (keine Wahl) wird bewusst wiederhergestellt
-}
+// ── Schrank-Typ: kein Persist – Start immer mit "bitte wählen" ──
 
 // ── Berechnung ────────────────────────────────────────────────
 function calculate() {
@@ -377,8 +370,15 @@ function calculate() {
 
 // ── Ergebnistabelle ───────────────────────────────────────────
 function buildTable(p) {
+  if (!p.typ) {
+    document.getElementById('results-area').innerHTML =
+      `<p style="color:var(--tx3);font-size:13px;margin-top:24px;padding:0 4px">
+        Bitte Schrank-Typ auswählen, um Ergebnisse anzuzeigen.
+      </p>`;
+    return;
+  }
   const isWand  = p.typ === 'wandschrank';
-  const typLabel = isWand ? 'Wandschrank (Modul 1)' : 'Standschrank (Modul 2)';
+  const typLabel = isWand ? 'Wandschrank' : 'Standschrank';
   const sfx      = isWand ? 'wandschrank_mm' : 'standschrank_mm';
   const src      = isWand ? 'aus Modul 1' : 'aus Modul 2';
 
@@ -443,9 +443,9 @@ function buildTable(p) {
   const fM2  = fn(CM2,      p.flaeche_mbereich_m2.toFixed(3));
 
   const formel = `<div class="formula-box">
-  ${vnTE} = ⌊ ${vnB} / ${vnTEB} ⌋ &nbsp;=&nbsp; ⌊ ${fB} / ${fTE} ⌋ &nbsp;=&nbsp; ${fN} TE<br>
-  ${vnCM2} = ${vnB} × ${vnH} &nbsp;=&nbsp; ${fB} × ${fH} &nbsp;=&nbsp; ${fCM2} cm²<br>
-  ${vnM2} = ${vnB} × ${vnH} / 1 000 000 &nbsp;=&nbsp; ${fM2} m²
+  ${vnTE} = ⌊ ${vnB} / ${vnTEB} ⌋ &nbsp;=&nbsp; ⌊ ${fB} mm / ${fTE} mm ⌋ &nbsp;=&nbsp; ${fN} TE<br>
+  ${vnCM2} = ${vnB} × ${vnH} &nbsp;=&nbsp; ${fB} mm × ${fH} mm &nbsp;=&nbsp; ${fCM2} cm²<br>
+  ${vnM2} = ${vnB} × ${vnH} / 1 000 000 &nbsp;=&nbsp; ${fB} mm × ${fH} mm / 1 000 000 &nbsp;=&nbsp; ${fM2} m²
   <div class="note-line">TE-Breite: 17,5 mm nach DIN EN 60715 · Ergebnis: ganze Zahl (abgerundet)</div>
 </div>`;
 
@@ -475,7 +475,6 @@ function loadProjFields() {
 
 // ── Init ──────────────────────────────────────────────────────
 loadProjFields();
-loadInputs();
 calculate();
 </script>
 
