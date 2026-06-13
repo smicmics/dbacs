@@ -561,7 +561,8 @@ function calculateZones(b, h) {
   const b_inner   = Math.max(0, b - 2 * B_KANAL_V);
   // Übereinander: zusätzlicher H.Kanal zwischen Leistung und Steuerung
   const h_kanal_ls = isNeben ? 0 : H_KANAL_H;
-  const h_verfueg = h - h_evert - h_klemm - H_KANAL_H - h_kanal_ls;
+  // Beide Modi: H.Kanal oberhalb Energieverteilung
+  const h_verfueg = h - h_evert - h_klemm - H_KANAL_H - h_kanal_ls - H_KANAL_H;
 
   let h_leist, h_steuer, b_leist, b_steuer;
   if (isNeben) {
@@ -576,7 +577,7 @@ function calculateZones(b, h) {
     b_steuer = b_inner;   // volle Innenbreite für Steuerungszeile
   }
 
-  const h_gesamt = h_evert + h_klemm + H_KANAL_H + h_kanal_ls +
+  const h_gesamt = h_evert + h_klemm + H_KANAL_H + h_kanal_ls + H_KANAL_H +
     (isNeben ? h_leist : h_leist + h_steuer);
   const h_diff = h - h_gesamt;
   // passt = Festzonen (Evert + Klemm + H.Kanäle) passen; L/S-Zonen sind flexibel
@@ -595,7 +596,7 @@ function calculateZones(b, h) {
     set('zh_leist',   h_leist   + ' mm');
     set('zh_steuer',  anordnung === 'nebeneinander' ? '= Leistung' : h_steuer + ' mm',
         anordnung === 'nebeneinander' ? '#666460' : '');
-    set('zh_kanal_h', isNeben ? H_KANAL_H + ' mm' : `2× ${H_KANAL_H} = ${2*H_KANAL_H} mm`, '#666');
+    set('zh_kanal_h', isNeben ? `2× ${H_KANAL_H} = ${2*H_KANAL_H} mm` : `3× ${H_KANAL_H} = ${3*H_KANAL_H} mm`, '#666');
     set('zh_klemm',   h_klemm   + ' mm');
     set('zh_gesamt',  h_gesamt  + ' mm');
     const diffEl = document.getElementById('zh_diff');
@@ -665,6 +666,9 @@ function buildLayout(zp) {
     kanal_ls: { h_mm: H_KANAL_H, zones: [
       { id:'kanal_ls', x:0, w:1, col:'#888', lbl:'H. Kanal L/S' }
     ]},
+    kanal_ev: { h_mm: H_KANAL_H, zones: [
+      { id:'kanal_ev', x:0, w:1, col:'#888', lbl:'H. Kanal Evert.' }
+    ]},
 
     // Nebeneinander: [VK_L | ÜSS | Leistung_eff | Steuerung | VK_R]
     leist_neben: { h_mm: h_leist, zones: [
@@ -704,7 +708,7 @@ function buildLayout(zp) {
   // KE unten: Evert → [Steuerung → H.Kanal L/S →] Leistung → H.Kanal → Klemmen
   let rows;
   if (ke_pos === 'unten') {
-    rows = [R.evert];
+    rows = [R.evert, R.kanal_ev];
     if (!isNeben) rows.push(R.steuer_ueber, R.kanal_ls);
     rows.push(isNeben ? R.leist_neben : R.leist_ueber);
     rows.push(R.kanal_h, R.klemm);
@@ -712,7 +716,7 @@ function buildLayout(zp) {
     rows = [R.klemm, R.kanal_h];
     rows.push(isNeben ? R.leist_neben : R.leist_ueber);
     if (!isNeben) rows.push(R.kanal_ls, R.steuer_ueber);
-    rows.push(R.evert);
+    rows.push(R.kanal_ev, R.evert);
   }
   return rows;
 }
@@ -771,7 +775,7 @@ function buildZoneSection(zp) {
     : (zp.anordnung === 'nebeneinander' ? 'Nebeneinander' : 'Übereinander');
   const netzLabel = zp.netztyp === 'drehstrom' ? 'Drehstrom 3~' : 'Wechselstrom 1~';
   const isNebenZ  = zp.anordnung === 'nebeneinander';
-  const h_fest    = zp.h_evert + zp.h_klemm + H_KANAL_H + (isNebenZ ? 0 : H_KANAL_H);
+  const h_fest    = zp.h_evert + zp.h_klemm + 2*H_KANAL_H + (isNebenZ ? 0 : H_KANAL_H);
   const warnHtml  = !zp.passt
     ? `<p style="color:#E04040;font-size:11px;font-family:var(--mono);margin-bottom:6px">
         ⚠ Festzonen ${h_fest} mm &gt; Montagefläche ${zp.h} mm – größeres Gehäuse oder kleinere Kabeleinführungszone erforderlich</p>`
@@ -908,6 +912,7 @@ function buildZoneTable(zp) {
     if (id === 'evert')    return srcEvert;
     if (id === 'kanal_h')  return srcKanalH;
     if (id === 'kanal_ls') return srcKanalLS;
+    if (id === 'kanal_ev') return `Festwert ${H_KANAL_H} mm · H. Kanal oberhalb Energieverteilung (Platzhalter), volle Plattenbreite`;
     if (id === 'kanal_vl') return srcKanalVL;
     if (id === 'kanal_vr') return srcKanalVR;
     if (id === 'klemm_l' || id === 'klemm_f' || id === 'klemm_s') return srcKlemm;
@@ -942,7 +947,7 @@ function buildZoneTable(zp) {
 <p class="note-line" style="margin-top:6px">
   Mindesthöhen · aufger. 5 mm · Einspeisung + Klemmen immer links ·
   V. Kanal Links ${B_KANAL_V} mm (Leistungsleit.) · V. Kanal Rechts ${B_KANAL_V} mm (Steuerungsleit.) ·
-  H. Kanal ${H_KANAL_H} mm (Klemmen/L/S)${zp.anordnung !== 'nebeneinander' ? ` + ${H_KANAL_H} mm (L/S-Trennung)` : ''} ·
+  H. Kanäle je ${H_KANAL_H} mm: Klemmen/L/S${zp.anordnung !== 'nebeneinander' ? ` · L/S-Trennung` : ''} · oberhalb Evert. ·
   KE ${zp.ke_pos === 'oben' ? 'oben → Klemmen oben, Evert. unten' : 'unten → Evert. oben, Klemmen unten'}
 </p>`;
   return tbl;
