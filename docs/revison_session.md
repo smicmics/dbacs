@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 10. Juni 2026 – Session 10
+**Stand:** 13. Juni 2026 – Session 11
 
 ---
 
@@ -175,6 +175,10 @@ Strichstärken skalieren mit dem Maßstab – kleinere Schrankdarstellungen erha
 - Variablennamen in Seitenleiste und Tabelle wechseln dynamisch je Typ (`_wandschrank_mm` / `_standschrank_mm`)
 - Formel-Variablennamen farbig (gleiche Farbe wie Tabellenzeile)
 - Copyright-Zeile (`class="copyright-line"`) in Druckansicht ausgeblendet
+- `schrank_typ` wird **nicht** aus localStorage wiederhergestellt – jeder Modulaufruf startet mit leerem Dropdown „— bitte wählen —"
+- Bei leerem `schrank_typ`: Ergebnisbereich zeigt Hinweistext „Bitte Schrank-Typ auswählen", keine Tabelle
+- `typLabel` in der Ergebnistabelle ohne Modulangabe: nur „Wandschrank" oder „Standschrank"
+- Formelbox: Eingabewerte b und h mit Einheit mm, z. B. `⌊ 499 mm / 17,5 mm ⌋`
 
 ---
 
@@ -314,7 +318,10 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 - `te_breite_mm = 17,5 mm` Festwert nach DIN EN 60715 (nicht ändern)
 - `n_te = Math.floor(b / 17.5)` – ganzzahlig abgerundet
 - Datenfluss: Modul 1/2 → localStorage → Modul 3 (kein direkter Aufruf)
-- Standardauswahl `schrank_typ = ""` → alle Felder 0 bis Auswahl erfolgt
+- `schrank_typ` wird **nicht** aus localStorage wiederhergestellt – Start immer mit „— bitte wählen —"
+- Bei leerem `schrank_typ`: Ergebnisbereich zeigt Hinweistext, keine Tabelle/Formelbox
+- `typLabel` ohne Modulangabe: „Wandschrank" / „Standschrank"
+- Formelbox zeigt Eingabewerte mit Einheit mm: `⌊ b mm / 17,5 mm ⌋`
 - Copyright: `class="copyright-line"` + `@media print { .copyright-line { display:none !important } }`
 
 **Daten / Architektur**

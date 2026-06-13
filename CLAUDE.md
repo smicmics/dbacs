@@ -273,9 +273,12 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
   - Modul 1 schreibt: `m01_b/h_mplatte_mbereich_wandschrank_mm`
   - Modul 2 schreibt: `m02_b/h_mplatte_mbereich_standschrank_mm`
   - Modul 3 liest je nach `schrank_typ`-Auswahl den passenden Key
-- Standardauswahl beim Start: `— bitte wählen —` (leerer Wert), Felder zeigen 0
+- `schrank_typ` wird **nicht** aus localStorage wiederhergestellt – jeder Aufruf startet mit leerem Dropdown „— bitte wählen —"
+- Bei leerem `schrank_typ`: Ergebnisbereich zeigt nur Hinweistext, keine Tabelle / Formelbox
+- `typLabel` in Ergebnistabelle ohne Modulangabe: nur „Wandschrank" oder „Standschrank"
 - `te_breite_mm = 17,5 mm` Festwert nach DIN EN 60715
 - `n_te = Math.floor(b / 17.5)` – immer als ganze Zahl (abgerundet)
+- Formelbox: Eingabewerte b und h mit Einheit mm dargestellt, z. B. `⌊ 499 mm / 17,5 mm ⌋`
 - Farbkodierung Ergebnisvariablen:
   - `flaeche_mbereich_cm2` → Grün `#2DBD8E`
   - `flaeche_mbereich_m2`  → Lila `#9A94E8`
