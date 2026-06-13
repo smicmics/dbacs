@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 13. Juni 2026 – Session 11
+**Stand:** 13. Juni 2026 – Session 12
 
 ---
 
@@ -34,7 +34,7 @@ dbacs/
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html   Modul 1 – Wandschrank, vollständig ✅
 │   ├── modul-02-standschrank/index.html    Modul 2 – Standschrank, vollständig ✅
-│   └── modul-03-te-berechnung/index.html   Modul 3 – TE-Berechnung, vollständig ✅ ← NEU Session 10
+│   └── modul-03-te-berechnung/index.html   Modul 3 – TE-Berechnung + Zonenaufteilung ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html       Referenzzeichnung Wandschrank (nicht bearbeiten)
 │   └── standschrank_frontansicht.html      Referenzzeichnung Standschrank (nicht bearbeiten)
@@ -43,9 +43,9 @@ dbacs/
 │   ├── kabel_nym_j.json                    Kabeldatenbank NYM-J (committed)
 │   ├── wandschraenke.json                  Wandschrank-DB Rittal AX (committed)
 │   ├── kabelzugschellen.json               Kabelzugschellen-DB Icotek CCL (committed)
-│   ├── standschraenke.json                 Standschrank-DB Rittal VX25 (committed) ← NEU Session 8
-│   ├── sockel.json                         Sockel-DB Rittal VX (committed) ← NEU Session 8
-│   ├── bodenbleche.json                    Bodenblech-DB Rittal VX (committed) ← NEU Session 8
+│   ├── standschraenke.json                 Standschrank-DB Rittal VX25 (committed)
+│   ├── sockel.json                         Sockel-DB Rittal VX (committed)
+│   ├── bodenbleche.json                    Bodenblech-DB Rittal VX (committed)
 │   └── xlsx_to_json.py                     Konvertierungsskript Excel → JSON (6 Sheets)
 └── docs/
     └── *.md                                Projektdokumentation
@@ -91,6 +91,10 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 - `h_mplatte_mbereich_wandschrank_mm` – Höhe Montagebereich MP
 - `b_mplatte_mbereich_wandschrank_mm` = b_mplatte_mm
 
+**localStorage-Ausgabe**
+- `m01_b/h_mplatte_mbereich_wandschrank_mm` → Modul 3
+- `m01_ke_pos` → Modul 3
+
 ---
 
 ### Modul 2 – vollständig funktionsfähig ✅
@@ -110,75 +114,82 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 | Ergebnisvariablen | `_wandschrank_` | `_standschrank_` |
 | Standardwerte Aufruf | KE oben, Zugentlastung Nein | KE unten, Sockel 100 mm aktiv, Zugentlastung Ja |
 
-**Sockel-Logik:**
-- Sockel Ja/Nein toggle → Höhe 100 oder 200 mm wählbar
-- DB-Lookup: `SOCKEL_DB.find(e => e.b_gehaeuse_aussen_mm === B && e.h_sockel_mm === h_sockel_option)`
-- SVG: Sockel-Rechteck maßstäblich unterhalb des Schranks, Text „Schaltschranksockel" linksbündig bei `zoneLblX`
-- Maßlinie Sockel: gleiche horizontale Position wie H-Maßlinie (`hx = sx - 16`), Label nur Wert (ohne Variablenname)
-- VH = PT + SH + h_sockel_px + PB (SVG-Höhe dynamisch erweitert)
-
-**KE unten ohne PG:**
-- Kabel läuft von KE-Zone durch Schrankinnenraum und Boden in Sockel
-- Text „Freie Kabeleinführung · Boden offen" bei `zoneLblX`, unterhalb Sockeltext, Größe `fs_zone`
-- Kabelstub: 10 px unterhalb Sockel (oder Schrankunterseite wenn kein Sockel)
-
-**SVG Maßstab + Strichstärken (beide Module):**
-```js
-const SH    = 390;                           // SVG-Höhe px (fest)
-const sc    = SH / p.H;                      // Maßstab px/mm
-const lw_s  = +Math.max(0.8, sc * 8).toFixed(1);  // Gehäuselinie (proportional)
-const lw_mp = +Math.max(0.4, sc * 4).toFixed(1);  // MP-Linie (proportional)
-```
-Schrank, Montageplatte, KE-Zonen und Sockel sind immer proportional korrekt dargestellt.
-Strichstärken skalieren mit dem Maßstab – kleinere Schrankdarstellungen erhalten dünnere Linien.
-
-**Ergebnisse**
-- `h_ke_mm` – Kabeleinführungszone gesamt (gleiche Formel wie Modul 1)
-- `h_mplatte_mbereich_standschrank_mm` – Höhe Montagebereich MP
-- `b_mplatte_mbereich_standschrank_mm` = b_mplatte_mm
+**localStorage-Ausgabe**
+- `m02_b/h_mplatte_mbereich_standschrank_mm` → Modul 3
+- `m02_ke_pos` → Modul 3
 
 ---
 
-### Modul 3 – vollständig funktionsfähig ✅ ← NEU Session 10
+### Modul 3 – vollständig funktionsfähig ✅ (Session 10–12)
 **Titel:** „Modul 3 · TE-Berechnung & Reihenkapazität"
 **Datei:** `modules/modul-03-te-berechnung/index.html`
 
-**Zweck:** Berechnung der verfügbaren Teileinheiten auf der Montageplatte, auf Basis der Montagebereich-Maße aus Modul 1 oder 2.
+**Zweck:** Berechnung der verfügbaren Teileinheiten auf der Montageplatte sowie vorläufige Zonenaufteilung der Montagefläche auf Basis technischer Mindesthöhen.
 
-**Eingabepanel**
+#### TE-Berechnung (Fieldsets 1–4)
 - Schrank-Typ: Wandschrank / Standschrank (Pflichtauswahl, Standard „— bitte wählen —")
-- Montagebereich Breite + Höhe: automatisch via localStorage aus Modul 1/2 übernommen (read-only)
+- Montagebereich Breite + Höhe: automatisch via localStorage aus Modul 1/2 (read-only)
 - Festwert: te_breite_mm = 17,5 mm (DIN EN 60715)
+- `n_te = ⌊ b / 17,5 ⌋` (ganze Zahl, abgerundet)
+- `flaeche_mbereich_cm2` / `flaeche_mbereich_m2`
 
-**localStorage-Datenaustausch**
-- Modul 1 schreibt bei jeder Berechnung: `m01_b/h_mplatte_mbereich_wandschrank_mm`
-- Modul 2 schreibt bei jeder Berechnung: `m02_b/h_mplatte_mbereich_standschrank_mm`
-- Modul 3 liest je nach Typ-Auswahl den passenden Key
-- Bei fehlendem Key: Felder = 0, Hinweis mit Link zur Startseite
+#### Zonenaufteilung (Fieldset 5) ← NEU Session 12
+Berechnet vorläufige Zonenhöhen auf Basis technischer Mindesthöhen (analog h_ke-Logik aus M1/M2).
 
-**Ergebnisse**
-- `flaeche_mbereich_cm2` = (b × h) / 100
-- `flaeche_mbereich_m2`  = (b × h) / 1 000 000
-- `n_te`                 = ⌊ b / 17,5 ⌋ (ganze Zahl, abgerundet)
+**Neue Eingaben:**
+| Feld | ID | Werte | Beschreibung |
+|---|---|---|---|
+| Schrankfelder | `zone_modus` | 1 Feld / Mehrere Felder | Ansicht: 1 Feld oder N Felder nebeneinander |
+| Leistung/Steuerung | `zone_anordnung` | Übereinander / Nebeneinander | Anordnung L+S auf der Platte (gesperrt bei Mehrere Felder) |
+| Netzanschluss | `zone_netztyp` | Drehstrom 3~ / Wechselstrom 1~ | Beeinflusst h_evert_min |
 
-**Farbkodierung**
-| Variable | Farbe | Hex |
-|---|---|---|
-| Eingaben b, h | Sekundär | `#9A9890` |
-| `flaeche_mbereich_cm2` | Grün | `#2DBD8E` |
-| `flaeche_mbereich_m2` | Lila | `#9A94E8` |
-| `n_te` | Hellblau | `#A8C4E8` |
-| `te_breite_mm` (Festwert) | Amber | `#D4A84B` |
+**Mindesthöhen-Berechnung (aufger. 5 mm):**
+```
+H_EINSP_MIN  = 120 mm   (Festwert: Hauptschalter + ÜSS)
+H_KLEMME_STD =  52 mm   (Standard-Klemme 4 mm², Phoenix UK 4)
+H_HANDLING   =  15 mm   (Kabelhandling je Seite, wie h_handling_ke)
+H_SICHER_WS  =  75 mm   (Sicherungshalter Wechselstrom, NH00/D02)
+H_SCHIENE_DS = 150 mm   (Stromschienensystem Drehstrom)
 
-**Besonderheiten**
-- Kein SVG – nur Ergebnistabelle und Formelbox
-- Variablennamen in Seitenleiste und Tabelle wechseln dynamisch je Typ (`_wandschrank_mm` / `_standschrank_mm`)
-- Formel-Variablennamen farbig (gleiche Farbe wie Tabellenzeile)
-- Copyright-Zeile (`class="copyright-line"`) in Druckansicht ausgeblendet
-- `schrank_typ` wird **nicht** aus localStorage wiederhergestellt – jeder Modulaufruf startet mit leerem Dropdown „— bitte wählen —"
-- Bei leerem `schrank_typ`: Ergebnisbereich zeigt Hinweistext „Bitte Schrank-Typ auswählen", keine Tabelle
-- `typLabel` in der Ergebnistabelle ohne Modulangabe: nur „Wandschrank" oder „Standschrank"
-- Formelbox: Eingabewerte b und h mit Einheit mm, z. B. `⌊ 499 mm / 17,5 mm ⌋`
+h_einsp = 120 mm (Festwert)
+h_evert = Drehstrom: ceil5(150) = 150 mm
+          Wechselstrom: ceil5(15+75+15) = 105 mm
+h_klemm = ceil5(15+52+15) = 85 mm    (3 Gruppen, Mindesthöhe gleich)
+
+h_verfueg = h - h_einsp - h_evert - h_klemm
+
+Übereinander: h_leist = ceil5(h_verfueg/2), h_steuer = Rest
+Nebeneinander: h_leist = h_steuer = ceil5(h_verfueg), b_leist = b_steuer = b/2
+```
+
+**7 Zonen, 5 Reihen im SVG:**
+| # | Zone | ID | Farbe | Breite |
+|---|---|---|---|---|
+| – | Einspeisezone | `einsp` | `#D4A84B` | volle Breite |
+| – | Energieverteilung | `evert` | `#C8720E` | volle Breite |
+| – | Leistungsbaugruppen | `leist` | `#C84E2E` | volle Breite (Übereinander) / 50 % (Nebeneinander) |
+| – | Steuerbaugr./DDC | `steuer` | `#4BBECA` | volle Breite (Übereinander) / 50 % (Nebeneinander) |
+| – | Abg.-Kl. Leistung | `klemm_l` | `#2DBD8E` | unter Leistungsbereich |
+| – | Abg.-Kl. Feldgeräte | `klemm_f` | `#9A94E8` | unter Steuerungsbereich / 2 |
+| – | Abg.-Kl. Sensoren | `klemm_s` | `#E8C448` | unter Steuerungsbereich / 2 |
+
+**Zonenreihenfolge (KE-abhängig):**
+- KE oben: Einsp. → Evert. → Leist./Steuer. → Klemmen
+- KE unten: Evert. → Leist./Steuer. → Klemmen → Einsp.
+
+**SVG 2D-Layout:**
+- `buildLayout(zp)` erzeugt Zeilen mit x/w-Fraktionen
+- Nebeneinander: Leistung | Steuerung in einer Zeile als Spalten
+- Klemmenzeile: klemm_l (Leistungsbreite) | klemm_f + klemm_s (Steuerungsbreite, je ½)
+- Maßlinie rechts je Zeile, Gesamthöhe-Linie außen
+- Mehrere Felder: N Felder nebeneinander (Anordnung intern immer übereinander)
+
+**localStorage-Ausgabe M3:**
+```
+m03_zone_modus, m03_zone_anordnung, m03_zone_netztyp, m03_zone_ke_pos, m03_n_felder
+m03_h_einsp, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm
+m03_b_leist, m03_b_steuer
+```
 
 ---
 
@@ -190,74 +201,12 @@ Strichstärken skalieren mit dem Maßstab – kleinere Schrankdarstellungen erha
 
 **`kabelzugschellen.json`** – 4 Icotek CCL Bügelschellen für 30 mm C-Schiene
 
-**`standschraenke.json`** – 11 Rittal VX25 Standschränke ← NEU Session 8
+**`standschraenke.json`** – 11 Rittal VX25 Standschränke
 
-| Bezeichnung | B×H×T (mm) | MP B×H (mm) |
-|---|---|---|
-| VX 8686.000 | 600×1800×600 | 499×1696 |
-| VX 8604.000 | 600×2000×400 | 499×1896 |
-| VX 8606.000 | 600×2000×600 | 499×1896 |
-| VX 8880.000 | 800×1800×500 | 699×1696 |
-| VX 8804.000 | 800×2000×400 | 699×1896 |
-| VX 8806.000 | 800×2000×600 | 699×1896 |
-| VX 8826.000 | 800×2200×600 | 699×2096 |
-| VX 8080.000 | 1000×1800×400 | 899×1696 |
-| VX 8006.000 | 1000×2000×600 | 899×1896 |
-| VX 8265.000 | 1200×1600×500 | 1099×1496 |
-| VX 8205.000 | 1200×2000×500 | 1099×1896 |
+**`sockel.json`** – 8 Rittal VX Sockel (B=600/800/1000/1200 mm × H=100/200 mm)
 
-Formel: MP_B = B − 101 mm, MP_H = H − 104 mm
-
-**`sockel.json`** – 8 Rittal VX Sockel ← NEU Session 8
-B = 600/800/1000/1200 mm × H = 100/200 mm
-
-**`bodenbleche.json`** – 4 Rittal VX Bodenblech-Sätze (je Schrankbreite) ← NEU Session 8
-Bestellnummern noch zu verifizieren (aus Rittal-Katalog ableiten)
-
----
-
-### xlsx_to_json.py
-
-Exportiert alle 6 Sheets in einem Aufruf:
-```
-python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
-```
-→ `kabel_nym_j.json` + `wandschraenke.json` + `kabelzugschellen.json`
-  + `standschraenke.json` + `sockel.json` + `bodenbleche.json`
-
----
-
-## Variablen-Konvention (modulübergreifend)
-
-| Variable | Bedeutung | Einheit |
-|---|---|---|
-| `b_gehaeuse_aussen_mm` | Schrank-Außenbreite | mm |
-| `h_gehaeuse_aussen_mm` | Schrank-Außenhöhe | mm |
-| `b_mplatte_mm` | Montageplatte Breite | mm |
-| `h_mplatte_mm` | Montageplatte Höhe | mm |
-| `b_mplatte_abstand_gehaeuse_iw_mm` | Seitl. Abstand MP–Gehäuseinnenwand | mm |
-| `h_mplatte_abstand_gehaeuse_iw_mm` | Oberer Abstand MP–Gehäuseinnenwand | mm |
-| `n_adern` | Anzahl Leiter im Kabel | – |
-| `querschnitt_mm2` | Leiterquerschnitt | mm² |
-| `d_max_kabel_ke_mm` | Max. Kabel-Außen-∅ KE-Zone (aus DB) | mm |
-| `h_handling_ke_mm` | Freie Kabellänge nach PG / ab Boden (Festwert 15 mm) | mm |
-| `h_kabel_bieg_mm` | Mindestbiegeradius (4 × d_max, VDE 0298-4) | mm |
-| `h_zug_ke_mm` | Bügelschellen-Höhe aus DB (Icotek CCL) | mm |
-| `h_handling_zug_ke_mm` | Freiraum nach Schelle bis Kabelkanal/Gerät (Festwert 20 mm) | mm |
-| `h_kanal_ke_mm` | Horizontaler Kabelkanal KE-Zone | mm |
-| `h_ke_mm` | Kabeleinführungszone gesamt | mm |
-| `h_mplatte_mbereich_wandschrank_mm` | Höhe Montagebereich MP – Wandschrank | mm |
-| `b_mplatte_mbereich_wandschrank_mm` | Breite Montagebereich MP – Wandschrank (= b_mplatte_mm) | mm |
-| `h_mplatte_mbereich_standschrank_mm` | Höhe Montagebereich MP – Standschrank | mm |
-| `b_mplatte_mbereich_standschrank_mm` | Breite Montagebereich MP – Standschrank (= b_mplatte_mm) | mm |
-| `h_sockel_mm` | Sockelhöhe Standschrank (0 wenn inaktiv) | mm |
-| `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld) | mm |
-| `h_kabel_bieg_faktor` | Biegeradiusfaktor (Festwert 4, VDE 0298-4) | – |
-| `schrank_typ` | Auswahl Wandschrank / Standschrank (Modul 3) | – |
-| `te_breite_mm` | TE-Breite nach DIN EN 60715 (Festwert 17,5 mm) | mm |
-| `flaeche_mbereich_cm2` | Montagefläche Montagebereich | cm² |
-| `flaeche_mbereich_m2` | Montagefläche Montagebereich | m² |
-| `n_te` | Verfügbare Teileinheiten auf Montagebereich-Breite (ganze Zahl) | TE |
+**`bodenbleche.json`** – 4 Rittal VX Bodenblech-Sätze (je Schrankbreite)
+→ Bestellnummern noch zu verifizieren
 
 ---
 
@@ -265,24 +214,27 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 
 **Daten verifizieren (Prio mittel)**
 1. Bestellnummern `bodenbleche.json` über Rittal-Katalog/Website bestätigen
-2. Bestellnummern `sockel.json` (8660001, 8660004, 8660005, 8660021, 8660024) – bestätigt: 8660003, 8660023, 8660025
-3. Preisfelder aller DBs befüllen (Listenpreise)
+2. Preisfelder aller DBs befüllen (Listenpreise)
+
+**Modul 3 – mögliche Erweiterungen**
+3. Zonenaufteilung: Mindesthöhen als editierbare Felder (Override) – derzeit Festwerte
+4. Zonenaufteilung: Warnung bei zu kleiner Montagefläche aktuell als Hinweis (rot), kein Blocker
+5. Mehrere Felder + Nebeneinander: aktuell disabled; Konzept für feldweise Nebeneinander-Anordnung
 
 **Nächste Module (Prio hoch)**
-4. Modul 4 – Einspeisezone h_einsp (analog h_ke)
-5. Modul 5 – Klemmenzone h_klemm
-6. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
+6. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
+7. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
+8. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
 
 **Später**
-7. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
-8. Startseite: Screenshot-Vorschau je Modul ergänzen
-9. Standschrank-Zeichnung: Werte der Beispieldarstellung mit realen DB-Werten abgleichen
+9. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
+10. Startseite: Screenshot-Vorschau je Modul ergänzen
 
 ---
 
 ## Entscheidungen (gesperrt)
 
-**Formel h_ke (beide Module)**
+**Formel h_ke (Modul 1+2)**
 - Reihenfolge: handling → bieg → zug → handling_zug → kanal (fest)
 - Biegeradius-Faktor 4× (VDE 0298-4, fest verlegt)
 - h_handling_ke = 15 mm Festwert
@@ -296,33 +248,29 @@ python3 xlsx_to_json.py    # aus data/-Verzeichnis in WSL
 - „Schaltschranksockel" + „Freie Kabeleinführung · Boden offen" beide bei zoneLblX linksbündig
 - Schriftgrößen Standschrank: fs_dim=5, fs_var=5, fs_zone=5 (Standardwerte)
 
-**SVG / Darstellung (beide Module)**
+**SVG / Darstellung (Modul 1+2)**
 - SVG dynamisch per JavaScript, feste Höhe SH=390 px, sc = SH/H_mm (maßstäblich)
 - Strichstärken proportional zum Maßstab: `lw_s = max(0.8, sc*8)`, `lw_mp = max(0.4, sc*4)`
 - Alle Maßketten einheitlich blau #3366BB
 - Zonenrahmen-Farben (Amber, Teal) von Maßkettenfarben getrennt
-- Zonenbeschriftungen linksbündig bei `zoneLblX = bxo + 10`
-- Teilmaß-Labels vertikal zentriert via `dominant-baseline="middle"` (außer h_handling_ke_mm)
-
-**Startseite / Branding**
-- DBACS Logo (`web/assets/img/dbacs-logo.png`) in Startseiten-Header und Modul-Headern
-- Logo in Print-CSS explizit gesetzt (44px, display:flex im Header)
-- Modul-Kacheln: Struktur Titel → Untertitel (blau) → Scope (grau) → Beschreibungstext → Features
-
-**Variablen-Trennung Wand- vs. Standschrank**
-- `h/b_mplatte_mbereich_wandschrank_mm` für Modul 1
-- `h/b_mplatte_mbereich_standschrank_mm` für Modul 2
-- Ermöglicht automatische Datenübernahme in Modul 3 via localStorage
 
 **Modul 3 – TE-Berechnung**
 - `te_breite_mm = 17,5 mm` Festwert nach DIN EN 60715 (nicht ändern)
 - `n_te = Math.floor(b / 17.5)` – ganzzahlig abgerundet
-- Datenfluss: Modul 1/2 → localStorage → Modul 3 (kein direkter Aufruf)
 - `schrank_typ` wird **nicht** aus localStorage wiederhergestellt – Start immer mit „— bitte wählen —"
-- Bei leerem `schrank_typ`: Ergebnisbereich zeigt Hinweistext, keine Tabelle/Formelbox
 - `typLabel` ohne Modulangabe: „Wandschrank" / „Standschrank"
 - Formelbox zeigt Eingabewerte mit Einheit mm: `⌊ b mm / 17,5 mm ⌋`
 - Copyright: `class="copyright-line"` + `@media print { .copyright-line { display:none !important } }`
+
+**Modul 3 – Zonenaufteilung (gesperrt)**
+- Mindesthöhen basieren auf physikalischen Festwerten (wie h_ke-Logik), keine Prozent-Eingabe
+- `ceil5()` – alle Mindesthöhen auf 5 mm aufgerundet
+- h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING) = 85 mm (Festwert 4 mm²-Klemme)
+- h_einsp = 120 mm (Festwert, nicht überschreibbar)
+- 3 Klemmengruppen immer nebeneinander (klemm_l | klemm_f | klemm_s), adjacent zu ihrer Funktionszone
+- Anordnung L/S gesperrt (disabled) wenn Modus „Mehrere Felder"
+- KE-Position bestimmt Zonenreihenfolge: KE oben → Einsp. oben; KE unten → Einsp. unten, Evert. oben
+- `klemm_e` ist kein gültiges Konzept → heißt `klemm_s` (Abgangsklemmen Sensoren)
 
 **Daten / Architektur**
 - Single-File HTML pro Modul (GitHub Pages, kein Build-Step)

@@ -268,10 +268,9 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - SVG vollständig maßstäblich: `sc = SH / H_mm` – Schrank, MP, KE-Zonen, Sockel alle mit gleichem Faktor skaliert
 
 ### Modul 3 – TE-Berechnung (gesperrt)
-- Kein SVG – nur Ergebnistabelle + Formelbox
 - Datenübernahme ausschließlich via localStorage (kein direkter Modulaufruf):
-  - Modul 1 schreibt: `m01_b/h_mplatte_mbereich_wandschrank_mm`
-  - Modul 2 schreibt: `m02_b/h_mplatte_mbereich_standschrank_mm`
+  - Modul 1 schreibt: `m01_b/h_mplatte_mbereich_wandschrank_mm`, `m01_ke_pos`
+  - Modul 2 schreibt: `m02_b/h_mplatte_mbereich_standschrank_mm`, `m02_ke_pos`
   - Modul 3 liest je nach `schrank_typ`-Auswahl den passenden Key
 - `schrank_typ` wird **nicht** aus localStorage wiederhergestellt – jeder Aufruf startet mit leerem Dropdown „— bitte wählen —"
 - Bei leerem `schrank_typ`: Ergebnisbereich zeigt nur Hinweistext, keine Tabelle / Formelbox
@@ -287,6 +286,21 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Variablennamen in Seitenleiste und Tabelle wechseln dynamisch je nach Typ (`_wandschrank_mm` / `_standschrank_mm`)
 - Hint-Text bei fehlendem localStorage-Wert: Link zur Startseite
 - `class="copyright-line"` – Copyright-Absatz im Druck ausgeblendet (`display:none !important`)
+
+### Modul 3 – Zonenaufteilung (gesperrt)
+- Mindesthöhen basieren auf physikalischen Festwerten (analog h_ke-Logik), **keine Prozent-Eingabe**
+- `ceil5(v)` = `Math.ceil(v/5)*5` – alle Mindesthöhen auf 5 mm aufgerundet
+- Festwerte: `H_EINSP_MIN=120`, `H_KLEMME_STD=52`, `H_HANDLING=15`, `H_SICHER_WS=75`, `H_SCHIENE_DS=150`
+- `h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING) = 85 mm` – alle 3 Klemmengruppen gleiche Höhe
+- `h_einsp = 120 mm` Festwert (nicht überschreibbar)
+- `h_evert`: Drehstrom = `ceil5(150) = 150 mm`, Wechselstrom = `ceil5(105) = 105 mm`
+- Leistung/Steuerung: verbleibende Höhe ÷ 2 (Übereinander) oder gleiche Höhe je 50 % Breite (Nebeneinander)
+- `zone_anordnung` (Nebeneinander/Übereinander) wird disabled wenn `zone_modus === 'je_feld'`
+- 7 Zonen: `einsp`, `evert`, `leist`, `steuer`, `klemm_l`, `klemm_f`, `klemm_s` (kein `klemm_e`)
+- 3 Klemmengruppen immer nebeneinander: klemm_l unter Leistungsbereich, klemm_f+klemm_s unter Steuerungsbereich
+- KE-Position bestimmt Zonenreihenfolge: KE oben → Einsp. oben; KE unten → Evert. oben, Einsp. unten
+- `buildLayout(zp)` erzeugt Zeilen-Array mit x/w-Fraktionen für SVG-Rendering
+- SVG-Maßlinien: je Zeile rechts, Gesamthöhe außen (gleiche Konvention wie M1/M2)
 
 ### Modul 2 – Standschrank-spezifische Regeln (gesperrt)
 - KE unten: kein PG (Boden offen), Kabel läuft frei durch Schrankunterseite und Sockel
