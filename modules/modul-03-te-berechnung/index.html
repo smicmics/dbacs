@@ -329,12 +329,12 @@ legend{
 
       <div class="zone-row-h">
         <span class="zone-dot" style="background:#D4A84B"></span>
-        <span class="zone-lbl2">Einspeisung <span style="color:var(--tx3);font-size:10px">(Breite)</span></span>
+        <span class="zone-lbl2">ÜSS + Sich. <span style="color:var(--tx3);font-size:10px">(B · H)</span></span>
         <span id="zh_einsp" class="zmm2">–</span>
       </div>
       <div class="zone-row-h">
         <span class="zone-dot" style="background:#C8720E"></span>
-        <span class="zone-lbl2">Energieverteilung <span style="color:var(--tx3);font-size:10px">(Höhe)</span></span>
+        <span class="zone-lbl2">Energieverteilung</span>
         <span id="zh_evert" class="zmm2">–</span>
       </div>
       <div class="zone-row-h">
@@ -409,7 +409,8 @@ const H_SCHIENE_DS = 150;  // Stromschienensystem Drehstrom Mindesthöhe
 // Einspeisezone: Breite in TE (Platzhalter – wird später an Schranknennleistung geknüpft)
 const TE_USS_TYP2  = 4;    // ÜSS Typ 2 Drehstrom 4-polig (Kompaktgerät, z. B. Dehn DG S 4P)
 const TE_SICH_USS  = 3;    // Vorsicherungen ÜSS, 3× D02-Halter je 1 TE (L1/L2/L3, N ohne Sich.)
-const TE_KLEMME_ES = 5;    // Einspeiseklemmen L1/L2/L3/N/PE (Platzhalter, später nach Kabelquerschnitt)
+const TE_KLEMME_ES = 5;    // Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile
+const H_USS_BAUTEIL = 60;  // ÜSS Typ 2 Bauhöhe (Kompaktgerät, Platzhalter)
 
 function ceil5(v) { return Math.ceil(Math.max(0, v) / 5) * 5; }
 
@@ -527,18 +528,22 @@ function calculateZones(b, h) {
   document.getElementById('zone_anordnung').disabled = isMehreFelder;
   document.getElementById('zone-feld-section').style.display = isMehreFelder ? '' : 'none';
 
-  // Einspeisezone: Breite (kein eigener Höhenbedarf – liegt neben Energieverteilung)
-  const n_te_einsp = TE_USS_TYP2 + TE_SICH_USS + TE_KLEMME_ES;  // 12 TE
-  const b_einsp    = Math.min(n_te_einsp * TE_BREITE_MM, b);     // max = Plattenbreite
+  // ÜSS + Sicherungen: eigene Zeile an der KE-Seite (Teilbreite)
+  const n_te_uss = TE_USS_TYP2 + TE_SICH_USS;                    // 7 TE
+  const b_uss    = Math.min(n_te_uss * TE_BREITE_MM, b);         // max = Plattenbreite
+  const h_uss    = ceil5(H_HANDLING + H_USS_BAUTEIL + H_HANDLING); // ceil5(90) = 90 mm
+
+  // Einspeiseklemmen (TE_KLEMME_ES) → integriert in Klemmenzeile, kein eigener Höhenbedarf
+  const b_ek = Math.min(TE_KLEMME_ES * TE_BREITE_MM, b * 0.25); // max 25 % der Plattenbreite
 
   // Mindesthöhen (wie h_ke-Logik: Handling + Bauteil + Handling, aufger. 5 mm)
   const h_evert = netztyp === 'drehstrom'
     ? ceil5(H_SCHIENE_DS)                              // 150 mm
     : ceil5(H_HANDLING + H_SICHER_WS + H_HANDLING);   // ceil5(105) = 105 mm
-  const h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING);  // ceil5(82) = 85 mm
+  const h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING); // ceil5(82) = 85 mm
 
-  // Einspeisung teilt sich die Evert-Zeile → kein eigener Höhenbedarf
-  const h_verfueg = h - h_evert - h_klemm;
+  // Festzonen: Evert + Klemm + USS; L/S füllen den Rest
+  const h_verfueg = h - h_evert - h_klemm - h_uss;
 
   let h_leist, h_steuer, b_leist, b_steuer;
   if (anordnung === 'nebeneinander') {
@@ -548,26 +553,26 @@ function calculateZones(b, h) {
     b_steuer = b - b_leist;
   } else {
     h_leist  = ceil5(Math.max(0, h_verfueg / 2));
-    h_steuer = Math.max(0, h - h_evert - h_leist - h_klemm);
+    h_steuer = Math.max(0, h - h_evert - h_leist - h_klemm - h_uss);
     b_leist  = b;
     b_steuer = b;
   }
 
-  const h_gesamt = h_evert +
+  const h_gesamt = h_evert + h_uss +
     (anordnung === 'nebeneinander' ? h_leist : h_leist + h_steuer) + h_klemm;
-  const h_diff   = h - h_gesamt;
-  // passt = Festzonen (Evert + Klemm) passen; L/S-Zonen sind flexibel; Einsp. nur Breite
-  const passt    = h_verfueg >= 0;
+  const h_diff = h - h_gesamt;
+  // passt = Festzonen (Evert + Klemm + USS) passen; L/S-Zonen sind flexibel
+  const passt  = h_verfueg >= 0;
 
   // Sidebar aktualisieren
   const set = (id, txt, col) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.textContent = txt;
-    if (col) el.style.color = col;
+    el.style.color = col || '';
   };
   if (h > 0) {
-    set('zh_einsp',  `${n_te_einsp} TE · ${Math.round(b_einsp)} mm`, '#D4A84B');
+    set('zh_einsp',  `${n_te_uss} TE · ${Math.round(b_uss)} mm`, '#D4A84B');
     set('zh_evert',  h_evert  + ' mm');
     set('zh_leist',  h_leist  + ' mm');
     set('zh_steuer', anordnung === 'nebeneinander' ? '= Leistung' : h_steuer + ' mm',
@@ -591,7 +596,8 @@ function calculateZones(b, h) {
   localStorage.setItem('m03_zone_netztyp',   netztyp);
   localStorage.setItem('m03_zone_ke_pos',    ke_pos);
   localStorage.setItem('m03_n_felder',       n_felder);
-  localStorage.setItem('m03_b_einsp',  b_einsp);
+  localStorage.setItem('m03_b_uss',    b_uss);
+  localStorage.setItem('m03_h_uss',    h_uss);
   localStorage.setItem('m03_h_evert',  h_evert);
   localStorage.setItem('m03_h_leist',  h_leist);
   localStorage.setItem('m03_h_steuer', h_steuer);
@@ -600,56 +606,78 @@ function calculateZones(b, h) {
   localStorage.setItem('m03_b_steuer', b_steuer);
 
   return { b, h, ke_pos, modus, anordnung, netztyp, n_felder,
-           n_te_einsp, b_einsp, h_evert, h_leist, h_steuer, h_klemm,
+           n_te_uss, b_uss, b_ek, h_uss, h_evert, h_leist, h_steuer, h_klemm,
            b_leist, b_steuer, h_gesamt, h_diff, passt };
 }
 
 // ── Layout-Zeilen aufbauen ────────────────────────────────────
 // Jede Zeile: { h_mm, zones:[{id,x_frac,w_frac,col,lbl}] }
 function buildLayout(zp) {
-  const { b, b_einsp, h_evert, h_leist, h_steuer, h_klemm,
+  const { b, b_uss, b_ek, h_uss, h_evert, h_leist, h_steuer, h_klemm,
           b_leist, b_steuer, anordnung, ke_pos } = zp;
-  const isNeben  = anordnung === 'nebeneinander';
+  const isNeben = anordnung === 'nebeneinander';
 
-  // Einspeisung: Breitenanteil an der gemeinsamen Einsp+Evert-Zeile
-  const f_einsp = b > 0 ? Math.min(b_einsp / b, 1) : 0;
-  const f_evert = 1 - f_einsp;
+  // ÜSS-Zeile: Teilbreite, Position abhängig von KE-Seite
+  const f_uss = b > 0 ? Math.min(b_uss / b, 1) : 0;
 
-  // Klemmen-Breitenaufteilung: klemm_l unter Leistung, klemm_f+klemm_s unter Steuerung
-  const f_kl  = b_leist  / b;
-  const f_kfs = b_steuer / b;
+  // Klemmenzeile: Einspeiseklemmen integriert, Rest proportional aufgeteilt
+  // KE unten → Einsp-Kl. rechts; KE oben → Einsp-Kl. links
+  const f_ek  = b > 0 ? Math.min(b_ek / b, 0.25) : 0;
+  const f_rest = 1 - f_ek;
+  const f_kl  = (b_leist  / b) * f_rest;
+  const f_kfs = (b_steuer / b) * f_rest;
   const f_kf  = f_kfs / 2;
   const f_ks  = f_kfs - f_kf;
 
   const R = {
-    // Einspeisung + Energieverteilung teilen sich eine Zeile (Höhe = h_evert)
-    einsp_evert: { h_mm: h_evert, zones: [
-      { id:'einsp', x:0,       w:f_einsp, col:'#D4A84B', lbl:'Einspeisung' },
-      { id:'evert', x:f_einsp, w:f_evert, col:'#C8720E', lbl:'Energieverteilung' },
+    evert: { h_mm: h_evert, zones: [
+      { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
+    ]},
+    // ÜSS + Sicherungen: Teilbreite, auf der KE-Seite (links bei KE oben, rechts bei KE unten)
+    uss_ke_unten: { h_mm: h_uss, zones: [
+      { id:'uss', x:1-f_uss, w:f_uss, col:'#D4A84B', lbl:'ÜSS + Sich.' }
+    ]},
+    uss_ke_oben: { h_mm: h_uss, zones: [
+      { id:'uss', x:0, w:f_uss, col:'#D4A84B', lbl:'ÜSS + Sich.' }
+    ]},
+    // Klemmen: Einsp-Kl. auf der KE-Seite, Abgangsklemmen füllen den Rest
+    klemm_ke_unten: { h_mm: h_klemm, zones: [
+      { id:'klemm_l', x:0,             w:f_kl,  col:'#2DBD8E', lbl:'Abg.-Kl. Leistung' },
+      { id:'klemm_f', x:f_kl,          w:f_kf,  col:'#9A94E8', lbl:'Abg.-Kl. Feldger.' },
+      { id:'klemm_s', x:f_kl+f_kf,     w:f_ks,  col:'#E8C448', lbl:'Abg.-Kl. Sensoren' },
+      { id:'klemm_e', x:1-f_ek,        w:f_ek,  col:'#D4A84B', lbl:'Einsp.-Kl.' },
+    ]},
+    klemm_ke_oben: { h_mm: h_klemm, zones: [
+      { id:'klemm_e', x:0,             w:f_ek,  col:'#D4A84B', lbl:'Einsp.-Kl.' },
+      { id:'klemm_l', x:f_ek,          w:f_kl,  col:'#2DBD8E', lbl:'Abg.-Kl. Leistung' },
+      { id:'klemm_f', x:f_ek+f_kl,     w:f_kf,  col:'#9A94E8', lbl:'Abg.-Kl. Feldger.' },
+      { id:'klemm_s', x:f_ek+f_kl+f_kf,w:f_ks,  col:'#E8C448', lbl:'Abg.-Kl. Sensoren' },
     ]},
     ls: isNeben
       ? { h_mm: h_leist, zones: [
-          { id:'leist',  x:0,    w:f_kl,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
-          { id:'steuer', x:f_kl, w:f_kfs, col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+          { id:'leist',  x:0,           w:b_leist/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
+          { id:'steuer', x:b_leist/b,   w:b_steuer/b, col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
         ]}
       : { h_mm: h_leist, zones: [
-          { id:'leist',  x:0, w:1,        col:'#C84E2E', lbl:'Leistungsbaugruppen' }
+          { id:'leist', x:0, w:1, col:'#C84E2E', lbl:'Leistungsbaugruppen' }
         ]},
     steuer: { h_mm: h_steuer, zones: [
       { id:'steuer', x:0, w:1, col:'#4BBECA', lbl:'Steuerbaugr. / DDC' }
     ]},
-    klemm: { h_mm: h_klemm, zones: [
-      { id:'klemm_l', x:0,         w:f_kl, col:'#2DBD8E', lbl:'Abg.-Kl. Leistung' },
-      { id:'klemm_f', x:f_kl,      w:f_kf, col:'#9A94E8', lbl:'Abg.-Kl. Feldger.' },
-      { id:'klemm_s', x:f_kl+f_kf, w:f_ks, col:'#E8C448', lbl:'Abg.-Kl. Sensoren' },
-    ]},
   };
 
-  // Zonenreihenfolge: Energieverteilung immer oben, Klemmen immer unten
-  // KE-Position bestimmt nur die SVG-Kabeldarstellung, nicht die Zonenreihenfolge
-  const rows = [R.einsp_evert, R.ls];
-  if (!isNeben) rows.push(R.steuer);
-  rows.push(R.klemm);
+  // KE unten (Standschrank): Evert oben · L/S · Klemmen · ÜSS unten (nahe KE)
+  // KE oben (Wandschrank):   ÜSS oben (nahe KE) · Klemmen · L/S · Evert unten
+  let rows;
+  if (ke_pos === 'unten') {
+    rows = [R.evert, R.ls];
+    if (!isNeben) rows.push(R.steuer);
+    rows.push(R.klemm_ke_unten, R.uss_ke_unten);
+  } else {
+    rows = [R.uss_ke_oben, R.klemm_ke_oben, R.ls];
+    if (!isNeben) rows.push(R.steuer);
+    rows.push(R.evert);
+  }
   return rows;
 }
 
@@ -708,7 +736,7 @@ function buildZoneSection(zp) {
   const netzLabel = zp.netztyp === 'drehstrom' ? 'Drehstrom 3~' : 'Wechselstrom 1~';
   const warnHtml  = !zp.passt
     ? `<p style="color:#E04040;font-size:11px;font-family:var(--mono);margin-bottom:6px">
-        ⚠ Festzonen (Evert. + Klemm.) ${zp.h_evert + zp.h_klemm} mm &gt; Montagefläche ${zp.h} mm – größeres Gehäuse oder kleinere Kabeleinführungszone erforderlich</p>`
+        ⚠ Festzonen (Evert. + Klemm. + ÜSS) ${zp.h_evert + zp.h_klemm + zp.h_uss} mm &gt; Montagefläche ${zp.h} mm – größeres Gehäuse oder kleinere Kabeleinführungszone erforderlich</p>`
     : '';
   return `<div class="zone-section-title">Zonenaufteilung · ${modLabel} · L/S: ${lsLabel} · KE: ${keLabel} · Netz: ${netzLabel}</div>
 ${warnHtml}${buildZoneSVG(zp)}
@@ -823,14 +851,16 @@ function buildZoneTable(zp) {
   const n_te_row = Math.floor(zp.b / TE_BREITE_MM);
 
   const srcKlemm  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (4 mm²) + ${H_HANDLING} mm Handling`;
-  const srcEinsp  = `${TE_USS_TYP2} TE ÜSS Typ 2 (4-pol.) + ${TE_SICH_USS} TE Vorsich. D02 + ${TE_KLEMME_ES} TE Einspeisekl. = ${zp.n_te_einsp} TE · ${Math.round(zp.b_einsp)} mm Breite (Platzhalter)`;
+  const srcUss    = `${TE_USS_TYP2} TE ÜSS Typ 2 (4-pol.) + ${TE_SICH_USS} TE Vorsich. D02 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm Breite · ${H_HANDLING} mm + ${H_USS_BAUTEIL} mm + ${H_HANDLING} mm Höhe → ${zp.h_uss} mm (Platzhalter)`;
+  const srcEinspKl = `${TE_KLEMME_ES} TE Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`;
   const srcEvert  = zp.netztyp === 'drehstrom'
     ? `Festwert ${H_SCHIENE_DS} mm (Stromschienensystem Drehstrom 3~), nicht aufgerundet`
     : `${H_HANDLING} mm Handling + ${H_SICHER_WS} mm Sicherungsträger (1~) + ${H_HANDLING} mm Handling = ${H_HANDLING+H_SICHER_WS+H_HANDLING} mm → aufger. ${ceil5(H_HANDLING+H_SICHER_WS+H_HANDLING)} mm`;
-  const srcLS     = `(Platte − Evert. − Klemm.) ${zp.anordnung === 'nebeneinander' ? '÷ 2 Breite' : '÷ 2 Höhe'}, aufger. 5 mm`;
+  const srcLS     = `(Platte − Evert. − Klemm. − ÜSS) ${zp.anordnung === 'nebeneinander' ? '÷ 2 Breite' : '÷ 2 Höhe'}, aufger. 5 mm`;
 
   function srcFor(id) {
-    if (id === 'einsp')   return srcEinsp;
+    if (id === 'uss')     return srcUss;
+    if (id === 'klemm_e') return srcEinspKl;
     if (id === 'evert')   return srcEvert;
     if (id === 'klemm_l' || id === 'klemm_f' || id === 'klemm_s') return srcKlemm;
     return srcLS;
@@ -862,10 +892,10 @@ function buildZoneTable(zp) {
   }
   tbl += `</tbody></table>
 <p class="note-line" style="margin-top:6px">
-  Mindesthöhen · aufgerundet auf 5 mm · Einspeisung liegt neben Energieverteilung (gemeinsame Zeile, Höhe = Evert.) ·
-  Klemmen: Handling + Klemmenhöhe 4 mm² + Handling ·
+  Mindesthöhen · aufgerundet auf 5 mm · ÜSS + Sicherungen an der KE-Seite (Teilbreite) ·
+  Einspeiseklemmen in der Klemmenzeile · Klemmen: Handling + Klemmenhöhe 4 mm² + Handling ·
   Leistung/Steuerung: verbleibende Fläche ${zp.anordnung === 'nebeneinander' ? 'nebeneinander je 50 % Breite' : 'übereinander je 50 % Höhe'} ·
-  Reihenfolge: KE ${zp.ke_pos === 'oben' ? 'oben' : 'unten'}
+  KE ${zp.ke_pos === 'oben' ? 'oben → ÜSS oben, Evert. unten' : 'unten → Evert. oben, ÜSS unten'}
 </p>`;
   return tbl;
 }
