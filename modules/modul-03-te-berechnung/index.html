@@ -171,6 +171,31 @@ legend{
   .panel-in{border-right:none;border-bottom:1px solid var(--bord);}
 }
 
+/* ── Zonenaufteilung Sidebar ── */
+.zone-row{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:.5px solid var(--bord);}
+.zone-row:last-of-type{border-bottom:none;}
+.zone-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.zone-lbl{flex:1;color:var(--tx2);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.zpct{width:38px;padding:2px 4px;border:1px solid var(--bords);border-radius:3px;
+      background:var(--bg);color:var(--tx);font-size:11px;text-align:right;flex-shrink:0;}
+.zpct:focus{outline:none;border-color:var(--green);}
+.zpct-unit{font-size:10px;color:var(--tx3);flex-shrink:0;}
+.zmm{font-family:var(--mono);font-size:10px;color:var(--tx3);width:46px;text-align:right;flex-shrink:0;}
+.zone-sum-row{display:flex;align-items:center;justify-content:space-between;
+              padding:5px 0 2px;border-top:1px solid var(--bords);margin-top:4px;}
+.zone-sum-ok {font-family:var(--mono);font-size:11px;color:#2DBD8E;font-weight:700;}
+.zone-sum-err{font-family:var(--mono);font-size:11px;color:#E04040;font-weight:700;}
+.zone-sep{border:none;border-top:1px solid var(--bord);margin:8px 0 6px;}
+.zone-section-title{font-size:12px;font-weight:700;color:var(--tx2);
+  margin:20px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bords);}
+@media print{
+  .zone-pct-section,.zone-feld-section{display:block !important;}
+  .zpct{background:#fff;border-color:#ccc;color:#000;}
+  .zone-section-title{color:#222;border-color:#999;}
+  .zone-sum-ok{color:#007740;}
+  .zone-sum-err{color:#aa0000;}
+}
+
 /* ── Footer ── */
 .site-footer{
   background:#111110;border-top:1px solid var(--bord);
@@ -275,6 +300,87 @@ legend{
       </div>
     </fieldset>
 
+    <!-- Fieldset 5: Zonenaufteilung -->
+    <fieldset>
+      <legend>Zonenaufteilung · Montageplatte</legend>
+
+      <div class="field">
+        <div class="lbl">Anordnung<span class="var">zone_modus</span></div>
+        <select id="zone_modus" onchange="saveZoneInputs();calculate()" style="width:130px">
+          <option value="uebereinander">Übereinander</option>
+          <option value="je_feld">Je Feld</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">KE-Position<span class="var">ke_pos</span></div>
+        <input id="zone_ke_pos" type="text" value="–" disabled>
+      </div>
+
+      <hr class="zone-sep">
+
+      <!-- Modus A: 6 Zonen als Prozentaufteilung -->
+      <div id="zone-pct-section">
+        <div class="zone-row">
+          <span class="zone-dot" style="background:#D4A84B"></span>
+          <span class="zone-lbl" title="Einspeisezone · Hauptschalter · ÜSS">Einspeisezone</span>
+          <input id="pct_einsp"   class="zpct" type="number" min="0" max="100" value="10" oninput="saveZoneInputs();calculate()">
+          <span class="zpct-unit">%</span>
+          <span id="zmm_einsp"   class="zmm">–</span>
+        </div>
+        <div class="zone-row">
+          <span class="zone-dot" style="background:#C8720E"></span>
+          <span class="zone-lbl" title="Energieverteilung · Sicherungen · MSS · Schienensystem">Energieverteilung</span>
+          <input id="pct_evert"  class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
+          <span class="zpct-unit">%</span>
+          <span id="zmm_evert"  class="zmm">–</span>
+        </div>
+        <div class="zone-row">
+          <span class="zone-dot" style="background:#C84E2E"></span>
+          <span class="zone-lbl" title="Leistungsbaugruppen · Schütze · FU · Antriebe">Leistungsbaugr.</span>
+          <input id="pct_leist"  class="zpct" type="number" min="0" max="100" value="20" oninput="saveZoneInputs();calculate()">
+          <span class="zpct-unit">%</span>
+          <span id="zmm_leist"  class="zmm">–</span>
+        </div>
+        <div class="zone-row">
+          <span class="zone-dot" style="background:#4BBECA"></span>
+          <span class="zone-lbl" title="Steuerbaugruppen · DDC · SPS · I/O-Module">Steuerbaugr./DDC</span>
+          <input id="pct_steuer" class="zpct" type="number" min="0" max="100" value="25" oninput="saveZoneInputs();calculate()">
+          <span class="zpct-unit">%</span>
+          <span id="zmm_steuer" class="zmm">–</span>
+        </div>
+        <div class="zone-row">
+          <span class="zone-dot" style="background:#2DBD8E"></span>
+          <span class="zone-lbl" title="Abgangsklemmen Leistung · 230/400 V Abgänge">Abg.-Kl. Leistung</span>
+          <input id="pct_klemm_l" class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
+          <span class="zpct-unit">%</span>
+          <span id="zmm_klemm_l" class="zmm">–</span>
+        </div>
+        <div class="zone-row">
+          <span class="zone-dot" style="background:#9A94E8"></span>
+          <span class="zone-lbl" title="Abgangsklemmen Feldgeräte · 24 V DC · Signale">Abg.-Kl. Feldger.</span>
+          <input id="pct_klemm_f" class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
+          <span class="zpct-unit">%</span>
+          <span id="zmm_klemm_f" class="zmm">–</span>
+        </div>
+        <div class="zone-sum-row">
+          <span style="font-size:11px;color:var(--tx2)">Summe</span>
+          <span id="zone_sum_display" class="zone-sum-ok">100 %</span>
+        </div>
+      </div>
+
+      <!-- Modus B: Feldanzahl -->
+      <div id="zone-feld-section" style="display:none">
+        <div class="field" style="margin-top:4px">
+          <div class="lbl">Anzahl Felder<span class="var">n_felder</span></div>
+          <input id="n_felder" type="number" min="1" max="20" value="3"
+                 oninput="saveZoneInputs();calculate()"
+                 style="width:60px;padding:3px 7px;border:1px solid var(--bords);border-radius:3px;
+                        background:var(--bg);color:var(--tx);font-size:13px;text-align:right">
+        </div>
+      </div>
+
+    </fieldset>
+
     <button class="btn-print" onclick="window.print()">Ergebnis drucken</button>
 
   </aside>
@@ -300,21 +406,38 @@ const _v = (id, val) => { document.getElementById(id).value = val; };
 // ── Festwert ──────────────────────────────────────────────────
 const TE_BREITE_MM = 17.5;  // DIN EN 60715
 
-// ── Farben Ergebnistabelle ────────────────────────────────────
-const CI  = '#9A9890';   // Eingabewerte (sekundär)
-const CCM2 = '#2DBD8E';  // flaeche_mbereich_cm2 (grün)
-const CM2  = '#9A94E8';  // flaeche_mbereich_m2  (lila)
-const CTE  = '#A8C4E8';  // n_te                 (hellblau)
+// ── Farben TE-Tabelle ─────────────────────────────────────────
+const CI   = '#9A9890';
+const CCM2 = '#2DBD8E';
+const CM2  = '#9A94E8';
+const CTE  = '#A8C4E8';
+
+// ── Zonendefinition ───────────────────────────────────────────
+const ZONES = [
+  { id:'einsp',   lbl:'Einspeisezone',        col:'#D4A84B' },
+  { id:'evert',   lbl:'Energieverteilung',     col:'#C8720E' },
+  { id:'leist',   lbl:'Leistungsbaugruppen',   col:'#C84E2E' },
+  { id:'steuer',  lbl:'Steuerbaugr. / DDC',    col:'#4BBECA' },
+  { id:'klemm_l', lbl:'Abgangskl. Leistung',   col:'#2DBD8E' },
+  { id:'klemm_f', lbl:'Abgangskl. Feldgeräte', col:'#9A94E8' },
+];
+
+// Zonenreihenfolge von oben nach unten je KE-Position
+function getZoneOrder(ke_pos) {
+  return ke_pos === 'oben'
+    ? ['klemm_f','klemm_l','steuer','leist','evert','einsp']
+    : ['einsp','evert','leist','steuer','klemm_l','klemm_f'];
+}
 
 // ── Übernahme aus Modul 1 / 2 ────────────────────────────────
 function loadFromModul() {
-  const typ = gs('schrank_typ');
+  const typ  = gs('schrank_typ');
   const hint = document.getElementById('hint_quelle');
 
-  // Keine Auswahl → alles auf 0, neutrale Anzeige
   if (!typ) {
     _v('b_mplatte_mbereich_mm', 0);
     _v('h_mplatte_mbereich_mm', 0);
+    _v('zone_ke_pos', '–');
     document.getElementById('var_b').textContent = 'b_mplatte_mbereich_mm';
     document.getElementById('var_h').textContent = 'h_mplatte_mbereich_mm';
     hint.textContent = 'Bitte Schrank-Typ auswählen';
@@ -322,16 +445,19 @@ function loadFromModul() {
   }
 
   const isWand = typ === 'wandschrank';
-  const keyB = isWand ? 'm01_b_mplatte_mbereich_wandschrank_mm'
-                      : 'm02_b_mplatte_mbereich_standschrank_mm';
-  const keyH = isWand ? 'm01_h_mplatte_mbereich_wandschrank_mm'
-                      : 'm02_h_mplatte_mbereich_standschrank_mm';
+  const keyB   = isWand ? 'm01_b_mplatte_mbereich_wandschrank_mm'
+                        : 'm02_b_mplatte_mbereich_standschrank_mm';
+  const keyH   = isWand ? 'm01_h_mplatte_mbereich_wandschrank_mm'
+                        : 'm02_h_mplatte_mbereich_standschrank_mm';
+  const keyKE  = isWand ? 'm01_ke_pos' : 'm02_ke_pos';
 
-  const storedB = localStorage.getItem(keyB);
-  const storedH = localStorage.getItem(keyH);
+  const storedB  = localStorage.getItem(keyB);
+  const storedH  = localStorage.getItem(keyH);
+  const storedKE = localStorage.getItem(keyKE);
 
-  _v('b_mplatte_mbereich_mm', storedB !== null ? +storedB : 0);
-  _v('h_mplatte_mbereich_mm', storedH !== null ? +storedH : 0);
+  _v('b_mplatte_mbereich_mm', storedB  !== null ? +storedB  : 0);
+  _v('h_mplatte_mbereich_mm', storedH  !== null ? +storedH  : 0);
+  _v('zone_ke_pos',           storedKE !== null ? storedKE  : (isWand ? 'oben' : 'unten'));
 
   const sfx = isWand ? 'wandschrank_mm' : 'standschrank_mm';
   document.getElementById('var_b').textContent = `b_mplatte_mbereich_${sfx}`;
@@ -348,6 +474,23 @@ function loadFromModul() {
 
 // ── Schrank-Typ: kein Persist – Start immer mit "bitte wählen" ──
 
+// ── Zonenaufteilung speichern / laden ─────────────────────────
+function saveZoneInputs() {
+  localStorage.setItem('m03_zone_modus', gs('zone_modus'));
+  for (const z of ZONES) localStorage.setItem('m03_pct_' + z.id, gs('pct_' + z.id));
+  localStorage.setItem('m03_n_felder', gs('n_felder'));
+}
+function loadZoneInputs() {
+  const modus = localStorage.getItem('m03_zone_modus');
+  if (modus) _v('zone_modus', modus);
+  for (const z of ZONES) {
+    const v = localStorage.getItem('m03_pct_' + z.id);
+    if (v !== null) _v('pct_' + z.id, v);
+  }
+  const nf = localStorage.getItem('m03_n_felder');
+  if (nf !== null) _v('n_felder', nf);
+}
+
 // ── Berechnung ────────────────────────────────────────────────
 function calculate() {
   const typ = gs('schrank_typ');
@@ -360,96 +503,264 @@ function calculate() {
   const flaeche_mbereich_m2  = (b * h) / 1e6;
   const n_te                 = Math.floor(b / TE_BREITE_MM);
 
-  // Seitenleiste aktualisieren
   _v('flaeche_mbereich_cm2', flaeche_mbereich_cm2.toFixed(0));
   _v('flaeche_mbereich_m2',  flaeche_mbereich_m2.toFixed(3));
   _v('n_te',                 n_te);
 
-  buildTable({ b, h, typ, flaeche_mbereich_cm2, flaeche_mbereich_m2, n_te });
-}
+  // Modus-Sichtbarkeit
+  const modus = gs('zone_modus');
+  document.getElementById('zone-pct-section').style.display = modus === 'je_feld' ? 'none' : '';
+  document.getElementById('zone-feld-section').style.display = modus === 'je_feld' ? '' : 'none';
 
-// ── Ergebnistabelle ───────────────────────────────────────────
-function buildTable(p) {
-  if (!p.typ) {
+  // Zonen-Sidebar + Rückgabe
+  const zp = calculateZones(b, h);
+
+  // Ergebnisbereich
+  if (!typ) {
     document.getElementById('results-area').innerHTML =
       `<p style="color:var(--tx3);font-size:13px;margin-top:24px;padding:0 4px">
         Bitte Schrank-Typ auswählen, um Ergebnisse anzuzeigen.
       </p>`;
     return;
   }
-  const isWand  = p.typ === 'wandschrank';
+
+  let html = buildTETable({ b, h, typ, flaeche_mbereich_cm2, flaeche_mbereich_m2, n_te });
+
+  if (b > 0 && h > 0 && zp.sum === 100) {
+    html += buildZoneSection(zp);
+  } else if (b > 0 && h > 0 && zp.sum !== 100) {
+    html += `<p style="color:#E04040;font-size:12px;margin-top:16px;font-family:var(--mono)">
+      Zonenaufteilung: ${zp.sum} % – bitte auf 100 % anpassen.</p>`;
+  }
+
+  document.getElementById('results-area').innerHTML = html;
+}
+
+// ── Zonen-Sidebar berechnen ───────────────────────────────────
+function calculateZones(b, h) {
+  let sum = 0;
+  const zoneData = ZONES.map(z => {
+    const pct  = Math.max(0, g('pct_' + z.id));
+    const h_mm = Math.round((pct / 100) * h);
+    sum += pct;
+    const elMm = document.getElementById('zmm_' + z.id);
+    if (elMm) elMm.textContent = h > 0 ? h_mm + ' mm' : '–';
+    return { ...z, pct, h_mm };
+  });
+
+  const sumEl = document.getElementById('zone_sum_display');
+  sumEl.textContent = sum + ' %';
+  sumEl.className   = sum === 100 ? 'zone-sum-ok' : 'zone-sum-err';
+
+  const ke_pos   = gs('zone_ke_pos') || 'unten';
+  const modus    = gs('zone_modus');
+  const n_felder = Math.max(1, g('n_felder') || 3);
+
+  // localStorage-Ausgabe für Folgemodule
+  localStorage.setItem('m03_zone_modus',  modus);
+  localStorage.setItem('m03_zone_ke_pos', ke_pos);
+  localStorage.setItem('m03_n_felder',    n_felder);
+  for (const z of zoneData) {
+    localStorage.setItem('m03_pct_'     + z.id, z.pct);
+    localStorage.setItem('m03_zone_'    + z.id + '_h_mm', z.h_mm);
+  }
+
+  return { b, h, ke_pos, modus, sum, zoneData, n_felder };
+}
+
+// ── TE-Tabelle (gibt HTML-String zurück) ──────────────────────
+function buildTETable(p) {
+  const isWand   = p.typ === 'wandschrank';
   const typLabel = isWand ? 'Wandschrank' : 'Standschrank';
   const sfx      = isWand ? 'wandschrank_mm' : 'standschrank_mm';
   const src      = isWand ? 'aus Modul 1' : 'aus Modul 2';
-
-  // Farbige Variablennamen für Formel-Spalte
-  const cb = s => `<span style="color:${CI}">${s}</span>`;
-  const fmtFormelA  = `(${cb('b')} × ${cb('h')}) / 100`;
-  const fmtFormelM  = `(${cb('b')} × ${cb('h')}) / 1 000 000`;
-  const fmtFormelTE = `⌊ ${cb('b')} / 17,5 ⌋`;
+  const cb = s  => `<span style="color:${CI}">${s}</span>`;
+  const fn = (col, txt) => `<span style="color:${col};font-weight:700">${txt}</span>`;
 
   const rows = [
-    { v: 'schrank_typ',                        label: 'Schrank-Typ',           val: typLabel,                              unit: '–',   formel: 'Auswahl',   col: CI   },
-    { v: `b_mplatte_mbereich_${sfx}`,          label: 'Montagebereich Breite', val: p.b.toFixed(0),                        unit: 'mm',  formel: src,         col: CI   },
-    { v: `h_mplatte_mbereich_${sfx}`,          label: 'Montagebereich Höhe',   val: p.h.toFixed(0),                        unit: 'mm',  formel: src,         col: CI   },
-    { v: 'flaeche_mbereich_cm2',               label: 'Fläche',                val: p.flaeche_mbereich_cm2.toFixed(0),     unit: 'cm²', formel: fmtFormelA,  col: CCM2 },
-    { v: 'flaeche_mbereich_m2',                label: 'Fläche',                val: p.flaeche_mbereich_m2.toFixed(3),      unit: 'm²',  formel: fmtFormelM,  col: CM2  },
-    { v: 'n_te',                               label: 'Verfügbare TE',         val: p.n_te,                                unit: 'TE',  formel: fmtFormelTE, col: CTE  },
+    { v:'schrank_typ',               label:'Schrank-Typ',           val:typLabel,                         unit:'–',   formel:'Auswahl',                              col:CI   },
+    { v:`b_mplatte_mbereich_${sfx}`, label:'Montagebereich Breite', val:p.b.toFixed(0),                   unit:'mm',  formel:src,                                    col:CI   },
+    { v:`h_mplatte_mbereich_${sfx}`, label:'Montagebereich Höhe',   val:p.h.toFixed(0),                   unit:'mm',  formel:src,                                    col:CI   },
+    { v:'flaeche_mbereich_cm2',      label:'Fläche',                val:p.flaeche_mbereich_cm2.toFixed(0), unit:'cm²', formel:`(${cb('b')} × ${cb('h')}) / 100`,      col:CCM2 },
+    { v:'flaeche_mbereich_m2',       label:'Fläche',                val:p.flaeche_mbereich_m2.toFixed(3),  unit:'m²',  formel:`(${cb('b')} × ${cb('h')}) / 1 000 000`,col:CM2  },
+    { v:'n_te',                      label:'Verfügbare TE',         val:p.n_te,                            unit:'TE',  formel:`⌊ ${cb('b')} / 17,5 ⌋`,               col:CTE  },
   ];
 
-  let tbl = `<table class="rtable">
-  <thead>
-    <tr>
-      <th>Variable</th>
-      <th>Bezeichnung</th>
-      <th style="text-align:right">Wert</th>
-      <th style="text-align:right">Einheit</th>
-      <th>Formel / Quelle</th>
-    </tr>
-  </thead>
-  <tbody>`;
-
+  let tbl = `<table class="rtable"><thead><tr>
+    <th>Variable</th><th>Bezeichnung</th>
+    <th style="text-align:right">Wert</th><th style="text-align:right">Einheit</th>
+    <th>Formel / Quelle</th></tr></thead><tbody>`;
   for (const r of rows) {
-    tbl += `
-    <tr>
+    tbl += `<tr>
       <td><span class="vname" style="color:${r.col}">${r.v}</span></td>
       <td style="color:var(--tx2);font-size:12px">${r.label}</td>
       <td class="val" style="color:${r.col}">${r.val}</td>
       <td class="val" style="color:var(--tx3);font-weight:400">${r.unit}</td>
-      <td class="formula-cell">${r.formel}</td>
-    </tr>`;
+      <td class="formula-cell">${r.formel}</td></tr>`;
   }
+  tbl += `</tbody></table>`;
 
-  tbl += `
-  </tbody>
-</table>`;
-
-  // Formelzeile – Variablennamen + Werte farbig
-  const fn = (col, txt) => `<span style="color:${col};font-weight:700">${txt}</span>`;
-
-  // Variablennamen
-  const vnTE  = fn(CTE,      'n_te');
-  const vnB   = fn(CI,       'b');
-  const vnH   = fn(CI,       'h');
-  const vnTEB = fn('#D4A84B','te_breite');
-  const vnCM2 = fn(CCM2,     'flaeche_mbereich_cm2');
-  const vnM2  = fn(CM2,      'flaeche_mbereich_m2');
-  // Werte
-  const fB   = fn(CI,       p.b.toFixed(0));
-  const fH   = fn(CI,       p.h.toFixed(0));
-  const fTE  = fn('#D4A84B','17,5');
-  const fN   = fn(CTE,      p.n_te);
-  const fCM2 = fn(CCM2,     p.flaeche_mbereich_cm2.toFixed(0));
-  const fM2  = fn(CM2,      p.flaeche_mbereich_m2.toFixed(3));
-
+  const fB = fn(CI, p.b.toFixed(0)), fH = fn(CI, p.h.toFixed(0));
   const formel = `<div class="formula-box">
-  ${vnTE} = ⌊ ${vnB} / ${vnTEB} ⌋ &nbsp;=&nbsp; ⌊ ${fB} mm / ${fTE} mm ⌋ &nbsp;=&nbsp; ${fN} TE<br>
-  ${vnCM2} = ${vnB} × ${vnH} &nbsp;=&nbsp; ${fB} mm × ${fH} mm &nbsp;=&nbsp; ${fCM2} cm²<br>
-  ${vnM2} = ${vnB} × ${vnH} / 1 000 000 &nbsp;=&nbsp; ${fB} mm × ${fH} mm / 1 000 000 &nbsp;=&nbsp; ${fM2} m²
+  ${fn(CTE,'n_te')} = ⌊ ${fn(CI,'b')} / ${fn('#D4A84B','te_breite')} ⌋
+    &nbsp;=&nbsp; ⌊ ${fB} mm / ${fn('#D4A84B','17,5')} mm ⌋ &nbsp;=&nbsp; ${fn(CTE,p.n_te)} TE<br>
+  ${fn(CCM2,'flaeche_mbereich_cm2')} = ${fn(CI,'b')} × ${fn(CI,'h')}
+    &nbsp;=&nbsp; ${fB} mm × ${fH} mm &nbsp;=&nbsp; ${fn(CCM2,p.flaeche_mbereich_cm2.toFixed(0))} cm²<br>
+  ${fn(CM2,'flaeche_mbereich_m2')} = ${fn(CI,'b')} × ${fn(CI,'h')} / 1 000 000
+    &nbsp;=&nbsp; ${fB} mm × ${fH} mm / 1 000 000 &nbsp;=&nbsp; ${fn(CM2,p.flaeche_mbereich_m2.toFixed(3))} m²
   <div class="note-line">TE-Breite: 17,5 mm nach DIN EN 60715 · Ergebnis: ganze Zahl (abgerundet)</div>
 </div>`;
 
-  document.getElementById('results-area').innerHTML = tbl + formel;
+  return tbl + formel;
+}
+
+// ── Zonenabschnitt Wrapper ────────────────────────────────────
+function buildZoneSection(zp) {
+  const keLabel  = zp.ke_pos === 'oben' ? 'oben' : 'unten';
+  const modLabel = zp.modus === 'je_feld'
+    ? 'Je Feld · ' + zp.n_felder + ' Felder'
+    : 'Übereinander · 1 Feld';
+  return `<div class="zone-section-title">Zonenaufteilung · Montageplatte · ${modLabel} · KE ${keLabel}</div>
+${buildZoneSVG(zp)}
+${buildZoneTable(zp)}`;
+}
+
+// ── Zonen-SVG ─────────────────────────────────────────────────
+function buildZoneSVG(zp) {
+  const b = zp.b, h = zp.h;
+  const zMap = Object.fromEntries(ZONES.map(z => [z.id, z]));
+
+  if (zp.modus === 'uebereinander') {
+    const PL = 10, PT = 14, PR = 92, PB = 14;
+    const sc  = Math.min(260 / b, 520 / h);
+    const pw  = Math.round(b * sc);
+    const ph  = Math.round(h * sc);
+    const VW  = PL + pw + PR, VH = PT + ph + PB;
+    const dimX = PL + pw + 6, lblX = PL + pw + 14;
+
+    let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
+      style="width:100%;max-width:${VW}px;display:block;background:#1C1C1A;border-radius:4px;margin-bottom:12px">`;
+    s += `<rect x="${PL}" y="${PT}" width="${pw}" height="${ph}" fill="#FDFCF8" stroke="#888" stroke-width="0.8"/>`;
+
+    let y = PT;
+    for (const id of getZoneOrder(zp.ke_pos)) {
+      const zd  = zp.zoneData.find(z => z.id === id);
+      const col = zMap[id].col;
+      const lbl = zMap[id].lbl;
+      const zh  = Math.round(zd.h_mm * sc);
+      const cy  = y + zh / 2;
+
+      s += `<rect x="${PL}" y="${y}" width="${pw}" height="${zh}"
+        fill="${col}" fill-opacity="0.22" stroke="${col}" stroke-width="0.5"/>`;
+      if (zh >= 12)
+        s += `<text x="${PL+5}" y="${cy - (zh >= 22 ? 5 : 0)}" dominant-baseline="middle"
+          font-size="7.5" fill="${col}" font-weight="600" font-family="system-ui,sans-serif">${lbl}</text>`;
+      if (zh >= 22)
+        s += `<text x="${PL+5}" y="${cy+6}" dominant-baseline="middle"
+          font-size="7" fill="#888680" font-family="'Courier New',monospace">${zd.h_mm} mm</text>`;
+
+      // Maßlinie
+      s += `<line x1="${dimX}" y1="${y}" x2="${dimX+4}" y2="${y}" stroke="#3366BB" stroke-width="0.7"/>`;
+      s += `<line x1="${dimX+2}" y1="${y}" x2="${dimX+2}" y2="${y+zh}" stroke="#3366BB" stroke-width="0.7"/>`;
+      s += `<line x1="${dimX}" y1="${y+zh}" x2="${dimX+4}" y2="${y+zh}" stroke="#3366BB" stroke-width="0.7"/>`;
+      if (zh >= 10)
+        s += `<text x="${lblX}" y="${cy}" dominant-baseline="middle"
+          font-size="8" fill="#3366BB" font-family="'Courier New',monospace">${zd.h_mm} mm</text>`;
+
+      y += zh;
+    }
+
+    // Gesamthöhe-Maßlinie
+    const ox = PL + pw + 56;
+    s += `<line x1="${ox}" y1="${PT}" x2="${ox+4}" y2="${PT}" stroke="#3366BB" stroke-width="0.9"/>`;
+    s += `<line x1="${ox+2}" y1="${PT}" x2="${ox+2}" y2="${PT+ph}" stroke="#3366BB" stroke-width="0.9"/>`;
+    s += `<line x1="${ox}" y1="${PT+ph}" x2="${ox+4}" y2="${PT+ph}" stroke="#3366BB" stroke-width="0.9"/>`;
+    s += `<text x="${ox+7}" y="${PT+ph/2}" dominant-baseline="middle"
+      font-size="9" fill="#3366BB" font-weight="600" font-family="'Courier New',monospace">${h} mm</text>`;
+    s += `</svg>`;
+    return s;
+
+  } else {
+    // Modus B: N Felder nebeneinander
+    const N = zp.n_felder;
+    const PT = 24, PB = 14, PL = 10, GAP = 6;
+    const fw  = Math.min(80, Math.floor((520 - PL - GAP*(N-1)) / N));
+    const sc_h = Math.min(400 / h, 0.28);
+    const ph  = Math.round(h * sc_h);
+    const VW  = PL + N*fw + (N-1)*GAP + PL;
+    const VH  = PT + ph + PB;
+
+    // 4 Bandgruppen: Einspeisung+Verteilung / Leistung / Steuerung / Klemmen
+    const pE = zp.zoneData.find(z=>z.id==='einsp').pct + zp.zoneData.find(z=>z.id==='evert').pct;
+    const pL = zp.zoneData.find(z=>z.id==='leist').pct;
+    const pS = zp.zoneData.find(z=>z.id==='steuer').pct;
+    const pK = zp.zoneData.find(z=>z.id==='klemm_l').pct + zp.zoneData.find(z=>z.id==='klemm_f').pct;
+    const tot = pE+pL+pS+pK || 100;
+    const bands = [
+      { col:'#D4A84B', lbl:'Einsp./Vert.', pct:pE },
+      { col:'#C84E2E', lbl:'Leistung',     pct:pL },
+      { col:'#4BBECA', lbl:'Steuerung',    pct:pS },
+      { col:'#2DBD8E', lbl:'Klemmen',      pct:pK },
+    ];
+
+    let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
+      style="width:100%;max-width:${VW}px;display:block;background:#1C1C1A;border-radius:4px;margin-bottom:12px">`;
+    for (let i = 0; i < N; i++) {
+      const fx = PL + i*(fw+GAP);
+      s += `<text x="${fx+fw/2}" y="${PT-6}" text-anchor="middle"
+        font-size="8" fill="#9A9890" font-family="system-ui,sans-serif">Feld ${i+1}</text>`;
+      s += `<rect x="${fx}" y="${PT}" width="${fw}" height="${ph}" fill="#FDFCF8" stroke="#888" stroke-width="0.8"/>`;
+      let fy = PT;
+      for (const band of bands) {
+        const bh = Math.round((band.pct/tot)*ph);
+        s += `<rect x="${fx}" y="${fy}" width="${fw}" height="${bh}"
+          fill="${band.col}" fill-opacity="0.25" stroke="${band.col}" stroke-width="0.4"/>`;
+        if (bh >= 10)
+          s += `<text x="${fx+fw/2}" y="${fy+bh/2}" text-anchor="middle" dominant-baseline="middle"
+            font-size="6.5" fill="${band.col}" font-family="system-ui,sans-serif">${band.lbl}</text>`;
+        fy += bh;
+      }
+    }
+    s += `</svg>`;
+    return s;
+  }
+}
+
+// ── Zonen-Tabelle (gibt HTML-String zurück) ───────────────────
+function buildZoneTable(zp) {
+  const order    = getZoneOrder(zp.ke_pos);
+  const zMap     = Object.fromEntries(ZONES.map(z => [z.id, z]));
+  const n_te_row = Math.floor(zp.b / TE_BREITE_MM);
+
+  let tbl = `<table class="rtable"><thead><tr>
+    <th>#</th><th>Zone · Bezeichnung</th>
+    <th style="text-align:right">Anteil</th>
+    <th style="text-align:right">Höhe</th>
+    <th style="text-align:right">TE / Reihe</th>
+    <th>Formel</th></tr></thead><tbody>`;
+
+  order.forEach((id, idx) => {
+    const zd  = zp.zoneData.find(z => z.id === id);
+    const col = zMap[id].col;
+    const lbl = zMap[id].lbl;
+    tbl += `<tr>
+      <td style="color:var(--tx3);font-size:11px">${idx+1}</td>
+      <td><span style="display:inline-flex;align-items:center;gap:5px">
+        <span style="width:9px;height:9px;border-radius:50%;background:${col};flex-shrink:0;display:inline-block"></span>
+        <span style="color:var(--tx2);font-size:12px">${lbl}</span>
+      </span></td>
+      <td class="val" style="color:${col}">${zd.pct} %</td>
+      <td class="val" style="color:${col}">${zd.h_mm} mm</td>
+      <td class="val" style="color:var(--tx3);font-weight:400">${n_te_row} TE</td>
+      <td class="formula-cell">${zd.pct}% × ${zp.h} mm / 100</td></tr>`;
+  });
+  tbl += `</tbody></table>
+<p class="note-line" style="margin-top:6px">
+  Reihenfolge von oben nach unten · KE ${zp.ke_pos === 'oben' ? 'oben' : 'unten'} ·
+  TE/Reihe = ${n_te_row} (Breite ${zp.b} mm ÷ 17,5 mm) ·
+  Reihenzahl je Zone abhängig von Komponenten-Einbauhöhe (Detailplanung)
+</p>`;
+  return tbl;
 }
 
 // ── Projektfelder speichern / laden ───────────────────────────
@@ -475,6 +786,7 @@ function loadProjFields() {
 
 // ── Init ──────────────────────────────────────────────────────
 loadProjFields();
+loadZoneInputs();
 calculate();
 </script>
 
