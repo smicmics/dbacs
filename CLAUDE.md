@@ -293,20 +293,22 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Festwerte: `H_KLEMME_STD=52`, `H_HANDLING=15`, `H_SICHER_WS=75`, `H_SCHIENE_DS=150`, `H_KANAL_H=40`, `B_KANAL_V=40`
 - `h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING) = 85 mm` – H_HANDLING = 15 mm (gesperrt)
 - `h_evert`: Drehstrom = `ceil5(150) = 150 mm`, Wechselstrom = `ceil5(105) = 105 mm`
-- **KE-Seite = Klemmen-Seite**: KE oben → Klemmen oben; KE unten → Klemmen unten
-- **Energieverteilung** immer gegenüber den Klemmen: KE oben → Evert unten; KE unten → Evert oben
+- **Einspeisung (USS) + Einsp.-Klemmen immer LINKS** – unabhängig von KE-Position (gesperrt)
+- **KE-Position** bestimmt nur die vertikale Reihenfolge: KE oben → Klemmen oben, Evert unten; KE unten → Evert oben, Klemmen unten
 - **Klemmenzeile** = eine Hutschiene, 4 Untergruppen: Einsp.-Kl. (5 TE) · Abg.-Kl. Leistung · Abg.-Kl. Feldgeräte · Abg.-Kl. Sensoren
-  - Einsp.-Kl. immer auf der äußeren (KE-nahen) Seite; Breitenaufteilung ½ / ½ (fix, unabhängig von Anordnung)
-- **Einspeisefeld** (ÜSS + Sich. + Hauptschalter-Platzhalter) immer im Leistungsbereich (EMV – nie neben Steuerung)
-  - Nebeneinander: als Teilzone in der Leistungsspalte (Breite = b_uss)
-  - Übereinander: als Teilzone in der Leistungszeile (Breite = b_uss)
-- **Horizontaler Kabelkanal** (`H_KANAL_H = 40 mm`, Platzhalter): eigene Zeile voller Breite, zwischen Klemmen und L/S-Bereich
-- **Vertikaler Kabelkanal** (`B_KANAL_V = 40 mm`, Platzhalter): als Zone in jeder L/S-Zeile, auf der USS-Seite (links KE oben, rechts KE unten)
-  - Reduziert b_steuer (nebeneinander) bzw. b_leist + b_steuer (übereinander) um B_KANAL_V
-- **h_verfueg** = h − h_evert − h_klemm − H_KANAL_H (Festzonen); L/S-Zonen füllen den Rest
-- Leistung/Steuerung: verbleibende Höhe ÷ 2 (Übereinander) oder gleiche Höhe je ~50 % Breite (Nebeneinander)
-- **Zonenreihenfolge KE oben**: Klemmen → H.Kanal → Leistung[+Steuerung] → Evert
-- **Zonenreihenfolge KE unten**: Evert → [Steuerung+]Leistung → H.Kanal → Klemmen
+  - Einsp.-Kl. immer links (x=0), Breitenaufteilung L:S = ½ / ½ (fix)
+- **Einspeisefeld** (ÜSS + Sich. + Hauptschalter-Platzhalter) immer im Leistungsbereich (EMV), immer links
+  - In jeder L/S-Zeile: Breite = b_uss, direkt rechts neben linkem V.Kanal
+- **Vertikaler Kabelkanal Links** (`B_KANAL_V = 40 mm`): an linker Gehäusekante, Leistungsleitungen
+- **Vertikaler Kabelkanal Rechts** (`B_KANAL_V = 40 mm`): an rechter Gehäusekante, Steuerungsleitungen
+  - Beide V.Kanäle erscheinen in jeder L/S-Zeile (nebeneinander + übereinander)
+  - `b_inner = b − 2 × B_KANAL_V` = Nutzbreite für L/S
+- **Horizontaler Kabelkanal** (`H_KANAL_H = 40 mm`): volle Breite, zwischen Klemmen und L/S
+- **Horizontaler Kanal L/S-Trennung** (`H_KANAL_H = 40 mm`): volle Breite, zwischen Leistung und Steuerung (nur Übereinander)
+- **h_verfueg** = h − h_evert − h_klemm − H_KANAL_H − h_kanal_ls; h_kanal_ls = H_KANAL_H (über) oder 0 (neben)
+- Leistung/Steuerung: verbleibende Höhe ÷ 2 (Übereinander) oder gleiche Höhe je ~50 % b_inner (Nebeneinander)
+- **Zonenreihenfolge KE oben**: Klemmen → H.Kanal → Leistung → [H.Kanal L/S → Steuerung] → Evert
+- **Zonenreihenfolge KE unten**: Evert → [Steuerung → H.Kanal L/S →] Leistung → H.Kanal → Klemmen
 - `zone_anordnung` (Nebeneinander/Übereinander) wird disabled wenn `zone_modus === 'je_feld'`
 - `buildLayout(zp)` erzeugt Zeilen-Array mit x/w-Fraktionen für SVG-Rendering
 - SVG-Maßlinien: je Zeile rechts, Gesamthöhe außen (gleiche Konvention wie M1/M2)
