@@ -638,13 +638,24 @@ function buildLayout(zp) {
   const isNeben = anordnung === 'nebeneinander';
 
   // Klemmenzeile: volle Breite b, Einsp.-Kl. immer links
-  const b_half = Math.floor(b / 2);
+  // übereinander: Leistungsklemmen bis zur Zonengrenze (b − B_KANAL_V), F+S teilen Rest
   const f_ek   = b > 0 ? Math.min(b_ek / b, 0.25) : 0;
   const f_rest = 1 - f_ek;
-  const f_kl   = b > 0 ? (b_half / b) * f_rest : 0;
-  const f_kfs  = f_rest - f_kl;
-  const f_kf   = f_kfs / 2;
-  const f_ks   = f_kfs - f_kf;
+  let f_kl, f_kf, f_ks;
+  if (isNeben) {
+    const b_half = Math.floor(b / 2);
+    f_kl = b > 0 ? (b_half / b) * f_rest : 0;
+    const f_kfs = f_rest - f_kl;
+    f_kf = f_kfs / 2;
+    f_ks = f_kfs - f_kf;
+  } else {
+    const b_ek_eff = Math.min(b_ek, b * 0.25);
+    const b_kl     = Math.max(0, b - B_KANAL_V - b_ek_eff);
+    const b_kfs    = Math.max(0, B_KANAL_V);
+    f_kl = b > 0 ? b_kl / b : 0;
+    f_kf = b > 0 ? b_kfs / (2 * b) : 0;
+    f_ks = f_kf;
+  }
 
   // L/S-Fraktionen: V.Kanäle links + rechts an Gehäusekante
   const f_vk   = b > 0 ? B_KANAL_V / b : 0;
@@ -661,13 +672,13 @@ function buildLayout(zp) {
       { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
     ]},
     kanal_h: { h_mm: H_KANAL_H, zones: [
-      { id:'kanal_h', x:0, w:1, col:'#888', lbl:'H. Kabelkanal' }
+      { id:'kanal_h', x:0, w:1, col:'#888', lbl:'' }
     ]},
     kanal_ls: { h_mm: H_KANAL_H, zones: [
-      { id:'kanal_ls', x:0, w:1, col:'#888', lbl:'H. Kanal L/S' }
+      { id:'kanal_ls', x:0, w:1, col:'#888', lbl:'' }
     ]},
     kanal_ev: { h_mm: H_KANAL_H, zones: [
-      { id:'kanal_ev', x:0, w:1, col:'#888', lbl:'H. Kanal Evert.' }
+      { id:'kanal_ev', x:0, w:1, col:'#888', lbl:'' }
     ]},
 
     // Nebeneinander obere Hälfte: [VK_L | ÜSS | Leistung_eff | Steuerung | VK_R]
@@ -870,13 +881,9 @@ function buildZoneSVG(zp) {
       s += `<rect x="${zx}" y="${y}" width="${zw}" height="${rh}"
         fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.5"/>`;
 
-      if (rh >= 12)
-        s += `<text x="${zx+4}" y="${cy - (isSingle && rh >= 22 ? 5 : 0)}" dominant-baseline="middle"
+      if (rh >= 12 && zone.lbl)
+        s += `<text x="${zx+4}" y="${cy}" dominant-baseline="middle"
           font-size="7.5" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
-
-      if (isSingle && rh >= 22)
-        s += `<text x="${zx+4}" y="${cy+6}" dominant-baseline="middle"
-          font-size="7" fill="#888680" font-family="'Courier New',monospace">${row.h_mm} mm</text>`;
     }
 
     // Maßlinie rechts je Zeile
