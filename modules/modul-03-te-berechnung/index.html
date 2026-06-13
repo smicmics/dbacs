@@ -645,18 +645,11 @@ function buildLayout(zp) {
     ]},
   };
 
-  // KE oben: Einsp+Evert oben (nahe KE), Klemm unten
-  // KE unten: Klemm oben, Einsp+Evert unten (nahe KE)
-  let rows;
-  if (ke_pos === 'oben') {
-    rows = [R.einsp_evert, R.ls];
-    if (!isNeben) rows.push(R.steuer);
-    rows.push(R.klemm);
-  } else {
-    rows = [R.klemm];
-    if (!isNeben) rows.push(R.steuer);
-    rows.push(R.ls, R.einsp_evert);
-  }
+  // Zonenreihenfolge: Energieverteilung immer oben, Klemmen immer unten
+  // KE-Position bestimmt nur die SVG-Kabeldarstellung, nicht die Zonenreihenfolge
+  const rows = [R.einsp_evert, R.ls];
+  if (!isNeben) rows.push(R.steuer);
+  rows.push(R.klemm);
   return rows;
 }
 
