@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "web-static",
-      "runtimeExecutable": "py",
-      "runtimeArgs": ["-m", "http.server", "8099", "--directory", "web"],
+      "name": "dbacs-static",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8099", "--directory", "."],
       "port": 8099
     }
   ]

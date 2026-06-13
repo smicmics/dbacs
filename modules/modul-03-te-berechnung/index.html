@@ -172,25 +172,20 @@ legend{
 }
 
 /* ── Zonenaufteilung Sidebar ── */
-.zone-row{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:.5px solid var(--bord);}
-.zone-row:last-of-type{border-bottom:none;}
 .zone-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-.zone-lbl{flex:1;color:var(--tx2);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.zpct{width:38px;padding:2px 4px;border:1px solid var(--bords);border-radius:3px;
-      background:var(--bg);color:var(--tx);font-size:11px;text-align:right;flex-shrink:0;}
-.zpct:focus{outline:none;border-color:var(--green);}
-.zpct-unit{font-size:10px;color:var(--tx3);flex-shrink:0;}
-.zmm{font-family:var(--mono);font-size:10px;color:var(--tx3);width:46px;text-align:right;flex-shrink:0;}
+.zone-row-h{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:.5px solid var(--bord);}
+.zone-row-h:last-of-type{border-bottom:none;}
+.zone-lbl2{flex:1;color:var(--tx2);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.zmm2{font-family:var(--mono);font-size:10px;color:var(--tx);font-weight:600;text-align:right;min-width:52px;}
 .zone-sum-row{display:flex;align-items:center;justify-content:space-between;
-              padding:5px 0 2px;border-top:1px solid var(--bords);margin-top:4px;}
+              padding:4px 0 2px;border-top:1px solid var(--bords);margin-top:3px;}
 .zone-sum-ok {font-family:var(--mono);font-size:11px;color:#2DBD8E;font-weight:700;}
 .zone-sum-err{font-family:var(--mono);font-size:11px;color:#E04040;font-weight:700;}
 .zone-sep{border:none;border-top:1px solid var(--bord);margin:8px 0 6px;}
 .zone-section-title{font-size:12px;font-weight:700;color:var(--tx2);
   margin:20px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bords);}
 @media print{
-  .zone-pct-section,.zone-feld-section{display:block !important;}
-  .zpct{background:#fff;border-color:#ccc;color:#000;}
+  .zone-feld-section{display:block !important;}
   .zone-section-title{color:#222;border-color:#999;}
   .zone-sum-ok{color:#007740;}
   .zone-sum-err{color:#aa0000;}
@@ -305,10 +300,24 @@ legend{
       <legend>Zonenaufteilung · Montageplatte</legend>
 
       <div class="field">
-        <div class="lbl">Anordnung<span class="var">zone_modus</span></div>
+        <div class="lbl">Schrankfelder<span class="var">zone_modus</span></div>
         <select id="zone_modus" onchange="saveZoneInputs();calculate()" style="width:130px">
+          <option value="1feld">1 Feld</option>
+          <option value="je_feld">Mehrere Felder</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Leistung / Steuerung<span class="var">zone_anordnung</span></div>
+        <select id="zone_anordnung" onchange="saveZoneInputs();calculate()" style="width:130px">
           <option value="uebereinander">Übereinander</option>
-          <option value="je_feld">Je Feld</option>
+          <option value="nebeneinander">Nebeneinander</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Netzanschluss<span class="var">zone_netztyp</span></div>
+        <select id="zone_netztyp" onchange="saveZoneInputs();calculate()" style="width:130px">
+          <option value="drehstrom">Drehstrom 3~</option>
+          <option value="wechselstrom">Wechselstrom 1~</option>
         </select>
       </div>
       <div class="field">
@@ -318,65 +327,43 @@ legend{
 
       <hr class="zone-sep">
 
-      <!-- Modus A: 6 Zonen als Prozentaufteilung -->
-      <div id="zone-pct-section">
-        <div class="zone-row">
-          <span class="zone-dot" style="background:#D4A84B"></span>
-          <span class="zone-lbl" title="Einspeisezone · Hauptschalter · ÜSS">Einspeisezone</span>
-          <input id="pct_einsp"   class="zpct" type="number" min="0" max="100" value="10" oninput="saveZoneInputs();calculate()">
-          <span class="zpct-unit">%</span>
-          <span id="zmm_einsp"   class="zmm">–</span>
-        </div>
-        <div class="zone-row">
-          <span class="zone-dot" style="background:#C8720E"></span>
-          <span class="zone-lbl" title="Energieverteilung · Sicherungen · MSS · Schienensystem">Energieverteilung</span>
-          <input id="pct_evert"  class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
-          <span class="zpct-unit">%</span>
-          <span id="zmm_evert"  class="zmm">–</span>
-        </div>
-        <div class="zone-row">
-          <span class="zone-dot" style="background:#C84E2E"></span>
-          <span class="zone-lbl" title="Leistungsbaugruppen · Schütze · FU · Antriebe">Leistungsbaugr.</span>
-          <input id="pct_leist"  class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
-          <span class="zpct-unit">%</span>
-          <span id="zmm_leist"  class="zmm">–</span>
-        </div>
-        <div class="zone-row">
-          <span class="zone-dot" style="background:#4BBECA"></span>
-          <span class="zone-lbl" title="Steuerbaugruppen · DDC · SPS · I/O-Module">Steuerbaugr./DDC</span>
-          <input id="pct_steuer" class="zpct" type="number" min="0" max="100" value="20" oninput="saveZoneInputs();calculate()">
-          <span class="zpct-unit">%</span>
-          <span id="zmm_steuer" class="zmm">–</span>
-        </div>
-        <div class="zone-row">
-          <span class="zone-dot" style="background:#2DBD8E"></span>
-          <span class="zone-lbl" title="Abgangsklemmen Leistung · 230/400 V Abgänge">Abg.-Kl. Leistung</span>
-          <input id="pct_klemm_l" class="zpct" type="number" min="0" max="100" value="10" oninput="saveZoneInputs();calculate()">
-          <span class="zpct-unit">%</span>
-          <span id="zmm_klemm_l" class="zmm">–</span>
-        </div>
-        <div class="zone-row">
-          <span class="zone-dot" style="background:#9A94E8"></span>
-          <span class="zone-lbl" title="Abgangsklemmen Feldgeräte · 24 V DC · Signale">Abg.-Kl. Feldger.</span>
-          <input id="pct_klemm_f" class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
-          <span class="zpct-unit">%</span>
-          <span id="zmm_klemm_f" class="zmm">–</span>
-        </div>
-        <div class="zone-row">
-          <span class="zone-dot" style="background:#E8C448"></span>
-          <span class="zone-lbl" title="Anschlussklemmen Feldgeräte und elektrische Betriebsmittel">Anschl.-Kl. Betr.</span>
-          <input id="pct_klemm_e" class="zpct" type="number" min="0" max="100" value="15" oninput="saveZoneInputs();calculate()">
-          <span class="zpct-unit">%</span>
-          <span id="zmm_klemm_e" class="zmm">–</span>
-        </div>
-        <div class="zone-sum-row">
-          <span style="font-size:11px;color:var(--tx2)">Summe</span>
-          <span id="zone_sum_display" class="zone-sum-ok">100 %</span>
-        </div>
+      <div class="zone-row-h">
+        <span class="zone-dot" style="background:#D4A84B"></span>
+        <span class="zone-lbl2">Einspeisezone</span>
+        <span id="zh_einsp" class="zmm2">–</span>
+      </div>
+      <div class="zone-row-h">
+        <span class="zone-dot" style="background:#C8720E"></span>
+        <span class="zone-lbl2">Energieverteilung</span>
+        <span id="zh_evert" class="zmm2">–</span>
+      </div>
+      <div class="zone-row-h">
+        <span class="zone-dot" style="background:#C84E2E"></span>
+        <span class="zone-lbl2">Leistungsbaugruppen</span>
+        <span id="zh_leist" class="zmm2">–</span>
+      </div>
+      <div class="zone-row-h" id="zh_steuer_row">
+        <span class="zone-dot" style="background:#4BBECA"></span>
+        <span class="zone-lbl2">Steuerbaugr. / DDC</span>
+        <span id="zh_steuer" class="zmm2">–</span>
+      </div>
+      <div class="zone-row-h">
+        <span class="zone-dot" style="background:#888"></span>
+        <span class="zone-lbl2">Klemmen (3 Gruppen)</span>
+        <span id="zh_klemm" class="zmm2">–</span>
+      </div>
+      <div class="zone-sum-row">
+        <span style="font-size:11px;color:var(--tx2)">Gesamt</span>
+        <span id="zh_gesamt" class="zmm2">–</span>
+      </div>
+      <div class="zone-sum-row">
+        <span style="font-size:11px;color:var(--tx2)">Differenz zu Platte</span>
+        <span id="zh_diff" class="zone-sum-ok">–</span>
       </div>
 
-      <!-- Modus B: Feldanzahl -->
+      <!-- Mehrere Felder: Feldanzahl -->
       <div id="zone-feld-section" style="display:none">
+        <hr class="zone-sep">
         <div class="field" style="margin-top:4px">
           <div class="lbl">Anzahl Felder<span class="var">n_felder</span></div>
           <input id="n_felder" type="number" min="1" max="20" value="3"
@@ -410,32 +397,23 @@ const g  = id => +document.getElementById(id).value;
 const gs = id => document.getElementById(id).value;
 const _v = (id, val) => { document.getElementById(id).value = val; };
 
-// ── Festwert ──────────────────────────────────────────────────
-const TE_BREITE_MM = 17.5;  // DIN EN 60715
+// ── Festwerte ─────────────────────────────────────────────────
+const TE_BREITE_MM  = 17.5;  // DIN EN 60715
+
+// Mindesthöhen Zonenberechnung
+const H_EINSP_MIN  = 120;  // Einspeisezone: Hauptschalter + ÜSS, Festwert
+const H_KLEMME_STD = 52;   // Klemmenhöhe 4 mm² auf Hutschiene (Phoenix UK 4)
+const H_HANDLING   = 15;   // Kabelhandling je Seite (wie h_handling_ke in M1/M2)
+const H_SICHER_WS  = 75;   // Sicherungshalter Wechselstrom (NH00/D02 + Träger)
+const H_SCHIENE_DS = 150;  // Stromschienensystem Drehstrom Mindesthöhe
+
+function ceil5(v) { return Math.ceil(Math.max(0, v) / 5) * 5; }
 
 // ── Farben TE-Tabelle ─────────────────────────────────────────
 const CI   = '#9A9890';
 const CCM2 = '#2DBD8E';
 const CM2  = '#9A94E8';
 const CTE  = '#A8C4E8';
-
-// ── Zonendefinition ───────────────────────────────────────────
-const ZONES = [
-  { id:'einsp',   lbl:'Einspeisezone',              col:'#D4A84B' },
-  { id:'evert',   lbl:'Energieverteilung',           col:'#C8720E' },
-  { id:'leist',   lbl:'Leistungsbaugruppen',         col:'#C84E2E' },
-  { id:'steuer',  lbl:'Steuerbaugr. / DDC',          col:'#4BBECA' },
-  { id:'klemm_l', lbl:'Abgangskl. Leistung',         col:'#2DBD8E' },
-  { id:'klemm_f', lbl:'Abgangskl. Feldgeräte',       col:'#9A94E8' },
-  { id:'klemm_e', lbl:'Anschl.-Kl. Betriebsmittel', col:'#E8C448' },
-];
-
-// Zonenreihenfolge von oben nach unten je KE-Position
-function getZoneOrder(ke_pos) {
-  return ke_pos === 'oben'
-    ? ['klemm_e','klemm_f','klemm_l','steuer','leist','evert','einsp']
-    : ['einsp','evert','leist','steuer','klemm_l','klemm_f','klemm_e'];
-}
 
 // ── Übernahme aus Modul 1 / 2 ────────────────────────────────
 function loadFromModul() {
@@ -484,17 +462,18 @@ function loadFromModul() {
 
 // ── Zonenaufteilung speichern / laden ─────────────────────────
 function saveZoneInputs() {
-  localStorage.setItem('m03_zone_modus', gs('zone_modus'));
-  for (const z of ZONES) localStorage.setItem('m03_pct_' + z.id, gs('pct_' + z.id));
-  localStorage.setItem('m03_n_felder', gs('n_felder'));
+  localStorage.setItem('m03_zone_modus',     gs('zone_modus'));
+  localStorage.setItem('m03_zone_anordnung', gs('zone_anordnung'));
+  localStorage.setItem('m03_zone_netztyp',   gs('zone_netztyp'));
+  localStorage.setItem('m03_n_felder',       gs('n_felder'));
 }
 function loadZoneInputs() {
   const modus = localStorage.getItem('m03_zone_modus');
   if (modus) _v('zone_modus', modus);
-  for (const z of ZONES) {
-    const v = localStorage.getItem('m03_pct_' + z.id);
-    if (v !== null) _v('pct_' + z.id, v);
-  }
+  const anordnung = localStorage.getItem('m03_zone_anordnung');
+  if (anordnung) _v('zone_anordnung', anordnung);
+  const netztyp = localStorage.getItem('m03_zone_netztyp');
+  if (netztyp) _v('zone_netztyp', netztyp);
   const nf = localStorage.getItem('m03_n_felder');
   if (nf !== null) _v('n_felder', nf);
 }
@@ -515,15 +494,8 @@ function calculate() {
   _v('flaeche_mbereich_m2',  flaeche_mbereich_m2.toFixed(3));
   _v('n_te',                 n_te);
 
-  // Modus-Sichtbarkeit
-  const modus = gs('zone_modus');
-  document.getElementById('zone-pct-section').style.display = modus === 'je_feld' ? 'none' : '';
-  document.getElementById('zone-feld-section').style.display = modus === 'je_feld' ? '' : 'none';
-
-  // Zonen-Sidebar + Rückgabe
   const zp = calculateZones(b, h);
 
-  // Ergebnisbereich
   if (!typ) {
     document.getElementById('results-area').innerHTML =
       `<p style="color:var(--tx3);font-size:13px;margin-top:24px;padding:0 4px">
@@ -533,50 +505,149 @@ function calculate() {
   }
 
   let html = buildTETable({ b, h, typ, flaeche_mbereich_cm2, flaeche_mbereich_m2, n_te });
-
-  if (b > 0 && h > 0 && zp.sum === 100) {
-    html += buildZoneSection(zp);
-  } else if (b > 0 && h > 0 && zp.sum !== 100) {
-    html += `<p style="color:#E04040;font-size:12px;margin-top:16px;font-family:var(--mono)">
-      Zonenaufteilung: ${zp.sum} % – bitte auf 100 % anpassen.</p>`;
-  }
+  if (b > 0 && h > 0) html += buildZoneSection(zp);
 
   document.getElementById('results-area').innerHTML = html;
 }
 
-// ── Zonen-Sidebar berechnen ───────────────────────────────────
+// ── Zonen-Sidebar + Mindesthöhen berechnen ────────────────────
 function calculateZones(b, h) {
-  let sum = 0;
-  const zoneData = ZONES.map(z => {
-    const pct  = Math.max(0, g('pct_' + z.id));
-    const h_mm = Math.round((pct / 100) * h);
-    sum += pct;
-    const elMm = document.getElementById('zmm_' + z.id);
-    if (elMm) elMm.textContent = h > 0 ? h_mm + ' mm' : '–';
-    return { ...z, pct, h_mm };
-  });
+  const modus     = gs('zone_modus');
+  const anordnung = gs('zone_anordnung');
+  const netztyp   = gs('zone_netztyp');
+  const ke_pos    = gs('zone_ke_pos') || 'unten';
+  const n_felder  = Math.max(1, g('n_felder') || 3);
 
-  const sumEl = document.getElementById('zone_sum_display');
-  sumEl.textContent = sum + ' %';
-  sumEl.className   = sum === 100 ? 'zone-sum-ok' : 'zone-sum-err';
+  // Mehrere Felder: Anordnungsauswahl sperren
+  const isMehreFelder = modus === 'je_feld';
+  document.getElementById('zone_anordnung').disabled = isMehreFelder;
+  document.getElementById('zone-feld-section').style.display = isMehreFelder ? '' : 'none';
 
-  const ke_pos   = gs('zone_ke_pos') || 'unten';
-  const modus    = gs('zone_modus');
-  const n_felder = Math.max(1, g('n_felder') || 3);
+  // Mindesthöhen (wie h_ke-Logik: Handling + Bauteil + Handling, aufger. 5 mm)
+  const h_einsp = H_EINSP_MIN;  // 120 mm Festwert
+  const h_evert = netztyp === 'drehstrom'
+    ? ceil5(H_SCHIENE_DS)                              // 150 mm
+    : ceil5(H_HANDLING + H_SICHER_WS + H_HANDLING);   // ceil5(105) = 105 mm
+  const h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING);  // ceil5(82) = 85 mm
 
-  // localStorage-Ausgabe für Folgemodule
-  localStorage.setItem('m03_zone_modus',  modus);
-  localStorage.setItem('m03_zone_ke_pos', ke_pos);
-  localStorage.setItem('m03_n_felder',    n_felder);
-  for (const z of zoneData) {
-    localStorage.setItem('m03_pct_'     + z.id, z.pct);
-    localStorage.setItem('m03_zone_'    + z.id + '_h_mm', z.h_mm);
+  const h_verfueg = h - h_einsp - h_evert - h_klemm;
+
+  let h_leist, h_steuer, b_leist, b_steuer;
+  if (anordnung === 'nebeneinander') {
+    h_leist  = ceil5(Math.max(0, h_verfueg));
+    h_steuer = h_leist;
+    b_leist  = Math.floor(b / 2);
+    b_steuer = b - b_leist;
+  } else {
+    h_leist  = ceil5(Math.max(0, h_verfueg / 2));
+    h_steuer = Math.max(0, h - h_einsp - h_evert - h_leist - h_klemm);
+    b_leist  = b;
+    b_steuer = b;
   }
 
-  return { b, h, ke_pos, modus, sum, zoneData, n_felder };
+  const h_gesamt = h_einsp + h_evert +
+    (anordnung === 'nebeneinander' ? h_leist : h_leist + h_steuer) + h_klemm;
+  const h_diff   = h - h_gesamt;
+  const passt    = h_diff >= 0 && h_verfueg >= 0;
+
+  // Sidebar aktualisieren
+  const set = (id, txt, col) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = txt;
+    if (col) el.style.color = col;
+  };
+  if (h > 0) {
+    set('zh_einsp',  h_einsp  + ' mm');
+    set('zh_evert',  h_evert  + ' mm');
+    set('zh_leist',  h_leist  + ' mm');
+    set('zh_steuer', anordnung === 'nebeneinander' ? '= Leistung' : h_steuer + ' mm',
+        anordnung === 'nebeneinander' ? '#666460' : '');
+    set('zh_klemm',  h_klemm  + ' mm');
+    set('zh_gesamt', h_gesamt + ' mm');
+    const diffEl = document.getElementById('zh_diff');
+    diffEl.textContent = (h_diff >= 0 ? '+' : '') + h_diff + ' mm';
+    diffEl.className   = passt ? 'zone-sum-ok' : 'zone-sum-err';
+  } else {
+    ['zh_einsp','zh_evert','zh_leist','zh_steuer','zh_klemm','zh_gesamt'].forEach(id => {
+      const el = document.getElementById(id); if (el) { el.textContent='–'; el.style.color=''; }
+    });
+    const diffEl = document.getElementById('zh_diff');
+    diffEl.textContent = '–'; diffEl.className = 'zone-sum-ok';
+  }
+
+  // localStorage für Folgemodule
+  localStorage.setItem('m03_zone_modus',     modus);
+  localStorage.setItem('m03_zone_anordnung', anordnung);
+  localStorage.setItem('m03_zone_netztyp',   netztyp);
+  localStorage.setItem('m03_zone_ke_pos',    ke_pos);
+  localStorage.setItem('m03_n_felder',       n_felder);
+  localStorage.setItem('m03_h_einsp',  h_einsp);
+  localStorage.setItem('m03_h_evert',  h_evert);
+  localStorage.setItem('m03_h_leist',  h_leist);
+  localStorage.setItem('m03_h_steuer', h_steuer);
+  localStorage.setItem('m03_h_klemm',  h_klemm);
+  localStorage.setItem('m03_b_leist',  b_leist);
+  localStorage.setItem('m03_b_steuer', b_steuer);
+
+  return { b, h, ke_pos, modus, anordnung, netztyp, n_felder,
+           h_einsp, h_evert, h_leist, h_steuer, h_klemm,
+           b_leist, b_steuer, h_gesamt, h_diff, passt };
 }
 
-// ── TE-Tabelle (gibt HTML-String zurück) ──────────────────────
+// ── Layout-Zeilen aufbauen ────────────────────────────────────
+// Jede Zeile: { h_mm, zones:[{id,x_frac,w_frac,col,lbl}] }
+function buildLayout(zp) {
+  const { b, h_einsp, h_evert, h_leist, h_steuer, h_klemm,
+          b_leist, b_steuer, anordnung, ke_pos } = zp;
+  const isNeben  = anordnung === 'nebeneinander';
+
+  // Klemmen-Breitenaufteilung: klemm_l unter Leistung, klemm_f+klemm_s unter Steuerung
+  const f_kl  = b_leist  / b;
+  const f_kfs = b_steuer / b;
+  const f_kf  = f_kfs / 2;
+  const f_ks  = f_kfs - f_kf;
+
+  const R = {
+    einsp: { h_mm: h_einsp, zones: [
+      { id:'einsp',  x:0, w:1,     col:'#D4A84B', lbl:'Einspeisezone' }
+    ]},
+    evert: { h_mm: h_evert, zones: [
+      { id:'evert',  x:0, w:1,     col:'#C8720E', lbl:'Energieverteilung' }
+    ]},
+    ls: isNeben
+      ? { h_mm: h_leist, zones: [
+          { id:'leist',  x:0,         w:f_kl,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+          { id:'steuer', x:f_kl,      w:f_kfs, col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+        ]}
+      : { h_mm: h_leist, zones: [
+          { id:'leist',  x:0, w:1,    col:'#C84E2E', lbl:'Leistungsbaugruppen' }
+        ]},
+    steuer: { h_mm: h_steuer, zones: [
+      { id:'steuer', x:0, w:1,     col:'#4BBECA', lbl:'Steuerbaugr. / DDC' }
+    ]},
+    klemm: { h_mm: h_klemm, zones: [
+      { id:'klemm_l', x:0,            w:f_kl, col:'#2DBD8E', lbl:'Abg.-Kl. Leistung' },
+      { id:'klemm_f', x:f_kl,         w:f_kf, col:'#9A94E8', lbl:'Abg.-Kl. Feldger.' },
+      { id:'klemm_s', x:f_kl+f_kf,    w:f_ks, col:'#E8C448', lbl:'Abg.-Kl. Sensoren' },
+    ]},
+  };
+
+  let rows;
+  if (ke_pos === 'oben') {
+    rows = [R.einsp, R.evert, R.ls];
+    if (!isNeben) rows.push(R.steuer);
+    rows.push(R.klemm);
+  } else {
+    // KE unten: Energieverteilung oben, Einspeisung unten (nahe KE)
+    rows = [R.evert, R.ls];
+    if (!isNeben) rows.push(R.steuer);
+    rows.push(R.klemm, R.einsp);
+  }
+  return rows;
+}
+
+// ── TE-Tabelle ────────────────────────────────────────────────
 function buildTETable(p) {
   const isWand   = p.typ === 'wandschrank';
   const typLabel = isWand ? 'Wandschrank' : 'Standschrank';
@@ -586,12 +657,12 @@ function buildTETable(p) {
   const fn = (col, txt) => `<span style="color:${col};font-weight:700">${txt}</span>`;
 
   const rows = [
-    { v:'schrank_typ',               label:'Schrank-Typ',           val:typLabel,                         unit:'–',   formel:'Auswahl',                              col:CI   },
-    { v:`b_mplatte_mbereich_${sfx}`, label:'Montagebereich Breite', val:p.b.toFixed(0),                   unit:'mm',  formel:src,                                    col:CI   },
-    { v:`h_mplatte_mbereich_${sfx}`, label:'Montagebereich Höhe',   val:p.h.toFixed(0),                   unit:'mm',  formel:src,                                    col:CI   },
-    { v:'flaeche_mbereich_cm2',      label:'Fläche',                val:p.flaeche_mbereich_cm2.toFixed(0), unit:'cm²', formel:`(${cb('b')} × ${cb('h')}) / 100`,      col:CCM2 },
-    { v:'flaeche_mbereich_m2',       label:'Fläche',                val:p.flaeche_mbereich_m2.toFixed(3),  unit:'m²',  formel:`(${cb('b')} × ${cb('h')}) / 1 000 000`,col:CM2  },
-    { v:'n_te',                      label:'Verfügbare TE',         val:p.n_te,                            unit:'TE',  formel:`⌊ ${cb('b')} / 17,5 ⌋`,               col:CTE  },
+    { v:'schrank_typ',               label:'Schrank-Typ',           val:typLabel,                          unit:'–',   formel:'Auswahl',                               col:CI   },
+    { v:`b_mplatte_mbereich_${sfx}`, label:'Montagebereich Breite', val:p.b.toFixed(0),                    unit:'mm',  formel:src,                                     col:CI   },
+    { v:`h_mplatte_mbereich_${sfx}`, label:'Montagebereich Höhe',   val:p.h.toFixed(0),                    unit:'mm',  formel:src,                                     col:CI   },
+    { v:'flaeche_mbereich_cm2',      label:'Fläche',                val:p.flaeche_mbereich_cm2.toFixed(0), unit:'cm²', formel:`(${cb('b')} × ${cb('h')}) / 100`,       col:CCM2 },
+    { v:'flaeche_mbereich_m2',       label:'Fläche',                val:p.flaeche_mbereich_m2.toFixed(3),  unit:'m²',  formel:`(${cb('b')} × ${cb('h')}) / 1 000 000`, col:CM2  },
+    { v:'n_te',                      label:'Verfügbare TE',         val:p.n_te,                            unit:'TE',  formel:`⌊ ${cb('b')} / 17,5 ⌋`,                col:CTE  },
   ];
 
   let tbl = `<table class="rtable"><thead><tr>
@@ -625,148 +696,169 @@ function buildTETable(p) {
 // ── Zonenabschnitt Wrapper ────────────────────────────────────
 function buildZoneSection(zp) {
   const keLabel  = zp.ke_pos === 'oben' ? 'oben' : 'unten';
-  const modLabel = zp.modus === 'je_feld'
-    ? 'Je Feld · ' + zp.n_felder + ' Felder'
-    : 'Übereinander · 1 Feld';
-  return `<div class="zone-section-title">Zonenaufteilung · Montageplatte · ${modLabel} · KE ${keLabel}</div>
-${buildZoneSVG(zp)}
+  const modLabel = zp.modus === 'je_feld' ? zp.n_felder + ' Felder' : '1 Feld';
+  const lsLabel  = zp.modus === 'je_feld' ? '–'
+    : (zp.anordnung === 'nebeneinander' ? 'Nebeneinander' : 'Übereinander');
+  const netzLabel = zp.netztyp === 'drehstrom' ? 'Drehstrom 3~' : 'Wechselstrom 1~';
+  const warnHtml  = !zp.passt
+    ? `<p style="color:#E04040;font-size:11px;font-family:var(--mono);margin-bottom:6px">
+        ⚠ Zonenhöhe ${zp.h_gesamt} mm &gt; Montagefläche ${zp.h} mm (Δ ${-zp.h_diff} mm) – größeres Gehäuse erforderlich</p>`
+    : '';
+  return `<div class="zone-section-title">Zonenaufteilung · ${modLabel} · L/S: ${lsLabel} · KE: ${keLabel} · Netz: ${netzLabel}</div>
+${warnHtml}${buildZoneSVG(zp)}
 ${buildZoneTable(zp)}`;
 }
 
 // ── Zonen-SVG ─────────────────────────────────────────────────
 function buildZoneSVG(zp) {
-  const b = zp.b, h = zp.h;
-  const zMap = Object.fromEntries(ZONES.map(z => [z.id, z]));
+  const { b, h, modus, n_felder, anordnung } = zp;
+  if (!b || !h) return '';
 
-  if (zp.modus === 'uebereinander') {
-    const PL = 10, PT = 14, PR = 92, PB = 14;
-    const sc  = Math.min(260 / b, 520 / h);
-    const pw  = Math.round(b * sc);
-    const ph  = Math.round(h * sc);
-    const VW  = PL + pw + PR, VH = PT + ph + PB;
-    const dimX = PL + pw + 6, lblX = PL + pw + 14;
+  const PL = 10, PT = 14, PR = 95, PB = 14;
+  const sc = Math.min(260 / b, 520 / h);
+  const pw = Math.round(b * sc);
+  const ph = Math.round(h * sc);
 
-    let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
-      style="width:100%;max-width:${VW}px;display:block;background:#1C1C1A;border-radius:4px;margin-bottom:12px">`;
-    s += `<rect x="${PL}" y="${PT}" width="${pw}" height="${ph}" fill="#FDFCF8" stroke="#888" stroke-width="0.8"/>`;
-
-    let y = PT;
-    for (const id of getZoneOrder(zp.ke_pos)) {
-      const zd  = zp.zoneData.find(z => z.id === id);
-      const col = zMap[id].col;
-      const lbl = zMap[id].lbl;
-      const zh  = Math.round(zd.h_mm * sc);
-      const cy  = y + zh / 2;
-
-      s += `<rect x="${PL}" y="${y}" width="${pw}" height="${zh}"
-        fill="${col}" fill-opacity="0.22" stroke="${col}" stroke-width="0.5"/>`;
-      if (zh >= 12)
-        s += `<text x="${PL+5}" y="${cy - (zh >= 22 ? 5 : 0)}" dominant-baseline="middle"
-          font-size="7.5" fill="${col}" font-weight="600" font-family="system-ui,sans-serif">${lbl}</text>`;
-      if (zh >= 22)
-        s += `<text x="${PL+5}" y="${cy+6}" dominant-baseline="middle"
-          font-size="7" fill="#888680" font-family="'Courier New',monospace">${zd.h_mm} mm</text>`;
-
-      // Maßlinie
-      s += `<line x1="${dimX}" y1="${y}" x2="${dimX+4}" y2="${y}" stroke="#3366BB" stroke-width="0.7"/>`;
-      s += `<line x1="${dimX+2}" y1="${y}" x2="${dimX+2}" y2="${y+zh}" stroke="#3366BB" stroke-width="0.7"/>`;
-      s += `<line x1="${dimX}" y1="${y+zh}" x2="${dimX+4}" y2="${y+zh}" stroke="#3366BB" stroke-width="0.7"/>`;
-      if (zh >= 10)
-        s += `<text x="${lblX}" y="${cy}" dominant-baseline="middle"
-          font-size="8" fill="#3366BB" font-family="'Courier New',monospace">${zd.h_mm} mm</text>`;
-
-      y += zh;
-    }
-
-    // Gesamthöhe-Maßlinie
-    const ox = PL + pw + 56;
-    s += `<line x1="${ox}" y1="${PT}" x2="${ox+4}" y2="${PT}" stroke="#3366BB" stroke-width="0.9"/>`;
-    s += `<line x1="${ox+2}" y1="${PT}" x2="${ox+2}" y2="${PT+ph}" stroke="#3366BB" stroke-width="0.9"/>`;
-    s += `<line x1="${ox}" y1="${PT+ph}" x2="${ox+4}" y2="${PT+ph}" stroke="#3366BB" stroke-width="0.9"/>`;
-    s += `<text x="${ox+7}" y="${PT+ph/2}" dominant-baseline="middle"
-      font-size="9" fill="#3366BB" font-weight="600" font-family="'Courier New',monospace">${h} mm</text>`;
-    s += `</svg>`;
-    return s;
-
-  } else {
-    // Modus B: N Felder nebeneinander
-    const N = zp.n_felder;
-    const PT = 24, PB = 14, PL = 10, GAP = 6;
-    const fw  = Math.min(80, Math.floor((520 - PL - GAP*(N-1)) / N));
-    const sc_h = Math.min(400 / h, 0.28);
-    const ph  = Math.round(h * sc_h);
-    const VW  = PL + N*fw + (N-1)*GAP + PL;
-    const VH  = PT + ph + PB;
-
-    // 4 Bandgruppen: Einspeisung+Verteilung / Leistung / Steuerung / Klemmen
-    const pE = zp.zoneData.find(z=>z.id==='einsp').pct + zp.zoneData.find(z=>z.id==='evert').pct;
-    const pL = zp.zoneData.find(z=>z.id==='leist').pct;
-    const pS = zp.zoneData.find(z=>z.id==='steuer').pct;
-    const pK = zp.zoneData.find(z=>z.id==='klemm_l').pct + zp.zoneData.find(z=>z.id==='klemm_f').pct + zp.zoneData.find(z=>z.id==='klemm_e').pct;
-    const tot = pE+pL+pS+pK || 100;
-    const bands = [
-      { col:'#D4A84B', lbl:'Einsp./Vert.', pct:pE },
-      { col:'#C84E2E', lbl:'Leistung',     pct:pL },
-      { col:'#4BBECA', lbl:'Steuerung',    pct:pS },
-      { col:'#2DBD8E', lbl:'Klemmen',      pct:pK },
-    ];
+  if (modus === 'je_feld') {
+    // Mehrere Felder nebeneinander, je Feld übereinander
+    const N   = n_felder;
+    const GAP = 5;
+    const fw  = Math.min(75, Math.floor((530 - PL - GAP*(N-1)) / N));
+    const sc_h = Math.min(400 / h, ph / h);
+    const fph  = Math.round(h * sc_h);
+    const VW   = PL + N*fw + (N-1)*GAP + PL + 4;
+    const VH   = PT + fph + PB;
+    const rows = buildLayout({ ...zp, anordnung: 'uebereinander' });
 
     let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
       style="width:100%;max-width:${VW}px;display:block;background:#1C1C1A;border-radius:4px;margin-bottom:12px">`;
-    for (let i = 0; i < N; i++) {
-      const fx = PL + i*(fw+GAP);
-      s += `<text x="${fx+fw/2}" y="${PT-6}" text-anchor="middle"
-        font-size="8" fill="#9A9890" font-family="system-ui,sans-serif">Feld ${i+1}</text>`;
-      s += `<rect x="${fx}" y="${PT}" width="${fw}" height="${ph}" fill="#FDFCF8" stroke="#888" stroke-width="0.8"/>`;
+    for (let fi = 0; fi < N; fi++) {
+      const fx = PL + fi*(fw+GAP);
+      s += `<text x="${fx+fw/2}" y="${PT-5}" text-anchor="middle"
+        font-size="7.5" fill="#9A9890" font-family="system-ui,sans-serif">F ${fi+1}</text>`;
+      s += `<rect x="${fx}" y="${PT}" width="${fw}" height="${fph}" fill="#FDFCF8" stroke="#888" stroke-width="0.7"/>`;
       let fy = PT;
-      for (const band of bands) {
-        const bh = Math.round((band.pct/tot)*ph);
-        s += `<rect x="${fx}" y="${fy}" width="${fw}" height="${bh}"
-          fill="${band.col}" fill-opacity="0.25" stroke="${band.col}" stroke-width="0.4"/>`;
-        if (bh >= 10)
-          s += `<text x="${fx+fw/2}" y="${fy+bh/2}" text-anchor="middle" dominant-baseline="middle"
-            font-size="6.5" fill="${band.col}" font-family="system-ui,sans-serif">${band.lbl}</text>`;
-        fy += bh;
+      for (const row of rows) {
+        const rh = Math.round(row.h_mm * sc_h);
+        for (const zone of row.zones) {
+          const zx = fx + Math.round(zone.x * fw);
+          const zw = Math.round(zone.w * fw);
+          s += `<rect x="${zx}" y="${fy}" width="${zw}" height="${rh}"
+            fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.4"/>`;
+          if (rh >= 10 && fi === 0)
+            s += `<text x="${zx+3}" y="${fy+rh/2}" dominant-baseline="middle"
+              font-size="6" fill="${zone.col}" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
+        }
+        fy += rh;
       }
     }
     s += `</svg>`;
     return s;
   }
+
+  // 1 Feld
+  const VW = PL + pw + PR, VH = PT + ph + PB;
+  const dimX = PL + pw + 6, lblX = PL + pw + 14;
+  const rows = buildLayout(zp);
+
+  let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
+    style="width:100%;max-width:${VW}px;display:block;background:#1C1C1A;border-radius:4px;margin-bottom:12px">`;
+  s += `<rect x="${PL}" y="${PT}" width="${pw}" height="${ph}" fill="#FDFCF8" stroke="#888" stroke-width="0.8"/>`;
+
+  let y = PT;
+  for (const row of rows) {
+    const rh          = Math.round(row.h_mm * sc);
+    const isSingle    = row.zones.length === 1;
+    const rowCy       = y + rh / 2;
+
+    for (const zone of row.zones) {
+      const zx = PL + Math.round(zone.x * pw);
+      const zw = Math.round(zone.w * pw);
+      const cy = y + rh / 2;
+
+      s += `<rect x="${zx}" y="${y}" width="${zw}" height="${rh}"
+        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.5"/>`;
+
+      if (rh >= 12)
+        s += `<text x="${zx+4}" y="${cy - (isSingle && rh >= 22 ? 5 : 0)}" dominant-baseline="middle"
+          font-size="7.5" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
+
+      if (isSingle && rh >= 22)
+        s += `<text x="${zx+4}" y="${cy+6}" dominant-baseline="middle"
+          font-size="7" fill="#888680" font-family="'Courier New',monospace">${row.h_mm} mm</text>`;
+    }
+
+    // Maßlinie rechts je Zeile
+    s += `<line x1="${dimX}" y1="${y}" x2="${dimX+4}" y2="${y}" stroke="#3366BB" stroke-width="0.7"/>`;
+    s += `<line x1="${dimX+2}" y1="${y}" x2="${dimX+2}" y2="${y+rh}" stroke="#3366BB" stroke-width="0.7"/>`;
+    s += `<line x1="${dimX}" y1="${y+rh}" x2="${dimX+4}" y2="${y+rh}" stroke="#3366BB" stroke-width="0.7"/>`;
+    if (rh >= 10)
+      s += `<text x="${lblX}" y="${rowCy}" dominant-baseline="middle"
+        font-size="8" fill="#3366BB" font-family="'Courier New',monospace">${row.h_mm} mm</text>`;
+
+    y += rh;
+  }
+
+  // Gesamthöhe-Maßlinie
+  const ox = PL + pw + 56;
+  s += `<line x1="${ox}" y1="${PT}" x2="${ox+4}" y2="${PT}" stroke="#3366BB" stroke-width="0.9"/>`;
+  s += `<line x1="${ox+2}" y1="${PT}" x2="${ox+2}" y2="${PT+ph}" stroke="#3366BB" stroke-width="0.9"/>`;
+  s += `<line x1="${ox}" y1="${PT+ph}" x2="${ox+4}" y2="${PT+ph}" stroke="#3366BB" stroke-width="0.9"/>`;
+  s += `<text x="${ox+7}" y="${PT+ph/2}" dominant-baseline="middle"
+    font-size="9" fill="#3366BB" font-weight="600" font-family="'Courier New',monospace">${h} mm</text>`;
+
+  s += `</svg>`;
+  return s;
 }
 
-// ── Zonen-Tabelle (gibt HTML-String zurück) ───────────────────
+// ── Zonen-Tabelle ─────────────────────────────────────────────
 function buildZoneTable(zp) {
-  const order    = getZoneOrder(zp.ke_pos);
-  const zMap     = Object.fromEntries(ZONES.map(z => [z.id, z]));
+  const rows     = buildLayout(zp);
   const n_te_row = Math.floor(zp.b / TE_BREITE_MM);
+
+  const srcKlemm  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (4 mm²) + ${H_HANDLING} mm Handling`;
+  const srcEinsp  = `Festwert ${H_EINSP_MIN} mm (Hauptschalter + ÜSS)`;
+  const srcEvert  = zp.netztyp === 'drehstrom'
+    ? `Stromschienensystem Drehstrom, Festwert ${H_SCHIENE_DS} mm`
+    : `${H_HANDLING} mm Handling + ${H_SICHER_WS} mm Sicherungsträger + ${H_HANDLING} mm Handling`;
+  const srcLS     = `(Platte − Einsp. − Evert. − Klemm.) ${zp.anordnung === 'nebeneinander' ? '÷ 2 Breite' : '÷ 2 Höhe'}, aufger. 5 mm`;
+
+  function srcFor(id) {
+    if (id === 'einsp')   return srcEinsp;
+    if (id === 'evert')   return srcEvert;
+    if (id === 'klemm_l' || id === 'klemm_f' || id === 'klemm_s') return srcKlemm;
+    return srcLS;
+  }
 
   let tbl = `<table class="rtable"><thead><tr>
     <th>#</th><th>Zone · Bezeichnung</th>
-    <th style="text-align:right">Anteil</th>
+    <th style="text-align:right">Breite</th>
     <th style="text-align:right">Höhe</th>
-    <th style="text-align:right">TE / Reihe</th>
-    <th>Formel</th></tr></thead><tbody>`;
+    <th style="text-align:right">TE/Reihe</th>
+    <th>Quelle / Berechnung</th></tr></thead><tbody>`;
 
-  order.forEach((id, idx) => {
-    const zd  = zp.zoneData.find(z => z.id === id);
-    const col = zMap[id].col;
-    const lbl = zMap[id].lbl;
-    tbl += `<tr>
-      <td style="color:var(--tx3);font-size:11px">${idx+1}</td>
-      <td><span style="display:inline-flex;align-items:center;gap:5px">
-        <span style="width:9px;height:9px;border-radius:50%;background:${col};flex-shrink:0;display:inline-block"></span>
-        <span style="color:var(--tx2);font-size:12px">${lbl}</span>
-      </span></td>
-      <td class="val" style="color:${col}">${zd.pct} %</td>
-      <td class="val" style="color:${col}">${zd.h_mm} mm</td>
-      <td class="val" style="color:var(--tx3);font-weight:400">${n_te_row} TE</td>
-      <td class="formula-cell">${zd.pct}% × ${zp.h} mm / 100</td></tr>`;
-  });
+  let idx = 1;
+  for (const row of rows) {
+    for (const zone of row.zones) {
+      const w_mm = Math.round(zone.w * zp.b);
+      const n_te = Math.floor(w_mm / TE_BREITE_MM);
+      tbl += `<tr>
+        <td style="color:var(--tx3);font-size:11px">${idx++}</td>
+        <td><span style="display:inline-flex;align-items:center;gap:5px">
+          <span style="width:9px;height:9px;border-radius:50%;background:${zone.col};flex-shrink:0;display:inline-block"></span>
+          <span style="color:var(--tx2);font-size:12px">${zone.lbl}</span>
+        </span></td>
+        <td class="val" style="color:${zone.col}">${w_mm} mm</td>
+        <td class="val" style="color:${zone.col}">${row.h_mm} mm</td>
+        <td class="val" style="color:var(--tx3);font-weight:400">${n_te} TE</td>
+        <td class="formula-cell">${srcFor(zone.id)}</td></tr>`;
+    }
+  }
   tbl += `</tbody></table>
 <p class="note-line" style="margin-top:6px">
-  Reihenfolge von oben nach unten · KE ${zp.ke_pos === 'oben' ? 'oben' : 'unten'} ·
-  TE/Reihe = ${n_te_row} (Breite ${zp.b} mm ÷ 17,5 mm) ·
-  Reihenzahl je Zone abhängig von Komponenten-Einbauhöhe (Detailplanung)
+  Mindesthöhen · aufgerundet auf 5 mm · Klemmen: Handling + Klemmenhöhe 4 mm² + Handling ·
+  Leistung/Steuerung: verbleibende Fläche ${zp.anordnung === 'nebeneinander' ? 'nebeneinander je 50 % Breite' : 'übereinander je 50 % Höhe'} ·
+  Reihenfolge: KE ${zp.ke_pos === 'oben' ? 'oben' : 'unten'}
 </p>`;
   return tbl;
 }
