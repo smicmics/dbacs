@@ -406,11 +406,15 @@ const H_HANDLING   = 15;   // Kabelhandling je Seite (wie h_handling_ke in M1/M2
 const H_SICHER_WS  = 75;   // Sicherungshalter Wechselstrom (NH00/D02 + Träger)
 const H_SCHIENE_DS = 150;  // Stromschienensystem Drehstrom Mindesthöhe
 
-// Einspeisezone: Breite in TE (Platzhalter – wird später an Schranknennleistung geknüpft)
-const TE_USS_TYP2  = 4;    // ÜSS Typ 2 Drehstrom 4-polig (Kompaktgerät, z. B. Dehn DG S 4P)
-const TE_SICH_USS  = 3;    // Vorsicherungen ÜSS, 3× D02-Halter je 1 TE (L1/L2/L3, N ohne Sich.)
-const TE_KLEMME_ES = 5;    // Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile
-const H_USS_BAUTEIL = 60;  // ÜSS Typ 2 Bauhöhe (Kompaktgerät, Platzhalter)
+// ÜSS + Vorsicherung – netztyp-abhängig, liegt neben Leistungsteil (EMV)
+// Wechselstrom 1~: ÜSS 2-polig Typ 2 (z. B. Dehn DG S 2P 275, 2× 1 TE) + D0-Halter L (2 TE)
+const TE_USS_WS   = 2;   // ÜSS Typ 2, 2-polig
+const TE_SICH_WS  = 2;   // Vorsicherung D0, 1× breiter Halter (L-Leiter), 2 TE
+// Drehstrom 3~: ÜSS 4-polig Typ 2 (z. B. Dehn DG S 4P 275, 4× 1 TE) + D0-Halter L1/L2/L3 (3× 1 TE)
+const TE_USS_DS   = 4;   // ÜSS Typ 2, 4-polig
+const TE_SICH_DS  = 3;   // Vorsicherungen D0, 3× schmaler Halter (L1/L2/L3, N ohne Sich.), 3 TE
+// Einspeiseklemmen: teilen sich die Klemmenzeile
+const TE_KLEMME_ES = 5;  // L1/L2/L3/N/PE – Platzhalter, später nach Kabelquerschnitt
 
 function ceil5(v) { return Math.ceil(Math.max(0, v) / 5) * 5; }
 
@@ -528,8 +532,10 @@ function calculateZones(b, h) {
   document.getElementById('zone_anordnung').disabled = isMehreFelder;
   document.getElementById('zone-feld-section').style.display = isMehreFelder ? '' : 'none';
 
-  // ÜSS + Sicherungen: Breite innerhalb der Leistungszeile (kein eigener Höhenbedarf)
-  const n_te_uss = TE_USS_TYP2 + TE_SICH_USS;                    // 7 TE
+  // ÜSS + Vorsicherung: Breite netztyp-abhängig, liegt im Leistungsbereich (EMV)
+  const n_te_uss = netztyp === 'drehstrom'
+    ? TE_USS_DS + TE_SICH_DS   // 7 TE  (4 TE ÜSS + 3 TE D0-Halter)
+    : TE_USS_WS + TE_SICH_WS;  // 4 TE  (2 TE ÜSS + 2 TE D0-Halter)
   const b_uss    = Math.min(n_te_uss * TE_BREITE_MM, b * 0.4);  // max 40 % der Plattenbreite
 
   // Einspeiseklemmen → integriert in Klemmenzeile, kein eigener Höhenbedarf
@@ -631,28 +637,29 @@ function buildLayout(zp) {
       { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
     ]},
 
-    // Leistungszeile: ÜSS nimmt Platz vom Leistungsteil (outer side je nach KE)
-    // nebeneinander: [Leistung | ÜSS | Steuerung] in einer Zeile
-    // uebereinander: [Leistung | ÜSS] Zeile 1, [Steuerung] Zeile 2
-    leist_unten: isNeben   // KE unten: ÜSS rechts (außen, Richtung Klemmen unten)
+    // Leistungszeile: ÜSS immer im Leistungsbereich (EMV – nie in Steuerung)
+    // KE unten neben: [Leistung_eff | ÜSS | Steuerung]  ← ÜSS am rechten Rand von Leistung
+    // KE oben  neben: [ÜSS | Leistung_eff | Steuerung]  ← ÜSS am linken Rand von Leistung
+    // uebereinander (beide KE): [Leistung_eff | ÜSS]     ← ÜSS rechts, Steuerung eigene Zeile
+    leist_unten: isNeben
       ? { h_mm: h_leist, zones: [
-          { id:'leist',  x:0,                    w:(b_leist-b_uss)/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
-          { id:'uss',    x:(b_leist-b_uss)/b,    w:f_uss,             col:'#D4A84B', lbl:'ÜSS + Sich.' },
-          { id:'steuer', x:b_leist/b,             w:b_steuer/b,        col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+          { id:'leist',  x:0,                 w:(b_leist-b_uss)/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
+          { id:'uss',    x:(b_leist-b_uss)/b, w:f_uss,             col:'#D4A84B', lbl:'ÜSS + Sich.' },
+          { id:'steuer', x:b_leist/b,         w:b_steuer/b,        col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
         ]}
       : { h_mm: h_leist, zones: [
           { id:'leist', x:0,       w:1-f_uss, col:'#C84E2E', lbl:'Leistungsbaugruppen' },
           { id:'uss',   x:1-f_uss, w:f_uss,   col:'#D4A84B', lbl:'ÜSS + Sich.' },
         ]},
-    leist_oben: isNeben    // KE oben: ÜSS links (außen, Richtung Klemmen oben)
+    leist_oben: isNeben
       ? { h_mm: h_leist, zones: [
-          { id:'steuer', x:0,                 w:b_steuer/b,        col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
-          { id:'uss',    x:b_steuer/b,        w:f_uss,             col:'#D4A84B', lbl:'ÜSS + Sich.' },
-          { id:'leist',  x:b_steuer/b+f_uss,  w:(b_leist-b_uss)/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
+          { id:'uss',    x:0,       w:f_uss,             col:'#D4A84B', lbl:'ÜSS + Sich.' },
+          { id:'leist',  x:f_uss,   w:(b_leist-b_uss)/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
+          { id:'steuer', x:b_leist/b, w:b_steuer/b,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
         ]}
       : { h_mm: h_leist, zones: [
-          { id:'uss',   x:0,     w:f_uss,   col:'#D4A84B', lbl:'ÜSS + Sich.' },
-          { id:'leist', x:f_uss, w:1-f_uss, col:'#C84E2E', lbl:'Leistungsbaugruppen' },
+          { id:'leist', x:0,       w:1-f_uss, col:'#C84E2E', lbl:'Leistungsbaugruppen' },
+          { id:'uss',   x:1-f_uss, w:f_uss,   col:'#D4A84B', lbl:'ÜSS + Sich.' },
         ]},
 
     steuer: { h_mm: h_steuer, zones: [
@@ -678,13 +685,15 @@ function buildLayout(zp) {
   // KE oben  (Wandschrank):  Klemmen oben · [Steuerung] · Leistung+ÜSS · Evert unten
   let rows;
   if (ke_pos === 'unten') {
+    // KE unten: Evert oben · Leistung+ÜSS · [Steuerung] · Klemmen unten
     rows = [R.evert, R.leist_unten];
     if (!isNeben) rows.push(R.steuer);
     rows.push(R.klemm_ke_unten);
   } else {
-    rows = [R.klemm_ke_oben];
+    // KE oben: Klemmen oben · Leistung+ÜSS · [Steuerung] · Evert unten
+    rows = [R.klemm_ke_oben, R.leist_oben];
     if (!isNeben) rows.push(R.steuer);
-    rows.push(R.leist_oben, R.evert);
+    rows.push(R.evert);
   }
   return rows;
 }
@@ -859,7 +868,9 @@ function buildZoneTable(zp) {
   const n_te_row = Math.floor(zp.b / TE_BREITE_MM);
 
   const srcKlemm  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (4 mm²) + ${H_HANDLING} mm Handling`;
-  const srcUss    = `${TE_USS_TYP2} TE ÜSS Typ 2 (4-pol.) + ${TE_SICH_USS} TE Vorsich. D02 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm Breite – liegt neben Leistungsteil (Platzhalter)`;
+  const srcUss = zp.netztyp === 'drehstrom'
+    ? `${TE_USS_DS} TE ÜSS Typ 2 4-pol. (z. B. Dehn DG S 4P 275) + ${TE_SICH_DS} TE D0-Halter L1/L2/L3 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`
+    : `${TE_USS_WS} TE ÜSS Typ 2 2-pol. (z. B. Dehn DG S 2P 275) + ${TE_SICH_WS} TE D0-Halter L = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`;
   const srcEinspKl = `${TE_KLEMME_ES} TE Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`;
   const srcEvert  = zp.netztyp === 'drehstrom'
     ? `Festwert ${H_SCHIENE_DS} mm (Stromschienensystem Drehstrom 3~), nicht aufgerundet`
