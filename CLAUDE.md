@@ -290,17 +290,27 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 ### Modul 3 – Zonenaufteilung (gesperrt)
 - Mindesthöhen basieren auf physikalischen Festwerten (analog h_ke-Logik), **keine Prozent-Eingabe**
 - `ceil5(v)` = `Math.ceil(v/5)*5` – alle Mindesthöhen auf 5 mm aufgerundet
-- Festwerte: `H_EINSP_MIN=120`, `H_KLEMME_STD=52`, `H_HANDLING=15`, `H_SICHER_WS=75`, `H_SCHIENE_DS=150`
-- `h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING) = 85 mm` – alle 3 Klemmengruppen gleiche Höhe
-- `h_einsp = 120 mm` Festwert (nicht überschreibbar)
+- Festwerte: `H_KLEMME_STD=52`, `H_HANDLING=15`, `H_SICHER_WS=75`, `H_SCHIENE_DS=150`, `H_KANAL_H=40`, `B_KANAL_V=40`
+- `h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING) = 85 mm` – H_HANDLING = 15 mm (gesperrt)
 - `h_evert`: Drehstrom = `ceil5(150) = 150 mm`, Wechselstrom = `ceil5(105) = 105 mm`
-- Leistung/Steuerung: verbleibende Höhe ÷ 2 (Übereinander) oder gleiche Höhe je 50 % Breite (Nebeneinander)
+- **KE-Seite = Klemmen-Seite**: KE oben → Klemmen oben; KE unten → Klemmen unten
+- **Energieverteilung** immer gegenüber den Klemmen: KE oben → Evert unten; KE unten → Evert oben
+- **Klemmenzeile** = eine Hutschiene, 4 Untergruppen: Einsp.-Kl. (5 TE) · Abg.-Kl. Leistung · Abg.-Kl. Feldgeräte · Abg.-Kl. Sensoren
+  - Einsp.-Kl. immer auf der äußeren (KE-nahen) Seite; Breitenaufteilung ½ / ½ (fix, unabhängig von Anordnung)
+- **Einspeisefeld** (ÜSS + Sich. + Hauptschalter-Platzhalter) immer im Leistungsbereich (EMV – nie neben Steuerung)
+  - Nebeneinander: als Teilzone in der Leistungsspalte (Breite = b_uss)
+  - Übereinander: als Teilzone in der Leistungszeile (Breite = b_uss)
+- **Horizontaler Kabelkanal** (`H_KANAL_H = 40 mm`, Platzhalter): eigene Zeile voller Breite, zwischen Klemmen und L/S-Bereich
+- **Vertikaler Kabelkanal** (`B_KANAL_V = 40 mm`, Platzhalter): als Zone in jeder L/S-Zeile, auf der USS-Seite (links KE oben, rechts KE unten)
+  - Reduziert b_steuer (nebeneinander) bzw. b_leist + b_steuer (übereinander) um B_KANAL_V
+- **h_verfueg** = h − h_evert − h_klemm − H_KANAL_H (Festzonen); L/S-Zonen füllen den Rest
+- Leistung/Steuerung: verbleibende Höhe ÷ 2 (Übereinander) oder gleiche Höhe je ~50 % Breite (Nebeneinander)
+- **Zonenreihenfolge KE oben**: Klemmen → H.Kanal → Leistung[+Steuerung] → Evert
+- **Zonenreihenfolge KE unten**: Evert → [Steuerung+]Leistung → H.Kanal → Klemmen
 - `zone_anordnung` (Nebeneinander/Übereinander) wird disabled wenn `zone_modus === 'je_feld'`
-- 7 Zonen: `einsp`, `evert`, `leist`, `steuer`, `klemm_l`, `klemm_f`, `klemm_s` (kein `klemm_e`)
-- 3 Klemmengruppen immer nebeneinander: klemm_l unter Leistungsbereich, klemm_f+klemm_s unter Steuerungsbereich
-- KE-Position bestimmt Zonenreihenfolge: KE oben → Einsp. oben; KE unten → Evert. oben, Einsp. unten
 - `buildLayout(zp)` erzeugt Zeilen-Array mit x/w-Fraktionen für SVG-Rendering
 - SVG-Maßlinien: je Zeile rechts, Gesamthöhe außen (gleiche Konvention wie M1/M2)
+- Kabelkanäle als eigene SVG-Zonen dargestellt (Grau `#888`, fill-opacity 0.22)
 
 ### Modul 2 – Standschrank-spezifische Regeln (gesperrt)
 - KE unten: kein PG (Boden offen), Kabel läuft frei durch Schrankunterseite und Sockel
