@@ -290,8 +290,12 @@ legend{
     <fieldset>
       <legend>Festwerte · Norm</legend>
       <div class="field">
-        <div class="lbl">TE-Breite nach DIN EN 60715 (mm)<span class="var">te_breite_mm</span></div>
-        <input type="number" value="17.5" disabled>
+        <div class="lbl">TE-Breite nach DIN 43880 (mm)<span class="var">te_breite_mm</span></div>
+        <input type="number" value="18.0" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Hutschiene Höhe nach DIN EN 60715 (mm)<span class="var">h_hutschiene_mm</span></div>
+        <input type="number" value="7.5" disabled>
       </div>
     </fieldset>
 
@@ -403,7 +407,7 @@ const gs = id => document.getElementById(id).value;
 const _v = (id, val) => { document.getElementById(id).value = val; };
 
 // ── Festwerte ─────────────────────────────────────────────────
-const TE_BREITE_MM  = 17.5;  // DIN EN 60715
+const TE_BREITE_MM  = 18.0;  // DIN 43880
 
 // Mindesthöhen Zonenberechnung
 const H_KLEMME_STD = 52;   // Klemmenhöhe 4 mm² auf Hutschiene (Phoenix UK 4)
@@ -751,7 +755,7 @@ function buildTETable(p) {
     { v:`h_mplatte_mbereich_${sfx}`, label:'Montagebereich Höhe',   val:p.h.toFixed(0),                    unit:'mm',  formel:src,                                     col:CI   },
     { v:'flaeche_mbereich_cm2',      label:'Fläche',                val:p.flaeche_mbereich_cm2.toFixed(0), unit:'cm²', formel:`(${cb('b')} × ${cb('h')}) / 100`,       col:CCM2 },
     { v:'flaeche_mbereich_m2',       label:'Fläche',                val:p.flaeche_mbereich_m2.toFixed(3),  unit:'m²',  formel:`(${cb('b')} × ${cb('h')}) / 1 000 000`, col:CM2  },
-    { v:'n_te',                      label:'Verfügbare TE',         val:p.n_te,                            unit:'TE',  formel:`⌊ ${cb('b')} / 17,5 ⌋`,                col:CTE  },
+    { v:'n_te',                      label:'Verfügbare TE',         val:p.n_te,                            unit:'TE',  formel:`⌊ ${cb('b')} / 18,0 ⌋`,                col:CTE  },
   ];
 
   let tbl = `<table class="rtable"><thead><tr>
@@ -771,12 +775,12 @@ function buildTETable(p) {
   const fB = fn(CI, p.b.toFixed(0)), fH = fn(CI, p.h.toFixed(0));
   const formel = `<div class="formula-box">
   ${fn(CTE,'n_te')} = ⌊ ${fn(CI,'b')} / ${fn('#D4A84B','te_breite')} ⌋
-    &nbsp;=&nbsp; ⌊ ${fB} mm / ${fn('#D4A84B','17,5')} mm ⌋ &nbsp;=&nbsp; ${fn(CTE,p.n_te)} TE<br>
+    &nbsp;=&nbsp; ⌊ ${fB} mm / ${fn('#D4A84B','18,0')} mm ⌋ &nbsp;=&nbsp; ${fn(CTE,p.n_te)} TE<br>
   ${fn(CCM2,'flaeche_mbereich_cm2')} = ${fn(CI,'b')} × ${fn(CI,'h')}
     &nbsp;=&nbsp; ${fB} mm × ${fH} mm &nbsp;=&nbsp; ${fn(CCM2,p.flaeche_mbereich_cm2.toFixed(0))} cm²<br>
   ${fn(CM2,'flaeche_mbereich_m2')} = ${fn(CI,'b')} × ${fn(CI,'h')} / 1 000 000
     &nbsp;=&nbsp; ${fB} mm × ${fH} mm / 1 000 000 &nbsp;=&nbsp; ${fn(CM2,p.flaeche_mbereich_m2.toFixed(3))} m²
-  <div class="note-line">TE-Breite: 17,5 mm nach DIN EN 60715 · Ergebnis: ganze Zahl (abgerundet)</div>
+  <div class="note-line">TE-Breite: 18,0 mm nach DIN 43880 · Hutschiene: 7,5 mm nach DIN EN 60715 · Ergebnis: ganze Zahl (abgerundet)</div>
 </div>`;
 
   return tbl + formel;

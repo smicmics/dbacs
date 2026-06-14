@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 13. Juni 2026 – Session 13
+**Stand:** 14. Juni 2026 – Session 14
 
 ---
 
@@ -129,8 +129,9 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 #### TE-Berechnung (Fieldsets 1–4)
 - Schrank-Typ: Wandschrank / Standschrank (Pflichtauswahl, Standard „— bitte wählen —")
 - Montagebereich Breite + Höhe: automatisch via localStorage aus Modul 1/2 (read-only)
-- Festwert: te_breite_mm = 17,5 mm (DIN EN 60715)
-- `n_te = ⌊ b / 17,5 ⌋` (ganze Zahl, abgerundet)
+- Festwert: te_breite_mm = 18,0 mm (DIN 43880 – Hüllmaße Installationseinbaugeräte)
+- Festwert: h_hutschiene_mm = 7,5 mm (DIN EN 60715 – Hutschiene)
+- `n_te = ⌊ b / 18,0 ⌋` (ganze Zahl, abgerundet)
 - `flaeche_mbereich_cm2` / `flaeche_mbereich_m2`
 
 #### Zonenaufteilung (Fieldset 5) ← NEU Session 12–13
@@ -213,6 +214,9 @@ m03_b_leist, m03_b_steuer
 **`bodenbleche.json`** – 4 Rittal VX Bodenblech-Sätze (je Schrankbreite)
 → Bestellnummern noch zu verifizieren
 
+**`reiheneinbaugeraete.json`** – 24 Einträge: Schmelzsicherungshalter, LSS, Hilfskontakte, FI-Schutzschalter (Eaton + Siemens)
+→ Preise noch zu befüllen · Bestellnummern zu verifizieren
+
 ---
 
 ## Offene Punkte
@@ -260,11 +264,12 @@ m03_b_leist, m03_b_steuer
 - Zonenrahmen-Farben (Amber, Teal) von Maßkettenfarben getrennt
 
 **Modul 3 – TE-Berechnung**
-- `te_breite_mm = 17,5 mm` Festwert nach DIN EN 60715 (nicht ändern)
-- `n_te = Math.floor(b / 17.5)` – ganzzahlig abgerundet
+- `te_breite_mm = 18,0 mm` Festwert nach DIN 43880 (Hüllmaße für Installationseinbaugeräte)
+- `h_hutschiene_mm = 7,5 mm` Festwert nach DIN EN 60715 (Hutschiene, nur Anzeige)
+- `n_te = Math.floor(b / 18.0)` – ganzzahlig abgerundet
 - `schrank_typ` wird **nicht** aus localStorage wiederhergestellt – Start immer mit „— bitte wählen —"
 - `typLabel` ohne Modulangabe: „Wandschrank" / „Standschrank"
-- Formelbox zeigt Eingabewerte mit Einheit mm: `⌊ b mm / 17,5 mm ⌋`
+- Formelbox zeigt Eingabewerte mit Einheit mm: `⌊ b mm / 18,0 mm ⌋`
 - Copyright: `class="copyright-line"` + `@media print { .copyright-line { display:none !important } }`
 
 **Modul 3 – Zonenaufteilung (gesperrt)**
