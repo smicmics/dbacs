@@ -1201,9 +1201,12 @@ function buildFullLayoutSVG() {
   const m3_px = Math.round(h_mb_layout * sc);
   const ke_px = mph - m3_px;  // exakter Anschluss ohne Rundungslücke
 
+  // KE unten: Reihenfolge umkehren → Handling liegt unten (nah am Kabeleintritt)
+  const zonesOrdered = ke_pos === 'unten' ? [...keZones].reverse() : keZones;
+
   // KE-Start: oben → my, unten → my + m3_px
   let keY = ke_pos === 'oben' ? my : my + m3_px;
-  for (const z of keZones) {
+  for (const z of zonesOrdered) {
     const zh = Math.round(z.h * sc);
     if (zh < 1) continue;
     s += `<rect x="${mx}" y="${keY}" width="${mpw}" height="${zh}"
@@ -1237,13 +1240,13 @@ function buildFullLayoutSVG() {
     zoneY += rh;
   }
 
-  // ── Maßlinie KE-Zone ─────────────────────────────────────────
+  // ── Maßlinie KE-Zone (gleiche Spalte wie Zonen-Maßketten) ───
   const keStartY = ke_pos === 'oben' ? my : my + m3_px;
-  s += `<line x1="${keX}" y1="${keStartY}" x2="${keX+4}" y2="${keStartY}" stroke="#3366BB" stroke-width="0.7"/>`;
-  s += `<line x1="${keX+2}" y1="${keStartY}" x2="${keX+2}" y2="${keStartY+ke_px}" stroke="#3366BB" stroke-width="0.7"/>`;
-  s += `<line x1="${keX}" y1="${keStartY+ke_px}" x2="${keX+4}" y2="${keStartY+ke_px}" stroke="#3366BB" stroke-width="0.7"/>`;
-  s += `<text x="${keLblX}" y="${keStartY+ke_px/2}" dominant-baseline="middle"
-    font-size="7.5" fill="#3366BB" font-family="'Courier New',monospace">h_ke: ${h_ke} mm</text>`;
+  s += `<line x1="${dimX}" y1="${keStartY}" x2="${dimX+4}" y2="${keStartY}" stroke="#3366BB" stroke-width="0.7"/>`;
+  s += `<line x1="${dimX+2}" y1="${keStartY}" x2="${dimX+2}" y2="${keStartY+ke_px}" stroke="#3366BB" stroke-width="0.7"/>`;
+  s += `<line x1="${dimX}" y1="${keStartY+ke_px}" x2="${dimX+4}" y2="${keStartY+ke_px}" stroke="#3366BB" stroke-width="0.7"/>`;
+  s += `<text x="${lblX}" y="${keStartY+ke_px/2}" dominant-baseline="middle"
+    font-size="8" fill="#3366BB" font-family="'Courier New',monospace">${h_ke} mm</text>`;
 
   // ── Gesamthöhe-Maßlinie ───────────────────────────────────────
   s += `<line x1="${ox}" y1="${sy}" x2="${ox+4}" y2="${sy}" stroke="#3366BB" stroke-width="0.9"/>`;
