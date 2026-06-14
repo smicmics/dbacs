@@ -130,7 +130,7 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 - Schrank-Typ: Wandschrank / Standschrank (Pflichtauswahl, Standard „— bitte wählen —")
 - Montagebereich Breite + Höhe: automatisch via localStorage aus Modul 1/2 (read-only)
 - Festwert: te_breite_mm = 18,0 mm (DIN 43880 – Hüllmaße Installationseinbaugeräte)
-- Festwert: h_hutschiene_mm = 7,5 mm (DIN EN 60715 – Hutschiene)
+- Festwert: b_hutschiene_mm = 35 mm (DIN EN 60715 – Hutschiene Breite)
 - `n_te = ⌊ b / 18,0 ⌋` (ganze Zahl, abgerundet)
 - `flaeche_mbereich_cm2` / `flaeche_mbereich_m2`
 
