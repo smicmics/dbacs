@@ -196,11 +196,10 @@ body.print-full .layout,
 body.print-full .site-footer { display:none !important; }
 body.print-full #full-layout-container { display:block !important; padding:12px 0; }
 @media print {
-  body.print-full header,
   body.print-full .site-footer { display:none !important; }
   body.print-full .layout { display:none !important; }
   body.print-full #full-layout-container { display:block !important; padding:0; }
-  body.print-full #full-layout-container svg { width:100% !important; max-width:none !important; height:auto !important; }
+  body.print-full #full-layout-container svg { width:100% !important; max-width:none !important; height:auto !important; max-height:170mm !important; }
 }
 
 /* ── Nav-Button ── */
@@ -1302,8 +1301,8 @@ function buildFullLayoutSVG() {
   // Pfeil vollständig oberhalb (KE oben) bzw. unterhalb der B-Maßkette (KE unten)
   const arrowCx = sx + sw / 2;
   if (ke_pos === 'oben') {
-    // Pfeil oberhalb Schrank, Spitze → sy (Schrankoberseite)
-    const tipY  = sy - 4;
+    // Pfeil oberhalb Schrank, Spitze → sy (Schrankoberseite), mit Abstand
+    const tipY  = sy - 16;
     const baseY = tipY - 20;
     s += `<line x1="${arrowCx}" y1="${baseY}" x2="${arrowCx}" y2="${tipY}"
       stroke="#2DBD8E" stroke-width="2" marker-end="url(#arrowhead)"/>`;
