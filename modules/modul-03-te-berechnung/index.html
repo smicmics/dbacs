@@ -297,6 +297,14 @@ legend{
         <div class="lbl">Hutschiene Breite nach DIN EN 60715 (mm)<span class="var">b_hutschiene_mm</span></div>
         <input type="number" value="35" disabled>
       </div>
+      <div class="field">
+        <div class="lbl">H. Kabelkanal Höhe (mm)<span class="var">h_kanal_h_mm</span></div>
+        <input id="h_kanal_h_mm" type="number" min="20" max="200" value="40" oninput="calculate()">
+      </div>
+      <div class="field">
+        <div class="lbl">V. Kabelkanal Breite (mm)<span class="var">b_kanal_v_mm</span></div>
+        <input id="b_kanal_v_mm" type="number" min="20" max="200" value="40" oninput="calculate()">
+      </div>
     </fieldset>
 
     <!-- Fieldset 5: Zonenaufteilung -->
@@ -366,7 +374,7 @@ legend{
         <span id="zh_gesamt" class="zmm2">–</span>
       </div>
       <div class="zone-sum-row">
-        <span style="font-size:11px;color:var(--tx2)">Differenz zu Platte</span>
+        <span style="font-size:11px;color:var(--tx2)">Differenz zu Montageplatte</span>
         <span id="zh_diff" class="zone-sum-ok">–</span>
       </div>
 
@@ -414,8 +422,8 @@ const H_KLEMME_STD = 52;   // Klemmenhöhe 4 mm² auf Hutschiene (Phoenix UK 4)
 const H_HANDLING   = 15;   // Kabelhandling je Seite (wie h_handling_ke in M1/M2)
 const H_SICHER_WS  = 75;   // Sicherungshalter Wechselstrom (NH00/D02 + Träger)
 const H_SCHIENE_DS = 150;  // Stromschienensystem Drehstrom Mindesthöhe
-const H_KANAL_H    = 40;   // Horizontaler Kabelkanal (Festwert Platzhalter)
-const B_KANAL_V    = 40;   // Vertikaler Kabelkanal (Festwert Platzhalter)
+const H_KANAL_H_DEF = 40;  // Horizontaler Kabelkanal – Standardwert (Nutzereingabe überschreibt)
+const B_KANAL_V_DEF = 40;  // Vertikaler Kabelkanal – Standardwert (Nutzereingabe überschreibt)
 
 // ÜSS + Vorsicherung – netztyp-abhängig, liegt neben Leistungsteil (EMV)
 // Wechselstrom 1~: ÜSS 2-polig Typ 2 (z. B. Dehn DG S 2P 275, 2× 1 TE) + D0-Halter L (2 TE)
@@ -537,6 +545,8 @@ function calculateZones(b, h) {
   const anordnung = gs('zone_anordnung');
   const netztyp   = gs('zone_netztyp');
   const ke_pos    = gs('zone_ke_pos') || 'unten';
+  const h_kanal_h = g('h_kanal_h_mm') || H_KANAL_H_DEF;
+  const b_kanal_v = g('b_kanal_v_mm') || B_KANAL_V_DEF;
   const n_felder  = Math.max(1, g('n_felder') || 3);
 
   // Mehrere Felder: Anordnungsauswahl sperren
@@ -564,10 +574,10 @@ function calculateZones(b, h) {
   // Einspeisung (USS) + Einsp.-Kl. immer LINKS – unabhängig von KE-Position
   const isNeben   = anordnung === 'nebeneinander';
   // Nutzbreite nach Abzug beider V.Kanäle (links Leistung, rechts Steuerung)
-  const b_inner   = Math.max(0, b - 2 * B_KANAL_V);
+  const b_inner   = Math.max(0, b - 2 * b_kanal_v);
   // Neben: H.Kanal mittig in L/S-Zone; Über: H.Kanal zwischen L und S
   // Beide Modi: 3 H.Kanäle gesamt (Klemm/L, mittig/L-S, Evert.)
-  const h_verfueg = h - h_evert - h_klemm - 3 * H_KANAL_H;
+  const h_verfueg = h - h_evert - h_klemm - 3 * h_kanal_h;
 
   let h_leist, h_steuer, b_leist, b_steuer;
   if (isNeben) {
@@ -583,7 +593,7 @@ function calculateZones(b, h) {
     b_steuer = b_inner;
   }
 
-  const h_gesamt = h_evert + h_klemm + 3 * H_KANAL_H +
+  const h_gesamt = h_evert + h_klemm + 3 * h_kanal_h +
     (isNeben ? 2 * h_leist : h_leist + h_steuer);
   const h_diff = h - h_gesamt;
   // passt = Festzonen (Evert + Klemm + H.Kanäle) passen; L/S-Zonen sind flexibel
@@ -602,7 +612,7 @@ function calculateZones(b, h) {
     set('zh_leist',   h_leist   + ' mm');
     set('zh_steuer',  anordnung === 'nebeneinander' ? '= Leistung' : h_steuer + ' mm',
         anordnung === 'nebeneinander' ? '#666460' : '');
-    set('zh_kanal_h', `3× ${H_KANAL_H} = ${3*H_KANAL_H} mm`, '#666');
+    set('zh_kanal_h', `3× ${h_kanal_h} = ${3*h_kanal_h} mm`, '#666');
     set('zh_klemm',   h_klemm   + ' mm');
     set('zh_gesamt',  h_gesamt  + ' mm');
     const diffEl = document.getElementById('zh_diff');
@@ -631,6 +641,7 @@ function calculateZones(b, h) {
   localStorage.setItem('m03_b_steuer', b_steuer);
 
   return { b, h, ke_pos, modus, anordnung, netztyp, n_felder,
+           h_kanal_h, b_kanal_v,
            n_te_uss, b_uss, n_te_ek, b_ek, h_evert, h_leist, h_steuer, h_klemm,
            b_leist, b_steuer, b_inner, h_gesamt, h_diff, passt };
 }
@@ -640,7 +651,8 @@ function calculateZones(b, h) {
 // Einspeisung (USS) + Einsp.-Kl. immer LINKS – unabhängig von KE-Position
 function buildLayout(zp) {
   const { b, b_uss, b_ek, h_evert, h_leist, h_steuer, h_klemm,
-          b_leist, b_steuer, b_inner, anordnung, ke_pos } = zp;
+          b_leist, b_steuer, b_inner, anordnung, ke_pos,
+          h_kanal_h, b_kanal_v } = zp;
   const isNeben = anordnung === 'nebeneinander';
 
   // Klemmenzeile: volle Breite b, Einsp.-Kl. immer links; L:S = b/2 : b/2 (beide Modi)
@@ -653,7 +665,7 @@ function buildLayout(zp) {
   const f_ks   = f_kfs - f_kf;
 
   // L/S-Fraktionen: V.Kanäle links + rechts an Gehäusekante
-  const f_vk   = b > 0 ? B_KANAL_V / b : 0;
+  const f_vk   = b > 0 ? b_kanal_v / b : 0;
   const f_uss  = b > 0 ? Math.min(b_uss / b, 0.4) : 0;
   // nebeneinander: b_leist = b_inner/2, b_steuer = b_inner - b_leist
   const f_l_n  = b > 0 ? Math.max(0, b_leist - b_uss) / b : 0;  // Leistung_eff (neben)
@@ -666,13 +678,13 @@ function buildLayout(zp) {
     evert: { h_mm: h_evert, zones: [
       { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
     ]},
-    kanal_h: { h_mm: H_KANAL_H, zones: [
+    kanal_h: { h_mm: h_kanal_h, zones: [
       { id:'kanal_h', x:0, w:1, col:'#888', lbl:'' }
     ]},
-    kanal_ls: { h_mm: H_KANAL_H, zones: [
+    kanal_ls: { h_mm: h_kanal_h, zones: [
       { id:'kanal_ls', x:0, w:1, col:'#888', lbl:'' }
     ]},
-    kanal_ev: { h_mm: H_KANAL_H, zones: [
+    kanal_ev: { h_mm: h_kanal_h, zones: [
       { id:'kanal_ev', x:0, w:1, col:'#888', lbl:'' }
     ]},
 
@@ -796,7 +808,7 @@ function buildZoneSection(zp) {
     : (zp.anordnung === 'nebeneinander' ? 'Nebeneinander' : 'Übereinander');
   const netzLabel = zp.netztyp === 'drehstrom' ? 'Drehstrom 3~' : 'Wechselstrom 1~';
   const isNebenZ  = zp.anordnung === 'nebeneinander';
-  const h_fest    = zp.h_evert + zp.h_klemm + 3 * H_KANAL_H;
+  const h_fest    = zp.h_evert + zp.h_klemm + 3 * zp.h_kanal_h;
   const warnHtml  = !zp.passt
     ? `<p style="color:#E04040;font-size:11px;font-family:var(--mono);margin-bottom:6px">
         ⚠ Festzonen ${h_fest} mm &gt; Montagefläche ${zp.h} mm – größeres Gehäuse oder kleinere Kabeleinführungszone erforderlich</p>`
@@ -917,21 +929,24 @@ function buildZoneTable(zp) {
   const rows     = buildLayout(zp);
   const n_te_row = Math.floor(zp.b / TE_BREITE_MM);
 
-  const srcKlemm  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (4 mm²) + ${H_HANDLING} mm Handling`;
+  const { h_kanal_h, b_kanal_v } = zp;
+  const srcKlemmL  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (4 mm²) + ${H_HANDLING} mm Handling`;
+  const srcKlemmF  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (1,5 mm², Ventile/Klappen) + ${H_HANDLING} mm Handling`;
+  const srcKlemmS  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (1 mm², JY(ST)Y) + ${H_HANDLING} mm Handling`;
   const srcUss = zp.netztyp === 'drehstrom'
-    ? `${TE_USS_DS} TE ÜSS Typ 2 4-pol. (z. B. Dehn DG S 4P 275) + ${TE_SICH_DS} TE D0-Halter L1/L2/L3 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`
-    : `${TE_USS_WS} TE ÜSS Typ 2 2-pol. (z. B. Dehn DG S 2P 275) + ${TE_SICH_WS} TE D0-Halter L = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`;
+    ? `${TE_USS_DS} TE ÜSS Typ 2 4-pol. + ${TE_SICH_DS} TE D0-Halter L1/L2/L3 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`
+    : `${TE_USS_WS} TE ÜSS Typ 2 2-pol. + ${TE_SICH_WS} TE D0-Halter L = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`;
   const srcEinspKl = zp.netztyp === 'drehstrom'
     ? `${TE_KLEMME_ES_DS} TE Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`
     : `${TE_KLEMME_ES_WS} TE Einspeiseklemmen L1/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`;
   const srcEvert  = zp.netztyp === 'drehstrom'
     ? `Festwert ${H_SCHIENE_DS} mm (Stromschienensystem Drehstrom 3~), nicht aufgerundet`
     : `${H_HANDLING} mm Handling + ${H_SICHER_WS} mm Sicherungsträger (1~) + ${H_HANDLING} mm Handling = ${H_HANDLING+H_SICHER_WS+H_HANDLING} mm → aufger. ${ceil5(H_HANDLING+H_SICHER_WS+H_HANDLING)} mm`;
-  const srcLS     = `(Platte − Evert. − Klemm. − H.Kanal) ${zp.anordnung === 'nebeneinander' ? '÷ 2 Breite' : '÷ 2 Höhe'}, aufger. 5 mm`;
-  const srcKanalH  = `Festwert ${H_KANAL_H} mm · H. Kabelkanal (Platzhalter), volle Plattenbreite`;
-  const srcKanalLS = `Festwert ${H_KANAL_H} mm · H. Kanal mittig (Platzhalter): Nebeneinander = in Höhenmitte L/S-Zone; Übereinander = L/S-Trennung`;
-  const srcKanalVL = `Festwert ${B_KANAL_V} mm · V. Kanal Links – Leistungsleitungen, an linker Gehäusekante`;
-  const srcKanalVR = `Festwert ${B_KANAL_V} mm · V. Kanal Rechts – Steuerungsleitungen, an rechter Gehäusekante`;
+  const srcLS     = `(Montageplatte − Evert. − Klemm. − H.Kanal) ${zp.anordnung === 'nebeneinander' ? '÷ 2 Breite' : '÷ 2 Höhe'}, aufger. 5 mm`;
+  const srcKanalH  = `Nutzereingabe ${h_kanal_h} mm · H. Kabelkanal, volle Montageplattenbreite`;
+  const srcKanalLS = `Nutzereingabe ${h_kanal_h} mm · H. Kanal mittig: Nebeneinander = in Höhenmitte L/S-Zone; Übereinander = L/S-Trennung`;
+  const srcKanalVL = `Nutzereingabe ${b_kanal_v} mm · V. Kanal Links – Leistungsleitungen, an linker Gehäusekante`;
+  const srcKanalVR = `Nutzereingabe ${b_kanal_v} mm · V. Kanal Rechts – Steuerungsleitungen, an rechter Gehäusekante`;
 
   function srcFor(id) {
     if (id === 'uss')      return srcUss;
@@ -939,10 +954,12 @@ function buildZoneTable(zp) {
     if (id === 'evert')    return srcEvert;
     if (id === 'kanal_h')  return srcKanalH;
     if (id === 'kanal_ls') return srcKanalLS;
-    if (id === 'kanal_ev') return `Festwert ${H_KANAL_H} mm · H. Kanal oberhalb Energieverteilung (Platzhalter), volle Plattenbreite`;
+    if (id === 'kanal_ev') return `Nutzereingabe ${h_kanal_h} mm · H. Kanal oberhalb Energieverteilung, volle Montageplattenbreite`;
     if (id === 'kanal_vl') return srcKanalVL;
     if (id === 'kanal_vr') return srcKanalVR;
-    if (id === 'klemm_l' || id === 'klemm_f' || id === 'klemm_s') return srcKlemm;
+    if (id === 'klemm_f')  return srcKlemmF;
+    if (id === 'klemm_s')  return srcKlemmS;
+    if (id === 'klemm_l')  return srcKlemmL;
     return srcLS;
   }
 
@@ -957,7 +974,8 @@ function buildZoneTable(zp) {
   for (const row of rows) {
     for (const zone of row.zones) {
       const w_mm = Math.round(zone.w * zp.b);
-      const n_te = Math.floor(w_mm / TE_BREITE_MM);
+      const isKanal = zone.id.startsWith('kanal');
+      const n_te = isKanal ? Math.ceil(w_mm / TE_BREITE_MM) : Math.floor(w_mm / TE_BREITE_MM);
       tbl += `<tr>
         <td style="color:var(--tx3);font-size:11px">${idx++}</td>
         <td><span style="display:inline-flex;align-items:center;gap:5px">
@@ -973,8 +991,8 @@ function buildZoneTable(zp) {
   tbl += `</tbody></table>
 <p class="note-line" style="margin-top:6px">
   Mindesthöhen · aufger. 5 mm · Einspeisung + Klemmen immer links ·
-  V. Kanal Links ${B_KANAL_V} mm (Leistungsleit.) · V. Kanal Rechts ${B_KANAL_V} mm (Steuerungsleit.) ·
-  H. Kanäle je ${H_KANAL_H} mm: Klemmen/L/S${zp.anordnung !== 'nebeneinander' ? ` · L/S-Trennung` : ''} · oberhalb Evert. ·
+  V. Kanal Links ${b_kanal_v} mm (Leistungsleit.) · V. Kanal Rechts ${b_kanal_v} mm (Steuerungsleit.) ·
+  H. Kanäle je ${h_kanal_h} mm: Klemmen/L/S${zp.anordnung !== 'nebeneinander' ? ` · L/S-Trennung` : ''} · oberhalb Evert. ·
   KE ${zp.ke_pos === 'oben' ? 'oben → Klemmen oben, Evert. unten' : 'unten → Evert. oben, Klemmen unten'}
 </p>`;
   return tbl;
