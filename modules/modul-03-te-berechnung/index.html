@@ -327,9 +327,24 @@ legend{
       </div>
       <div class="field">
         <div class="lbl">Netzanschluss<span class="var">zone_netztyp</span></div>
-        <select id="zone_netztyp" onchange="saveZoneInputs();calculate()" style="width:130px">
+        <select id="zone_netztyp" onchange="saveZoneInputs();updateZoneVisibility();calculate()" style="width:130px">
           <option value="drehstrom">Drehstrom 3~</option>
           <option value="wechselstrom">Wechselstrom 1~</option>
+        </select>
+      </div>
+      <div id="zone_schiene_row" class="field" style="display:none">
+        <div class="lbl">Schienensystem<span class="var">zone_schiene</span></div>
+        <select id="zone_schiene" onchange="saveZoneInputs();updateZoneVisibility();calculate()" style="width:130px">
+          <option value="ja">Ja</option>
+          <option value="nein">Nein</option>
+        </select>
+      </div>
+      <div id="zone_schiene_pol_row" class="field" style="display:none">
+        <div class="lbl">Polzahl<span class="var">zone_schiene_pol</span></div>
+        <select id="zone_schiene_pol" onchange="saveZoneInputs();calculate()" style="width:130px">
+          <option value="3">3-polig</option>
+          <option value="4">4-polig</option>
+          <option value="5">5-polig</option>
         </select>
       </div>
       <div class="field">
@@ -421,7 +436,9 @@ const TE_BREITE_MM  = 18.0;  // DIN 43880
 const H_KLEMME_STD = 52;   // Klemmenhöhe 4 mm² auf Hutschiene (Phoenix UK 4)
 const H_HANDLING   = 15;   // Kabelhandling je Seite (wie h_handling_ke in M1/M2)
 const H_SICHER_WS  = 75;   // Sicherungshalter Wechselstrom (NH00/D02 + Träger)
-const H_SCHIENE_DS = 150;  // Stromschienensystem Drehstrom Mindesthöhe
+const H_SCHIENE_3POL = 300;  // 60-mm-System, 3-polig, mit NH-Trennern
+const H_SCHIENE_4POL = 350;  // 60-mm-System, 4-polig, mit NH-Trennern
+const H_SCHIENE_5POL = 400;  // 60-mm-System, 5-polig, mit NH-Trennern
 const H_KANAL_H_DEF = 40;  // Horizontaler Kabelkanal – Standardwert (Nutzereingabe überschreibt)
 const B_KANAL_V_DEF = 40;  // Vertikaler Kabelkanal – Standardwert (Nutzereingabe überschreibt)
 
@@ -491,10 +508,12 @@ function loadFromModul() {
 
 // ── Zonenaufteilung speichern / laden ─────────────────────────
 function saveZoneInputs() {
-  localStorage.setItem('m03_zone_modus',     gs('zone_modus'));
-  localStorage.setItem('m03_zone_anordnung', gs('zone_anordnung'));
-  localStorage.setItem('m03_zone_netztyp',   gs('zone_netztyp'));
-  localStorage.setItem('m03_n_felder',       gs('n_felder'));
+  localStorage.setItem('m03_zone_modus',       gs('zone_modus'));
+  localStorage.setItem('m03_zone_anordnung',   gs('zone_anordnung'));
+  localStorage.setItem('m03_zone_netztyp',     gs('zone_netztyp'));
+  localStorage.setItem('m03_zone_schiene',     gs('zone_schiene') || 'ja');
+  localStorage.setItem('m03_zone_schiene_pol', gs('zone_schiene_pol') || '3');
+  localStorage.setItem('m03_n_felder',         gs('n_felder'));
 }
 function loadZoneInputs() {
   const modus = localStorage.getItem('m03_zone_modus');
@@ -503,8 +522,21 @@ function loadZoneInputs() {
   if (anordnung) _v('zone_anordnung', anordnung);
   const netztyp = localStorage.getItem('m03_zone_netztyp');
   if (netztyp) _v('zone_netztyp', netztyp);
+  const schiene = localStorage.getItem('m03_zone_schiene') || 'ja';
+  _v('zone_schiene', schiene);
+  const schienePol = localStorage.getItem('m03_zone_schiene_pol') || '3';
+  _v('zone_schiene_pol', schienePol);
   const nf = localStorage.getItem('m03_n_felder');
   if (nf !== null) _v('n_felder', nf);
+  updateZoneVisibility();
+}
+function updateZoneVisibility() {
+  const netztyp = gs('zone_netztyp');
+  const schiene = gs('zone_schiene') || 'ja';
+  const showSchiene = netztyp === 'drehstrom';
+  const showPol     = showSchiene && schiene === 'ja';
+  document.getElementById('zone_schiene_row').style.display     = showSchiene ? '' : 'none';
+  document.getElementById('zone_schiene_pol_row').style.display = showPol     ? '' : 'none';
 }
 
 // ── Berechnung ────────────────────────────────────────────────
@@ -565,9 +597,18 @@ function calculateZones(b, h) {
   const b_ek = Math.min(n_te_ek * TE_BREITE_MM, b * 0.25); // max 25 % der Plattenbreite
 
   // Mindesthöhen (wie h_ke-Logik: Handling + Bauteil + Handling, aufger. 5 mm)
-  const h_evert = netztyp === 'drehstrom'
-    ? ceil5(H_SCHIENE_DS)                              // 150 mm
-    : ceil5(H_HANDLING + H_SICHER_WS + H_HANDLING);   // ceil5(105) = 105 mm
+  const schiene     = gs('zone_schiene')     || 'ja';
+  const schiene_pol = gs('zone_schiene_pol') || '3';
+  let h_evert;
+  if (netztyp === 'drehstrom') {
+    if (schiene === 'ja') {
+      h_evert = schiene_pol === '5' ? H_SCHIENE_5POL : schiene_pol === '4' ? H_SCHIENE_4POL : H_SCHIENE_3POL;
+    } else {
+      h_evert = ceil5(H_HANDLING + H_SICHER_WS + H_HANDLING); // 105 mm, D0 3~ auf Hutschiene
+    }
+  } else {
+    h_evert = ceil5(H_HANDLING + H_SICHER_WS + H_HANDLING); // 105 mm WS
+  }
   const h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING); // ceil5(82) = 85 mm
 
   // Festzonen: Evert + Klemm + H.Kanal(e); L/S (inkl. ÜSS) füllen den Rest
@@ -640,7 +681,10 @@ function calculateZones(b, h) {
   localStorage.setItem('m03_b_leist',  b_leist);
   localStorage.setItem('m03_b_steuer', b_steuer);
 
-  return { b, h, ke_pos, modus, anordnung, netztyp, n_felder,
+  localStorage.setItem('m03_zone_schiene',     schiene);
+  localStorage.setItem('m03_zone_schiene_pol', schiene_pol);
+
+  return { b, h, ke_pos, modus, anordnung, netztyp, schiene, schiene_pol, n_felder,
            h_kanal_h, b_kanal_v,
            n_te_uss, b_uss, n_te_ek, b_ek, h_evert, h_leist, h_steuer, h_klemm,
            b_leist, b_steuer, b_inner, h_gesamt, h_diff, passt };
@@ -806,7 +850,17 @@ function buildZoneSection(zp) {
   const modLabel = zp.modus === 'je_feld' ? zp.n_felder + ' Felder' : '1 Feld';
   const lsLabel  = zp.modus === 'je_feld' ? '–'
     : (zp.anordnung === 'nebeneinander' ? 'Nebeneinander' : 'Übereinander');
-  const netzLabel = zp.netztyp === 'drehstrom' ? 'Drehstrom 3~' : 'Wechselstrom 1~';
+  let netzLabel;
+  if (zp.netztyp === 'drehstrom') {
+    if (zp.schiene === 'ja') {
+      const polLabel = { '3':'3-polig', '4':'4-polig', '5':'5-polig' }[zp.schiene_pol] || '3-polig';
+      netzLabel = `Drehstrom 3~ · Schiene: ${polLabel}`;
+    } else {
+      netzLabel = 'Drehstrom 3~ · kein Schienensystem';
+    }
+  } else {
+    netzLabel = 'Wechselstrom 1~';
+  }
   const isNebenZ  = zp.anordnung === 'nebeneinander';
   const h_fest    = zp.h_evert + zp.h_klemm + 3 * zp.h_kanal_h;
   const warnHtml  = !zp.passt
@@ -932,16 +986,21 @@ function buildZoneTable(zp) {
   const { h_kanal_h, b_kanal_v } = zp;
   const srcKlemmL  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (4 mm²) + ${H_HANDLING} mm Handling`;
   const srcKlemmF  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (1,5 mm², Ventile/Klappen) + ${H_HANDLING} mm Handling`;
-  const srcKlemmS  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (1 mm², JY(ST)Y) + ${H_HANDLING} mm Handling`;
+  const srcKlemmS  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (1 mm²) + ${H_HANDLING} mm Handling`;
   const srcUss = zp.netztyp === 'drehstrom'
     ? `${TE_USS_DS} TE ÜSS Typ 2 4-pol. + ${TE_SICH_DS} TE D0-Halter L1/L2/L3 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`
     : `${TE_USS_WS} TE ÜSS Typ 2 2-pol. + ${TE_SICH_WS} TE D0-Halter L = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`;
   const srcEinspKl = zp.netztyp === 'drehstrom'
     ? `${TE_KLEMME_ES_DS} TE Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`
     : `${TE_KLEMME_ES_WS} TE Einspeiseklemmen L1/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`;
-  const srcEvert  = zp.netztyp === 'drehstrom'
-    ? `Festwert ${H_SCHIENE_DS} mm (Stromschienensystem Drehstrom 3~), nicht aufgerundet`
-    : `${H_HANDLING} mm Handling + ${H_SICHER_WS} mm Sicherungsträger (1~) + ${H_HANDLING} mm Handling = ${H_HANDLING+H_SICHER_WS+H_HANDLING} mm → aufger. ${ceil5(H_HANDLING+H_SICHER_WS+H_HANDLING)} mm`;
+  let srcEvert;
+  if (zp.netztyp === 'drehstrom' && zp.schiene === 'ja') {
+    const polLabel = { '3':'3-polig', '4':'4-polig', '5':'5-polig' }[zp.schiene_pol] || '3-polig';
+    srcEvert = `60-mm-Schienensystem ${polLabel} mit NH-Trennern · Festwert ${zp.h_evert} mm`;
+  } else {
+    const typLabel = zp.netztyp === 'drehstrom' ? 'D0 3~' : '1~';
+    srcEvert = `${H_HANDLING} mm Handling + ${H_SICHER_WS} mm Sicherungsträger (${typLabel}) + ${H_HANDLING} mm Handling = ${H_HANDLING+H_SICHER_WS+H_HANDLING} mm → aufger. ${ceil5(H_HANDLING+H_SICHER_WS+H_HANDLING)} mm`;
+  }
   const srcLS     = `(Montageplatte − Evert. − Klemm. − H.Kanal) ${zp.anordnung === 'nebeneinander' ? '÷ 2 Breite' : '÷ 2 Höhe'}, aufger. 5 mm`;
   const srcKanalH  = `Nutzereingabe ${h_kanal_h} mm · H. Kabelkanal, volle Montageplattenbreite`;
   const srcKanalLS = `Nutzereingabe ${h_kanal_h} mm · H. Kanal mittig: Nebeneinander = in Höhenmitte L/S-Zone; Übereinander = L/S-Trennung`;
