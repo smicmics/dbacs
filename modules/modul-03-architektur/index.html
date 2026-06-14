@@ -193,13 +193,15 @@ legend{
 
 /* ── Vollständiges Layout Druck ── */
 body.print-full .layout,
-body.print-full .site-footer { display:none !important; }
-body.print-full #full-layout-container { display:block !important; padding:12px 0; }
+body.print-full .site-footer,
+body.print-full header { display:none !important; }
+body.print-full #full-layout-container { display:block !important; padding:0; }
 @media print {
+  body.print-full header,
   body.print-full .site-footer { display:none !important; }
   body.print-full .layout { display:none !important; }
   body.print-full #full-layout-container { display:block !important; padding:0; }
-  body.print-full #full-layout-container svg { width:100% !important; max-width:none !important; height:auto !important; max-height:170mm !important; }
+  body.print-full #full-layout-container svg { width:100% !important; max-width:none !important; height:auto !important; }
 }
 
 /* ── Nav-Button ── */
@@ -1153,72 +1155,107 @@ function buildFullLayoutSVG() {
   const pfx = typ === 'wandschrank' ? 'm01' : 'm02';
 
   // Kabinett-Daten aus localStorage (von M1/M2 geschrieben)
-  const B     = +(localStorage.getItem(pfx + '_B')     || 0);
-  const H     = +(localStorage.getItem(pfx + '_H')     || 0);
-  const mp_b  = +(localStorage.getItem(pfx + '_mp_b')  || 0);
-  const mp_h  = +(localStorage.getItem(pfx + '_mp_h')  || 0);
-  const b_abst= +(localStorage.getItem(pfx + '_b_abst')|| 0);
-  const h_abst= +(localStorage.getItem(pfx + '_h_abst')|| 0);
-  const h_ke  = +(localStorage.getItem(pfx + '_h_ke_mm')            || 0);
-  const h_hand= +(localStorage.getItem(pfx + '_h_handling_ke_mm')   || 0);
-  const h_bieg= +(localStorage.getItem(pfx + '_h_kabel_bieg_mm')    || 0);
-  const h_zug = +(localStorage.getItem(pfx + '_h_zug_ke_mm')        || 0);
-  const h_hz  = +(localStorage.getItem(pfx + '_h_handling_zug_ke_mm')|| 0);
-  const h_kan = +(localStorage.getItem(pfx + '_h_kanal_ke_mm')      || 0);
+  const B      = +(localStorage.getItem(pfx + '_B')                    || 0);
+  const H      = +(localStorage.getItem(pfx + '_H')                    || 0);
+  const mp_b   = +(localStorage.getItem(pfx + '_mp_b')                 || 0);
+  const mp_h   = +(localStorage.getItem(pfx + '_mp_h')                 || 0);
+  const b_abst = +(localStorage.getItem(pfx + '_b_abst')               || 0);
+  const h_abst = +(localStorage.getItem(pfx + '_h_abst')               || 0);
+  const h_ke   = +(localStorage.getItem(pfx + '_h_ke_mm')              || 0);
+  const h_hand = +(localStorage.getItem(pfx + '_h_handling_ke_mm')     || 0);
+  const h_bieg = +(localStorage.getItem(pfx + '_h_kabel_bieg_mm')      || 0);
+  const h_zug  = +(localStorage.getItem(pfx + '_h_zug_ke_mm')          || 0);
+  const h_hz   = +(localStorage.getItem(pfx + '_h_handling_zug_ke_mm') || 0);
+  const h_kan  = +(localStorage.getItem(pfx + '_h_kanal_ke_mm')        || 0);
   const kanal_aktiv = localStorage.getItem(pfx + '_kanal_aktiv') === '1';
   const zug_aktiv   = localStorage.getItem(pfx + '_zug_aktiv')   === '1';
   const ke_pos      = localStorage.getItem(pfx + '_ke_pos') || 'oben';
 
+  // Sockel (nur Standschrank)
+  const sockel_aktiv = typ === 'standschrank' && localStorage.getItem('m02_sockel_aktiv') === '1';
+  const h_sockel     = sockel_aktiv ? +(localStorage.getItem('m02_h_sockel_mm') || 0) : 0;
+
   if (!B || !H) return '<p style="color:#666;padding:20px">Keine Schrankdaten vorhanden – bitte zuerst Modul 1 oder 2 berechnen.</p>';
 
-  // M3-Zonen: Höhe = mp_h − h_ke (exakter Anschluss ohne Rundungslücke)
-  const b_mb = g('b_mplatte_mbereich_mm');
+  // M3-Zonen
+  const b_mb        = g('b_mplatte_mbereich_mm');
   const h_mb_layout = mp_h - h_ke;
   const zp   = calculateZones(b_mb, h_mb_layout);
   const rows = buildLayout(zp);
 
-  // SVG-Skalierung: Gehäuse (B×H) in feste Höhe einpassen
-  const SVG_H = 560;
-  const sc    = SVG_H / H;
-  const sw    = Math.round(B * sc);
-  const PL = 50, PT = 55, PR = 180, PB = 80;
-  const VW = PL + sw + PR;
-  const VH = PT + SVG_H + PB;
+  // Projektdaten
+  const projName     = localStorage.getItem('proj-name')     || '';
+  const projNr       = localStorage.getItem('proj-nummer')   || '';
+  const projAsp      = localStorage.getItem('proj-asp')      || '';
+  const projEngineer = localStorage.getItem('proj-engineer') || '';
 
-  const sx = PL, sy = PT;
-  const mx = sx + Math.round(b_abst * sc);
-  const my = sy + Math.round(h_abst * sc);
+  // SVG-Dimensionierung – landscape-freundlich (VH/VW ≤ 0.69 für A4 quer)
+  const SVG_H   = 440;
+  const sc      = SVG_H / H;
+  const sw      = Math.round(B * sc);
+  const sock_px = sockel_aktiv ? Math.round(h_sockel * sc) : 0;
+
+  const PH = 36;                              // Projektkopf-Streifen
+  const PL = 50, PT = 36, PR = 180, PB = 68;
+  const VW  = Math.max(PL + sw + PR, 950);   // Mindestbreite für Querformat
+  const VH  = PH + PT + SVG_H + sock_px + PB;
+
+  const sx  = PL;
+  const sy  = PH + PT;   // Schrankoberseite
+  const mx  = sx + Math.round(b_abst * sc);
+  const my  = sy + Math.round(h_abst * sc);
   const mpw = Math.round(mp_b * sc);
   const mph = Math.round(mp_h * sc);
 
   const KE_COLS = {
-    handling: '#2DBD8E',
-    bieg:     '#C8720E',
-    zug:      '#D4A84B',
-    hz:       '#4BBECA',
-    kanal:    '#9A94E8',
+    handling: '#2DBD8E', bieg: '#C8720E',
+    zug: '#D4A84B',      hz:   '#4BBECA', kanal: '#9A94E8',
   };
 
-  // Maßketten-Spalten: Zone (eng rechts), KE (Mitte), Gesamt-H (weit rechts)
-  const dimX  = sx + sw + 6;   // Zonen-Maßketten Tick
-  const lblX  = sx + sw + 14;  // Zonen-Maßketten Label
-  const keX   = sx + sw + 68;  // KE-Maßkette Tick
-  const keLblX= sx + sw + 76;  // KE-Maßkette Label
-  const ox    = sx + sw + 132; // H-Gesamtmaßkette Tick
+  const dimX = sx + sw + 6;    // Zonen/KE/Sockel-Maßketten-Tick
+  const lblX = sx + sw + 14;   // Zonen/KE/Sockel-Label
+  const ox   = sx + sw + 90;   // H-Gesamt-Maßkette
 
-  let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
-    style="width:100%;max-width:${VW}px;display:block;background:#FDFCF8;border-radius:4px">`;
+  let s = '';
 
-  // Schrankrahmen
+  // ── Projektkopf-Streifen ─────────────────────────────────────
+  s += `<rect x="0" y="0" width="${VW}" height="${PH}" fill="#EFEFEC"/>`;
+  s += `<line x1="0" y1="${PH}" x2="${VW}" y2="${PH}" stroke="#BBBBBB" stroke-width="0.8"/>`;
+  const typLabel = typ === 'wandschrank' ? 'Wandschrank' : 'Standschrank';
+  s += `<text x="${PL}" y="12" font-size="9" font-weight="700" fill="#333"
+    font-family="system-ui,sans-serif">DBACS · GA-Planung · Modul 3 · Vollständiges Layout</text>`;
+  s += `<text x="${PL}" y="27" font-size="8.5" fill="#555"
+    font-family="system-ui,sans-serif">${typLabel} · ${B} × ${H} mm${sockel_aktiv ? ` · Sockel ${h_sockel} mm` : ''}</text>`;
+  const projParts = [];
+  if (projName)     projParts.push(`Projekt: ${projName}`);
+  if (projNr)       projParts.push(`Nr.: ${projNr}`);
+  if (projAsp)      projParts.push(`ASP: ${projAsp}`);
+  if (projEngineer) projParts.push(`Bearb.: ${projEngineer}`);
+  if (projParts.length)
+    s += `<text x="${VW - 8}" y="${PH/2}" dominant-baseline="middle" text-anchor="end"
+      font-size="8" fill="#444" font-family="system-ui,sans-serif">${projParts.join('  ·  ')}</text>`;
+
+  // ── Schrankrahmen ─────────────────────────────────────────────
   s += `<rect x="${sx}" y="${sy}" width="${sw}" height="${SVG_H}"
     fill="#FDFCF8" stroke="#555" stroke-width="2"/>`;
 
-  // Montageplatte
+  // ── Sockel (Standschrank, hellgrau) ──────────────────────────
+  if (sockel_aktiv && sock_px > 0) {
+    const sockY = sy + SVG_H;
+    s += `<rect x="${sx}" y="${sockY}" width="${sw}" height="${sock_px}"
+      fill="#D4D4D0" stroke="#888" stroke-width="1.2"/>`;
+    s += `<line x1="${dimX}" y1="${sockY}" x2="${dimX+4}" y2="${sockY}" stroke="#3366BB" stroke-width="0.7"/>`;
+    s += `<line x1="${dimX+2}" y1="${sockY}" x2="${dimX+2}" y2="${sockY+sock_px}" stroke="#3366BB" stroke-width="0.7"/>`;
+    s += `<line x1="${dimX}" y1="${sockY+sock_px}" x2="${dimX+4}" y2="${sockY+sock_px}" stroke="#3366BB" stroke-width="0.7"/>`;
+    s += `<text x="${lblX}" y="${sockY+sock_px/2}" dominant-baseline="middle"
+      font-size="7.5" fill="#3366BB" font-family="'Courier New',monospace">${h_sockel} mm</text>`;
+  }
+
+  // ── Montageplatte ─────────────────────────────────────────────
   s += `<rect x="${mx}" y="${my}" width="${mpw}" height="${mph}"
     fill="none" stroke="#999" stroke-width="0.8" stroke-dasharray="3,2"/>`;
 
-  // ── KE-Zonen auf Montageplatte ────────────────────────────────
-  // KE-Zonen stapeln ab Gehäuse-Innenwand (h_abst) in Richtung Montageplatte
+  // ── KE-Zonen ─────────────────────────────────────────────────
   const keZones = [
     { h: h_hand, col: KE_COLS.handling, lbl: '' },
     { h: h_bieg, col: KE_COLS.bieg,     lbl: 'Kabeleinführungszone' },
@@ -1231,14 +1268,10 @@ function buildFullLayoutSVG() {
     keZones.push({ h: h_kan, col: KE_COLS.kanal, lbl: 'Kabelkanal Einführungszone' });
   }
 
-  // m3_px: Pixel-Höhe des Montagebereichs (mp_h − h_ke), KE füllt den Rest
   const m3_px = Math.round(h_mb_layout * sc);
-  const ke_px = mph - m3_px;  // exakter Anschluss ohne Rundungslücke
+  const ke_px = mph - m3_px;
 
-  // KE unten: Reihenfolge umkehren → Handling liegt unten (nah am Kabeleintritt)
   const zonesOrdered = ke_pos === 'unten' ? [...keZones].reverse() : keZones;
-
-  // KE-Start: oben → my, unten → my + m3_px
   let keY = ke_pos === 'oben' ? my : my + m3_px;
   for (const z of zonesOrdered) {
     const zh = Math.round(z.h * sc);
@@ -1251,7 +1284,7 @@ function buildFullLayoutSVG() {
     keY += zh;
   }
 
-  // ── M3-Zonen auf Montageplatte ────────────────────────────────
+  // ── M3-Zonen ─────────────────────────────────────────────────
   let zoneY = ke_pos === 'oben' ? my + ke_px : my;
   for (const row of rows) {
     const rh = Math.round(row.h_mm * sc);
@@ -1264,7 +1297,6 @@ function buildFullLayoutSVG() {
         s += `<text x="${zx+4}" y="${zoneY+rh/2}" dominant-baseline="middle"
           font-size="7" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
     }
-    // Maßlinie rechts
     s += `<line x1="${dimX}" y1="${zoneY}" x2="${dimX+4}" y2="${zoneY}" stroke="#3366BB" stroke-width="0.7"/>`;
     s += `<line x1="${dimX+2}" y1="${zoneY}" x2="${dimX+2}" y2="${zoneY+rh}" stroke="#3366BB" stroke-width="0.7"/>`;
     s += `<line x1="${dimX}" y1="${zoneY+rh}" x2="${dimX+4}" y2="${zoneY+rh}" stroke="#3366BB" stroke-width="0.7"/>`;
@@ -1274,7 +1306,7 @@ function buildFullLayoutSVG() {
     zoneY += rh;
   }
 
-  // ── Maßlinie KE-Zone (gleiche Spalte wie Zonen-Maßketten) ───
+  // ── KE-Maßkette (gleiche Spalte wie Zonen) ───────────────────
   const keStartY = ke_pos === 'oben' ? my : my + m3_px;
   s += `<line x1="${dimX}" y1="${keStartY}" x2="${dimX+4}" y2="${keStartY}" stroke="#3366BB" stroke-width="0.7"/>`;
   s += `<line x1="${dimX+2}" y1="${keStartY}" x2="${dimX+2}" y2="${keStartY+ke_px}" stroke="#3366BB" stroke-width="0.7"/>`;
@@ -1282,15 +1314,15 @@ function buildFullLayoutSVG() {
   s += `<text x="${lblX}" y="${keStartY+ke_px/2}" dominant-baseline="middle"
     font-size="8" fill="#3366BB" font-family="'Courier New',monospace">${h_ke} mm</text>`;
 
-  // ── Gesamthöhe-Maßlinie ───────────────────────────────────────
+  // ── H-Gesamtmaßkette (Schrank) ───────────────────────────────
   s += `<line x1="${ox}" y1="${sy}" x2="${ox+4}" y2="${sy}" stroke="#3366BB" stroke-width="0.9"/>`;
   s += `<line x1="${ox+2}" y1="${sy}" x2="${ox+2}" y2="${sy+SVG_H}" stroke="#3366BB" stroke-width="0.9"/>`;
   s += `<line x1="${ox}" y1="${sy+SVG_H}" x2="${ox+4}" y2="${sy+SVG_H}" stroke="#3366BB" stroke-width="0.9"/>`;
   s += `<text x="${ox+7}" y="${sy+SVG_H/2}" dominant-baseline="middle"
     font-size="8.5" fill="#3366BB" font-weight="600" font-family="'Courier New',monospace">${H} mm</text>`;
 
-  // ── Gesamtbreite-Maßlinie ─────────────────────────────────────
-  const byLine = sy + SVG_H + 10;
+  // ── B-Maßkette ────────────────────────────────────────────────
+  const byLine = sy + SVG_H + sock_px + 10;
   s += `<line x1="${sx}" y1="${byLine}" x2="${sx}" y2="${byLine-4}" stroke="#3366BB" stroke-width="0.9"/>`;
   s += `<line x1="${sx}" y1="${byLine}" x2="${sx+sw}" y2="${byLine}" stroke="#3366BB" stroke-width="0.9"/>`;
   s += `<line x1="${sx+sw}" y1="${byLine}" x2="${sx+sw}" y2="${byLine-4}" stroke="#3366BB" stroke-width="0.9"/>`;
@@ -1298,28 +1330,25 @@ function buildFullLayoutSVG() {
     font-size="8.5" fill="#3366BB" font-weight="600" font-family="'Courier New',monospace">${B} mm</text>`;
 
   // ── Kabeleinführungs-Pfeil ────────────────────────────────────
-  // Pfeil vollständig oberhalb (KE oben) bzw. unterhalb der B-Maßkette (KE unten)
   const arrowCx = sx + sw / 2;
   if (ke_pos === 'oben') {
-    // Pfeil oberhalb Schrank, Spitze → sy (Schrankoberseite), mit Abstand
-    const tipY  = sy - 16;
-    const baseY = tipY - 20;
+    const tipY  = sy - 14;
+    const baseY = tipY - 18;
     s += `<line x1="${arrowCx}" y1="${baseY}" x2="${arrowCx}" y2="${tipY}"
       stroke="#2DBD8E" stroke-width="2" marker-end="url(#arrowhead)"/>`;
-    s += `<text x="${arrowCx+6}" y="${baseY+10}" dominant-baseline="middle"
+    s += `<text x="${arrowCx+6}" y="${baseY+9}" dominant-baseline="middle"
       font-size="9" fill="#2DBD8E" font-family="system-ui,sans-serif">Kabeleinführung</text>`;
   } else {
-    // Pfeil unterhalb B-Maßkette, Spitze zeigt auf byLine+22 (Schrank-Richtung)
-    const tipY  = byLine + 24;
-    const baseY = tipY + 20;
+    const tipY  = byLine + 16;
+    const baseY = tipY + 15;
     s += `<line x1="${arrowCx}" y1="${baseY}" x2="${arrowCx}" y2="${tipY}"
       stroke="#2DBD8E" stroke-width="2" marker-end="url(#arrowhead-up)"/>`;
-    s += `<text x="${arrowCx+6}" y="${baseY - 10}" dominant-baseline="middle"
+    s += `<text x="${arrowCx+6}" y="${baseY-8}" dominant-baseline="middle"
       font-size="9" fill="#2DBD8E" font-family="system-ui,sans-serif">Kabeleinführung</text>`;
   }
 
-  // ── Pfeilspitzen (defs) ───────────────────────────────────────
-  s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
+  // ── SVG-Wrapper ───────────────────────────────────────────────
+  return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
     style="width:100%;max-width:${VW}px;display:block;background:#FDFCF8;border-radius:4px">
     <defs>
       <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
@@ -1328,10 +1357,7 @@ function buildFullLayoutSVG() {
       <marker id="arrowhead-up" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
         <path d="M0,0 L6,3 L0,6 Z" fill="#2DBD8E"/>
       </marker>
-    </defs>` + s.replace(/^<svg[^>]*>/, '');
-
-  s += `</svg>`;
-  return s;
+    </defs>${s}</svg>`;
 }
 
 // ── Init ──────────────────────────────────────────────────────
