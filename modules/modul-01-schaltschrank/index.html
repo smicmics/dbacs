@@ -935,7 +935,11 @@ loadProjFields();
 const M1_INPUT_FIELDS = ['ke_pos','n_adern','querschnitt','d_max',
   'kanal_aktiv','h_kanal','zug_aktiv','fs_dim','fs_var','fs_zone'];
 
+// Speicherung erst aktiv nachdem gespeicherte Werte geladen wurden
+let _m1SaveReady = false;
+
 function saveInputs() {
+  if (!_m1SaveReady) return;
   M1_INPUT_FIELDS.forEach(id => localStorage.setItem('m01_si_' + id, gs(id)));
   localStorage.setItem('m01_si_preset', gs('preset_schrank'));
 }
@@ -952,6 +956,7 @@ function loadSavedInputs() {
     const v = localStorage.getItem(key); if (v) _v(id, v);
   });
   document.getElementById('h_kanal').disabled = gs('kanal_aktiv') !== 'ja';
+  _m1SaveReady = true;
   lookupKabel();
   calculate();
 }
