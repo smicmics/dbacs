@@ -424,8 +424,9 @@ const TE_SICH_WS  = 2;   // Vorsicherung D0, 1× breiter Halter (L-Leiter), 2 TE
 // Drehstrom 3~: ÜSS 4-polig Typ 2 (z. B. Dehn DG S 4P 275, 4× 1 TE) + D0-Halter L1/L2/L3 (3× 1 TE)
 const TE_USS_DS   = 4;   // ÜSS Typ 2, 4-polig
 const TE_SICH_DS  = 3;   // Vorsicherungen D0, 3× schmaler Halter (L1/L2/L3, N ohne Sich.), 3 TE
-// Einspeiseklemmen: teilen sich die Klemmenzeile
-const TE_KLEMME_ES = 5;  // L1/L2/L3/N/PE – Platzhalter, später nach Kabelquerschnitt
+// Einspeiseklemmen: teilen sich die Klemmenzeile, netztyp-abhängig
+const TE_KLEMME_ES_DS = 5;  // Drehstrom:    L1/L2/L3/N/PE
+const TE_KLEMME_ES_WS = 3;  // Wechselstrom: L1/N/PE
 
 function ceil5(v) { return Math.ceil(Math.max(0, v) / 5) * 5; }
 
@@ -550,7 +551,8 @@ function calculateZones(b, h) {
   const b_uss    = Math.min(n_te_uss * TE_BREITE_MM, b * 0.4);  // max 40 % der Plattenbreite
 
   // Einspeiseklemmen → integriert in Klemmenzeile, kein eigener Höhenbedarf
-  const b_ek = Math.min(TE_KLEMME_ES * TE_BREITE_MM, b * 0.25); // max 25 % der Plattenbreite
+  const n_te_ek = netztyp === 'drehstrom' ? TE_KLEMME_ES_DS : TE_KLEMME_ES_WS;
+  const b_ek = Math.min(n_te_ek * TE_BREITE_MM, b * 0.25); // max 25 % der Plattenbreite
 
   // Mindesthöhen (wie h_ke-Logik: Handling + Bauteil + Handling, aufger. 5 mm)
   const h_evert = netztyp === 'drehstrom'
@@ -629,7 +631,7 @@ function calculateZones(b, h) {
   localStorage.setItem('m03_b_steuer', b_steuer);
 
   return { b, h, ke_pos, modus, anordnung, netztyp, n_felder,
-           n_te_uss, b_uss, b_ek, h_evert, h_leist, h_steuer, h_klemm,
+           n_te_uss, b_uss, n_te_ek, b_ek, h_evert, h_leist, h_steuer, h_klemm,
            b_leist, b_steuer, b_inner, h_gesamt, h_diff, passt };
 }
 
@@ -919,7 +921,9 @@ function buildZoneTable(zp) {
   const srcUss = zp.netztyp === 'drehstrom'
     ? `${TE_USS_DS} TE ÜSS Typ 2 4-pol. (z. B. Dehn DG S 4P 275) + ${TE_SICH_DS} TE D0-Halter L1/L2/L3 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`
     : `${TE_USS_WS} TE ÜSS Typ 2 2-pol. (z. B. Dehn DG S 2P 275) + ${TE_SICH_WS} TE D0-Halter L = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`;
-  const srcEinspKl = `${TE_KLEMME_ES} TE Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`;
+  const srcEinspKl = zp.netztyp === 'drehstrom'
+    ? `${TE_KLEMME_ES_DS} TE Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`
+    : `${TE_KLEMME_ES_WS} TE Einspeiseklemmen L1/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`;
   const srcEvert  = zp.netztyp === 'drehstrom'
     ? `Festwert ${H_SCHIENE_DS} mm (Stromschienensystem Drehstrom 3~), nicht aufgerundet`
     : `${H_HANDLING} mm Handling + ${H_SICHER_WS} mm Sicherungsträger (1~) + ${H_HANDLING} mm Handling = ${H_HANDLING+H_SICHER_WS+H_HANDLING} mm → aufger. ${ceil5(H_HANDLING+H_SICHER_WS+H_HANDLING)} mm`;
