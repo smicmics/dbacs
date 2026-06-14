@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 14. Juni 2026 – Session 15
+**Stand:** 14. Juni 2026 – Session 16
 
 ---
 
@@ -96,6 +96,8 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 **localStorage-Ausgabe**
 - `m01_b/h_mplatte_mbereich_wandschrank_mm` → Modul 3
 - `m01_ke_pos` → Modul 3
+- `m01_h_ke_mm`, `m01_h_handling_ke_mm`, `m01_h_kabel_bieg_mm`, `m01_h_zug_ke_mm`, `m01_h_handling_zug_ke_mm`, `m01_h_kanal_ke_mm` → Modul 3 (Vollständiges Layout)
+- `m01_kanal_aktiv`, `m01_zug_aktiv`, `m01_B`, `m01_H`, `m01_mp_b`, `m01_mp_h`, `m01_b_abst`, `m01_h_abst` → Modul 3 (Vollständiges Layout)
 
 ---
 
@@ -119,6 +121,8 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 **localStorage-Ausgabe**
 - `m02_b/h_mplatte_mbereich_standschrank_mm` → Modul 3
 - `m02_ke_pos` → Modul 3
+- `m02_h_ke_mm`, `m02_h_handling_ke_mm`, `m02_h_kabel_bieg_mm`, `m02_h_zug_ke_mm`, `m02_h_handling_zug_ke_mm`, `m02_h_kanal_ke_mm` → Modul 3 (Vollständiges Layout)
+- `m02_kanal_aktiv`, `m02_zug_aktiv`, `m02_B`, `m02_H`, `m02_mp_b`, `m02_mp_h`, `m02_b_abst`, `m02_h_abst` → Modul 3 (Vollständiges Layout)
 
 ---
 
@@ -234,6 +238,24 @@ m03_zone_schiene, m03_zone_schiene_pol
 m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03_b_steuer
 ```
 
+#### Druckbutton „Vollständiges Layout drucken" (Session 16)
+
+**Funktion:** `buildFullLayoutSVG()` – erzeugt kombiniertes SVG des vollständigen Schranks
+
+**Datenquellen:**
+- `schrank_typ` → Präfix `m01` (Wandschrank) oder `m02` (Standschrank)
+- localStorage mXX_*: Cabinet-Maße (B, H, mp_b, mp_h, b_abst, h_abst) + alle KE-Zonen
+- `calculateZones(b_mb, h_mb)` + `buildLayout(zp)` → M3-Zonen
+
+**SVG-Inhalt:**
+- Schrankrahmen (B×H), Montageplatte (gestrichelt)
+- KE-Zonen in M1/M2-Farben (Handling grün, Biegeradius orange, Zug amber, Handling_Zug teal, Kanal lila)
+- M3-Zonen (Klemmen, Kanäle, L/S, Evert) – gleiche Farben wie buildZoneSVG()
+- Maßlinien rechts (je M3-Zone) + KE-Gesamtmaß + H/B-Außenmaße
+- Kabeleinführungs-Pfeil außen (grün #2DBD8E), Richtung je ke_pos
+
+**Print-Klasse:** `body.print-full` blendet `.layout` + `.site-footer` aus, zeigt `#full-layout-container`
+
 ---
 
 ### Datenbanken
@@ -268,9 +290,7 @@ m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03
 5. Mehrere Felder + Nebeneinander: aktuell disabled; Konzept für feldweise Nebeneinander-Anordnung
 
 **Nächste Schritte (Prio hoch)**
-6. Modul 3 Zonenaufteilung für **Standschrank** validieren (Übertrag Session 15 → 16)
-   - Wandschrank-Logik gilt analog; KE-Richtung und Sockel unterscheiden sich
-   - Schienensystem-Auswahl gilt genauso für Standschrank
+6. Modul 3 „Vollständiges Layout drucken" im Browser verifizieren (Wandschrank + Standschrank, beide ke_pos)
 7. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
 8. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
 9. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
