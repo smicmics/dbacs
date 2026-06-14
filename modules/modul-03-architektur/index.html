@@ -805,9 +805,9 @@ function buildLayout(zp) {
     // KE unten: Evert oben; bei useEvKanal H.Kanäle beidseitig, sonst direkt an L/S
     rows = useEvKanal ? [R.kanal_ev2, R.evert, R.kanal_ev] : [R.evert, R.kanal_ev];
     if (isNeben) {
-      rows.push(R.leist_neben_b, R.kanal_ls, R.leist_neben_a);
+      rows.push(R.leist_neben_a, R.kanal_ls, R.leist_neben_b);
     } else {
-      rows.push(R.steuer_ueber, R.kanal_ls, R.leist_ueber);
+      rows.push(R.leist_ueber, R.kanal_ls, R.steuer_ueber);
     }
     rows.push(R.kanal_h, R.klemm);
   } else {
@@ -1137,20 +1137,19 @@ function buildFullLayoutSVG() {
 
   if (!B || !H) return '<p style="color:#666;padding:20px">Keine Schrankdaten vorhanden – bitte zuerst Modul 1 oder 2 berechnen.</p>';
 
-  // M3-Zonen
+  // M3-Zonen: Höhe = mp_h − h_ke (exakter Anschluss ohne Rundungslücke)
   const b_mb = g('b_mplatte_mbereich_mm');
-  const h_mb = g('h_mplatte_mbereich_mm');
-  const zp   = calculateZones(b_mb, h_mb);
+  const h_mb_layout = mp_h - h_ke;
+  const zp   = calculateZones(b_mb, h_mb_layout);
   const rows = buildLayout(zp);
 
   // SVG-Skalierung: Gehäuse (B×H) in feste Höhe einpassen
   const SVG_H = 560;
   const sc    = SVG_H / H;
   const sw    = Math.round(B * sc);
-  const PL = 50, PT = 50, PR = 120, PB = 50;
-  const ARROW = 30;  // Pfeil-Länge außen
+  const PL = 50, PT = 55, PR = 180, PB = 80;
   const VW = PL + sw + PR;
-  const VH = PT + SVG_H + PB + (ke_pos === 'oben' ? ARROW : 0) + (ke_pos === 'unten' ? ARROW : 0);
+  const VH = PT + SVG_H + PB;
 
   const sx = PL, sy = PT;
   const mx = sx + Math.round(b_abst * sc);
@@ -1166,8 +1165,12 @@ function buildFullLayoutSVG() {
     kanal:    '#9A94E8',
   };
 
-  const dimX = sx + sw + 6;
-  const lblX = sx + sw + 14;
+  // Maßketten-Spalten: Zone (eng rechts), KE (Mitte), Gesamt-H (weit rechts)
+  const dimX  = sx + sw + 6;   // Zonen-Maßketten Tick
+  const lblX  = sx + sw + 14;  // Zonen-Maßketten Label
+  const keX   = sx + sw + 68;  // KE-Maßkette Tick
+  const keLblX= sx + sw + 76;  // KE-Maßkette Label
+  const ox    = sx + sw + 132; // H-Gesamtmaßkette Tick
 
   let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
     style="width:100%;max-width:${VW}px;display:block;background:#FDFCF8;border-radius:4px">`;
@@ -1194,9 +1197,12 @@ function buildFullLayoutSVG() {
     keZones.push({ h: h_kan, col: KE_COLS.kanal, lbl: 'Kabelkanal' });
   }
 
-  // KE-Start: oben = bei my (Montageplatte Oberkante), unten = my+mph-h_ke*sc (Unterkante)
-  const ke_px = Math.round(h_ke * sc);
-  let keY = ke_pos === 'oben' ? my : my + mph - ke_px;
+  // m3_px: Pixel-Höhe des Montagebereichs (mp_h − h_ke), KE füllt den Rest
+  const m3_px = Math.round(h_mb_layout * sc);
+  const ke_px = mph - m3_px;  // exakter Anschluss ohne Rundungslücke
+
+  // KE-Start: oben → my, unten → my + m3_px
+  let keY = ke_pos === 'oben' ? my : my + m3_px;
   for (const z of keZones) {
     const zh = Math.round(z.h * sc);
     if (zh < 1) continue;
@@ -1209,7 +1215,6 @@ function buildFullLayoutSVG() {
   }
 
   // ── M3-Zonen auf Montageplatte ────────────────────────────────
-  // M3-Zonen füllen den Montagebereich (h_mb ab ke-Ende oder Platte-Anfang)
   let zoneY = ke_pos === 'oben' ? my + ke_px : my;
   for (const row of rows) {
     const rh = Math.round(row.h_mm * sc);
@@ -1233,16 +1238,14 @@ function buildFullLayoutSVG() {
   }
 
   // ── Maßlinie KE-Zone ─────────────────────────────────────────
-  const keStartY = ke_pos === 'oben' ? my : my + mph - ke_px;
-  const keX = dimX + 50;
+  const keStartY = ke_pos === 'oben' ? my : my + m3_px;
   s += `<line x1="${keX}" y1="${keStartY}" x2="${keX+4}" y2="${keStartY}" stroke="#3366BB" stroke-width="0.7"/>`;
   s += `<line x1="${keX+2}" y1="${keStartY}" x2="${keX+2}" y2="${keStartY+ke_px}" stroke="#3366BB" stroke-width="0.7"/>`;
   s += `<line x1="${keX}" y1="${keStartY+ke_px}" x2="${keX+4}" y2="${keStartY+ke_px}" stroke="#3366BB" stroke-width="0.7"/>`;
-  s += `<text x="${keX+7}" y="${keStartY+ke_px/2}" dominant-baseline="middle"
+  s += `<text x="${keLblX}" y="${keStartY+ke_px/2}" dominant-baseline="middle"
     font-size="7.5" fill="#3366BB" font-family="'Courier New',monospace">h_ke: ${h_ke} mm</text>`;
 
   // ── Gesamthöhe-Maßlinie ───────────────────────────────────────
-  const ox = sx + sw + 82;
   s += `<line x1="${ox}" y1="${sy}" x2="${ox+4}" y2="${sy}" stroke="#3366BB" stroke-width="0.9"/>`;
   s += `<line x1="${ox+2}" y1="${sy}" x2="${ox+2}" y2="${sy+SVG_H}" stroke="#3366BB" stroke-width="0.9"/>`;
   s += `<line x1="${ox}" y1="${sy+SVG_H}" x2="${ox+4}" y2="${sy+SVG_H}" stroke="#3366BB" stroke-width="0.9"/>`;
@@ -1258,20 +1261,23 @@ function buildFullLayoutSVG() {
     font-size="8.5" fill="#3366BB" font-weight="600" font-family="'Courier New',monospace">${B} mm</text>`;
 
   // ── Kabeleinführungs-Pfeil ────────────────────────────────────
+  // Pfeil vollständig oberhalb (KE oben) bzw. unterhalb der B-Maßkette (KE unten)
   const arrowCx = sx + sw / 2;
   if (ke_pos === 'oben') {
-    // Pfeil von oben nach unten zeigend, oberhalb Schrank
-    const ay = sy - ARROW - 5;
-    s += `<line x1="${arrowCx}" y1="${ay}" x2="${arrowCx}" y2="${sy-2}"
+    // Pfeil oberhalb Schrank, Spitze → sy (Schrankoberseite)
+    const tipY  = sy - 4;
+    const baseY = tipY - 20;
+    s += `<line x1="${arrowCx}" y1="${baseY}" x2="${arrowCx}" y2="${tipY}"
       stroke="#2DBD8E" stroke-width="2" marker-end="url(#arrowhead)"/>`;
-    s += `<text x="${arrowCx+6}" y="${ay+ARROW/2}" dominant-baseline="middle"
+    s += `<text x="${arrowCx+6}" y="${baseY+10}" dominant-baseline="middle"
       font-size="9" fill="#2DBD8E" font-family="system-ui,sans-serif">Kabeleinführung</text>`;
   } else {
-    // Pfeil von unten nach oben zeigend, unterhalb Schrank
-    const ay = sy + SVG_H + ARROW + 15;
-    s += `<line x1="${arrowCx}" y1="${ay}" x2="${arrowCx}" y2="${sy+SVG_H+2}"
+    // Pfeil unterhalb B-Maßkette, Spitze zeigt auf byLine+22 (Schrank-Richtung)
+    const tipY  = byLine + 24;
+    const baseY = tipY + 20;
+    s += `<line x1="${arrowCx}" y1="${baseY}" x2="${arrowCx}" y2="${tipY}"
       stroke="#2DBD8E" stroke-width="2" marker-end="url(#arrowhead-up)"/>`;
-    s += `<text x="${arrowCx+6}" y="${sy+SVG_H+ARROW/2+8}" dominant-baseline="middle"
+    s += `<text x="${arrowCx+6}" y="${baseY - 10}" dominant-baseline="middle"
       font-size="9" fill="#2DBD8E" font-family="system-ui,sans-serif">Kabeleinführung</text>`;
   }
 
