@@ -1186,15 +1186,15 @@ function buildFullLayoutSVG() {
   // ── KE-Zonen auf Montageplatte ────────────────────────────────
   // KE-Zonen stapeln ab Gehäuse-Innenwand (h_abst) in Richtung Montageplatte
   const keZones = [
-    { h: h_hand, col: KE_COLS.handling, lbl: 'Handling' },
-    { h: h_bieg, col: KE_COLS.bieg,     lbl: 'Biegeradius' },
+    { h: h_hand, col: KE_COLS.handling, lbl: '' },
+    { h: h_bieg, col: KE_COLS.bieg,     lbl: 'Kabeleinführungszone' },
   ];
   if (zug_aktiv) {
-    keZones.push({ h: h_zug, col: KE_COLS.zug, lbl: 'Zugentlastung' });
-    keZones.push({ h: h_hz,  col: KE_COLS.hz,  lbl: 'Handling' });
+    keZones.push({ h: h_zug, col: KE_COLS.zug, lbl: 'C-Schiene mit Bügelschellen' });
+    keZones.push({ h: h_hz,  col: KE_COLS.hz,  lbl: '' });
   }
   if (kanal_aktiv) {
-    keZones.push({ h: h_kan, col: KE_COLS.kanal, lbl: 'Kabelkanal' });
+    keZones.push({ h: h_kan, col: KE_COLS.kanal, lbl: 'Kabelkanal Einführungszone' });
   }
 
   // m3_px: Pixel-Höhe des Montagebereichs (mp_h − h_ke), KE füllt den Rest
