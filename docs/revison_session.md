@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 14. Juni 2026 – Session 16
+**Stand:** 14. Juni 2026 – Session 17
 
 ---
 
@@ -123,6 +123,7 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 - `m02_ke_pos` → Modul 3
 - `m02_h_ke_mm`, `m02_h_handling_ke_mm`, `m02_h_kabel_bieg_mm`, `m02_h_zug_ke_mm`, `m02_h_handling_zug_ke_mm`, `m02_h_kanal_ke_mm` → Modul 3 (Vollständiges Layout)
 - `m02_kanal_aktiv`, `m02_zug_aktiv`, `m02_B`, `m02_H`, `m02_mp_b`, `m02_mp_h`, `m02_b_abst`, `m02_h_abst` → Modul 3 (Vollständiges Layout)
+- `m02_h_sockel_mm`, `m02_sockel_aktiv` → Modul 3 (Vollständiges Layout – Sockel-Rect + Maßkette)
 
 ---
 
@@ -238,23 +239,41 @@ m03_zone_schiene, m03_zone_schiene_pol
 m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03_b_steuer
 ```
 
-#### Druckbutton „Vollständiges Layout drucken" (Session 16)
+#### Druckbutton „Vollständiges Layout drucken" (aktualisiert Session 17)
 
 **Funktion:** `buildFullLayoutSVG()` – erzeugt kombiniertes SVG des vollständigen Schranks
 
 **Datenquellen:**
 - `schrank_typ` → Präfix `m01` (Wandschrank) oder `m02` (Standschrank)
-- localStorage mXX_*: Cabinet-Maße (B, H, mp_b, mp_h, b_abst, h_abst) + alle KE-Zonen
+- localStorage mXX_*: Cabinet-Maße + alle KE-Zonen + Sockel (m02_h_sockel_mm, m02_sockel_aktiv)
+- `proj-name`, `proj-nummer`, `proj-asp`, `proj-engineer` → Projektkopf-Streifen im SVG
 - `calculateZones(b_mb, h_mb)` + `buildLayout(zp)` → M3-Zonen
 
+**SVG-Dimensionierung (landscape-freundlich):**
+```
+PH = 36       Projektkopf-Streifen (fill #EFEFEC)
+PT = 36       Freiraum über Schrank (Pfeil KE oben)
+SVG_H = 440   Schrankhöhe in Pixel (fest)
+PB = 68       Freiraum unter Schrank/Sockel (B-Maßkette + Pfeil KE unten)
+PL = 50, PR = 180
+VW = max(PL + sw + PR, 950)   Mindestbreite → VH/VW ≤ 0,69 für A4 quer
+VH = PH + PT + SVG_H + sock_px + PB
+```
+
 **SVG-Inhalt:**
+- **Projektkopf-Streifen** (y=0–PH): Modulbezeichnung + Schranktyp/Maße links, Projektdaten rechts
 - Schrankrahmen (B×H), Montageplatte (gestrichelt)
+- **Sockel** (Standschrank): hellgrau `#D4D4D0`, Maßkette gleiche Spalte wie Zonenpfeile
 - KE-Zonen in M1/M2-Farben (Handling grün, Biegeradius orange, Zug amber, Handling_Zug teal, Kanal lila)
 - M3-Zonen (Klemmen, Kanäle, L/S, Evert) – gleiche Farben wie buildZoneSVG()
-- Maßlinien rechts (je M3-Zone) + KE-Gesamtmaß + H/B-Außenmaße
+- Maßlinien rechts: je M3-Zone + KE-Gesamt + Sockel (dimX = sx+sw+6, lblX = sx+sw+14)
+- H-Gesamtmaßkette (Schrank ohne Sockel) bei ox = sx+sw+90
+- B-Maßkette unterhalb Schrank+Sockel
 - Kabeleinführungs-Pfeil außen (grün #2DBD8E), Richtung je ke_pos
 
-**Print-Klasse:** `body.print-full` blendet `.layout` + `.site-footer` aus, zeigt `#full-layout-container`
+**Print-CSS `body.print-full`:**
+- Header, .layout, .site-footer ausgeblendet (screen + print) – Projektkopf liegt im SVG
+- SVG: `width:100%; height:auto` – landscape ratio garantiert durch VW_min=950
 
 ---
 
@@ -290,7 +309,7 @@ m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03
 5. Mehrere Felder + Nebeneinander: aktuell disabled; Konzept für feldweise Nebeneinander-Anordnung
 
 **Nächste Schritte (Prio hoch)**
-6. Modul 3 „Vollständiges Layout drucken" im Browser verifizieren (Wandschrank + Standschrank, beide ke_pos)
+6. Vollständiges Layout: optische Restfehler beheben (offen nach Session 17)
 7. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
 8. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
 9. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
@@ -343,6 +362,12 @@ m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03
 - Keine Typbezeichnungen in srcKlemm-Texten (kein Kabeltyp, kein Herstellertyp)
 - Anordnung L/S gesperrt (disabled) wenn Modus „Mehrere Felder"
 - KE-Position bestimmt Zonenreihenfolge (kommt aus Modul 1/2 via localStorage, read-only)
+
+**Persistenz Modul 1 + 2 (Session 17)**
+- Alle Eingabefelder inkl. B, H, mp_b, mp_h in `M1_INPUT_FIELDS` / `M2_INPUT_FIELDS` → gespeichert via `m01_si_*` / `m02_si_*`
+- `_m1SaveReady` / `_m2SaveReady` Flag: `saveInputs()` ist bis zum Abschluss von `loadSavedInputs()` blockiert (verhindert Überschreiben durch initialen `calculate()`-Aufruf vor DB-Load)
+- Preset-Index gesondert als `m01_si_preset` / `m02_si_preset`
+- Navigation → Modul 3: `gotoModul3()` setzt `m03_autoselect`, Modul 3 wählt Schranktyp automatisch
 
 **Daten / Architektur**
 - Single-File HTML pro Modul (GitHub Pages, kein Build-Step)
