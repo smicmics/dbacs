@@ -196,10 +196,16 @@ body.print-full .layout,
 body.print-full .site-footer { display:none !important; }
 body.print-full #full-layout-container { display:block !important; padding:12px 0; }
 @media print {
-  body.print-full .layout,
+  body.print-full header,
   body.print-full .site-footer { display:none !important; }
-  body.print-full #full-layout-container { display:block !important; }
+  body.print-full .layout { display:none !important; }
+  body.print-full #full-layout-container { display:block !important; padding:0; }
+  body.print-full #full-layout-container svg { width:100% !important; max-width:none !important; height:auto !important; }
 }
+
+/* ── Nav-Button ── */
+.btn-nav{background:var(--bg3);color:var(--green);border-color:var(--green);margin-top:8px;}
+.btn-nav:hover{background:var(--green);color:#fff;}
 
 /* ── Footer ── */
 .site-footer{
@@ -419,6 +425,7 @@ body.print-full #full-layout-container { display:block !important; padding:12px 
 
     <button class="btn-print" onclick="window.print()">Ergebnis drucken</button>
     <button class="btn-print" onclick="printFullLayout()">Vollständiges Layout drucken</button>
+    <button class="btn-print btn-nav" id="btn-goto-modul" onclick="gotoParentModul()" style="display:none">← Zurück zu Modul</button>
 
   </aside>
 
@@ -569,6 +576,8 @@ function calculate() {
   _v('n_te',                 n_te);
 
   const zp = calculateZones(b, h);
+
+  updateNavButton();
 
   if (!typ) {
     document.getElementById('results-area').innerHTML =
@@ -1108,8 +1117,34 @@ function loadProjFields() {
 function printFullLayout() {
   document.getElementById('full-layout-container').innerHTML = buildFullLayoutSVG();
   document.body.classList.add('print-full');
+  const ps = document.createElement('style');
+  ps.id = 'pls';
+  ps.textContent = '@page{size:A4 landscape;margin:8mm}';
+  document.head.appendChild(ps);
   window.print();
   document.body.classList.remove('print-full');
+  document.head.removeChild(ps);
+}
+
+// ── Navigation ────────────────────────────────────────────────
+function gotoParentModul() {
+  const typ = gs('schrank_typ');
+  if (typ === 'wandschrank')  window.location.href = '../modul-01-schaltschrank/';
+  else if (typ === 'standschrank') window.location.href = '../modul-02-standschrank/';
+}
+
+function updateNavButton() {
+  const typ = gs('schrank_typ');
+  const btn = document.getElementById('btn-goto-modul');
+  if (typ === 'wandschrank') {
+    btn.textContent = '← Zurück zu Modul 1 · Wandschrank';
+    btn.style.display = '';
+  } else if (typ === 'standschrank') {
+    btn.textContent = '← Zurück zu Modul 2 · Standschrank';
+    btn.style.display = '';
+  } else {
+    btn.style.display = 'none';
+  }
 }
 
 function buildFullLayoutSVG() {
@@ -1190,7 +1225,7 @@ function buildFullLayoutSVG() {
     { h: h_bieg, col: KE_COLS.bieg,     lbl: 'Kabeleinführungszone' },
   ];
   if (zug_aktiv) {
-    keZones.push({ h: h_zug, col: KE_COLS.zug, lbl: 'C-Schiene mit Bügelschellen' });
+    keZones.push({ h: h_zug, col: KE_COLS.zug, lbl: 'Zugentlastung mit Bügelschellen' });
     keZones.push({ h: h_hz,  col: KE_COLS.hz,  lbl: '' });
   }
   if (kanal_aktiv) {
@@ -1303,6 +1338,9 @@ function buildFullLayoutSVG() {
 // ── Init ──────────────────────────────────────────────────────
 loadProjFields();
 loadZoneInputs();
+// Auto-Select Schranktyp wenn aus Modul 1/2 navigiert
+const _autoSel = localStorage.getItem('m03_autoselect');
+if (_autoSel) { _v('schrank_typ', _autoSel); localStorage.removeItem('m03_autoselect'); }
 calculate();
 </script>
 

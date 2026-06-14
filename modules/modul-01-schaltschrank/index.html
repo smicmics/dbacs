@@ -123,6 +123,8 @@ legend{
   cursor:pointer;text-align:center;transition:background .15s,color .15s;
 }
 .btn-print:hover{background:var(--bords);color:var(--tx);}
+.btn-nav{background:var(--bg3);color:var(--green);border-color:var(--green);margin-top:8px;}
+.btn-nav:hover{background:var(--green);color:#fff;}
 
 @media print{
   body{background:#fff;color:#000;}
@@ -368,6 +370,7 @@ legend{
     </fieldset>
 
     <button class="btn-print" onclick="window.print()">Ergebnis drucken</button>
+    <button class="btn-print btn-nav" onclick="gotoModul3()">→ Weiter zu Modul 3</button>
 
   </aside>
 
@@ -457,7 +460,7 @@ fetch('../../data/wandschraenke.json')
       if (s.bezeichnung === 'AX 1214.000') opt.selected = true;
       sel.appendChild(opt);
     });
-    loadPreset();
+    loadSavedInputs();
   })
   .catch(() => { /* DB nicht verfügbar – manuelle Eingabe */ });
 
@@ -536,6 +539,7 @@ function calculate() {
   const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_handling_zug, h_bieg, h_ke, h_mb, b_mb, ke_pos, fs_dim, fs_var, fs_zone, zug_aktiv, kanal_aktiv };
   document.getElementById('svg-inner').innerHTML  = buildSVG(p);
   document.getElementById('results-area').innerHTML = buildTable(p);
+  saveInputs();
 }
 
 // ── SVG-Generator ─────────────────────────────────────────────
@@ -690,7 +694,7 @@ function buildSVG(p) {
   if (p.fs_zone > 0) {
     s += tx(zoneLblX, yB+hb/2+3.5, 'Kabeleinführungszone', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_b});
     if (hz > 0)
-      s += tx(zoneLblX, yZ+hz/2, 'C-Schiene mit Bügelschellen', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_h,db:'middle'});
+      s += tx(zoneLblX, yZ+hz/2, 'Zugentlastung mit Bügelschellen', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_h,db:'middle'});
     if (hk > 0)
       s += tx(zoneLblX, yK+hk/2+3.5, 'Kabelkanal Einführungszone', {anchor:'start',size:p.fs_zone,weight:400,fill:C.zone_tx_k});
     s += ln(mx, nutz_y, mx+mw, nutz_y, C.nutz, 1.2, '8 5');
@@ -926,6 +930,37 @@ function loadProjFields() {
   updateDocNr();
 }
 loadProjFields();
+
+// ── Eingaben speichern / laden ────────────────────────────────
+const M1_INPUT_FIELDS = ['ke_pos','n_adern','querschnitt','d_max',
+  'kanal_aktiv','h_kanal','zug_aktiv','fs_dim','fs_var','fs_zone'];
+
+function saveInputs() {
+  M1_INPUT_FIELDS.forEach(id => localStorage.setItem('m01_si_' + id, gs(id)));
+  localStorage.setItem('m01_si_preset', gs('preset_schrank'));
+}
+
+function loadSavedInputs() {
+  M1_INPUT_FIELDS.forEach(id => {
+    const v = localStorage.getItem('m01_si_' + id);
+    if (v !== null) _v(id, v);
+  });
+  const pre = localStorage.getItem('m01_si_preset');
+  if (pre !== null) _v('preset_schrank', pre);
+  // Maße aus letzter Berechnung wiederherstellen (überschreibt Preset-Defaults)
+  [['B','m01_B'],['H','m01_H'],['mp_b','m01_mp_b'],['mp_h','m01_mp_h']].forEach(([id,key]) => {
+    const v = localStorage.getItem(key); if (v) _v(id, v);
+  });
+  document.getElementById('h_kanal').disabled = gs('kanal_aktiv') !== 'ja';
+  lookupKabel();
+  calculate();
+}
+
+// ── Navigation ────────────────────────────────────────────────
+function gotoModul3() {
+  localStorage.setItem('m03_autoselect', 'wandschrank');
+  window.location.href = '../modul-03-architektur/';
+}
 
 // ── Init ─────────────────────────────────────────────────────
 calculate(); // Sofortiger Aufruf mit d_max-Defaultwert; fetch() übernimmt DB-Init
