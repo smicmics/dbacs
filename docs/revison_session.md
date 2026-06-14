@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 14. Juni 2026 – Session 14
+**Stand:** 14. Juni 2026 – Session 15
 
 ---
 
@@ -24,7 +24,8 @@ dbacs/
 ├── index.html                              Root-Redirect → web/index.html (GitHub Pages)
 ├── .gitignore                              OS, Editor, Python, data/*.db, data/*.xlsx
 ├── .claude/
-│   └── launch.json                         Dev-Server-Konfiguration (statischer HTTP-Server Port 8099)
+│   ├── launch.json                         Dev-Server-Konfiguration (statischer HTTP-Server Port 8099)
+│   └── settings.local.json                 Stop-Hook: auto commit + push nach Aufgabe
 ├── web/
 │   ├── index.html                          Startseite / Modulübersicht (Dark Theme) – 3 Module aktiv
 │   └── assets/
@@ -46,7 +47,8 @@ dbacs/
 │   ├── standschraenke.json                 Standschrank-DB Rittal VX25 (committed)
 │   ├── sockel.json                         Sockel-DB Rittal VX (committed)
 │   ├── bodenbleche.json                    Bodenblech-DB Rittal VX (committed)
-│   └── xlsx_to_json.py                     Konvertierungsskript Excel → JSON (6 Sheets)
+│   ├── reiheneinbaugeraete.json            Reiheneinbaugeräte (Eaton + Siemens, committed)
+│   └── xlsx_to_json.py                     Konvertierungsskript Excel → JSON (7 Sheets)
 └── docs/
     └── *.md                                Projektdokumentation
 ```
@@ -120,8 +122,8 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 
 ---
 
-### Modul 3 – vollständig funktionsfähig ✅ (Session 10–12)
-**Titel:** „Modul 3 · TE-Berechnung & Reihenkapazität"
+### Modul 3 – vollständig funktionsfähig ✅ (Sessions 10–15)
+**Titel:** „Modul 3 · TE-Berechnung · Architektur · Innenaufbau"
 **Datei:** `modules/modul-03-te-berechnung/index.html`
 
 **Zweck:** Berechnung der verfügbaren Teileinheiten auf der Montageplatte sowie vorläufige Zonenaufteilung der Montagefläche auf Basis technischer Mindesthöhen.
@@ -129,72 +131,107 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 #### TE-Berechnung (Fieldsets 1–4)
 - Schrank-Typ: Wandschrank / Standschrank (Pflichtauswahl, Standard „— bitte wählen —")
 - Montagebereich Breite + Höhe: automatisch via localStorage aus Modul 1/2 (read-only)
-- Festwert: te_breite_mm = 18,0 mm (DIN 43880 – Hüllmaße Installationseinbaugeräte)
-- Festwert: b_hutschiene_mm = 35 mm (DIN EN 60715 – Hutschiene Breite)
+- Festwert: `TE_BREITE_MM = 18,0 mm` (DIN 43880 – Hüllmaße Installationseinbaugeräte)
+- Festwert: `b_hutschiene_mm = 35 mm` (DIN EN 60715 – Hutschiene Breite, nur Anzeige)
 - `n_te = ⌊ b / 18,0 ⌋` (ganze Zahl, abgerundet)
 - `flaeche_mbereich_cm2` / `flaeche_mbereich_m2`
+- Kabelkanal-Festwerte editierbar: `h_kanal_h_mm` (Standard 40 mm), `b_kanal_v_mm` (Standard 40 mm)
 
-#### Zonenaufteilung (Fieldset 5) ← NEU Session 12–13
-Berechnet vorläufige Zonenhöhen auf Basis technischer Mindesthöhen (analog h_ke-Logik aus M1/M2).
+#### Zonenaufteilung (Fieldset 5)
 
 **Eingaben:**
 | Feld | ID | Werte | Beschreibung |
 |---|---|---|---|
 | Schrankfelder | `zone_modus` | 1 Feld / Mehrere Felder | Ansicht: 1 Feld oder N Felder nebeneinander |
-| Leistung/Steuerung | `zone_anordnung` | Übereinander / Nebeneinander | Anordnung L+S auf der Platte (gesperrt bei Mehrere Felder) |
-| Netzanschluss | `zone_netztyp` | Drehstrom 3~ / Wechselstrom 1~ | Beeinflusst h_evert_min |
+| Leistung/Steuerung | `zone_anordnung` | Übereinander / Nebeneinander | gesperrt bei Mehrere Felder |
+| Netzanschluss | `zone_netztyp` | Drehstrom 3~ / Wechselstrom 1~ | bestimmt h_evert und ÜSS-Größe |
+| Schienensystem | `zone_schiene` | Ja / Nein | nur bei Drehstrom sichtbar |
+| Polzahl | `zone_schiene_pol` | 3-polig / 4-polig / 5-polig | nur bei Schienensystem=Ja sichtbar |
 
-**Mindesthöhen-Berechnung (aufger. 5 mm):**
+**Festwerte (JS-Konstanten):**
 ```
-H_KLEMME_STD =  52 mm   (Standard-Klemme 4 mm², Phoenix UK 4)
-H_HANDLING   =  15 mm   (Kabelhandling je Seite, wie h_handling_ke)
-H_SICHER_WS  =  75 mm   (Sicherungshalter Wechselstrom, NH00/D02)
-H_SCHIENE_DS = 150 mm   (Stromschienensystem Drehstrom)
-H_KANAL_H    =  40 mm   (Horizontaler Kabelkanal, Platzhalter)
-B_KANAL_V    =  40 mm   (Vertikaler Kabelkanal je Seite, Platzhalter)
+TE_BREITE_MM   = 18,0 mm  (DIN 43880)
+H_KLEMME_STD  = 65 mm    (Phoenix XTV 6 → 6 mm², 62,5 mm; PT 2.5 MT → Messertrennkl., 62,5 mm → aufger. 65 mm)
+H_HANDLING    = 15 mm    (Kabelhandling je Seite, wie h_handling_ke in M1/M2)
+H_SICHER_WS   = 75 mm    (Sicherungshalter D0/NH00, Wechselstrom)
+H_SCHIENE_3POL = 300 mm  (60-mm-Schienensystem, 3-polig, mit NH-Trennern – eigene Recherche)
+H_SCHIENE_4POL = 350 mm  (60-mm-Schienensystem, 4-polig, mit NH-Trennern)
+H_SCHIENE_5POL = 400 mm  (60-mm-Schienensystem, 5-polig, mit NH-Trennern)
+H_KANAL_H_DEF =  40 mm  (H. Kabelkanal Standardwert, vom Nutzer editierbar)
+B_KANAL_V_DEF =  40 mm  (V. Kabelkanal Standardwert, vom Nutzer editierbar)
+TE_USS_WS     = 2 TE     (ÜSS Typ 2, 2-polig, Wechselstrom)
+TE_SICH_WS    = 2 TE     (Vorsicherung D0, 1× Halter L-Leiter)
+TE_USS_DS     = 4 TE     (ÜSS Typ 2, 4-polig, Drehstrom)
+TE_SICH_DS    = 3 TE     (Vorsicherung D0, 3× Halter L1/L2/L3)
+TE_KLEMME_ES_WS = 3 TE  (Einspeiseklemmen WS: L1/N/PE)
+TE_KLEMME_ES_DS = 5 TE  (Einspeiseklemmen DS: L1/L2/L3/N/PE)
+```
 
-h_evert = Drehstrom: ceil5(150) = 150 mm
-          Wechselstrom: ceil5(15+75+15) = 105 mm
-h_klemm = ceil5(15+52+15) = 85 mm
+**Mindesthöhen-Berechnung:**
+```
+h_evert:
+  DS + Schiene Ja + 3-pol: 300 mm (H_SCHIENE_3POL, kein ceil5 – exakter Herstellerwert)
+  DS + Schiene Ja + 4-pol: 350 mm
+  DS + Schiene Ja + 5-pol: 400 mm
+  DS + Schiene Nein:        ceil5(15 + 75 + 15) = 105 mm (D0 3~ auf Hutschiene)
+  Wechselstrom:             ceil5(15 + 75 + 15) = 105 mm
 
-h_verfueg = h − h_evert − h_klemm − 3 × H_KANAL_H
-b_inner   = b − 2 × B_KANAL_V
+h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING)
+        = ceil5(15 + 65 + 15) = ceil5(95) = 95 mm
+
+useEvKanal = !(netztyp === 'drehstrom' && schiene === 'ja')
+n_kanal_h  = useEvKanal ? 4 : 3
+  Schiene Ja:  3 H.Kanäle (kanal_h + kanal_ls + kanal_ev)
+  Schiene Nein / WS: 4 H.Kanäle (+ kanal_ev2 auf KE-Seite)
+
+h_verfueg = h − h_evert − h_klemm − n_kanal_h × h_kanal_h
+b_inner   = b − 2 × b_kanal_v
 
 Übereinander: h_leist = ceil5(h_verfueg/2), h_steuer = Rest
 Nebeneinander: h_leist = h_steuer = ceil5(h_verfueg/2), b_leist = floor(b_inner/2)
 ```
 
 **Zonen im SVG (buildLayout):**
-| Zone | ID | Farbe | Breite |
-|---|---|---|---|
-| Energieverteilung | `evert` | `#C8720E` | volle Breite |
-| H. Kabelkanal | `kanal_h/ls/ev` | `#888` | volle Breite, kein Label |
-| V. Kabelkanal Links | `kanal_vl` | `#888` | B_KANAL_V, in jeder L/S-Zeile |
-| V. Kabelkanal Rechts | `kanal_vr` | `#888` | B_KANAL_V, in jeder L/S-Zeile |
-| ÜSS + Sich. | `uss` | `#D4A84B` | b_uss, immer links (nach VK_L) |
-| Leistungsbaugruppen | `leist` | `#C84E2E` | b_leist_eff |
-| Steuerbaugr./DDC | `steuer` | `#4BBECA` | b_steuer (nach VK_L, kein USS) |
-| Einsp.-Kl. | `klemm_e` | `#D4A84B` | b_ek (5 TE), immer links |
-| Abg.-Kl. Leistung | `klemm_l` | `#2DBD8E` | neben: b/2·f_rest; über: b−B_KANAL_V−b_ek |
-| Abg.-Kl. Feldger. | `klemm_f` | `#9A94E8` | neben: Rest/2; über: B_KANAL_V/2 |
-| Abg.-Kl. Sensoren | `klemm_s` | `#E8C448` | neben: Rest/2; über: B_KANAL_V/2 |
+| Zone | ID | Farbe | Breite | Bedingung |
+|---|---|---|---|---|
+| Energieverteilung | `evert` | `#C8720E` | volle Breite (+ lin. V.Kanal wenn useEvKanal) | immer |
+| H. Kabelkanal KE-Seite | `kanal_ev2` | `#888` | volle Breite | nur wenn useEvKanal |
+| H. Kabelkanal L/S-Seite | `kanal_ev` | `#888` | volle Breite | immer |
+| H. Kabelkanal Klemmen/L | `kanal_h` | `#888` | volle Breite | immer |
+| H. Kabelkanal L/S-Trenner | `kanal_ls` | `#888` | volle Breite | immer |
+| V. Kabelkanal Links | `kanal_vl` | `#888` | b_kanal_v | in jeder L/S-Zeile |
+| V. Kabelkanal Rechts | `kanal_vr` | `#888` | b_kanal_v | in jeder L/S-Zeile |
+| ÜSS + Sich. | `uss` | `#D4A84B` | b_uss (max 40 % b), immer links (nach VK_L) | in L/S-Zeile |
+| Leistungsbaugruppen | `leist` | `#C84E2E` | b_leist_eff | in L/S-Zeile |
+| Steuerbaugr./DDC | `steuer` | `#4BBECA` | b_steuer (nach VK_L, kein USS) | in L/S-Zeile |
+| Einsp.-Kl. | `klemm_e` | `#D4A84B` | b_ek (3 TE WS / 5 TE DS), immer links | in Klemmenzeile |
+| Abg.-Kl. Leistung | `klemm_l` | `#2DBD8E` | ~b/2 · f_rest | in Klemmenzeile |
+| Abg.-Kl. Feldger. | `klemm_f` | `#9A94E8` | Rest/2 | in Klemmenzeile |
+| Abg.-Kl. Sensoren | `klemm_s` | `#E8C448` | Rest/2 | in Klemmenzeile |
 
 **Zonenreihenfolge (KE-abhängig):**
-- KE oben: Klemmen → H.Kanal → L/S-Zonen → H.Kanal L/S → H.Kanal Evert → Evert
-- KE unten: Evert → H.Kanal Evert → L/S-Zonen → H.Kanal L/S → H.Kanal → Klemmen
+- KE oben:  Klemmen → kanal_h → L/S → kanal_ls → kanal_ev → Evert [→ kanal_ev2]
+- KE unten: [kanal_ev2 →] Evert → kanal_ev → L/S → kanal_ls → kanal_h → Klemmen
 
-**SVG-Besonderheiten:**
-- `buildLayout(zp)` erzeugt Zeilen-Array mit x/w-Fraktionen
-- Kanalstreifen ohne Label (`lbl:''`) – grau erkennbar ohne Textüberschneidung
-- Maßlinie rechts je Zeile, Gesamthöhe-Linie außen
-- Mehrere Felder: N Felder nebeneinander (intern immer übereinander)
-- Kein sekundärer `row.h_mm mm`-Text im SVG; Werte nur über Maßlinien
+**Besonderheit Evert-Zone:**
+- `useEvKanal = false` (Schienensystem Ja): Evert volle Breite – Anschluss seitlich über V.Kanal
+- `useEvKanal = true` (kein Schiene / WS): linker V.Kanal sichtbar in Evert-Zone (Kabel muss Montageplattenkante erreichen)
 
-**localStorage-Ausgabe M3:**
+**Quellen-Texte Tabelle (srcEvert):**
+- DS + Schiene Ja: „60-mm-Schienensystem X-polig mit NH-Trennern · Festwert Y mm"
+- DS + Schiene Nein: „15 mm Handling + 75 mm Sicherungsträger (D0 3~) + 15 mm Handling = 105 mm → aufger. 105 mm"
+- WS: „15 mm Handling + 75 mm Sicherungsträger (1~) + 15 mm Handling = 105 mm → aufger. 105 mm"
+
+**Klemmen-Quellentexte (srcKlemm):**
+- `srcKlemmL`: `15 mm Handling + 65 mm Klemme (4 mm²) + 15 mm Handling`
+- `srcKlemmF`: `15 mm Handling + 65 mm Klemme (1,5 mm², Ventile/Klappen) + 15 mm Handling`
+- `srcKlemmS`: `15 mm Handling + 65 mm Klemme (1 mm²) + 15 mm Handling` (kein Kabeltyp!)
+
+**localStorage – Modul 3 schreibt:**
 ```
 m03_zone_modus, m03_zone_anordnung, m03_zone_netztyp, m03_zone_ke_pos, m03_n_felder
-m03_h_einsp, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm
-m03_b_leist, m03_b_steuer
+m03_zone_schiene, m03_zone_schiene_pol
+m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03_b_steuer
 ```
 
 ---
@@ -227,17 +264,20 @@ m03_b_leist, m03_b_steuer
 
 **Modul 3 – mögliche Erweiterungen**
 3. Zonenaufteilung: Mindesthöhen als editierbare Felder (Override) – derzeit Festwerte
-4. Zonenaufteilung: Warnung bei zu kleiner Montagefläche aktuell als Hinweis (rot), kein Blocker
+4. Warnung bei zu kleiner Montagefläche: aktuell roter Hinweis, kein Blocker
 5. Mehrere Felder + Nebeneinander: aktuell disabled; Konzept für feldweise Nebeneinander-Anordnung
 
-**Nächste Module (Prio hoch)**
-6. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
-7. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
-8. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
+**Nächste Schritte (Prio hoch)**
+6. Modul 3 Zonenaufteilung für **Standschrank** validieren (Übertrag Session 15 → 16)
+   - Wandschrank-Logik gilt analog; KE-Richtung und Sockel unterscheiden sich
+   - Schienensystem-Auswahl gilt genauso für Standschrank
+7. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
+8. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
+9. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
 
 **Später**
-9. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
-10. Startseite: Screenshot-Vorschau je Modul ergänzen
+10. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
+11. Startseite: Screenshot-Vorschau je Modul ergänzen
 
 ---
 
@@ -263,24 +303,26 @@ m03_b_leist, m03_b_steuer
 - Alle Maßketten einheitlich blau #3366BB
 - Zonenrahmen-Farben (Amber, Teal) von Maßkettenfarben getrennt
 
-**Modul 3 – TE-Berechnung**
-- `te_breite_mm = 18,0 mm` Festwert nach DIN 43880 (Hüllmaße für Installationseinbaugeräte)
-- `h_hutschiene_mm = 7,5 mm` Festwert nach DIN EN 60715 (Hutschiene, nur Anzeige)
+**Modul 3 – TE-Berechnung (gesperrt)**
+- `te_breite_mm = 18,0 mm` Festwert nach DIN 43880 (Hüllmaße Installationseinbaugeräte)
+- `b_hutschiene_mm = 35 mm` nach DIN EN 60715 (Breite, nicht Höhe – nur Anzeige)
 - `n_te = Math.floor(b / 18.0)` – ganzzahlig abgerundet
-- `schrank_typ` wird **nicht** aus localStorage wiederhergestellt – Start immer mit „— bitte wählen —"
+- `schrank_typ` wird nicht aus localStorage wiederhergestellt – Start immer „— bitte wählen —"
 - `typLabel` ohne Modulangabe: „Wandschrank" / „Standschrank"
-- Formelbox zeigt Eingabewerte mit Einheit mm: `⌊ b mm / 18,0 mm ⌋`
 - Copyright: `class="copyright-line"` + `@media print { .copyright-line { display:none !important } }`
 
 **Modul 3 – Zonenaufteilung (gesperrt)**
 - Mindesthöhen basieren auf physikalischen Festwerten (wie h_ke-Logik), keine Prozent-Eingabe
-- `ceil5()` – alle Mindesthöhen auf 5 mm aufgerundet
-- h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING) = 85 mm (Festwert 4 mm²-Klemme)
-- h_einsp = 120 mm (Festwert, nicht überschreibbar)
-- 3 Klemmengruppen immer nebeneinander (klemm_l | klemm_f | klemm_s), adjacent zu ihrer Funktionszone
+- `ceil5()` – alle berechneten Mindesthöhen auf 5 mm aufgerundet; Schienensystem-Werte sind exakt (kein ceil5)
+- H_KLEMME_STD = 65 mm (Phoenix XTV 6 und PT 2.5 MT je 62,5 mm → aufgerundet)
+- h_klemm = ceil5(15+65+15) = 95 mm
+- Schienensystem-Höhen (60-mm-Technologie): 3-pol=300, 4-pol=350, 5-pol=400 mm – eigene Recherche
+- useEvKanal steuert kanal_ev2 und linken V.Kanal in Evert-Zone (gesperrt)
+- kanal_ev (L/S-Seite von Evert) ist immer vorhanden – Abführung zu Leistungszone
+- Einspeiseklemmen: WS=3 TE (L1/N/PE), DS=5 TE (L1/L2/L3/N/PE)
+- Keine Typbezeichnungen in srcKlemm-Texten (kein Kabeltyp, kein Herstellertyp)
 - Anordnung L/S gesperrt (disabled) wenn Modus „Mehrere Felder"
-- KE-Position bestimmt Zonenreihenfolge: KE oben → Einsp. oben; KE unten → Einsp. unten, Evert. oben
-- `klemm_e` ist kein gültiges Konzept → heißt `klemm_s` (Abgangsklemmen Sensoren)
+- KE-Position bestimmt Zonenreihenfolge (kommt aus Modul 1/2 via localStorage, read-only)
 
 **Daten / Architektur**
 - Single-File HTML pro Modul (GitHub Pages, kein Build-Step)
