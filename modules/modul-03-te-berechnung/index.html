@@ -692,17 +692,17 @@ function buildLayout(zp) {
 
     // Übereinander – Leistungszeile: [VK_L | ÜSS | Leistung_eff | VK_R]
     leist_ueber: { h_mm: h_leist, zones: [
-      { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'V. Kanal L' },
+      { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'' },
       { id:'uss',      x:f_vk,        w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
       { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'V. Kanal S' },
+      { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'' },
     ]},
 
     // Übereinander – Steuerungszeile: [VK_L | Steuerung | VK_R]
     steuer_ueber: { h_mm: h_steuer, zones: [
-      { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'V. Kanal L' },
+      { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'' },
       { id:'steuer',   x:f_vk,  w:f_s_u,  col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
-      { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'V. Kanal S' },
+      { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'' },
     ]},
 
     // Klemmen: Einsp.-Kl. immer links (KE-Position unabhängig)
@@ -809,7 +809,7 @@ function buildZoneSVG(zp) {
   const { b, h, modus, n_felder, anordnung } = zp;
   if (!b || !h) return '';
 
-  const PL = 10, PT = 14, PR = 95, PB = 14;
+  const PL = 10, PT = 14, PR = 95, PB = 22;
   const sc = Math.min(260 / b, 520 / h);
   const pw = Math.round(b * sc);
   const ph = Math.round(h * sc);
@@ -897,6 +897,14 @@ function buildZoneSVG(zp) {
   s += `<line x1="${ox}" y1="${PT+ph}" x2="${ox+4}" y2="${PT+ph}" stroke="#3366BB" stroke-width="0.9"/>`;
   s += `<text x="${ox+7}" y="${PT+ph/2}" dominant-baseline="middle"
     font-size="9" fill="#3366BB" font-weight="600" font-family="'Courier New',monospace">${h} mm</text>`;
+
+  // Gesamtbreite-Maßlinie (unten)
+  const by = PT + ph + 8;
+  s += `<line x1="${PL}" y1="${by}" x2="${PL}" y2="${by-4}" stroke="#3366BB" stroke-width="0.9"/>`;
+  s += `<line x1="${PL}" y1="${by}" x2="${PL+pw}" y2="${by}" stroke="#3366BB" stroke-width="0.9"/>`;
+  s += `<line x1="${PL+pw}" y1="${by}" x2="${PL+pw}" y2="${by-4}" stroke="#3366BB" stroke-width="0.9"/>`;
+  s += `<text x="${PL+pw/2}" y="${by+5}" dominant-baseline="hanging" text-anchor="middle"
+    font-size="9" fill="#3366BB" font-weight="600" font-family="'Courier New',monospace">${b} mm</text>`;
 
   s += `</svg>`;
   return s;
