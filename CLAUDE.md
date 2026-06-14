@@ -8,7 +8,7 @@
 3. `docs/revison_session.md` lesen – aktueller Projektstand, offene Punkte, gesperrte Entscheidungen
 4. Bei Arbeit an Modul 1: `modules/modul-01-schaltschrank/index.html` – JS beginnt nach dem HTML-Markup (Suche nach `<script>`)
 5. Bei Arbeit an Modul 2: `modules/modul-02-standschrank/index.html` – gleiche Struktur wie Modul 1
-6. Bei Arbeit an Modul 3: `modules/modul-03-te-berechnung/index.html` – kein SVG, nur Berechnungstabelle; Daten kommen via localStorage aus Modul 1/2
+6. Bei Arbeit an Modul 3: `modules/modul-03-architektur/index.html` – kein SVG, nur Berechnungstabelle; Daten kommen via localStorage aus Modul 1/2
 
 **Hinweis:** Commits erfolgen in der Regel über VS Code, nicht über Claude. Der letzte Commit-Stand ist daher maßgeblich für den tatsächlichen Projektstand – nicht der Dokumentationsstand in `revison_session.md`.
 
@@ -41,7 +41,7 @@ dbacs/
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html        h_ke-Rechner (Wandschrank) ✅
 │   ├── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
-│   └── modul-03-te-berechnung/index.html        TE-Berechnung & Reihenkapazität ✅
+│   └── modul-03-architektur/index.html        TE-Berechnung & Reihenkapazität ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html            Referenzzeichnung Wandschrank (nicht bearbeiten)
 │   └── standschrank_frontansicht.html           Referenzzeichnung Standschrank (nicht bearbeiten)
@@ -70,7 +70,7 @@ dbacs/
 | GitHub Pages | https://smicmics.github.io/dbacs/ |
 | Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
 | Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
-| Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-te-berechnung/ |
+| Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-architektur/ |
 | Deploy-Trigger | `git push origin main` → GitHub Pages baut automatisch |
 
 ---

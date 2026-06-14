@@ -60,7 +60,7 @@ header a:hover{color:var(--tx2);}
 .proj-field input:focus{outline:none;border-color:var(--green);}
 #proj-name   {width:220px;}
 #proj-nummer {width:130px;}
-#proj-asp    {width:110px;}
+#proj-asp    {width:185px;}
 #proj-docnr  {width:280px;color:var(--tx2);}
 
 @media print{
@@ -564,6 +564,20 @@ function calculate() {
   localStorage.setItem('m02_h_mplatte_mbereich_standschrank_mm', h_mb);
   localStorage.setItem('m02_b_mplatte_mbereich_standschrank_mm', b_mb);
   localStorage.setItem('m02_ke_pos', ke_pos);
+  localStorage.setItem('m02_h_ke_mm',              h_ke);
+  localStorage.setItem('m02_h_handling_ke_mm',     h_hand);
+  localStorage.setItem('m02_h_kabel_bieg_mm',      h_bieg);
+  localStorage.setItem('m02_h_zug_ke_mm',          h_zug);
+  localStorage.setItem('m02_h_handling_zug_ke_mm', h_handling_zug);
+  localStorage.setItem('m02_h_kanal_ke_mm',        h_kanal);
+  localStorage.setItem('m02_kanal_aktiv',          kanal_aktiv ? '1' : '0');
+  localStorage.setItem('m02_zug_aktiv',            zug_aktiv   ? '1' : '0');
+  localStorage.setItem('m02_B',                    B);
+  localStorage.setItem('m02_H',                    H);
+  localStorage.setItem('m02_mp_b',                 mp_b);
+  localStorage.setItem('m02_mp_h',                 mp_h);
+  localStorage.setItem('m02_b_abst',               b_abst);
+  localStorage.setItem('m02_h_abst',               h_abst);
 
   const p = { B, H, mp_b, mp_h, b_abst, h_abst, d_max, h_kanal, h_hand, h_zug, h_handling_zug, h_bieg, h_ke, h_mb, b_mb, ke_pos, fs_dim, fs_var, fs_zone, zug_aktiv, kanal_aktiv, sockel_aktiv, h_sockel };
   document.getElementById('svg-inner').innerHTML  = buildSVG(p);

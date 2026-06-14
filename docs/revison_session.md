@@ -35,7 +35,7 @@ dbacs/
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html   Modul 1 – Wandschrank, vollständig ✅
 │   ├── modul-02-standschrank/index.html    Modul 2 – Standschrank, vollständig ✅
-│   └── modul-03-te-berechnung/index.html   Modul 3 – TE-Berechnung + Zonenaufteilung ✅
+│   └── modul-03-architektur/index.html   Modul 3 – TE-Berechnung + Zonenaufteilung ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html       Referenzzeichnung Wandschrank (nicht bearbeiten)
 │   └── standschrank_frontansicht.html      Referenzzeichnung Standschrank (nicht bearbeiten)
@@ -60,7 +60,7 @@ dbacs/
 | Live-URL Startseite | https://smicmics.github.io/dbacs/ |
 | Live-URL Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
 | Live-URL Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
-| Live-URL Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-te-berechnung/ |
+| Live-URL Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-architektur/ |
 | Deploy-Trigger | Push auf `main` Branch → GitHub Pages baut automatisch |
 
 ---
@@ -124,7 +124,7 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 
 ### Modul 3 – vollständig funktionsfähig ✅ (Sessions 10–15)
 **Titel:** „Modul 3 · TE-Berechnung · Architektur · Innenaufbau"
-**Datei:** `modules/modul-03-te-berechnung/index.html`
+**Datei:** `modules/modul-03-architektur/index.html`
 
 **Zweck:** Berechnung der verfügbaren Teileinheiten auf der Montageplatte sowie vorläufige Zonenaufteilung der Montagefläche auf Basis technischer Mindesthöhen.
 
