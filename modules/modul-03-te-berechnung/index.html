@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DBACS · Modul 3 · TE-Berechnung & Architektur Innenaufbau</title>
+<title>DBACS · Modul 3 · TE-Berechnung · Architektur · Innenaufbau</title>
 <style>
 :root{
   --bg:    #1A1A18;
@@ -207,7 +207,7 @@ legend{
 <header>
   <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
   <div class="title">
-    <h1>Modul 3 · TE-Berechnung &amp; Architektur Innenaufbau</h1>
+    <h1>Modul 3 · TE-Berechnung · Architektur · Innenaufbau</h1>
     <p>GA-Planung · Schaltschrank-Dimensionierung</p>
     <p class="copyright-line" style="font-size:10px;color:var(--tx3);margin-top:2px;">© 2026 Stephan Michler</p>
   </div>
@@ -619,7 +619,7 @@ function calculateZones(b, h) {
   // Schienensystem: Anschluss seitlich → keine H.Kanäle an Evert (kanal_ev/ev2 entfallen)
   // Ohne Schienensystem: beidseitig H.Kanal nötig (Zu- und Abführung Sicherungen)
   const useEvKanal = !(netztyp === 'drehstrom' && schiene === 'ja');
-  const n_kanal_h = useEvKanal ? 4 : 2;
+  const n_kanal_h = useEvKanal ? 4 : 3;  // Schiene ja: kanal_ev (L/S-Seite) immer, kanal_ev2 (KE-Seite) entfällt
   const h_verfueg = h - h_evert - h_klemm - n_kanal_h * h_kanal_h;
 
   let h_leist, h_steuer, b_leist, b_steuer;
@@ -722,8 +722,7 @@ function buildLayout(zp) {
 
   const R = {
     evert: { h_mm: h_evert, zones: [
-      { id:'kanal_vl', x:0,    w:f_vk,   col:'#888',    lbl:'' },
-      { id:'evert',    x:f_vk, w:1-f_vk, col:'#C8720E', lbl:'Energieverteilung' },
+      { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
     ]},
     kanal_h: { h_mm: h_kanal_h, zones: [
       { id:'kanal_h', x:0, w:1, col:'#888', lbl:'' }
@@ -785,7 +784,7 @@ function buildLayout(zp) {
   const { useEvKanal } = zp;
   if (ke_pos === 'unten') {
     // KE unten: Evert oben; bei useEvKanal H.Kanäle beidseitig, sonst direkt an L/S
-    rows = useEvKanal ? [R.kanal_ev2, R.evert, R.kanal_ev] : [R.evert];
+    rows = useEvKanal ? [R.kanal_ev2, R.evert, R.kanal_ev] : [R.evert, R.kanal_ev];
     if (isNeben) {
       rows.push(R.leist_neben_b, R.kanal_ls, R.leist_neben_a);
     } else {
@@ -800,7 +799,7 @@ function buildLayout(zp) {
     } else {
       rows.push(R.leist_ueber, R.kanal_ls, R.steuer_ueber);
     }
-    useEvKanal ? rows.push(R.kanal_ev, R.evert, R.kanal_ev2) : rows.push(R.evert);
+    useEvKanal ? rows.push(R.kanal_ev, R.evert, R.kanal_ev2) : rows.push(R.kanal_ev, R.evert);
   }
   return rows;
 }
