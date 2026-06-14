@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 13. Juni 2026 – Session 12
+**Stand:** 13. Juni 2026 – Session 13
 
 ---
 
@@ -133,10 +133,10 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 - `n_te = ⌊ b / 17,5 ⌋` (ganze Zahl, abgerundet)
 - `flaeche_mbereich_cm2` / `flaeche_mbereich_m2`
 
-#### Zonenaufteilung (Fieldset 5) ← NEU Session 12
+#### Zonenaufteilung (Fieldset 5) ← NEU Session 12–13
 Berechnet vorläufige Zonenhöhen auf Basis technischer Mindesthöhen (analog h_ke-Logik aus M1/M2).
 
-**Neue Eingaben:**
+**Eingaben:**
 | Feld | ID | Werte | Beschreibung |
 |---|---|---|---|
 | Schrankfelder | `zone_modus` | 1 Feld / Mehrere Felder | Ansicht: 1 Feld oder N Felder nebeneinander |
@@ -145,44 +145,49 @@ Berechnet vorläufige Zonenhöhen auf Basis technischer Mindesthöhen (analog h_
 
 **Mindesthöhen-Berechnung (aufger. 5 mm):**
 ```
-H_EINSP_MIN  = 120 mm   (Festwert: Hauptschalter + ÜSS)
 H_KLEMME_STD =  52 mm   (Standard-Klemme 4 mm², Phoenix UK 4)
 H_HANDLING   =  15 mm   (Kabelhandling je Seite, wie h_handling_ke)
 H_SICHER_WS  =  75 mm   (Sicherungshalter Wechselstrom, NH00/D02)
 H_SCHIENE_DS = 150 mm   (Stromschienensystem Drehstrom)
+H_KANAL_H    =  40 mm   (Horizontaler Kabelkanal, Platzhalter)
+B_KANAL_V    =  40 mm   (Vertikaler Kabelkanal je Seite, Platzhalter)
 
-h_einsp = 120 mm (Festwert)
 h_evert = Drehstrom: ceil5(150) = 150 mm
           Wechselstrom: ceil5(15+75+15) = 105 mm
-h_klemm = ceil5(15+52+15) = 85 mm    (3 Gruppen, Mindesthöhe gleich)
+h_klemm = ceil5(15+52+15) = 85 mm
 
-h_verfueg = h - h_einsp - h_evert - h_klemm
+h_verfueg = h − h_evert − h_klemm − 3 × H_KANAL_H
+b_inner   = b − 2 × B_KANAL_V
 
 Übereinander: h_leist = ceil5(h_verfueg/2), h_steuer = Rest
-Nebeneinander: h_leist = h_steuer = ceil5(h_verfueg), b_leist = b_steuer = b/2
+Nebeneinander: h_leist = h_steuer = ceil5(h_verfueg/2), b_leist = floor(b_inner/2)
 ```
 
-**7 Zonen, 5 Reihen im SVG:**
-| # | Zone | ID | Farbe | Breite |
-|---|---|---|---|---|
-| – | Einspeisezone | `einsp` | `#D4A84B` | volle Breite |
-| – | Energieverteilung | `evert` | `#C8720E` | volle Breite |
-| – | Leistungsbaugruppen | `leist` | `#C84E2E` | volle Breite (Übereinander) / 50 % (Nebeneinander) |
-| – | Steuerbaugr./DDC | `steuer` | `#4BBECA` | volle Breite (Übereinander) / 50 % (Nebeneinander) |
-| – | Abg.-Kl. Leistung | `klemm_l` | `#2DBD8E` | unter Leistungsbereich |
-| – | Abg.-Kl. Feldgeräte | `klemm_f` | `#9A94E8` | unter Steuerungsbereich / 2 |
-| – | Abg.-Kl. Sensoren | `klemm_s` | `#E8C448` | unter Steuerungsbereich / 2 |
+**Zonen im SVG (buildLayout):**
+| Zone | ID | Farbe | Breite |
+|---|---|---|---|
+| Energieverteilung | `evert` | `#C8720E` | volle Breite |
+| H. Kabelkanal | `kanal_h/ls/ev` | `#888` | volle Breite, kein Label |
+| V. Kabelkanal Links | `kanal_vl` | `#888` | B_KANAL_V, in jeder L/S-Zeile |
+| V. Kabelkanal Rechts | `kanal_vr` | `#888` | B_KANAL_V, in jeder L/S-Zeile |
+| ÜSS + Sich. | `uss` | `#D4A84B` | b_uss, immer links (nach VK_L) |
+| Leistungsbaugruppen | `leist` | `#C84E2E` | b_leist_eff |
+| Steuerbaugr./DDC | `steuer` | `#4BBECA` | b_steuer (nach VK_L, kein USS) |
+| Einsp.-Kl. | `klemm_e` | `#D4A84B` | b_ek (5 TE), immer links |
+| Abg.-Kl. Leistung | `klemm_l` | `#2DBD8E` | neben: b/2·f_rest; über: b−B_KANAL_V−b_ek |
+| Abg.-Kl. Feldger. | `klemm_f` | `#9A94E8` | neben: Rest/2; über: B_KANAL_V/2 |
+| Abg.-Kl. Sensoren | `klemm_s` | `#E8C448` | neben: Rest/2; über: B_KANAL_V/2 |
 
 **Zonenreihenfolge (KE-abhängig):**
-- KE oben: Einsp. → Evert. → Leist./Steuer. → Klemmen
-- KE unten: Evert. → Leist./Steuer. → Klemmen → Einsp.
+- KE oben: Klemmen → H.Kanal → L/S-Zonen → H.Kanal L/S → H.Kanal Evert → Evert
+- KE unten: Evert → H.Kanal Evert → L/S-Zonen → H.Kanal L/S → H.Kanal → Klemmen
 
-**SVG 2D-Layout:**
-- `buildLayout(zp)` erzeugt Zeilen mit x/w-Fraktionen
-- Nebeneinander: Leistung | Steuerung in einer Zeile als Spalten
-- Klemmenzeile: klemm_l (Leistungsbreite) | klemm_f + klemm_s (Steuerungsbreite, je ½)
+**SVG-Besonderheiten:**
+- `buildLayout(zp)` erzeugt Zeilen-Array mit x/w-Fraktionen
+- Kanalstreifen ohne Label (`lbl:''`) – grau erkennbar ohne Textüberschneidung
 - Maßlinie rechts je Zeile, Gesamthöhe-Linie außen
-- Mehrere Felder: N Felder nebeneinander (Anordnung intern immer übereinander)
+- Mehrere Felder: N Felder nebeneinander (intern immer übereinander)
+- Kein sekundärer `row.h_mm mm`-Text im SVG; Werte nur über Maßlinien
 
 **localStorage-Ausgabe M3:**
 ```

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DBACS · Modul 3 · TE-Berechnung</title>
+<title>DBACS · Modul 3 · TE-Berechnung & Architektur Innenaufbau</title>
 <style>
 :root{
   --bg:    #1A1A18;
@@ -207,7 +207,7 @@ legend{
 <header>
   <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
   <div class="title">
-    <h1>Modul 3 · TE-Berechnung &amp; Reihenkapazität</h1>
+    <h1>Modul 3 · TE-Berechnung &amp; Architektur Innenaufbau</h1>
     <p>GA-Planung · Schaltschrank-Dimensionierung</p>
     <p class="copyright-line" style="font-size:10px;color:var(--tx3);margin-top:2px;">© 2026 Stephan Michler</p>
   </div>
@@ -637,25 +637,14 @@ function buildLayout(zp) {
           b_leist, b_steuer, b_inner, anordnung, ke_pos } = zp;
   const isNeben = anordnung === 'nebeneinander';
 
-  // Klemmenzeile: volle Breite b, Einsp.-Kl. immer links
-  // übereinander: Leistungsklemmen bis zur Zonengrenze (b − B_KANAL_V), F+S teilen Rest
+  // Klemmenzeile: volle Breite b, Einsp.-Kl. immer links; L:S = b/2 : b/2 (beide Modi)
+  const b_half = Math.floor(b / 2);
   const f_ek   = b > 0 ? Math.min(b_ek / b, 0.25) : 0;
   const f_rest = 1 - f_ek;
-  let f_kl, f_kf, f_ks;
-  if (isNeben) {
-    const b_half = Math.floor(b / 2);
-    f_kl = b > 0 ? (b_half / b) * f_rest : 0;
-    const f_kfs = f_rest - f_kl;
-    f_kf = f_kfs / 2;
-    f_ks = f_kfs - f_kf;
-  } else {
-    const b_ek_eff = Math.min(b_ek, b * 0.25);
-    const b_kl     = Math.max(0, b - B_KANAL_V - b_ek_eff);
-    const b_kfs    = Math.max(0, B_KANAL_V);
-    f_kl = b > 0 ? b_kl / b : 0;
-    f_kf = b > 0 ? b_kfs / (2 * b) : 0;
-    f_ks = f_kf;
-  }
+  const f_kl   = b > 0 ? (b_half / b) * f_rest : 0;
+  const f_kfs  = f_rest - f_kl;
+  const f_kf   = f_kfs / 2;
+  const f_ks   = f_kfs - f_kf;
 
   // L/S-Fraktionen: V.Kanäle links + rechts an Gehäusekante
   const f_vk   = b > 0 ? B_KANAL_V / b : 0;
