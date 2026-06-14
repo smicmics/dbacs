@@ -721,9 +721,15 @@ function buildLayout(zp) {
   const f_s_u  = b > 0 ? b_inner / b : 0;                        // Steuerung (über)
 
   const R = {
-    evert: { h_mm: h_evert, zones: [
-      { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
-    ]},
+    evert: { h_mm: h_evert, zones: zp.useEvKanal
+      ? [
+          { id:'kanal_vl', x:0,    w:f_vk,   col:'#888',    lbl:'' },
+          { id:'evert',    x:f_vk, w:1-f_vk, col:'#C8720E', lbl:'Energieverteilung' },
+        ]
+      : [
+          { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
+        ]
+    },
     kanal_h: { h_mm: h_kanal_h, zones: [
       { id:'kanal_h', x:0, w:1, col:'#888', lbl:'' }
     ]},
