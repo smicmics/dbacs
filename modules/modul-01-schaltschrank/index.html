@@ -932,7 +932,7 @@ function loadProjFields() {
 loadProjFields();
 
 // ── Eingaben speichern / laden ────────────────────────────────
-const M1_INPUT_FIELDS = ['ke_pos','n_adern','querschnitt','d_max',
+const M1_INPUT_FIELDS = ['ke_pos','B','H','mp_b','mp_h','n_adern','querschnitt','d_max',
   'kanal_aktiv','h_kanal','zug_aktiv','fs_dim','fs_var','fs_zone'];
 
 // Speicherung erst aktiv nachdem gespeicherte Werte geladen wurden
@@ -951,10 +951,6 @@ function loadSavedInputs() {
   });
   const pre = localStorage.getItem('m01_si_preset');
   if (pre !== null) _v('preset_schrank', pre);
-  // Maße aus letzter Berechnung wiederherstellen (überschreibt Preset-Defaults)
-  [['B','m01_B'],['H','m01_H'],['mp_b','m01_mp_b'],['mp_h','m01_mp_h']].forEach(([id,key]) => {
-    const v = localStorage.getItem(key); if (v) _v(id, v);
-  });
   document.getElementById('h_kanal').disabled = gs('kanal_aktiv') !== 'ja';
   _m1SaveReady = true;
   lookupKabel();

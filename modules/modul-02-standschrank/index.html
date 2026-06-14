@@ -989,7 +989,7 @@ function loadProjFields() {
 loadProjFields();
 
 // ── Eingaben speichern / laden ────────────────────────────────
-const M2_INPUT_FIELDS = ['ke_pos','n_adern','querschnitt','d_max',
+const M2_INPUT_FIELDS = ['ke_pos','B','H','mp_b','mp_h','n_adern','querschnitt','d_max',
   'sockel_aktiv','h_sockel_option','kanal_aktiv','h_kanal','zug_aktiv',
   'fs_dim','fs_var','fs_zone'];
 
@@ -1009,9 +1009,6 @@ function loadSavedInputs() {
   });
   const pre = localStorage.getItem('m02_si_preset');
   if (pre !== null) _v('preset_schrank', pre);
-  [['B','m02_B'],['H','m02_H'],['mp_b','m02_mp_b'],['mp_h','m02_mp_h']].forEach(([id,key]) => {
-    const v = localStorage.getItem(key); if (v) _v(id, v);
-  });
   document.getElementById('h_kanal').disabled = gs('kanal_aktiv') !== 'ja';
   _m2SaveReady = true;
   onSockelChange();
