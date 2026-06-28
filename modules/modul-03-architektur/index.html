@@ -788,10 +788,15 @@ function calculateZones(b, h) {
     el.style.color = col || '';
   };
   if (h > 0) {
+    const te_evert  = Math.floor(b_inner / TE_BREITE_MM);
+    const te_leist  = n_felder > 1
+      ? Math.floor(b_leist / TE_BREITE_MM)
+      : Math.floor((b_leist - b_uss) / TE_BREITE_MM);
+    const te_steuer = Math.floor(b_steuer / TE_BREITE_MM);
     set('zh_einsp',   `${n_te_uss} TE · ${Math.round(b_uss)} mm`, '#D4A84B');
-    set('zh_evert',   h_evert   + ' mm');
-    set('zh_leist',   h_leist   + ' mm');
-    set('zh_steuer',  anordnung === 'nebeneinander' ? '= Leistung' : h_steuer + ' mm',
+    set('zh_evert',   `${te_evert} TE · ${h_evert} mm`);
+    set('zh_leist',   `${te_leist} TE · ${h_leist} mm`);
+    set('zh_steuer',  anordnung === 'nebeneinander' ? '= Leistung' : `${te_steuer} TE · ${h_steuer} mm`,
         anordnung === 'nebeneinander' ? '#666460' : '');
     set('zh_kanal_h', `${n_kanal_h}× ${h_kanal_h} = ${n_kanal_h*h_kanal_h} mm`, '#666');
     set('zh_klemm',   h_klemm   + ' mm');
