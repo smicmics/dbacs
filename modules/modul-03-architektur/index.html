@@ -720,6 +720,31 @@ function calculateZones(b, h) {
            b_leist, b_steuer, b_inner, h_gesamt, h_diff, passt };
 }
 
+// ── SVG-Text mit automatischem Zeilenumbruch ─────────────────
+function wrapSVGText(lbl, x, cy, zw, fs, extra='') {
+  const PAD = 6;
+  const cw  = fs * 0.58;
+  const maxChars = Math.max(1, Math.floor((zw - PAD) / cw));
+  const words = lbl.split(' ');
+  const lines = [];
+  let cur = '';
+  for (const w of words) {
+    const test = cur ? cur + ' ' + w : w;
+    if (test.length <= maxChars) { cur = test; }
+    else { if (cur) lines.push(cur); cur = w; }
+  }
+  if (cur) lines.push(cur);
+  if (lines.length === 1)
+    return `<text x="${x}" y="${cy}" dominant-baseline="middle" font-size="${fs}" ${extra}>${lines[0]}</text>`;
+  const lh = fs * 1.25;
+  const startY = cy - (lines.length - 1) * lh / 2;
+  let s = `<text font-size="${fs}" ${extra}>`;
+  lines.forEach((ln, i) => {
+    s += `<tspan x="${x}" ${i===0 ? `y="${startY}"` : `dy="${lh}"`} dominant-baseline="middle">${ln}</tspan>`;
+  });
+  return s + `</text>`;
+}
+
 // ── Layout-Zeilen aufbauen ────────────────────────────────────
 // Jede Zeile: { h_mm, zones:[{id,x,w,col,lbl,h_sub_mm?}] }
 // Einspeisung (USS) + Einsp.-Kl. immer LINKS – unabhängig von KE-Position
@@ -977,8 +1002,7 @@ function buildZoneSVG(zp) {
           s += `<rect x="${zx}" y="${fy}" width="${zw}" height="${rh}"
             fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw0}"/>`;
           if (rh >= 8 && fi === 0 && zone.lbl)
-            s += `<text x="${zx+3}" y="${fy+rh/2}" dominant-baseline="middle"
-              font-size="6" fill="${zone.col}" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
+            s += wrapSVGText(zone.lbl, zx+3, fy+rh/2, zw, 6, `fill="${zone.col}" font-family="system-ui,sans-serif"`);
         }
         fy += rh;
       }
@@ -1012,8 +1036,7 @@ function buildZoneSVG(zp) {
         fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw1}"/>`;
 
       if (rh >= 10 && zone.lbl)
-        s += `<text x="${zx+4}" y="${cy}" dominant-baseline="middle"
-          font-size="7.5" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
+        s += wrapSVGText(zone.lbl, zx+4, cy, zw, 7.5, `fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif"`);
     }
 
     // Maßlinie rechts je Zeile
@@ -1331,8 +1354,7 @@ function buildFullLayoutSVG() {
       s += `<rect x="${zx}" y="${zoneY}" width="${zw}" height="${rh}"
         fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw2}"/>`;
       if (rh >= 10 && zone.lbl)
-        s += `<text x="${zx+4}" y="${zoneY+rh/2}" dominant-baseline="middle"
-          font-size="7" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
+        s += wrapSVGText(zone.lbl, zx+4, zoneY+rh/2, zw, 7, `fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif"`);
     }
     s += `<line x1="${dimX}" y1="${zoneY}" x2="${dimX+4}" y2="${zoneY}" stroke="#3366BB" stroke-width="0.7"/>`;
     s += `<line x1="${dimX+2}" y1="${zoneY}" x2="${dimX+2}" y2="${zoneY+rh}" stroke="#3366BB" stroke-width="0.7"/>`;
