@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 14. Juni 2026 – Session 17
+**Stand:** 28. Juni 2026 – Session 18
 
 ---
 
@@ -35,7 +35,7 @@ dbacs/
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html   Modul 1 – Wandschrank, vollständig ✅
 │   ├── modul-02-standschrank/index.html    Modul 2 – Standschrank, vollständig ✅
-│   └── modul-03-architektur/index.html   Modul 3 – TE-Berechnung + Zonenaufteilung ✅
+│   └── modul-03-architektur/index.html     Modul 3 – TE-Berechnung + Zonenaufteilung ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html       Referenzzeichnung Wandschrank (nicht bearbeiten)
 │   └── standschrank_frontansicht.html      Referenzzeichnung Standschrank (nicht bearbeiten)
@@ -84,7 +84,7 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 - Schriftgrößen SVG: fs_dim=7, fs_var=6, fs_zone=7
 - Festwerte: h_handling_ke=15 mm, h_handling_zug_ke=20 mm, Faktor 4×
 - Projektfelder im Header (Projekt, Projektnummer, ASP, Bearbeitet von, Dokument-Nr.) → localStorage
-- Druckbutton: Ergebnis drucken (float-Layout, Hochformat, 2 Seiten)
+- Druckbutton: `printErgebnis()` → Querformat A4, Vollseiten-Ausdruck (beide Panels + SVG)
 - DBACS Logo im Header (screen + print), `../../web/assets/img/dbacs-logo.png`
 - Strichstärken proportional: `lw_s = Math.max(0.8, sc*8)`, `lw_mp = Math.max(0.4, sc*4)`
 
@@ -127,7 +127,7 @@ h_ke_mm = h_handling_ke_mm + h_kabel_bieg_mm + h_zug_ke_mm + h_handling_zug_ke_m
 
 ---
 
-### Modul 3 – vollständig funktionsfähig ✅ (Sessions 10–15)
+### Modul 3 – vollständig funktionsfähig ✅ (Sessions 10–18)
 **Titel:** „Modul 3 · TE-Berechnung · Architektur · Innenaufbau"
 **Datei:** `modules/modul-03-architektur/index.html`
 
@@ -222,16 +222,6 @@ Nebeneinander: h_leist = h_steuer = ceil5(h_verfueg/2), b_leist = floor(b_inner/
 - `useEvKanal = false` (Schienensystem Ja): Evert volle Breite – Anschluss seitlich über V.Kanal
 - `useEvKanal = true` (kein Schiene / WS): linker V.Kanal sichtbar in Evert-Zone (Kabel muss Montageplattenkante erreichen)
 
-**Quellen-Texte Tabelle (srcEvert):**
-- DS + Schiene Ja: „60-mm-Schienensystem X-polig mit NH-Trennern · Festwert Y mm"
-- DS + Schiene Nein: „15 mm Handling + 75 mm Sicherungsträger (D0 3~) + 15 mm Handling = 105 mm → aufger. 105 mm"
-- WS: „15 mm Handling + 75 mm Sicherungsträger (1~) + 15 mm Handling = 105 mm → aufger. 105 mm"
-
-**Klemmen-Quellentexte (srcKlemm):**
-- `srcKlemmL`: `15 mm Handling + 65 mm Klemme (4 mm²) + 15 mm Handling`
-- `srcKlemmF`: `15 mm Handling + 65 mm Klemme (1,5 mm², Ventile/Klappen) + 15 mm Handling`
-- `srcKlemmS`: `15 mm Handling + 65 mm Klemme (1 mm²) + 15 mm Handling` (kein Kabeltyp!)
-
 **localStorage – Modul 3 schreibt:**
 ```
 m03_zone_modus, m03_zone_anordnung, m03_zone_netztyp, m03_zone_ke_pos, m03_n_felder
@@ -239,41 +229,32 @@ m03_zone_schiene, m03_zone_schiene_pol
 m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03_b_steuer
 ```
 
-#### Druckbutton „Vollständiges Layout drucken" (aktualisiert Session 17)
+#### Druckbutton „Vollständiges Layout drucken"
 
 **Funktion:** `buildFullLayoutSVG()` – erzeugt kombiniertes SVG des vollständigen Schranks
 
-**Datenquellen:**
-- `schrank_typ` → Präfix `m01` (Wandschrank) oder `m02` (Standschrank)
-- localStorage mXX_*: Cabinet-Maße + alle KE-Zonen + Sockel (m02_h_sockel_mm, m02_sockel_aktiv)
-- `proj-name`, `proj-nummer`, `proj-asp`, `proj-engineer` → Projektkopf-Streifen im SVG
-- `calculateZones(b_mb, h_mb)` + `buildLayout(zp)` → M3-Zonen
-
-**SVG-Dimensionierung (landscape-freundlich):**
-```
-PH = 36       Projektkopf-Streifen (fill #EFEFEC)
-PT = 36       Freiraum über Schrank (Pfeil KE oben)
-SVG_H = 440   Schrankhöhe in Pixel (fest)
-PB = 68       Freiraum unter Schrank/Sockel (B-Maßkette + Pfeil KE unten)
-PL = 50, PR = 180
-VW = max(PL + sw + PR, 950)   Mindestbreite → VH/VW ≤ 0,69 für A4 quer
-VH = PH + PT + SVG_H + sock_px + PB
-```
-
-**SVG-Inhalt:**
-- **Projektkopf-Streifen** (y=0–PH): Modulbezeichnung + Schranktyp/Maße links, Projektdaten rechts
-- Schrankrahmen (B×H), Montageplatte (gestrichelt)
-- **Sockel** (Standschrank): hellgrau `#D4D4D0`, Maßkette gleiche Spalte wie Zonenpfeile
-- KE-Zonen in M1/M2-Farben (Handling grün, Biegeradius orange, Zug amber, Handling_Zug teal, Kanal lila)
-- M3-Zonen (Klemmen, Kanäle, L/S, Evert) – gleiche Farben wie buildZoneSVG()
-- Maßlinien rechts: je M3-Zone + KE-Gesamt + Sockel (dimX = sx+sw+6, lblX = sx+sw+14)
-- H-Gesamtmaßkette (Schrank ohne Sockel) bei ox = sx+sw+90
-- B-Maßkette unterhalb Schrank+Sockel
-- Kabeleinführungs-Pfeil außen (grün #2DBD8E), Richtung je ke_pos
-
 **Print-CSS `body.print-full`:**
-- Header, .layout, .site-footer ausgeblendet (screen + print) – Projektkopf liegt im SVG
+- Header, .layout, .site-footer ausgeblendet – Projektkopf liegt im SVG
 - SVG: `width:100%; height:auto` – landscape ratio garantiert durch VW_min=950
+
+**SVG-Header (Corporate Design, im SVG eingebettet):**
+- Grauer Balken (fill `#EFEFEC`, Höhe PH=54), Trennlinie `#BBBBBB`
+- Logo links, Titel + Schrankinfo, vertikale Trennung bei x=348, Projektfelder rechts
+- Footer: Linie + „Stand: DD.MM.YYYY" links, „Seite 1 von 1" mittig
+
+#### Druckbutton „Ergebnis drucken" (alle 3 Module, Session 18)
+
+**Funktion:** `printErgebnis()` – injiziert `@page{size:A4 landscape;margin:10mm 12mm}` per JS, ruft `window.print()` auf (kein Container-Switching)
+
+**Vollseiten-Ausdruck** (Seitenleiste + SVG/Ergebnistabelle), gleicher Inhalt wie Bildschirm
+
+**Corporate Header im `@media print`** (alle 3 Module identisch):
+- `header { background:#EFEFEC !important; border-bottom:1.5px solid #BBBBBB; ... }`
+- Logo 40×40, Titel, vertikale Trennlinie via `border-left:1px solid #CCC` auf `.proj-fields`
+- `.proj-field input { color:#111 !important; border-bottom:0.5px solid #BBB; }`
+- `-webkit-print-color-adjust:exact; print-color-adjust:exact` – erzwingt Hintergrundfarbe im Druck
+
+**Fieldsets page-break-safe:** `break-inside:avoid; page-break-inside:avoid` auf `fieldset`
 
 ---
 
@@ -309,14 +290,13 @@ VH = PH + PT + SVG_H + sock_px + PB
 5. Mehrere Felder + Nebeneinander: aktuell disabled; Konzept für feldweise Nebeneinander-Anordnung
 
 **Nächste Schritte (Prio hoch)**
-6. Vollständiges Layout: optische Restfehler beheben (offen nach Session 17)
-7. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
-8. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
-9. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
+6. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
+7. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
+8. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
 
 **Später**
-10. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
-11. Startseite: Screenshot-Vorschau je Modul ergänzen
+9. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
+10. Startseite: Screenshot-Vorschau je Modul ergänzen
 
 ---
 
@@ -363,9 +343,18 @@ VH = PH + PT + SVG_H + sock_px + PB
 - Anordnung L/S gesperrt (disabled) wenn Modus „Mehrere Felder"
 - KE-Position bestimmt Zonenreihenfolge (kommt aus Modul 1/2 via localStorage, read-only)
 
+**Drucklayout (Session 18 – gesperrt)**
+- Alle 3 Module: `printErgebnis()` injiziert `@page{size:A4 landscape;margin:10mm 12mm}` per JS-`<style>`-Element (NICHT innerhalb `@media print` – wird von Browsern ignoriert)
+- Vollseiten-Ausdruck: Seitenleiste + SVG/Grafik + Ergebnistabelle (kein Container-Switching)
+- Corporate Header im `@media print`: `background:#EFEFEC`, `border-bottom:1.5px solid #BBBBBB`, Logo 40×40, Titelblock, `border-left:1px solid #CCC` als Separator zu Projektfeldern
+- Hintergrundfarbe erzwingen: `-webkit-print-color-adjust:exact; print-color-adjust:exact` auf `header`
+- Projektfelder: `color:#111 !important` auf `.proj-field input` (überschreibt graue Dok.-Nr.-Farbe)
+- `fieldset { break-inside:avoid; page-break-inside:avoid }` in allen 3 Modulen
+- Modul 3 `.field .lbl`: `overflow:hidden` + `.field .var`: `white-space:normal; word-break:break-all` (verhindert Überlauf langer Variablennamen in Nachbarspalte)
+
 **Persistenz Modul 1 + 2 (Session 17)**
 - Alle Eingabefelder inkl. B, H, mp_b, mp_h in `M1_INPUT_FIELDS` / `M2_INPUT_FIELDS` → gespeichert via `m01_si_*` / `m02_si_*`
-- `_m1SaveReady` / `_m2SaveReady` Flag: `saveInputs()` ist bis zum Abschluss von `loadSavedInputs()` blockiert (verhindert Überschreiben durch initialen `calculate()`-Aufruf vor DB-Load)
+- `_m1SaveReady` / `_m2SaveReady` Flag: `saveInputs()` ist bis zum Abschluss von `loadSavedInputs()` blockiert
 - Preset-Index gesondert als `m01_si_preset` / `m02_si_preset`
 - Navigation → Modul 3: `gotoModul3()` setzt `m03_autoselect`, Modul 3 wählt Schranktyp automatisch
 
