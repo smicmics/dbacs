@@ -233,19 +233,22 @@ body.print-ergebnis #print-ergebnis-container { display:block !important; paddin
   body.print-ergebnis .site-footer { display:none !important; }
   body.print-ergebnis #print-ergebnis-container { display:block !important; }
 }
-/* Kopf-/Fußzeile im Ergebnis-Ausdruck */
+/* Kopf-/Fußzeile im Ergebnis-Ausdruck – gleiche Optik wie SVG-Header */
 .pe-header {
-  display:flex; align-items:flex-start; gap:12px;
-  padding-bottom:10px; border-bottom:1.5px solid #888; margin-bottom:14px;
+  display:flex; align-items:center; gap:0;
+  background:#EFEFEC; border-bottom:1.5px solid #BBBBBB;
+  margin-bottom:14px; padding:8px 10px; min-height:54px;
 }
-.pe-header img { height:44px; width:44px; object-fit:contain; flex-shrink:0; }
-.pe-header .title h1 { font-size:14px; font-weight:700; color:#000; margin:0 0 2px; }
-.pe-header .title p  { font-size:10px; color:#555; margin:0; }
-.pe-fields { display:flex; gap:14px; flex-wrap:wrap; margin-left:auto; align-items:flex-end; }
-.pe-field  { display:flex; flex-direction:column; gap:2px; }
-.pe-field label { font-size:7px; color:#888; text-transform:uppercase; letter-spacing:.05em; }
-.pe-field span  { font-size:9.5px; color:#111; font-weight:500;
-  border-bottom:1px solid #ccc; min-width:65px; padding-bottom:1px; }
+.pe-header img { height:40px; width:40px; object-fit:contain; flex-shrink:0; margin-right:10px; }
+.pe-header .title { flex-shrink:0; }
+.pe-header .title h1 { font-size:11px; font-weight:700; color:#111; margin:0 0 2px; }
+.pe-header .title p  { font-size:8px; color:#555; margin:0; }
+.pe-header .pe-sep  { width:1px; background:#CCC; align-self:stretch; margin:4px 14px; flex-shrink:0; }
+.pe-fields { display:flex; gap:0; flex:1; align-items:center; }
+.pe-field  { display:flex; flex-direction:column; gap:1px; flex:1; padding-right:10px; }
+.pe-field label { font-size:6px; color:#888; text-transform:uppercase; letter-spacing:.05em; }
+.pe-field span  { font-size:8.5px; color:#111; font-weight:500;
+  border-bottom:0.5px solid #BBB; padding-bottom:2px; }
 .pe-footer { margin-top:18px; }
 .pe-footer hr  { border:none; border-top:1px solid #bbb; margin-bottom:5px; }
 .pe-foot-row   { display:flex; align-items:center; font-size:8px; color:#666; }
@@ -1275,6 +1278,7 @@ function printErgebnis() {
       <h1>Modul 3 · TE-Berechnung · Architektur · Innenaufbau</h1>
       <p>GA-Planung · Schaltschrank-Dimensionierung</p>
     </div>
+    <div class="pe-sep"></div>
     <div class="pe-fields">
       ${field('PROJEKT',  val('proj-name'))}
       ${field('NR.',      val('proj-nummer'))}
