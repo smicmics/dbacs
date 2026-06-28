@@ -764,7 +764,7 @@ function calculateZones(b, h) {
 // ── SVG-Text mit automatischem Zeilenumbruch ─────────────────
 function wrapSVGText(lbl, x, cy, zw, fs, extra='') {
   const PAD = 6;
-  const cw  = fs * 0.58;
+  const cw  = fs * 0.63;
   const maxChars = Math.max(1, Math.floor((zw - PAD) / cw));
   const words = lbl.split(/(?<=-)|[ ]/).filter(Boolean);
   const lines = [];
@@ -1301,7 +1301,7 @@ function buildFullLayoutSVG() {
   const sock_px = sockel_aktiv ? Math.round(h_sockel * sc) : 0;
 
   const PH = 54;                              // Projektkopf-Streifen
-  const PL = 50, PT = 28, PR = 180, PB = 68;
+  const PL = 50, PT = 28, PR = 180, PB = 90;
   const VW  = Math.max(PL + sw + PR, 950);   // Mindestbreite für Querformat
   const VH  = PH + PT + SVG_H + sock_px + PB;
 
@@ -1458,6 +1458,17 @@ function buildFullLayoutSVG() {
     s += `<text x="${arrowCx+6}" y="${baseY}" dominant-baseline="middle"
       font-size="9" fill="#2DBD8E" font-family="system-ui,sans-serif">Kabeleinführung</text>`;
   }
+
+  // ── Fußzeile ─────────────────────────────────────────────────
+  const footY = VH - 22;
+  const now = new Date();
+  const dateStr = String(now.getDate()).padStart(2,'0') + '.' +
+                  String(now.getMonth()+1).padStart(2,'0') + '.' + now.getFullYear();
+  s += `<line x1="0" y1="${footY}" x2="${VW}" y2="${footY}" stroke="#BBBBBB" stroke-width="0.7"/>`;
+  s += `<text x="8" y="${footY+10}" dominant-baseline="middle"
+    font-size="7.5" fill="#666" font-family="system-ui,sans-serif">Stand: ${dateStr}</text>`;
+  s += `<text x="${VW/2}" y="${footY+10}" dominant-baseline="middle" text-anchor="middle"
+    font-size="7.5" fill="#666" font-family="system-ui,sans-serif">Seite 1 von 1</text>`;
 
   // ── SVG-Wrapper ───────────────────────────────────────────────
   return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
