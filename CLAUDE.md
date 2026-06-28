@@ -287,6 +287,13 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Hint-Text bei fehlendem localStorage-Wert: Link zur Startseite
 - `class="copyright-line"` – Copyright-Absatz im Druck ausgeblendet (`display:none !important`)
 
+### Code-Review Fixes (Session 19, gesperrt)
+- `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
+- `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
+- `saveProjFields()` M1+M2: `proj-docnr` nach `updateDocNr()` in localStorage geschrieben
+- `calculate()` M1+M2: `if (!H || !B) return` – Guard gegen Division durch Null (sc = SH/H)
+- Toter CSS/HTML-Code in M3 entfernt (`body.print-ergebnis`-Blöcke, `#print-ergebnis-container`)
+
 ### Modul 3 – Sidebar Zonen-Anzeige (Session 19, gesperrt)
 - Energieverteilung, Leistungsbaugr., Steuerbaugr./DDC zeigen `TE · mm` in Zonenfarbe
 - Energieverteilung: `Math.floor(b_inner / TE_BREITE_MM)` TE · `h_evert` mm · Farbe `#C8720E`

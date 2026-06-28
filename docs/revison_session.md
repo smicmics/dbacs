@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 28. Juni 2026 – Session 19
+**Stand:** 28. Juni 2026 – Session 19 (Code-Review abgeschlossen)
 
 ---
 
@@ -291,10 +291,10 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 5. Mehrere Felder + Nebeneinander: aktuell disabled; Konzept für feldweise Nebeneinander-Anordnung
 
 **Nächste Schritte (Prio hoch)**
-6. Code-Review alle 3 Module (Variablenkonsistenz, Formelkorrektheit, localStorage-Konsistenz, Randfälle)
-7. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
-7. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
-8. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
+6. ~~Code-Review alle 3 Module~~ ✅ abgeschlossen Session 19
+7. Modul 4 – Einspeisezone / Leistungszone (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen, Geräte befüllen)
+8. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
+9. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
 
 **Später**
 9. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
@@ -352,6 +352,15 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 - Keine Typbezeichnungen in srcKlemm-Texten (kein Kabeltyp, kein Herstellertyp)
 - Anordnung L/S gesperrt (disabled) wenn Modus „Mehrere Felder"
 - KE-Position bestimmt Zonenreihenfolge (kommt aus Modul 1/2 via localStorage, read-only)
+
+**Code-Review Fixes (Session 19 – gesperrt)**
+- M3: `buildFullLayoutSVG()` – `h_mb_layout = mp_h − h_ke + h_abst` (fehlender h_abst-Term korrigiert)
+- M3: `h_kanal_h_mm` + `b_kanal_v_mm` werden in `saveZoneInputs()`/`loadZoneInputs()` persistiert
+- M3: Toter CSS-Code (`body.print-ergebnis`) und `#print-ergebnis-container` entfernt
+- M3: Kommentar korrigiert: `ceil5(95) = 95 mm` (nicht 85 mm)
+- M1+M2: `proj-docnr` nach `updateDocNr()` in localStorage gespeichert → erscheint im Vollständigen Layout
+- M1+M2: Guard gegen Division durch Null: `if (!H || !B) return` am Anfang von `calculate()`
+- CLAUDE.md: `TE_BREITE_MM = 18,0 mm` (DIN 43880), `H_KLEMME_STD = 65 mm`, `h_klemm = 95 mm`
 
 **Drucklayout (Session 18 – gesperrt)**
 - Alle 3 Module: `printErgebnis()` injiziert `@page{size:A4 landscape;margin:10mm 12mm}` per JS-`<style>`-Element (NICHT innerhalb `@media print` – wird von Browsern ignoriert)
