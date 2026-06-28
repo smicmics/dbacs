@@ -122,18 +122,38 @@ legend{
 
 @media print{
   body{background:#fff;color:#000;}
-  header{display:flex;align-items:flex-start;gap:12px;width:100%;background:#fff !important;border-bottom:1.5px solid #888;padding-bottom:10px;}
-  header .title h1{font-size:16px;color:#000;}
-  header .title p{font-size:11px;color:#444;}
+  /* ── Corporate Header ── */
+  header{
+    display:flex !important;align-items:center;gap:0;
+    background:#EFEFEC !important;border-bottom:1.5px solid #BBBBBB;
+    padding:8px 10px;min-height:54px;margin-bottom:10px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .header-logo{height:40px;width:40px;object-fit:contain;flex-shrink:0;margin-right:10px;}
+  header .title{flex-shrink:0;}
+  header .title h1{font-size:11px;font-weight:700;color:#111;margin:0 0 2px;}
+  header .title p{font-size:8px;color:#555;margin:0;}
   .copyright-line{display:none !important;}
   header a{display:none;}
-  .header-logo{height:44px;width:44px;object-fit:contain;}
+  .proj-fields{
+    display:flex !important;gap:0;flex:1;align-items:center;
+    border-left:1px solid #CCC;padding-left:14px;margin-left:14px;
+  }
+  .proj-field{display:flex;flex-direction:column;gap:1px;flex:1;padding-right:10px;}
+  .proj-field label{font-size:6px;color:#888;text-transform:uppercase;letter-spacing:.05em;}
+  .proj-field input{
+    font-size:8.5px;color:#111 !important;font-weight:500;
+    border:none;border-bottom:0.5px solid #BBB;background:transparent;
+    padding:0 0 2px;width:100%;text-align:left;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  /* ── Layout ── */
   .site-footer{display:none !important;}
   .btn-print{display:none !important;}
   .layout{display:block;min-height:0;}
-  .panel-in{float:left;width:280px;background:#fff;border:none;overflow:visible;padding:10px 12px;}
-  .panel-out{margin-left:295px;overflow:visible;padding:10px 12px;}
-  fieldset{border-color:#ccc;background:#fff;}
+  .panel-in{float:left;width:260px;background:#fff;border:none;overflow:visible;padding:6px 10px;}
+  .panel-out{margin-left:275px;overflow:visible;padding:6px 10px;}
+  fieldset{border-color:#ccc;background:#fff;break-inside:avoid;page-break-inside:avoid;}
   legend{color:#444;}
   .field input,.field select{border-color:#ccc;background:#fff;color:#000;}
   .field .lbl{color:#222;}
@@ -1269,42 +1289,11 @@ function loadProjFields() {
 
 // ── Ergebnis drucken ──────────────────────────────────────────
 function printErgebnis() {
-  const val = id => (document.getElementById(id) || {}).value || '';
-  const field = (lbl, v) => `<div class="pe-field"><label>${lbl}</label><span>${v || '–'}</span></div>`;
-  const now = new Date();
-  const dateStr = String(now.getDate()).padStart(2,'0') + '.' +
-                  String(now.getMonth()+1).padStart(2,'0') + '.' + now.getFullYear();
-  const header = `<div class="pe-header">
-    <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS">
-    <div class="title">
-      <h1>Modul 3 · TE-Berechnung · Architektur · Innenaufbau</h1>
-      <p>GA-Planung · Schaltschrank-Dimensionierung</p>
-    </div>
-    <div class="pe-sep"></div>
-    <div class="pe-fields">
-      ${field('PROJEKT',  val('proj-name'))}
-      ${field('NR.',      val('proj-nummer'))}
-      ${field('ASP',      val('proj-asp'))}
-      ${field('BEARB.',   val('proj-engineer'))}
-      ${field('DOK.-NR.', val('proj-docnr'))}
-    </div>
-  </div>`;
-  const footer = `<div class="pe-footer"><hr>
-    <div class="pe-foot-row">
-      <span>Stand: ${dateStr}</span>
-      <span class="pe-foot-center">Seite 1 von 1</span>
-      <span></span>
-    </div>
-  </div>`;
-  document.getElementById('print-ergebnis-container').innerHTML =
-    header + document.getElementById('results-area').innerHTML + footer;
-  document.body.classList.add('print-ergebnis');
   const ps = document.createElement('style');
   ps.id = 'pes';
   ps.textContent = '@page{size:A4 landscape;margin:10mm 12mm}';
   document.head.appendChild(ps);
   window.print();
-  document.body.classList.remove('print-ergebnis');
   document.head.removeChild(ps);
 }
 
