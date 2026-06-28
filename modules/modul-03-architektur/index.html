@@ -796,8 +796,7 @@ function calculateZones(b, h) {
     set('zh_einsp',   `${n_te_uss} TE · ${Math.round(b_uss)} mm`, '#D4A84B');
     set('zh_evert',   `${te_evert} TE · ${h_evert} mm`);
     set('zh_leist',   `${te_leist} TE · ${h_leist} mm`);
-    set('zh_steuer',  anordnung === 'nebeneinander' ? '= Leistung' : `${te_steuer} TE · ${h_steuer} mm`,
-        anordnung === 'nebeneinander' ? '#666460' : '');
+    set('zh_steuer',  `${te_steuer} TE · ${h_steuer} mm`, '#4BBECA');
     set('zh_kanal_h', `${n_kanal_h}× ${h_kanal_h} = ${n_kanal_h*h_kanal_h} mm`, '#666');
     set('zh_klemm',   h_klemm   + ' mm');
     set('zh_gesamt',  h_gesamt  + ' mm');
