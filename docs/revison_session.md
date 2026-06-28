@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 28. Juni 2026 – Session 18
+**Stand:** 28. Juni 2026 – Session 19
 
 ---
 
@@ -227,6 +227,7 @@ Nebeneinander: h_leist = h_steuer = ceil5(h_verfueg/2), b_leist = floor(b_inner/
 m03_zone_modus, m03_zone_anordnung, m03_zone_netztyp, m03_zone_ke_pos, m03_n_felder
 m03_zone_schiene, m03_zone_schiene_pol
 m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03_b_steuer
+m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Modul 4)
 ```
 
 #### Druckbutton „Vollständiges Layout drucken"
@@ -290,7 +291,8 @@ m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03
 5. Mehrere Felder + Nebeneinander: aktuell disabled; Konzept für feldweise Nebeneinander-Anordnung
 
 **Nächste Schritte (Prio hoch)**
-6. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
+6. Code-Review alle 3 Module (Variablenkonsistenz, Formelkorrektheit, localStorage-Konsistenz, Randfälle)
+7. Modul 4 – Einspeisezone h_einsp (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen)
 7. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
 8. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
 
@@ -329,6 +331,14 @@ m03_b_uss, m03_h_evert, m03_h_leist, m03_h_steuer, m03_h_klemm, m03_b_leist, m03
 - `schrank_typ` wird nicht aus localStorage wiederhergestellt – Start immer „— bitte wählen —"
 - `typLabel` ohne Modulangabe: „Wandschrank" / „Standschrank"
 - Copyright: `class="copyright-line"` + `@media print { .copyright-line { display:none !important } }`
+
+**Modul 3 – Sidebar Zonen-Anzeige (Session 19 – gesperrt)**
+- Energieverteilung, Leistungsbaugr., Steuerbaugr./DDC zeigen jetzt `TE · mm` (TE = Breiten-TE der Zone)
+- Leistungsbaugr. bei n_felder > 1: größtes Feld (ohne ÜSS-Reservierung) → `Math.floor(b_leist / TE_BREITE_MM)`
+- Leistungsbaugr. bei n_felder = 1: `Math.floor((b_leist - b_uss) / TE_BREITE_MM)`
+- Energieverteilung TE: `Math.floor(b_inner / TE_BREITE_MM)`
+- Steuerbaugr./DDC TE: `Math.floor(b_steuer / TE_BREITE_MM)` – auch im Nebeneinander-Modus (kein `= Leistung` mehr)
+- Textfarben Sidebar: Energieverteilung `#C8720E`, Leistungsbaugr. `#C84E2E`, Steuerbaugr. `#4BBECA`
 
 **Modul 3 – Zonenaufteilung (gesperrt)**
 - Mindesthöhen basieren auf physikalischen Festwerten (wie h_ke-Logik), keine Prozent-Eingabe

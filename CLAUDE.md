@@ -287,6 +287,13 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Hint-Text bei fehlendem localStorage-Wert: Link zur Startseite
 - `class="copyright-line"` – Copyright-Absatz im Druck ausgeblendet (`display:none !important`)
 
+### Modul 3 – Sidebar Zonen-Anzeige (Session 19, gesperrt)
+- Energieverteilung, Leistungsbaugr., Steuerbaugr./DDC zeigen `TE · mm` in Zonenfarbe
+- Energieverteilung: `Math.floor(b_inner / TE_BREITE_MM)` TE · `h_evert` mm · Farbe `#C8720E`
+- Leistungsbaugr.: n_felder > 1 → `Math.floor(b_leist / TE_BREITE_MM)`, sonst `Math.floor((b_leist - b_uss) / TE_BREITE_MM)` · `h_leist` mm · Farbe `#C84E2E`
+- Steuerbaugr./DDC: `Math.floor(b_steuer / TE_BREITE_MM)` TE · `h_steuer` mm · Farbe `#4BBECA` (auch Nebeneinander – kein `= Leistung` mehr)
+- localStorage Modul 3 → Modul 4: `m03_n_te`, `m03_b_kanal_v`, `m03_h_kanal_h`, `m03_b_ek` (in `calculateZones()` geschrieben)
+
 ### Modul 3 – Zonenaufteilung (gesperrt)
 - Mindesthöhen basieren auf physikalischen Festwerten (analog h_ke-Logik), **keine Prozent-Eingabe**
 - `ceil5(v)` = `Math.ceil(v/5)*5` – alle Mindesthöhen auf 5 mm aufgerundet
