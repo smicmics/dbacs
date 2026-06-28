@@ -1331,7 +1331,7 @@ function buildFullLayoutSVG() {
   s += `<text x="56" y="20" font-size="10" font-weight="700" fill="#111" font-family="system-ui,sans-serif">Modul 3 · TE-Berechnung · Architektur · Innenaufbau</text>`;
   s += `<text x="56" y="33" font-size="8" fill="#555" font-family="system-ui,sans-serif">GA-Planung · Schaltschrank-Dimensionierung</text>`;
   s += `<text x="56" y="46" font-size="8" fill="#444" font-family="system-ui,sans-serif">${typLabel} · ${B} × ${H} mm${sockel_aktiv ? ` · Sockel ${h_sockel} mm` : ''}</text>`;
-  s += `<line x1="268" y1="8" x2="268" y2="${PH-8}" stroke="#CCCCCC" stroke-width="0.6"/>`;
+  s += `<line x1="348" y1="8" x2="348" y2="${PH-8}" stroke="#CCCCCC" stroke-width="0.6"/>`;
   const pfields = [
     { lbl:'PROJEKT',  val: projName },
     { lbl:'NR.',      val: projNr   },
@@ -1339,12 +1339,12 @@ function buildFullLayoutSVG() {
     { lbl:'BEARB.',   val: projEngineer },
     { lbl:'DOK.-NR.', val: localStorage.getItem('proj-docnr') || '' },
   ];
-  const fStart = 275, fEnd = VW - 6, fW = Math.floor((fEnd - fStart) / pfields.length);
+  const fStart = 355, fEnd = VW - 6, fW = Math.floor((fEnd - fStart) / pfields.length);
   pfields.forEach(({ lbl, val }, i) => {
     const fx = fStart + i * fW;
-    s += `<text x="${fx}" y="19" font-size="6.5" fill="#888" font-family="system-ui,sans-serif">${lbl}</text>`;
-    s += `<text x="${fx}" y="36" font-size="9.5" fill="#111" font-weight="500" font-family="system-ui,sans-serif">${val || '-'}</text>`;
-    s += `<line x1="${fx}" y1="41" x2="${fx+fW-4}" y2="41" stroke="#BBBBBB" stroke-width="0.5"/>`;
+    s += `<text x="${fx}" y="19" font-size="6" fill="#888" font-family="system-ui,sans-serif">${lbl}</text>`;
+    s += `<text x="${fx}" y="35" font-size="8.5" fill="#111" font-weight="500" font-family="system-ui,sans-serif">${val || '-'}</text>`;
+    s += `<line x1="${fx}" y1="40" x2="${fx+fW-4}" y2="40" stroke="#BBBBBB" stroke-width="0.5"/>`;
   });
 
   // ── Schrankrahmen ─────────────────────────────────────────────
