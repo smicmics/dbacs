@@ -1,0 +1,352 @@
+[
+  {
+    "artikel_nr": "W-Series 1010200000",
+    "bezeichnung": "Durchgangsklemme W 2.5 N, 2,5 mm², grau",
+    "hersteller": "Weidmüller",
+    "bauteil_typ": "klemme",
+    "te_breite": 1,
+    "h_mm": 47,
+    "zone": "klemmen",
+    "preis_eur": 1.20
+  },
+  {
+    "artikel_nr": "W-Series 1010210000",
+    "bezeichnung": "Durchgangsklemme W 4 N, 4 mm², grau",
+    "hersteller": "Weidmüller",
+    "bauteil_typ": "klemme",
+    "te_breite": 1,
+    "h_mm": 47,
+    "zone": "klemmen",
+    "preis_eur": 1.50
+  },
+  {
+    "artikel_nr": "W-Series 1010220000",
+    "bezeichnung": "Durchgangsklemme W 6 N, 6 mm², grau",
+    "hersteller": "Weidmüller",
+    "bauteil_typ": "klemme",
+    "te_breite": 1,
+    "h_mm": 47,
+    "zone": "klemmen",
+    "preis_eur": 1.90
+  },
+  {
+    "artikel_nr": "W-Series 1010250000",
+    "bezeichnung": "Durchgangsklemme W 10 N, 10 mm², grau",
+    "hersteller": "Weidmüller",
+    "bauteil_typ": "klemme",
+    "te_breite": 1,
+    "h_mm": 56,
+    "zone": "klemmen",
+    "preis_eur": 2.40
+  },
+  {
+    "artikel_nr": "W-Series 1010290000",
+    "bezeichnung": "Schutzleiterklemme WPE 2.5 N, PE 2,5 mm², gelb/grün",
+    "hersteller": "Weidmüller",
+    "bauteil_typ": "klemme",
+    "te_breite": 1,
+    "h_mm": 47,
+    "zone": "klemmen",
+    "preis_eur": 1.30
+  },
+  {
+    "artikel_nr": "W-Series 1012600000",
+    "bezeichnung": "Verbindungsbrücke WQV 2.5/2, 10-polig, für W 2.5 N",
+    "hersteller": "Weidmüller",
+    "bauteil_typ": "sonstige",
+    "te_breite": 0,
+    "h_mm": 0,
+    "zone": "klemmen",
+    "preis_eur": 2.80
+  },
+  {
+    "artikel_nr": "3209517",
+    "bezeichnung": "Durchgangsklemme ST 2.5, 2,5 mm², grau",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "te_breite": 1,
+    "h_mm": 47,
+    "zone": "klemmen",
+    "preis_eur": 1.15
+  },
+  {
+    "artikel_nr": "3209559",
+    "bezeichnung": "Durchgangsklemme ST 4, 4 mm², grau",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "te_breite": 1,
+    "h_mm": 47,
+    "zone": "klemmen",
+    "preis_eur": 1.45
+  },
+  {
+    "artikel_nr": "3209562",
+    "bezeichnung": "Schutzleiterklemme ST 2.5-PE, 2,5 mm², gelb/grün",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "te_breite": 1,
+    "h_mm": 47,
+    "zone": "klemmen",
+    "preis_eur": 1.25
+  },
+  {
+    "artikel_nr": "3240308",
+    "bezeichnung": "Querbrücker FBS 10-5, 10-polig für ST 2.5/4",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "sonstige",
+    "te_breite": 0,
+    "h_mm": 0,
+    "zone": "klemmen",
+    "preis_eur": 3.10
+  },
+  {
+    "artikel_nr": "3RT2015-1AB01",
+    "bezeichnung": "Schütz AC-3, 7 A, 3 kW / 400 V, 24 V AC 50/60 Hz",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "te_breite": 2,
+    "h_mm": 70,
+    "zone": "leistung",
+    "preis_eur": 19.50
+  },
+  {
+    "artikel_nr": "3RT2015-1BB41",
+    "bezeichnung": "Schütz AC-3, 7 A, 3 kW / 400 V, 24 V DC",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "te_breite": 2,
+    "h_mm": 70,
+    "zone": "leistung",
+    "preis_eur": 22.00
+  },
+  {
+    "artikel_nr": "3RT2016-1BB41",
+    "bezeichnung": "Schütz AC-3, 9 A, 4 kW / 400 V, 24 V DC",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "te_breite": 2,
+    "h_mm": 70,
+    "zone": "leistung",
+    "preis_eur": 24.50
+  },
+  {
+    "artikel_nr": "3RT2023-1BB40",
+    "bezeichnung": "Schütz AC-3, 12 A, 5,5 kW / 400 V, 24 V DC",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "te_breite": 3,
+    "h_mm": 80,
+    "zone": "leistung",
+    "preis_eur": 32.00
+  },
+  {
+    "artikel_nr": "3RT2025-1BB40",
+    "bezeichnung": "Schütz AC-3, 17 A, 7,5 kW / 400 V, 24 V DC",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "te_breite": 3,
+    "h_mm": 80,
+    "zone": "leistung",
+    "preis_eur": 38.00
+  },
+  {
+    "artikel_nr": "278488",
+    "bezeichnung": "DILM7-10(24VDC) Schütz 24VDC, 7 A, 3 kW / 400 V",
+    "hersteller": "Eaton",
+    "bauteil_typ": "schuetz",
+    "te_breite": 2,
+    "h_mm": 70,
+    "zone": "leistung",
+    "preis_eur": 21.00
+  },
+  {
+    "artikel_nr": "278492",
+    "bezeichnung": "DILM12-10(24VDC) Schütz 24VDC, 12 A, 5,5 kW / 400 V",
+    "hersteller": "Eaton",
+    "bauteil_typ": "schuetz",
+    "te_breite": 3,
+    "h_mm": 80,
+    "zone": "leistung",
+    "preis_eur": 28.00
+  },
+  {
+    "artikel_nr": "3RV2011-1AA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 1,0–1,6 A, 0,55 kW",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "te_breite": 3,
+    "h_mm": 77,
+    "zone": "leistung",
+    "preis_eur": 35.00
+  },
+  {
+    "artikel_nr": "3RV2011-1CA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 2,5–4,0 A, 1,5 kW",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "te_breite": 3,
+    "h_mm": 77,
+    "zone": "leistung",
+    "preis_eur": 35.00
+  },
+  {
+    "artikel_nr": "3RV2011-1EA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 4,0–6,3 A, 2,2 kW",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "te_breite": 3,
+    "h_mm": 77,
+    "zone": "leistung",
+    "preis_eur": 35.00
+  },
+  {
+    "artikel_nr": "3RV2011-1JA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 6,0–10 A, 4,0 kW",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "te_breite": 3,
+    "h_mm": 77,
+    "zone": "leistung",
+    "preis_eur": 37.00
+  },
+  {
+    "artikel_nr": "072735",
+    "bezeichnung": "PKZM0-1,6 Motorschutzschalter, Einstellung 1,0–1,6 A",
+    "hersteller": "Eaton",
+    "bauteil_typ": "motorschutz",
+    "te_breite": 3,
+    "h_mm": 77,
+    "zone": "leistung",
+    "preis_eur": 32.00
+  },
+  {
+    "artikel_nr": "072738",
+    "bezeichnung": "PKZM0-4 Motorschutzschalter, Einstellung 2,5–4,0 A",
+    "hersteller": "Eaton",
+    "bauteil_typ": "motorschutz",
+    "te_breite": 3,
+    "h_mm": 77,
+    "zone": "leistung",
+    "preis_eur": 33.00
+  },
+  {
+    "artikel_nr": "072739",
+    "bezeichnung": "PKZM0-6,3 Motorschutzschalter, Einstellung 4,0–6,3 A",
+    "hersteller": "Eaton",
+    "bauteil_typ": "motorschutz",
+    "te_breite": 3,
+    "h_mm": 77,
+    "zone": "leistung",
+    "preis_eur": 34.00
+  },
+  {
+    "artikel_nr": "5SL6106-7",
+    "bezeichnung": "LSS 5SL6 B6 A, 1-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "te_breite": 1,
+    "h_mm": 81,
+    "zone": "leistung",
+    "preis_eur": 8.50
+  },
+  {
+    "artikel_nr": "5SL6110-7",
+    "bezeichnung": "LSS 5SL6 B10 A, 1-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "te_breite": 1,
+    "h_mm": 81,
+    "zone": "leistung",
+    "preis_eur": 8.50
+  },
+  {
+    "artikel_nr": "5SL6116-7",
+    "bezeichnung": "LSS 5SL6 B16 A, 1-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "te_breite": 1,
+    "h_mm": 81,
+    "zone": "leistung",
+    "preis_eur": 8.80
+  },
+  {
+    "artikel_nr": "5SL6206-7",
+    "bezeichnung": "LSS 5SL6 B6 A, 2-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "te_breite": 2,
+    "h_mm": 81,
+    "zone": "leistung",
+    "preis_eur": 16.50
+  },
+  {
+    "artikel_nr": "5SL6210-7",
+    "bezeichnung": "LSS 5SL6 B10 A, 2-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "te_breite": 2,
+    "h_mm": 81,
+    "zone": "leistung",
+    "preis_eur": 17.00
+  },
+  {
+    "artikel_nr": "5SL6216-7",
+    "bezeichnung": "LSS 5SL6 C16 A, 2-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "te_breite": 2,
+    "h_mm": 81,
+    "zone": "leistung",
+    "preis_eur": 17.50
+  },
+  {
+    "artikel_nr": "1864135",
+    "bezeichnung": "PLC-RSC-24DC/21 Koppelrelais 24VDC, 1 Wechsler, 6 A",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "koppelrelais",
+    "te_breite": 1,
+    "h_mm": 75,
+    "zone": "steuerung",
+    "preis_eur": 14.50
+  },
+  {
+    "artikel_nr": "1461118",
+    "bezeichnung": "WR 24VDC/230VAC 8A 1CO Koppelrelais-Modul 24VDC, 1 Wechsler",
+    "hersteller": "Weidmüller",
+    "bauteil_typ": "koppelrelais",
+    "te_breite": 1,
+    "h_mm": 75,
+    "zone": "steuerung",
+    "preis_eur": 13.80
+  },
+  {
+    "artikel_nr": "2866690",
+    "bezeichnung": "QUINT-PS/1AC/24DC/2.5 Netzteil 1-Ph., 24 VDC / 2,5 A, 60 W",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "netzteil",
+    "te_breite": 2,
+    "h_mm": 130,
+    "zone": "steuerung",
+    "preis_eur": 145.00
+  },
+  {
+    "artikel_nr": "2866752",
+    "bezeichnung": "QUINT-PS/1AC/24DC/5 Netzteil 1-Ph., 24 VDC / 5 A, 120 W",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "netzteil",
+    "te_breite": 3,
+    "h_mm": 130,
+    "zone": "steuerung",
+    "preis_eur": 195.00
+  },
+  {
+    "artikel_nr": "2866763",
+    "bezeichnung": "QUINT-PS/1AC/24DC/10 Netzteil 1-Ph., 24 VDC / 10 A, 240 W",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "netzteil",
+    "te_breite": 4,
+    "h_mm": 130,
+    "zone": "steuerung",
+    "preis_eur": 280.00
+  }
+]

@@ -1,0 +1,160 @@
+[
+  {
+    "id": "luefter_1stufig_2kw",
+    "name": "Lüftermotor 1-stufig bis 2 kW",
+    "gewerk": "rlt",
+    "beschreibung": "Motorsteuerung für 1-stufige Lüfter bis 2 kW, mit Motorschutz und Schütz 24VDC",
+    "bauteile": [
+      { "artikel_nr": "3RV2011-1CA10", "menge": 1 },
+      { "artikel_nr": "3RT2015-1BB41", "menge": 1 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 4 },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+    ]
+  },
+  {
+    "id": "luefter_1stufig_5kw",
+    "name": "Lüftermotor 1-stufig bis 5,5 kW",
+    "gewerk": "rlt",
+    "beschreibung": "Motorsteuerung für 1-stufige Lüfter bis 5,5 kW, mit Motorschutz und Schütz 24VDC",
+    "bauteile": [
+      { "artikel_nr": "3RV2011-1EA10", "menge": 1 },
+      { "artikel_nr": "3RT2023-1BB40", "menge": 1 },
+      { "artikel_nr": "W-Series 1010210000", "menge": 4 },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+    ]
+  },
+  {
+    "id": "ventilantrieb_on_off",
+    "name": "Ventilantrieb On/Off 24VDC",
+    "gewerk": "rlt",
+    "beschreibung": "Steuerung für schaltende Ventilantriebe (Klappe, Kugelhahn) 24VDC, Auf/Zu",
+    "bauteile": [
+      { "artikel_nr": "1864135", "menge": 1 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 3 }
+    ]
+  },
+  {
+    "id": "ventilantrieb_stetig",
+    "name": "Ventilantrieb stetig 3-Punkt",
+    "gewerk": "rlt",
+    "beschreibung": "Steuerung für stetige Ventilantriebe 3-Punkt AUF/ZU, zwei Koppelrelais",
+    "bauteile": [
+      { "artikel_nr": "1864135", "menge": 2 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 4 }
+    ]
+  },
+  {
+    "id": "sensor_passiv_rlt",
+    "name": "Passiver Sensor (NTC/PT100/PT1000)",
+    "gewerk": "rlt",
+    "beschreibung": "Klemmenanschluss für passive Temperaturfühler NTC, PT100 oder PT1000",
+    "bauteile": [
+      { "artikel_nr": "W-Series 1010200000", "menge": 2 }
+    ]
+  },
+  {
+    "id": "sensor_aktiv_24v",
+    "name": "Aktiver Sensor 24VDC (CO2, Druck, Feuchte)",
+    "gewerk": "rlt",
+    "beschreibung": "Klemmenanschluss für aktive Sensoren 24VDC mit 0-10V oder 4-20mA Ausgang",
+    "bauteile": [
+      { "artikel_nr": "W-Series 1010200000", "menge": 3 }
+    ]
+  },
+  {
+    "id": "pumpe_1kw",
+    "name": "Umwälzpumpe bis 1 kW",
+    "gewerk": "hkl",
+    "beschreibung": "Motorsteuerung für kleine Heizungs- oder Kältepumpen bis 1 kW",
+    "bauteile": [
+      { "artikel_nr": "3RV2011-1AA10", "menge": 1 },
+      { "artikel_nr": "3RT2015-1BB41", "menge": 1 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 4 },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+    ]
+  },
+  {
+    "id": "pumpe_3kw",
+    "name": "Umwälzpumpe bis 3 kW",
+    "gewerk": "hkl",
+    "beschreibung": "Motorsteuerung für Heizungs- oder Kältepumpen bis 3 kW",
+    "bauteile": [
+      { "artikel_nr": "3RV2011-1CA10", "menge": 1 },
+      { "artikel_nr": "3RT2015-1BB41", "menge": 1 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 4 },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+    ]
+  },
+  {
+    "id": "pumpe_betr_stoer",
+    "name": "Pumpe mit Betriebs- und Störmeldung",
+    "gewerk": "hkl",
+    "beschreibung": "Rückmeldung Betrieb und Störung über zwei Koppelrelais (potentialfrei)",
+    "bauteile": [
+      { "artikel_nr": "1864135", "menge": 2 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 4 }
+    ]
+  },
+  {
+    "id": "ventilantrieb_hkl",
+    "name": "Heizungsventil stetig 0-10V",
+    "gewerk": "hkl",
+    "beschreibung": "Steuerung für stufenlose Heizungsventile oder Mischer 0-10V, mit Abschaltrelais",
+    "bauteile": [
+      { "artikel_nr": "1864135", "menge": 1 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 3 }
+    ]
+  },
+  {
+    "id": "pumpe_san_1kw",
+    "name": "Warmwasser-Zirkulationspumpe bis 1 kW",
+    "gewerk": "san",
+    "beschreibung": "Motorsteuerung für Trinkwasser-Zirkulationspumpen bis 1 kW",
+    "bauteile": [
+      { "artikel_nr": "3RV2011-1AA10", "menge": 1 },
+      { "artikel_nr": "3RT2015-1BB41", "menge": 1 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 4 },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+    ]
+  },
+  {
+    "id": "beleuchtung_schaltkreis",
+    "name": "Lichtschaltkreis (schaltend)",
+    "gewerk": "bel",
+    "beschreibung": "Absicherung und Schaltrelais für einen Beleuchtungsschaltkreis bis 10 A",
+    "bauteile": [
+      { "artikel_nr": "5SL6110-7", "menge": 1 },
+      { "artikel_nr": "1864135", "menge": 1 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 2 }
+    ]
+  },
+  {
+    "id": "dali_segment",
+    "name": "DALI-Bus Segment Anschluss",
+    "gewerk": "bel",
+    "beschreibung": "Klemmenanschluss für DALI-Bus-Segment (+DALI, -DALI, PE, Meldeklemme)",
+    "bauteile": [
+      { "artikel_nr": "W-Series 1010200000", "menge": 4 }
+    ]
+  },
+  {
+    "id": "lss_abzweig_1p",
+    "name": "Abzweig-LSS 1-polig B10 A",
+    "gewerk": "elek",
+    "beschreibung": "Einzelner Leitungsschutzschalter für einpolige Abzweige bis 10 A",
+    "bauteile": [
+      { "artikel_nr": "5SL6110-7", "menge": 1 },
+      { "artikel_nr": "W-Series 1010200000", "menge": 2 }
+    ]
+  },
+  {
+    "id": "netzteil_24v_60w",
+    "name": "Netzteil 24VDC / 2,5 A (60 W)",
+    "gewerk": "elek",
+    "beschreibung": "Spannungsversorgung 24VDC 60W für DDC-Steuerung, inkl. vorgeschalteter Absicherung",
+    "bauteile": [
+      { "artikel_nr": "2866690", "menge": 1 },
+      { "artikel_nr": "5SL6106-7", "menge": 1 }
+    ]
+  }
+]

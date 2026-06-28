@@ -36,6 +36,8 @@ header .title{flex:1;min-width:200px;}
 header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;margin-top:3px;}
 header a:hover{color:var(--tx2);}
 .header-logo{height:48px;width:48px;object-fit:contain;flex-shrink:0;}
+.copyright-line{}
+@media print{.copyright-line{display:none !important;}}
 
 .proj-fields{
   display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:flex-end;width:100%;
@@ -50,8 +52,178 @@ header a:hover{color:var(--tx2);}
 #proj-name   {width:220px;}
 #proj-nummer {width:130px;}
 #proj-asp    {width:185px;}
-#proj-docnr  {width:280px;color:var(--tx2);}
+#proj-docnr  {width:200px;color:var(--tx2);}
 
+/* ── 3-Spalten Layout ── */
+.layout-3col{
+  display:grid;
+  grid-template-columns:300px 1fr 320px;
+  min-height:calc(100vh - 130px);
+}
+
+/* ── Linkes Panel ── */
+.panel-in{
+  background:var(--bg2);border-right:1px solid var(--bord);
+  padding:14px 12px;overflow-y:auto;
+}
+.panel-in h2{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tx3);margin-bottom:10px;
+}
+
+/* ── Mittleres Panel ── */
+.panel-mid{
+  padding:16px 18px;overflow-y:auto;background:var(--bg);
+  border-right:1px solid var(--bord);
+}
+.panel-mid h2{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tx3);margin-bottom:10px;
+}
+
+/* ── Rechtes Panel ── */
+.panel-right{
+  padding:16px 14px;overflow-y:auto;background:var(--bg2);
+}
+.panel-right h2{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tx3);margin-bottom:10px;
+}
+
+/* ── Fieldsets ── */
+fieldset{
+  border:1px solid var(--bord);border-radius:5px;
+  padding:10px 12px;margin-bottom:10px;background:var(--bg3);
+}
+legend{
+  font-size:9.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--tx2);padding:0 5px;
+}
+.field{margin-bottom:8px;}
+.field:last-child{margin-bottom:0;}
+.field .lbl{
+  font-size:11px;color:var(--tx2);margin-bottom:3px;display:flex;
+  justify-content:space-between;align-items:baseline;
+}
+.field .var{
+  font-family:var(--mono);font-size:9px;color:var(--tx3);
+  white-space:normal;word-break:break-all;
+}
+.field input,.field select{
+  width:100%;background:var(--bg);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:12px;padding:3px 7px;
+}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green);}
+.field input[disabled]{color:var(--tx3);cursor:not-allowed;}
+.hint-text{font-size:10px;color:var(--tx3);margin-top:4px;line-height:1.4;}
+.hint-text a{color:var(--green);text-decoration:none;}
+.hint-text a:hover{text-decoration:underline;}
+
+/* ── Gewerk-Tabs ── */
+.gewerk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
+.gewerk-tab{
+  font-size:10px;padding:3px 8px;border-radius:3px;cursor:pointer;
+  background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
+}
+.gewerk-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.gewerk-tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
+
+/* ── BG-Auswahl ── */
+.bg-add-row{display:flex;gap:6px;margin-top:6px;}
+.bg-add-row input[type=number]{width:55px;flex-shrink:0;}
+.bg-add-row select{flex:1;}
+.btn-add{
+  padding:4px 10px;background:var(--green);color:#000;border:none;
+  border-radius:3px;font-size:12px;font-weight:700;cursor:pointer;
+  white-space:nowrap;
+}
+.btn-add:hover{opacity:.85;}
+
+/* ── Belegungsliste ── */
+.bel-zeile{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 6px;border-radius:3px;margin-bottom:3px;
+  background:var(--bg4);border:1px solid var(--bord);
+}
+.bel-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.bel-name{flex:1;font-size:11px;color:var(--tx);min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.bel-rm{
+  background:none;border:none;color:var(--tx3);cursor:pointer;
+  font-size:14px;padding:0 2px;line-height:1;flex-shrink:0;
+}
+.bel-rm:hover{color:#E04444;}
+
+/* ── Reihenhöhen ── */
+.reihe-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.reihe-row label{font-size:10px;color:var(--tx2);flex:1;}
+.reihe-row input{width:60px;text-align:right;}
+
+/* ── Füllstand ── */
+.fuell-zone{margin-bottom:8px;}
+.fuell-label{font-size:10px;color:var(--tx2);display:flex;justify-content:space-between;margin-bottom:3px;}
+.fuell-bar-bg{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--bord);}
+.fuell-bar{height:100%;border-radius:4px;transition:width .3s;}
+
+/* ── SVG Container ── */
+#svg-wrap{
+  border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
+  margin-top:12px;min-height:200px;overflow:hidden;
+}
+#svg-wrap svg{width:100%;display:block;}
+.no-data-msg{
+  display:flex;align-items:center;justify-content:center;
+  height:200px;color:var(--tx3);font-size:12px;text-align:center;padding:20px;
+}
+
+/* ── Stückliste ── */
+#stueckliste-wrap table{
+  width:100%;border-collapse:collapse;font-size:11px;
+}
+#stueckliste-wrap th{
+  font-size:9px;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--tx3);border-bottom:1px solid var(--bord);
+  padding:4px 4px 5px;text-align:left;font-weight:600;
+}
+#stueckliste-wrap td{
+  padding:3px 4px;border-bottom:1px solid var(--bord);
+  color:var(--tx);vertical-align:top;
+}
+#stueckliste-wrap tr:last-child td{border-bottom:none;}
+#stueckliste-wrap .td-num{text-align:right;font-family:var(--mono);font-size:10px;}
+.stk-total{
+  margin-top:6px;text-align:right;font-size:12px;font-weight:700;color:var(--tx);
+  padding-top:6px;border-top:1px solid var(--bords);
+}
+.stk-empty{font-size:11px;color:var(--tx3);margin-top:8px;}
+.zone-badge{
+  display:inline-block;font-size:9px;padding:1px 4px;border-radius:2px;
+  font-weight:600;text-transform:uppercase;letter-spacing:.03em;
+}
+.zone-l{background:#C84E2E33;color:#C84E2E;}
+.zone-s{background:#4BBECA33;color:#4BBECA;}
+.zone-k{background:#D4A84B33;color:#D4A84B;}
+
+/* ── Buttons ── */
+.btn-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.btn-print{
+  padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;
+  background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
+}
+.btn-print:hover{border-color:var(--tx2);color:var(--tx);}
+.btn-csv{
+  padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;
+  background:var(--bg3);border:1px solid var(--green);color:var(--green);
+}
+.btn-csv:hover{background:var(--green);color:#000;}
+
+/* ── Footer ── */
+.site-footer{
+  background:#111110;border-top:1px solid var(--bord);
+  padding:10px 22px;font-size:11px;color:var(--tx3);
+  display:flex;justify-content:space-between;align-items:center;
+}
+
+/* ── Print ── */
 @media print{
   .proj-fields{display:flex !important;}
   .proj-field input{background:#fff;border-color:#ccc;color:#000;font-size:11px;}
@@ -72,84 +244,12 @@ header a:hover{color:var(--tx2);}
   }
   fieldset{border-color:#ccc;background:#fff;break-inside:avoid;page-break-inside:avoid;}
   .site-footer{display:none;}
+  .btn-row{display:none;}
+  .gewerk-tabs{display:none;}
+  .bg-add-row{display:none;}
+  .bel-rm{display:none;}
+  .layout-3col{grid-template-columns:220px 1fr 260px;}
 }
-
-/* ── Layout ── */
-.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 46px);}
-
-/* ── Input panel ── */
-.panel-in{
-  background:var(--bg2);border-right:1px solid var(--bord);
-  padding:18px 16px;overflow-y:auto;overflow-x:hidden;
-}
-.panel-in h2{
-  font-size:11px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.06em;color:var(--tx3);margin-bottom:14px;
-}
-
-/* ── Fieldset ── */
-fieldset{
-  border:1px solid var(--bord);border-radius:6px;
-  padding:12px 14px;margin-bottom:12px;background:var(--bg3);
-}
-legend{
-  font-size:10px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.05em;color:var(--tx2);padding:0 6px;
-}
-.field{margin-bottom:10px;}
-.field:last-child{margin-bottom:0;}
-.field .lbl{
-  font-size:12px;color:var(--tx2);margin-bottom:4px;display:flex;
-  justify-content:space-between;align-items:baseline;flex:1;min-width:0;overflow:hidden;
-}
-.field .var{
-  font-family:var(--mono);font-size:9.5px;color:var(--tx3);
-  display:block;margin-top:4px;white-space:normal;word-break:break-all;overflow:hidden;
-}
-.field input,.field select{
-  width:100%;background:var(--bg);border:1px solid var(--bords);border-radius:3px;
-  color:var(--tx);font-size:13px;padding:4px 8px;
-}
-.field input:focus,.field select:focus{outline:none;border-color:var(--green);}
-.field input[disabled],.field select[disabled]{color:var(--tx3);cursor:not-allowed;}
-
-/* ── Output panel ── */
-.panel-out{
-  padding:20px 24px;overflow-y:auto;
-}
-
-/* ── Placeholder ── */
-.placeholder-box{
-  border:1.5px dashed var(--bord);border-radius:10px;
-  padding:40px 32px;text-align:center;margin-top:40px;
-}
-.placeholder-box h3{
-  font-size:16px;font-weight:700;color:var(--tx2);margin-bottom:10px;
-}
-.placeholder-box p{font-size:13px;color:var(--tx3);line-height:1.7;max-width:480px;margin:0 auto 8px;}
-.placeholder-tag{
-  display:inline-block;margin:4px 3px;padding:3px 10px;
-  border-radius:3px;font-size:11px;background:var(--bg3);
-  border:1px solid var(--bord);color:var(--tx2);
-}
-
-/* ── Button ── */
-.btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;
-  cursor:pointer;border:1px solid transparent;text-decoration:none;
-}
-.btn--ghost{background:transparent;border-color:var(--bords);color:var(--tx2);}
-.btn--ghost:hover{border-color:var(--tx2);color:var(--tx);}
-
-/* ── Footer ── */
-.site-footer{
-  background:#111110;border-top:1px solid var(--bord);
-  padding:10px 22px;font-size:11px;color:var(--tx3);
-  display:flex;justify-content:space-between;align-items:center;
-}
-.copyright-line{}
-@media print{.copyright-line{display:none !important;}}
 </style>
 </head>
 <body>
@@ -176,24 +276,20 @@ legend{
       <input id="proj-asp" type="text" placeholder="Automationsschwerpunkt" oninput="saveProjFields()">
     </div>
     <div class="proj-field">
-      <label for="proj-engineer">Bearbeitet von</label>
-      <input id="proj-engineer" type="text" placeholder="Name" oninput="saveProjFields()">
-    </div>
-    <div class="proj-field">
       <label for="proj-docnr">Dokument-Nr.</label>
       <input id="proj-docnr" type="text" readonly>
     </div>
   </div>
 </header>
 
-<div class="layout">
+<div class="layout-3col">
 
-  <!-- ── Eingabe-Panel ── -->
+  <!-- ── Linkes Panel ── -->
   <div class="panel-in">
     <h2>Eingaben</h2>
 
     <fieldset>
-      <legend>Schrank-Typ</legend>
+      <legend>Schrank-Typ &amp; Montagebereich</legend>
       <div class="field">
         <div class="lbl">Schranktyp<span class="var">schrank_typ</span></div>
         <select id="schrank_typ" onchange="onTypChange()">
@@ -210,39 +306,109 @@ legend{
         <div class="lbl">Montagebereich H (mm)<span class="var" id="var_h">h_mplatte_mbereich_mm</span></div>
         <input id="h_mplatte_mbereich_mm" type="number" value="0" disabled>
       </div>
-      <p style="font-size:10px;color:var(--tx3);margin-top:6px" id="hint_quelle">Bitte Schrank-Typ wählen</p>
+      <p class="hint-text" id="hint_quelle">Bitte Schrank-Typ wählen</p>
     </fieldset>
 
     <fieldset>
-      <legend>Baugruppen · Funktionsgruppen</legend>
-      <p style="font-size:11px;color:var(--tx3);line-height:1.6">
-        In Entwicklung – Geräte- und Baugruppenauswahl aus Datenbank folgt in der nächsten Session.
-      </p>
+      <legend>Reihenhöhen</legend>
+      <div class="reihe-row">
+        <label>Leistungszone (mm)</label>
+        <input id="h_reihe_leistung" type="number" value="100" min="40" max="200" oninput="onReiheChange()">
+      </div>
+      <div class="reihe-row">
+        <label>Steuerungszone (mm)</label>
+        <input id="h_reihe_steuerung" type="number" value="75" min="40" max="200" oninput="onReiheChange()">
+      </div>
+      <div class="reihe-row">
+        <label>Klemmenzeile (mm)</label>
+        <input id="h_reihe_klemmen" type="number" value="65" min="40" max="200" oninput="onReiheChange()">
+      </div>
+      <p class="hint-text">Höhe pro Hutschienen-Reihe inkl. Abstand</p>
     </fieldset>
 
+    <fieldset>
+      <legend>Gewerk</legend>
+      <div class="gewerk-tabs">
+        <button class="gewerk-tab active" id="tab-rlt" data-gewerk="rlt" onclick="setGewerk('rlt')">RLT</button>
+        <button class="gewerk-tab" id="tab-hkl" data-gewerk="hkl" onclick="setGewerk('hkl')">HKL</button>
+        <button class="gewerk-tab" id="tab-san" data-gewerk="san" onclick="setGewerk('san')">Sanitär</button>
+        <button class="gewerk-tab" id="tab-bel" data-gewerk="bel" onclick="setGewerk('bel')">Beleuchtung</button>
+        <button class="gewerk-tab" id="tab-elek" data-gewerk="elek" onclick="setGewerk('elek')">Elektro</button>
+      </div>
+      <div class="bg-add-row">
+        <select id="bg_auswahl" style="flex:1">
+          <option value="">Laden …</option>
+        </select>
+        <input id="bg_menge" type="number" value="1" min="1" max="99">
+        <button class="btn-add" onclick="addBaugruppe()">+</button>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Belegung</legend>
+      <div id="belegung-liste">
+        <p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>
+      </div>
+    </fieldset>
   </div>
 
-  <!-- ── Ausgabe-Panel ── -->
-  <div class="panel-out">
-    <div class="placeholder-box">
-      <h3>Modul 4 · In Entwicklung</h3>
-      <p>
-        Dieses Modul wird die Auswahl von Funktionsbaugruppen aus einer Gerätedatenbank ermöglichen.
-        Der Platzbedarf je Zone wird automatisch berechnet und grafisch in der
-        Schaltschrankvollansicht dargestellt.
-      </p>
-      <p style="margin-top:16px;font-size:12px;color:var(--tx3)">Geplante Funktionen:</p>
-      <div style="margin-top:8px">
-        <span class="placeholder-tag">Baugruppen-Auswahl</span>
-        <span class="placeholder-tag">Zonenbasierter Platzbedarf</span>
-        <span class="placeholder-tag">TE-Bedarf je Gruppe</span>
-        <span class="placeholder-tag">Schaltschrankvollansicht</span>
-        <span class="placeholder-tag">Flächen- und TE-Abgleich</span>
-        <span class="placeholder-tag">Geräte-Datenbank</span>
+  <!-- ── Mittleres Panel ── -->
+  <div class="panel-mid">
+    <h2>Schranksicht · Befüllungsgrad</h2>
+
+    <!-- Füllstand-Balken -->
+    <div id="fuellstand-wrap">
+      <div class="fuell-zone">
+        <div class="fuell-label">
+          <span style="color:#C84E2E">Leistungszone</span>
+          <span id="fs-leist-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – TE</span>
+        </div>
+        <div class="fuell-bar-bg">
+          <div id="fs-leist-bar" class="fuell-bar" style="width:0%;background:#C84E2E"></div>
+        </div>
       </div>
-      <div style="margin-top:28px">
-        <a href="../modul-03-architektur/" class="btn btn--ghost">← Modul 3 · Zonenaufteilung</a>
+      <div class="fuell-zone">
+        <div class="fuell-label">
+          <span style="color:#4BBECA">Steuerungszone</span>
+          <span id="fs-steuer-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – TE</span>
+        </div>
+        <div class="fuell-bar-bg">
+          <div id="fs-steuer-bar" class="fuell-bar" style="width:0%;background:#4BBECA"></div>
+        </div>
       </div>
+      <div class="fuell-zone">
+        <div class="fuell-label">
+          <span style="color:#D4A84B">Klemmenzeile</span>
+          <span id="fs-klemm-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – TE</span>
+        </div>
+        <div class="fuell-bar-bg">
+          <div id="fs-klemm-bar" class="fuell-bar" style="width:0%;background:#D4A84B"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SVG Schranksicht -->
+    <div id="svg-wrap">
+      <div class="no-data-msg" id="svg-msg">Bitte Schrank-Typ wählen und Daten aus Modul 1–3 laden</div>
+      <div id="svg-inner" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- ── Rechtes Panel ── -->
+  <div class="panel-right">
+    <h2>Stückliste</h2>
+
+    <div id="stueckliste-wrap">
+      <p class="stk-empty">Keine Baugruppen ausgewählt.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-csv" onclick="exportCSV()">↓ CSV exportieren</button>
+      <button class="btn-print" onclick="printErgebnis()">⎙ Drucken</button>
+    </div>
+
+    <div style="margin-top:14px;">
+      <a href="../modul-03-architektur/" style="font-size:11px;color:var(--tx3);text-decoration:none;">← Modul 3 · Zonenaufteilung</a>
     </div>
   </div>
 
@@ -250,12 +416,26 @@ legend{
 
 <footer class="site-footer">
   <span class="copyright-line">© 2026 Stephan Michler · DBACS · Modul 4</span>
-  <span>DBACS · GA-Planung · In Entwicklung</span>
+  <span>DBACS · GA-Planung · Innenaufbau</span>
 </footer>
 
 <script>
-const gs = id => document.getElementById(id).value;
+// ── Konstanten ───────────────────────────────────────────────────────
+const TE_MM = 18;
+const BG_COLORS = ['#E07B39','#4BBECA','#9A94E8','#2DBD8E','#C84E2E','#D4A84B','#7A74CC','#5BAD6B','#C86090','#A8C4E8'];
+const ZONE_LABELS = {leistung:'Leistung', steuerung:'Steuerung', klemmen:'Klemmen'};
 
+// ── Daten ────────────────────────────────────────────────────────────
+let EINZELBAUTEILE_DB = [];
+let BAUGRUPPEN_DB     = [];
+let belegung          = [];  // [{bg_id, menge, ci}, ...]
+
+// ── DOM-Helfer ───────────────────────────────────────────────────────
+const g  = id => +document.getElementById(id).value;
+const gs = id =>  document.getElementById(id).value;
+const _v = (id, v) => { document.getElementById(id).value = v; };
+
+// ── Projekt-Felder ───────────────────────────────────────────────────
 function updateDocNr() {
   const nr  = document.getElementById('proj-nummer').value.trim();
   const asp = document.getElementById('proj-asp').value.trim();
@@ -263,79 +443,454 @@ function updateDocNr() {
   document.getElementById('proj-docnr').value = doc || '–';
 }
 function saveProjFields() {
-  ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id =>
+  ['proj-name','proj-nummer','proj-asp'].forEach(id =>
     localStorage.setItem(id, document.getElementById(id).value));
   updateDocNr();
   localStorage.setItem('proj-docnr', document.getElementById('proj-docnr').value);
 }
 function loadProjFields() {
-  ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id => {
-    const val = localStorage.getItem(id);
-    if (val !== null) document.getElementById(id).value = val;
+  ['proj-name','proj-nummer','proj-asp'].forEach(id => {
+    const v = localStorage.getItem(id);
+    if(v !== null) document.getElementById(id).value = v;
   });
   updateDocNr();
 }
 
+// ── Datenladen ───────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    [EINZELBAUTEILE_DB, BAUGRUPPEN_DB] = await Promise.all([
+      fetch('../../data/einzelbauteile.json').then(r => r.json()),
+      fetch('../../data/baugruppen.json').then(r => r.json())
+    ]);
+    init();
+  } catch(e) {
+    document.getElementById('svg-msg').textContent = 'Datenbank konnte nicht geladen werden. Bitte lokalen Server verwenden.';
+  }
+}
+
+// ── Initialisierung ──────────────────────────────────────────────────
+function init() {
+  loadProjFields();
+
+  // Schrank-Typ (Auto-Select aus M3 oder gespeichert)
+  const auto = localStorage.getItem('m04_autoselect');
+  const saved = localStorage.getItem('m04_schrank_typ');
+  if(auto) {
+    _v('schrank_typ', auto);
+    localStorage.setItem('m04_schrank_typ', auto);
+    localStorage.removeItem('m04_autoselect');
+  } else if(saved) {
+    _v('schrank_typ', saved);
+  }
+
+  // Reihenhöhen
+  ['h_reihe_leistung','h_reihe_steuerung','h_reihe_klemmen'].forEach(id => {
+    const v = localStorage.getItem('m04_' + id);
+    if(v) _v(id, v);
+  });
+
+  // Belegung wiederherstellen
+  const bels = localStorage.getItem('m04_belegung');
+  if(bels) try { belegung = JSON.parse(bels); } catch(e){}
+
+  loadMontagebereich(gs('schrank_typ'));
+  setGewerk('rlt');
+  renderBelegung();
+  calculate();
+}
+
+// ── Schrank-Typ ──────────────────────────────────────────────────────
 function onTypChange() {
   const typ = gs('schrank_typ');
   localStorage.setItem('m04_schrank_typ', typ);
   loadMontagebereich(typ);
+  calculate();
 }
 
 function loadMontagebereich(typ) {
   const hint = document.getElementById('hint_quelle');
   const sfx  = typ === 'wandschrank' ? 'wandschrank_mm' : 'standschrank_mm';
   const pfx  = typ === 'wandschrank' ? 'm01' : 'm02';
-  document.getElementById('var_b').textContent = `b_mplatte_mbereich_${sfx}`;
-  document.getElementById('var_h').textContent = `h_mplatte_mbereich_${sfx}`;
-
-  if (!typ) {
-    document.getElementById('b_mplatte_mbereich_mm').value = 0;
-    document.getElementById('h_mplatte_mbereich_mm').value = 0;
+  document.getElementById('var_b').textContent = typ ? `b_mplatte_mbereich_${sfx}` : 'b_mplatte_mbereich_mm';
+  document.getElementById('var_h').textContent = typ ? `h_mplatte_mbereich_${sfx}` : 'h_mplatte_mbereich_mm';
+  if(!typ) {
+    _v('b_mplatte_mbereich_mm', 0);
+    _v('h_mplatte_mbereich_mm', 0);
     hint.textContent = 'Bitte Schrank-Typ wählen';
+    return;
+  }
+  const storedB = localStorage.getItem(`${pfx}_b_mplatte_mbereich_${sfx}`);
+  const storedH = localStorage.getItem(`${pfx}_h_mplatte_mbereich_${sfx}`);
+  if(storedB !== null && storedH !== null) {
+    _v('b_mplatte_mbereich_mm', +storedB);
+    _v('h_mplatte_mbereich_mm', +storedH);
+    hint.textContent = typ === 'wandschrank' ? 'Automatisch aus Modul 1 übernommen' : 'Automatisch aus Modul 2 übernommen';
     hint.style.color = '';
+  } else {
+    _v('b_mplatte_mbereich_mm', 0);
+    _v('h_mplatte_mbereich_mm', 0);
+    const m = typ === 'wandschrank'
+      ? '<a href="../modul-01-schaltschrank/">Modul 1</a>'
+      : '<a href="../modul-02-standschrank/">Modul 2</a>';
+    hint.innerHTML = `Keine Daten – bitte zuerst ${m} und <a href="../modul-03-architektur/">Modul 3</a> berechnen`;
+    hint.style.color = 'var(--orange)';
+  }
+}
+
+// ── Gewerk-Tabs ──────────────────────────────────────────────────────
+function setGewerk(gew) {
+  document.querySelectorAll('.gewerk-tab').forEach(b => b.classList.toggle('active', b.dataset.gewerk === gew));
+  filterBaugruppen(gew);
+}
+
+function filterBaugruppen(gew) {
+  const sel = document.getElementById('bg_auswahl');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Baugruppe wählen —</option>';
+  BAUGRUPPEN_DB.filter(b => b.gewerk === gew).forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b.id;
+    opt.textContent = b.name;
+    if(b.id === cur) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+// ── Belegung ─────────────────────────────────────────────────────────
+function addBaugruppe() {
+  const bgId  = gs('bg_auswahl');
+  const menge = Math.max(1, g('bg_menge'));
+  if(!bgId) return;
+  const ex = belegung.find(b => b.bg_id === bgId);
+  if(ex) {
+    ex.menge += menge;
+  } else {
+    belegung.push({bg_id: bgId, menge, ci: belegung.length % BG_COLORS.length});
+  }
+  saveBelegung();
+  renderBelegung();
+  calculate();
+}
+
+function removeBaugruppe(i) {
+  belegung.splice(i, 1);
+  belegung.forEach((b, idx) => { b.ci = idx % BG_COLORS.length; });
+  saveBelegung();
+  renderBelegung();
+  calculate();
+}
+
+function saveBelegung() {
+  localStorage.setItem('m04_belegung', JSON.stringify(belegung));
+}
+
+function renderBelegung() {
+  const el = document.getElementById('belegung-liste');
+  if(!belegung.length) {
+    el.innerHTML = '<p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>';
+    return;
+  }
+  el.innerHTML = belegung.map((b, i) => {
+    const bg = BAUGRUPPEN_DB.find(x => x.id === b.bg_id);
+    const name = bg ? bg.name : b.bg_id;
+    return `<div class="bel-zeile">
+      <span class="bel-dot" style="background:${BG_COLORS[b.ci]}"></span>
+      <span class="bel-name" title="${name}">${b.menge}× ${name}</span>
+      <button class="bel-rm" onclick="removeBaugruppe(${i})">×</button>
+    </div>`;
+  }).join('');
+}
+
+// ── Reihenhöhen ──────────────────────────────────────────────────────
+function onReiheChange() {
+  ['h_reihe_leistung','h_reihe_steuerung','h_reihe_klemmen'].forEach(id =>
+    localStorage.setItem('m04_' + id, gs(id)));
+  calculate();
+}
+
+// ── Berechnung ───────────────────────────────────────────────────────
+function calculate() {
+  const b_leist  = +localStorage.getItem('m03_b_leist')    || 0;
+  const h_leist  = +localStorage.getItem('m03_h_leist')    || 0;
+  const b_steuer = +localStorage.getItem('m03_b_steuer')   || 0;
+  const h_steuer = +localStorage.getItem('m03_h_steuer')   || 0;
+  const h_klemm  = +localStorage.getItem('m03_h_klemm')    || 0;
+  const h_evert  = +localStorage.getItem('m03_h_evert')    || 0;
+  const b_uss    = +localStorage.getItem('m03_b_uss')      || 0;
+  const b_ek     = +localStorage.getItem('m03_b_ek')       || 0;
+  const b_kanal_v= +localStorage.getItem('m03_b_kanal_v')  || 40;
+  const anordn   =  localStorage.getItem('m03_zone_anordnung') || 'nebeneinander';
+  const ke_pos   =  localStorage.getItem('m03_zone_ke_pos')    || 'unten';
+  const b_mb = g('b_mplatte_mbereich_mm');
+  const h_mb = g('h_mplatte_mbereich_mm');
+
+  const hr_l = Math.max(1, g('h_reihe_leistung'));
+  const hr_s = Math.max(1, g('h_reihe_steuerung'));
+  const hr_k = Math.max(1, g('h_reihe_klemmen'));
+
+  // Nutzbreiten pro Zone
+  const b_l_nutz = Math.max(0, b_leist - b_uss);
+  const b_s_nutz = b_steuer;
+  const b_k_nutz = Math.max(0, b_leist + b_steuer - b_ek);
+
+  const zones = {
+    leistung:  {b: b_l_nutz,  h: h_leist,  hr: hr_l, color:'#C84E2E'},
+    steuerung: {b: b_s_nutz,  h: h_steuer, hr: hr_s, color:'#4BBECA'},
+    klemmen:   {b: b_k_nutz,  h: h_klemm,  hr: hr_k, color:'#D4A84B'}
+  };
+
+  Object.values(zones).forEach(z => {
+    z.te_reihe = z.b > 0 && z.hr > 0 ? Math.floor(z.b / TE_MM) : 0;
+    z.n_reihen = z.h > 0 && z.hr > 0 ? Math.floor(z.h / z.hr) : 0;
+    z.te_total = z.te_reihe * z.n_reihen;
+    z.te_belegt = 0;
+    z.blocks = [];
+  });
+
+  // Bauteile platzieren (Reihenfolge nach Belegungsliste → pro Baugruppen-Instanz)
+  belegung.forEach(item => {
+    const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
+    if(!bg) return;
+    const farbe = BG_COLORS[item.ci];
+    for(let inst = 0; inst < item.menge; inst++) {
+      bg.bauteile.forEach(bt => {
+        const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+        if(!eb || eb.te_breite <= 0) return;
+        const z = zones[eb.zone];
+        if(!z || z.te_reihe <= 0) return;
+        for(let q = 0; q < bt.menge; q++) {
+          const cur = z.te_belegt;
+          const row = Math.floor(cur / z.te_reihe);
+          const col = cur % z.te_reihe;
+          z.blocks.push({col, row, te: eb.te_breite, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung});
+          z.te_belegt += eb.te_breite;
+        }
+      });
+    }
+  });
+
+  buildFuellstand(zones);
+  buildSVG(zones, {b_leist, h_leist, b_steuer, h_steuer, h_klemm, h_evert, b_uss, b_ek, b_kanal_v, anordn, ke_pos, b_mb, h_mb});
+  buildStueckliste();
+}
+
+function kurzLabel(eb) {
+  const m = {schuetz:'Sch.', motorschutz:'MSS', lss:'LSS', klemme:'Kl.', koppelrelais:'KR', netzteil:'NT', sonstige:'–'};
+  return m[eb.bauteil_typ] || eb.bezeichnung.substring(0, 4);
+}
+
+// ── Füllstand-Balken ─────────────────────────────────────────────────
+function buildFuellstand(zones) {
+  const map = {leistung:'leist', steuerung:'steuer', klemmen:'klemm'};
+  Object.entries(map).forEach(([zone, id]) => {
+    const z = zones[zone];
+    const belegt = z.te_belegt;
+    const total  = z.te_total;
+    const pct    = total > 0 ? Math.min(100, (belegt / total) * 100) : 0;
+    const bar    = document.getElementById(`fs-${id}-bar`);
+    const txt    = document.getElementById(`fs-${id}-txt`);
+    txt.textContent = total > 0 ? `${belegt} / ${total} TE` : '– / – TE';
+    bar.style.width = pct + '%';
+    bar.style.background = pct > 100 ? '#E04444' : (pct > 80 ? '#D4A84B' : z.color);
+  });
+}
+
+// ── SVG Schranksicht ─────────────────────────────────────────────────
+function buildSVG(zones, dims) {
+  const {b_leist, h_leist, b_steuer, h_steuer, h_klemm, h_evert, b_uss, b_ek, b_kanal_v, anordn, ke_pos, b_mb, h_mb} = dims;
+  const msgEl = document.getElementById('svg-msg');
+  const svgEl = document.getElementById('svg-inner');
+
+  if(!b_mb || !h_mb) {
+    msgEl.style.display = '';
+    svgEl.style.display = 'none';
+    return;
+  }
+  msgEl.style.display = 'none';
+  svgEl.style.display = '';
+
+  const SW = 480;
+  const sc = SW / b_mb;
+  const PAD = 12;
+
+  // Zonendefinitionen
+  const zoneDefs = {
+    leistung:  {h: h_leist,  xNutz: b_uss * sc, label:'Leistung',      color:'#C84E2E33', stroke:'#C84E2E'},
+    steuerung: {h: h_steuer, xNutz: 0,           label:'Steuerung',     color:'#4BBECA22', stroke:'#4BBECA'},
+    klemmen:   {h: h_klemm,  xNutz: b_ek * sc,   label:'Klemmen',       color:'#D4A84B22', stroke:'#D4A84B'},
+    evert:     {h: h_evert,  xNutz: 0,           label:'Einspeisezone', color:'#88888822', stroke:'#888'}
+  };
+
+  // Reihenfolge je KE-Position (vereinfachte übereinander-Ansicht)
+  const zoneOrder = ke_pos === 'oben'
+    ? ['klemmen','leistung','steuerung','evert']
+    : ['evert','steuerung','leistung','klemmen'];
+
+  // SVG-Positionen berechnen
+  let svgZones = [];
+  let y = 0;
+  zoneOrder.forEach(key => {
+    const zd = zoneDefs[key];
+    if(!zd || !zd.h) return;
+    svgZones.push({key, ...zd, svgY: y, svgH: zd.h * sc, svgW: SW});
+    y += zd.h * sc + 1;
+  });
+
+  const totalH = svgZones.reduce((a, z) => Math.max(a, z.svgY + z.svgH), 0);
+  let svg = `<svg viewBox="${-PAD} ${-PAD} ${SW + PAD*2} ${totalH + PAD*2}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">`;
+
+  // Montageplatte Hintergrund
+  svg += `<rect x="0" y="0" width="${SW}" height="${totalH}" fill="#333330" rx="2"/>`;
+
+  svgZones.forEach(zs => {
+    const y0 = zs.svgY;
+    // Zone-Hintergrund
+    svg += `<rect x="0" y="${y0.toFixed(1)}" width="${zs.svgW}" height="${zs.svgH.toFixed(1)}" fill="${zs.color}" stroke="${zs.stroke}" stroke-width="0.6" rx="1"/>`;
+
+    // Zone-Label (nur wenn genug Höhe)
+    if(zs.svgH >= 14) {
+      svg += `<text x="4" y="${(y0 + Math.min(13, zs.svgH * 0.8)).toFixed(1)}" font-size="8" font-family="system-ui,sans-serif" fill="${zs.stroke}" opacity="0.8">${zs.label}</text>`;
+    }
+
+    // ÜSS-Block in Leistungszone
+    if(zs.key === 'leistung' && b_uss > 0) {
+      const ussW = b_uss * sc;
+      svg += `<rect x="0" y="${y0.toFixed(1)}" width="${ussW.toFixed(1)}" height="${zs.svgH.toFixed(1)}" fill="#44444488" stroke="#666" stroke-width="0.5"/>`;
+      if(zs.svgH >= 20) {
+        svg += `<text x="${(ussW/2).toFixed(1)}" y="${(y0 + zs.svgH/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#999">ÜSS</text>`;
+      }
+    }
+
+    // TE-Blöcke
+    const z = zones[zs.key];
+    if(z && z.blocks.length > 0 && z.hr > 0) {
+      const hrPx = z.hr * sc;
+      const xOff = zs.xNutz !== undefined ? zs.xNutz : 0;
+      z.blocks.forEach(blk => {
+        if(blk.row >= z.n_reihen) return;
+        const bx = xOff + blk.col * TE_MM * sc;
+        const by = y0 + blk.row * hrPx;
+        const bw = Math.max(1, blk.te * TE_MM * sc - 1);
+        const bh = Math.max(2, hrPx - 2);
+        svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.25" stroke-width="0.5" rx="1">`;
+        svg += `<title>${blk.title}</title></rect>`;
+        if(bw > 28 && bh > 9) {
+          const fs = Math.min(8, bh * 0.45);
+          svg += `<text x="${(bx + bw/2).toFixed(1)}" y="${(by + bh/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fs.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.75" pointer-events="none">${blk.lbl}</text>`;
+        }
+      });
+
+      // Überfüllung
+      if(z.te_belegt > z.te_total) {
+        svg += `<rect x="0" y="${y0.toFixed(1)}" width="${zs.svgW}" height="${zs.svgH.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="2" rx="1"/>`;
+        svg += `<text x="${(zs.svgW - 8).toFixed(1)}" y="${(y0 + 13).toFixed(1)}" font-size="14" font-family="system-ui,sans-serif" fill="#E04444" font-weight="bold">!</text>`;
+      }
+    }
+
+    // Reihen-Trennlinien
+    if(z && z.n_reihen > 1 && z.hr > 0) {
+      for(let r = 1; r < z.n_reihen; r++) {
+        const lineY = y0 + r * z.hr * sc;
+        svg += `<line x1="${(zs.xNutz || 0).toFixed(1)}" y1="${lineY.toFixed(1)}" x2="${zs.svgW}" y2="${lineY.toFixed(1)}" stroke="#FFFFFF18" stroke-width="0.5"/>`;
+      }
+    }
+  });
+
+  svg += `</svg>`;
+  svgEl.innerHTML = svg;
+}
+
+function b_l_nutz_dim(b_leist, b_uss, b_steuer, anordn) {
+  return b_leist - b_uss;
+}
+
+// ── Stückliste ───────────────────────────────────────────────────────
+function aggregateStueckliste() {
+  const agg = {};
+  belegung.forEach(item => {
+    const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
+    if(!bg) return;
+    bg.bauteile.forEach(bt => {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+      if(!eb) return;
+      const total = bt.menge * item.menge;
+      if(agg[bt.artikel_nr]) {
+        agg[bt.artikel_nr].menge += total;
+      } else {
+        agg[bt.artikel_nr] = {...eb, menge: total};
+      }
+    });
+  });
+  // Sort by zone then hersteller
+  const order = {leistung:0, steuerung:1, klemmen:2, sonstige:3};
+  return Object.values(agg).sort((a,b) => (order[a.zone]||9) - (order[b.zone]||9));
+}
+
+function buildStueckliste() {
+  const liste = aggregateStueckliste();
+  const wrap = document.getElementById('stueckliste-wrap');
+  if(!liste.length) {
+    wrap.innerHTML = '<p class="stk-empty">Keine Baugruppen ausgewählt.</p>';
     return;
   }
 
-  const keyB = `${pfx}_b_mplatte_mbereich_${sfx}`;
-  const keyH = `${pfx}_h_mplatte_mbereich_${sfx}`;
-  const storedB = localStorage.getItem(keyB);
-  const storedH = localStorage.getItem(keyH);
+  const zBadge = {leistung:'<span class="zone-badge zone-l">L</span>', steuerung:'<span class="zone-badge zone-s">S</span>', klemmen:'<span class="zone-badge zone-k">K</span>'};
+  let total = 0;
+  let rows = liste.map((e, i) => {
+    const summe = e.menge * e.preis_eur;
+    total += summe;
+    const badge = zBadge[e.zone] || '';
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${badge} ${e.bezeichnung}</td>
+      <td>${e.hersteller.substring(0,6)}</td>
+      <td class="td-num">${e.menge}</td>
+      <td class="td-num">${e.preis_eur.toFixed(2)}</td>
+      <td class="td-num">${summe.toFixed(2)}</td>
+    </tr>`;
+  }).join('');
 
-  if (storedB !== null && storedH !== null) {
-    document.getElementById('b_mplatte_mbereich_mm').value = +storedB;
-    document.getElementById('h_mplatte_mbereich_mm').value = +storedH;
-    hint.textContent = typ === 'wandschrank'
-      ? 'Automatisch aus Modul 1 übernommen'
-      : 'Automatisch aus Modul 2 übernommen';
-    hint.style.color = '';
-  } else {
-    document.getElementById('b_mplatte_mbereich_mm').value = 0;
-    document.getElementById('h_mplatte_mbereich_mm').value = 0;
-    hint.innerHTML = 'Keine Daten vorhanden &ndash; bitte zuerst '
-      + (typ === 'wandschrank'
-        ? '<a href="../modul-01-schaltschrank/" style="color:var(--green)">Modul 1</a>'
-        : '<a href="../modul-02-standschrank/" style="color:var(--green)">Modul 2</a>')
-      + ' und <a href="../modul-03-architektur/" style="color:var(--green)">Modul 3</a> berechnen';
-    hint.style.color = 'var(--tx3)';
-  }
+  wrap.innerHTML = `<table>
+    <thead><tr>
+      <th>#</th><th>Bezeichnung</th><th>Hst.</th>
+      <th style="text-align:right">Mge</th>
+      <th style="text-align:right">€/Stk</th>
+      <th style="text-align:right">Gesamt</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="stk-total">Gesamt: ${total.toFixed(2)} €</div>`;
 }
 
-// ── Init ──────────────────────────────────────────────────────
-loadProjFields();
-
-// Auto-Select wenn aus Modul 3 navigiert
-const _autoSel = localStorage.getItem('m04_autoselect');
-if (_autoSel) {
-  document.getElementById('schrank_typ').value = _autoSel;
-  localStorage.setItem('m04_schrank_typ', _autoSel);
-  localStorage.removeItem('m04_autoselect');
-} else {
-  // gespeicherte Auswahl wiederherstellen
-  const saved = localStorage.getItem('m04_schrank_typ');
-  if (saved) document.getElementById('schrank_typ').value = saved;
+// ── CSV-Export ───────────────────────────────────────────────────────
+function exportCSV() {
+  const liste = aggregateStueckliste();
+  if(!liste.length) { alert('Keine Stückliste vorhanden.'); return; }
+  const lines = [
+    'Pos;Bezeichnung;Hersteller;Artikel-Nr;Zone;Menge;Preis/Stk EUR;Gesamt EUR',
+    ...liste.map((e, i) => [i+1, `"${e.bezeichnung}"`, e.hersteller, e.artikel_nr, e.zone, e.menge, e.preis_eur.toFixed(2), (e.menge*e.preis_eur).toFixed(2)].join(';'))
+  ];
+  const blob = new Blob(['﻿' + lines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'dbacs_stueckliste.csv';
+  a.click();
+  URL.revokeObjectURL(url);
 }
-loadMontagebereich(gs('schrank_typ'));
+
+// ── Drucken ──────────────────────────────────────────────────────────
+function printErgebnis() {
+  const s = document.createElement('style');
+  s.textContent = '@page{size:A4 landscape;margin:10mm 12mm}';
+  document.head.appendChild(s);
+  window.print();
+  document.head.removeChild(s);
+}
+
+// ── Start ────────────────────────────────────────────────────────────
+loadData();
 </script>
 </body>
 </html>
