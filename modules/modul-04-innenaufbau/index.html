@@ -159,8 +159,9 @@ legend{
   <div class="title">
     <h1>Modul 4 · Schaltschrank-Dimensionierung · Baugruppen · Innenaufbau</h1>
     <p>Baugruppen · Sensorik · Aktorik · Zonenbasierte Platzbedarf-Berechnung</p>
-    <a href="../../index.html">← Startseite</a>
+    <p class="copyright-line" style="font-size:10px;color:var(--tx3);margin-top:2px;">© 2026 Stephan Michler</p>
   </div>
+  <a href="../../index.html">← Startseite</a>
   <div class="proj-fields">
     <div class="proj-field">
       <label for="proj-name">Projekt</label>
@@ -195,21 +196,21 @@ legend{
       <legend>Schrank-Typ</legend>
       <div class="field">
         <div class="lbl">Schranktyp<span class="var">schrank_typ</span></div>
-        <select id="schrank_typ" disabled>
-          <option value="">— aus Modul 3 übernommen —</option>
+        <select id="schrank_typ" onchange="onTypChange()">
+          <option value="">— bitte wählen —</option>
           <option value="wandschrank">Wandschrank</option>
           <option value="standschrank">Standschrank</option>
         </select>
       </div>
       <div class="field">
-        <div class="lbl">Montagebereich B (mm)<span class="var">b_mplatte_mbereich_mm</span></div>
+        <div class="lbl">Montagebereich B (mm)<span class="var" id="var_b">b_mplatte_mbereich_mm</span></div>
         <input id="b_mplatte_mbereich_mm" type="number" value="0" disabled>
       </div>
       <div class="field">
-        <div class="lbl">Montagebereich H (mm)<span class="var">h_mplatte_mbereich_mm</span></div>
+        <div class="lbl">Montagebereich H (mm)<span class="var" id="var_h">h_mplatte_mbereich_mm</span></div>
         <input id="h_mplatte_mbereich_mm" type="number" value="0" disabled>
       </div>
-      <p style="font-size:10px;color:var(--tx3);margin-top:6px" id="hint_quelle">Automatisch aus Modul 3 übernommen</p>
+      <p style="font-size:10px;color:var(--tx3);margin-top:6px" id="hint_quelle">Bitte Schrank-Typ wählen</p>
     </fieldset>
 
     <fieldset>
@@ -253,12 +254,8 @@ legend{
 </footer>
 
 <script>
-function todayISO() {
-  const d = new Date();
-  return d.getFullYear() + '-'
-    + String(d.getMonth()+1).padStart(2,'0') + '-'
-    + String(d.getDate()).padStart(2,'0');
-}
+const gs = id => document.getElementById(id).value;
+
 function updateDocNr() {
   const nr  = document.getElementById('proj-nummer').value.trim();
   const asp = document.getElementById('proj-asp').value.trim();
@@ -266,8 +263,8 @@ function updateDocNr() {
   document.getElementById('proj-docnr').value = doc || '–';
 }
 function saveProjFields() {
-  const fields = ['proj-name','proj-nummer','proj-asp','proj-engineer'];
-  fields.forEach(id => localStorage.setItem(id, document.getElementById(id).value));
+  ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id =>
+    localStorage.setItem(id, document.getElementById(id).value));
   updateDocNr();
   localStorage.setItem('proj-docnr', document.getElementById('proj-docnr').value);
 }
@@ -279,28 +276,66 @@ function loadProjFields() {
   updateDocNr();
 }
 
-function loadFromModul3() {
-  const typ = localStorage.getItem('schrank_typ') ||
-              localStorage.getItem('m03_zone_ke_pos') && 'wandschrank';
-  const isWand = typ !== 'standschrank';
-  const keyB = isWand ? 'm01_b_mplatte_mbereich_wandschrank_mm'
-                      : 'm02_b_mplatte_mbereich_standschrank_mm';
-  const keyH = isWand ? 'm01_h_mplatte_mbereich_wandschrank_mm'
-                      : 'm02_h_mplatte_mbereich_standschrank_mm';
+function onTypChange() {
+  const typ = gs('schrank_typ');
+  localStorage.setItem('m04_schrank_typ', typ);
+  loadMontagebereich(typ);
+}
+
+function loadMontagebereich(typ) {
+  const hint = document.getElementById('hint_quelle');
+  const sfx  = typ === 'wandschrank' ? 'wandschrank_mm' : 'standschrank_mm';
+  const pfx  = typ === 'wandschrank' ? 'm01' : 'm02';
+  document.getElementById('var_b').textContent = `b_mplatte_mbereich_${sfx}`;
+  document.getElementById('var_h').textContent = `h_mplatte_mbereich_${sfx}`;
+
+  if (!typ) {
+    document.getElementById('b_mplatte_mbereich_mm').value = 0;
+    document.getElementById('h_mplatte_mbereich_mm').value = 0;
+    hint.textContent = 'Bitte Schrank-Typ wählen';
+    hint.style.color = '';
+    return;
+  }
+
+  const keyB = `${pfx}_b_mplatte_mbereich_${sfx}`;
+  const keyH = `${pfx}_h_mplatte_mbereich_${sfx}`;
   const storedB = localStorage.getItem(keyB);
   const storedH = localStorage.getItem(keyH);
-  if (storedB !== null) document.getElementById('b_mplatte_mbereich_mm').value = +storedB;
-  if (storedH !== null) document.getElementById('h_mplatte_mbereich_mm').value = +storedH;
 
-  const autoSel = localStorage.getItem('m04_autoselect');
-  if (autoSel) {
-    document.getElementById('schrank_typ').value = autoSel;
-    localStorage.removeItem('m04_autoselect');
+  if (storedB !== null && storedH !== null) {
+    document.getElementById('b_mplatte_mbereich_mm').value = +storedB;
+    document.getElementById('h_mplatte_mbereich_mm').value = +storedH;
+    hint.textContent = typ === 'wandschrank'
+      ? 'Automatisch aus Modul 1 übernommen'
+      : 'Automatisch aus Modul 2 übernommen';
+    hint.style.color = '';
+  } else {
+    document.getElementById('b_mplatte_mbereich_mm').value = 0;
+    document.getElementById('h_mplatte_mbereich_mm').value = 0;
+    hint.innerHTML = 'Keine Daten vorhanden &ndash; bitte zuerst '
+      + (typ === 'wandschrank'
+        ? '<a href="../modul-01-schaltschrank/" style="color:var(--green)">Modul 1</a>'
+        : '<a href="../modul-02-standschrank/" style="color:var(--green)">Modul 2</a>')
+      + ' und <a href="../modul-03-architektur/" style="color:var(--green)">Modul 3</a> berechnen';
+    hint.style.color = 'var(--tx3)';
   }
 }
 
+// ── Init ──────────────────────────────────────────────────────
 loadProjFields();
-loadFromModul3();
+
+// Auto-Select wenn aus Modul 3 navigiert
+const _autoSel = localStorage.getItem('m04_autoselect');
+if (_autoSel) {
+  document.getElementById('schrank_typ').value = _autoSel;
+  localStorage.setItem('m04_schrank_typ', _autoSel);
+  localStorage.removeItem('m04_autoselect');
+} else {
+  // gespeicherte Auswahl wiederherstellen
+  const saved = localStorage.getItem('m04_schrank_typ');
+  if (saved) document.getElementById('schrank_typ').value = saved;
+}
+loadMontagebereich(gs('schrank_typ'));
 </script>
 </body>
 </html>

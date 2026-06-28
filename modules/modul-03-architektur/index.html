@@ -490,6 +490,7 @@ body.print-full #full-layout-container { display:block !important; padding:0; }
     <button class="btn-print" onclick="printErgebnis()">Ergebnis drucken</button>
     <button class="btn-print" onclick="printFullLayout()">Vollständiges Layout drucken</button>
     <button class="btn-print btn-nav" id="btn-goto-modul" onclick="gotoParentModul()" style="display:none">← Zurück zu Modul</button>
+    <button class="btn-print btn-nav" id="btn-goto-m4" onclick="gotoModul4()" style="display:none">→ Weiter zu Modul 4 · Innenaufbau</button>
 
   </aside>
 
@@ -1308,17 +1309,27 @@ function gotoParentModul() {
   else if (typ === 'standschrank') window.location.href = '../modul-02-standschrank/';
 }
 
+function gotoModul4() {
+  const typ = gs('schrank_typ');
+  if (typ) localStorage.setItem('m04_autoselect', typ);
+  window.location.href = '../modul-04-innenaufbau/';
+}
+
 function updateNavButton() {
   const typ = gs('schrank_typ');
-  const btn = document.getElementById('btn-goto-modul');
+  const btn  = document.getElementById('btn-goto-modul');
+  const btn4 = document.getElementById('btn-goto-m4');
   if (typ === 'wandschrank') {
     btn.textContent = '← Zurück zu Modul 1 · Wandschrank';
     btn.style.display = '';
+    btn4.style.display = '';
   } else if (typ === 'standschrank') {
     btn.textContent = '← Zurück zu Modul 2 · Standschrank';
     btn.style.display = '';
+    btn4.style.display = '';
   } else {
-    btn.style.display = 'none';
+    btn.style.display  = 'none';
+    btn4.style.display = 'none';
   }
 }
 
