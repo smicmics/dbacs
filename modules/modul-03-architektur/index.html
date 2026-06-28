@@ -208,6 +208,19 @@ body.print-full #full-layout-container { display:block !important; padding:0; }
   body.print-full #full-layout-container { display:block !important; padding:0; }
   body.print-full #full-layout-container svg { width:100% !important; max-width:none !important; height:auto !important; }
 }
+#full-layout-header {
+  display:flex; align-items:flex-start; gap:12px; padding:10px 12px 10px;
+  border-bottom:1.5px solid #888; margin-bottom:10px; background:#fff;
+}
+#full-layout-header .header-logo { height:48px; width:48px; object-fit:contain; flex-shrink:0; }
+#full-layout-header .title h1 { font-size:15px; font-weight:700; color:#000; margin:0 0 2px; }
+#full-layout-header .title p  { font-size:11px; color:#555; margin:0; }
+#full-layout-header .flh-fields {
+  display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-left:auto;
+}
+#full-layout-header .flh-field { display:flex; flex-direction:column; gap:2px; }
+#full-layout-header .flh-field label { font-size:8.5px; color:#888; text-transform:uppercase; letter-spacing:.05em; }
+#full-layout-header .flh-field span  { font-size:11px; color:#222; font-weight:500; border-bottom:1px solid #ccc; min-width:80px; padding-bottom:1px; }
 
 /* ── Nav-Button ── */
 .btn-nav{background:var(--bg3);color:var(--green);border-color:var(--green);margin-top:8px;}
@@ -1206,8 +1219,29 @@ function loadProjFields() {
 }
 
 // ── Vollständiges Layout drucken ──────────────────────────────
+function buildFullLayoutHeader() {
+  const val = id => (document.getElementById(id) || {}).value || '';
+  const field = (lbl, v) => v
+    ? `<div class="flh-field"><label>${lbl}</label><span>${v}</span></div>` : '';
+  return `<div id="full-layout-header">
+    <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
+    <div class="title">
+      <h1>Modul 3 · TE-Berechnung · Architektur · Innenaufbau</h1>
+      <p>GA-Planung · Schaltschrank-Dimensionierung</p>
+    </div>
+    <div class="flh-fields">
+      ${field('Projekt',       val('proj-name'))}
+      ${field('Projektnummer', val('proj-nummer'))}
+      ${field('ASP',           val('proj-asp'))}
+      ${field('Bearbeitet von',val('proj-engineer'))}
+      ${field('Dokument-Nr.',  val('proj-docnr'))}
+    </div>
+  </div>`;
+}
+
 function printFullLayout() {
-  document.getElementById('full-layout-container').innerHTML = buildFullLayoutSVG();
+  document.getElementById('full-layout-container').innerHTML =
+    buildFullLayoutHeader() + buildFullLayoutSVG();
   document.body.classList.add('print-full');
   const ps = document.createElement('style');
   ps.id = 'pls';
@@ -1427,7 +1461,7 @@ function buildFullLayoutSVG() {
     const baseY = tipY - 18;
     s += `<line x1="${arrowCx}" y1="${baseY}" x2="${arrowCx}" y2="${tipY}"
       stroke="#2DBD8E" stroke-width="2" marker-end="url(#arrowhead)"/>`;
-    s += `<text x="${arrowCx+6}" y="${baseY+9}" dominant-baseline="middle"
+    s += `<text x="${arrowCx+6}" y="${baseY}" dominant-baseline="middle"
       font-size="9" fill="#2DBD8E" font-family="system-ui,sans-serif">Kabeleinführung</text>`;
   } else {
     const tipY  = byLine + 24;
