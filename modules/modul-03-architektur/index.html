@@ -222,6 +222,49 @@ body.print-full #full-layout-container { display:block !important; padding:0; }
 #full-layout-header .flh-field label { font-size:8.5px; color:#888; text-transform:uppercase; letter-spacing:.05em; }
 #full-layout-header .flh-field span  { font-size:11px; color:#222; font-weight:500; border-bottom:1px solid #ccc; min-width:80px; padding-bottom:1px; }
 
+/* ── Ergebnis drucken – dedizierter Container ── */
+body.print-ergebnis .layout,
+body.print-ergebnis .site-footer,
+body.print-ergebnis header { display:none !important; }
+body.print-ergebnis #print-ergebnis-container { display:block !important; padding:0; }
+@media print {
+  body.print-ergebnis .layout,
+  body.print-ergebnis header,
+  body.print-ergebnis .site-footer { display:none !important; }
+  body.print-ergebnis #print-ergebnis-container { display:block !important; }
+}
+/* Kopf-/Fußzeile im Ergebnis-Ausdruck */
+.pe-header {
+  display:flex; align-items:flex-start; gap:12px;
+  padding-bottom:10px; border-bottom:1.5px solid #888; margin-bottom:14px;
+}
+.pe-header img { height:44px; width:44px; object-fit:contain; flex-shrink:0; }
+.pe-header .title h1 { font-size:14px; font-weight:700; color:#000; margin:0 0 2px; }
+.pe-header .title p  { font-size:10px; color:#555; margin:0; }
+.pe-fields { display:flex; gap:14px; flex-wrap:wrap; margin-left:auto; align-items:flex-end; }
+.pe-field  { display:flex; flex-direction:column; gap:2px; }
+.pe-field label { font-size:7px; color:#888; text-transform:uppercase; letter-spacing:.05em; }
+.pe-field span  { font-size:9.5px; color:#111; font-weight:500;
+  border-bottom:1px solid #ccc; min-width:65px; padding-bottom:1px; }
+.pe-footer { margin-top:18px; }
+.pe-footer hr  { border:none; border-top:1px solid #bbb; margin-bottom:5px; }
+.pe-foot-row   { display:flex; align-items:center; font-size:8px; color:#666; }
+.pe-foot-row .pe-foot-center { flex:1; text-align:center; }
+/* Seitenumbruch-Schutz */
+.pe-section { break-inside:avoid; page-break-inside:avoid; margin-bottom:16px; }
+/* Tabellenbreiten im Ergebnis-Ausdruck */
+@media print {
+  body.print-ergebnis .rtable { table-layout:fixed; width:100%; }
+  body.print-ergebnis .rtable th, body.print-ergebnis .rtable td {
+    font-size:9px; padding:3px 5px; overflow:hidden; }
+  body.print-ergebnis .rtable .vname { font-size:8px; white-space:normal; word-break:break-all; }
+  body.print-ergebnis .rtable .formula-cell { white-space:normal; font-size:8.5px; word-break:break-word; }
+  body.print-ergebnis .rtable .val { white-space:nowrap; }
+  body.print-ergebnis .formula-box { background:#f5f5f5; border-left-color:#999; color:#000; }
+  body.print-ergebnis .zone-section-title { color:#222; border-color:#999; }
+  body.print-ergebnis .zone-feld-section { display:block !important; }
+}
+
 /* ── Nav-Button ── */
 .btn-nav{background:var(--bg3);color:var(--green);border-color:var(--green);margin-top:8px;}
 .btn-nav:hover{background:var(--green);color:#fff;}
@@ -442,7 +485,7 @@ body.print-full #full-layout-container { display:block !important; padding:0; }
 
     </fieldset>
 
-    <button class="btn-print" onclick="window.print()">Ergebnis drucken</button>
+    <button class="btn-print" onclick="printErgebnis()">Ergebnis drucken</button>
     <button class="btn-print" onclick="printFullLayout()">Vollständiges Layout drucken</button>
     <button class="btn-print btn-nav" id="btn-goto-modul" onclick="gotoParentModul()" style="display:none">← Zurück zu Modul</button>
 
@@ -456,6 +499,7 @@ body.print-full #full-layout-container { display:block !important; padding:0; }
 </div>
 
 <div id="full-layout-container" style="display:none"></div>
+<div id="print-ergebnis-container" style="display:none"></div>
 
 <footer class="site-footer">
   <span>Erstellt von: Stephan Michler · DBACS GA-Planung · 2026</span>
@@ -976,7 +1020,7 @@ function buildTETable(p) {
   <div class="note-line">TE-Breite: 18,0 mm nach DIN 43880 · Hutschiene: 7,5 mm nach DIN EN 60715 · Ergebnis: ganze Zahl (abgerundet)</div>
 </div>`;
 
-  return tbl + formel;
+  return `<div class="pe-section">${tbl}${formel}</div>`;
 }
 
 // ── Zonenabschnitt Wrapper ────────────────────────────────────
@@ -1002,9 +1046,9 @@ function buildZoneSection(zp) {
     ? `<p style="color:#E04040;font-size:11px;font-family:var(--mono);margin-bottom:6px">
         ⚠ Festzonen ${h_fest} mm &gt; Montagefläche ${zp.h} mm – größeres Gehäuse oder kleinere Kabeleinführungszone erforderlich</p>`
     : '';
-  return `<div class="zone-section-title">Zonenaufteilung · ${modLabel} · L/S: ${lsLabel} · KE: ${keLabel} · Netz: ${netzLabel}</div>
+  return `<div class="pe-section"><div class="zone-section-title">Zonenaufteilung · ${modLabel} · L/S: ${lsLabel} · KE: ${keLabel} · Netz: ${netzLabel}</div>
 ${warnHtml}${buildZoneSVG(zp)}
-${buildZoneTable(zp)}`;
+${buildZoneTable(zp)}</div>`;
 }
 
 // ── Zonen-SVG ─────────────────────────────────────────────────
@@ -1216,6 +1260,46 @@ function loadProjFields() {
     if (val !== null) document.getElementById(id).value = val;
   });
   updateDocNr();
+}
+
+// ── Ergebnis drucken ──────────────────────────────────────────
+function printErgebnis() {
+  const val = id => (document.getElementById(id) || {}).value || '';
+  const field = (lbl, v) => `<div class="pe-field"><label>${lbl}</label><span>${v || '–'}</span></div>`;
+  const now = new Date();
+  const dateStr = String(now.getDate()).padStart(2,'0') + '.' +
+                  String(now.getMonth()+1).padStart(2,'0') + '.' + now.getFullYear();
+  const header = `<div class="pe-header">
+    <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS">
+    <div class="title">
+      <h1>Modul 3 · TE-Berechnung · Architektur · Innenaufbau</h1>
+      <p>GA-Planung · Schaltschrank-Dimensionierung</p>
+    </div>
+    <div class="pe-fields">
+      ${field('PROJEKT',  val('proj-name'))}
+      ${field('NR.',      val('proj-nummer'))}
+      ${field('ASP',      val('proj-asp'))}
+      ${field('BEARB.',   val('proj-engineer'))}
+      ${field('DOK.-NR.', val('proj-docnr'))}
+    </div>
+  </div>`;
+  const footer = `<div class="pe-footer"><hr>
+    <div class="pe-foot-row">
+      <span>Stand: ${dateStr}</span>
+      <span class="pe-foot-center">Seite 1 von 1</span>
+      <span></span>
+    </div>
+  </div>`;
+  document.getElementById('print-ergebnis-container').innerHTML =
+    header + document.getElementById('results-area').innerHTML + footer;
+  document.body.classList.add('print-ergebnis');
+  const ps = document.createElement('style');
+  ps.id = 'pes';
+  ps.textContent = '@page{size:A4 portrait;margin:10mm 12mm}';
+  document.head.appendChild(ps);
+  window.print();
+  document.body.classList.remove('print-ergebnis');
+  document.head.removeChild(ps);
 }
 
 // ── Vollständiges Layout drucken ──────────────────────────────
