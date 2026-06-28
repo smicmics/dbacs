@@ -287,6 +287,22 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Hint-Text bei fehlendem localStorage-Wert: Link zur Startseite
 - `class="copyright-line"` – Copyright-Absatz im Druck ausgeblendet (`display:none !important`)
 
+### Modul 4 – Innenaufbau (Session 20, gesperrt)
+- 3-Spalten-Layout: 300px Eingabe | flex:1 SVG-Schranksicht | 320px Stückliste
+- Datenbasis: `data/einzelbauteile.json` (35 Bauteile, 4 Hersteller) + `data/baugruppen.json` (15 GA-Gruppen)
+- Gewerk-Tabs: RLT · HKL · Sanitär · Beleuchtung · Elektro → filtert Baugruppen-Dropdown
+- Belegungsliste: persistiert als `m04_belegung` (JSON-Array in localStorage)
+- TE-Platzierung: je Zone (leistung/steuerung/klemmen) links→rechts, oben→unten je Reihe
+- Reihenhöhen: h_reihe_leistung=100mm, h_reihe_steuerung=75mm, h_reihe_klemmen=65mm (editierbar, persistiert)
+- Füllstand-Balken: grün ≤80%, gelb 80–100%, rot >100% je Zone
+- WYSIWYG-SVG: TE-Blöcke farbig je Baugruppe, ÜSS als grauer Block, Überfüllung = roter Rahmen
+- Stückliste: aggregiert nach artikel_nr, mit Listenpreisen und Gesamt-Betrag
+- CSV-Export: Blob-Download `dbacs_stueckliste.csv` (UTF-8 BOM, Semikolon-getrennt)
+- `printErgebnis()` wie M1–M3 (A4 landscape, Corporate Header)
+- localStorage liest: m03_b_leist, m03_h_leist, m03_b_steuer, m03_h_steuer, m03_h_klemm, m03_h_evert, m03_b_uss, m03_b_ek, m03_zone_anordnung, m03_zone_ke_pos
+- localStorage schreibt: m04_belegung, m04_schrank_typ, m04_h_reihe_leistung/steuerung/klemmen
+- BG_COLORS: 10 Farben zyklisch: #E07B39, #4BBECA, #9A94E8, #2DBD8E, #C84E2E, #D4A84B, #7A74CC, #5BAD6B, #C86090, #A8C4E8
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 28. Juni 2026 – Session 19 (Code-Review abgeschlossen)
+**Stand:** 28. Juni 2026 – Session 20 (Modul 4 vollständig implementiert)
 
 ---
 
@@ -35,7 +35,8 @@ dbacs/
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html   Modul 1 – Wandschrank, vollständig ✅
 │   ├── modul-02-standschrank/index.html    Modul 2 – Standschrank, vollständig ✅
-│   └── modul-03-architektur/index.html     Modul 3 – TE-Berechnung + Zonenaufteilung ✅
+│   ├── modul-03-architektur/index.html     Modul 3 – TE-Berechnung + Zonenaufteilung ✅
+│   └── modul-04-innenaufbau/index.html     Modul 4 – Baugruppen · Innenaufbau ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html       Referenzzeichnung Wandschrank (nicht bearbeiten)
 │   └── standschrank_frontansicht.html      Referenzzeichnung Standschrank (nicht bearbeiten)
@@ -48,6 +49,8 @@ dbacs/
 │   ├── sockel.json                         Sockel-DB Rittal VX (committed)
 │   ├── bodenbleche.json                    Bodenblech-DB Rittal VX (committed)
 │   ├── reiheneinbaugeraete.json            Reiheneinbaugeräte (Eaton + Siemens, committed)
+│   ├── einzelbauteile.json                 Einzelbauteile-DB M4 (35 Einträge, 4 Hersteller) ← Session 20
+│   ├── baugruppen.json                     Baugruppen-DB M4 (15 GA-Funktionsgruppen) ← Session 20
 │   └── xlsx_to_json.py                     Konvertierungsskript Excel → JSON (7 Sheets)
 └── docs/
     └── *.md                                Projektdokumentation
@@ -61,6 +64,7 @@ dbacs/
 | Live-URL Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
 | Live-URL Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
 | Live-URL Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-architektur/ |
+| Live-URL Modul 4 | https://smicmics.github.io/dbacs/modules/modul-04-innenaufbau/ |
 | Deploy-Trigger | Push auf `main` Branch → GitHub Pages baut automatisch |
 
 ---
@@ -292,9 +296,10 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 
 **Nächste Schritte (Prio hoch)**
 6. ~~Code-Review alle 3 Module~~ ✅ abgeschlossen Session 19
-7. Modul 4 – Einspeisezone / Leistungszone (Detailplanung, Eingabe Hauptschalter/ÜSS-Typen, Geräte befüllen)
-8. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
-9. Startseite: Modul 4–5 Karten aktualisieren wenn Entwicklung beginnt
+7. ~~Modul 4 – Grundstruktur~~ ✅ abgeschlossen Session 20
+8. Modul 4 – Erweiterungen: Mehrfeld-Schränke, Bauteil-Icons, GAEB/AVA-Export
+9. Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern)
+10. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
 
 **Später**
 9. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
