@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -1219,29 +1219,9 @@ function loadProjFields() {
 }
 
 // ── Vollständiges Layout drucken ──────────────────────────────
-function buildFullLayoutHeader() {
-  const val = id => (document.getElementById(id) || {}).value || '';
-  const field = (lbl, v) => v
-    ? `<div class="flh-field"><label>${lbl}</label><span>${v}</span></div>` : '';
-  return `<div id="full-layout-header">
-    <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
-    <div class="title">
-      <h1>Modul 3 · TE-Berechnung · Architektur · Innenaufbau</h1>
-      <p>GA-Planung · Schaltschrank-Dimensionierung</p>
-    </div>
-    <div class="flh-fields">
-      ${field('Projekt',       val('proj-name'))}
-      ${field('Projektnummer', val('proj-nummer'))}
-      ${field('ASP',           val('proj-asp'))}
-      ${field('Bearbeitet von',val('proj-engineer'))}
-      ${field('Dokument-Nr.',  val('proj-docnr'))}
-    </div>
-  </div>`;
-}
 
 function printFullLayout() {
-  document.getElementById('full-layout-container').innerHTML =
-    buildFullLayoutHeader() + buildFullLayoutSVG();
+  document.getElementById('full-layout-container').innerHTML = buildFullLayoutSVG();
   document.body.classList.add('print-full');
   const ps = document.createElement('style');
   ps.id = 'pls';
@@ -1320,8 +1300,8 @@ function buildFullLayoutSVG() {
   const sw      = Math.round(B * sc);
   const sock_px = sockel_aktiv ? Math.round(h_sockel * sc) : 0;
 
-  const PH = 36;                              // Projektkopf-Streifen
-  const PL = 50, PT = 36, PR = 180, PB = 68;
+  const PH = 54;                              // Projektkopf-Streifen
+  const PL = 50, PT = 28, PR = 180, PB = 68;
   const VW  = Math.max(PL + sw + PR, 950);   // Mindestbreite für Querformat
   const VH  = PH + PT + SVG_H + sock_px + PB;
 
@@ -1343,22 +1323,29 @@ function buildFullLayoutSVG() {
 
   let s = '';
 
-  // ── Projektkopf-Streifen ─────────────────────────────────────
+  // -- Projektkopf-Streifen -------------------------------------------
+  const typLabel = typ === 'wandschrank' ? 'Wandschrank' : 'Standschrank';
   s += `<rect x="0" y="0" width="${VW}" height="${PH}" fill="#EFEFEC"/>`;
   s += `<line x1="0" y1="${PH}" x2="${VW}" y2="${PH}" stroke="#BBBBBB" stroke-width="0.8"/>`;
-  const typLabel = typ === 'wandschrank' ? 'Wandschrank' : 'Standschrank';
-  s += `<text x="${PL}" y="12" font-size="9" font-weight="700" fill="#333"
-    font-family="system-ui,sans-serif">DBACS · GA-Planung · Modul 3 · Vollständiges Layout</text>`;
-  s += `<text x="${PL}" y="27" font-size="8.5" fill="#555"
-    font-family="system-ui,sans-serif">${typLabel} · ${B} × ${H} mm${sockel_aktiv ? ` · Sockel ${h_sockel} mm` : ''}</text>`;
-  const projParts = [];
-  if (projName)     projParts.push(`Projekt: ${projName}`);
-  if (projNr)       projParts.push(`Nr.: ${projNr}`);
-  if (projAsp)      projParts.push(`ASP: ${projAsp}`);
-  if (projEngineer) projParts.push(`Bearb.: ${projEngineer}`);
-  if (projParts.length)
-    s += `<text x="${VW - 8}" y="${PH/2}" dominant-baseline="middle" text-anchor="end"
-      font-size="8" fill="#444" font-family="system-ui,sans-serif">${projParts.join('  ·  ')}</text>`;
+  s += `<image href="../../web/assets/img/dbacs-logo.png" x="8" y="7" width="40" height="40" preserveAspectRatio="xMidYMid meet"/>`;
+  s += `<text x="56" y="20" font-size="10" font-weight="700" fill="#111" font-family="system-ui,sans-serif">Modul 3 · TE-Berechnung · Architektur · Innenaufbau</text>`;
+  s += `<text x="56" y="33" font-size="8" fill="#555" font-family="system-ui,sans-serif">GA-Planung · Schaltschrank-Dimensionierung</text>`;
+  s += `<text x="56" y="46" font-size="8" fill="#444" font-family="system-ui,sans-serif">${typLabel} · ${B} × ${H} mm${sockel_aktiv ? ` · Sockel ${h_sockel} mm` : ''}</text>`;
+  s += `<line x1="268" y1="8" x2="268" y2="${PH-8}" stroke="#CCCCCC" stroke-width="0.6"/>`;
+  const pfields = [
+    { lbl:'PROJEKT',  val: projName },
+    { lbl:'NR.',      val: projNr   },
+    { lbl:'ASP',      val: projAsp  },
+    { lbl:'BEARB.',   val: projEngineer },
+    { lbl:'DOK.-NR.', val: localStorage.getItem('proj-docnr') || '' },
+  ];
+  const fStart = 275, fEnd = VW - 6, fW = Math.floor((fEnd - fStart) / pfields.length);
+  pfields.forEach(({ lbl, val }, i) => {
+    const fx = fStart + i * fW;
+    s += `<text x="${fx}" y="19" font-size="6.5" fill="#888" font-family="system-ui,sans-serif">${lbl}</text>`;
+    s += `<text x="${fx}" y="36" font-size="9.5" fill="#111" font-weight="500" font-family="system-ui,sans-serif">${val || '-'}</text>`;
+    s += `<line x1="${fx}" y1="41" x2="${fx+fW-4}" y2="41" stroke="#BBBBBB" stroke-width="0.5"/>`;
+  });
 
   // ── Schrankrahmen ─────────────────────────────────────────────
   s += `<rect x="${sx}" y="${sy}" width="${sw}" height="${SVG_H}"
