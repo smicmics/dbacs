@@ -242,17 +242,6 @@ body.print-full #full-layout-container { display:block !important; padding:0; }
 #full-layout-header .flh-field label { font-size:8.5px; color:#888; text-transform:uppercase; letter-spacing:.05em; }
 #full-layout-header .flh-field span  { font-size:11px; color:#222; font-weight:500; border-bottom:1px solid #ccc; min-width:80px; padding-bottom:1px; }
 
-/* ── Ergebnis drucken – dedizierter Container ── */
-body.print-ergebnis .layout,
-body.print-ergebnis .site-footer,
-body.print-ergebnis header { display:none !important; }
-body.print-ergebnis #print-ergebnis-container { display:block !important; padding:0; }
-@media print {
-  body.print-ergebnis .layout,
-  body.print-ergebnis header,
-  body.print-ergebnis .site-footer { display:none !important; }
-  body.print-ergebnis #print-ergebnis-container { display:block !important; }
-}
 /* Kopf-/Fußzeile im Ergebnis-Ausdruck – gleiche Optik wie SVG-Header */
 .pe-header {
   display:flex; align-items:center; gap:0;
@@ -277,18 +266,6 @@ body.print-ergebnis #print-ergebnis-container { display:block !important; paddin
 .pe-foot-row .pe-foot-center { flex:1; text-align:center; }
 /* Seitenumbruch-Schutz */
 .pe-section { break-inside:avoid; page-break-inside:avoid; margin-bottom:16px; }
-/* Tabellenbreiten im Ergebnis-Ausdruck */
-@media print {
-  body.print-ergebnis .rtable { table-layout:fixed; width:100%; }
-  body.print-ergebnis .rtable th, body.print-ergebnis .rtable td {
-    font-size:9px; padding:3px 5px; overflow:hidden; }
-  body.print-ergebnis .rtable .vname { font-size:8px; white-space:normal; word-break:break-all; }
-  body.print-ergebnis .rtable .formula-cell { white-space:normal; font-size:8.5px; word-break:break-word; }
-  body.print-ergebnis .rtable .val { white-space:nowrap; }
-  body.print-ergebnis .formula-box { background:#f5f5f5; border-left-color:#999; color:#000; }
-  body.print-ergebnis .zone-section-title { color:#222; border-color:#999; }
-  body.print-ergebnis .zone-feld-section { display:block !important; }
-}
 
 /* ── Nav-Button ── */
 .btn-nav{background:var(--bg3);color:var(--green);border-color:var(--green);margin-top:8px;}
@@ -524,7 +501,6 @@ body.print-ergebnis #print-ergebnis-container { display:block !important; paddin
 </div>
 
 <div id="full-layout-container" style="display:none"></div>
-<div id="print-ergebnis-container" style="display:none"></div>
 
 <footer class="site-footer">
   <span>Erstellt von: Stephan Michler · DBACS GA-Planung · 2026</span>
@@ -650,6 +626,8 @@ function saveZoneInputs() {
   localStorage.setItem('m03_zone_schiene',     gs('zone_schiene') || 'ja');
   localStorage.setItem('m03_zone_schiene_pol', gs('zone_schiene_pol') || '3');
   localStorage.setItem('m03_n_felder',         gs('n_felder'));
+  localStorage.setItem('m03_h_kanal_h',        gs('h_kanal_h_mm'));
+  localStorage.setItem('m03_b_kanal_v',        gs('b_kanal_v_mm'));
 }
 function loadZoneInputs() {
   const modus = localStorage.getItem('m03_zone_modus');
@@ -664,6 +642,10 @@ function loadZoneInputs() {
   _v('zone_schiene_pol', schienePol);
   const nf = localStorage.getItem('m03_n_felder');
   if (nf !== null) _v('n_felder', nf);
+  const hKanal = localStorage.getItem('m03_h_kanal_h');
+  if (hKanal !== null) _v('h_kanal_h_mm', hKanal);
+  const bKanal = localStorage.getItem('m03_b_kanal_v');
+  if (bKanal !== null) _v('b_kanal_v_mm', bKanal);
   updateZoneVisibility();
 }
 function updateZoneVisibility() {
@@ -747,7 +729,7 @@ function calculateZones(b, h) {
   } else {
     h_evert = ceil5(H_HANDLING + H_SICHER_WS + H_HANDLING); // 105 mm WS
   }
-  const h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING); // ceil5(82) = 85 mm
+  const h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING); // ceil5(95) = 95 mm
 
   // Festzonen: Evert + Klemm + H.Kanal(e); L/S (inkl. ÜSS) füllen den Rest
   // Einspeisung (USS) + Einsp.-Kl. immer LINKS – unabhängig von KE-Position
@@ -1371,7 +1353,7 @@ function buildFullLayoutSVG() {
 
   // M3-Zonen
   const b_mb        = g('b_mplatte_mbereich_mm');
-  const h_mb_layout = mp_h - h_ke;
+  const h_mb_layout = mp_h - h_ke + h_abst;
   const zp   = calculateZones(b_mb, h_mb_layout);
   const rows = buildLayout(zp);
 

@@ -104,7 +104,7 @@ Diese Namen gelten verbindlich in allen Modulen (Tabellenspalten, JS-Variablen, 
 | `h_schelle_mm` | Einbauhöhe Bügelschelle (Datenbankfeld in kabelzugschellen.json) | mm |
 | `h_kabel_bieg_faktor` | Biegeradiusfaktor Festwert 4 (VDE 0298-4) | – |
 | `schrank_typ` | Auswahl Wandschrank / Standschrank (Modul 3) | – |
-| `te_breite_mm` | TE-Breite nach DIN EN 60715 (Festwert 17,5 mm) | mm |
+| `te_breite_mm` | TE-Breite nach DIN 43880 (Festwert 18,0 mm – Hüllmaße Installationseinbaugeräte) | mm |
 | `flaeche_mbereich_cm2` | Montagefläche Montagebereich | cm² |
 | `flaeche_mbereich_m2` | Montagefläche Montagebereich | m² |
 | `n_te` | Verfügbare Teileinheiten auf Montagebereich-Breite (ganze Zahl) | TE |
@@ -297,8 +297,8 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 ### Modul 3 – Zonenaufteilung (gesperrt)
 - Mindesthöhen basieren auf physikalischen Festwerten (analog h_ke-Logik), **keine Prozent-Eingabe**
 - `ceil5(v)` = `Math.ceil(v/5)*5` – alle Mindesthöhen auf 5 mm aufgerundet
-- Festwerte: `H_KLEMME_STD=52`, `H_HANDLING=15`, `H_SICHER_WS=75`, `H_SCHIENE_DS=150`, `H_KANAL_H=40`, `B_KANAL_V=40`
-- `h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING) = 85 mm` – H_HANDLING = 15 mm (gesperrt)
+- Festwerte: `H_KLEMME_STD=65`, `H_HANDLING=15`, `H_SICHER_WS=75`, `H_SCHIENE_DS=150`, `H_KANAL_H=40`, `B_KANAL_V=40`
+- `h_klemm = ceil5(H_HANDLING + H_KLEMME_STD + H_HANDLING) = 95 mm` – H_KLEMME_STD = 65 mm, H_HANDLING = 15 mm (gesperrt)
 - `h_evert`: Drehstrom = `ceil5(150) = 150 mm`, Wechselstrom = `ceil5(105) = 105 mm`
 - **Einspeisung (USS) + Einsp.-Klemmen immer LINKS** – unabhängig von KE-Position (gesperrt)
 - **KE-Position** bestimmt nur die vertikale Reihenfolge: KE oben → Klemmen oben, Evert unten; KE unten → Evert oben, Klemmen unten

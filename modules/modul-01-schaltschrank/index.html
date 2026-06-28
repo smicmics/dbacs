@@ -528,6 +528,7 @@ const gs = id =>  document.getElementById(id).value;
 // ── Berechnung ────────────────────────────────────────────────
 function calculate() {
   const B = g('B'), H = g('H'), mp_b = g('mp_b'), mp_h = g('mp_h');
+  if (!H || !B) return;
   const d_max = g('d_max'), ke_pos = gs('ke_pos');
   const fs_dim = g('fs_dim'), fs_var = g('fs_var'), fs_zone = g('fs_zone');
 
@@ -960,6 +961,7 @@ function saveProjFields() {
   localStorage.setItem('asp',              document.getElementById('proj-asp').value);
   localStorage.setItem('project_engineer', document.getElementById('proj-engineer').value);
   updateDocNr();
+  localStorage.setItem('proj-docnr', document.getElementById('proj-docnr').value);
 }
 function loadProjFields() {
   ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id => {
