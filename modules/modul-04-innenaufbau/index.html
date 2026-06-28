@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBACS · Modul 4 · Schaltschrank-Dimensionierung · Baugruppen · Innenaufbau</title>
+<style>
+:root{
+  --bg:    #1A1A18;
+  --bg2:   #222220;
+  --bg3:   #2A2A28;
+  --bg4:   #303030;
+  --bord:  #3A3835;
+  --bords: #5A5855;
+  --tx:    #E0DED8;
+  --tx2:   #9A9890;
+  --tx3:   #666460;
+  --green: #2DBD8E;
+  --orange:#C8720E;
+  --blue:  #7A74CC;
+  --font:  system-ui,-apple-system,sans-serif;
+  --mono:  'Courier New',Courier,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;}
+
+/* ── Header ── */
+header{
+  background:#111110;color:#E0DED8;
+  padding:10px 22px 12px;display:flex;align-items:flex-start;gap:18px;
+  border-bottom:1px solid var(--bord);flex-wrap:wrap;
+}
+header h1{font-size:15px;font-weight:700;letter-spacing:-.01em;}
+header p{font-size:11px;color:var(--tx3);margin-top:1px;}
+header .title{flex:1;min-width:200px;}
+header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;margin-top:3px;}
+header a:hover{color:var(--tx2);}
+.header-logo{height:48px;width:48px;object-fit:contain;flex-shrink:0;}
+
+.proj-fields{
+  display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:flex-end;width:100%;
+}
+.proj-field{display:flex;flex-direction:column;gap:3px;}
+.proj-field label{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;}
+.proj-field input{
+  background:var(--bg3);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:12px;padding:3px 8px;
+}
+.proj-field input:focus{outline:none;border-color:var(--green);}
+#proj-name   {width:220px;}
+#proj-nummer {width:130px;}
+#proj-asp    {width:185px;}
+#proj-docnr  {width:280px;color:var(--tx2);}
+
+@media print{
+  .proj-fields{display:flex !important;}
+  .proj-field input{background:#fff;border-color:#ccc;color:#000;font-size:11px;}
+  .proj-field label{color:#666;}
+  header{
+    background:#EFEFEC !important;border-bottom:1.5px solid #BBBBBB;
+    padding:8px 10px;min-height:54px;margin-bottom:10px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .proj-fields{
+    display:flex !important;gap:0;flex:1;align-items:center;
+    border-left:1px solid #CCC;padding-left:14px;margin-left:14px;margin-top:0;
+  }
+  .proj-field input{
+    font-size:8.5px;color:#111 !important;font-weight:500;
+    border:none;border-bottom:0.5px solid #BBB;background:transparent;
+    padding:0 0 2px;width:100%;
+  }
+  fieldset{border-color:#ccc;background:#fff;break-inside:avoid;page-break-inside:avoid;}
+  .site-footer{display:none;}
+}
+
+/* ── Layout ── */
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 46px);}
+
+/* ── Input panel ── */
+.panel-in{
+  background:var(--bg2);border-right:1px solid var(--bord);
+  padding:18px 16px;overflow-y:auto;overflow-x:hidden;
+}
+.panel-in h2{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--tx3);margin-bottom:14px;
+}
+
+/* ── Fieldset ── */
+fieldset{
+  border:1px solid var(--bord);border-radius:6px;
+  padding:12px 14px;margin-bottom:12px;background:var(--bg3);
+}
+legend{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--tx2);padding:0 6px;
+}
+.field{margin-bottom:10px;}
+.field:last-child{margin-bottom:0;}
+.field .lbl{
+  font-size:12px;color:var(--tx2);margin-bottom:4px;display:flex;
+  justify-content:space-between;align-items:baseline;flex:1;min-width:0;overflow:hidden;
+}
+.field .var{
+  font-family:var(--mono);font-size:9.5px;color:var(--tx3);
+  display:block;margin-top:4px;white-space:normal;word-break:break-all;overflow:hidden;
+}
+.field input,.field select{
+  width:100%;background:var(--bg);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:13px;padding:4px 8px;
+}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green);}
+.field input[disabled],.field select[disabled]{color:var(--tx3);cursor:not-allowed;}
+
+/* ── Output panel ── */
+.panel-out{
+  padding:20px 24px;overflow-y:auto;
+}
+
+/* ── Placeholder ── */
+.placeholder-box{
+  border:1.5px dashed var(--bord);border-radius:10px;
+  padding:40px 32px;text-align:center;margin-top:40px;
+}
+.placeholder-box h3{
+  font-size:16px;font-weight:700;color:var(--tx2);margin-bottom:10px;
+}
+.placeholder-box p{font-size:13px;color:var(--tx3);line-height:1.7;max-width:480px;margin:0 auto 8px;}
+.placeholder-tag{
+  display:inline-block;margin:4px 3px;padding:3px 10px;
+  border-radius:3px;font-size:11px;background:var(--bg3);
+  border:1px solid var(--bord);color:var(--tx2);
+}
+
+/* ── Button ── */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;
+  cursor:pointer;border:1px solid transparent;text-decoration:none;
+}
+.btn--ghost{background:transparent;border-color:var(--bords);color:var(--tx2);}
+.btn--ghost:hover{border-color:var(--tx2);color:var(--tx);}
+
+/* ── Footer ── */
+.site-footer{
+  background:#111110;border-top:1px solid var(--bord);
+  padding:10px 22px;font-size:11px;color:var(--tx3);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.copyright-line{}
+@media print{.copyright-line{display:none !important;}}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
+  <div class="title">
+    <h1>Modul 4 · Schaltschrank-Dimensionierung · Baugruppen · Innenaufbau</h1>
+    <p>Baugruppen · Sensorik · Aktorik · Zonenbasierte Platzbedarf-Berechnung</p>
+    <a href="../../index.html">← Startseite</a>
+  </div>
+  <div class="proj-fields">
+    <div class="proj-field">
+      <label for="proj-name">Projekt</label>
+      <input id="proj-name" type="text" placeholder="Projektbezeichnung" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-nummer">Projektnummer</label>
+      <input id="proj-nummer" type="text" placeholder="z. B. 2024-001" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-asp">ASP</label>
+      <input id="proj-asp" type="text" placeholder="Automationsschwerpunkt" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-engineer">Bearbeitet von</label>
+      <input id="proj-engineer" type="text" placeholder="Name" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-docnr">Dokument-Nr.</label>
+      <input id="proj-docnr" type="text" readonly>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ── Eingabe-Panel ── -->
+  <div class="panel-in">
+    <h2>Eingaben</h2>
+
+    <fieldset>
+      <legend>Schrank-Typ</legend>
+      <div class="field">
+        <div class="lbl">Schranktyp<span class="var">schrank_typ</span></div>
+        <select id="schrank_typ" disabled>
+          <option value="">— aus Modul 3 übernommen —</option>
+          <option value="wandschrank">Wandschrank</option>
+          <option value="standschrank">Standschrank</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Montagebereich B (mm)<span class="var">b_mplatte_mbereich_mm</span></div>
+        <input id="b_mplatte_mbereich_mm" type="number" value="0" disabled>
+      </div>
+      <div class="field">
+        <div class="lbl">Montagebereich H (mm)<span class="var">h_mplatte_mbereich_mm</span></div>
+        <input id="h_mplatte_mbereich_mm" type="number" value="0" disabled>
+      </div>
+      <p style="font-size:10px;color:var(--tx3);margin-top:6px" id="hint_quelle">Automatisch aus Modul 3 übernommen</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Baugruppen · Funktionsgruppen</legend>
+      <p style="font-size:11px;color:var(--tx3);line-height:1.6">
+        In Entwicklung – Geräte- und Baugruppenauswahl aus Datenbank folgt in der nächsten Session.
+      </p>
+    </fieldset>
+
+  </div>
+
+  <!-- ── Ausgabe-Panel ── -->
+  <div class="panel-out">
+    <div class="placeholder-box">
+      <h3>Modul 4 · In Entwicklung</h3>
+      <p>
+        Dieses Modul wird die Auswahl von Funktionsbaugruppen aus einer Gerätedatenbank ermöglichen.
+        Der Platzbedarf je Zone wird automatisch berechnet und grafisch in der
+        Schaltschrankvollansicht dargestellt.
+      </p>
+      <p style="margin-top:16px;font-size:12px;color:var(--tx3)">Geplante Funktionen:</p>
+      <div style="margin-top:8px">
+        <span class="placeholder-tag">Baugruppen-Auswahl</span>
+        <span class="placeholder-tag">Zonenbasierter Platzbedarf</span>
+        <span class="placeholder-tag">TE-Bedarf je Gruppe</span>
+        <span class="placeholder-tag">Schaltschrankvollansicht</span>
+        <span class="placeholder-tag">Flächen- und TE-Abgleich</span>
+        <span class="placeholder-tag">Geräte-Datenbank</span>
+      </div>
+      <div style="margin-top:28px">
+        <a href="../modul-03-architektur/" class="btn btn--ghost">← Modul 3 · Zonenaufteilung</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <span class="copyright-line">© 2026 Stephan Michler · DBACS · Modul 4</span>
+  <span>DBACS · GA-Planung · In Entwicklung</span>
+</footer>
+
+<script>
+function todayISO() {
+  const d = new Date();
+  return d.getFullYear() + '-'
+    + String(d.getMonth()+1).padStart(2,'0') + '-'
+    + String(d.getDate()).padStart(2,'0');
+}
+function updateDocNr() {
+  const nr  = document.getElementById('proj-nummer').value.trim();
+  const asp = document.getElementById('proj-asp').value.trim();
+  const doc = [nr, asp, 'M04'].filter(Boolean).join('-');
+  document.getElementById('proj-docnr').value = doc || '–';
+}
+function saveProjFields() {
+  const fields = ['proj-name','proj-nummer','proj-asp','proj-engineer'];
+  fields.forEach(id => localStorage.setItem(id, document.getElementById(id).value));
+  updateDocNr();
+  localStorage.setItem('proj-docnr', document.getElementById('proj-docnr').value);
+}
+function loadProjFields() {
+  ['proj-name','proj-nummer','proj-asp','proj-engineer'].forEach(id => {
+    const val = localStorage.getItem(id);
+    if (val !== null) document.getElementById(id).value = val;
+  });
+  updateDocNr();
+}
+
+function loadFromModul3() {
+  const typ = localStorage.getItem('schrank_typ') ||
+              localStorage.getItem('m03_zone_ke_pos') && 'wandschrank';
+  const isWand = typ !== 'standschrank';
+  const keyB = isWand ? 'm01_b_mplatte_mbereich_wandschrank_mm'
+                      : 'm02_b_mplatte_mbereich_standschrank_mm';
+  const keyH = isWand ? 'm01_h_mplatte_mbereich_wandschrank_mm'
+                      : 'm02_h_mplatte_mbereich_standschrank_mm';
+  const storedB = localStorage.getItem(keyB);
+  const storedH = localStorage.getItem(keyH);
+  if (storedB !== null) document.getElementById('b_mplatte_mbereich_mm').value = +storedB;
+  if (storedH !== null) document.getElementById('h_mplatte_mbereich_mm').value = +storedH;
+
+  const autoSel = localStorage.getItem('m04_autoselect');
+  if (autoSel) {
+    document.getElementById('schrank_typ').value = autoSel;
+    localStorage.removeItem('m04_autoselect');
+  }
+}
+
+loadProjFields();
+loadFromModul3();
+</script>
+</body>
+</html>
