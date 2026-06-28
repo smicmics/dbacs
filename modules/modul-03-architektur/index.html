@@ -716,8 +716,9 @@ function calculateZones(b, h) {
 }
 
 // ── Layout-Zeilen aufbauen ────────────────────────────────────
-// Jede Zeile: { h_mm, zones:[{id,x,w,col,lbl}] }
+// Jede Zeile: { h_mm, zones:[{id,x,w,col,lbl,h_sub_mm?}] }
 // Einspeisung (USS) + Einsp.-Kl. immer LINKS – unabhängig von KE-Position
+// USS h_sub_mm = h_klemm: tatsächliche Einbauhöhe, positioniert in der Ecke neben Einsp.-Kl.
 function buildLayout(zp) {
   const { b, b_uss, b_ek, h_evert, h_leist, h_steuer, h_klemm,
           b_leist, b_steuer, b_inner, anordnung, ke_pos,
@@ -766,10 +767,10 @@ function buildLayout(zp) {
       { id:'kanal_ev2', x:0, w:1, col:'#888', lbl:'' }
     ]},
 
-    // Nebeneinander obere Hälfte: [VK_L | ÜSS | Leistung_eff | Steuerung | VK_R]
+    // Nebeneinander – Hälfte MIT ÜSS: [VK_L | ÜSS (h_sub_mm=h_klemm) | Leistung_eff | Steuerung | VK_R]
     leist_neben_a: { h_mm: h_leist, zones: [
       { id:'kanal_vl', x:0,              w:f_vk,  col:'#888',    lbl:'' },
-      { id:'uss',      x:f_vk,           w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
+      { id:'uss',      x:f_vk,           w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.', h_sub_mm: h_klemm },
       { id:'leist',    x:f_vk+f_uss,     w:f_l_n,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
       { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,  col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr', x:1-f_vk,         w:f_vk,   col:'#888',    lbl:'' },
@@ -782,10 +783,10 @@ function buildLayout(zp) {
       { id:'kanal_vr', x:1-f_vk,         w:f_vk,           col:'#888',    lbl:'' },
     ]},
 
-    // Übereinander – Leistungszeile: [VK_L | ÜSS | Leistung_eff | VK_R]
+    // Übereinander – Leistungszeile: [VK_L | ÜSS (h_sub_mm=h_klemm) | Leistung_eff | VK_R]
     leist_ueber: { h_mm: h_leist, zones: [
       { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'' },
-      { id:'uss',      x:f_vk,        w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
+      { id:'uss',      x:f_vk,        w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.', h_sub_mm: h_klemm },
       { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
       { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'' },
     ]},
@@ -807,17 +808,18 @@ function buildLayout(zp) {
   };
 
   // Vertikale Reihenfolge nach KE-Position:
-  // KE oben:  Klemmen → H.Kanal → Leistung → [H.Kanal L/S → Steuerung] → Evert
-  // KE unten: Evert → [Steuerung → H.Kanal L/S →] Leistung → H.Kanal → Klemmen
+  // KE oben:  Klemmen → H.Kanal → Leistung(ÜSS oben) → [H.Kanal L/S → Steuerung] → Evert
+  // KE unten: Evert → [Steuerung → H.Kanal L/S →] Leistung(ÜSS unten) → H.Kanal → Klemmen
+  // Regel: ÜSS immer in der Ecke neben den Einspeiseklemmen (Leistungszone direkt an Klemmen)
   let rows;
   const { useEvKanal } = zp;
   if (ke_pos === 'unten') {
-    // KE unten: Evert oben; bei useEvKanal H.Kanäle beidseitig, sonst direkt an L/S
+    // KE unten: Evert oben, Leistung(ÜSS) direkt über Klemmen
     rows = useEvKanal ? [R.kanal_ev2, R.evert, R.kanal_ev] : [R.evert, R.kanal_ev];
     if (isNeben) {
-      rows.push(R.leist_neben_a, R.kanal_ls, R.leist_neben_b);
+      rows.push(R.leist_neben_b, R.kanal_ls, R.leist_neben_a);  // neben_a (ÜSS) unten = neben Klemmen
     } else {
-      rows.push(R.leist_ueber, R.kanal_ls, R.steuer_ueber);
+      rows.push(R.steuer_ueber, R.kanal_ls, R.leist_ueber);     // Leistung(ÜSS) unten = neben Klemmen
     }
     rows.push(R.kanal_h, R.klemm);
   } else {
@@ -939,12 +941,14 @@ function buildZoneSVG(zp) {
       for (const row of rows) {
         const rh = Math.round(row.h_mm * sc_h);
         for (const zone of row.zones) {
-          const zx = fx + Math.round(zone.x * fw);
-          const zw = Math.round(zone.w * fw);
-          s += `<rect x="${zx}" y="${fy}" width="${zw}" height="${rh}"
+          const zx    = fx + Math.round(zone.x * fw);
+          const zw    = Math.round(zone.w * fw);
+          const subPx = zone.h_sub_mm ? Math.round(Math.min(zone.h_sub_mm, row.h_mm) * sc_h) : rh;
+          const zy    = zone.h_sub_mm ? (zp.ke_pos === 'oben' ? fy : fy + rh - subPx) : fy;
+          s += `<rect x="${zx}" y="${zy}" width="${zw}" height="${subPx}"
             fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.4"/>`;
-          if (rh >= 10 && fi === 0)
-            s += `<text x="${zx+3}" y="${fy+rh/2}" dominant-baseline="middle"
+          if (subPx >= 8 && fi === 0 && zone.lbl)
+            s += `<text x="${zx+3}" y="${zy+subPx/2}" dominant-baseline="middle"
               font-size="6" fill="${zone.col}" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
         }
         fy += rh;
@@ -970,14 +974,16 @@ function buildZoneSVG(zp) {
     const rowCy       = y + rh / 2;
 
     for (const zone of row.zones) {
-      const zx = PL + Math.round(zone.x * pw);
-      const zw = Math.round(zone.w * pw);
-      const cy = y + rh / 2;
+      const zx    = PL + Math.round(zone.x * pw);
+      const zw    = Math.round(zone.w * pw);
+      const subPx = zone.h_sub_mm ? Math.round(Math.min(zone.h_sub_mm, row.h_mm) * sc) : rh;
+      const zy    = zone.h_sub_mm ? (zp.ke_pos === 'oben' ? y : y + rh - subPx) : y;
+      const cy    = zy + subPx / 2;
 
-      s += `<rect x="${zx}" y="${y}" width="${zw}" height="${rh}"
+      s += `<rect x="${zx}" y="${zy}" width="${zw}" height="${subPx}"
         fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.5"/>`;
 
-      if (rh >= 12 && zone.lbl)
+      if (subPx >= 10 && zone.lbl)
         s += `<text x="${zx+4}" y="${cy}" dominant-baseline="middle"
           font-size="7.5" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
     }
@@ -1078,7 +1084,7 @@ function buildZoneTable(zp) {
           <span style="color:var(--tx2);font-size:12px">${zone.lbl}</span>
         </span></td>
         <td class="val" style="color:${zone.col}">${w_mm} mm</td>
-        <td class="val" style="color:${zone.col}">${row.h_mm} mm</td>
+        <td class="val" style="color:${zone.col}">${zone.h_sub_mm || row.h_mm} mm</td>
         <td class="val" style="color:var(--tx3);font-weight:400">${n_te} TE</td>
         <td class="formula-cell">${srcFor(zone.id)}</td></tr>`;
     }
@@ -1088,7 +1094,8 @@ function buildZoneTable(zp) {
   Mindesthöhen · aufger. 5 mm · Einspeisung + Klemmen immer links ·
   V. Kanal Links ${b_kanal_v} mm (Leistungsleit.) · V. Kanal Rechts ${b_kanal_v} mm (Steuerungsleit.) ·
   H. Kanäle je ${h_kanal_h} mm: Klemmen/L/S${zp.anordnung !== 'nebeneinander' ? ` · L/S-Trennung` : ''} · oberhalb Evert. ·
-  KE ${zp.ke_pos === 'oben' ? 'oben → Klemmen oben, Evert. unten' : 'unten → Evert. oben, Klemmen unten'}
+  KE ${zp.ke_pos === 'oben' ? 'oben → Klemmen oben, Leistung direkt darunter, Evert. unten' : 'unten → Evert. oben, Leistung direkt oberhalb Klemmen'} ·
+  ÜSS immer in Ecke neben Einsp.-Kl. (Leistungsbereich, EMV-gerecht) · ÜSS-Fläche = tatsächliche Einbauhöhe (${zp.h_klemm} mm)
 </p>`;
   return tbl;
 }
@@ -1289,12 +1296,14 @@ function buildFullLayoutSVG() {
   for (const row of rows) {
     const rh = Math.round(row.h_mm * sc);
     for (const zone of row.zones) {
-      const zx = mx + Math.round(zone.x * mpw);
-      const zw = Math.round(zone.w * mpw);
-      s += `<rect x="${zx}" y="${zoneY}" width="${zw}" height="${rh}"
+      const zx    = mx + Math.round(zone.x * mpw);
+      const zw    = Math.round(zone.w * mpw);
+      const subPx = zone.h_sub_mm ? Math.round(Math.min(zone.h_sub_mm, row.h_mm) * sc) : rh;
+      const zy    = zone.h_sub_mm ? (ke_pos === 'oben' ? zoneY : zoneY + rh - subPx) : zoneY;
+      s += `<rect x="${zx}" y="${zy}" width="${zw}" height="${subPx}"
         fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.4"/>`;
-      if (rh >= 12 && zone.lbl)
-        s += `<text x="${zx+4}" y="${zoneY+rh/2}" dominant-baseline="middle"
+      if (subPx >= 10 && zone.lbl)
+        s += `<text x="${zx+4}" y="${zy+subPx/2}" dominant-baseline="middle"
           font-size="7" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
     }
     s += `<line x1="${dimX}" y1="${zoneY}" x2="${dimX+4}" y2="${zoneY}" stroke="#3366BB" stroke-width="0.7"/>`;
