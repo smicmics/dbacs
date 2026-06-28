@@ -725,7 +725,7 @@ function wrapSVGText(lbl, x, cy, zw, fs, extra='') {
   const PAD = 6;
   const cw  = fs * 0.58;
   const maxChars = Math.max(1, Math.floor((zw - PAD) / cw));
-  const words = lbl.split(' ');
+  const words = lbl.split(/(?<=-)|[ ]/).filter(Boolean);
   const lines = [];
   let cur = '';
   for (const w of words) {
