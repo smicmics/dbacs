@@ -1430,11 +1430,11 @@ function buildFullLayoutSVG() {
     s += `<text x="${arrowCx+6}" y="${baseY+9}" dominant-baseline="middle"
       font-size="9" fill="#2DBD8E" font-family="system-ui,sans-serif">Kabeleinführung</text>`;
   } else {
-    const tipY  = byLine + 16;
-    const baseY = tipY + 15;
+    const tipY  = byLine + 24;
+    const baseY = tipY + 18;
     s += `<line x1="${arrowCx}" y1="${baseY}" x2="${arrowCx}" y2="${tipY}"
       stroke="#2DBD8E" stroke-width="2" marker-end="url(#arrowhead-up)"/>`;
-    s += `<text x="${arrowCx+6}" y="${baseY-8}" dominant-baseline="middle"
+    s += `<text x="${arrowCx+6}" y="${baseY}" dominant-baseline="middle"
       font-size="9" fill="#2DBD8E" font-family="system-ui,sans-serif">Kabeleinführung</text>`;
   }
 
