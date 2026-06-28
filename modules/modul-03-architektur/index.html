@@ -823,6 +823,10 @@ function calculateZones(b, h) {
 
   localStorage.setItem('m03_zone_schiene',     schiene);
   localStorage.setItem('m03_zone_schiene_pol', schiene_pol);
+  localStorage.setItem('m03_n_te',      Math.floor(b / TE_BREITE_MM));
+  localStorage.setItem('m03_b_kanal_v', b_kanal_v);
+  localStorage.setItem('m03_h_kanal_h', h_kanal_h);
+  localStorage.setItem('m03_b_ek',      b_ek);
 
   return { b, h, ke_pos, modus, anordnung, netztyp, schiene, schiene_pol, n_felder,
            h_kanal_h, b_kanal_v, n_kanal_h, useEvKanal,
