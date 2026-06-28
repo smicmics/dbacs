@@ -145,9 +145,10 @@ legend{
   .proj-field{display:flex;flex-direction:column;gap:1px;flex:1;padding-right:10px;}
   .proj-field label{font-size:6px;color:#888;text-transform:uppercase;letter-spacing:.05em;}
   .proj-field input{
-    font-size:8.5px;color:#111;font-weight:500;
+    font-size:8.5px;color:#111 !important;font-weight:500;
     border:none;border-bottom:0.5px solid #BBB;background:transparent;
     padding:0 0 2px;width:100%;text-align:left;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
   /* ── Layout ── */
   .site-footer{display:none !important;}
