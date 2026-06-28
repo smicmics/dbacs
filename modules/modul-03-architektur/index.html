@@ -772,17 +772,18 @@ function buildLayout(zp) {
     ]},
 
     // Übereinander – ÜSS-Zeile: h_klemm hoch, ÜSS + Leistung nebeneinander
+    // kanal_vl/vr noStroke: kein horizontaler Rahmen an der Kanalzone → kein Trennstrich
     leist_uss_ueber: { h_mm: h_klemm, zones: [
-      { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'' },
+      { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'', noStroke:true },
       { id:'uss',      x:f_vk,        w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
       { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'' },
+      { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'', noStroke:true },
     ]},
     // Übereinander – Leistungs-Erweiterungszeile: (h_leist − h_klemm) hoch, volle Innenbreite
     leist_ext_ueber: { h_mm: h_leist_ext, zones: [
-      { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'' },
-      { id:'leist',    x:f_vk,   w:f_s_u,  col:'#C84E2E', lbl:'' },
-      { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'' },
+      { id:'kanal_vl',  x:0,     w:f_vk,  col:'#888',    lbl:'', noStroke:true },
+      { id:'leist_ext', x:f_vk,  w:f_s_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'kanal_vr',  x:1-f_vk, w:f_vk, col:'#888',    lbl:'', noStroke:true },
     ]},
 
     // Übereinander – Steuerungszeile: [VK_L | Steuerung | VK_R]
@@ -793,19 +794,20 @@ function buildLayout(zp) {
     ]},
 
     // Nebeneinander – ÜSS-Zeile: h_klemm hoch, ÜSS + Leistung + Steuerung
+    // kanal_vl/vr noStroke: kein horizontaler Rahmen an der Kanalzone → kein Trennstrich
     leist_uss_neben: { h_mm: h_klemm, zones: [
-      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'' },
+      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
       { id:'uss',      x:f_vk,           w:f_uss,      col:'#D4A84B', lbl:'ÜSS + Sich.' },
       { id:'leist',    x:f_vk+f_uss,     w:f_l_n,      col:'#C84E2E', lbl:'Leistungsbaugr.' },
       { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
-      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'' },
+      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'', noStroke:true },
     ]},
     // Nebeneinander – Erweiterungszeile: (h_leist − h_klemm) hoch, volle Leistungsbreite nutzbar
     leist_ext_neben: { h_mm: h_leist_ext, zones: [
-      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'' },
-      { id:'leist',    x:f_vk,           w:b_leist/b,  col:'#C84E2E', lbl:'' },
-      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'' },
-      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'' },
+      { id:'kanal_vl',  x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
+      { id:'leist_ext', x:f_vk,           w:b_leist/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'steuer',    x:f_vk+b_leist/b, w:f_s_n,     col:'#4BBECA', lbl:'' },
+      { id:'kanal_vr',  x:1-f_vk,         w:f_vk,      col:'#888',    lbl:'', noStroke:true },
     ]},
     // Nebeneinander – zweite Hälfte: h_leist hoch, kein ÜSS
     leist_neben_b: { h_mm: h_leist, zones: [
@@ -966,8 +968,9 @@ function buildZoneSVG(zp) {
         for (const zone of row.zones) {
           const zx = fx + Math.round(zone.x * fw);
           const zw = Math.round(zone.w * fw);
+          const sw0 = zone.noStroke ? 0 : 0.4;
           s += `<rect x="${zx}" y="${fy}" width="${zw}" height="${rh}"
-            fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.4"/>`;
+            fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw0}"/>`;
           if (rh >= 8 && fi === 0 && zone.lbl)
             s += `<text x="${zx+3}" y="${fy+rh/2}" dominant-baseline="middle"
               font-size="6" fill="${zone.col}" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
@@ -999,8 +1002,9 @@ function buildZoneSVG(zp) {
       const zw = Math.round(zone.w * pw);
       const cy = y + rh / 2;
 
+      const sw1 = zone.noStroke ? 0 : 0.5;
       s += `<rect x="${zx}" y="${y}" width="${zw}" height="${rh}"
-        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.5"/>`;
+        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw1}"/>`;
 
       if (rh >= 10 && zone.lbl)
         s += `<text x="${zx+4}" y="${cy}" dominant-baseline="middle"
@@ -1080,6 +1084,7 @@ function buildZoneTable(zp) {
     if (id === 'klemm_f')  return srcKlemmF;
     if (id === 'klemm_s')  return srcKlemmS;
     if (id === 'klemm_l')  return srcKlemmL;
+    if (id === 'leist_ext') return `Erweiterungsfläche Leistungsbaugruppen · Freifläche nach Abzug ÜSS-Einbauhöhe (${zp.h_klemm} mm) von Leistungszonenhöhe`;
     return srcLS;
   }
 
@@ -1317,8 +1322,9 @@ function buildFullLayoutSVG() {
     for (const zone of row.zones) {
       const zx = mx + Math.round(zone.x * mpw);
       const zw = Math.round(zone.w * mpw);
+      const sw2 = zone.noStroke ? 0 : 0.4;
       s += `<rect x="${zx}" y="${zoneY}" width="${zw}" height="${rh}"
-        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.4"/>`;
+        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw2}"/>`;
       if (rh >= 10 && zone.lbl)
         s += `<text x="${zx+4}" y="${zoneY+rh/2}" dominant-baseline="middle"
           font-size="7" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
