@@ -124,7 +124,6 @@ legend{
 .btn-nav:hover{background:var(--green);color:#fff;}
 
 @media print{
-  @page{size:A4 landscape;margin:10mm 12mm}
   body{background:#fff;color:#000;}
   /* ── Corporate Header ── */
   header{
@@ -159,7 +158,7 @@ legend{
   .panel-out{margin-left:275px;overflow:visible;padding:6px 10px;}
   #svg-wrap{border:1px solid #ccc;}
   #svg-wrap svg{max-height:200px;width:auto;}
-  fieldset{border-color:#ccc;background:#fff;}
+  fieldset{border-color:#ccc;background:#fff;break-inside:avoid;page-break-inside:avoid;}
   legend{color:#444;}
   .field input,.field select{border-color:#ccc;background:#fff;color:#000;}
   .field .lbl{color:#222;}
@@ -408,7 +407,7 @@ legend{
       </div>
     </fieldset>
 
-    <button class="btn-print" onclick="window.print()">Ergebnis drucken</button>
+    <button class="btn-print" onclick="printErgebnis()">Ergebnis drucken</button>
     <button class="btn-print btn-nav" onclick="gotoModul3()">→ Weiter zu Modul 3 · Architektur</button>
 
   </aside>
@@ -1039,6 +1038,15 @@ function loadSavedInputs() {
 }
 
 // ── Navigation ────────────────────────────────────────────────
+function printErgebnis() {
+  const ps = document.createElement('style');
+  ps.id = 'pes';
+  ps.textContent = '@page{size:A4 landscape;margin:10mm 12mm}';
+  document.head.appendChild(ps);
+  window.print();
+  document.head.removeChild(ps);
+}
+
 function gotoModul3() {
   localStorage.setItem('m03_autoselect', 'standschrank');
   window.location.href = '../modul-03-architektur/';

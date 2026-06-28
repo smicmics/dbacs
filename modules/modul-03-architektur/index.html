@@ -1300,7 +1300,7 @@ function printErgebnis() {
   document.body.classList.add('print-ergebnis');
   const ps = document.createElement('style');
   ps.id = 'pes';
-  ps.textContent = '@page{size:A4 portrait;margin:10mm 12mm}';
+  ps.textContent = '@page{size:A4 landscape;margin:10mm 12mm}';
   document.head.appendChild(ps);
   window.print();
   document.body.classList.remove('print-ergebnis');
