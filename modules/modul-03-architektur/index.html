@@ -140,10 +140,10 @@ legend{
   .field .var{color:#666;}
   .rtable th{background:#eee;color:#222;}
   .rtable td{color:#000;}
-  .rtable{table-layout:fixed;}
-  .rtable th,.rtable td{font-size:9px;padding:3px 5px;}
+  .rtable{table-layout:fixed;width:100%;}
+  .rtable th,.rtable td{font-size:9px;padding:3px 5px;overflow:hidden;}
   .rtable .vname{font-size:8px;white-space:normal;word-break:break-all;}
-  .rtable .formula-cell{white-space:normal;font-size:8.5px;}
+  .rtable .formula-cell{white-space:normal;font-size:8.5px;word-break:break-word;}
   .rtable .val{white-space:nowrap;}
   .formula-box{background:#f5f5f5;border-left-color:#999;color:#000;}
 }
@@ -487,6 +487,34 @@ const CCM2 = '#2DBD8E';
 const CM2  = '#9A94E8';
 const CTE  = '#A8C4E8';
 
+// ── Design-Konstanten SVG ─────────────────────────────────────
+// Alle Grafikparameter zentral; Renderer referenzieren nur DC.*
+const DC = {
+  // Schrankrahmen (buildFullLayoutSVG)
+  gehaeuse_fill:     '#FDFCF8',   // Papier-Weiß (wie M1/M2)
+  gehaeuse_stroke:   '#555',
+  gehaeuse_sw:       2,
+  // Montageplatte
+  mp_stroke:         '#999',
+  mp_sw:             0.8,
+  // Zonen: Füllung + Rahmen
+  zone_fill_op:      0.22,        // alle Zonen-Rects
+  ke_fill_op:        0.28,        // KE-Zonen (Einführungszone)
+  zone_sw_full:      0.4,         // buildFullLayoutSVG + je_feld
+  zone_sw_1feld:     0.5,         // 1-Feld-Renderer
+  // Maßketten
+  dim_stroke:        '#3366BB',
+  dim_sw:            0.7,
+  dim_font:          "'Courier New',monospace",
+  dim_fs:            7.5,
+  // Zonenbeschriftung
+  lbl_font:          'system-ui,sans-serif',
+  lbl_fs_full:       7,           // buildFullLayoutSVG
+  lbl_fs_1feld:      7.5,         // 1-Feld-Renderer
+  lbl_fs_jefeld:     6,           // je_feld-Renderer
+  lbl_fw:            '600',
+};
+
 // ── Übernahme aus Modul 1 / 2 ────────────────────────────────
 function loadFromModul() {
   const typ  = gs('schrank_typ');
@@ -789,16 +817,16 @@ function buildLayout(zp) {
         ]
     },
     kanal_h: { h_mm: h_kanal_h, zones: [
-      { id:'kanal_h', x:0, w:1, col:'#888', lbl:'' }
+      { id:'kanal_h', x:0, w:1, col:'#888', lbl:'', noStroke:true }
     ]},
     kanal_ls: { h_mm: h_kanal_h, zones: [
-      { id:'kanal_ls', x:0, w:1, col:'#888', lbl:'' }
+      { id:'kanal_ls', x:0, w:1, col:'#888', lbl:'', noStroke:true }
     ]},
     kanal_ev: { h_mm: h_kanal_h, zones: [
-      { id:'kanal_ev', x:0, w:1, col:'#888', lbl:'' }
+      { id:'kanal_ev', x:0, w:1, col:'#888', lbl:'', noStroke:true }
     ]},
     kanal_ev2: { h_mm: h_kanal_h, zones: [
-      { id:'kanal_ev2', x:0, w:1, col:'#888', lbl:'' }
+      { id:'kanal_ev2', x:0, w:1, col:'#888', lbl:'', noStroke:true }
     ]},
 
     // Übereinander – ÜSS-Zeile: h_klemm hoch, ÜSS + Leistung nebeneinander
@@ -908,7 +936,9 @@ function buildTETable(p) {
     { v:'n_te',                      label:'Verfügbare TE',         val:p.n_te,                            unit:'TE',  formel:`⌊ ${cb('b')} / 18,0 ⌋`,                col:CTE  },
   ];
 
-  let tbl = `<table class="rtable"><thead><tr>
+  let tbl = `<table class="rtable rtable-te"><colgroup>
+    <col style="width:16%"><col style="width:20%"><col style="width:10%"><col style="width:8%"><col style="width:46%">
+    </colgroup><thead><tr>
     <th>Variable</th><th>Bezeichnung</th>
     <th style="text-align:right">Wert</th><th style="text-align:right">Einheit</th>
     <th>Formel / Quelle</th></tr></thead><tbody>`;
@@ -1116,7 +1146,9 @@ function buildZoneTable(zp) {
     return srcLS;
   }
 
-  let tbl = `<table class="rtable"><thead><tr>
+  let tbl = `<table class="rtable rtable-zone"><colgroup>
+    <col style="width:4%"><col style="width:18%"><col style="width:9%"><col style="width:9%"><col style="width:7%"><col style="width:53%">
+    </colgroup><thead><tr>
     <th>#</th><th>Zone · Bezeichnung</th>
     <th style="text-align:right">Breite</th>
     <th style="text-align:right">Höhe</th>
@@ -1312,7 +1344,7 @@ function buildFullLayoutSVG() {
 
   // ── Montageplatte ─────────────────────────────────────────────
   s += `<rect x="${mx}" y="${my}" width="${mpw}" height="${mph}"
-    fill="none" stroke="#999" stroke-width="0.8" stroke-dasharray="3,2"/>`;
+    fill="none" stroke="${DC.mp_stroke}" stroke-width="${DC.mp_sw}"/>`;
 
   // ── KE-Zonen ─────────────────────────────────────────────────
   const keZones = [
