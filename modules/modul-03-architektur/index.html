@@ -716,9 +716,8 @@ function calculateZones(b, h) {
 }
 
 // ── Layout-Zeilen aufbauen ────────────────────────────────────
-// Jede Zeile: { h_mm, zones:[{id,x,w,col,lbl,h_sub_mm?}] }
+// Jede Zeile: { h_mm, zones:[{id,x,w,col,lbl}] }
 // Einspeisung (USS) + Einsp.-Kl. immer LINKS – unabhängig von KE-Position
-// USS h_sub_mm = h_klemm: tatsächliche Einbauhöhe, positioniert in der Ecke neben Einsp.-Kl.
 function buildLayout(zp) {
   const { b, b_uss, b_ek, h_evert, h_leist, h_steuer, h_klemm,
           b_leist, b_steuer, b_inner, anordnung, ke_pos,
@@ -744,10 +743,6 @@ function buildLayout(zp) {
   const f_l_u  = b > 0 ? Math.max(0, b_inner - b_uss) / b : 0;  // Leistung_eff (über)
   const f_s_u  = b > 0 ? b_inner / b : 0;                        // Steuerung (über)
 
-  // Leistungszone aufgeteilt: ÜSS-Zeile (h_klemm) + Erweiterungszeile (h_leist − h_klemm)
-  // Die Erweiterungszeile nutzt die volle Innenbreite für Leistungsbaugruppen.
-  const h_leist_ext = Math.max(0, h_leist - h_klemm);
-
   const R = {
     evert: { h_mm: h_evert, zones: zp.useEvKanal
       ? [
@@ -771,19 +766,28 @@ function buildLayout(zp) {
       { id:'kanal_ev2', x:0, w:1, col:'#888', lbl:'' }
     ]},
 
-    // Übereinander – ÜSS-Zeile: h_klemm hoch, ÜSS + Leistung nebeneinander
-    leist_uss_ueber: { h_mm: h_klemm, zones: [
+    // Nebeneinander obere Hälfte: [VK_L | ÜSS | Leistung_eff | Steuerung | VK_R]
+    leist_neben_a: { h_mm: h_leist, zones: [
+      { id:'kanal_vl', x:0,              w:f_vk,  col:'#888',    lbl:'' },
+      { id:'uss',      x:f_vk,           w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
+      { id:'leist',    x:f_vk+f_uss,     w:f_l_n,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,  col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'kanal_vr', x:1-f_vk,         w:f_vk,   col:'#888',    lbl:'' },
+    ]},
+    // Nebeneinander untere Hälfte: [VK_L | Leistung | Steuerung | VK_R] (kein ÜSS-Wiederholung)
+    leist_neben_b: { h_mm: h_leist, zones: [
+      { id:'kanal_vl', x:0,              w:f_vk,           col:'#888',    lbl:'' },
+      { id:'leist',    x:f_vk,           w:b_leist/b,      col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,          col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'kanal_vr', x:1-f_vk,         w:f_vk,           col:'#888',    lbl:'' },
+    ]},
+
+    // Übereinander – Leistungszeile: [VK_L | ÜSS | Leistung_eff | VK_R]
+    leist_ueber: { h_mm: h_leist, zones: [
       { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'' },
       { id:'uss',      x:f_vk,        w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
       { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
       { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'' },
-    ]},
-    // Übereinander – Leistungs-Erweiterungszeile: (h_leist − h_klemm) hoch, volle Innenbreite
-    // noStroke: kein Rahmen → keine horizontale Trennlinie; hideInTable: nur leist_ext in Tabelle
-    leist_ext_ueber: { h_mm: h_leist_ext, zones: [
-      { id:'kanal_vl',  x:0,     w:f_vk,  col:'#888',    lbl:'', noStroke:true, hideInTable:true },
-      { id:'leist_ext', x:f_vk,  w:f_s_u, col:'#C84E2E', lbl:'', noStroke:true },
-      { id:'kanal_vr',  x:1-f_vk, w:f_vk, col:'#888',    lbl:'', noStroke:true, hideInTable:true },
     ]},
 
     // Übereinander – Steuerungszeile: [VK_L | Steuerung | VK_R]
@@ -791,30 +795,6 @@ function buildLayout(zp) {
       { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'' },
       { id:'steuer',   x:f_vk,  w:f_s_u,  col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'' },
-    ]},
-
-    // Nebeneinander – ÜSS-Zeile: h_klemm hoch, ÜSS + Leistung + Steuerung
-    leist_uss_neben: { h_mm: h_klemm, zones: [
-      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'' },
-      { id:'uss',      x:f_vk,           w:f_uss,      col:'#D4A84B', lbl:'ÜSS + Sich.' },
-      { id:'leist',    x:f_vk+f_uss,     w:f_l_n,      col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
-      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'' },
-    ]},
-    // Nebeneinander – Erweiterungszeile: (h_leist − h_klemm) hoch, nur Leistungsbreite
-    // noStroke: kein Rahmen → keine Trennlinie über volle Breite; Steuer/Kanal-Füllung ohne Kontur
-    leist_ext_neben: { h_mm: h_leist_ext, zones: [
-      { id:'kanal_vl',  x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true, hideInTable:true },
-      { id:'leist_ext', x:f_vk,           w:b_leist/b, col:'#C84E2E', lbl:'', noStroke:true },
-      { id:'steuer',    x:f_vk+b_leist/b, w:f_s_n,     col:'#4BBECA', lbl:'', noStroke:true, hideInTable:true },
-      { id:'kanal_vr',  x:1-f_vk,         w:f_vk,      col:'#888',    lbl:'', noStroke:true, hideInTable:true },
-    ]},
-    // Nebeneinander – zweite Hälfte: h_leist hoch, kein ÜSS
-    leist_neben_b: { h_mm: h_leist, zones: [
-      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'' },
-      { id:'leist',    x:f_vk,           w:b_leist/b,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
-      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'' },
     ]},
 
     // Klemmen: Einsp.-Kl. immer links (KE-Position unabhängig)
@@ -827,33 +807,26 @@ function buildLayout(zp) {
   };
 
   // Vertikale Reihenfolge nach KE-Position:
-  // KE oben:  Klemmen → H.Kanal → ÜSS-Zeile → Leistungs-Ext → [kanal_ls → Steuerung] → Evert
-  // KE unten: Evert → [Steuerung → kanal_ls →] Leistungs-Ext → ÜSS-Zeile → H.Kanal → Klemmen
-  // Regel: ÜSS-Zeile immer direkt an Klemmen, Erweiterungszeile füllt restliche Leistungsfläche
+  // KE oben:  Klemmen → H.Kanal → Leistung → [H.Kanal L/S → Steuerung] → Evert
+  // KE unten: Evert → [Steuerung → H.Kanal L/S →] Leistung → H.Kanal → Klemmen
   let rows;
   const { useEvKanal } = zp;
   if (ke_pos === 'unten') {
+    // KE unten: Evert oben; bei useEvKanal H.Kanäle beidseitig, sonst direkt an L/S
     rows = useEvKanal ? [R.kanal_ev2, R.evert, R.kanal_ev] : [R.evert, R.kanal_ev];
     if (isNeben) {
-      rows.push(R.leist_neben_b, R.kanal_ls);
-      if (h_leist_ext > 0) rows.push(R.leist_ext_neben);
-      rows.push(R.leist_uss_neben);
+      rows.push(R.leist_neben_a, R.kanal_ls, R.leist_neben_b);
     } else {
-      rows.push(R.steuer_ueber, R.kanal_ls);
-      if (h_leist_ext > 0) rows.push(R.leist_ext_ueber);
-      rows.push(R.leist_uss_ueber);
+      rows.push(R.leist_ueber, R.kanal_ls, R.steuer_ueber);
     }
     rows.push(R.kanal_h, R.klemm);
   } else {
+    // KE oben: Evert unten; bei useEvKanal H.Kanäle beidseitig, sonst direkt an L/S
     rows = [R.klemm, R.kanal_h];
     if (isNeben) {
-      rows.push(R.leist_uss_neben);
-      if (h_leist_ext > 0) rows.push(R.leist_ext_neben);
-      rows.push(R.kanal_ls, R.leist_neben_b);
+      rows.push(R.leist_neben_a, R.kanal_ls, R.leist_neben_b);
     } else {
-      rows.push(R.leist_uss_ueber);
-      if (h_leist_ext > 0) rows.push(R.leist_ext_ueber);
-      rows.push(R.kanal_ls, R.steuer_ueber);
+      rows.push(R.leist_ueber, R.kanal_ls, R.steuer_ueber);
     }
     useEvKanal ? rows.push(R.kanal_ev, R.evert, R.kanal_ev2) : rows.push(R.kanal_ev, R.evert);
   }
@@ -968,10 +941,9 @@ function buildZoneSVG(zp) {
         for (const zone of row.zones) {
           const zx = fx + Math.round(zone.x * fw);
           const zw = Math.round(zone.w * fw);
-          const sw = zone.noStroke ? 0 : 0.4;
           s += `<rect x="${zx}" y="${fy}" width="${zw}" height="${rh}"
-            fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw}"/>`;
-          if (rh >= 8 && fi === 0 && zone.lbl)
+            fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.4"/>`;
+          if (rh >= 10 && fi === 0)
             s += `<text x="${zx+3}" y="${fy+rh/2}" dominant-baseline="middle"
               font-size="6" fill="${zone.col}" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
         }
@@ -1002,11 +974,10 @@ function buildZoneSVG(zp) {
       const zw = Math.round(zone.w * pw);
       const cy = y + rh / 2;
 
-      const sw = zone.noStroke ? 0 : 0.5;
       s += `<rect x="${zx}" y="${y}" width="${zw}" height="${rh}"
-        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw}"/>`;
+        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.5"/>`;
 
-      if (rh >= 10 && zone.lbl)
+      if (rh >= 12 && zone.lbl)
         s += `<text x="${zx+4}" y="${cy}" dominant-baseline="middle"
           font-size="7.5" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
     }
@@ -1084,7 +1055,6 @@ function buildZoneTable(zp) {
     if (id === 'klemm_f')  return srcKlemmF;
     if (id === 'klemm_s')  return srcKlemmS;
     if (id === 'klemm_l')  return srcKlemmL;
-    if (id === 'leist_ext') return `Erweiterungsfläche Leistungsbaugruppen · Freifläche nach Abzug ÜSS-Einbauhöhe (${h_klemm} mm) von Leistungszonenhöhe`;
     return srcLS;
   }
 
@@ -1098,7 +1068,6 @@ function buildZoneTable(zp) {
   let idx = 1;
   for (const row of rows) {
     for (const zone of row.zones) {
-      if (zone.hideInTable) continue;
       const w_mm = Math.round(zone.w * zp.b);
       const isKanal = zone.id.startsWith('kanal');
       const n_te = isKanal ? Math.ceil(w_mm / TE_BREITE_MM) : Math.floor(w_mm / TE_BREITE_MM);
@@ -1119,8 +1088,7 @@ function buildZoneTable(zp) {
   Mindesthöhen · aufger. 5 mm · Einspeisung + Klemmen immer links ·
   V. Kanal Links ${b_kanal_v} mm (Leistungsleit.) · V. Kanal Rechts ${b_kanal_v} mm (Steuerungsleit.) ·
   H. Kanäle je ${h_kanal_h} mm: Klemmen/L/S${zp.anordnung !== 'nebeneinander' ? ` · L/S-Trennung` : ''} · oberhalb Evert. ·
-  KE ${zp.ke_pos === 'oben' ? 'oben → Klemmen oben, Leistung direkt darunter, Evert. unten' : 'unten → Evert. oben, Leistung direkt oberhalb Klemmen'} ·
-  ÜSS immer in Ecke neben Einsp.-Kl. (Leistungsbereich, EMV-gerecht) · ÜSS-Fläche = tatsächliche Einbauhöhe (${zp.h_klemm} mm)
+  KE ${zp.ke_pos === 'oben' ? 'oben → Klemmen oben, Evert. unten' : 'unten → Evert. oben, Klemmen unten'}
 </p>`;
   return tbl;
 }
@@ -1323,10 +1291,9 @@ function buildFullLayoutSVG() {
     for (const zone of row.zones) {
       const zx = mx + Math.round(zone.x * mpw);
       const zw = Math.round(zone.w * mpw);
-      const sw = zone.noStroke ? 0 : 0.4;
       s += `<rect x="${zx}" y="${zoneY}" width="${zw}" height="${rh}"
-        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="${sw}"/>`;
-      if (rh >= 10 && zone.lbl)
+        fill="${zone.col}" fill-opacity="0.22" stroke="${zone.col}" stroke-width="0.4"/>`;
+      if (rh >= 12 && zone.lbl)
         s += `<text x="${zx+4}" y="${zoneY+rh/2}" dominant-baseline="middle"
           font-size="7" fill="${zone.col}" font-weight="600" font-family="system-ui,sans-serif">${zone.lbl}</text>`;
     }
