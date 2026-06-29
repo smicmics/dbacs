@@ -310,20 +310,12 @@ legend{
     </fieldset>
 
     <fieldset>
-      <legend>Reihenhöhen</legend>
+      <legend>Reihen-Parameter</legend>
       <div class="reihe-row">
-        <label>Leistungszone (mm)</label>
-        <input id="h_reihe_leistung" type="number" value="100" min="40" max="200" oninput="onReiheChange()">
+        <label>Klemmraum je Seite (mm)</label>
+        <input id="klemmraum_mm" type="number" value="20" min="5" max="50" oninput="onKlemmraumChange()">
       </div>
-      <div class="reihe-row">
-        <label>Steuerungszone (mm)</label>
-        <input id="h_reihe_steuerung" type="number" value="75" min="40" max="200" oninput="onReiheChange()">
-      </div>
-      <div class="reihe-row">
-        <label>Klemmenzeile (mm)</label>
-        <input id="h_reihe_klemmen" type="number" value="65" min="40" max="200" oninput="onReiheChange()">
-      </div>
-      <p class="hint-text">Höhe pro Hutschienen-Reihe inkl. Abstand</p>
+      <p class="hint-text">Freiraum oben &amp; unten je Bauteil für el. Anschlüsse (Rittal-Empfehlung: 20 mm). Verdrahtungskanal zwischen Reihen: 40 mm (fest).</p>
     </fieldset>
 
     <fieldset>
@@ -484,11 +476,9 @@ function init() {
     _v('schrank_typ', saved);
   }
 
-  // Reihenhöhen
-  ['h_reihe_leistung','h_reihe_steuerung','h_reihe_klemmen'].forEach(id => {
-    const v = localStorage.getItem('m04_' + id);
-    if(v) _v(id, v);
-  });
+  // Klemmraum
+  const kr = localStorage.getItem('m04_klemmraum_mm');
+  if(kr) _v('klemmraum_mm', kr);
 
   // Belegung wiederherstellen
   const bels = localStorage.getItem('m04_belegung');
@@ -602,10 +592,9 @@ function renderBelegung() {
   }).join('');
 }
 
-// ── Reihenhöhen ──────────────────────────────────────────────────────
-function onReiheChange() {
-  ['h_reihe_leistung','h_reihe_steuerung','h_reihe_klemmen'].forEach(id =>
-    localStorage.setItem('m04_' + id, gs(id)));
+// ── Klemmraum ────────────────────────────────────────────────────────
+function onKlemmraumChange() {
+  localStorage.setItem('m04_klemmraum_mm', gs('klemmraum_mm'));
   calculate();
 }
 
@@ -625,9 +614,7 @@ function calculate() {
   const b_mb = g('b_mplatte_mbereich_mm');
   const h_mb = g('h_mplatte_mbereich_mm');
 
-  const hr_l = Math.max(1, g('h_reihe_leistung'));
-  const hr_s = Math.max(1, g('h_reihe_steuerung'));
-  const hr_k = Math.max(1, g('h_reihe_klemmen'));
+  const klemmraum = Math.max(5, g('klemmraum_mm') || 20);
 
   // Nutzbreiten pro Zone
   const b_l_nutz = Math.max(0, b_leist - b_uss);
@@ -635,20 +622,24 @@ function calculate() {
   const b_k_nutz = Math.max(0, b_leist + b_steuer - b_ek);
 
   const zones = {
-    leistung:  {b: b_l_nutz,  h: h_leist,  hr: hr_l, color:'#C84E2E'},
-    steuerung: {b: b_s_nutz,  h: h_steuer, hr: hr_s, color:'#4BBECA'},
-    klemmen:   {b: b_k_nutz,  h: h_klemm,  hr: hr_k, color:'#D4A84B'}
+    leistung:  {b: b_l_nutz,  h: h_leist,  color:'#C84E2E'},
+    steuerung: {b: b_s_nutz,  h: h_steuer, color:'#4BBECA'},
+    klemmen:   {b: b_k_nutz,  h: h_klemm,  color:'#D4A84B'}
   };
 
-  Object.values(zones).forEach(z => {
-    z.te_reihe = z.b > 0 && z.hr > 0 ? Math.floor(z.b / TE_MM) : 0;
-    z.n_reihen = z.h > 0 && z.hr > 0 ? Math.floor(z.h / z.hr) : 0;
-    z.te_total = z.te_reihe * z.n_reihen;
-    z.te_belegt = 0;
-    z.blocks = [];
-  });
+  placeBauteile(zones, klemmraum);
 
-  // Bauteile platzieren (Reihenfolge nach Belegungsliste → pro Baugruppen-Instanz)
+  buildFuellstand(zones);
+  buildSVG(zones, {b_leist, h_leist, b_steuer, h_steuer, h_klemm, h_evert, b_uss, b_ek, b_kanal_v, anordn, ke_pos, b_mb, h_mb, klemmraum});
+  buildStueckliste();
+}
+
+// ── Bauteil-Platzierung (physikalisch) ───────────────────────────────
+function placeBauteile(zones, klemmraum) {
+  const H_KANAL = 40;
+
+  // Gerätewarteschlange je Zone aufbauen
+  const queues = {leistung:[], steuerung:[], klemmen:[]};
   belegung.forEach(item => {
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
@@ -656,23 +647,64 @@ function calculate() {
     for(let inst = 0; inst < item.menge; inst++) {
       bg.bauteile.forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
-        if(!eb || eb.te_breite <= 0) return;
-        const z = zones[eb.zone];
-        if(!z || z.te_reihe <= 0) return;
+        if(!eb || eb.te_breite <= 0 || !queues[eb.zone]) return;
         for(let q = 0; q < bt.menge; q++) {
-          const cur = z.te_belegt;
-          const row = Math.floor(cur / z.te_reihe);
-          const col = cur % z.te_reihe;
-          z.blocks.push({col, row, te: eb.te_breite, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung});
-          z.te_belegt += eb.te_breite;
+          queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung});
         }
       });
     }
   });
 
-  buildFuellstand(zones);
-  buildSVG(zones, {b_leist, h_leist, b_steuer, h_steuer, h_klemm, h_evert, b_uss, b_ek, b_kanal_v, anordn, ke_pos, b_mb, h_mb});
-  buildStueckliste();
+  ['leistung','steuerung','klemmen'].forEach(zn => {
+    const z = zones[zn];
+    const devs = queues[zn] || [];
+    const te_per_row = z.b > 0 ? Math.floor(z.b / TE_MM) : 0;
+
+    z.rows = [];        // [{y_mm, h_mm, h_dev, blocks:[{col,te,h_mm,farbe,lbl,title}]}]
+    z.kanaele = [];     // y_mm-Positionen der Kanaloberseiten
+    z.te_belegt = devs.reduce((s,d) => s + d.te, 0);
+    z.mm_used = 0;
+    z.overflow = false;
+
+    if(!te_per_row || !z.h) return;
+
+    // Geräte in Reihen-Batches aufteilen (TE-Kapazität je Reihe)
+    const batches = [];
+    let cur = [], te = 0;
+    devs.forEach(d => {
+      if(te + d.te > te_per_row && cur.length) { batches.push(cur); cur = []; te = 0; }
+      cur.push(d); te += d.te;
+    });
+    if(cur.length) batches.push(cur);
+
+    // Reihen platzieren: Kanal → Reihe → Kanal → Reihe → … → Kanal
+    let y = 0;
+    batches.forEach(batch => {
+      const h_dev = Math.max(...batch.map(d => d.h_mm));
+      const h_row = h_dev + 2 * klemmraum;
+
+      // Kanal oberhalb dieser Reihe
+      z.kanaele.push(y);
+      y += H_KANAL;
+
+      // Blöcke mit Spalten-Offsets
+      let col = 0;
+      const blocks = batch.map(d => {
+        const b = {col, te: d.te, h_mm: d.h_mm, farbe: d.farbe, lbl: d.lbl, title: d.title};
+        col += d.te;
+        return b;
+      });
+
+      z.rows.push({y_mm: y, h_mm: h_row, h_dev, blocks, over: y + h_row > z.h});
+      y += h_row;
+    });
+
+    // Abschließender Kanal unter der letzten Reihe
+    if(batches.length) { z.kanaele.push(y); y += H_KANAL; }
+
+    z.mm_used = y;
+    z.overflow = z.mm_used > z.h;
+  });
 }
 
 function kurzLabel(eb) {
@@ -684,21 +716,22 @@ function kurzLabel(eb) {
 function buildFuellstand(zones) {
   const map = {leistung:'leist', steuerung:'steuer', klemmen:'klemm'};
   Object.entries(map).forEach(([zone, id]) => {
-    const z = zones[zone];
-    const belegt = z.te_belegt;
-    const total  = z.te_total;
-    const pct    = total > 0 ? Math.min(100, (belegt / total) * 100) : 0;
-    const bar    = document.getElementById(`fs-${id}-bar`);
-    const txt    = document.getElementById(`fs-${id}-txt`);
-    txt.textContent = total > 0 ? `${belegt} / ${total} TE` : '– / – TE';
-    bar.style.width = pct + '%';
+    const z    = zones[zone];
+    const used = z.mm_used || 0;
+    const avail= z.h || 0;
+    const pct  = avail > 0 ? (used / avail) * 100 : 0;
+    const bar  = document.getElementById(`fs-${id}-bar`);
+    const txt  = document.getElementById(`fs-${id}-txt`);
+    const teStr = z.te_belegt > 0 ? `${z.te_belegt} TE · ` : '';
+    txt.textContent = avail > 0 ? `${teStr}${Math.round(used)} / ${Math.round(avail)} mm` : '– / – mm';
+    bar.style.width = Math.min(100, pct) + '%';
     bar.style.background = pct > 100 ? '#E04444' : (pct > 80 ? '#D4A84B' : z.color);
   });
 }
 
 // ── SVG Schranksicht ─────────────────────────────────────────────────
 function buildSVG(zones, dims) {
-  const {b_leist, h_leist, b_steuer, h_steuer, h_klemm, h_evert, b_uss, b_ek, b_kanal_v, anordn, ke_pos, b_mb, h_mb} = dims;
+  const {b_leist, h_leist, b_steuer, h_steuer, h_klemm, h_evert, b_uss, b_ek, b_kanal_v, anordn, ke_pos, b_mb, h_mb, klemmraum} = dims;
   const msgEl = document.getElementById('svg-msg');
   const svgEl = document.getElementById('svg-inner');
 
@@ -762,47 +795,57 @@ function buildSVG(zones, dims) {
       }
     }
 
-    // TE-Blöcke
+    // Verdrahtungskanäle + TE-Blöcke (physikalische Platzierung)
     const z = zones[zs.key];
-    if(z && z.blocks.length > 0 && z.hr > 0) {
-      const hrPx = z.hr * sc;
-      const xOff = zs.xNutz !== undefined ? zs.xNutz : 0;
-      z.blocks.forEach(blk => {
-        if(blk.row >= z.n_reihen) return;
-        const bx = xOff + blk.col * TE_MM * sc;
-        const by = y0 + blk.row * hrPx;
-        const bw = Math.max(1, blk.te * TE_MM * sc - 1);
-        const bh = Math.max(2, hrPx - 2);
-        svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.25" stroke-width="0.5" rx="1">`;
-        svg += `<title>${blk.title}</title></rect>`;
-        if(bw > 28 && bh > 9) {
-          const fs = Math.min(8, bh * 0.45);
-          svg += `<text x="${(bx + bw/2).toFixed(1)}" y="${(by + bh/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fs.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.75" pointer-events="none">${blk.lbl}</text>`;
+    if(z && z.rows) {
+      const xOff  = zs.xNutz || 0;
+      const nutzW = zs.svgW - xOff;
+      const zBot  = y0 + zs.svgH;   // untere Zonengrenze in SVG-px
+
+      // Verdrahtungskanäle (grau)
+      z.kanaele.forEach(ch_y => {
+        const cy  = y0 + ch_y * sc;
+        const chH = Math.min(40 * sc, zBot - cy);
+        if(cy >= zBot || chH <= 0) return;
+        svg += `<rect x="${xOff.toFixed(1)}" y="${cy.toFixed(1)}" width="${nutzW.toFixed(1)}" height="${chH.toFixed(1)}" fill="#FFFFFF0C" stroke="none"/>`;
+        if(chH > 8) {
+          svg += `<text x="${(xOff + 3).toFixed(1)}" y="${(cy + chH/2).toFixed(1)}" dominant-baseline="middle" font-size="5" font-family="system-ui,sans-serif" fill="#88888888">Kanal</text>`;
         }
       });
 
-      // Überfüllung
-      if(z.te_belegt > z.te_total) {
-        svg += `<rect x="0" y="${y0.toFixed(1)}" width="${zs.svgW}" height="${zs.svgH.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="2" rx="1"/>`;
-        svg += `<text x="${(zs.svgW - 8).toFixed(1)}" y="${(y0 + 13).toFixed(1)}" font-size="14" font-family="system-ui,sans-serif" fill="#E04444" font-weight="bold">!</text>`;
-      }
-    }
+      // Gerätereihen
+      z.rows.forEach(row => {
+        const ry   = y0 + row.y_mm * sc;
+        const rh   = row.h_mm * sc;
+        const kPx  = klemmraum * sc;
+        row.blocks.forEach(blk => {
+          const bx  = xOff + blk.col * TE_MM * sc;
+          const bw  = Math.max(1, blk.te * TE_MM * sc - 1);
+          const bh  = blk.h_mm * sc;
+          const by  = ry + kPx;              // Gerät startet nach Klemmraum oben
+          if(by + bh > zBot + 1) return;     // außerhalb Zone → nicht zeichnen
+          svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(2,bh).toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.25" stroke-width="0.5" rx="1"><title>${blk.title}</title></rect>`;
+          if(bw > 28 && bh > 8) {
+            const fs = Math.min(8, bh * 0.45);
+            svg += `<text x="${(bx+bw/2).toFixed(1)}" y="${(by+bh/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fs.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.75" pointer-events="none">${blk.lbl}</text>`;
+          }
+        });
+        // Reihe überläuft Zone → roter Rahmen
+        if(row.over) {
+          svg += `<rect x="${xOff.toFixed(1)}" y="${ry.toFixed(1)}" width="${nutzW.toFixed(1)}" height="${rh.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="0.8" rx="1"/>`;
+        }
+      });
 
-    // Reihen-Trennlinien
-    if(z && z.n_reihen > 1 && z.hr > 0) {
-      for(let r = 1; r < z.n_reihen; r++) {
-        const lineY = y0 + r * z.hr * sc;
-        svg += `<line x1="${(zs.xNutz || 0).toFixed(1)}" y1="${lineY.toFixed(1)}" x2="${zs.svgW}" y2="${lineY.toFixed(1)}" stroke="#FFFFFF18" stroke-width="0.5"/>`;
+      // Zone insgesamt überfüllt
+      if(z.overflow) {
+        svg += `<rect x="0" y="${y0.toFixed(1)}" width="${zs.svgW}" height="${zs.svgH.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="2" rx="1"/>`;
+        svg += `<text x="${(zs.svgW-8).toFixed(1)}" y="${(y0+13).toFixed(1)}" font-size="14" font-family="system-ui,sans-serif" fill="#E04444" font-weight="bold">!</text>`;
       }
     }
   });
 
   svg += `</svg>`;
   svgEl.innerHTML = svg;
-}
-
-function b_l_nutz_dim(b_leist, b_uss, b_steuer, anordn) {
-  return b_leist - b_uss;
 }
 
 // ── Stückliste ───────────────────────────────────────────────────────

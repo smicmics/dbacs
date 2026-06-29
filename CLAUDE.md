@@ -293,14 +293,15 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Gewerk-Tabs: RLT · HKL · Sanitär · Beleuchtung · Elektro → filtert Baugruppen-Dropdown
 - Belegungsliste: persistiert als `m04_belegung` (JSON-Array in localStorage)
 - TE-Platzierung: je Zone (leistung/steuerung/klemmen) links→rechts, oben→unten je Reihe
-- Reihenhöhen: h_reihe_leistung=100mm, h_reihe_steuerung=75mm, h_reihe_klemmen=65mm (editierbar, persistiert)
-- Füllstand-Balken: grün ≤80%, gelb 80–100%, rot >100% je Zone
-- WYSIWYG-SVG: TE-Blöcke farbig je Baugruppe, ÜSS als grauer Block, Überfüllung = roter Rahmen
+- Reihen-Parameter: Klemmraum je Seite (Standard 20 mm, editierbar, persistiert als `m04_klemmraum_mm`); Verdrahtungskanal = 40 mm (Konstante, nicht editierbar)
+- Physikalische Reihenplatzierung (`placeBauteile()`): Reihenfolge Kanal(40mm) → Reihe → Kanal → Reihe → … → Kanal; Reihenhöhe = max(h_mm in Reihe) + 2×Klemmraum; TE-Kapazität je Reihe = floor(b_zone / 18)
+- Füllstand-Balken: zeigt `te_belegt TE · mm_used / h_zone mm`; grün ≤80%, gelb 80–100%, rot >100%
+- WYSIWYG-SVG: Verdrahtungskanäle als hellgraue Bänder (40mm skaliert), Geräte-Blöcke farbig mit Klemmraum-Offset, ÜSS als grauer Block, Überfüllung = roter Rahmen
 - Stückliste: aggregiert nach artikel_nr, mit Listenpreisen und Gesamt-Betrag
 - CSV-Export: Blob-Download `dbacs_stueckliste.csv` (UTF-8 BOM, Semikolon-getrennt)
 - `printErgebnis()` wie M1–M3 (A4 landscape, Corporate Header)
 - localStorage liest: m03_b_leist, m03_h_leist, m03_b_steuer, m03_h_steuer, m03_h_klemm, m03_h_evert, m03_b_uss, m03_b_ek, m03_zone_anordnung, m03_zone_ke_pos
-- localStorage schreibt: m04_belegung, m04_schrank_typ, m04_h_reihe_leistung/steuerung/klemmen
+- localStorage schreibt: m04_belegung, m04_schrank_typ, m04_klemmraum_mm
 - BG_COLORS: 10 Farben zyklisch: #E07B39, #4BBECA, #9A94E8, #2DBD8E, #C84E2E, #D4A84B, #7A74CC, #5BAD6B, #C86090, #A8C4E8
 
 ### Code-Review Fixes (Session 19, gesperrt)
