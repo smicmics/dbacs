@@ -297,9 +297,15 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 **Nächste Schritte (Prio hoch)**
 6. ~~Code-Review alle 3 Module~~ ✅ abgeschlossen Session 19
 7. ~~Modul 4 – Grundstruktur~~ ✅ abgeschlossen Session 20
-8. Modul 4 – Erweiterungen: Mehrfeld-Schränke, Bauteil-Icons, GAEB/AVA-Export
-9. Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern)
-10. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
+8. ~~Modul 4 – Physikalische Reihenplatzierung (Klemmraum + Verdrahtungskanal)~~ ✅ abgeschlossen Session 21
+9. **Modul 4 – Typische Installationsaufbauten in Baugruppen berücksichtigen:**
+   MSS und zugehöriger Schütz werden üblicherweise untereinander montiert (kurze Kabelwege).
+   Konzept: Baugruppen-Definition steuert Anordnung (z. B. Feld „anordnung: untereinander|nebeneinander"),
+   oder Geräteklassen mit Affinität zueinander werden beim Platzieren gruppiert.
+   → Abstimmung mit Nutzer vor Implementierung erforderlich.
+10. Modul 4 – Erweiterungen: Mehrfeld-Schränke, Bauteil-Icons, GAEB/AVA-Export
+11. Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern)
+12. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
 
 **Später**
 9. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
