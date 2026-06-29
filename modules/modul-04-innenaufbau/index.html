@@ -677,15 +677,19 @@ function placeBauteile(zones, klemmraum) {
     });
     if(cur.length) batches.push(cur);
 
-    // Reihen platzieren: Kanal → Reihe → Kanal → Reihe → … → Kanal
+    // Reihen platzieren mit Kanal-Erkennung:
+    // Vor jeder Reihe: Kanal oben setzen, WENN dort noch keiner ist.
+    // Nach jeder Reihe: Kanal unten immer setzen.
+    // → Zwischen zwei Reihen liegt so genau ein Kanal (kein Doppel-Kanal).
     let y = 0;
+    let kanalObenVorhanden = false;
     batches.forEach(batch => {
       const h_dev = Math.max(...batch.map(d => d.h_mm));
       const h_row = h_dev + 2 * klemmraum;
 
-      // Kanal oberhalb dieser Reihe
-      z.kanaele.push(y);
-      y += H_KANAL;
+      // Kanal oben: nur wenn noch keiner an dieser Position
+      if(!kanalObenVorhanden) { z.kanaele.push(y); y += H_KANAL; }
+      kanalObenVorhanden = false;
 
       // Blöcke mit Spalten-Offsets
       let col = 0;
@@ -697,10 +701,11 @@ function placeBauteile(zones, klemmraum) {
 
       z.rows.push({y_mm: y, h_mm: h_row, h_dev, blocks, over: y + h_row > z.h});
       y += h_row;
-    });
 
-    // Abschließender Kanal unter der letzten Reihe
-    if(batches.length) { z.kanaele.push(y); y += H_KANAL; }
+      // Kanal unten: immer setzen – gilt zugleich als Kanal oben für die nächste Reihe
+      z.kanaele.push(y); y += H_KANAL;
+      kanalObenVorhanden = true;
+    });
 
     z.mm_used = y;
     z.overflow = z.mm_used > z.h;
