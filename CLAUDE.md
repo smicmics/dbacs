@@ -287,22 +287,30 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Hint-Text bei fehlendem localStorage-Wert: Link zur Startseite
 - `class="copyright-line"` – Copyright-Absatz im Druck ausgeblendet (`display:none !important`)
 
-### Modul 4 – Innenaufbau (Session 20, gesperrt)
-- 3-Spalten-Layout: 300px Eingabe | flex:1 SVG-Schranksicht | 320px Stückliste
-- Datenbasis: `data/einzelbauteile.json` (35 Bauteile, 4 Hersteller) + `data/baugruppen.json` (15 GA-Gruppen)
+### Modul 4 – Innenaufbau (Session 20, gesperrt – Grundlayout, Details siehe Session 22)
+- 3-Spalten-Layout: 340px Eingabe | flex:1 SVG-Schranksicht | 380px Stückliste (Session 21: verbreitert, unabhängiges Scrollen je Panel)
 - Gewerk-Tabs: RLT · HKL · Sanitär · Beleuchtung · Elektro → filtert Baugruppen-Dropdown
 - Belegungsliste: persistiert als `m04_belegung` (JSON-Array in localStorage)
-- TE-Platzierung: je Zone (leistung/steuerung/klemmen) links→rechts, oben→unten je Reihe
 - Reihen-Parameter: Klemmraum je Seite (Standard 20 mm, editierbar, persistiert als `m04_klemmraum_mm`); Verdrahtungskanal = 40 mm (Konstante, nicht editierbar)
-- Physikalische Reihenplatzierung (`placeBauteile()`): Reihenfolge Kanal(40mm) → Reihe → Kanal → Reihe → … → Kanal; Reihenhöhe = max(h_mm in Reihe) + 2×Klemmraum; TE-Kapazität je Reihe = floor(b_zone / 18)
-- Füllstand-Balken: zeigt `te_belegt TE · mm_used / h_zone mm`; grün ≤80%, gelb 80–100%, rot >100%
-- WYSIWYG-SVG: Verdrahtungskanäle als hellgraue Bänder (40mm skaliert), Geräte-Blöcke farbig mit Klemmraum-Offset, ÜSS als grauer Block, Überfüllung = roter Rahmen
-- Stückliste: aggregiert nach artikel_nr, mit Listenpreisen und Gesamt-Betrag
+- Physikalische Reihenplatzierung: Reihenfolge Kanal(40mm) → Reihe → Kanal → Reihe → … → Kanal; Reihenhöhe = max(h_mm in Reihe) + 2×Klemmraum; TE-Kapazität je Reihe = floor(b_zone / 18) – gilt nur für die Mehrreihen-Zonen, siehe Session 22
 - CSV-Export: Blob-Download `dbacs_stueckliste.csv` (UTF-8 BOM, Semikolon-getrennt)
 - `printErgebnis()` wie M1–M3 (A4 landscape, Corporate Header)
-- localStorage liest: m03_b_leist, m03_h_leist, m03_b_steuer, m03_h_steuer, m03_h_klemm, m03_h_evert, m03_b_uss, m03_b_ek, m03_zone_anordnung, m03_zone_ke_pos
-- localStorage schreibt: m04_belegung, m04_schrank_typ, m04_klemmraum_mm
 - BG_COLORS: 10 Farben zyklisch: #E07B39, #4BBECA, #9A94E8, #2DBD8E, #C84E2E, #D4A84B, #7A74CC, #5BAD6B, #C86090, #A8C4E8
+
+### Modul 4 – Granulare Zonen, Direktbauteile & Indizierung (Session 22, gesperrt)
+- **Löst die Session-20-Vereinfachung ab:** statt 3 Sammelzonen (leistung/steuerung/klemmen) jetzt 8 echte Modul-3-Unterzonen, deckungsgleich mit `buildLayout()`-IDs: `klemm_e` (Einspeiseklemmen), `uss` (ÜSS+Vorsicherung), `evert` (Energieverteilung), `leist`/`leist_ext` (Leistungsbaugruppe), `steuer` (Steuerbaugruppe), `klemm_l`/`klemm_f`/`klemm_s` (Abgänge-Klemmen Leistung/Feldgeräte/Sensoren)
+- **Zwei Platzierungsmodelle** (Unterscheidung ist zentral, nicht austauschbar):
+  - `placeInBands()` – Kanal(40mm)+Klemmraum-Modell für flexible Mehrreihen-Zonen: `leist`, `steuer`, sowie `evert` **nur wenn** Schienensystem aktiv (`zp.useEvKanal===false`, h_evert 300–400mm, großzügig)
+  - `placeInKlemmRow()` – 1-Reihen-Modell (keine Kanal/Klemmraum-Klammerung, Breite statt Höhe als Kapazität): `klemm_e`, `uss`, `klemm_l`, `klemm_f`, `klemm_s`, sowie `evert` **ohne** Schienensystem (h_evert=105mm, entspricht bereits `ceil5(15+75+15)` – M3 hat die Einbauhöhe schon exakt bemessen, kein Zusatzraum)
+  - **Warum:** h_klemm/h_uss/h_evert-ohne-Schiene sind in M3 bereits als „Handling+Bauteil+Handling“ fertig bemessen; ein zusätzliches Kanal+Klemmraum-Layer von M4 sprengt diese Zonen (führte zu Mehrreihen-Zonen mit 0 platzierten Bauteilen trotz freiem Platz – Session-22-Bugfix)
+- **Datenmodell:** `bt.zone || eb.zone` – Zone wird pro Baugruppen-Bauteil-Eintrag optional überschrieben (`baugruppen.json`), Katalog-Default (`einzelbauteile.json`) nur Fallback. Kein Auswahl-UI für Zone zur Laufzeit – ist immer vorab in der Datenpflege festgelegt
+- **Zwei Belegungs-Eintragstypen:** `{typ:'baugruppe', bg_id, menge, ci}` (Gewerk-Tabs, Bündel) und `{typ:'einzel', artikel_nr, menge, ci}` (neues Fieldset „Einspeisung, Verteilung & Direktbauteile“, Dropdown mit `<optgroup>` je `kategorie`-Feld). Alte `m04_belegung`-Einträge ohne `typ` werden beim Laden als `'baugruppe'` interpretiert
+- **Indizierung:** jeder platzierte Bauteil-Block bekommt eine laufende Nummer je Zone (`idx` in `placeInBands()`/`placeInKlemmRow()`), sichtbar im SVG-Tooltip (`#<idx> · <Bezeichnung>`) und in der Stückliste (`formatIdxList()` – komprimiert zu Bereichen wie `#3–#5, #7`)
+- **Stückliste-Aggregation** jetzt nach `(artikel_nr, effektive Zone)` statt nur `artikel_nr` – derselbe Artikel kann je Baugruppe in unterschiedlichen Zonen landen und erscheint dann bewusst als getrennte Zeile
+- **Füllstand-Anzeige:** 8 Balken in 2 Gruppen („Einspeisung & Verteilung“ / „Feldgeräte-Baugruppen“) + Kanal-Info-Zeile (Struktur-mm aus M3 `n_kanal_h × h_kanal_h` + dynamische mm aus Baugruppen-Reihen-Kanälen)
+- **Zone-Badges:** `zone-ke`/`zone-us`/`zone-ev`/`zone-l`/`zone-s`/`zone-kl`/`zone-kf`/`zone-ks` (ersetzt die alten `zone-e`/`zone-k`)
+- **Nicht umgesetzt (bewusst zurückgestellt):** intelligente DDC-Modul-Packlogik (Belegung bis Datenpunkt-Kapazitätsgrenze inkl. Kunden-Reserve), Drag&Drop-Repositionierung, Integritätsprüfung einer Baugruppen-Instanz, Mehrfeld-Schränke in M4
+- Datenbasis jetzt: `data/einzelbauteile.json` (44 Bauteile) + `data/baugruppen.json` (15 GA-Gruppen, Bauteile mit optionalem Zone-Override). Neue Katalogeinträge (Best-effort-Maße, wie `bodenbleche.json` als „zu verifizieren“ zu behandeln): DDC-I/O-Module Siemens Desigo PXA30-W2/PXA30-N (`zone:"steuer"`, Feld `datenpunkte` gespeichert aber unausgewertet), Lasttrennschalter/Sicherungshalter (`zone:"evert"`), ÜSS-Geräte Typ 2 + Vorsicherungshalter (`zone:"uss"`)
 
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen

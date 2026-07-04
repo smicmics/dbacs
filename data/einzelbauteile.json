@@ -6,7 +6,8 @@
     "bauteil_typ": "klemme",
     "te_breite": 1,
     "h_mm": 47,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.20
   },
   {
@@ -16,7 +17,8 @@
     "bauteil_typ": "klemme",
     "te_breite": 1,
     "h_mm": 47,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.50
   },
   {
@@ -26,7 +28,8 @@
     "bauteil_typ": "klemme",
     "te_breite": 1,
     "h_mm": 47,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.90
   },
   {
@@ -36,7 +39,8 @@
     "bauteil_typ": "klemme",
     "te_breite": 1,
     "h_mm": 56,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 2.40
   },
   {
@@ -46,7 +50,8 @@
     "bauteil_typ": "klemme",
     "te_breite": 1,
     "h_mm": 47,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.30
   },
   {
@@ -56,7 +61,8 @@
     "bauteil_typ": "sonstige",
     "te_breite": 0,
     "h_mm": 0,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 2.80
   },
   {
@@ -66,7 +72,8 @@
     "bauteil_typ": "klemme",
     "te_breite": 1,
     "h_mm": 47,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.15
   },
   {
@@ -76,7 +83,8 @@
     "bauteil_typ": "klemme",
     "te_breite": 1,
     "h_mm": 47,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.45
   },
   {
@@ -86,7 +94,8 @@
     "bauteil_typ": "klemme",
     "te_breite": 1,
     "h_mm": 47,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.25
   },
   {
@@ -96,7 +105,8 @@
     "bauteil_typ": "sonstige",
     "te_breite": 0,
     "h_mm": 0,
-    "zone": "klemmen",
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen",
     "preis_eur": 3.10
   },
   {
@@ -106,7 +116,7 @@
     "bauteil_typ": "schuetz",
     "te_breite": 2,
     "h_mm": 70,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 19.50
   },
   {
@@ -116,7 +126,7 @@
     "bauteil_typ": "schuetz",
     "te_breite": 2,
     "h_mm": 70,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 22.00
   },
   {
@@ -126,7 +136,7 @@
     "bauteil_typ": "schuetz",
     "te_breite": 2,
     "h_mm": 70,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 24.50
   },
   {
@@ -136,7 +146,7 @@
     "bauteil_typ": "schuetz",
     "te_breite": 3,
     "h_mm": 80,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 32.00
   },
   {
@@ -146,7 +156,7 @@
     "bauteil_typ": "schuetz",
     "te_breite": 3,
     "h_mm": 80,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 38.00
   },
   {
@@ -156,7 +166,7 @@
     "bauteil_typ": "schuetz",
     "te_breite": 2,
     "h_mm": 70,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 21.00
   },
   {
@@ -166,7 +176,7 @@
     "bauteil_typ": "schuetz",
     "te_breite": 3,
     "h_mm": 80,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 28.00
   },
   {
@@ -176,7 +186,7 @@
     "bauteil_typ": "motorschutz",
     "te_breite": 3,
     "h_mm": 77,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 35.00
   },
   {
@@ -186,7 +196,7 @@
     "bauteil_typ": "motorschutz",
     "te_breite": 3,
     "h_mm": 77,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 35.00
   },
   {
@@ -196,7 +206,7 @@
     "bauteil_typ": "motorschutz",
     "te_breite": 3,
     "h_mm": 77,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 35.00
   },
   {
@@ -206,7 +216,7 @@
     "bauteil_typ": "motorschutz",
     "te_breite": 3,
     "h_mm": 77,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 37.00
   },
   {
@@ -216,7 +226,7 @@
     "bauteil_typ": "motorschutz",
     "te_breite": 3,
     "h_mm": 77,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 32.00
   },
   {
@@ -226,7 +236,7 @@
     "bauteil_typ": "motorschutz",
     "te_breite": 3,
     "h_mm": 77,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 33.00
   },
   {
@@ -236,7 +246,7 @@
     "bauteil_typ": "motorschutz",
     "te_breite": 3,
     "h_mm": 77,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 34.00
   },
   {
@@ -246,7 +256,7 @@
     "bauteil_typ": "lss",
     "te_breite": 1,
     "h_mm": 81,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 8.50
   },
   {
@@ -256,7 +266,7 @@
     "bauteil_typ": "lss",
     "te_breite": 1,
     "h_mm": 81,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 8.50
   },
   {
@@ -266,7 +276,7 @@
     "bauteil_typ": "lss",
     "te_breite": 1,
     "h_mm": 81,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 8.80
   },
   {
@@ -276,7 +286,7 @@
     "bauteil_typ": "lss",
     "te_breite": 2,
     "h_mm": 81,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 16.50
   },
   {
@@ -286,7 +296,7 @@
     "bauteil_typ": "lss",
     "te_breite": 2,
     "h_mm": 81,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 17.00
   },
   {
@@ -296,7 +306,7 @@
     "bauteil_typ": "lss",
     "te_breite": 2,
     "h_mm": 81,
-    "zone": "leistung",
+    "zone": "leist",
     "preis_eur": 17.50
   },
   {
@@ -306,7 +316,7 @@
     "bauteil_typ": "koppelrelais",
     "te_breite": 1,
     "h_mm": 75,
-    "zone": "steuerung",
+    "zone": "steuer",
     "preis_eur": 14.50
   },
   {
@@ -316,7 +326,7 @@
     "bauteil_typ": "koppelrelais",
     "te_breite": 1,
     "h_mm": 75,
-    "zone": "steuerung",
+    "zone": "steuer",
     "preis_eur": 13.80
   },
   {
@@ -326,7 +336,8 @@
     "bauteil_typ": "netzteil",
     "te_breite": 2,
     "h_mm": 130,
-    "zone": "steuerung",
+    "zone": "steuer",
+    "kategorie": "Netzversorgung/Transformatoren",
     "preis_eur": 145.00
   },
   {
@@ -336,7 +347,8 @@
     "bauteil_typ": "netzteil",
     "te_breite": 3,
     "h_mm": 130,
-    "zone": "steuerung",
+    "zone": "steuer",
+    "kategorie": "Netzversorgung/Transformatoren",
     "preis_eur": 195.00
   },
   {
@@ -346,7 +358,109 @@
     "bauteil_typ": "netzteil",
     "te_breite": 4,
     "h_mm": 130,
-    "zone": "steuerung",
+    "zone": "steuer",
+    "kategorie": "Netzversorgung/Transformatoren",
     "preis_eur": 280.00
+  },
+  {
+    "artikel_nr": "PXA30-W2",
+    "bezeichnung": "Desigo PX Erweiterungsmodul universal I/O (8DI/8DO/4AI/4AO), BACnet",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ddc_io",
+    "te_breite": 3,
+    "h_mm": 90,
+    "zone": "steuer",
+    "kategorie": "DDC-Automationseinrichtung",
+    "datenpunkte": 24,
+    "preis_eur": 420.00
+  },
+  {
+    "artikel_nr": "PXA30-N",
+    "bezeichnung": "Desigo PX Erweiterungsmodul BACnet/IP, kompakt",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ddc_io",
+    "te_breite": 2,
+    "h_mm": 90,
+    "zone": "steuer",
+    "kategorie": "DDC-Automationseinrichtung",
+    "datenpunkte": 8,
+    "preis_eur": 280.00
+  },
+  {
+    "artikel_nr": "5SG7101",
+    "bezeichnung": "D01 Sicherungslasttrennschalter, 1-polig, 63 A, inkl. Sicherungseinsatz",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lasttrenner",
+    "te_breite": 2,
+    "h_mm": 75,
+    "zone": "evert",
+    "kategorie": "Energieverteilung-Schutzeinrichtungen",
+    "preis_eur": 18.00
+  },
+  {
+    "artikel_nr": "3NP1130-1CA20",
+    "bezeichnung": "Lasttrennschalter NH00, 3-polig, 160 A, inkl. Sicherungseinsätze",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lasttrenner",
+    "te_breite": 5,
+    "h_mm": 155,
+    "zone": "evert",
+    "kategorie": "Energieverteilung-Schutzeinrichtungen",
+    "preis_eur": 95.00
+  },
+  {
+    "artikel_nr": "3NP1143-1CA20",
+    "bezeichnung": "Lasttrennschalter NH1, 3-polig, 250 A, inkl. Sicherungseinsätze",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lasttrenner",
+    "te_breite": 6,
+    "h_mm": 175,
+    "zone": "evert",
+    "kategorie": "Energieverteilung-Schutzeinrichtungen",
+    "preis_eur": 130.00
+  },
+  {
+    "artikel_nr": "170M3010",
+    "bezeichnung": "Sicherungslasttrennleiste NH00, 1-polig, 160 A (Ergänzung/Abgang)",
+    "hersteller": "Eaton",
+    "bauteil_typ": "lasttrenner",
+    "te_breite": 2,
+    "h_mm": 155,
+    "zone": "evert",
+    "kategorie": "Energieverteilung-Schutzeinrichtungen",
+    "preis_eur": 42.00
+  },
+  {
+    "artikel_nr": "2905371",
+    "bezeichnung": "FLIMOVE-T2-3S-350 Überspannungsschutz Typ 2, 3-polig, 350 V",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "ueberspannung",
+    "te_breite": 4,
+    "h_mm": 90,
+    "zone": "uss",
+    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "preis_eur": 165.00
+  },
+  {
+    "artikel_nr": "2905360",
+    "bezeichnung": "FLIMOVE-T2-1S-350 Überspannungsschutz Typ 2, 1-polig, 350 V",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "ueberspannung",
+    "te_breite": 1,
+    "h_mm": 90,
+    "zone": "uss",
+    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "preis_eur": 58.00
+  },
+  {
+    "artikel_nr": "072693",
+    "bezeichnung": "Vorsicherungshalter D02, 1-polig, für ÜSS-Vorsicherung",
+    "hersteller": "Eaton",
+    "bauteil_typ": "sicherung",
+    "te_breite": 1,
+    "h_mm": 75,
+    "zone": "uss",
+    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "preis_eur": 12.00
   }
 ]

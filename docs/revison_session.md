@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 28. Juni 2026 – Session 20 (Modul 4 vollständig implementiert)
+**Stand:** 4. Juli 2026 – Session 22 (Modul 4: granulare Zonen, Direktbauteile, Bauteil-Indizierung)
 
 ---
 
@@ -298,18 +298,23 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 6. ~~Code-Review alle 3 Module~~ ✅ abgeschlossen Session 19
 7. ~~Modul 4 – Grundstruktur~~ ✅ abgeschlossen Session 20
 8. ~~Modul 4 – Physikalische Reihenplatzierung (Klemmraum + Verdrahtungskanal)~~ ✅ abgeschlossen Session 21
-9. **Modul 4 – Typische Installationsaufbauten in Baugruppen berücksichtigen:**
-   MSS und zugehöriger Schütz werden üblicherweise untereinander montiert (kurze Kabelwege).
-   Konzept: Baugruppen-Definition steuert Anordnung (z. B. Feld „anordnung: untereinander|nebeneinander"),
-   oder Geräteklassen mit Affinität zueinander werden beim Platzieren gruppiert.
-   → Abstimmung mit Nutzer vor Implementierung erforderlich.
-10. Modul 4 – Erweiterungen: Mehrfeld-Schränke, Bauteil-Icons, GAEB/AVA-Export
-11. Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern)
-12. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
+9. ~~Modul 4 – Granulare Zonen (8 statt 3), Direktbauteile, Bauteil-Indizierung~~ ✅ abgeschlossen Session 22
+10. **Modul 4 – Typische Installationsaufbauten in Baugruppen berücksichtigen:**
+    MSS und zugehöriger Schütz werden üblicherweise untereinander montiert (kurze Kabelwege).
+    Konzept: Baugruppen-Definition steuert Anordnung (z. B. Feld „anordnung: untereinander|nebeneinander"),
+    oder Geräteklassen mit Affinität zueinander werden beim Platzieren gruppiert.
+    → Abstimmung mit Nutzer vor Implementierung erforderlich.
+11. **Modul 4 – DDC-Modul-Packlogik:** Hersteller/Serie final festlegen, dann Belegung bis zur
+    Datenpunkte-Kapazitätsgrenze eines Moduls (inkl. Kunden-Reserve), erst danach neues Modul setzen –
+    inkl. Auswirkung auf Anzahl Abgangsklemmen. Aktuell: 1 Baugruppe = 1 eigenes DDC-Modul (kein Teilen).
+12. Modul 4 – Erweiterungen: Drag&Drop-Repositionierung, Integritätsprüfung Baugruppen-Instanz, Mehrfeld-Schränke, Bauteil-Icons, GAEB/AVA-Export
+13. Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern) – inkl. neuer Felder `zone`-Override und `kategorie`
+14. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
 
 **Später**
-9. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
-10. Startseite: Screenshot-Vorschau je Modul ergänzen
+15. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
+16. Startseite: Screenshot-Vorschau je Modul ergänzen
+17. Neue Modul-4-Katalogeinträge (DDC-Module, Lasttrennschalter, ÜSS-Geräte) sind Best-effort-Platzhalter – reale Herstellerdatenblätter (Maße, Bestellnummern) noch zu verifizieren
 
 ---
 

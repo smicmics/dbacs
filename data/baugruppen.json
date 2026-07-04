@@ -7,8 +7,9 @@
     "bauteile": [
       { "artikel_nr": "3RV2011-1CA10", "menge": 1 },
       { "artikel_nr": "3RT2015-1BB41", "menge": 1 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 4 },
-      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 4, "zone": "klemm_l" },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1, "zone": "klemm_l" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -19,8 +20,9 @@
     "bauteile": [
       { "artikel_nr": "3RV2011-1EA10", "menge": 1 },
       { "artikel_nr": "3RT2023-1BB40", "menge": 1 },
-      { "artikel_nr": "W-Series 1010210000", "menge": 4 },
-      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+      { "artikel_nr": "W-Series 1010210000", "menge": 4, "zone": "klemm_l" },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1, "zone": "klemm_l" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -30,7 +32,8 @@
     "beschreibung": "Steuerung für schaltende Ventilantriebe (Klappe, Kugelhahn) 24VDC, Auf/Zu",
     "bauteile": [
       { "artikel_nr": "1864135", "menge": 1 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 3 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 3, "zone": "klemm_f" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -40,7 +43,8 @@
     "beschreibung": "Steuerung für stetige Ventilantriebe 3-Punkt AUF/ZU, zwei Koppelrelais",
     "bauteile": [
       { "artikel_nr": "1864135", "menge": 2 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 4 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 4, "zone": "klemm_f" },
+      { "artikel_nr": "PXA30-W2", "menge": 1 }
     ]
   },
   {
@@ -49,7 +53,8 @@
     "gewerk": "rlt",
     "beschreibung": "Klemmenanschluss für passive Temperaturfühler NTC, PT100 oder PT1000",
     "bauteile": [
-      { "artikel_nr": "W-Series 1010200000", "menge": 2 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 2, "zone": "klemm_s" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -58,7 +63,8 @@
     "gewerk": "rlt",
     "beschreibung": "Klemmenanschluss für aktive Sensoren 24VDC mit 0-10V oder 4-20mA Ausgang",
     "bauteile": [
-      { "artikel_nr": "W-Series 1010200000", "menge": 3 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 3, "zone": "klemm_s" },
+      { "artikel_nr": "PXA30-W2", "menge": 1 }
     ]
   },
   {
@@ -69,8 +75,9 @@
     "bauteile": [
       { "artikel_nr": "3RV2011-1AA10", "menge": 1 },
       { "artikel_nr": "3RT2015-1BB41", "menge": 1 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 4 },
-      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 4, "zone": "klemm_l" },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1, "zone": "klemm_l" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -81,8 +88,9 @@
     "bauteile": [
       { "artikel_nr": "3RV2011-1CA10", "menge": 1 },
       { "artikel_nr": "3RT2015-1BB41", "menge": 1 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 4 },
-      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 4, "zone": "klemm_l" },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1, "zone": "klemm_l" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -92,7 +100,8 @@
     "beschreibung": "Rückmeldung Betrieb und Störung über zwei Koppelrelais (potentialfrei)",
     "bauteile": [
       { "artikel_nr": "1864135", "menge": 2 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 4 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 4, "zone": "klemm_f" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -102,7 +111,8 @@
     "beschreibung": "Steuerung für stufenlose Heizungsventile oder Mischer 0-10V, mit Abschaltrelais",
     "bauteile": [
       { "artikel_nr": "1864135", "menge": 1 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 3 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 3, "zone": "klemm_f" },
+      { "artikel_nr": "PXA30-W2", "menge": 1 }
     ]
   },
   {
@@ -113,8 +123,9 @@
     "bauteile": [
       { "artikel_nr": "3RV2011-1AA10", "menge": 1 },
       { "artikel_nr": "3RT2015-1BB41", "menge": 1 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 4 },
-      { "artikel_nr": "W-Series 1010290000", "menge": 1 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 4, "zone": "klemm_l" },
+      { "artikel_nr": "W-Series 1010290000", "menge": 1, "zone": "klemm_l" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -125,7 +136,8 @@
     "bauteile": [
       { "artikel_nr": "5SL6110-7", "menge": 1 },
       { "artikel_nr": "1864135", "menge": 1 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 2 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 2, "zone": "klemm_l" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -134,7 +146,8 @@
     "gewerk": "bel",
     "beschreibung": "Klemmenanschluss für DALI-Bus-Segment (+DALI, -DALI, PE, Meldeklemme)",
     "bauteile": [
-      { "artikel_nr": "W-Series 1010200000", "menge": 4 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 4, "zone": "klemm_f" },
+      { "artikel_nr": "PXA30-N", "menge": 1 }
     ]
   },
   {
@@ -144,7 +157,7 @@
     "beschreibung": "Einzelner Leitungsschutzschalter für einpolige Abzweige bis 10 A",
     "bauteile": [
       { "artikel_nr": "5SL6110-7", "menge": 1 },
-      { "artikel_nr": "W-Series 1010200000", "menge": 2 }
+      { "artikel_nr": "W-Series 1010200000", "menge": 2, "zone": "klemm_l" }
     ]
   },
   {

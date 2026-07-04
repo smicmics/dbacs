@@ -160,10 +160,16 @@ legend{
 .reihe-row input{width:60px;text-align:right;}
 
 /* ── Füllstand ── */
-.fuell-zone{margin-bottom:8px;}
+.fuell-group-title{
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--tx3);margin:10px 0 5px;
+}
+.fuell-group-title:first-child{margin-top:0;}
+.fuell-zone{margin-bottom:6px;}
 .fuell-label{font-size:10px;color:var(--tx2);display:flex;justify-content:space-between;margin-bottom:3px;}
-.fuell-bar-bg{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--bord);}
+.fuell-bar-bg{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--bord);}
 .fuell-bar{height:100%;border-radius:4px;transition:width .3s;}
+.fuell-kanal-info{font-size:10px;color:var(--tx3);margin-top:6px;padding-top:6px;border-top:1px solid var(--bord);}
 
 /* ── SVG Container ── */
 #svg-wrap{
@@ -205,8 +211,12 @@ legend{
 }
 .zone-l{background:#C84E2E33;color:#C84E2E;}
 .zone-s{background:#4BBECA33;color:#4BBECA;}
-.zone-k{background:#D4A84B33;color:#D4A84B;}
-.zone-e{background:#C8720E33;color:#C8720E;}
+.zone-ke{background:#D4A84B33;color:#D4A84B;}
+.zone-us{background:#D4A84B33;color:#D4A84B;}
+.zone-ev{background:#C8720E33;color:#C8720E;}
+.zone-kl{background:#2DBD8E33;color:#2DBD8E;}
+.zone-kf{background:#9A94E833;color:#9A94E8;}
+.zone-ks{background:#E8C44833;color:#8A7A1E;}
 
 /* ── Buttons ── */
 .btn-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
@@ -343,6 +353,18 @@ legend{
     </fieldset>
 
     <fieldset>
+      <legend>Einspeisung, Verteilung &amp; Direktbauteile</legend>
+      <div class="bg-add-row">
+        <select id="einzel_auswahl" style="flex:1">
+          <option value="">Laden …</option>
+        </select>
+        <input id="einzel_menge" type="number" value="1" min="1" max="99">
+        <button class="btn-add" onclick="addEinzelbauteil()">+</button>
+      </div>
+      <p class="hint-text">Bauteile ohne Gewerk-Bezug (Einspeiseklemmen, ÜSS, Sicherungen/Lasttrennschalter, DDC-Module, Netzteile) – einzeln statt als Baugruppe.</p>
+    </fieldset>
+
+    <fieldset>
       <legend>Belegung</legend>
       <div id="belegung-liste">
         <p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>
@@ -356,19 +378,40 @@ legend{
 
     <!-- Füllstand-Balken -->
     <div id="fuellstand-wrap">
+      <div class="fuell-group-title">Einspeisung &amp; Verteilung</div>
       <div class="fuell-zone">
         <div class="fuell-label">
-          <span style="color:#C8720E">Einspeisung / Energieverteilung</span>
+          <span style="color:#D4A84B">Einspeiseklemmen</span>
+          <span id="fs-klemme-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
+        </div>
+        <div class="fuell-bar-bg">
+          <div id="fs-klemme-bar" class="fuell-bar" style="width:0%;background:#D4A84B"></div>
+        </div>
+      </div>
+      <div class="fuell-zone">
+        <div class="fuell-label">
+          <span style="color:#D4A84B">Überspannungsschutz &amp; Vorsicherung</span>
+          <span id="fs-uss-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
+        </div>
+        <div class="fuell-bar-bg">
+          <div id="fs-uss-bar" class="fuell-bar" style="width:0%;background:#D4A84B"></div>
+        </div>
+      </div>
+      <div class="fuell-zone">
+        <div class="fuell-label">
+          <span style="color:#C8720E">Energieverteilung</span>
           <span id="fs-evert-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
         </div>
         <div class="fuell-bar-bg">
           <div id="fs-evert-bar" class="fuell-bar" style="width:0%;background:#C8720E"></div>
         </div>
       </div>
+
+      <div class="fuell-group-title">Feldgeräte-Baugruppen</div>
       <div class="fuell-zone">
         <div class="fuell-label">
-          <span style="color:#C84E2E">Leistungszone</span>
-          <span id="fs-leist-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – TE</span>
+          <span style="color:#C84E2E">Leistungsbaugruppe</span>
+          <span id="fs-leist-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
         </div>
         <div class="fuell-bar-bg">
           <div id="fs-leist-bar" class="fuell-bar" style="width:0%;background:#C84E2E"></div>
@@ -376,8 +419,8 @@ legend{
       </div>
       <div class="fuell-zone">
         <div class="fuell-label">
-          <span style="color:#4BBECA">Steuerungszone</span>
-          <span id="fs-steuer-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – TE</span>
+          <span style="color:#4BBECA">Steuerbaugruppe</span>
+          <span id="fs-steuer-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
         </div>
         <div class="fuell-bar-bg">
           <div id="fs-steuer-bar" class="fuell-bar" style="width:0%;background:#4BBECA"></div>
@@ -385,13 +428,33 @@ legend{
       </div>
       <div class="fuell-zone">
         <div class="fuell-label">
-          <span style="color:#D4A84B">Klemmenzeile</span>
-          <span id="fs-klemm-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – TE</span>
+          <span style="color:#2DBD8E">Abg.-Kl. Leistung</span>
+          <span id="fs-klemml-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
         </div>
         <div class="fuell-bar-bg">
-          <div id="fs-klemm-bar" class="fuell-bar" style="width:0%;background:#D4A84B"></div>
+          <div id="fs-klemml-bar" class="fuell-bar" style="width:0%;background:#2DBD8E"></div>
         </div>
       </div>
+      <div class="fuell-zone">
+        <div class="fuell-label">
+          <span style="color:#9A94E8">Abg.-Kl. Feldgeräte</span>
+          <span id="fs-klemmf-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
+        </div>
+        <div class="fuell-bar-bg">
+          <div id="fs-klemmf-bar" class="fuell-bar" style="width:0%;background:#9A94E8"></div>
+        </div>
+      </div>
+      <div class="fuell-zone">
+        <div class="fuell-label">
+          <span style="color:#E8C448">Abg.-Kl. Sensoren</span>
+          <span id="fs-klemms-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
+        </div>
+        <div class="fuell-bar-bg">
+          <div id="fs-klemms-bar" class="fuell-bar" style="width:0%;background:#E8C448"></div>
+        </div>
+      </div>
+
+      <div class="fuell-kanal-info" id="fs-kanal-info">Verdrahtungskanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)</div>
     </div>
 
     <!-- SVG Schranksicht -->
@@ -430,12 +493,25 @@ legend{
 // ── Konstanten ───────────────────────────────────────────────────────
 const TE_MM = 18;
 const BG_COLORS = ['#E07B39','#4BBECA','#9A94E8','#2DBD8E','#C84E2E','#D4A84B','#7A74CC','#5BAD6B','#C86090','#A8C4E8'];
-const ZONE_LABELS = {evert:'Einspeisung/Energieverteilung', leistung:'Leistung', steuerung:'Steuerung', klemmen:'Klemmen'};
+const ZONE_LABELS = {
+  klemm_e:'Einspeiseklemmen', uss:'Überspannungsschutz & Vorsicherung', evert:'Energieverteilung',
+  leist:'Leistungsbaugruppe', steuer:'Steuerbaugruppe',
+  klemm_l:'Abg.-Kl. Leistung', klemm_f:'Abg.-Kl. Feldgeräte', klemm_s:'Abg.-Kl. Sensoren'
+};
+// leist/steuer: Höhe ist ein flexibles Mehrreihen-Budget → Kanal+Klemmraum-Modell.
+// uss/klemm_*: Höhe = h_klemm = tatsächliche Einbauhöhe (M3: "ÜSS h_sub_mm = h_klemm"),
+// kein Zusatzraum für Kanal/Klemmraum – eine Hutschienen-Reihe, breitenbegrenzt.
+// evert: modellabhängig (siehe placeBauteile) – mit Schienensystem großzügig
+// bemessen (Mehrreihen), ohne Schienensystem exakt auf 1 Sicherungshalter
+// zugeschnitten (ceil5(15+75+15), analog ÜSS/Klemmenzeile → 1-Reihen-Modell).
+const REIHEN_ZONEN = ['leist','steuer'];
+const KLEMM_ZONEN  = ['klemm_e','uss','klemm_l','klemm_f','klemm_s'];
+const ALLE_ZONEN   = ['klemm_e','uss','evert','leist','steuer','klemm_l','klemm_f','klemm_s'];
 
 // ── Daten ────────────────────────────────────────────────────────────
 let EINZELBAUTEILE_DB = [];
 let BAUGRUPPEN_DB     = [];
-let belegung          = [];  // [{bg_id, menge, ci}, ...]
+let belegung          = [];  // [{typ:'baugruppe', bg_id, menge, ci}, {typ:'einzel', artikel_nr, menge, ci}, ...]
 
 // ── DOM-Helfer ───────────────────────────────────────────────────────
 const g  = id => +document.getElementById(id).value;
@@ -495,14 +571,37 @@ function init() {
   const kr = localStorage.getItem('m04_klemmraum_mm');
   if(kr) _v('klemmraum_mm', kr);
 
-  // Belegung wiederherstellen
+  // Belegung wiederherstellen (ältere Einträge ohne "typ" = Baugruppe)
   const bels = localStorage.getItem('m04_belegung');
   if(bels) try { belegung = JSON.parse(bels); } catch(e){}
+  belegung.forEach(b => { if(!b.typ) b.typ = 'baugruppe'; });
 
   loadMontagebereich(gs('schrank_typ'));
   setGewerk('rlt');
+  populateEinzelAuswahl();
   renderBelegung();
   calculate();
+}
+
+// ── Direktbauteil-Dropdown (gruppiert nach Kategorie) ─────────────────
+function populateEinzelAuswahl() {
+  const sel = document.getElementById('einzel_auswahl');
+  sel.innerHTML = '<option value="">— Bauteil wählen —</option>';
+  const kategorien = {};
+  EINZELBAUTEILE_DB.filter(e => e.kategorie).forEach(e => {
+    (kategorien[e.kategorie] = kategorien[e.kategorie] || []).push(e);
+  });
+  Object.keys(kategorien).sort().forEach(kat => {
+    const og = document.createElement('optgroup');
+    og.label = kat;
+    kategorien[kat].forEach(e => {
+      const opt = document.createElement('option');
+      opt.value = e.artikel_nr;
+      opt.textContent = `${e.bezeichnung} (${e.hersteller})`;
+      og.appendChild(opt);
+    });
+    sel.appendChild(og);
+  });
 }
 
 // ── Schrank-Typ ──────────────────────────────────────────────────────
@@ -567,18 +666,33 @@ function addBaugruppe() {
   const bgId  = gs('bg_auswahl');
   const menge = Math.max(1, g('bg_menge'));
   if(!bgId) return;
-  const ex = belegung.find(b => b.bg_id === bgId);
+  const ex = belegung.find(b => b.typ === 'baugruppe' && b.bg_id === bgId);
   if(ex) {
     ex.menge += menge;
   } else {
-    belegung.push({bg_id: bgId, menge, ci: belegung.length % BG_COLORS.length});
+    belegung.push({typ:'baugruppe', bg_id: bgId, menge, ci: belegung.length % BG_COLORS.length});
   }
   saveBelegung();
   renderBelegung();
   calculate();
 }
 
-function removeBaugruppe(i) {
+function addEinzelbauteil() {
+  const artikelNr = gs('einzel_auswahl');
+  const menge = Math.max(1, g('einzel_menge'));
+  if(!artikelNr) return;
+  const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
+  if(ex) {
+    ex.menge += menge;
+  } else {
+    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length});
+  }
+  saveBelegung();
+  renderBelegung();
+  calculate();
+}
+
+function removeBelegungItem(i) {
   belegung.splice(i, 1);
   belegung.forEach((b, idx) => { b.ci = idx % BG_COLORS.length; });
   saveBelegung();
@@ -597,12 +711,18 @@ function renderBelegung() {
     return;
   }
   el.innerHTML = belegung.map((b, i) => {
-    const bg = BAUGRUPPEN_DB.find(x => x.id === b.bg_id);
-    const name = bg ? bg.name : b.bg_id;
+    let name;
+    if(b.typ === 'einzel') {
+      const eb = EINZELBAUTEILE_DB.find(x => x.artikel_nr === b.artikel_nr);
+      name = eb ? eb.bezeichnung : b.artikel_nr;
+    } else {
+      const bg = BAUGRUPPEN_DB.find(x => x.id === b.bg_id);
+      name = bg ? bg.name : b.bg_id;
+    }
     return `<div class="bel-zeile">
       <span class="bel-dot" style="background:${BG_COLORS[b.ci]}"></span>
       <span class="bel-name" title="${name}">${b.menge}× ${name}</span>
-      <button class="bel-rm" onclick="removeBaugruppe(${i})">×</button>
+      <button class="bel-rm" onclick="removeBelegungItem(${i})">×</button>
     </div>`;
   }).join('');
 }
@@ -764,13 +884,14 @@ function buildZp() {
 }
 
 // ── Platzierungs-Bänder je Zone aus dem Layout ableiten ───────────────
-// Fasst klemm_l/klemm_f/klemm_s zu einem zusammenhängenden Klemmen-Band
-// zusammen (Einsp.-Kl. bleibt ausgenommen); liefert außerdem die
-// Zonen-Zeilen (svgRows) für die maßstäbliche Grundzeichnung.
+// Jede M3-Unterzone (klemm_e/klemm_l/klemm_f/klemm_s/uss/evert/leist/steuer)
+// bekommt ihr eigenes Band – keine Zusammenfassung mehr (behebt den
+// Überlappungs-Bug: Bauteile respektieren jetzt die echten Zonengrenzen).
+// Liefert außerdem die Zonen-Zeilen (svgRows) für die maßstäbliche Grundzeichnung.
 function getZoneBands(zp) {
   const rows = buildLayout(zp);
   const b = zp.b;
-  const bands   = { evert: [], leistung: [], steuerung: [], klemmen: [] };
+  const bands   = { klemm_e:[], uss:[], evert:[], leist:[], steuer:[], klemm_l:[], klemm_f:[], klemm_s:[] };
   const svgRows = [];
   let y = 0;
   rows.forEach(row => {
@@ -779,16 +900,9 @@ function getZoneBands(zp) {
     }));
     svgRows.push({ y_mm: y, h_mm: row.h_mm, zones: zonesOut });
 
-    const klemmSub = zonesOut.filter(z => z.id==='klemm_l' || z.id==='klemm_f' || z.id==='klemm_s');
-    if (klemmSub.length) {
-      const x0 = Math.min(...klemmSub.map(z => z.x_mm));
-      const x1 = Math.max(...klemmSub.map(z => z.x_mm + z.w_mm));
-      bands.klemmen.push({ x_mm:x0, y_mm:y, w_mm:x1-x0, h_mm: row.h_mm });
-    }
     zonesOut.forEach(z => {
-      if (z.id==='leist' || z.id==='leist_ext') bands.leistung.push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm });
-      else if (z.id==='steuer') bands.steuerung.push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm });
-      else if (z.id==='evert') bands.evert.push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm });
+      const target = z.id === 'leist_ext' ? 'leist' : z.id;
+      if (bands[target]) bands[target].push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm });
     });
     y += row.h_mm;
   });
@@ -805,6 +919,7 @@ function placeInBands(devs, bands, klemmraum) {
   const channels = [];
   let idx = 0;
   let mm_used = 0;
+  let placedCount = 0;   // laufende Positionsnummer je Zone
 
   for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
     const band = bands[bi];
@@ -833,7 +948,7 @@ function placeInBands(devs, bands, klemmraum) {
       }
 
       let col = 0;
-      const blocks = batch.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title}; col += d.te; return bl; });
+      const blocks = batch.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title, artikel_nr:d.artikel_nr, idx:++placedCount}; col += d.te; return bl; });
       rows.push({ mode:'row', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm + y_local, h_mm: h_row, klemmraum, blocks });
       y_local += h_row;
       idx = j;
@@ -856,6 +971,7 @@ function placeInKlemmRow(devs, bands) {
   const rows = [];
   let idx = 0;
   let te_used = 0;
+  let placedCount = 0;   // laufende Positionsnummer je Zone
 
   for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
     const band = bands[bi];
@@ -866,7 +982,7 @@ function placeInKlemmRow(devs, bands) {
     const blocks = [];
     while (idx < devs.length && col + devs[idx].te <= te_per_row) {
       const d = devs[idx];
-      blocks.push({col, te: d.te, h_mm: d.h_mm, farbe: d.farbe, lbl: d.lbl, title: d.title});
+      blocks.push({col, te: d.te, h_mm: d.h_mm, farbe: d.farbe, lbl: d.lbl, title: d.title, artikel_nr: d.artikel_nr, idx: ++placedCount});
       col += d.te;
       idx++;
     }
@@ -887,40 +1003,54 @@ function calculate() {
   if (!zp.b || !zp.h) {
     document.getElementById('svg-msg').style.display = '';
     document.getElementById('svg-inner').style.display = 'none';
-    buildFuellstand(null);
-    buildStueckliste();
+    buildFuellstand(null, null);
+    buildStueckliste(null);
     return;
   }
 
   const layout = getZoneBands(zp);
-  const zones  = placeBauteile(layout.bands, klemmraum);
+  const zones  = placeBauteile(layout.bands, klemmraum, zp);
 
-  buildFuellstand(zones);
+  buildFuellstand(zones, zp);
   buildSVG(zp, layout, zones);
-  buildStueckliste();
+  buildStueckliste(zones);
 }
 
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
-function placeBauteile(bandsAll, klemmraum) {
-  // Gerätewarteschlange je Zone aufbauen
-  const queues = {evert:[], leistung:[], steuerung:[], klemmen:[]};
+function placeBauteile(bandsAll, klemmraum, zp) {
+  // Gerätewarteschlange je Zone aufbauen – aus Baugruppen UND Direktbauteilen.
+  // Zone je Bauteil: Baugruppen-Override (bt.zone) vor Katalog-Default (eb.zone).
+  const queues = {};
+  ALLE_ZONEN.forEach(z => queues[z] = []);
+
   belegung.forEach(item => {
+    if(item.typ === 'einzel') {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
+      if(!eb || eb.te_breite <= 0 || !queues[eb.zone]) return;
+      const farbe = BG_COLORS[item.ci];
+      for(let q = 0; q < item.menge; q++) {
+        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr});
+      }
+      return;
+    }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
     const farbe = BG_COLORS[item.ci];
     for(let inst = 0; inst < item.menge; inst++) {
       bg.bauteile.forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
-        if(!eb || eb.te_breite <= 0 || !queues[eb.zone]) return;
+        if(!eb || eb.te_breite <= 0) return;
+        const zone = bt.zone || eb.zone;
+        if(!queues[zone]) return;
         for(let q = 0; q < bt.menge; q++) {
-          queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung});
+          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr});
         }
       });
     }
   });
 
   const zones = {};
-  ['evert','leistung','steuerung'].forEach(zn => {
+  REIHEN_ZONEN.forEach(zn => {
     const devs  = queues[zn] || [];
     const bands = bandsAll[zn] || [];
     const placed = placeInBands(devs, bands, klemmraum);
@@ -930,22 +1060,50 @@ function placeBauteile(bandsAll, klemmraum) {
       mm_used:   placed.mm_used,
       overflow:  placed.overflow,
       rows:      placed.rows,
-      channels:  placed.channels
+      channels:  placed.channels,
+      bands
     };
   });
 
-  // Klemmenzeile: eine Hutschiene, Kapazität als Breite (mm) statt Höhe
-  const kDevs  = queues.klemmen || [];
-  const kBands = bandsAll.klemmen || [];
-  const placedK = placeInKlemmRow(kDevs, kBands);
-  zones.klemmen = {
-    te_belegt: kDevs.reduce((s,d) => s + d.te, 0),
-    mm_total:  kBands.reduce((s,bd) => s + bd.w_mm, 0),
-    mm_used:   placedK.mm_used,
-    overflow:  placedK.overflow,
-    rows:      placedK.rows,
-    channels:  []
-  };
+  // Klemmenzeilen (klemm_e/uss/klemm_l/klemm_f/klemm_s): je eine Hutschiene,
+  // Kapazität als Breite (mm) statt Höhe, kein Kanal/Klemmraum.
+  KLEMM_ZONEN.forEach(zn => {
+    const devs  = queues[zn] || [];
+    const bands = bandsAll[zn] || [];
+    const placed = placeInKlemmRow(devs, bands);
+    zones[zn] = {
+      te_belegt: devs.reduce((s,d) => s + d.te, 0),
+      mm_total:  bands.reduce((s,bd) => s + bd.w_mm, 0),
+      mm_used:   placed.mm_used,
+      overflow:  placed.overflow,
+      rows:      placed.rows,
+      channels:  [],
+      bands
+    };
+  });
+
+  // Energieverteilung: mit Schienensystem großzügiges Mehrreihen-Budget
+  // (Kanal+Klemmraum), ohne Schienensystem exakt 1 Sicherungshalter-Reihe
+  // (kein Zusatzraum – wie ÜSS/Klemmenzeile).
+  const evertDevs  = queues.evert || [];
+  const evertBands = bandsAll.evert || [];
+  if (zp.useEvKanal) {
+    const placed = placeInKlemmRow(evertDevs, evertBands);
+    zones.evert = {
+      te_belegt: evertDevs.reduce((s,d) => s + d.te, 0),
+      mm_total:  evertBands.reduce((s,bd) => s + bd.w_mm, 0),
+      mm_used:   placed.mm_used, overflow: placed.overflow, rows: placed.rows,
+      channels:  [], bands: evertBands
+    };
+  } else {
+    const placed = placeInBands(evertDevs, evertBands, klemmraum);
+    zones.evert = {
+      te_belegt: evertDevs.reduce((s,d) => s + d.te, 0),
+      mm_total:  evertBands.reduce((s,bd) => s + bd.h_mm, 0),
+      mm_used:   placed.mm_used, overflow: placed.overflow, rows: placed.rows,
+      channels:  placed.channels, bands: evertBands
+    };
+  }
 
   return zones;
 }
@@ -956,9 +1114,9 @@ function kurzLabel(eb) {
 }
 
 // ── Füllstand-Balken ─────────────────────────────────────────────────
-function buildFuellstand(zones) {
-  const map   = {evert:'evert', leistung:'leist', steuerung:'steuer', klemmen:'klemm'};
-  const color = {evert:'#C8720E', leistung:'#C84E2E', steuerung:'#4BBECA', klemmen:'#D4A84B'};
+function buildFuellstand(zones, zp) {
+  const map   = {klemm_e:'klemme', uss:'uss', evert:'evert', leist:'leist', steuer:'steuer', klemm_l:'klemml', klemm_f:'klemmf', klemm_s:'klemms'};
+  const color = {klemm_e:'#D4A84B', uss:'#D4A84B', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA', klemm_l:'#2DBD8E', klemm_f:'#9A94E8', klemm_s:'#E8C448'};
   Object.entries(map).forEach(([zone, id]) => {
     const z     = zones ? zones[zone] : null;
     const used  = z ? z.mm_used  : 0;
@@ -971,6 +1129,13 @@ function buildFuellstand(zones) {
     bar.style.width = Math.min(100, pct) + '%';
     bar.style.background = pct > 100 ? '#E04444' : (pct > 80 ? '#D4A84B' : color[zone]);
   });
+
+  const info = document.getElementById('fs-kanal-info');
+  if(!zones || !zp) { info.textContent = 'Verdrahtungskanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)'; return; }
+  const nKanalStruktur = zp.useEvKanal ? 4 : 3;
+  const mmStruktur = nKanalStruktur * zp.h_kanal_h;
+  const mmDynamisch = ALLE_ZONEN.reduce((s, zn) => s + (zones[zn].channels || []).reduce((a,c) => a + c.h_mm, 0), 0);
+  info.textContent = `Verdrahtungskanäle: ${mmStruktur} mm (Struktur) + ${mmDynamisch} mm (Baugruppen-Reihen)`;
 }
 
 // ── SVG Schranksicht (Zonenraster aus Modul 3 + physikalische Platzierung) ──
@@ -1010,7 +1175,7 @@ function buildSVG(zp, layout, zones) {
   });
 
   // Verdrahtungskanäle + Bauteil-Blöcke je platzierbarer Zone
-  ['evert','leistung','steuerung','klemmen'].forEach(zn => {
+  ALLE_ZONEN.forEach(zn => {
     const z = zones[zn];
     if(!z) return;
 
@@ -1030,7 +1195,7 @@ function buildSVG(zp, layout, zones) {
         const by0 = row.mode === 'klemm'
           ? (row.y_mm + (row.h_mm - blk.h_mm)/2) * sc   // Klemmenzeile: Gerät vertikal zentriert
           : (row.y_mm + row.klemmraum) * sc;            // Leist./Steuer./Evert: nach Klemmraum oben
-        svg += `<rect x="${bx.toFixed(1)}" y="${by0.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.3" stroke-width="0.5" rx="1"><title>${blk.title}</title></rect>`;
+        svg += `<rect x="${bx.toFixed(1)}" y="${by0.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.3" stroke-width="0.5" rx="1"><title>#${blk.idx} · ${blk.title}</title></rect>`;
         if(bw > 28 && bh > 8) {
           const fs = Math.min(8, bh*0.45);
           svg += `<text x="${(bx+bw/2).toFixed(1)}" y="${(by0+bh/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fs.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${blk.lbl}</text>`;
@@ -1038,12 +1203,15 @@ function buildSVG(zp, layout, zones) {
       });
     });
 
-    // Nicht mehr platzierbare Geräte → Overflow-Hinweis an letzter Reihe
-    if(z.overflow && z.rows.length) {
-      const last = z.rows[z.rows.length-1];
-      const rx = last.x_mm*sc, ry = last.y_mm*sc, rw = last.w_mm*sc, rh2 = last.h_mm*sc;
-      svg += `<rect x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" width="${rw.toFixed(1)}" height="${rh2.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="1.4" rx="1"/>`;
-      svg += `<text x="${(rx+rw-10).toFixed(1)}" y="${(ry+13).toFixed(1)}" font-size="13" font-family="system-ui,sans-serif" fill="#E04444" font-weight="bold">!</text>`;
+    // Nicht mehr platzierbare Geräte → Overflow-Hinweis an letzter Reihe,
+    // oder – falls gar keine Reihe mehr passte – am ersten Band der Zone.
+    if(z.overflow) {
+      const ref = z.rows.length ? z.rows[z.rows.length-1] : (z.bands && z.bands[0]);
+      if(ref) {
+        const rx = ref.x_mm*sc, ry = ref.y_mm*sc, rw = ref.w_mm*sc, rh2 = ref.h_mm*sc;
+        svg += `<rect x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" width="${rw.toFixed(1)}" height="${rh2.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="1.4" rx="1"/>`;
+        svg += `<text x="${(rx+rw-10).toFixed(1)}" y="${(ry+13).toFixed(1)}" font-size="13" font-family="system-ui,sans-serif" fill="#E04444" font-weight="bold">!</text>`;
+      }
     }
   });
 
@@ -1052,44 +1220,91 @@ function buildSVG(zp, layout, zones) {
 }
 
 // ── Stückliste ───────────────────────────────────────────────────────
+// Gruppiert nach (artikel_nr, effektiver Zone) – derselbe Artikel kann je
+// nach Baugruppe in unterschiedlichen Zonen landen (z. B. Klemme mal
+// klemm_l, mal klemm_s) und erscheint dann bewusst als getrennte Zeile.
 function aggregateStueckliste() {
   const agg = {};
+  const add = (artikel_nr, zone, menge) => {
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikel_nr);
+    if(!eb) return;
+    const key = artikel_nr + '::' + zone;
+    if(agg[key]) agg[key].menge += menge;
+    else agg[key] = {...eb, zone, menge};
+  };
   belegung.forEach(item => {
+    if(item.typ === 'einzel') {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
+      if(eb) add(item.artikel_nr, eb.zone, item.menge);
+      return;
+    }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
     bg.bauteile.forEach(bt => {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
       if(!eb) return;
-      const total = bt.menge * item.menge;
-      if(agg[bt.artikel_nr]) {
-        agg[bt.artikel_nr].menge += total;
-      } else {
-        agg[bt.artikel_nr] = {...eb, menge: total};
-      }
+      add(bt.artikel_nr, bt.zone || eb.zone, bt.menge * item.menge);
     });
   });
-  // Sort by zone then hersteller
-  const order = {evert:0, leistung:1, steuerung:2, klemmen:3, sonstige:4};
-  return Object.values(agg).sort((a,b) => (order[a.zone]||9) - (order[b.zone]||9));
+  const order = {klemm_e:0, uss:1, evert:2, leist:3, steuer:4, klemm_l:5, klemm_f:6, klemm_s:7};
+  return Object.values(agg).sort((a,b) => (order[a.zone]??9) - (order[b.zone]??9));
 }
 
-function buildStueckliste() {
+// ── Positionsnummern je Artikel+Zone aus der Platzierung ablesen ──────
+function buildIdxMap(zones) {
+  const map = {};
+  if(!zones) return map;
+  Object.entries(zones).forEach(([zn, z]) => {
+    (z.rows || []).forEach(row => {
+      row.blocks.forEach(blk => {
+        if(!blk.artikel_nr) return;
+        const key = blk.artikel_nr + '::' + zn;
+        (map[key] = map[key] || []).push(blk.idx);
+      });
+    });
+  });
+  return map;
+}
+
+function formatIdxList(arr) {
+  if(!arr || !arr.length) return '';
+  const sorted = [...arr].sort((a,b) => a-b);
+  const parts = [];
+  let start = sorted[0], prev = sorted[0];
+  for(let i = 1; i <= sorted.length; i++) {
+    const v = sorted[i];
+    if(v === prev + 1) { prev = v; continue; }
+    parts.push(start === prev ? `#${start}` : `#${start}–#${prev}`);
+    start = prev = v;
+  }
+  return parts.join(', ');
+}
+
+function buildStueckliste(zones) {
   const liste = aggregateStueckliste();
+  const idxMap = buildIdxMap(zones);
   const wrap = document.getElementById('stueckliste-wrap');
   if(!liste.length) {
     wrap.innerHTML = '<p class="stk-empty">Keine Baugruppen ausgewählt.</p>';
     return;
   }
 
-  const zBadge = {evert:'<span class="zone-badge zone-e">E</span>', leistung:'<span class="zone-badge zone-l">L</span>', steuerung:'<span class="zone-badge zone-s">S</span>', klemmen:'<span class="zone-badge zone-k">K</span>'};
+  const zBadge = {
+    klemm_e:'<span class="zone-badge zone-ke">EK</span>', uss:'<span class="zone-badge zone-us">ÜS</span>',
+    evert:'<span class="zone-badge zone-ev">EV</span>', leist:'<span class="zone-badge zone-l">L</span>',
+    steuer:'<span class="zone-badge zone-s">S</span>', klemm_l:'<span class="zone-badge zone-kl">KL</span>',
+    klemm_f:'<span class="zone-badge zone-kf">KF</span>', klemm_s:'<span class="zone-badge zone-ks">KS</span>'
+  };
   let total = 0;
   let rows = liste.map((e, i) => {
     const summe = e.menge * e.preis_eur;
     total += summe;
     const badge = zBadge[e.zone] || '';
+    const idxStr = formatIdxList(idxMap[e.artikel_nr + '::' + e.zone]);
+    const posInfo = idxStr ? `<div style="font-size:9px;color:var(--tx3);margin-top:1px;">${idxStr}</div>` : '';
     return `<tr>
       <td>${i+1}</td>
-      <td>${badge} ${e.bezeichnung}</td>
+      <td>${badge} ${e.bezeichnung}${posInfo}</td>
       <td class="td-hst" title="${e.hersteller}">${e.hersteller}</td>
       <td class="td-num">${e.menge}</td>
       <td class="td-num">${e.preis_eur.toFixed(2)}</td>
