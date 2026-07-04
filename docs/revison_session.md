@@ -1,7 +1,9 @@
 # DBACS – Revisionsstand
-**Stand:** 4. Juli 2026 – Session 24 (Modul 4: Funktionsbereich-Taxonomie, Design-Feinschliff Eingabeleiste)
+**Stand:** 4. Juli 2026 – Session 25 (Modul 4: bedarfsbasierte Breiten-Umverteilung Klemmleisten)
 
-**Hinweis Deployment:** GitHub-Pages-Deploy schlug bereits zweimal im „deploy"-Job fehl (Commits `0bef940`, `4f93b7b` – Build selbst jeweils erfolgreich, nur der Pages-Deploy-Schritt). Dieser Commit stößt einen weiteren, unabhängigen Deployment-Lauf an. Falls das Muster anhält: GitHub-Status-Seite (githubstatus.com) prüfen bzw. Pages-Einstellungen im Repo kontrollieren.
+**Meilenstein:** Git-Tag `meilenstein-2026-07-04-modul4-design` (Sessions 22–24) + vollständiges Backup (ZIP, Git-Bundle, Claude-Gedächtnis) unter `C:\Users\SMI\Backups\dbacs\`.
+
+**Hinweis Deployment (Session 24, erledigt):** GitHub-Pages-Deploy schlug zweimal im „deploy"-Job fehl (Commits `0bef940`, `4f93b7b` – Build jeweils erfolgreich, nur der Pages-Deploy-Schritt). Beide Male hat ein Folge-Commit bzw. ein automatischer GitHub-Retry das Deployment erfolgreich nachgeholt. War eine kurzzeitige Instabilität bei GitHub Pages, kein Code-Fehler.
 
 ---
 
@@ -303,6 +305,11 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 9. ~~Modul 4 – Granulare Zonen (8 statt 3), Direktbauteile, Bauteil-Indizierung~~ ✅ abgeschlossen Session 22
 9a. ~~Modul 4 – Layout-Neuordnung (Schranksicht dominant, skaliert wie M3, Eingabeleiste + Füllstand-Streifen volle Breite)~~ ✅ abgeschlossen Session 23
 9b. ~~Modul 4 – Funktionsbereich-Taxonomie (10 statt 5 Bereiche), Design-Feinschliff~~ ✅ abgeschlossen Session 24
+9c. ~~Modul 4 – Bedarfsbasierte Breiten-Umverteilung Klemmleisten (klemm_l/f/s)~~ ✅ abgeschlossen Session 25
+9d. **Modul 4 – Idee 2 (zurückgestellt): Höhen-Umverteilung Leistung/Steuerung** mit verschiebendem
+    Kabelkanal, analog zur Klemmleisten-Umverteilung. Energieverteilung bleibt fix. Braucht eigene
+    Abstimmung: Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg „Nebeneinander" (Breite) vs.
+    „Übereinander" (Höhe).
 10. **Modul 4 – Grundlagenarbeit Bauteildaten/Baugruppen (als nächstes geplant):**
     korrekte Maße + richtige Zonen-Zuordnung für alle Bauteile, damit sie exakt positioniert werden;
     außerdem Baugruppen für die neuen Funktionsbereiche `schaltschrank`/`automation`/`netzwerk`/`kaelte`/`nutzungsspezifisch` anlegen (aktuell leer).

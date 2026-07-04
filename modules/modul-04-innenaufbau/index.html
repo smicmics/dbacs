@@ -964,6 +964,48 @@ function placeInBands(devs, bands, klemmraum) {
   return { rows, channels, overflow: idx < devs.length, mm_used };
 }
 
+// ── Bedarfsbasierte Breiten-Umverteilung Klemmleisten ─────────────────
+// Abg.-Kl. Leistung/Feldgeräte/Sensoren (klemm_l/klemm_f/klemm_s) teilen sich
+// eine gemeinsame Gesamtbreite (= Summe ihrer ursprünglichen Modul-3-Bänder).
+// Statt der starren M3-Aufteilung bekommt jede Unterzone so viel Breite wie
+// ihre aktuelle Belegung tatsächlich braucht; überschüssige Breite wird im
+// Modul-3-Ursprungsverhältnis verteilt (Füllstand bleibt aussagekräftig).
+// klemm_e (Einspeiseklemmen) ist davon ausgenommen und bleibt unverändert fix.
+function redistributeKlemmBands(bandsAll, queues) {
+  const KEYS = ['klemm_l', 'klemm_f', 'klemm_s'];
+  const origBands = {};
+  KEYS.forEach(k => { origBands[k] = bandsAll[k] || []; });
+
+  const origShare = {};
+  KEYS.forEach(k => { origShare[k] = origBands[k].reduce((a, bd) => a + bd.w_mm, 0); });
+  const totalWidth = KEYS.reduce((s, k) => s + origShare[k], 0);
+
+  const demandMM = {};
+  KEYS.forEach(k => { demandMM[k] = (queues[k] || []).reduce((s, d) => s + d.te, 0) * TE_MM; });
+  const totalDemand = KEYS.reduce((s, k) => s + demandMM[k], 0);
+
+  const newWidth = {};
+  if (totalDemand <= totalWidth) {
+    const rest = totalWidth - totalDemand;
+    const totalOrigShare = KEYS.reduce((s, k) => s + origShare[k], 0) || 1;
+    KEYS.forEach(k => { newWidth[k] = demandMM[k] + rest * (origShare[k] / totalOrigShare); });
+  } else {
+    // Echter Überlauf: jede Zone bekommt einen zu ihrem Bedarf proportionalen Anteil
+    KEYS.forEach(k => { newWidth[k] = totalWidth * (demandMM[k] / totalDemand); });
+  }
+
+  const firstBand = origBands[KEYS[0]][0];
+  const newBands = {};
+  if (!firstBand) { KEYS.forEach(k => { newBands[k] = origBands[k]; }); return newBands; }
+
+  let x = firstBand.x_mm;
+  KEYS.forEach(k => {
+    newBands[k] = [{ x_mm: x, y_mm: firstBand.y_mm, w_mm: newWidth[k], h_mm: firstBand.h_mm }];
+    x += newWidth[k];
+  });
+  return newBands;
+}
+
 // ── Klemmenzeile platzieren (eine Hutschiene, keine Kanal/Klemmraum-Klammerung) ──
 // h_klemm ist bereits inkl. Handling (siehe M3: ceil5(15+65+15)) – die Zeile
 // wird nicht in mehrere Reihen aufgeteilt, Geräte füllen sie von links nach
@@ -1068,9 +1110,11 @@ function placeBauteile(bandsAll, klemmraum, zp) {
 
   // Klemmenzeilen (klemm_e/uss/klemm_l/klemm_f/klemm_s): je eine Hutschiene,
   // Kapazität als Breite (mm) statt Höhe, kein Kanal/Klemmraum.
+  // klemm_l/klemm_f/klemm_s: Breite wird bedarfsbasiert umverteilt (klemm_e/uss bleiben fix).
+  const redistributedKlemm = redistributeKlemmBands(bandsAll, queues);
   KLEMM_ZONEN.forEach(zn => {
     const devs  = queues[zn] || [];
-    const bands = bandsAll[zn] || [];
+    const bands = redistributedKlemm[zn] || bandsAll[zn] || [];
     const placed = placeInKlemmRow(devs, bands);
     zones[zn] = {
       te_belegt: devs.reduce((s,d) => s + d.te, 0),
@@ -1167,11 +1211,15 @@ function buildSVG(zp, layout, zones) {
   let svg = `<svg viewBox="${-PAD} ${-PAD} ${(SW + PAD*2).toFixed(1)} ${(totalHpx + PAD*2).toFixed(1)}" xmlns="http://www.w3.org/2000/svg" width="${(SW+PAD*2).toFixed(0)}" height="${(totalHpx+PAD*2).toFixed(0)}">`;
   svg += `<rect x="0" y="0" width="${SW.toFixed(1)}" height="${totalHpx.toFixed(1)}" fill="#FDFCF8" rx="2"/>`;
 
-  // Zonenraster – exakt wie in Modul 3 (gleiche Geometrie, gleicher Maßstab)
+  // Zonenraster – exakt wie in Modul 3 (gleiche Geometrie, gleicher Maßstab).
+  // klemm_l/klemm_f/klemm_s werden übersprungen und weiter unten mit den
+  // bedarfsbasiert umverteilten Breiten gezeichnet (siehe redistributeKlemmBands()).
+  const KLEMM_REDIST = { klemm_l: true, klemm_f: true, klemm_s: true };
   layout.svgRows.forEach(row => {
     const y0 = row.y_mm * sc;
     const rh = row.h_mm * sc;
     row.zones.forEach(z => {
+      if(KLEMM_REDIST[z.id]) return;
       const zx = z.x_mm * sc;
       const zw = z.w_mm * sc;
       const sw0 = z.noStroke ? 0 : 0.6;
@@ -1180,6 +1228,22 @@ function buildSVG(zp, layout, zones) {
         svg += `<text x="${(zx+4).toFixed(1)}" y="${(y0+Math.min(11,rh*0.6)).toFixed(1)}" font-size="7.5" font-weight="600" font-family="system-ui,sans-serif" fill="${z.col}">${z.lbl}</text>`;
       }
     });
+  });
+
+  // Klemmleisten Leistung/Feldgeräte/Sensoren – umverteilte Breiten zeichnen
+  const KLEMM_REDIST_DEF = {
+    klemm_l: { col:'#2DBD8E', lbl:'Abg.-Kl. Leistung' },
+    klemm_f: { col:'#9A94E8', lbl:'Abg.-Kl. Feldger.' },
+    klemm_s: { col:'#E8C448', lbl:'Abg.-Kl. Sensoren' }
+  };
+  Object.entries(KLEMM_REDIST_DEF).forEach(([zn, def]) => {
+    const band = zones[zn] && zones[zn].bands && zones[zn].bands[0];
+    if(!band) return;
+    const zx = band.x_mm * sc, zy = band.y_mm * sc, zw = band.w_mm * sc, zh = band.h_mm * sc;
+    svg += `<rect x="${zx.toFixed(1)}" y="${zy.toFixed(1)}" width="${zw.toFixed(1)}" height="${zh.toFixed(1)}" fill="${def.col}" fill-opacity="0.22" stroke="${def.col}" stroke-width="0.6"/>`;
+    if(zh >= 10) {
+      svg += `<text x="${(zx+4).toFixed(1)}" y="${(zy+Math.min(11,zh*0.6)).toFixed(1)}" font-size="7.5" font-weight="600" font-family="system-ui,sans-serif" fill="${def.col}">${def.lbl}</text>`;
+    }
   });
 
   // Verdrahtungskanäle + Bauteil-Blöcke je platzierbarer Zone

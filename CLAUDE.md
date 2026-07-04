@@ -328,6 +328,14 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - **`schaltschrank`, `automation`, `netzwerk`, `kaelte`, `nutzungsspezifisch` sind bewusst leer** – keine Baugruppen bisher zugeordnet, wird Teil der nächsten „Grundlagen"-Session (korrekte Maße + Zonen-Zuordnung der Bauteildaten)
 - „Einspeisung, Verteilung & Direktbauteile" → „Spezifische Auswahl Einzelbauteile" umbenannt (Label unverändert funktional)
 - Baugruppe-Auswahl und Einzelbauteil-Auswahl jetzt gleich breit (`width:320px` statt `flex:1` beim Einzelbauteil-Feld) – verhindert, dass ein Dropdown deutlich länger als das andere wirkt
+- `.eb-field{min-width:0}` + `.bg-add-row select{min-width:0;overflow:hidden;text-overflow:ellipsis}`: Flexbox-Fix, damit lange Baugruppen-/Bauteilnamen das `<select>` nicht über die 320px hinaus aufblähen und Menge/„+"-Button verdrängen (Default-`min-width:auto` von Flex-Kindern war die Ursache)
+
+### Modul 4 – Bedarfsbasierte Breiten-Umverteilung Klemmleisten (Session 25, gesperrt)
+- **Problem:** `klemm_l`/`klemm_f`/`klemm_s` hatten feste, aus Modul 3 übernommene Breiten. Wurde z. B. `klemm_s` (Sensoren) stark genutzt, lief sie schnell über, obwohl `klemm_l`/`klemm_f` noch reichlich Platz hatten – der Schrank als Ganzes hätte gereicht.
+- **Lösung `redistributeKlemmBands(bandsAll, queues)`:** Die 3 Unterzonen (nicht `klemm_e`/Einspeiseklemmen – die bleibt fix) teilen sich eine gemeinsame Gesamtbreite = Summe ihrer ursprünglichen M3-Bänder (bleibt konstant). Jede Zone bekommt so viel Breite wie ihr TE-Bedarf (Summe `te` der Warteschlange × `TE_MM`) erfordert; reicht die Gesamtbreite, wird der Rest **proportional zum ursprünglichen M3-Verhältnis** verteilt (Füllstand bleibt aussagekräftig, nicht künstlich immer 100%). Reicht sie nicht, bekommt jede Zone einen zu ihrem Bedarf proportionalen Anteil (bestehender Überlauf-Indikator greift wie gehabt) – **kein neues Schaltschrankfeld** in diesem Schritt (bewusst nicht entwickelt).
+- Zustandslos: komplette Neuberechnung bei jedem `calculate()`-Aufruf, keine Reihenfolge-Abhängigkeit zwischen Baugruppen.
+- Eingebunden in `placeBauteile()` direkt vor der `KLEMM_ZONEN`-Schleife; `buildSVG()` zeichnet das Zonenraster für diese 3 IDs jetzt aus den umverteilten Bändern (`zones[zn].bands`) statt aus `layout.svgRows` (M3-Statik).
+- **Idee 2 (Leistung/Steuerung, Höhen-Umverteilung mit verschiebendem Kabelkanal) bewusst zurückgestellt** – eigene Abstimmungsrunde nötig (Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg für „Nebeneinander" vs. „Übereinander").
 
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
