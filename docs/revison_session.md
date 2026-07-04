@@ -1,6 +1,8 @@
 # DBACS – Revisionsstand
 **Stand:** 4. Juli 2026 – Session 24 (Modul 4: Funktionsbereich-Taxonomie, Design-Feinschliff Eingabeleiste)
 
+**Hinweis Deployment:** GitHub-Pages-Deploy für Commit `0bef940` schlug beim ersten Versuch im „deploy"-Job fehl (Build selbst erfolgreich). Dieser Commit stößt einen neuen, unabhängigen Deployment-Lauf an.
+
 ---
 
 ## Projektziel
