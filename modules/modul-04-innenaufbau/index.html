@@ -159,10 +159,11 @@ legend{
 .hint-text a:hover{text-decoration:underline;}
 
 /* ── Gewerk-Tabs ── */
-.gewerk-tabs{display:flex;flex-wrap:wrap;gap:6px 6px;margin-bottom:8px;}
+.gewerk-tabs{display:grid;grid-template-columns:repeat(5,auto);grid-auto-rows:auto;gap:5px 6px;margin-bottom:8px;}
 .gewerk-tab{
   font-size:10px;padding:4px 9px;border-radius:3px;cursor:pointer;
   background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
+  white-space:nowrap;
 }
 .gewerk-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
 .gewerk-tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
@@ -365,16 +366,21 @@ legend{
 
   <div class="eb-group">
     <div class="eb-field">
-      <label>Gewerk</label>
+      <label>Funktionsbereich</label>
       <div class="gewerk-tabs">
-        <button class="gewerk-tab active" id="tab-rlt" data-gewerk="rlt" onclick="setGewerk('rlt')">RLT</button>
-        <button class="gewerk-tab" id="tab-hkl" data-gewerk="hkl" onclick="setGewerk('hkl')">HKL</button>
-        <button class="gewerk-tab" id="tab-san" data-gewerk="san" onclick="setGewerk('san')">Sanitär</button>
-        <button class="gewerk-tab" id="tab-bel" data-gewerk="bel" onclick="setGewerk('bel')">Beleuchtung</button>
-        <button class="gewerk-tab" id="tab-elek" data-gewerk="elek" onclick="setGewerk('elek')">Elektro</button>
+        <button class="gewerk-tab" id="tab-schaltschrank" data-gewerk="schaltschrank" onclick="setGewerk('schaltschrank')">Schaltschrank</button>
+        <button class="gewerk-tab" id="tab-automation" data-gewerk="automation" onclick="setGewerk('automation')">Automation</button>
+        <button class="gewerk-tab" id="tab-elektro" data-gewerk="elektro" onclick="setGewerk('elektro')">Elektro</button>
+        <button class="gewerk-tab" id="tab-beleuchtung" data-gewerk="beleuchtung" onclick="setGewerk('beleuchtung')">Beleuchtung</button>
+        <button class="gewerk-tab" id="tab-netzwerk" data-gewerk="netzwerk" onclick="setGewerk('netzwerk')">Netzwerk</button>
+        <button class="gewerk-tab active" id="tab-lueftung" data-gewerk="lueftung" onclick="setGewerk('lueftung')">Lüftung</button>
+        <button class="gewerk-tab" id="tab-heizung" data-gewerk="heizung" onclick="setGewerk('heizung')">Heizung</button>
+        <button class="gewerk-tab" id="tab-kaelte" data-gewerk="kaelte" onclick="setGewerk('kaelte')">Kälte</button>
+        <button class="gewerk-tab" id="tab-sanitaer" data-gewerk="sanitaer" onclick="setGewerk('sanitaer')">Sanitär</button>
+        <button class="gewerk-tab" id="tab-nutzungsspezifisch" data-gewerk="nutzungsspezifisch" onclick="setGewerk('nutzungsspezifisch')">Nutzungsspezifisch</button>
       </div>
     </div>
-    <div class="eb-field" style="min-width:260px;">
+    <div class="eb-field" style="width:320px;">
       <label>Baugruppe</label>
       <div class="bg-add-row">
         <select id="bg_auswahl" style="flex:1">
@@ -388,8 +394,8 @@ legend{
 
   <div class="eb-sep"></div>
 
-  <div class="eb-field" style="min-width:300px;flex:1;">
-    <label>Einspeisung, Verteilung &amp; Direktbauteile</label>
+  <div class="eb-field" style="width:320px;">
+    <label>Spezifische Auswahl Einzelbauteile</label>
     <div class="bg-add-row">
       <select id="einzel_auswahl" style="flex:1">
         <option value="">Laden …</option>
@@ -573,7 +579,7 @@ function init() {
   belegung.forEach(b => { if(!b.typ) b.typ = 'baugruppe'; });
 
   loadMontagebereich(gs('schrank_typ'));
-  setGewerk('rlt');
+  setGewerk('lueftung');
   populateEinzelAuswahl();
   renderBelegung();
   calculate();

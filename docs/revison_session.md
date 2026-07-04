@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 4. Juli 2026 – Session 23 (Modul 4: Layout-Neuordnung, Schranksicht skaliert wie Modul 3)
+**Stand:** 4. Juli 2026 – Session 24 (Modul 4: Funktionsbereich-Taxonomie, Design-Feinschliff Eingabeleiste)
 
 ---
 
@@ -300,21 +300,25 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 8. ~~Modul 4 – Physikalische Reihenplatzierung (Klemmraum + Verdrahtungskanal)~~ ✅ abgeschlossen Session 21
 9. ~~Modul 4 – Granulare Zonen (8 statt 3), Direktbauteile, Bauteil-Indizierung~~ ✅ abgeschlossen Session 22
 9a. ~~Modul 4 – Layout-Neuordnung (Schranksicht dominant, skaliert wie M3, Eingabeleiste + Füllstand-Streifen volle Breite)~~ ✅ abgeschlossen Session 23
-10. **Modul 4 – Typische Installationsaufbauten in Baugruppen berücksichtigen:**
+9b. ~~Modul 4 – Funktionsbereich-Taxonomie (10 statt 5 Bereiche), Design-Feinschliff~~ ✅ abgeschlossen Session 24
+10. **Modul 4 – Grundlagenarbeit Bauteildaten/Baugruppen (als nächstes geplant):**
+    korrekte Maße + richtige Zonen-Zuordnung für alle Bauteile, damit sie exakt positioniert werden;
+    außerdem Baugruppen für die neuen Funktionsbereiche `schaltschrank`/`automation`/`netzwerk`/`kaelte`/`nutzungsspezifisch` anlegen (aktuell leer).
+12. **Modul 4 – Typische Installationsaufbauten in Baugruppen berücksichtigen:**
     MSS und zugehöriger Schütz werden üblicherweise untereinander montiert (kurze Kabelwege).
     Konzept: Baugruppen-Definition steuert Anordnung (z. B. Feld „anordnung: untereinander|nebeneinander"),
     oder Geräteklassen mit Affinität zueinander werden beim Platzieren gruppiert.
     → Abstimmung mit Nutzer vor Implementierung erforderlich.
-11. **Modul 4 – DDC-Modul-Packlogik:** Hersteller/Serie final festlegen, dann Belegung bis zur
+13. **Modul 4 – DDC-Modul-Packlogik:** Hersteller/Serie final festlegen, dann Belegung bis zur
     Datenpunkte-Kapazitätsgrenze eines Moduls (inkl. Kunden-Reserve), erst danach neues Modul setzen –
     inkl. Auswirkung auf Anzahl Abgangsklemmen. Aktuell: 1 Baugruppe = 1 eigenes DDC-Modul (kein Teilen).
-12. Modul 4 – Erweiterungen: Drag&Drop-Repositionierung, Integritätsprüfung Baugruppen-Instanz, Mehrfeld-Schränke, Bauteil-Icons, GAEB/AVA-Export
-13. Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern) – inkl. neuer Felder `zone`-Override und `kategorie`
-14. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
+14. Modul 4 – Erweiterungen: Drag&Drop-Repositionierung, Integritätsprüfung Baugruppen-Instanz, Mehrfeld-Schränke, Bauteil-Icons, GAEB/AVA-Export
+15. Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern) – inkl. neuer Felder `zone`-Override und `kategorie`
+16. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
 
 **Später**
-15. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
-16. Startseite: Screenshot-Vorschau je Modul ergänzen
+17. Außendurchmesser NYM-J mit echten Herstellerdaten verifizieren
+18. Startseite: Screenshot-Vorschau je Modul ergänzen
 17. Neue Modul-4-Katalogeinträge (DDC-Module, Lasttrennschalter, ÜSS-Geräte) sind Best-effort-Platzhalter – reale Herstellerdatenblätter (Maße, Bestellnummern) noch zu verifizieren
 
 ---

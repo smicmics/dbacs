@@ -319,6 +319,15 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - **Resize-Listener** (debounced 150ms) ruft `calculate()` erneut auf, damit die Schranksicht bei Fenstergrößenänderung neu skaliert
 - `var_b`/`var_h` zu einem gemeinsamen `var_b`-Span zusammengefasst (`b/h_mplatte_mbereich_...`), da B und H jetzt in einer Zeile mit „×“ getrennt angezeigt werden – `loadMontagebereich()` entsprechend angepasst (referenziert `var_h` nicht mehr)
 - Print-CSS: `.eingabeleiste`/`.fuellstand-strip` ausgeblendet (wie `.gewerk-tabs`/`.bg-add-row`), `.layout-3col` Druckspalten auf 200px/1fr/300px angepasst
+- `.eb-field label`: Beschreibung und `.var`-Variablenname stehen untereinander (`flex-direction:column`), nicht mehr nebeneinander – verhindert, dass lange Variablennamen die Feldbreite aufblähen und Folgefelder aus dem sichtbaren Bereich schieben
+
+### Modul 4 – Funktionsbereich-Taxonomie (Session 24, gesperrt)
+- **„Gewerk" → „Funktionsbereich" umbenannt** – Label in der Eingabeleiste und Konzept: Tabs gruppieren die Bauteil-Datenbank nach Funktionsbereich, nicht mehr nur nach klassischem HOAI-Gewerk
+- **10 Funktionsbereiche** (`data-gewerk`-Werte), Reihenfolge fest (2×5-Grid, `grid-template-columns:repeat(5,auto)`): `schaltschrank`, `automation`, `elektro`, `beleuchtung`, `netzwerk`, `lueftung`, `heizung`, `kaelte`, `sanitaer`, `nutzungsspezifisch`
+- **Migration bestehender `baugruppen.json`-Einträge** (mechanische Umbenennung, keine inhaltliche Neuzuordnung): `rlt→lueftung`, `hkl→heizung`, `san→sanitaer`, `bel→beleuchtung`, `elek→elektro`. Default-Tab beim Laden: `lueftung` (meiste bestehende Baugruppen)
+- **`schaltschrank`, `automation`, `netzwerk`, `kaelte`, `nutzungsspezifisch` sind bewusst leer** – keine Baugruppen bisher zugeordnet, wird Teil der nächsten „Grundlagen"-Session (korrekte Maße + Zonen-Zuordnung der Bauteildaten)
+- „Einspeisung, Verteilung & Direktbauteile" → „Spezifische Auswahl Einzelbauteile" umbenannt (Label unverändert funktional)
+- Baugruppe-Auswahl und Einzelbauteil-Auswahl jetzt gleich breit (`width:320px` statt `flex:1` beim Einzelbauteil-Feld) – verhindert, dass ein Dropdown deutlich länger als das andere wirkt
 
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
