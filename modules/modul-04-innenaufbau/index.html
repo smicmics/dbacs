@@ -61,7 +61,7 @@ header a:hover{color:var(--tx2);}
   background:var(--bg2);border-bottom:1px solid var(--bord);
   padding:10px 18px;flex-shrink:0;
 }
-.eb-field{display:flex;flex-direction:column;gap:3px;}
+.eb-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
 .eb-field label{
   font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
   display:flex;flex-direction:column;gap:1px;white-space:nowrap;
@@ -169,9 +169,9 @@ legend{
 .gewerk-tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
 
 /* ── BG-Auswahl ── */
-.bg-add-row{display:flex;gap:6px;margin-top:6px;}
+.bg-add-row{display:flex;gap:6px;margin-top:6px;min-width:0;}
 .bg-add-row input[type=number]{width:55px;flex-shrink:0;}
-.bg-add-row select{flex:1;}
+.bg-add-row select{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .btn-add{
   padding:4px 10px;background:var(--green);color:#000;border:none;
   border-radius:3px;font-size:12px;font-weight:700;cursor:pointer;
