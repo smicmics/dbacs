@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "dbacs-static",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8099", "--directory", "."],
+      "runtimeExecutable": "wsl.exe",
+      "runtimeArgs": ["python3", "-m", "http.server", "8099", "--directory", "."],
       "port": 8099
     }
   ]

@@ -22,13 +22,14 @@
   --mono:  'Courier New',Courier,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;display:flex;flex-direction:column;}
 
 /* ── Header ── */
 header{
   background:#111110;color:#E0DED8;
   padding:10px 22px 12px;display:flex;align-items:flex-start;gap:18px;
-  border-bottom:1px solid var(--bord);flex-wrap:wrap;
+  border-bottom:1px solid var(--bord);flex-wrap:wrap;flex-shrink:0;
 }
 header h1{font-size:15px;font-weight:700;letter-spacing:-.01em;}
 header p{font-size:11px;color:var(--tx3);margin-top:1px;}
@@ -57,14 +58,14 @@ header a:hover{color:var(--tx2);}
 /* ── 3-Spalten Layout ── */
 .layout-3col{
   display:grid;
-  grid-template-columns:300px 1fr 320px;
-  min-height:calc(100vh - 130px);
+  grid-template-columns:340px 1fr 380px;
+  flex:1;min-height:0;
 }
 
 /* ── Linkes Panel ── */
 .panel-in{
   background:var(--bg2);border-right:1px solid var(--bord);
-  padding:14px 12px;overflow-y:auto;
+  padding:14px 12px;overflow-y:auto;height:100%;
 }
 .panel-in h2{
   font-size:10px;font-weight:700;text-transform:uppercase;
@@ -74,7 +75,7 @@ header a:hover{color:var(--tx2);}
 /* ── Mittleres Panel ── */
 .panel-mid{
   padding:16px 18px;overflow-y:auto;background:var(--bg);
-  border-right:1px solid var(--bord);
+  border-right:1px solid var(--bord);height:100%;
 }
 .panel-mid h2{
   font-size:10px;font-weight:700;text-transform:uppercase;
@@ -83,7 +84,7 @@ header a:hover{color:var(--tx2);}
 
 /* ── Rechtes Panel ── */
 .panel-right{
-  padding:16px 14px;overflow-y:auto;background:var(--bg2);
+  padding:16px 14px;overflow-y:auto;background:var(--bg2);height:100%;
 }
 .panel-right h2{
   font-size:10px;font-weight:700;text-transform:uppercase;
@@ -120,9 +121,9 @@ legend{
 .hint-text a:hover{text-decoration:underline;}
 
 /* ── Gewerk-Tabs ── */
-.gewerk-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
+.gewerk-tabs{display:flex;flex-wrap:wrap;gap:6px 6px;margin-bottom:8px;}
 .gewerk-tab{
-  font-size:10px;padding:3px 8px;border-radius:3px;cursor:pointer;
+  font-size:10px;padding:4px 9px;border-radius:3px;cursor:pointer;
   background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
 }
 .gewerk-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
@@ -190,6 +191,9 @@ legend{
 }
 #stueckliste-wrap tr:last-child td{border-bottom:none;}
 #stueckliste-wrap .td-num{text-align:right;font-family:var(--mono);font-size:10px;}
+#stueckliste-wrap .td-hst{
+  max-width:88px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
 .stk-total{
   margin-top:6px;text-align:right;font-size:12px;font-weight:700;color:var(--tx);
   padding-top:6px;border-top:1px solid var(--bords);
@@ -202,6 +206,7 @@ legend{
 .zone-l{background:#C84E2E33;color:#C84E2E;}
 .zone-s{background:#4BBECA33;color:#4BBECA;}
 .zone-k{background:#D4A84B33;color:#D4A84B;}
+.zone-e{background:#C8720E33;color:#C8720E;}
 
 /* ── Buttons ── */
 .btn-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
@@ -221,6 +226,7 @@ legend{
   background:#111110;border-top:1px solid var(--bord);
   padding:10px 22px;font-size:11px;color:var(--tx3);
   display:flex;justify-content:space-between;align-items:center;
+  flex-shrink:0;
 }
 
 /* ── Print ── */
@@ -248,7 +254,7 @@ legend{
   .gewerk-tabs{display:none;}
   .bg-add-row{display:none;}
   .bel-rm{display:none;}
-  .layout-3col{grid-template-columns:220px 1fr 260px;}
+  .layout-3col{grid-template-columns:250px 1fr 300px;}
 }
 </style>
 </head>
@@ -352,6 +358,15 @@ legend{
     <div id="fuellstand-wrap">
       <div class="fuell-zone">
         <div class="fuell-label">
+          <span style="color:#C8720E">Einspeisung / Energieverteilung</span>
+          <span id="fs-evert-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
+        </div>
+        <div class="fuell-bar-bg">
+          <div id="fs-evert-bar" class="fuell-bar" style="width:0%;background:#C8720E"></div>
+        </div>
+      </div>
+      <div class="fuell-zone">
+        <div class="fuell-label">
           <span style="color:#C84E2E">Leistungszone</span>
           <span id="fs-leist-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – TE</span>
         </div>
@@ -415,7 +430,7 @@ legend{
 // ── Konstanten ───────────────────────────────────────────────────────
 const TE_MM = 18;
 const BG_COLORS = ['#E07B39','#4BBECA','#9A94E8','#2DBD8E','#C84E2E','#D4A84B','#7A74CC','#5BAD6B','#C86090','#A8C4E8'];
-const ZONE_LABELS = {leistung:'Leistung', steuerung:'Steuerung', klemmen:'Klemmen'};
+const ZONE_LABELS = {evert:'Einspeisung/Energieverteilung', leistung:'Leistung', steuerung:'Steuerung', klemmen:'Klemmen'};
 
 // ── Daten ────────────────────────────────────────────────────────────
 let EINZELBAUTEILE_DB = [];
@@ -598,48 +613,297 @@ function onKlemmraumChange() {
   calculate();
 }
 
-// ── Berechnung ───────────────────────────────────────────────────────
-function calculate() {
-  const b_leist  = +localStorage.getItem('m03_b_leist')    || 0;
-  const h_leist  = +localStorage.getItem('m03_h_leist')    || 0;
-  const b_steuer = +localStorage.getItem('m03_b_steuer')   || 0;
-  const h_steuer = +localStorage.getItem('m03_h_steuer')   || 0;
-  const h_klemm  = +localStorage.getItem('m03_h_klemm')    || 0;
-  const h_evert  = +localStorage.getItem('m03_h_evert')    || 0;
-  const b_uss    = +localStorage.getItem('m03_b_uss')      || 0;
-  const b_ek     = +localStorage.getItem('m03_b_ek')       || 0;
-  const b_kanal_v= +localStorage.getItem('m03_b_kanal_v')  || 40;
-  const anordn   =  localStorage.getItem('m03_zone_anordnung') || 'nebeneinander';
-  const ke_pos   =  localStorage.getItem('m03_zone_ke_pos')    || 'unten';
-  const b_mb = g('b_mplatte_mbereich_mm');
-  const h_mb = g('h_mplatte_mbereich_mm');
+// ── Zonen-Layout (portiert aus Modul 3, buildLayout) ──────────────────
+// Erzeugt exakt dieselbe Zonengeometrie wie Modul 3 (ÜSS-Position,
+// Übereinander/Nebeneinander, KE-Position, Kabelkanäle) – als Bruchteile
+// (x, w als Anteil von b) je Zeile. Unverändert aus M3 übernommen.
+function buildLayout(zp) {
+  const { b, b_uss, b_ek, h_evert, h_leist, h_steuer, h_klemm,
+          b_leist, b_steuer, b_inner, anordnung, ke_pos,
+          h_kanal_h, b_kanal_v } = zp;
+  const isNeben = anordnung === 'nebeneinander';
 
-  const klemmraum = Math.max(5, g('klemmraum_mm') || 20);
+  const b_half = Math.floor(b / 2);
+  const f_ek   = b > 0 ? Math.min(b_ek / b, 0.25) : 0;
+  const f_rest = 1 - f_ek;
+  const f_kl   = b > 0 ? (b_half / b) * f_rest : 0;
+  const f_kfs  = f_rest - f_kl;
+  const f_kf   = f_kfs / 2;
+  const f_ks   = f_kfs - f_kf;
 
-  // Nutzbreiten pro Zone
-  const b_l_nutz = Math.max(0, b_leist - b_uss);
-  const b_s_nutz = b_steuer;
-  const b_k_nutz = Math.max(0, b_leist + b_steuer - b_ek);
+  const f_vk   = b > 0 ? b_kanal_v / b : 0;
+  const f_uss  = b > 0 ? Math.min(b_uss / b, 0.4) : 0;
+  const f_l_n  = b > 0 ? Math.max(0, b_leist - b_uss) / b : 0;
+  const f_s_n  = b > 0 ? b_steuer / b : 0;
+  const f_l_u  = b > 0 ? Math.max(0, b_inner - b_uss) / b : 0;
+  const f_s_u  = b > 0 ? b_inner / b : 0;
 
-  const zones = {
-    leistung:  {b: b_l_nutz,  h: h_leist,  color:'#C84E2E'},
-    steuerung: {b: b_s_nutz,  h: h_steuer, color:'#4BBECA'},
-    klemmen:   {b: b_k_nutz,  h: h_klemm,  color:'#D4A84B'}
+  const h_leist_ext = Math.max(0, h_leist - h_klemm);
+
+  const R = {
+    evert: { h_mm: h_evert, zones: zp.useEvKanal
+      ? [
+          { id:'kanal_vl', x:0,    w:f_vk,   col:'#888',    lbl:'' },
+          { id:'evert',    x:f_vk, w:1-f_vk, col:'#C8720E', lbl:'Energieverteilung' },
+        ]
+      : [
+          { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
+        ]
+    },
+    kanal_h: { h_mm: h_kanal_h, zones: [
+      { id:'kanal_h', x:0, w:1, col:'#888', lbl:'', noStroke:true }
+    ]},
+    kanal_ls: { h_mm: h_kanal_h, zones: [
+      { id:'kanal_ls', x:0, w:1, col:'#888', lbl:'', noStroke:true }
+    ]},
+    kanal_ev: { h_mm: h_kanal_h, zones: [
+      { id:'kanal_ev', x:0, w:1, col:'#888', lbl:'', noStroke:true }
+    ]},
+    kanal_ev2: { h_mm: h_kanal_h, zones: [
+      { id:'kanal_ev2', x:0, w:1, col:'#888', lbl:'', noStroke:true }
+    ]},
+
+    leist_uss_ueber: { h_mm: h_klemm, zones: [
+      { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'', noStroke:true },
+      { id:'uss',      x:f_vk,        w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
+      { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'', noStroke:true },
+    ]},
+    leist_ext_ueber: { h_mm: h_leist_ext, zones: [
+      { id:'kanal_vl',  x:0,     w:f_vk,  col:'#888',    lbl:'', noStroke:true },
+      { id:'leist_ext', x:f_vk,  w:f_s_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'kanal_vr',  x:1-f_vk, w:f_vk, col:'#888',    lbl:'', noStroke:true },
+    ]},
+    steuer_ueber: { h_mm: h_steuer, zones: [
+      { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'' },
+      { id:'steuer',   x:f_vk,  w:f_s_u,  col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'' },
+    ]},
+
+    leist_uss_neben: { h_mm: h_klemm, zones: [
+      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
+      { id:'uss',      x:f_vk,           w:f_uss,      col:'#D4A84B', lbl:'ÜSS + Sich.' },
+      { id:'leist',    x:f_vk+f_uss,     w:f_l_n,      col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'', noStroke:true },
+    ]},
+    leist_ext_neben: { h_mm: h_leist_ext, zones: [
+      { id:'kanal_vl',  x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
+      { id:'leist_ext', x:f_vk,           w:b_leist/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'steuer',    x:f_vk+b_leist/b, w:f_s_n,     col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'kanal_vr',  x:1-f_vk,         w:f_vk,      col:'#888',    lbl:'', noStroke:true },
+    ]},
+    leist_neben_b: { h_mm: h_leist, zones: [
+      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'' },
+      { id:'leist',    x:f_vk,           w:b_leist/b,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'' },
+    ]},
+
+    klemm: { h_mm: h_klemm, zones: [
+      { id:'klemm_e', x:0,              w:f_ek,  col:'#D4A84B', lbl:'Einsp.-Kl.' },
+      { id:'klemm_l', x:f_ek,           w:f_kl,  col:'#2DBD8E', lbl:'Abg.-Kl. Leistung' },
+      { id:'klemm_f', x:f_ek+f_kl,      w:f_kf,  col:'#9A94E8', lbl:'Abg.-Kl. Feldger.' },
+      { id:'klemm_s', x:f_ek+f_kl+f_kf, w:f_ks,  col:'#E8C448', lbl:'Abg.-Kl. Sensoren' },
+    ]},
   };
 
-  placeBauteile(zones, klemmraum);
+  let rows;
+  const { useEvKanal } = zp;
+  if (ke_pos === 'unten') {
+    rows = useEvKanal ? [R.kanal_ev2, R.evert, R.kanal_ev] : [R.evert, R.kanal_ev];
+    if (isNeben) {
+      rows.push(R.leist_neben_b, R.kanal_ls);
+      if (h_leist_ext > 0) rows.push(R.leist_ext_neben);
+      rows.push(R.leist_uss_neben);
+    } else {
+      rows.push(R.steuer_ueber, R.kanal_ls);
+      if (h_leist_ext > 0) rows.push(R.leist_ext_ueber);
+      rows.push(R.leist_uss_ueber);
+    }
+    rows.push(R.kanal_h, R.klemm);
+  } else {
+    rows = [R.klemm, R.kanal_h];
+    if (isNeben) {
+      rows.push(R.leist_uss_neben);
+      if (h_leist_ext > 0) rows.push(R.leist_ext_neben);
+      rows.push(R.kanal_ls, R.leist_neben_b);
+    } else {
+      rows.push(R.leist_uss_ueber);
+      if (h_leist_ext > 0) rows.push(R.leist_ext_ueber);
+      rows.push(R.kanal_ls, R.steuer_ueber);
+    }
+    useEvKanal ? rows.push(R.kanal_ev, R.evert, R.kanal_ev2) : rows.push(R.kanal_ev, R.evert);
+  }
+  return rows;
+}
+
+// ── zp aus Modul 3 (localStorage) rekonstruieren ──────────────────────
+function buildZp() {
+  const b = g('b_mplatte_mbereich_mm');
+  const h = g('h_mplatte_mbereich_mm');
+  const b_kanal_v = +localStorage.getItem('m03_b_kanal_v') || 40;
+  const h_kanal_h = +localStorage.getItem('m03_h_kanal_h') || 40;
+  const netztyp   =  localStorage.getItem('m03_zone_netztyp') || 'drehstrom';
+  const schiene   =  localStorage.getItem('m03_zone_schiene') || 'ja';
+  const useEvKanal = !(netztyp === 'drehstrom' && schiene === 'ja');
+  const b_inner = Math.max(0, b - 2*b_kanal_v);
+  return {
+    b, h, b_inner, h_kanal_h, b_kanal_v, useEvKanal,
+    ke_pos:    localStorage.getItem('m03_zone_ke_pos')    || 'unten',
+    anordnung: localStorage.getItem('m03_zone_anordnung') || 'nebeneinander',
+    b_uss:    +localStorage.getItem('m03_b_uss')    || 0,
+    b_ek:     +localStorage.getItem('m03_b_ek')     || 0,
+    h_evert:  +localStorage.getItem('m03_h_evert')  || 0,
+    h_leist:  +localStorage.getItem('m03_h_leist')  || 0,
+    h_steuer: +localStorage.getItem('m03_h_steuer') || 0,
+    h_klemm:  +localStorage.getItem('m03_h_klemm')  || 0,
+    b_leist:  +localStorage.getItem('m03_b_leist')  || 0,
+    b_steuer: +localStorage.getItem('m03_b_steuer') || 0,
+  };
+}
+
+// ── Platzierungs-Bänder je Zone aus dem Layout ableiten ───────────────
+// Fasst klemm_l/klemm_f/klemm_s zu einem zusammenhängenden Klemmen-Band
+// zusammen (Einsp.-Kl. bleibt ausgenommen); liefert außerdem die
+// Zonen-Zeilen (svgRows) für die maßstäbliche Grundzeichnung.
+function getZoneBands(zp) {
+  const rows = buildLayout(zp);
+  const b = zp.b;
+  const bands   = { evert: [], leistung: [], steuerung: [], klemmen: [] };
+  const svgRows = [];
+  let y = 0;
+  rows.forEach(row => {
+    const zonesOut = row.zones.map(z => ({
+      id: z.id, x_mm: z.x*b, w_mm: z.w*b, col: z.col, lbl: z.lbl, noStroke: !!z.noStroke
+    }));
+    svgRows.push({ y_mm: y, h_mm: row.h_mm, zones: zonesOut });
+
+    const klemmSub = zonesOut.filter(z => z.id==='klemm_l' || z.id==='klemm_f' || z.id==='klemm_s');
+    if (klemmSub.length) {
+      const x0 = Math.min(...klemmSub.map(z => z.x_mm));
+      const x1 = Math.max(...klemmSub.map(z => z.x_mm + z.w_mm));
+      bands.klemmen.push({ x_mm:x0, y_mm:y, w_mm:x1-x0, h_mm: row.h_mm });
+    }
+    zonesOut.forEach(z => {
+      if (z.id==='leist' || z.id==='leist_ext') bands.leistung.push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm });
+      else if (z.id==='steuer') bands.steuerung.push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm });
+      else if (z.id==='evert') bands.evert.push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm });
+    });
+    y += row.h_mm;
+  });
+  return { svgRows, totalH: y, bands };
+}
+
+// ── Bauteile in die vorgegebenen Bänder platzieren ────────────────────
+// Reihenfolge je Band: Kanal(40mm) → Reihe → Kanal → Reihe → … → Kanal.
+// Passt eine Reihe nicht mehr in das aktuelle Band, wird im nächsten
+// Band derselben Zone weitergemacht; sind alle Bänder voll, Overflow.
+function placeInBands(devs, bands, klemmraum) {
+  const H_KANAL = 40;
+  const rows = [];
+  const channels = [];
+  let idx = 0;
+  let mm_used = 0;
+
+  for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
+    const band = bands[bi];
+    const te_per_row = band.w_mm > 0 ? Math.floor(band.w_mm / TE_MM) : 0;
+    if (te_per_row <= 0) continue;
+
+    let y_local = 0;
+    let kanalGesetzt = false;
+    while (idx < devs.length) {
+      let te = 0, j = idx;
+      while (j < devs.length) {
+        if (te + devs[j].te > te_per_row && j > idx) break;
+        te += devs[j].te; j++;
+      }
+      const batch = devs.slice(idx, j);
+      const h_dev = Math.max(...batch.map(d => d.h_mm));
+      const h_row = h_dev + 2*klemmraum;
+      const kanalOben = kanalGesetzt ? 0 : H_KANAL;
+
+      if (y_local + kanalOben + h_row > band.h_mm) break;
+
+      if (kanalOben) {
+        channels.push({ x_mm: band.x_mm, y_mm: band.y_mm + y_local, w_mm: band.w_mm, h_mm: H_KANAL });
+        y_local += H_KANAL;
+        kanalGesetzt = true;
+      }
+
+      let col = 0;
+      const blocks = batch.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title}; col += d.te; return bl; });
+      rows.push({ mode:'row', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm + y_local, h_mm: h_row, klemmraum, blocks });
+      y_local += h_row;
+      idx = j;
+    }
+    if (kanalGesetzt && y_local + H_KANAL <= band.h_mm) {
+      channels.push({ x_mm: band.x_mm, y_mm: band.y_mm + y_local, w_mm: band.w_mm, h_mm: H_KANAL });
+      y_local += H_KANAL;
+    }
+    mm_used += y_local;
+  }
+
+  return { rows, channels, overflow: idx < devs.length, mm_used };
+}
+
+// ── Klemmenzeile platzieren (eine Hutschiene, keine Kanal/Klemmraum-Klammerung) ──
+// h_klemm ist bereits inkl. Handling (siehe M3: ceil5(15+65+15)) – die Zeile
+// wird nicht in mehrere Reihen aufgeteilt, Geräte füllen sie von links nach
+// rechts; reicht die Breite nicht, ist der Rest ein Breiten-Overflow.
+function placeInKlemmRow(devs, bands) {
+  const rows = [];
+  let idx = 0;
+  let te_used = 0;
+
+  for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
+    const band = bands[bi];
+    const te_per_row = band.w_mm > 0 ? Math.floor(band.w_mm / TE_MM) : 0;
+    if (te_per_row <= 0) continue;
+
+    let col = 0;
+    const blocks = [];
+    while (idx < devs.length && col + devs[idx].te <= te_per_row) {
+      const d = devs[idx];
+      blocks.push({col, te: d.te, h_mm: d.h_mm, farbe: d.farbe, lbl: d.lbl, title: d.title});
+      col += d.te;
+      idx++;
+    }
+    if (blocks.length) {
+      rows.push({ mode:'klemm', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm, h_mm: band.h_mm, blocks });
+      te_used += col;
+    }
+  }
+
+  return { rows, overflow: idx < devs.length, mm_used: te_used * TE_MM };
+}
+
+// ── Berechnung ───────────────────────────────────────────────────────
+function calculate() {
+  const klemmraum = Math.max(5, g('klemmraum_mm') || 20);
+  const zp = buildZp();
+
+  if (!zp.b || !zp.h) {
+    document.getElementById('svg-msg').style.display = '';
+    document.getElementById('svg-inner').style.display = 'none';
+    buildFuellstand(null);
+    buildStueckliste();
+    return;
+  }
+
+  const layout = getZoneBands(zp);
+  const zones  = placeBauteile(layout.bands, klemmraum);
 
   buildFuellstand(zones);
-  buildSVG(zones, {b_leist, h_leist, b_steuer, h_steuer, h_klemm, h_evert, b_uss, b_ek, b_kanal_v, anordn, ke_pos, b_mb, h_mb, klemmraum});
+  buildSVG(zp, layout, zones);
   buildStueckliste();
 }
 
-// ── Bauteil-Platzierung (physikalisch) ───────────────────────────────
-function placeBauteile(zones, klemmraum) {
-  const H_KANAL = 40;
-
+// ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
+function placeBauteile(bandsAll, klemmraum) {
   // Gerätewarteschlange je Zone aufbauen
-  const queues = {leistung:[], steuerung:[], klemmen:[]};
+  const queues = {evert:[], leistung:[], steuerung:[], klemmen:[]};
   belegung.forEach(item => {
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
@@ -655,61 +919,35 @@ function placeBauteile(zones, klemmraum) {
     }
   });
 
-  ['leistung','steuerung','klemmen'].forEach(zn => {
-    const z = zones[zn];
-    const devs = queues[zn] || [];
-    const te_per_row = z.b > 0 ? Math.floor(z.b / TE_MM) : 0;
-
-    z.rows = [];        // [{y_mm, h_mm, h_dev, blocks:[{col,te,h_mm,farbe,lbl,title}]}]
-    z.kanaele = [];     // y_mm-Positionen der Kanaloberseiten
-    z.te_belegt = devs.reduce((s,d) => s + d.te, 0);
-    z.mm_used = 0;
-    z.overflow = false;
-
-    if(!te_per_row || !z.h) return;
-
-    // Geräte in Reihen-Batches aufteilen (TE-Kapazität je Reihe)
-    const batches = [];
-    let cur = [], te = 0;
-    devs.forEach(d => {
-      if(te + d.te > te_per_row && cur.length) { batches.push(cur); cur = []; te = 0; }
-      cur.push(d); te += d.te;
-    });
-    if(cur.length) batches.push(cur);
-
-    // Reihen platzieren mit Kanal-Erkennung:
-    // Vor jeder Reihe: Kanal oben setzen, WENN dort noch keiner ist.
-    // Nach jeder Reihe: Kanal unten immer setzen.
-    // → Zwischen zwei Reihen liegt so genau ein Kanal (kein Doppel-Kanal).
-    let y = 0;
-    let kanalObenVorhanden = false;
-    batches.forEach(batch => {
-      const h_dev = Math.max(...batch.map(d => d.h_mm));
-      const h_row = h_dev + 2 * klemmraum;
-
-      // Kanal oben: nur wenn noch keiner an dieser Position
-      if(!kanalObenVorhanden) { z.kanaele.push(y); y += H_KANAL; }
-      kanalObenVorhanden = false;
-
-      // Blöcke mit Spalten-Offsets
-      let col = 0;
-      const blocks = batch.map(d => {
-        const b = {col, te: d.te, h_mm: d.h_mm, farbe: d.farbe, lbl: d.lbl, title: d.title};
-        col += d.te;
-        return b;
-      });
-
-      z.rows.push({y_mm: y, h_mm: h_row, h_dev, blocks, over: y + h_row > z.h});
-      y += h_row;
-
-      // Kanal unten: immer setzen – gilt zugleich als Kanal oben für die nächste Reihe
-      z.kanaele.push(y); y += H_KANAL;
-      kanalObenVorhanden = true;
-    });
-
-    z.mm_used = y;
-    z.overflow = z.mm_used > z.h;
+  const zones = {};
+  ['evert','leistung','steuerung'].forEach(zn => {
+    const devs  = queues[zn] || [];
+    const bands = bandsAll[zn] || [];
+    const placed = placeInBands(devs, bands, klemmraum);
+    zones[zn] = {
+      te_belegt: devs.reduce((s,d) => s + d.te, 0),
+      mm_total:  bands.reduce((s,bd) => s + bd.h_mm, 0),
+      mm_used:   placed.mm_used,
+      overflow:  placed.overflow,
+      rows:      placed.rows,
+      channels:  placed.channels
+    };
   });
+
+  // Klemmenzeile: eine Hutschiene, Kapazität als Breite (mm) statt Höhe
+  const kDevs  = queues.klemmen || [];
+  const kBands = bandsAll.klemmen || [];
+  const placedK = placeInKlemmRow(kDevs, kBands);
+  zones.klemmen = {
+    te_belegt: kDevs.reduce((s,d) => s + d.te, 0),
+    mm_total:  kBands.reduce((s,bd) => s + bd.w_mm, 0),
+    mm_used:   placedK.mm_used,
+    overflow:  placedK.overflow,
+    rows:      placedK.rows,
+    channels:  []
+  };
+
+  return zones;
 }
 
 function kurzLabel(eb) {
@@ -719,28 +957,28 @@ function kurzLabel(eb) {
 
 // ── Füllstand-Balken ─────────────────────────────────────────────────
 function buildFuellstand(zones) {
-  const map = {leistung:'leist', steuerung:'steuer', klemmen:'klemm'};
+  const map   = {evert:'evert', leistung:'leist', steuerung:'steuer', klemmen:'klemm'};
+  const color = {evert:'#C8720E', leistung:'#C84E2E', steuerung:'#4BBECA', klemmen:'#D4A84B'};
   Object.entries(map).forEach(([zone, id]) => {
-    const z    = zones[zone];
-    const used = z.mm_used || 0;
-    const avail= z.h || 0;
-    const pct  = avail > 0 ? (used / avail) * 100 : 0;
-    const bar  = document.getElementById(`fs-${id}-bar`);
-    const txt  = document.getElementById(`fs-${id}-txt`);
-    const teStr = z.te_belegt > 0 ? `${z.te_belegt} TE · ` : '';
+    const z     = zones ? zones[zone] : null;
+    const used  = z ? z.mm_used  : 0;
+    const avail = z ? z.mm_total : 0;
+    const pct   = avail > 0 ? (used / avail) * 100 : 0;
+    const bar = document.getElementById(`fs-${id}-bar`);
+    const txt = document.getElementById(`fs-${id}-txt`);
+    const teStr = z && z.te_belegt > 0 ? `${z.te_belegt} TE · ` : '';
     txt.textContent = avail > 0 ? `${teStr}${Math.round(used)} / ${Math.round(avail)} mm` : '– / – mm';
     bar.style.width = Math.min(100, pct) + '%';
-    bar.style.background = pct > 100 ? '#E04444' : (pct > 80 ? '#D4A84B' : z.color);
+    bar.style.background = pct > 100 ? '#E04444' : (pct > 80 ? '#D4A84B' : color[zone]);
   });
 }
 
-// ── SVG Schranksicht ─────────────────────────────────────────────────
-function buildSVG(zones, dims) {
-  const {b_leist, h_leist, b_steuer, h_steuer, h_klemm, h_evert, b_uss, b_ek, b_kanal_v, anordn, ke_pos, b_mb, h_mb, klemmraum} = dims;
+// ── SVG Schranksicht (Zonenraster aus Modul 3 + physikalische Platzierung) ──
+function buildSVG(zp, layout, zones) {
   const msgEl = document.getElementById('svg-msg');
   const svgEl = document.getElementById('svg-inner');
 
-  if(!b_mb || !h_mb) {
+  if(!zp.b || !layout.totalH) {
     msgEl.style.display = '';
     svgEl.style.display = 'none';
     return;
@@ -748,104 +986,64 @@ function buildSVG(zones, dims) {
   msgEl.style.display = 'none';
   svgEl.style.display = '';
 
-  const SW = 480;
-  const sc = SW / b_mb;
+  const SW  = 480;
+  const sc  = SW / zp.b;
   const PAD = 12;
+  const totalHpx = layout.totalH * sc;
 
-  // Zonendefinitionen
-  const zoneDefs = {
-    leistung:  {h: h_leist,  xNutz: b_uss * sc, label:'Leistung',      color:'#C84E2E33', stroke:'#C84E2E'},
-    steuerung: {h: h_steuer, xNutz: 0,           label:'Steuerung',     color:'#4BBECA22', stroke:'#4BBECA'},
-    klemmen:   {h: h_klemm,  xNutz: b_ek * sc,   label:'Klemmen',       color:'#D4A84B22', stroke:'#D4A84B'},
-    evert:     {h: h_evert,  xNutz: 0,           label:'Einspeisezone', color:'#88888822', stroke:'#888'}
-  };
+  let svg = `<svg viewBox="${-PAD} ${-PAD} ${SW + PAD*2} ${(totalHpx + PAD*2).toFixed(1)}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">`;
+  svg += `<rect x="0" y="0" width="${SW}" height="${totalHpx.toFixed(1)}" fill="#FDFCF8" rx="2"/>`;
 
-  // Reihenfolge je KE-Position (vereinfachte übereinander-Ansicht)
-  const zoneOrder = ke_pos === 'oben'
-    ? ['klemmen','leistung','steuerung','evert']
-    : ['evert','steuerung','leistung','klemmen'];
-
-  // SVG-Positionen berechnen
-  let svgZones = [];
-  let y = 0;
-  zoneOrder.forEach(key => {
-    const zd = zoneDefs[key];
-    if(!zd || !zd.h) return;
-    svgZones.push({key, ...zd, svgY: y, svgH: zd.h * sc, svgW: SW});
-    y += zd.h * sc + 1;
+  // Zonenraster – exakt wie in Modul 3 (gleiche Geometrie, gleicher Maßstab)
+  layout.svgRows.forEach(row => {
+    const y0 = row.y_mm * sc;
+    const rh = row.h_mm * sc;
+    row.zones.forEach(z => {
+      const zx = z.x_mm * sc;
+      const zw = z.w_mm * sc;
+      const sw0 = z.noStroke ? 0 : 0.6;
+      svg += `<rect x="${zx.toFixed(1)}" y="${y0.toFixed(1)}" width="${zw.toFixed(1)}" height="${rh.toFixed(1)}" fill="${z.col}" fill-opacity="0.22" stroke="${z.col}" stroke-width="${sw0}"/>`;
+      if(rh >= 10 && z.lbl) {
+        svg += `<text x="${(zx+4).toFixed(1)}" y="${(y0+Math.min(11,rh*0.6)).toFixed(1)}" font-size="7.5" font-weight="600" font-family="system-ui,sans-serif" fill="${z.col}">${z.lbl}</text>`;
+      }
+    });
   });
 
-  const totalH = svgZones.reduce((a, z) => Math.max(a, z.svgY + z.svgH), 0);
-  let svg = `<svg viewBox="${-PAD} ${-PAD} ${SW + PAD*2} ${totalH + PAD*2}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">`;
+  // Verdrahtungskanäle + Bauteil-Blöcke je platzierbarer Zone
+  ['evert','leistung','steuerung','klemmen'].forEach(zn => {
+    const z = zones[zn];
+    if(!z) return;
 
-  // Montageplatte Hintergrund
-  svg += `<rect x="0" y="0" width="${SW}" height="${totalH}" fill="#333330" rx="2"/>`;
-
-  svgZones.forEach(zs => {
-    const y0 = zs.svgY;
-    // Zone-Hintergrund
-    svg += `<rect x="0" y="${y0.toFixed(1)}" width="${zs.svgW}" height="${zs.svgH.toFixed(1)}" fill="${zs.color}" stroke="${zs.stroke}" stroke-width="0.6" rx="1"/>`;
-
-    // Zone-Label (nur wenn genug Höhe)
-    if(zs.svgH >= 14) {
-      svg += `<text x="4" y="${(y0 + Math.min(13, zs.svgH * 0.8)).toFixed(1)}" font-size="8" font-family="system-ui,sans-serif" fill="${zs.stroke}" opacity="0.8">${zs.label}</text>`;
-    }
-
-    // ÜSS-Block in Leistungszone
-    if(zs.key === 'leistung' && b_uss > 0) {
-      const ussW = b_uss * sc;
-      svg += `<rect x="0" y="${y0.toFixed(1)}" width="${ussW.toFixed(1)}" height="${zs.svgH.toFixed(1)}" fill="#44444488" stroke="#666" stroke-width="0.5"/>`;
-      if(zs.svgH >= 20) {
-        svg += `<text x="${(ussW/2).toFixed(1)}" y="${(y0 + zs.svgH/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#999">ÜSS</text>`;
+    z.channels.forEach(ch => {
+      const cx = ch.x_mm*sc, cy = ch.y_mm*sc, cw = ch.w_mm*sc, chh = ch.h_mm*sc;
+      svg += `<rect x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" width="${cw.toFixed(1)}" height="${chh.toFixed(1)}" fill="#0000000C" stroke="none"/>`;
+      if(chh > 8) {
+        svg += `<text x="${(cx+3).toFixed(1)}" y="${(cy+chh/2).toFixed(1)}" dominant-baseline="middle" font-size="5" font-family="system-ui,sans-serif" fill="#00000066">Kanal</text>`;
       }
-    }
+    });
 
-    // Verdrahtungskanäle + TE-Blöcke (physikalische Platzierung)
-    const z = zones[zs.key];
-    if(z && z.rows) {
-      const xOff  = zs.xNutz || 0;
-      const nutzW = zs.svgW - xOff;
-      const zBot  = y0 + zs.svgH;   // untere Zonengrenze in SVG-px
-
-      // Verdrahtungskanäle (grau)
-      z.kanaele.forEach(ch_y => {
-        const cy  = y0 + ch_y * sc;
-        const chH = Math.min(40 * sc, zBot - cy);
-        if(cy >= zBot || chH <= 0) return;
-        svg += `<rect x="${xOff.toFixed(1)}" y="${cy.toFixed(1)}" width="${nutzW.toFixed(1)}" height="${chH.toFixed(1)}" fill="#FFFFFF0C" stroke="none"/>`;
-        if(chH > 8) {
-          svg += `<text x="${(xOff + 3).toFixed(1)}" y="${(cy + chH/2).toFixed(1)}" dominant-baseline="middle" font-size="5" font-family="system-ui,sans-serif" fill="#88888888">Kanal</text>`;
+    z.rows.forEach(row => {
+      row.blocks.forEach(blk => {
+        const bx = (row.x_mm + blk.col*TE_MM) * sc;
+        const bw = Math.max(1, blk.te*TE_MM*sc - 1);
+        const bh = Math.max(2, blk.h_mm*sc);
+        const by0 = row.mode === 'klemm'
+          ? (row.y_mm + (row.h_mm - blk.h_mm)/2) * sc   // Klemmenzeile: Gerät vertikal zentriert
+          : (row.y_mm + row.klemmraum) * sc;            // Leist./Steuer./Evert: nach Klemmraum oben
+        svg += `<rect x="${bx.toFixed(1)}" y="${by0.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.3" stroke-width="0.5" rx="1"><title>${blk.title}</title></rect>`;
+        if(bw > 28 && bh > 8) {
+          const fs = Math.min(8, bh*0.45);
+          svg += `<text x="${(bx+bw/2).toFixed(1)}" y="${(by0+bh/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fs.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${blk.lbl}</text>`;
         }
       });
+    });
 
-      // Gerätereihen
-      z.rows.forEach(row => {
-        const ry   = y0 + row.y_mm * sc;
-        const rh   = row.h_mm * sc;
-        const kPx  = klemmraum * sc;
-        row.blocks.forEach(blk => {
-          const bx  = xOff + blk.col * TE_MM * sc;
-          const bw  = Math.max(1, blk.te * TE_MM * sc - 1);
-          const bh  = blk.h_mm * sc;
-          const by  = ry + kPx;              // Gerät startet nach Klemmraum oben
-          if(by + bh > zBot + 1) return;     // außerhalb Zone → nicht zeichnen
-          svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(2,bh).toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.25" stroke-width="0.5" rx="1"><title>${blk.title}</title></rect>`;
-          if(bw > 28 && bh > 8) {
-            const fs = Math.min(8, bh * 0.45);
-            svg += `<text x="${(bx+bw/2).toFixed(1)}" y="${(by+bh/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fs.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.75" pointer-events="none">${blk.lbl}</text>`;
-          }
-        });
-        // Reihe überläuft Zone → roter Rahmen
-        if(row.over) {
-          svg += `<rect x="${xOff.toFixed(1)}" y="${ry.toFixed(1)}" width="${nutzW.toFixed(1)}" height="${rh.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="0.8" rx="1"/>`;
-        }
-      });
-
-      // Zone insgesamt überfüllt
-      if(z.overflow) {
-        svg += `<rect x="0" y="${y0.toFixed(1)}" width="${zs.svgW}" height="${zs.svgH.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="2" rx="1"/>`;
-        svg += `<text x="${(zs.svgW-8).toFixed(1)}" y="${(y0+13).toFixed(1)}" font-size="14" font-family="system-ui,sans-serif" fill="#E04444" font-weight="bold">!</text>`;
-      }
+    // Nicht mehr platzierbare Geräte → Overflow-Hinweis an letzter Reihe
+    if(z.overflow && z.rows.length) {
+      const last = z.rows[z.rows.length-1];
+      const rx = last.x_mm*sc, ry = last.y_mm*sc, rw = last.w_mm*sc, rh2 = last.h_mm*sc;
+      svg += `<rect x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" width="${rw.toFixed(1)}" height="${rh2.toFixed(1)}" fill="none" stroke="#E04444" stroke-width="1.4" rx="1"/>`;
+      svg += `<text x="${(rx+rw-10).toFixed(1)}" y="${(ry+13).toFixed(1)}" font-size="13" font-family="system-ui,sans-serif" fill="#E04444" font-weight="bold">!</text>`;
     }
   });
 
@@ -871,7 +1069,7 @@ function aggregateStueckliste() {
     });
   });
   // Sort by zone then hersteller
-  const order = {leistung:0, steuerung:1, klemmen:2, sonstige:3};
+  const order = {evert:0, leistung:1, steuerung:2, klemmen:3, sonstige:4};
   return Object.values(agg).sort((a,b) => (order[a.zone]||9) - (order[b.zone]||9));
 }
 
@@ -883,7 +1081,7 @@ function buildStueckliste() {
     return;
   }
 
-  const zBadge = {leistung:'<span class="zone-badge zone-l">L</span>', steuerung:'<span class="zone-badge zone-s">S</span>', klemmen:'<span class="zone-badge zone-k">K</span>'};
+  const zBadge = {evert:'<span class="zone-badge zone-e">E</span>', leistung:'<span class="zone-badge zone-l">L</span>', steuerung:'<span class="zone-badge zone-s">S</span>', klemmen:'<span class="zone-badge zone-k">K</span>'};
   let total = 0;
   let rows = liste.map((e, i) => {
     const summe = e.menge * e.preis_eur;
@@ -892,7 +1090,7 @@ function buildStueckliste() {
     return `<tr>
       <td>${i+1}</td>
       <td>${badge} ${e.bezeichnung}</td>
-      <td>${e.hersteller.substring(0,6)}</td>
+      <td class="td-hst" title="${e.hersteller}">${e.hersteller}</td>
       <td class="td-num">${e.menge}</td>
       <td class="td-num">${e.preis_eur.toFixed(2)}</td>
       <td class="td-num">${summe.toFixed(2)}</td>
