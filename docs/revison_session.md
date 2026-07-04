@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 4. Juli 2026 – Session 22 (Modul 4: granulare Zonen, Direktbauteile, Bauteil-Indizierung)
+**Stand:** 4. Juli 2026 – Session 23 (Modul 4: Layout-Neuordnung, Schranksicht skaliert wie Modul 3)
 
 ---
 
@@ -299,6 +299,7 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 7. ~~Modul 4 – Grundstruktur~~ ✅ abgeschlossen Session 20
 8. ~~Modul 4 – Physikalische Reihenplatzierung (Klemmraum + Verdrahtungskanal)~~ ✅ abgeschlossen Session 21
 9. ~~Modul 4 – Granulare Zonen (8 statt 3), Direktbauteile, Bauteil-Indizierung~~ ✅ abgeschlossen Session 22
+9a. ~~Modul 4 – Layout-Neuordnung (Schranksicht dominant, skaliert wie M3, Eingabeleiste + Füllstand-Streifen volle Breite)~~ ✅ abgeschlossen Session 23
 10. **Modul 4 – Typische Installationsaufbauten in Baugruppen berücksichtigen:**
     MSS und zugehöriger Schütz werden üblicherweise untereinander montiert (kurze Kabelwege).
     Konzept: Baugruppen-Definition steuert Anordnung (z. B. Feld „anordnung: untereinander|nebeneinander"),

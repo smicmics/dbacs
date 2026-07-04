@@ -55,10 +55,47 @@ header a:hover{color:var(--tx2);}
 #proj-asp    {width:185px;}
 #proj-docnr  {width:200px;color:var(--tx2);}
 
+/* ── Eingabeleiste (volle Breite, unter dem Header) ── */
+.eingabeleiste{
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 22px;
+  background:var(--bg2);border-bottom:1px solid var(--bord);
+  padding:10px 18px;flex-shrink:0;
+}
+.eb-field{display:flex;flex-direction:column;gap:3px;}
+.eb-field label{
+  font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
+  display:flex;align-items:baseline;gap:6px;white-space:nowrap;
+}
+.eb-field label .var{font-family:var(--mono);font-size:8px;color:var(--tx3);text-transform:none;letter-spacing:0;}
+.eb-field select,.eb-field input{
+  background:var(--bg);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:12px;padding:4px 7px;height:28px;
+}
+.eb-field input[disabled]{color:var(--tx2);cursor:not-allowed;}
+.eb-mb-row{display:flex;align-items:center;gap:5px;}
+.eb-mb-row input{width:62px;text-align:right;}
+.eb-mb-row span{color:var(--tx3);font-size:11px;}
+.eb-sep{width:1px;align-self:stretch;background:var(--bord);}
+.eb-group{display:flex;align-items:flex-end;gap:8px;}
+.eb-group .gewerk-tabs{margin-bottom:0;}
+.eb-hint{flex-basis:100%;font-size:10px;color:var(--tx3);}
+
+/* ── Füllstand-Streifen (volle Breite, kompakt) ── */
+.fuellstand-strip{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;
+  background:var(--bg2);border-bottom:1px solid var(--bord);
+  padding:8px 18px;flex-shrink:0;
+}
+.fs-mini{display:flex;flex-direction:column;gap:2px;flex:1 1 100px;min-width:90px;max-width:150px;}
+.fs-mini-label{font-size:9.5px;color:var(--tx2);display:flex;justify-content:space-between;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fs-mini-bar-bg{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;border:1px solid var(--bord);}
+.fs-mini-bar{height:100%;border-radius:3px;transition:width .3s;}
+.fs-kanal-mini{font-size:9.5px;color:var(--tx3);white-space:nowrap;margin-left:auto;padding-left:14px;border-left:1px solid var(--bord);}
+
 /* ── 3-Spalten Layout ── */
 .layout-3col{
   display:grid;
-  grid-template-columns:340px 1fr 380px;
+  grid-template-columns:260px 1fr 340px;
   flex:1;min-height:0;
 }
 
@@ -74,12 +111,13 @@ header a:hover{color:var(--tx2);}
 
 /* ── Mittleres Panel ── */
 .panel-mid{
-  padding:16px 18px;overflow-y:auto;background:var(--bg);
+  padding:16px 18px;background:var(--bg);
   border-right:1px solid var(--bord);height:100%;
+  display:flex;flex-direction:column;
 }
 .panel-mid h2{
   font-size:10px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.06em;color:var(--tx3);margin-bottom:10px;
+  letter-spacing:.06em;color:var(--tx3);margin-bottom:10px;flex-shrink:0;
 }
 
 /* ── Rechtes Panel ── */
@@ -174,12 +212,12 @@ legend{
 /* ── SVG Container ── */
 #svg-wrap{
   border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
-  margin-top:12px;min-height:200px;overflow:hidden;
-}
-#svg-wrap svg{width:100%;display:block;}
-.no-data-msg{
+  min-height:200px;overflow:hidden;flex:1;
   display:flex;align-items:center;justify-content:center;
-  height:200px;color:var(--tx3);font-size:12px;text-align:center;padding:20px;
+}
+#svg-wrap svg{display:block;}
+.no-data-msg{
+  color:var(--tx3);font-size:12px;text-align:center;padding:20px;
 }
 
 /* ── Stückliste ── */
@@ -264,7 +302,9 @@ legend{
   .gewerk-tabs{display:none;}
   .bg-add-row{display:none;}
   .bel-rm{display:none;}
-  .layout-3col{grid-template-columns:250px 1fr 300px;}
+  .eingabeleiste{display:none;}
+  .fuellstand-strip{display:none;}
+  .layout-3col{grid-template-columns:200px 1fr 300px;}
 }
 </style>
 </head>
@@ -298,44 +338,34 @@ legend{
   </div>
 </header>
 
-<div class="layout-3col">
+<!-- ── Eingabeleiste (volle Breite) ── -->
+<div class="eingabeleiste">
+  <div class="eb-field">
+    <label>Schranktyp<span class="var">schrank_typ</span></label>
+    <select id="schrank_typ" onchange="onTypChange()">
+      <option value="">— bitte wählen —</option>
+      <option value="wandschrank">Wandschrank</option>
+      <option value="standschrank">Standschrank</option>
+    </select>
+  </div>
+  <div class="eb-field">
+    <label>Montagebereich B×H (mm)<span class="var" id="var_b">b/h_mplatte_mbereich_mm</span></label>
+    <div class="eb-mb-row">
+      <input id="b_mplatte_mbereich_mm" type="number" value="0" disabled>
+      <span>×</span>
+      <input id="h_mplatte_mbereich_mm" type="number" value="0" disabled>
+    </div>
+  </div>
+  <div class="eb-field">
+    <label>Klemmraum je Seite (mm)</label>
+    <input id="klemmraum_mm" type="number" value="20" min="5" max="50" style="width:70px" oninput="onKlemmraumChange()">
+  </div>
 
-  <!-- ── Linkes Panel ── -->
-  <div class="panel-in">
-    <h2>Eingaben</h2>
+  <div class="eb-sep"></div>
 
-    <fieldset>
-      <legend>Schrank-Typ &amp; Montagebereich</legend>
-      <div class="field">
-        <div class="lbl">Schranktyp<span class="var">schrank_typ</span></div>
-        <select id="schrank_typ" onchange="onTypChange()">
-          <option value="">— bitte wählen —</option>
-          <option value="wandschrank">Wandschrank</option>
-          <option value="standschrank">Standschrank</option>
-        </select>
-      </div>
-      <div class="field">
-        <div class="lbl">Montagebereich B (mm)<span class="var" id="var_b">b_mplatte_mbereich_mm</span></div>
-        <input id="b_mplatte_mbereich_mm" type="number" value="0" disabled>
-      </div>
-      <div class="field">
-        <div class="lbl">Montagebereich H (mm)<span class="var" id="var_h">h_mplatte_mbereich_mm</span></div>
-        <input id="h_mplatte_mbereich_mm" type="number" value="0" disabled>
-      </div>
-      <p class="hint-text" id="hint_quelle">Bitte Schrank-Typ wählen</p>
-    </fieldset>
-
-    <fieldset>
-      <legend>Reihen-Parameter</legend>
-      <div class="reihe-row">
-        <label>Klemmraum je Seite (mm)</label>
-        <input id="klemmraum_mm" type="number" value="20" min="5" max="50" oninput="onKlemmraumChange()">
-      </div>
-      <p class="hint-text">Freiraum oben &amp; unten je Bauteil für el. Anschlüsse (Rittal-Empfehlung: 20 mm). Verdrahtungskanal zwischen Reihen: 40 mm (fest).</p>
-    </fieldset>
-
-    <fieldset>
-      <legend>Gewerk</legend>
+  <div class="eb-group">
+    <div class="eb-field">
+      <label>Gewerk</label>
       <div class="gewerk-tabs">
         <button class="gewerk-tab active" id="tab-rlt" data-gewerk="rlt" onclick="setGewerk('rlt')">RLT</button>
         <button class="gewerk-tab" id="tab-hkl" data-gewerk="hkl" onclick="setGewerk('hkl')">HKL</button>
@@ -343,6 +373,9 @@ legend{
         <button class="gewerk-tab" id="tab-bel" data-gewerk="bel" onclick="setGewerk('bel')">Beleuchtung</button>
         <button class="gewerk-tab" id="tab-elek" data-gewerk="elek" onclick="setGewerk('elek')">Elektro</button>
       </div>
+    </div>
+    <div class="eb-field" style="min-width:260px;">
+      <label>Baugruppe</label>
       <div class="bg-add-row">
         <select id="bg_auswahl" style="flex:1">
           <option value="">Laden …</option>
@@ -350,112 +383,75 @@ legend{
         <input id="bg_menge" type="number" value="1" min="1" max="99">
         <button class="btn-add" onclick="addBaugruppe()">+</button>
       </div>
-    </fieldset>
+    </div>
+  </div>
 
-    <fieldset>
-      <legend>Einspeisung, Verteilung &amp; Direktbauteile</legend>
-      <div class="bg-add-row">
-        <select id="einzel_auswahl" style="flex:1">
-          <option value="">Laden …</option>
-        </select>
-        <input id="einzel_menge" type="number" value="1" min="1" max="99">
-        <button class="btn-add" onclick="addEinzelbauteil()">+</button>
-      </div>
-      <p class="hint-text">Bauteile ohne Gewerk-Bezug (Einspeiseklemmen, ÜSS, Sicherungen/Lasttrennschalter, DDC-Module, Netzteile) – einzeln statt als Baugruppe.</p>
-    </fieldset>
+  <div class="eb-sep"></div>
 
-    <fieldset>
-      <legend>Belegung</legend>
-      <div id="belegung-liste">
-        <p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>
-      </div>
-    </fieldset>
+  <div class="eb-field" style="min-width:300px;flex:1;">
+    <label>Einspeisung, Verteilung &amp; Direktbauteile</label>
+    <div class="bg-add-row">
+      <select id="einzel_auswahl" style="flex:1">
+        <option value="">Laden …</option>
+      </select>
+      <input id="einzel_menge" type="number" value="1" min="1" max="99">
+      <button class="btn-add" onclick="addEinzelbauteil()">+</button>
+    </div>
+  </div>
+
+  <p class="eb-hint" id="hint_quelle">Bitte Schrank-Typ wählen</p>
+</div>
+
+<!-- ── Füllstand-Streifen (volle Breite, kompakt) ── -->
+<div class="fuellstand-strip" id="fuellstand-wrap">
+  <div class="fs-mini" id="fs-klemme-mini" title="Einspeiseklemmen">
+    <div class="fs-mini-label"><span style="color:#D4A84B">Einsp.-Kl.</span><span id="fs-klemme-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-klemme-bar" class="fs-mini-bar" style="width:0%;background:#D4A84B"></div></div>
+  </div>
+  <div class="fs-mini" id="fs-uss-mini" title="Überspannungsschutz & Vorsicherung">
+    <div class="fs-mini-label"><span style="color:#D4A84B">ÜSS</span><span id="fs-uss-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-uss-bar" class="fs-mini-bar" style="width:0%;background:#D4A84B"></div></div>
+  </div>
+  <div class="fs-mini" id="fs-evert-mini" title="Energieverteilung">
+    <div class="fs-mini-label"><span style="color:#C8720E">Energievert.</span><span id="fs-evert-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-evert-bar" class="fs-mini-bar" style="width:0%;background:#C8720E"></div></div>
+  </div>
+  <div class="fs-mini" id="fs-leist-mini" title="Leistungsbaugruppe">
+    <div class="fs-mini-label"><span style="color:#C84E2E">Leistung</span><span id="fs-leist-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-leist-bar" class="fs-mini-bar" style="width:0%;background:#C84E2E"></div></div>
+  </div>
+  <div class="fs-mini" id="fs-steuer-mini" title="Steuerbaugruppe">
+    <div class="fs-mini-label"><span style="color:#4BBECA">Steuerung</span><span id="fs-steuer-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-steuer-bar" class="fs-mini-bar" style="width:0%;background:#4BBECA"></div></div>
+  </div>
+  <div class="fs-mini" id="fs-klemml-mini" title="Abg.-Kl. Leistung">
+    <div class="fs-mini-label"><span style="color:#2DBD8E">Kl. Leist.</span><span id="fs-klemml-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-klemml-bar" class="fs-mini-bar" style="width:0%;background:#2DBD8E"></div></div>
+  </div>
+  <div class="fs-mini" id="fs-klemmf-mini" title="Abg.-Kl. Feldgeräte">
+    <div class="fs-mini-label"><span style="color:#9A94E8">Kl. Feld.</span><span id="fs-klemmf-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-klemmf-bar" class="fs-mini-bar" style="width:0%;background:#9A94E8"></div></div>
+  </div>
+  <div class="fs-mini" id="fs-klemms-mini" title="Abg.-Kl. Sensoren">
+    <div class="fs-mini-label"><span style="color:#E8C448">Kl. Sens.</span><span id="fs-klemms-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-klemms-bar" class="fs-mini-bar" style="width:0%;background:#E8C448"></div></div>
+  </div>
+  <span class="fs-kanal-mini" id="fs-kanal-info">Kanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)</span>
+</div>
+
+<div class="layout-3col">
+
+  <!-- ── Linkes Panel ── -->
+  <div class="panel-in">
+    <h2>Belegung</h2>
+    <div id="belegung-liste">
+      <p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>
+    </div>
   </div>
 
   <!-- ── Mittleres Panel ── -->
   <div class="panel-mid">
-    <h2>Schranksicht · Befüllungsgrad</h2>
-
-    <!-- Füllstand-Balken -->
-    <div id="fuellstand-wrap">
-      <div class="fuell-group-title">Einspeisung &amp; Verteilung</div>
-      <div class="fuell-zone">
-        <div class="fuell-label">
-          <span style="color:#D4A84B">Einspeiseklemmen</span>
-          <span id="fs-klemme-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
-        </div>
-        <div class="fuell-bar-bg">
-          <div id="fs-klemme-bar" class="fuell-bar" style="width:0%;background:#D4A84B"></div>
-        </div>
-      </div>
-      <div class="fuell-zone">
-        <div class="fuell-label">
-          <span style="color:#D4A84B">Überspannungsschutz &amp; Vorsicherung</span>
-          <span id="fs-uss-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
-        </div>
-        <div class="fuell-bar-bg">
-          <div id="fs-uss-bar" class="fuell-bar" style="width:0%;background:#D4A84B"></div>
-        </div>
-      </div>
-      <div class="fuell-zone">
-        <div class="fuell-label">
-          <span style="color:#C8720E">Energieverteilung</span>
-          <span id="fs-evert-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
-        </div>
-        <div class="fuell-bar-bg">
-          <div id="fs-evert-bar" class="fuell-bar" style="width:0%;background:#C8720E"></div>
-        </div>
-      </div>
-
-      <div class="fuell-group-title">Feldgeräte-Baugruppen</div>
-      <div class="fuell-zone">
-        <div class="fuell-label">
-          <span style="color:#C84E2E">Leistungsbaugruppe</span>
-          <span id="fs-leist-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
-        </div>
-        <div class="fuell-bar-bg">
-          <div id="fs-leist-bar" class="fuell-bar" style="width:0%;background:#C84E2E"></div>
-        </div>
-      </div>
-      <div class="fuell-zone">
-        <div class="fuell-label">
-          <span style="color:#4BBECA">Steuerbaugruppe</span>
-          <span id="fs-steuer-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
-        </div>
-        <div class="fuell-bar-bg">
-          <div id="fs-steuer-bar" class="fuell-bar" style="width:0%;background:#4BBECA"></div>
-        </div>
-      </div>
-      <div class="fuell-zone">
-        <div class="fuell-label">
-          <span style="color:#2DBD8E">Abg.-Kl. Leistung</span>
-          <span id="fs-klemml-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
-        </div>
-        <div class="fuell-bar-bg">
-          <div id="fs-klemml-bar" class="fuell-bar" style="width:0%;background:#2DBD8E"></div>
-        </div>
-      </div>
-      <div class="fuell-zone">
-        <div class="fuell-label">
-          <span style="color:#9A94E8">Abg.-Kl. Feldgeräte</span>
-          <span id="fs-klemmf-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
-        </div>
-        <div class="fuell-bar-bg">
-          <div id="fs-klemmf-bar" class="fuell-bar" style="width:0%;background:#9A94E8"></div>
-        </div>
-      </div>
-      <div class="fuell-zone">
-        <div class="fuell-label">
-          <span style="color:#E8C448">Abg.-Kl. Sensoren</span>
-          <span id="fs-klemms-txt" style="font-family:var(--mono);font-size:10px;color:var(--tx3)">– / – mm</span>
-        </div>
-        <div class="fuell-bar-bg">
-          <div id="fs-klemms-bar" class="fuell-bar" style="width:0%;background:#E8C448"></div>
-        </div>
-      </div>
-
-      <div class="fuell-kanal-info" id="fs-kanal-info">Verdrahtungskanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)</div>
-    </div>
+    <h2>Schranksicht</h2>
 
     <!-- SVG Schranksicht -->
     <div id="svg-wrap">
@@ -616,8 +612,7 @@ function loadMontagebereich(typ) {
   const hint = document.getElementById('hint_quelle');
   const sfx  = typ === 'wandschrank' ? 'wandschrank_mm' : 'standschrank_mm';
   const pfx  = typ === 'wandschrank' ? 'm01' : 'm02';
-  document.getElementById('var_b').textContent = typ ? `b_mplatte_mbereich_${sfx}` : 'b_mplatte_mbereich_mm';
-  document.getElementById('var_h').textContent = typ ? `h_mplatte_mbereich_${sfx}` : 'h_mplatte_mbereich_mm';
+  document.getElementById('var_b').textContent = typ ? `b/h_mplatte_mbereich_${sfx}` : 'b/h_mplatte_mbereich_mm';
   if(!typ) {
     _v('b_mplatte_mbereich_mm', 0);
     _v('h_mplatte_mbereich_mm', 0);
@@ -1113,7 +1108,7 @@ function kurzLabel(eb) {
   return m[eb.bauteil_typ] || eb.bezeichnung.substring(0, 4);
 }
 
-// ── Füllstand-Balken ─────────────────────────────────────────────────
+// ── Füllstand-Streifen (kompakt) ──────────────────────────────────────
 function buildFuellstand(zones, zp) {
   const map   = {klemm_e:'klemme', uss:'uss', evert:'evert', leist:'leist', steuer:'steuer', klemm_l:'klemml', klemm_f:'klemmf', klemm_s:'klemms'};
   const color = {klemm_e:'#D4A84B', uss:'#D4A84B', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA', klemm_l:'#2DBD8E', klemm_f:'#9A94E8', klemm_s:'#E8C448'};
@@ -1122,20 +1117,22 @@ function buildFuellstand(zones, zp) {
     const used  = z ? z.mm_used  : 0;
     const avail = z ? z.mm_total : 0;
     const pct   = avail > 0 ? (used / avail) * 100 : 0;
-    const bar = document.getElementById(`fs-${id}-bar`);
-    const txt = document.getElementById(`fs-${id}-txt`);
+    const bar  = document.getElementById(`fs-${id}-bar`);
+    const txt  = document.getElementById(`fs-${id}-txt`);
+    const mini = document.getElementById(`fs-${id}-mini`);
     const teStr = z && z.te_belegt > 0 ? `${z.te_belegt} TE · ` : '';
-    txt.textContent = avail > 0 ? `${teStr}${Math.round(used)} / ${Math.round(avail)} mm` : '– / – mm';
+    txt.textContent = avail > 0 ? Math.round(pct) + '%' : '–';
+    if(mini) mini.title = `${ZONE_LABELS[zone]}: ${avail > 0 ? `${teStr}${Math.round(used)} / ${Math.round(avail)} mm` : 'keine Daten'}`;
     bar.style.width = Math.min(100, pct) + '%';
     bar.style.background = pct > 100 ? '#E04444' : (pct > 80 ? '#D4A84B' : color[zone]);
   });
 
   const info = document.getElementById('fs-kanal-info');
-  if(!zones || !zp) { info.textContent = 'Verdrahtungskanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)'; return; }
+  if(!zones || !zp) { info.textContent = 'Kanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)'; return; }
   const nKanalStruktur = zp.useEvKanal ? 4 : 3;
   const mmStruktur = nKanalStruktur * zp.h_kanal_h;
   const mmDynamisch = ALLE_ZONEN.reduce((s, zn) => s + (zones[zn].channels || []).reduce((a,c) => a + c.h_mm, 0), 0);
-  info.textContent = `Verdrahtungskanäle: ${mmStruktur} mm (Struktur) + ${mmDynamisch} mm (Baugruppen-Reihen)`;
+  info.textContent = `Kanäle: ${mmStruktur} mm (Struktur) + ${mmDynamisch} mm (Baugruppen-Reihen)`;
 }
 
 // ── SVG Schranksicht (Zonenraster aus Modul 3 + physikalische Platzierung) ──
@@ -1151,13 +1148,18 @@ function buildSVG(zp, layout, zones) {
   msgEl.style.display = 'none';
   svgEl.style.display = '';
 
-  const SW  = 480;
-  const sc  = SW / zp.b;
+  // Passgenau skalieren wie Modul 3 (buildZoneSVG: sc = Math.min(maxW/b, maxH/h)) –
+  // die Schranksicht ist so immer vollständig sichtbar, ohne Innen-Scroll.
+  const wrapEl = document.getElementById('svg-wrap');
   const PAD = 12;
+  const availW = Math.max(120, wrapEl.clientWidth  - 2*PAD - 4);
+  const availH = Math.max(120, wrapEl.clientHeight - 2*PAD - 4);
+  const sc = Math.min(availW / zp.b, availH / layout.totalH);
+  const SW = zp.b * sc;
   const totalHpx = layout.totalH * sc;
 
-  let svg = `<svg viewBox="${-PAD} ${-PAD} ${SW + PAD*2} ${(totalHpx + PAD*2).toFixed(1)}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">`;
-  svg += `<rect x="0" y="0" width="${SW}" height="${totalHpx.toFixed(1)}" fill="#FDFCF8" rx="2"/>`;
+  let svg = `<svg viewBox="${-PAD} ${-PAD} ${(SW + PAD*2).toFixed(1)} ${(totalHpx + PAD*2).toFixed(1)}" xmlns="http://www.w3.org/2000/svg" width="${(SW+PAD*2).toFixed(0)}" height="${(totalHpx+PAD*2).toFixed(0)}">`;
+  svg += `<rect x="0" y="0" width="${SW.toFixed(1)}" height="${totalHpx.toFixed(1)}" fill="#FDFCF8" rx="2"/>`;
 
   // Zonenraster – exakt wie in Modul 3 (gleiche Geometrie, gleicher Maßstab)
   layout.svgRows.forEach(row => {
@@ -1352,6 +1354,13 @@ function printErgebnis() {
 
 // ── Start ────────────────────────────────────────────────────────────
 loadData();
+
+// Bei Fenstergrößenänderung neu skalieren (Schranksicht passt sich an)
+let _resizeT = null;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeT);
+  _resizeT = setTimeout(() => { if(EINZELBAUTEILE_DB.length) calculate(); }, 150);
+});
 </script>
 </body>
 </html>
