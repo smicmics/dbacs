@@ -599,6 +599,25 @@ W-Series + die zuvor recherchierten Phoenix-Einzelstücke).
 - Geprüft im Browser: Einspeisung (5 Klemmen L1/L2/L3/N/PE) und eine
   bestehende Baugruppe mit den neu gemappten Abgangsklemmen platzieren sich
   beide korrekt ohne Overflow.
+- **Nutzer-Gegenprüfung (Session 27c):** Nutzer hat alle 41 Klemmen gegen die
+  Phoenix-Contact-Herstellerseite geprüft und zwei Fehler korrigiert: (1)
+  Typbezeichnung enthielt noch nicht den Farbcode-Suffix (z. B. „UT 2,5 BN"
+  statt nur „UT 2,5" mit Farbe nur als Klartext-Anhängsel) – jetzt in
+  `bezeichnung` ergänzt; (2) mehrere Höhenangaben waren falsch, vermutlich
+  Höhe/Tiefe aus unterschiedlich sortierten Herstellerangaben (B×H×T vs.
+  B×T×H) vertauscht – korrigiert. Beide Korrekturen direkt in Excel
+  eingetragen, per `xlsx_to_json.py` neu eingelesen, im Browser erneut
+  verifiziert (auch die jetzt größeren PT 10/PT 16 N passen weiterhin ohne
+  Overflow in die 95-mm-Klemmenzone).
+- **`geprueft`-Feld für `einzelbauteile` ergänzt** (analog zum bereits
+  bestehenden Feld bei `baugruppen`): Nutzer hatte mangels Tag von Hand
+  einzelne Zellen grün eingefärbt, um selbst geprüfte Werte zu markieren –
+  das ist für `xlsx_to_json.py` unsichtbar (liest nur Zellwerte, keine
+  Formatierung) und geht beim nächsten Neu-Einlesen verloren. Neue Spalte
+  `geprueft` (Boolean, Default `false` für alle bestehenden Zeilen) im
+  `einzelbauteile`-Sheet, `export_einzelbauteile()` gibt sie jetzt mit aus.
+  Bewusst zeilenbasiert (nicht feldbasiert wie die informelle Grünfärbung) –
+  gleiche Granularität wie bei `baugruppen`, kein Sonderfall nötig.
 
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen

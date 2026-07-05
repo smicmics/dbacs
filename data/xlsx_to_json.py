@@ -338,6 +338,7 @@ def export_einzelbauteile(wb):
             entry['montage_minuten'] = float(rec['montage_minuten'])
         if rec.get('preis_gesamt_eur') is not None:
             entry['preis_gesamt_eur'] = float(rec['preis_gesamt_eur'])
+        entry['geprueft'] = bool(rec.get('geprueft'))
         rows.append(entry)
 
     with open(JSON_FILE, 'w', encoding='utf-8') as f:

@@ -8,7 +8,8 @@
     "te_breite": 2,
     "h_mm": 70.0,
     "zone": "leist",
-    "preis_eur": 19.5
+    "preis_eur": 19.5,
+    "geprueft": false
   },
   {
     "artikel_nr": "3RT2015-1BB41",
@@ -19,7 +20,8 @@
     "te_breite": 2,
     "h_mm": 70.0,
     "zone": "leist",
-    "preis_eur": 22.0
+    "preis_eur": 22.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "3RT2016-1BB41",
@@ -30,7 +32,8 @@
     "te_breite": 2,
     "h_mm": 70.0,
     "zone": "leist",
-    "preis_eur": 24.5
+    "preis_eur": 24.5,
+    "geprueft": false
   },
   {
     "artikel_nr": "3RT2023-1BB40",
@@ -41,7 +44,8 @@
     "te_breite": 3,
     "h_mm": 80.0,
     "zone": "leist",
-    "preis_eur": 32.0
+    "preis_eur": 32.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "3RT2025-1BB40",
@@ -52,7 +56,8 @@
     "te_breite": 3,
     "h_mm": 80.0,
     "zone": "leist",
-    "preis_eur": 38.0
+    "preis_eur": 38.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "3RV2011-1AA10",
@@ -63,7 +68,8 @@
     "te_breite": 3,
     "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 35.0
+    "preis_eur": 35.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "3RV2011-1CA10",
@@ -74,7 +80,8 @@
     "te_breite": 3,
     "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 35.0
+    "preis_eur": 35.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "3RV2011-1EA10",
@@ -85,7 +92,8 @@
     "te_breite": 3,
     "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 35.0
+    "preis_eur": 35.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "3RV2011-1JA10",
@@ -96,7 +104,8 @@
     "te_breite": 3,
     "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 37.0
+    "preis_eur": 37.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "5SL6106-7",
@@ -107,7 +116,8 @@
     "te_breite": 1,
     "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 8.5
+    "preis_eur": 8.5,
+    "geprueft": false
   },
   {
     "artikel_nr": "5SL6110-7",
@@ -118,7 +128,8 @@
     "te_breite": 1,
     "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 8.5
+    "preis_eur": 8.5,
+    "geprueft": false
   },
   {
     "artikel_nr": "5SL6116-7",
@@ -129,7 +140,8 @@
     "te_breite": 1,
     "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 8.8
+    "preis_eur": 8.8,
+    "geprueft": false
   },
   {
     "artikel_nr": "5SL6206-7",
@@ -140,7 +152,8 @@
     "te_breite": 2,
     "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 16.5
+    "preis_eur": 16.5,
+    "geprueft": false
   },
   {
     "artikel_nr": "5SL6210-7",
@@ -151,7 +164,8 @@
     "te_breite": 2,
     "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 17.0
+    "preis_eur": 17.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "5SL6216-7",
@@ -162,7 +176,8 @@
     "te_breite": 2,
     "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 17.5
+    "preis_eur": 17.5,
+    "geprueft": false
   },
   {
     "artikel_nr": "1864135",
@@ -173,7 +188,8 @@
     "te_breite": 1,
     "h_mm": 75.0,
     "zone": "steuer",
-    "preis_eur": 14.5
+    "preis_eur": 14.5,
+    "geprueft": false
   },
   {
     "artikel_nr": "2866690",
@@ -185,7 +201,8 @@
     "h_mm": 130.0,
     "zone": "steuer",
     "kategorie": "Netzversorgung/Transformatoren",
-    "preis_eur": 145.0
+    "preis_eur": 145.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "2866752",
@@ -197,7 +214,8 @@
     "h_mm": 130.0,
     "zone": "steuer",
     "kategorie": "Netzversorgung/Transformatoren",
-    "preis_eur": 195.0
+    "preis_eur": 195.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "2866763",
@@ -209,7 +227,8 @@
     "h_mm": 130.0,
     "zone": "steuer",
     "kategorie": "Netzversorgung/Transformatoren",
-    "preis_eur": 280.0
+    "preis_eur": 280.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "PXA30-W2",
@@ -222,7 +241,8 @@
     "zone": "steuer",
     "kategorie": "DDC-Automationseinrichtung",
     "datenpunkt_anzahl": 24,
-    "preis_eur": 420.0
+    "preis_eur": 420.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "PXA30-N",
@@ -235,7 +255,8 @@
     "zone": "steuer",
     "kategorie": "DDC-Automationseinrichtung",
     "datenpunkt_anzahl": 8,
-    "preis_eur": 280.0
+    "preis_eur": 280.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "5SG7101",
@@ -247,7 +268,8 @@
     "h_mm": 75.0,
     "zone": "evert",
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
-    "preis_eur": 18.0
+    "preis_eur": 18.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "3NP1130-1CA20",
@@ -259,7 +281,8 @@
     "h_mm": 155.0,
     "zone": "evert",
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
-    "preis_eur": 95.0
+    "preis_eur": 95.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "3NP1143-1CA20",
@@ -271,7 +294,8 @@
     "h_mm": 175.0,
     "zone": "evert",
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
-    "preis_eur": 130.0
+    "preis_eur": 130.0,
+    "geprueft": false
   },
   {
     "artikel_nr": "952300",
@@ -282,7 +306,8 @@
     "te_breite": 3,
     "h_mm": 90.0,
     "zone": "uss",
-    "kategorie": "Überspannungsschutz & Vorsicherung"
+    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "geprueft": false
   },
   {
     "artikel_nr": "5SG1812",
@@ -293,7 +318,8 @@
     "te_breite": 3,
     "h_mm": 45.0,
     "zone": "uss",
-    "kategorie": "Überspannungsschutz & Vorsicherung"
+    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "geprueft": false
   },
   {
     "artikel_nr": "BXT BAS",
@@ -304,7 +330,8 @@
     "te_breite": 1,
     "h_mm": 90.0,
     "zone": "uss",
-    "kategorie": "Überspannungsschutz & Vorsicherung"
+    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "geprueft": false
   },
   {
     "artikel_nr": "BXT ML4 BE24",
@@ -315,7 +342,8 @@
     "te_breite": 1,
     "h_mm": 90.0,
     "zone": "uss",
-    "kategorie": "Überspannungsschutz & Vorsicherung"
+    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "geprueft": false
   },
   {
     "artikel_nr": "4AM5742-4TT10-0FA0",
@@ -326,7 +354,8 @@
     "te_breite": 8,
     "h_mm": 152.0,
     "zone": "leist",
-    "kategorie": "Netzversorgung/Transformatoren"
+    "kategorie": "Netzversorgung/Transformatoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "PXC100-D",
@@ -337,7 +366,8 @@
     "te_breite": 11,
     "h_mm": 74.0,
     "zone": "steuer",
-    "kategorie": "DDC-Automationseinrichtung"
+    "kategorie": "DDC-Automationseinrichtung",
+    "geprueft": false
   },
   {
     "artikel_nr": "110661",
@@ -347,7 +377,8 @@
     "b_mm": 22.5,
     "te_breite": 2,
     "h_mm": 61.3,
-    "zone": "steuer"
+    "zone": "steuer",
+    "geprueft": false
   },
   {
     "artikel_nr": "110730",
@@ -357,7 +388,8 @@
     "b_mm": 11.2,
     "te_breite": 1,
     "h_mm": 87.5,
-    "zone": "steuer"
+    "zone": "steuer",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044077",
@@ -368,7 +400,8 @@
     "te_breite": 1,
     "h_mm": 47.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3045088",
@@ -379,7 +412,8 @@
     "te_breite": 1,
     "h_mm": 47.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044076",
@@ -390,7 +424,8 @@
     "te_breite": 1,
     "h_mm": 47.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044089",
@@ -401,7 +436,8 @@
     "te_breite": 1,
     "h_mm": 47.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044092",
@@ -412,7 +448,8 @@
     "te_breite": 1,
     "h_mm": 47.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3045224",
@@ -423,7 +460,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3045143",
@@ -434,7 +472,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044102",
@@ -445,7 +484,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044115",
@@ -456,7 +496,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044128",
@@ -467,7 +508,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "1146197",
@@ -478,7 +520,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3045208",
@@ -489,7 +532,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044131",
@@ -500,7 +544,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044144",
@@ -511,7 +556,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044157",
@@ -522,7 +568,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "1272440",
@@ -533,7 +580,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3046320",
@@ -544,7 +592,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044160",
@@ -555,7 +604,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044188",
@@ -566,7 +616,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044173",
@@ -577,7 +628,8 @@
     "te_breite": 1,
     "h_mm": 47.7,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "1143432",
@@ -588,7 +640,8 @@
     "te_breite": 1,
     "h_mm": 55.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044197",
@@ -599,7 +652,8 @@
     "te_breite": 1,
     "h_mm": 55.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044199",
@@ -610,7 +664,8 @@
     "te_breite": 1,
     "h_mm": 55.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044209",
@@ -621,7 +676,8 @@
     "te_breite": 1,
     "h_mm": 55.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3044212",
@@ -632,7 +688,8 @@
     "te_breite": 1,
     "h_mm": 55.5,
     "zone": "klemm_e",
-    "kategorie": "Einspeiseklemmen"
+    "kategorie": "Einspeiseklemmen",
+    "geprueft": false
   },
   {
     "artikel_nr": "3209510",
@@ -643,7 +700,8 @@
     "te_breite": 1,
     "h_mm": 48.6,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3209523",
@@ -654,7 +712,8 @@
     "te_breite": 1,
     "h_mm": 48.6,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3209536",
@@ -665,7 +724,8 @@
     "te_breite": 1,
     "h_mm": 48.6,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3211757",
@@ -676,7 +736,8 @@
     "te_breite": 1,
     "h_mm": 56.0,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3211760",
@@ -687,7 +748,8 @@
     "te_breite": 1,
     "h_mm": 56.0,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3211766",
@@ -698,7 +760,8 @@
     "te_breite": 1,
     "h_mm": 56.0,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3211813",
@@ -709,7 +772,8 @@
     "te_breite": 1,
     "h_mm": 57.7,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3211819",
@@ -720,7 +784,8 @@
     "te_breite": 1,
     "h_mm": 57.7,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3211822",
@@ -731,7 +796,8 @@
     "te_breite": 1,
     "h_mm": 57.7,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3212120",
@@ -742,7 +808,8 @@
     "te_breite": 1,
     "h_mm": 67.7,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3212123",
@@ -753,7 +820,8 @@
     "te_breite": 1,
     "h_mm": 67.7,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3212131",
@@ -764,7 +832,8 @@
     "te_breite": 1,
     "h_mm": 67.7,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3212138",
@@ -775,7 +844,8 @@
     "te_breite": 1,
     "h_mm": 75.4,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3212142",
@@ -786,7 +856,8 @@
     "te_breite": 1,
     "h_mm": 75.4,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3212147",
@@ -797,7 +868,8 @@
     "te_breite": 1,
     "h_mm": 75.4,
     "zone": "klemm_l",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   },
   {
     "artikel_nr": "3210156",
@@ -808,6 +880,7 @@
     "te_breite": 1,
     "h_mm": 62.2,
     "zone": "klemm_f",
-    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren"
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
   }
 ]
