@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 5. Juli 2026 – Session 26 (Modul 4: Verdrahtungskanal-Fix, Zonentext-Vordergrund + Zeilenumbruch, Zonen-Legende + sichtbare Bauteil-Nummerierung, Zonenfarben-Konsolidierung Modul 3+4, Höhenprüfung Hutschienen-Zonen + Beschriftung schmaler Bauteile)
+**Stand:** 5. Juli 2026 – Session 27 (Modul 4: Bauteil-Datenbasis über Excel-Pipeline nachgezogen, Recherche + Befüllung 18 neuer Katalogeinträge)
 
 **Meilenstein:** Git-Tag `meilenstein-2026-07-04-modul4-design` (Sessions 22–24) + Git-Tag `meilenstein-2026-07-05-modul4-abgeschlossen` (Sessions 25–26, Modul 4 Design/Darstellung fertig, vor Beginn der Bauteile/Funktionsgruppen-Integration) – je vollständiges Backup (ZIP, Git-Bundle, Claude-Gedächtnis) unter `C:\Users\SMI\Backups\dbacs\`.
 
@@ -315,9 +315,15 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
     Kabelkanal, analog zur Klemmleisten-Umverteilung. Energieverteilung bleibt fix. Braucht eigene
     Abstimmung: Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg „Nebeneinander" (Breite) vs.
     „Übereinander" (Höhe).
-10. **Modul 4 – Grundlagenarbeit Bauteildaten/Baugruppen (als nächstes geplant):**
-    korrekte Maße + richtige Zonen-Zuordnung für alle Bauteile, damit sie exakt positioniert werden;
-    außerdem Baugruppen für die neuen Funktionsbereiche `schaltschrank`/`automation`/`netzwerk`/`kaelte`/`nutzungsspezifisch` anlegen (aktuell leer).
+9j. ~~Modul 4 – Bauteil-Datenbasis über Excel-Pipeline nachgezogen~~ ✅ abgeschlossen Session 27 – `einzelbauteile.json`/`baugruppen.json` liefen als einzige DBs bisher nicht über Excel; jetzt neue Sheets `einzelbauteile`/`baugruppen`/`baugruppen_bauteile` (Verknüpfungstabelle). Schema erweitert: `b_mm` (reale Breite) jetzt Hauptfeld statt `te_breite` (wird abgeleitet), `datenpunkt_typ`/`-anzahl`/`klemmen_zusatz` (Datenfelder für spätere DDC-Kapazitätslogik, noch unausgewertet), `funktionsbereiche`/`automationsfunktionen`/`geprueft` bei Baugruppen. 18 neue Katalogeinträge recherchiert (Klemmen Phoenix/Wago mit Querschnittsbereich, ÜSS-Vorsicherung D03/100A statt NH00, Dehn-Feinschutz, Siemens-Steuertrafos mit Spannungsangabe, Desigo PXC100-D, Metz Connect KRS-E06/KMA-F8 als LVB-Nachfolger des alten BTR-Relais). Dabei Bug gefunden+gefixt: `buildStueckliste()`/`exportCSV()` stürzten bei fehlendem `preis_eur` ab (neue unbepreiste Einträge) – zeigen jetzt „–". Siehe CLAUDE.md für Details.
+10. **Modul 4 – Grundlagenarbeit Bauteildaten/Baugruppen:** ⏳ Session 27
+    begonnen – 18 neue Einzelbauteile recherchiert + über die Excel-Pipeline
+    eingepflegt (siehe 9j/15). **Noch offen:** vier Einträge mit unverifizierten
+    Abmessungen final klären (Schirmklemme, Moxa-Switch, Wachendorff-Gateway,
+    alte Steuertrafo-Variante); Maße/Zonen der ursprünglichen 44 Bauteile
+    gegenprüfen; Baugruppen für die neuen Funktionsbereiche
+    `schaltschrank`/`automation`/`netzwerk`/`kaelte`/`nutzungsspezifisch`
+    anlegen (aktuell leer) – noch nicht begonnen.
 12. **Modul 4 – Typische Installationsaufbauten in Baugruppen berücksichtigen:**
     MSS und zugehöriger Schütz werden üblicherweise untereinander montiert (kurze Kabelwege).
     Konzept: Baugruppen-Definition steuert Anordnung (z. B. Feld „anordnung: untereinander|nebeneinander"),
@@ -327,7 +333,7 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
     Datenpunkte-Kapazitätsgrenze eines Moduls (inkl. Kunden-Reserve), erst danach neues Modul setzen –
     inkl. Auswirkung auf Anzahl Abgangsklemmen. Aktuell: 1 Baugruppe = 1 eigenes DDC-Modul (kein Teilen).
 14. Modul 4 – Erweiterungen: Drag&Drop-Repositionierung, Integritätsprüfung Baugruppen-Instanz, Mehrfeld-Schränke, Bauteil-Icons, GAEB/AVA-Export
-15. Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern) – inkl. neuer Felder `zone`-Override und `kategorie`
+15. ~~Modul 4 – Datenbank: Bauteile + Baugruppen über Excel pflegen (xlsx_to_json.py erweitern)~~ ✅ abgeschlossen Session 27 – neue Sheets `einzelbauteile`/`baugruppen`/`baugruppen_bauteile`, siehe CLAUDE.md
 16. Modul 5 – Klemmenzone h_klemm (Anzahl Klemmen je Gruppe)
 
 **Später**

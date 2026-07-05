@@ -53,7 +53,10 @@ dbacs/
 │   ├── standschraenke.json                      Standschrank-DB Rittal VX25 (committed)
 │   ├── sockel.json                              Sockel-DB Rittal VX (committed)
 │   ├── bodenbleche.json                         Bodenblech-DB Rittal VX (committed)
-│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (6 Sheets)
+│   ├── reiheneinbaugeraete.json                 Reiheneinbaugeräte-DB (Sicherungsautomaten etc., committed)
+│   ├── einzelbauteile.json                      Modul-4-Bauteilkatalog (committed, seit Session 27 über Excel gepflegt)
+│   ├── baugruppen.json                          Modul-4-Baugruppen-DB (committed, seit Session 27 über Excel gepflegt)
+│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (9 Sheets, `einzelbauteile`/`baugruppen`+`baugruppen_bauteile`-Verknüpfungstabelle seit Session 27)
 └── docs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
     └── archiv/                                  ältere Session-Dokumentationen
@@ -487,6 +490,72 @@ Nächstes reale Bauteile/Funktionsgruppen integriert werden.
   Geprüft: bei wiederkehrenden Baugruppen-Instanzen (z. B. 4× Klemme A + 1×
   Klemme B je Instanz, 15×) entstehen korrekt kurze Läufe mit jeweils
   eigenem Anfang/Ende statt eines einzigen langen, irreführenden Laufs.
+
+### Modul 4 – Bauteil-Datenbasis über Excel-Pipeline (Session 27, gesperrt)
+Vorbereitung der eigentlichen Bauteil-/Baugruppen-Datenarbeit: `einzelbauteile.json`
+und `baugruppen.json` liefen bisher als einzige DBs **nicht** über die
+Excel-Pipeline (Session 20 direkt als JSON angelegt) – das ist jetzt
+nachgezogen, konsistent mit allen anderen 7 DBs.
+
+- **Neue Excel-Sheets** `einzelbauteile`, `baugruppen`, `baugruppen_bauteile`
+  (Verknüpfungstabelle: `bg_id`, `artikel_nr`, `menge`, `zone`-Override –
+  Excel kann keine verschachtelten Arrays, daher separates Sheet).
+  `export_einzelbauteile()`/`export_baugruppen()` in `xlsx_to_json.py` neu,
+  nach etabliertem Muster (`aktiv`-Filter, Header-Name-Mapping).
+- **Schema-Erweiterung `einzelbauteile`:** `b_mm` (reale Breite, float) ist
+  jetzt das Hauptfeld, `te_breite` wird beim Export daraus abgeleitet
+  (`Math.ceil(b_mm/18)` bzw. Python `math.ceil`) – nicht mehr händisch
+  gepflegt. Neu: `einbaulage` (rein beschreibend, z. B. bei DDC-Modulen),
+  `datenpunkt_typ`/`datenpunkt_anzahl`/`klemmen_zusatz` (Datenpunkt-Bedarf
+  eines Bauteils, für die spätere DDC-Kapazitäts-Logik – **nur Datenfelder,
+  keine Zählung/Auswertung in dieser Session**), `montage_minuten`,
+  `preis_lieferung_eur`, `preis_gesamt_eur`. **Wichtig:** Das JSON-Ausgabefeld
+  heißt weiterhin `preis_eur` (Excel-Spalte `preis_stueck_eur`, im Export auf
+  `preis_eur` zurückgemappt) – Modul 4 liest dieses Feld direkt in
+  `buildStueckliste()`/`exportCSV()`, eine Umbenennung hätte dort einen
+  Absturz verursacht (im Test aufgefallen, siehe unten).
+- **`h_mm`-Konvention dokumentiert:** Einbauhöhe ab Oberkante Hutschiene
+  (vertikale Ausdehnung im montierten Zustand), nicht die Bauteiltiefe.
+- **Mehrzonen-Fähigkeit:** kein Schema-Umbau – bestehender Mechanismus
+  (Katalog-Default-Zone + Baugruppen-Override) reicht aus.
+- **Schema-Erweiterung `baugruppen`:** `funktionsbereiche` (Array, ersetzt
+  die reine `gewerk`-Einfachzuordnung als vollständige Liste – `gewerk`
+  bleibt zusätzlich als Haupt-Tab-Zuordnung erhalten), `automationsfunktionen`
+  (Array, z. B. `betriebsmeldung`/`stoermeldung`/`modbus_rtu`), `geprueft`
+  (Bool-Tag, manuell bestätigt – alle 15 bestehenden Baugruppen beim Migrieren
+  auf `true` gesetzt, da bereits mehrfach getestet).
+- **Bug gefunden + behoben:** `buildStueckliste()`/`exportCSV()` gingen bisher
+  davon aus, dass `preis_eur` immer gesetzt ist (`e.preis_eur.toFixed(2)` ohne
+  Null-Check) – bei den neuen, noch nicht bepreisten Katalogeinträgen stürzte
+  das ab. Fix: `hasPreis`-Check, Anzeige „–" statt Absturz, unbepreiste
+  Positionen fließen nicht in die Summe ein (kein geratener Wert).
+- **Pflegewerkzeug:** bleibt Excel (kein eigenes Editor-Modul) – Nutzer
+  editiert `ga_komponenten.xlsx` selbst, Claude liefert recherchierte Werte
+  zur Übernahme. **Datei muss beim Schreiben per Skript geschlossen sein**
+  (Excel hält einen Lock, `~$ga_komponenten.xlsx` zeigt das an – vor jedem
+  Skript-Schreibzugriff prüfen).
+- **Recherche-Ergebnis (breit zuerst, 18 neue Katalogeinträge):** Klemmen
+  Phoenix Contact UT4/UT6/UT10/UT16/PT2,5-MT + Wago 2002-1201 (mit
+  Querschnittsbereich in der Bezeichnung, z. B. „0,14–6 mm²" – expliziter
+  Nutzerwunsch); ÜSS-Vorsicherung **D03 bis 100 A** statt NH00 (Siemens
+  5SG1812 – NH00 zu breit für die ÜSS-Zone, Nutzer-Korrektur); Dehn
+  BLITZDUCTOR XT (Feinschutz Netzwerk/Sensor, Basisteil + Modul getrennt
+  katalogisiert); Siemens-Steuertrafos 4AM-Serie (mit Spannungsangabe in der
+  Bezeichnung – expliziter Nutzerwunsch); Siemens Desigo PXC100-D; **Metz
+  Connect KRS-E06 (digitale LVB, Nachfolger des alten BTR-Relais) + KMA-F8
+  (analoge LVB)** – Hersteller/Baureihe vom Nutzer bestätigt, konkrete
+  Artikel über Metz-Connect-Produktseite verifiziert. Vier Einträge (Phoenix
+  Schirmklemme, Moxa-Switch, Wachendorff-Gateway-Maße, alte Steuertrafo-
+  Variante als Auslaufartikel) mangels verifizierter Abmessungen mit
+  `aktiv=false` markiert statt geraten – erscheinen erst nach Verifikation.
+- **Nicht erfolgreich:** Siemens HIT-Portal (`hit.sbt.siemens.com`) als
+  Recherchequelle – WebFetch scheitert an Zertifikatsprüfung, Suchmaschinen
+  indizieren nur Produkttitel ohne technische Daten. Für zukünftige
+  Siemens-Recherchen weiterhin auf Distributor-Datenblätter (RS Components,
+  Rexel, Elektro4000 u. ä.) ausweichen.
+- **Bewusst nicht Teil dieser Session:** DDC-Datenpunkte-Countdown-Logik,
+  automatische Mehrzonen-Platzierung zur Laufzeit, Zone „Tür" – siehe
+  `docs/revison_session.md`.
 
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen

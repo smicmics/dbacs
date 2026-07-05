@@ -1534,9 +1534,12 @@ function buildStueckliste(zones) {
     klemm_f:'<span class="zone-badge zone-kf">KF</span>', klemm_s:'<span class="zone-badge zone-ks">KS</span>'
   };
   let total = 0;
+  // Bauteile ohne verifizierten Preis (preis_eur fehlt) zeigen „–" statt 0,00 €
+  // und fließen nicht in die Summe ein – kein geratener Wert.
   let rows = liste.map((e, i) => {
-    const summe = e.menge * e.preis_eur;
-    total += summe;
+    const hasPreis = typeof e.preis_eur === 'number';
+    const summe = hasPreis ? e.menge * e.preis_eur : null;
+    if (hasPreis) total += summe;
     const badge = zBadge[e.zone] || '';
     const idxStr = formatIdxList(idxMap[e.artikel_nr + '::' + e.zone]);
     const posInfo = idxStr ? `<div style="font-size:9px;color:var(--tx3);margin-top:1px;">${idxStr}</div>` : '';
@@ -1545,8 +1548,8 @@ function buildStueckliste(zones) {
       <td>${badge} ${e.bezeichnung}${posInfo}</td>
       <td class="td-hst" title="${e.hersteller}">${e.hersteller}</td>
       <td class="td-num">${e.menge}</td>
-      <td class="td-num">${e.preis_eur.toFixed(2)}</td>
-      <td class="td-num">${summe.toFixed(2)}</td>
+      <td class="td-num">${hasPreis ? e.preis_eur.toFixed(2) : '–'}</td>
+      <td class="td-num">${hasPreis ? summe.toFixed(2) : '–'}</td>
     </tr>`;
   }).join('');
 
@@ -1568,7 +1571,12 @@ function exportCSV() {
   if(!liste.length) { alert('Keine Stückliste vorhanden.'); return; }
   const lines = [
     'Pos;Bezeichnung;Hersteller;Artikel-Nr;Zone;Menge;Preis/Stk EUR;Gesamt EUR',
-    ...liste.map((e, i) => [i+1, `"${e.bezeichnung}"`, e.hersteller, e.artikel_nr, e.zone, e.menge, e.preis_eur.toFixed(2), (e.menge*e.preis_eur).toFixed(2)].join(';'))
+    ...liste.map((e, i) => {
+      const hasPreis = typeof e.preis_eur === 'number';
+      const preisStr = hasPreis ? e.preis_eur.toFixed(2) : '';
+      const summeStr = hasPreis ? (e.menge*e.preis_eur).toFixed(2) : '';
+      return [i+1, `"${e.bezeichnung}"`, e.hersteller, e.artikel_nr, e.zone, e.menge, preisStr, summeStr].join(';');
+    })
   ];
   const blob = new Blob(['﻿' + lines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
   const url  = URL.createObjectURL(blob);

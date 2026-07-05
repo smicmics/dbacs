@@ -27,7 +27,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "lueftung"
+    ],
+    "geprueft": true
   },
   {
     "id": "luefter_1stufig_5kw",
@@ -57,7 +61,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "lueftung"
+    ],
+    "geprueft": true
   },
   {
     "id": "ventilantrieb_on_off",
@@ -78,7 +86,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "lueftung"
+    ],
+    "geprueft": true
   },
   {
     "id": "ventilantrieb_stetig",
@@ -99,7 +111,11 @@
         "artikel_nr": "PXA30-W2",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "lueftung"
+    ],
+    "geprueft": true
   },
   {
     "id": "sensor_passiv_rlt",
@@ -116,7 +132,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "lueftung"
+    ],
+    "geprueft": true
   },
   {
     "id": "sensor_aktiv_24v",
@@ -133,7 +153,11 @@
         "artikel_nr": "PXA30-W2",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "lueftung"
+    ],
+    "geprueft": true
   },
   {
     "id": "pumpe_1kw",
@@ -163,7 +187,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "heizung"
+    ],
+    "geprueft": true
   },
   {
     "id": "pumpe_3kw",
@@ -193,7 +221,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "heizung"
+    ],
+    "geprueft": true
   },
   {
     "id": "pumpe_betr_stoer",
@@ -214,7 +246,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "heizung"
+    ],
+    "geprueft": true
   },
   {
     "id": "ventilantrieb_hkl",
@@ -235,7 +271,11 @@
         "artikel_nr": "PXA30-W2",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "heizung"
+    ],
+    "geprueft": true
   },
   {
     "id": "pumpe_san_1kw",
@@ -265,7 +305,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "sanitaer"
+    ],
+    "geprueft": true
   },
   {
     "id": "beleuchtung_schaltkreis",
@@ -290,7 +334,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "beleuchtung"
+    ],
+    "geprueft": true
   },
   {
     "id": "dali_segment",
@@ -307,7 +355,11 @@
         "artikel_nr": "PXA30-N",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "beleuchtung"
+    ],
+    "geprueft": true
   },
   {
     "id": "lss_abzweig_1p",
@@ -324,7 +376,11 @@
         "menge": 2,
         "zone": "klemm_l"
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "elektro"
+    ],
+    "geprueft": true
   },
   {
     "id": "netzteil_24v_60w",
@@ -340,6 +396,10 @@
         "artikel_nr": "5SL6106-7",
         "menge": 1
       }
-    ]
+    ],
+    "funktionsbereiche": [
+      "elektro"
+    ],
+    "geprueft": true
   }
 ]

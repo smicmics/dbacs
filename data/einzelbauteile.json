@@ -4,74 +4,81 @@
     "bezeichnung": "Durchgangsklemme W 2.5 N, 2,5 mm², grau",
     "hersteller": "Weidmüller",
     "bauteil_typ": "klemme",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 47,
+    "h_mm": 47.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
-    "preis_eur": 1.20
+    "preis_eur": 1.2
   },
   {
     "artikel_nr": "W-Series 1010210000",
     "bezeichnung": "Durchgangsklemme W 4 N, 4 mm², grau",
     "hersteller": "Weidmüller",
     "bauteil_typ": "klemme",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 47,
+    "h_mm": 47.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
-    "preis_eur": 1.50
+    "preis_eur": 1.5
   },
   {
     "artikel_nr": "W-Series 1010220000",
     "bezeichnung": "Durchgangsklemme W 6 N, 6 mm², grau",
     "hersteller": "Weidmüller",
     "bauteil_typ": "klemme",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 47,
+    "h_mm": 47.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
-    "preis_eur": 1.90
+    "preis_eur": 1.9
   },
   {
     "artikel_nr": "W-Series 1010250000",
     "bezeichnung": "Durchgangsklemme W 10 N, 10 mm², grau",
     "hersteller": "Weidmüller",
     "bauteil_typ": "klemme",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 56,
+    "h_mm": 56.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
-    "preis_eur": 2.40
+    "preis_eur": 2.4
   },
   {
     "artikel_nr": "W-Series 1010290000",
     "bezeichnung": "Schutzleiterklemme WPE 2.5 N, PE 2,5 mm², gelb/grün",
     "hersteller": "Weidmüller",
     "bauteil_typ": "klemme",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 47,
+    "h_mm": 47.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
-    "preis_eur": 1.30
+    "preis_eur": 1.3
   },
   {
     "artikel_nr": "W-Series 1012600000",
     "bezeichnung": "Verbindungsbrücke WQV 2.5/2, 10-polig, für W 2.5 N",
     "hersteller": "Weidmüller",
     "bauteil_typ": "sonstige",
+    "b_mm": 0.0,
     "te_breite": 0,
-    "h_mm": 0,
+    "h_mm": 0.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
-    "preis_eur": 2.80
+    "preis_eur": 2.8
   },
   {
     "artikel_nr": "3209517",
     "bezeichnung": "Durchgangsklemme ST 2.5, 2,5 mm², grau",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "klemme",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 47,
+    "h_mm": 47.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.15
@@ -81,8 +88,9 @@
     "bezeichnung": "Durchgangsklemme ST 4, 4 mm², grau",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "klemme",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 47,
+    "h_mm": 47.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.45
@@ -92,8 +100,9 @@
     "bezeichnung": "Schutzleiterklemme ST 2.5-PE, 2,5 mm², gelb/grün",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "klemme",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 47,
+    "h_mm": 47.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
     "preis_eur": 1.25
@@ -103,364 +112,551 @@
     "bezeichnung": "Querbrücker FBS 10-5, 10-polig für ST 2.5/4",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "sonstige",
+    "b_mm": 0.0,
     "te_breite": 0,
-    "h_mm": 0,
+    "h_mm": 0.0,
     "zone": "klemm_l",
     "kategorie": "Einspeiseklemmen",
-    "preis_eur": 3.10
+    "preis_eur": 3.1
   },
   {
     "artikel_nr": "3RT2015-1AB01",
     "bezeichnung": "Schütz AC-3, 7 A, 3 kW / 400 V, 24 V AC 50/60 Hz",
     "hersteller": "Siemens",
     "bauteil_typ": "schuetz",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 70,
+    "h_mm": 70.0,
     "zone": "leist",
-    "preis_eur": 19.50
+    "preis_eur": 19.5
   },
   {
     "artikel_nr": "3RT2015-1BB41",
     "bezeichnung": "Schütz AC-3, 7 A, 3 kW / 400 V, 24 V DC",
     "hersteller": "Siemens",
     "bauteil_typ": "schuetz",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 70,
+    "h_mm": 70.0,
     "zone": "leist",
-    "preis_eur": 22.00
+    "preis_eur": 22.0
   },
   {
     "artikel_nr": "3RT2016-1BB41",
     "bezeichnung": "Schütz AC-3, 9 A, 4 kW / 400 V, 24 V DC",
     "hersteller": "Siemens",
     "bauteil_typ": "schuetz",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 70,
+    "h_mm": 70.0,
     "zone": "leist",
-    "preis_eur": 24.50
+    "preis_eur": 24.5
   },
   {
     "artikel_nr": "3RT2023-1BB40",
     "bezeichnung": "Schütz AC-3, 12 A, 5,5 kW / 400 V, 24 V DC",
     "hersteller": "Siemens",
     "bauteil_typ": "schuetz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 80,
+    "h_mm": 80.0,
     "zone": "leist",
-    "preis_eur": 32.00
+    "preis_eur": 32.0
   },
   {
     "artikel_nr": "3RT2025-1BB40",
     "bezeichnung": "Schütz AC-3, 17 A, 7,5 kW / 400 V, 24 V DC",
     "hersteller": "Siemens",
     "bauteil_typ": "schuetz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 80,
+    "h_mm": 80.0,
     "zone": "leist",
-    "preis_eur": 38.00
+    "preis_eur": 38.0
   },
   {
     "artikel_nr": "278488",
     "bezeichnung": "DILM7-10(24VDC) Schütz 24VDC, 7 A, 3 kW / 400 V",
     "hersteller": "Eaton",
     "bauteil_typ": "schuetz",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 70,
+    "h_mm": 70.0,
     "zone": "leist",
-    "preis_eur": 21.00
+    "preis_eur": 21.0
   },
   {
     "artikel_nr": "278492",
     "bezeichnung": "DILM12-10(24VDC) Schütz 24VDC, 12 A, 5,5 kW / 400 V",
     "hersteller": "Eaton",
     "bauteil_typ": "schuetz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 80,
+    "h_mm": 80.0,
     "zone": "leist",
-    "preis_eur": 28.00
+    "preis_eur": 28.0
   },
   {
     "artikel_nr": "3RV2011-1AA10",
     "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 1,0–1,6 A, 0,55 kW",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 77,
+    "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 35.00
+    "preis_eur": 35.0
   },
   {
     "artikel_nr": "3RV2011-1CA10",
     "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 2,5–4,0 A, 1,5 kW",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 77,
+    "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 35.00
+    "preis_eur": 35.0
   },
   {
     "artikel_nr": "3RV2011-1EA10",
     "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 4,0–6,3 A, 2,2 kW",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 77,
+    "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 35.00
+    "preis_eur": 35.0
   },
   {
     "artikel_nr": "3RV2011-1JA10",
     "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 6,0–10 A, 4,0 kW",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 77,
+    "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 37.00
+    "preis_eur": 37.0
   },
   {
     "artikel_nr": "072735",
     "bezeichnung": "PKZM0-1,6 Motorschutzschalter, Einstellung 1,0–1,6 A",
     "hersteller": "Eaton",
     "bauteil_typ": "motorschutz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 77,
+    "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 32.00
+    "preis_eur": 32.0
   },
   {
     "artikel_nr": "072738",
     "bezeichnung": "PKZM0-4 Motorschutzschalter, Einstellung 2,5–4,0 A",
     "hersteller": "Eaton",
     "bauteil_typ": "motorschutz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 77,
+    "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 33.00
+    "preis_eur": 33.0
   },
   {
     "artikel_nr": "072739",
     "bezeichnung": "PKZM0-6,3 Motorschutzschalter, Einstellung 4,0–6,3 A",
     "hersteller": "Eaton",
     "bauteil_typ": "motorschutz",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 77,
+    "h_mm": 77.0,
     "zone": "leist",
-    "preis_eur": 34.00
+    "preis_eur": 34.0
   },
   {
     "artikel_nr": "5SL6106-7",
     "bezeichnung": "LSS 5SL6 B6 A, 1-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 81,
+    "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 8.50
+    "preis_eur": 8.5
   },
   {
     "artikel_nr": "5SL6110-7",
     "bezeichnung": "LSS 5SL6 B10 A, 1-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 81,
+    "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 8.50
+    "preis_eur": 8.5
   },
   {
     "artikel_nr": "5SL6116-7",
     "bezeichnung": "LSS 5SL6 B16 A, 1-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 81,
+    "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 8.80
+    "preis_eur": 8.8
   },
   {
     "artikel_nr": "5SL6206-7",
     "bezeichnung": "LSS 5SL6 B6 A, 2-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 81,
+    "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 16.50
+    "preis_eur": 16.5
   },
   {
     "artikel_nr": "5SL6210-7",
     "bezeichnung": "LSS 5SL6 B10 A, 2-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 81,
+    "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 17.00
+    "preis_eur": 17.0
   },
   {
     "artikel_nr": "5SL6216-7",
     "bezeichnung": "LSS 5SL6 C16 A, 2-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 81,
+    "h_mm": 81.0,
     "zone": "leist",
-    "preis_eur": 17.50
+    "preis_eur": 17.5
   },
   {
     "artikel_nr": "1864135",
     "bezeichnung": "PLC-RSC-24DC/21 Koppelrelais 24VDC, 1 Wechsler, 6 A",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "koppelrelais",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 75,
+    "h_mm": 75.0,
     "zone": "steuer",
-    "preis_eur": 14.50
+    "preis_eur": 14.5
   },
   {
     "artikel_nr": "1461118",
     "bezeichnung": "WR 24VDC/230VAC 8A 1CO Koppelrelais-Modul 24VDC, 1 Wechsler",
     "hersteller": "Weidmüller",
     "bauteil_typ": "koppelrelais",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 75,
+    "h_mm": 75.0,
     "zone": "steuer",
-    "preis_eur": 13.80
+    "preis_eur": 13.8
   },
   {
     "artikel_nr": "2866690",
     "bezeichnung": "QUINT-PS/1AC/24DC/2.5 Netzteil 1-Ph., 24 VDC / 2,5 A, 60 W",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "netzteil",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 130,
+    "h_mm": 130.0,
     "zone": "steuer",
     "kategorie": "Netzversorgung/Transformatoren",
-    "preis_eur": 145.00
+    "preis_eur": 145.0
   },
   {
     "artikel_nr": "2866752",
     "bezeichnung": "QUINT-PS/1AC/24DC/5 Netzteil 1-Ph., 24 VDC / 5 A, 120 W",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "netzteil",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 130,
+    "h_mm": 130.0,
     "zone": "steuer",
     "kategorie": "Netzversorgung/Transformatoren",
-    "preis_eur": 195.00
+    "preis_eur": 195.0
   },
   {
     "artikel_nr": "2866763",
     "bezeichnung": "QUINT-PS/1AC/24DC/10 Netzteil 1-Ph., 24 VDC / 10 A, 240 W",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "netzteil",
+    "b_mm": 72.0,
     "te_breite": 4,
-    "h_mm": 130,
+    "h_mm": 130.0,
     "zone": "steuer",
     "kategorie": "Netzversorgung/Transformatoren",
-    "preis_eur": 280.00
+    "preis_eur": 280.0
   },
   {
     "artikel_nr": "PXA30-W2",
     "bezeichnung": "Desigo PX Erweiterungsmodul universal I/O (8DI/8DO/4AI/4AO), BACnet",
     "hersteller": "Siemens",
     "bauteil_typ": "ddc_io",
+    "b_mm": 54.0,
     "te_breite": 3,
-    "h_mm": 90,
+    "h_mm": 90.0,
     "zone": "steuer",
     "kategorie": "DDC-Automationseinrichtung",
-    "datenpunkte": 24,
-    "preis_eur": 420.00
+    "datenpunkt_anzahl": 24,
+    "preis_eur": 420.0
   },
   {
     "artikel_nr": "PXA30-N",
     "bezeichnung": "Desigo PX Erweiterungsmodul BACnet/IP, kompakt",
     "hersteller": "Siemens",
     "bauteil_typ": "ddc_io",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 90,
+    "h_mm": 90.0,
     "zone": "steuer",
     "kategorie": "DDC-Automationseinrichtung",
-    "datenpunkte": 8,
-    "preis_eur": 280.00
+    "datenpunkt_anzahl": 8,
+    "preis_eur": 280.0
   },
   {
     "artikel_nr": "5SG7101",
     "bezeichnung": "D01 Sicherungslasttrennschalter, 1-polig, 63 A, inkl. Sicherungseinsatz",
     "hersteller": "Siemens",
     "bauteil_typ": "lasttrenner",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 75,
+    "h_mm": 75.0,
     "zone": "evert",
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
-    "preis_eur": 18.00
+    "preis_eur": 18.0
   },
   {
     "artikel_nr": "3NP1130-1CA20",
     "bezeichnung": "Lasttrennschalter NH00, 3-polig, 160 A, inkl. Sicherungseinsätze",
     "hersteller": "Siemens",
     "bauteil_typ": "lasttrenner",
+    "b_mm": 90.0,
     "te_breite": 5,
-    "h_mm": 155,
+    "h_mm": 155.0,
     "zone": "evert",
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
-    "preis_eur": 95.00
+    "preis_eur": 95.0
   },
   {
     "artikel_nr": "3NP1143-1CA20",
     "bezeichnung": "Lasttrennschalter NH1, 3-polig, 250 A, inkl. Sicherungseinsätze",
     "hersteller": "Siemens",
     "bauteil_typ": "lasttrenner",
+    "b_mm": 108.0,
     "te_breite": 6,
-    "h_mm": 175,
+    "h_mm": 175.0,
     "zone": "evert",
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
-    "preis_eur": 130.00
+    "preis_eur": 130.0
   },
   {
     "artikel_nr": "170M3010",
     "bezeichnung": "Sicherungslasttrennleiste NH00, 1-polig, 160 A (Ergänzung/Abgang)",
     "hersteller": "Eaton",
     "bauteil_typ": "lasttrenner",
+    "b_mm": 36.0,
     "te_breite": 2,
-    "h_mm": 155,
+    "h_mm": 155.0,
     "zone": "evert",
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
-    "preis_eur": 42.00
+    "preis_eur": 42.0
   },
   {
     "artikel_nr": "2905371",
     "bezeichnung": "FLIMOVE-T2-3S-350 Überspannungsschutz Typ 2, 3-polig, 350 V",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "ueberspannung",
+    "b_mm": 72.0,
     "te_breite": 4,
-    "h_mm": 90,
+    "h_mm": 90.0,
     "zone": "uss",
     "kategorie": "Überspannungsschutz & Vorsicherung",
-    "preis_eur": 165.00
+    "preis_eur": 165.0
   },
   {
     "artikel_nr": "2905360",
     "bezeichnung": "FLIMOVE-T2-1S-350 Überspannungsschutz Typ 2, 1-polig, 350 V",
     "hersteller": "Phoenix Contact",
     "bauteil_typ": "ueberspannung",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 90,
+    "h_mm": 90.0,
     "zone": "uss",
     "kategorie": "Überspannungsschutz & Vorsicherung",
-    "preis_eur": 58.00
+    "preis_eur": 58.0
   },
   {
     "artikel_nr": "072693",
     "bezeichnung": "Vorsicherungshalter D02, 1-polig, für ÜSS-Vorsicherung",
     "hersteller": "Eaton",
     "bauteil_typ": "sicherung",
+    "b_mm": 18.0,
     "te_breite": 1,
-    "h_mm": 75,
+    "h_mm": 75.0,
     "zone": "uss",
     "kategorie": "Überspannungsschutz & Vorsicherung",
-    "preis_eur": 12.00
+    "preis_eur": 12.0
+  },
+  {
+    "artikel_nr": "3044102",
+    "bezeichnung": "Durchgangsklemme UT 4, 0,14-6 mm²",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "b_mm": 6.2,
+    "te_breite": 1,
+    "h_mm": 46.0,
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen"
+  },
+  {
+    "artikel_nr": "3044131",
+    "bezeichnung": "Durchgangsklemme UT 6, 0,2-10 mm²",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "b_mm": 8.2,
+    "te_breite": 1,
+    "h_mm": 55.0,
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen"
+  },
+  {
+    "artikel_nr": "3044160",
+    "bezeichnung": "Durchgangsklemme UT 10, 0,5-16 mm²",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "b_mm": 10.2,
+    "te_breite": 1,
+    "h_mm": 46.9,
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen"
+  },
+  {
+    "artikel_nr": "3044199",
+    "bezeichnung": "Durchgangsklemme UT 16, 1,5-25 mm²",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "b_mm": 12.2,
+    "te_breite": 1,
+    "h_mm": 54.4,
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen"
+  },
+  {
+    "artikel_nr": "3210156",
+    "bezeichnung": "Messertrennklemme PT 2,5-MT, 0,14-4 mm²",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "b_mm": 5.2,
+    "te_breite": 1,
+    "h_mm": 62.0,
+    "zone": "klemm_f",
+    "kategorie": "Einspeiseklemmen"
+  },
+  {
+    "artikel_nr": "2002-1201",
+    "bezeichnung": "2-Leiter-Durchgangsklemme TOPJOB S, 0,14-4 mm²",
+    "hersteller": "Wago",
+    "bauteil_typ": "klemme",
+    "b_mm": 5.2,
+    "te_breite": 1,
+    "h_mm": 48.5,
+    "zone": "klemm_l",
+    "kategorie": "Einspeiseklemmen"
+  },
+  {
+    "artikel_nr": "952300",
+    "bezeichnung": "DEHNguard M TNC 275, ÜSS Typ 2, 3-polig",
+    "hersteller": "Dehn",
+    "bauteil_typ": "ueberspannung",
+    "b_mm": 54.0,
+    "te_breite": 3,
+    "h_mm": 90.0,
+    "zone": "uss",
+    "kategorie": "Überspannungsschutz & Vorsicherung"
+  },
+  {
+    "artikel_nr": "5SG1812",
+    "bezeichnung": "Sicherungssockel D03, 1-polig, 100 A (Vorsicherung ÜSS)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "sicherung",
+    "b_mm": 44.0,
+    "te_breite": 3,
+    "h_mm": 45.0,
+    "zone": "uss",
+    "kategorie": "Überspannungsschutz & Vorsicherung"
+  },
+  {
+    "artikel_nr": "BXT BAS",
+    "bezeichnung": "BLITZDUCTOR XT Basisteil (Feinschutz-Traeger)",
+    "hersteller": "Dehn",
+    "bauteil_typ": "ueberspannung",
+    "b_mm": 18.0,
+    "te_breite": 1,
+    "h_mm": 90.0,
+    "zone": "uss",
+    "kategorie": "Überspannungsschutz & Vorsicherung"
+  },
+  {
+    "artikel_nr": "BXT ML4 BE24",
+    "bezeichnung": "BLITZDUCTOR XT Kombi-Ableiter-Modul ML4 (Feinschutz Signal/Netzwerk, 4-adrig, 24V)",
+    "hersteller": "Dehn",
+    "bauteil_typ": "ueberspannung",
+    "b_mm": 12.0,
+    "te_breite": 1,
+    "h_mm": 90.0,
+    "zone": "uss",
+    "kategorie": "Überspannungsschutz & Vorsicherung"
+  },
+  {
+    "artikel_nr": "4AM5742-4TT10-0FA0",
+    "bezeichnung": "Steuertrafo 1-ph., 230V/24V, 2,5kVA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "sonstige",
+    "b_mm": 144.0,
+    "te_breite": 8,
+    "h_mm": 152.0,
+    "zone": "leist",
+    "kategorie": "Netzversorgung/Transformatoren"
+  },
+  {
+    "artikel_nr": "PXC100-D",
+    "bezeichnung": "Desigo PX Automationsstation, kompakt",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ddc_io",
+    "b_mm": 192.0,
+    "te_breite": 11,
+    "h_mm": 74.0,
+    "zone": "steuer",
+    "kategorie": "DDC-Automationseinrichtung"
+  },
+  {
+    "artikel_nr": "110661",
+    "bezeichnung": "Schnittstellenmodul KRS-E06 mit Handbedienebene (LVB digital/binär), 24VAC/DC, 6A",
+    "hersteller": "Metz Connect",
+    "bauteil_typ": "koppelrelais",
+    "b_mm": 22.5,
+    "te_breite": 2,
+    "h_mm": 61.3,
+    "zone": "steuer"
+  },
+  {
+    "artikel_nr": "110730",
+    "bezeichnung": "Analogwertgeber KMA-F8 mit Handbedienebene (LVB analog 0-10V)",
+    "hersteller": "Metz Connect",
+    "bauteil_typ": "koppelrelais",
+    "b_mm": 11.2,
+    "te_breite": 1,
+    "h_mm": 87.5,
+    "zone": "steuer"
   }
 ]
