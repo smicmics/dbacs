@@ -1045,11 +1045,17 @@ function redistributeKlemmBands(bandsAll, queues) {
 // h_klemm ist bereits inkl. Handling (siehe M3: ceil5(15+65+15)) – die Zeile
 // wird nicht in mehrere Reihen aufgeteilt, Geräte füllen sie von links nach
 // rechts; reicht die Breite nicht, ist der Rest ein Breiten-Overflow.
+// Zusätzlich zur Breite wird auch die Höhe geprüft (d.h_mm <= band.h_mm) –
+// ein Bauteil, das für ein anderes Baumuster (z. B. Schienensystem) gedacht
+// und dafür zu hoch ist, wird sonst trotzdem "platziert" und im SVG verzerrt
+// dargestellt. Zu hohe Bauteile werden übersprungen (kein Platz, Overflow),
+// die Warteschlange läuft mit den übrigen Geräten weiter.
 function placeInKlemmRow(devs, bands) {
   const rows = [];
   let idx = 0;
   let te_used = 0;
   let placedCount = 0;   // laufende Positionsnummer je Zone
+  let placedTotal = 0;   // tatsächlich platzierte Geräte (für Overflow-Berechnung)
 
   for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
     const band = bands[bi];
@@ -1058,11 +1064,14 @@ function placeInKlemmRow(devs, bands) {
 
     let col = 0;
     const blocks = [];
-    while (idx < devs.length && col + devs[idx].te <= te_per_row) {
+    while (idx < devs.length) {
       const d = devs[idx];
+      if (col + d.te > te_per_row) break;           // Breite dieser Reihe erschöpft
+      if (d.h_mm > band.h_mm) { idx++; continue; }  // zu hoch für diese Hutschiene – überspringen
       blocks.push({col, te: d.te, h_mm: d.h_mm, farbe: d.farbe, lbl: d.lbl, title: d.title, artikel_nr: d.artikel_nr, idx: ++placedCount});
       col += d.te;
       idx++;
+      placedTotal++;
     }
     if (blocks.length) {
       rows.push({ mode:'klemm', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm, h_mm: band.h_mm, blocks });
@@ -1070,7 +1079,7 @@ function placeInKlemmRow(devs, bands) {
     }
   }
 
-  return { rows, overflow: idx < devs.length, mm_used: te_used * TE_MM };
+  return { rows, overflow: placedTotal < devs.length, mm_used: te_used * TE_MM };
 }
 
 // ── Berechnung ───────────────────────────────────────────────────────
@@ -1267,6 +1276,41 @@ function wrapSVGText(lbl, x, cy, zw, fs, extra='') {
   return s + `</text>`;
 }
 
+// ── Positionsnummer auf einem Bauteil-Block: horizontal, sonst gedreht ──
+// Erst horizontal versuchen (wie bisher); passt die Nummer auch verkleinert
+// nicht in die Blockbreite, wird sie als letzte Rückfallebene um 90° gedreht
+// entlang der Blockhöhe gezeichnet (schmale, hohe Blöcke haben oft mehr
+// Platz in der Höhe als in der Breite). Passt gar nichts, kein Text – der
+// Mouseover-Tooltip bleibt in jedem Fall der Fallback.
+function idxLabelSVG(cx, cy, bw, bh, idxStr) {
+  const fsH = Math.min(7, bh*0.4);
+  if (idxStr.length * fsH*0.63 <= bw - 4) {
+    return `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fsH.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${idxStr}</text>`;
+  }
+  const fsV = Math.min(7, bw - 2);
+  if (fsV >= 4 && idxStr.length * fsV*0.63 <= bh - 4) {
+    return `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 ${cx.toFixed(1)} ${cy.toFixed(1)})" font-size="${fsV.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${idxStr}</text>`;
+  }
+  return '';
+}
+
+// ── Klemmen-Zeilen: nur erster/letzter Block je zusammenhängendem
+// artikel_nr-Lauf bekommt eine Nummer ──────────────────────────────────
+// Einzelne Klemmen sind oft nur 0,5 TE breit und tragen nie eine lesbare
+// Einzelbeschriftung. Der Nutzer soll aber den Bereich ablesen können, ohne
+// gleich in die Stückliste wechseln zu müssen – daher Nummer nur am Anfang
+// und Ende eines Laufs gleicher Artikel, dazwischen bewusst kein Text
+// (Tooltip bleibt für jeden Block erhalten). placeInKlemmRow() liefert
+// immer genau eine Zeile je Zone, daher genügt die Prüfung innerhalb von
+// row.blocks (keine zeilenübergreifende Betrachtung nötig).
+function markFirstLastOfRun(blocks) {
+  blocks.forEach((b, i) => {
+    const isFirst = i === 0 || blocks[i-1].artikel_nr !== b.artikel_nr;
+    const isLast  = i === blocks.length-1 || blocks[i+1].artikel_nr !== b.artikel_nr;
+    b._showIdx = isFirst || isLast;
+  });
+}
+
 // ── SVG Schranksicht (Zonenraster aus Modul 3 + physikalische Platzierung) ──
 function buildSVG(zp, layout, zones) {
   const msgEl = document.getElementById('svg-msg');
@@ -1348,6 +1392,11 @@ function buildSVG(zp, layout, zones) {
     });
 
     z.rows.forEach(row => {
+      // Klemmen-Zeilen: nur Anfang/Ende eines gleichartigen Laufs beschriften
+      // (siehe markFirstLastOfRun) – bei den anderen Zonen wird jeder Block
+      // einzeln behandelt.
+      if (row.mode === 'klemm') markFirstLastOfRun(row.blocks);
+
       row.blocks.forEach(blk => {
         const bx = (row.x_mm + blk.col*TE_MM) * sc;
         const bw = Math.max(1, blk.te*TE_MM*sc - 1);
@@ -1356,14 +1405,17 @@ function buildSVG(zp, layout, zones) {
           ? (row.y_mm + (row.h_mm - blk.h_mm)/2) * sc   // Klemmenzeile: Gerät vertikal zentriert
           : (row.y_mm + row.klemmraum) * sc;            // Leist./Steuer./Evert: nach Klemmraum oben
         svg += `<rect x="${bx.toFixed(1)}" y="${by0.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.3" stroke-width="0.5" rx="1"><title>#${blk.idx} · ${blk.title}</title></rect>`;
-        // Sichtbare Bauteil-Nummer ergänzt die Kurzbezeichnung (nicht nur im
-        // Mouseover-Tooltip) – so lässt sich ein Block aus der Stückliste
-        // heraus im Schrank wiederfinden. Zwei Stufen je nach Platzangebot:
-        // Kurzbezeichnung + Nummer untereinander, sonst nur die Nummer allein,
-        // sonst (zu schmal) gar kein Text (Tooltip bleibt Fallback).
         const idxStr = '#' + blk.idx;
         const cx = bx + bw/2, cy = by0 + bh/2;
-        if(bw > 28 && bh > 8) {
+
+        if (row.mode === 'klemm') {
+          // Klemmen: nie die Kurzbezeichnung, nur Anfang/Ende eines Laufs
+          // bekommt die Nummer (horizontal, sonst gedreht, sonst gar nichts).
+          if (blk._showIdx) svg += idxLabelSVG(cx, cy, bw, bh, idxStr);
+        } else if (bw > 28 && bh > 8) {
+          // Sichtbare Bauteil-Nummer ergänzt die Kurzbezeichnung (nicht nur im
+          // Mouseover-Tooltip) – so lässt sich ein Block aus der Stückliste
+          // heraus im Schrank wiederfinden.
           const fs = Math.min(8, bh*0.45);
           const fsIdx = Math.min(7, bh*0.35);
           if(bh >= fs + fsIdx + 2) {
@@ -1376,10 +1428,9 @@ function buildSVG(zp, layout, zones) {
             svg += `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fs.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${blk.lbl}</text>`;
           }
         } else if(bh > 8) {
-          const fsIdx = Math.min(7, bh*0.4);
-          if(idxStr.length * fsIdx*0.63 <= bw - 4) {
-            svg += `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fsIdx.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${idxStr}</text>`;
-          }
+          // Zu schmal für die Kurzbezeichnung: Nummer allein, horizontal
+          // oder – als letzte Rückfallebene – gedreht entlang der Höhe.
+          svg += idxLabelSVG(cx, cy, bw, bh, idxStr);
         }
       });
     });

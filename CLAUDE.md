@@ -430,6 +430,64 @@ const ZONE_COLORS = {
   Formel-Variablen-Einfärbung – keine Zonenfarben, nicht Teil dieser
   Konsolidierung.
 
+### Modul 4 – Höhenprüfung Hutschienen-Zonen + Beschriftung schmaler Bauteile (Session 26, gesperrt)
+Zwei vom Nutzer vor dem Meilenstein gemeldete Bugs, behoben bevor als
+Nächstes reale Bauteile/Funktionsgruppen integriert werden.
+
+- **Bug 1 – Bauteile ohne ausreichenden Platz wurden trotzdem platziert:**
+  `placeInKlemmRow()` (genutzt für `klemm_e`, `uss`, `klemm_l`, `klemm_f`,
+  `klemm_s` sowie `evert` ohne Schienensystem – alle 6 Hutschienen-Zonen)
+  prüfte nur die Breite (TE), nie die Höhe. Ein NH00-Lasttrennschalter
+  (155 mm, für ein Schienensystem gedacht) wurde dadurch auch in der
+  kompakten 105-mm-Energieverteilung-Zone (kein Schienensystem) "platziert"
+  und im SVG verzerrt dargestellt, statt als nicht-platzierbar erkannt zu
+  werden. **Fix:** `placeInKlemmRow()` prüft jetzt zusätzlich `d.h_mm <=
+  band.h_mm`; zu hohe Bauteile werden übersprungen (nicht platziert, tragen
+  zum Overflow bei), die Warteschlange läuft mit den übrigen Geräten weiter
+  – ein einzelnes zu hohes Bauteil blockiert nicht die ganze Zeile. Overflow
+  wird jetzt über eine separate `placedTotal`-Zählung ermittelt (nicht mehr
+  allein über die Queue-Position `idx`), da einzelne Geräte übersprungen
+  werden können, ohne dass die Warteschlange "leer" wird. Der bereits
+  vorhandene rote Overflow-Marker (`!`) an der Zone greift automatisch,
+  keine neue UI nötig.
+- **Bewusst nicht Teil dieses Fixes:** eine Kennzeichnung einzelner
+  Katalogeinträge als "erfordert Schienensystem" (neues JSON-Feld in
+  `einzelbauteile.json` + Ausblenden aus der Bauteil-Dropdown
+  `populateEinzelAuswahl()`, wenn kein Schienensystem gewählt ist) – auf
+  Nutzerwunsch verschoben in die nächste Sitzung (Bauteile/Funktionsgruppen-
+  Integration), da dort ohnehin die komplette Bauteildatenpflege ansteht.
+  Der allgemeine Höhen-Fix verhindert die Fehlplatzierung bereits
+  unabhängig vom Grund (Schienensystem oder jeder andere Zonentyp/Höhe).
+- **Bug 2 – Beschriftung schmaler Bauteile:** die bestehende 3-Stufen-Logik
+  aus einer früheren Session (Label+Nummer / nur Label / nur Nummer) hatte
+  keine Rückfallebene mehr, wenn selbst die Nummer horizontal nicht passte
+  (z. B. beim 1-poligen Sicherungslasttrennleiste-Zusatzmodul) – Ergebnis:
+  gar kein sichtbarer Text außer dem Mouseover-Tooltip.
+- **Fix – neue Hilfsfunktion `idxLabelSVG(cx, cy, bw, bh, idxStr)`:**
+  versucht zuerst die Nummer horizontal (wie bisher), dreht sie als letzte
+  Rückfallebene um 90° (`transform="rotate(-90 cx cy)"`) entlang der
+  Blockhöhe, wenn horizontal auch verkleinert nicht passt (Achsen dabei
+  vertauscht geprüft: Textlänge gegen `bh`, Schriftgröße gegen `bw`). Passt
+  auch das nicht, kein Text – Tooltip bleibt Fallback. Erste SVG-
+  Textrotation im Projekt (vorher nirgends verwendet). Wird sowohl als
+  Rückfallebene für normale Zonen (Tier 3 der bestehenden Logik) als auch
+  für Klemmen-Zeilen (siehe unten) genutzt.
+- **Fix – Klemmen-Zeilen (`row.mode === 'klemm'`) bekommen nie mehr die
+  Kurzbezeichnung, nur Anfang/Ende eines Laufs eine Nummer:** einzelne
+  Klemmen sind oft nur 0,5 TE breit und tragen nie eine lesbare
+  Einzelbeschriftung. Neue Hilfsfunktion `markFirstLastOfRun(blocks)`
+  markiert `blk._showIdx` für den ersten und letzten Block jedes
+  zusammenhängenden `artikel_nr`-Laufs innerhalb `row.blocks` (Reihenfolge
+  ist bereits Platzierungsreihenfolge). Da `placeInKlemmRow()` je Zone immer
+  genau eine Zeile liefert (kein Zeilenumbruch), genügt die Betrachtung
+  innerhalb von `row.blocks` – keine zeilenübergreifende Logik nötig.
+  Blöcke zwischen Anfang und Ende bleiben bewusst ohne Beschriftung
+  (Tooltip bleibt für jeden Block erhalten); die exakte Liste steht
+  vollständig in der Stückliste (`formatIdxList()`, z. B. `#3–#5, #7`).
+  Geprüft: bei wiederkehrenden Baugruppen-Instanzen (z. B. 4× Klemme A + 1×
+  Klemme B je Instanz, 15×) entstehen korrekt kurze Läufe mit jeweils
+  eigenem Anfang/Ende statt eines einzigen langen, irreführenden Laufs.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
