@@ -368,6 +368,55 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - **Druck:** Keine neue `@media print`-Regel nötig – die Stückliste (mit vollem Bezeichnungstext + Idx-Bereichen wie `#3–#5, #7`) druckt bereits unverändert mit und deckt das vom Nutzer gewünschte „Mouseover-Volltext beim Druck sichern" bereits ab. Die neue Legende ist ein normales, nicht ausgeblendetes Panel-Element und druckt automatisch mit; `.legend-dot` bekommt zusätzlich `-webkit-print-color-adjust:exact;print-color-adjust:exact`, da Browser Hintergrundfarben beim Drucken sonst standardmäßig unterdrücken.
 - Kein neues `printFullLayout()`/`buildFullLayoutSVG()` (wie Modul 3) – bewusst nicht entwickelt, da die Stückliste die Volltext-Anforderung bereits erfüllt.
 
+### Zonenfarben (Modul 3 + 4, Session 26, gesperrt) – modulübergreifend identisch
+Nutzer-Feedback nach Test der neuen Legende: einige Zonenfarben sahen sich zu
+ähnlich (Einspeisung/ÜSS identisch, Sensoren-Klemme auch gelblich). Zusätzlich
+sollten Zonenfarben nicht länger mehrfach unabhängig gepflegt werden.
+```
+const ZONE_COLORS = {
+  klemm_e:'#D8A916', uss:'#EBDBA0', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA',
+  klemm_l:'#2DBD8E', klemm_f:'#9A94E8', klemm_s:'#C14FA0'
+};
+```
+- **Geänderte Werte:** `klemm_e` (Einspeisung) kräftigeres Gold-Gelb, `uss`
+  (ÜSS) blasses, entsättigtes Gelb – vorher beide identisch `#D4A84B`.
+  `klemm_s` (Abg.-Kl. Sensoren) Magenta statt Gelbton – vorher `#E8C448`.
+  `evert`, `leist`, `steuer`, `klemm_l`, `klemm_f` unverändert.
+- **Mechanismus:** kein gemeinsames externes File (Architektur bleibt
+  Single-File-HTML pro Modul, kein zusätzlicher `fetch()` nötig, Farben sind
+  synchron beim ersten Rendern verfügbar). Stattdessen führt jedes Modul
+  seine eigene `ZONE_COLORS`-Konstante – identische Werte, hier zentral
+  dokumentiert als verbindliche Quelle (analog zum bereits gesperrten
+  Maßketten-Blau `#3366BB`).
+- **Modul 4:** `buildLayout()` referenziert jetzt `ZONE_COLORS.<zone>` statt
+  Hex-Literalen zu duplizieren (schließt eine bereits vorher bestehende
+  interne Inkonsistenz). Dynamisch beim Bestücken entstehende
+  Verdrahtungskanäle (`z.channels` in `buildSVG()`) nutzen jetzt `fill="#888"
+  fill-opacity="0.22"` statt `#0000000C` und haben kein `"Kanal"`-Textlabel
+  mehr – optisch identisch zu den statischen Struktur-Kanälen aus Modul 3.
+- **Modul 4 – Zonentext nur auf dem Bildschirm ausgeblendet:** Da die Legende
+  bereits Farbe → Zonenname erklärt, entfällt der Zonentext im SVG jetzt für
+  die Bildschirmdarstellung (`svg += '<g class="zone-label-layer">...</g>'`,
+  CSS `#svg-inner .zone-label-layer{display:none}`). Im Ausdruck bleibt der
+  Zonentext erhalten (`@media print{#svg-inner .zone-label-layer{display:inline}}`),
+  da dort keine Legende danebenliegt – bewusste Bildschirm/Druck-Abweichung,
+  keine JS-Sonderbehandlung nötig, reine CSS-Sichtbarkeitssteuerung.
+- **Modul 3:** bekommt dieselbe `ZONE_COLORS`-Konstante (neu, neben
+  `TE_BREITE_MM`), `buildLayout()` referenziert sie ebenso; Sidebar-Farbpunkt
+  und Sidebar-Textfarbe für „ÜSS + Sich." (`zh_einsp`) aktualisiert.
+  **Bewusst NICHT übernommen:** keine Legende, keine Zonentext-Ausblendung
+  (Modul 3 platziert keine Bauteile, die den Text überdecken könnten – das
+  Ausgangsproblem existiert dort nicht), kein Kanal-Farbfix (Modul 3 kennt
+  keine dynamisch erzeugten Verdrahtungskanäle, nur die immer schon grauen,
+  textlosen Struktur-Kanäle).
+- **Nicht anfassen:** `KE_COLS` (h_ke-Zonenfarben aus Modul 1/2, u. a.
+  `zug:'#D4A84B'`) und die Formel-Box-Variablenfarbe für `te_breite` in
+  Modul 3 nutzen zufällig denselben alten Hex-Wert wie das vorherige
+  ÜSS/Einspeisung-Gelb, gehören aber zu einer anderen, bereits gesperrten
+  Farbkonvention (Modul 1/2 h_ke-Formel) bzw. sind reine
+  Formel-Variablen-Einfärbung – keine Zonenfarben, nicht Teil dieser
+  Konsolidierung.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

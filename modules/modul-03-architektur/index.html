@@ -435,7 +435,7 @@ body.print-full #full-layout-container { display:block !important; padding:0; }
       <hr class="zone-sep">
 
       <div class="zone-row-h">
-        <span class="zone-dot" style="background:#D4A84B"></span>
+        <span class="zone-dot" style="background:#EBDBA0"></span>
         <span class="zone-lbl2">ÜSS + Sich. <span style="color:var(--tx3);font-size:10px">(B · H)</span></span>
         <span id="zh_einsp" class="zmm2">–</span>
       </div>
@@ -516,6 +516,14 @@ const _v = (id, val) => { document.getElementById(id).value = val; };
 
 // ── Festwerte ─────────────────────────────────────────────────
 const TE_BREITE_MM  = 18.0;  // DIN 43880
+
+// Zonenfarben – modulübergreifend identisch mit Modul 4 gehalten
+// (siehe CLAUDE.md, gesperrte Konvention). kanal_* bleiben bei '#888'
+// (Kanal-Grau, kein Zonen-Farbwert, daher nicht Teil dieser Konstante).
+const ZONE_COLORS = {
+  klemm_e:'#D8A916', uss:'#EBDBA0', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA',
+  klemm_l:'#2DBD8E', klemm_f:'#9A94E8', klemm_s:'#C14FA0'
+};
 
 // Mindesthöhen Zonenberechnung
 const H_KLEMME_STD = 65;   // Klemmenhöhe Richtwert: Phoenix XTV 6 (6 mm², 62,5 mm) / PT 2.5 MT (Messertrennkl., 62,5 mm) → aufger. 65 mm
@@ -776,10 +784,10 @@ function calculateZones(b, h) {
       ? Math.floor(b_leist / TE_BREITE_MM)
       : Math.floor((b_leist - b_uss) / TE_BREITE_MM);
     const te_steuer = Math.floor(b_steuer / TE_BREITE_MM);
-    set('zh_einsp',   `${n_te_uss} TE · ${Math.round(b_uss)} mm`, '#D4A84B');
-    set('zh_evert',   `${te_evert} TE · ${h_evert} mm`, '#C8720E');
-    set('zh_leist',   `${te_leist} TE · ${h_leist} mm`, '#C84E2E');
-    set('zh_steuer',  `${te_steuer} TE · ${h_steuer} mm`, '#4BBECA');
+    set('zh_einsp',   `${n_te_uss} TE · ${Math.round(b_uss)} mm`, ZONE_COLORS.uss);
+    set('zh_evert',   `${te_evert} TE · ${h_evert} mm`, ZONE_COLORS.evert);
+    set('zh_leist',   `${te_leist} TE · ${h_leist} mm`, ZONE_COLORS.leist);
+    set('zh_steuer',  `${te_steuer} TE · ${h_steuer} mm`, ZONE_COLORS.steuer);
     set('zh_kanal_h', `${n_kanal_h}× ${h_kanal_h} = ${n_kanal_h*h_kanal_h} mm`, '#666');
     set('zh_klemm',   h_klemm   + ' mm');
     set('zh_gesamt',  h_gesamt  + ' mm');
@@ -883,10 +891,10 @@ function buildLayout(zp) {
     evert: { h_mm: h_evert, zones: zp.useEvKanal
       ? [
           { id:'kanal_vl', x:0,    w:f_vk,   col:'#888',    lbl:'' },
-          { id:'evert',    x:f_vk, w:1-f_vk, col:'#C8720E', lbl:'Energieverteilung' },
+          { id:'evert',    x:f_vk, w:1-f_vk, col:ZONE_COLORS.evert, lbl:'Energieverteilung' },
         ]
       : [
-          { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
+          { id:'evert', x:0, w:1, col:ZONE_COLORS.evert, lbl:'Energieverteilung' }
         ]
     },
     kanal_h: { h_mm: h_kanal_h, zones: [
@@ -906,21 +914,21 @@ function buildLayout(zp) {
     // kanal_vl/vr noStroke: kein horizontaler Rahmen an der Kanalzone → kein Trennstrich
     leist_uss_ueber: { h_mm: h_klemm, zones: [
       { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'', noStroke:true },
-      { id:'uss',      x:f_vk,        w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
-      { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'uss',      x:f_vk,        w:f_uss,  col:ZONE_COLORS.uss, lbl:'ÜSS + Sich.' },
+      { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
       { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'', noStroke:true },
     ]},
     // Übereinander – Leistungs-Erweiterungszeile: (h_leist − h_klemm) hoch, volle Innenbreite
     leist_ext_ueber: { h_mm: h_leist_ext, zones: [
       { id:'kanal_vl',  x:0,     w:f_vk,  col:'#888',    lbl:'', noStroke:true },
-      { id:'leist_ext', x:f_vk,  w:f_s_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'leist_ext', x:f_vk,  w:f_s_u,  col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
       { id:'kanal_vr',  x:1-f_vk, w:f_vk, col:'#888',    lbl:'', noStroke:true },
     ]},
 
     // Übereinander – Steuerungszeile: [VK_L | Steuerung | VK_R]
     steuer_ueber: { h_mm: h_steuer, zones: [
       { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'' },
-      { id:'steuer',   x:f_vk,  w:f_s_u,  col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'steuer',   x:f_vk,  w:f_s_u,  col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'' },
     ]},
 
@@ -928,32 +936,32 @@ function buildLayout(zp) {
     // kanal_vl/vr noStroke: kein horizontaler Rahmen an der Kanalzone → kein Trennstrich
     leist_uss_neben: { h_mm: h_klemm, zones: [
       { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
-      { id:'uss',      x:f_vk,           w:f_uss,      col:'#D4A84B', lbl:'ÜSS + Sich.' },
-      { id:'leist',    x:f_vk+f_uss,     w:f_l_n,      col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'uss',      x:f_vk,           w:f_uss,      col:ZONE_COLORS.uss, lbl:'ÜSS + Sich.' },
+      { id:'leist',    x:f_vk+f_uss,     w:f_l_n,      col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
+      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'', noStroke:true },
     ]},
     // Nebeneinander – Erweiterungszeile: (h_leist − h_klemm) hoch, volle Leistungsbreite nutzbar
     leist_ext_neben: { h_mm: h_leist_ext, zones: [
       { id:'kanal_vl',  x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
-      { id:'leist_ext', x:f_vk,           w:b_leist/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'steuer',    x:f_vk+b_leist/b, w:f_s_n,     col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'leist_ext', x:f_vk,           w:b_leist/b, col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
+      { id:'steuer',    x:f_vk+b_leist/b, w:f_s_n,     col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr',  x:1-f_vk,         w:f_vk,      col:'#888',    lbl:'', noStroke:true },
     ]},
     // Nebeneinander – zweite Hälfte: h_leist hoch, kein ÜSS
     leist_neben_b: { h_mm: h_leist, zones: [
       { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'' },
-      { id:'leist',    x:f_vk,           w:b_leist/b,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'leist',    x:f_vk,           w:b_leist/b,  col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
+      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'' },
     ]},
 
     // Klemmen: Einsp.-Kl. immer links (KE-Position unabhängig)
     klemm: { h_mm: h_klemm, zones: [
-      { id:'klemm_e', x:0,              w:f_ek,  col:'#D4A84B', lbl:'Einsp.-Kl.' },
-      { id:'klemm_l', x:f_ek,           w:f_kl,  col:'#2DBD8E', lbl:'Abg.-Kl. Leistung' },
-      { id:'klemm_f', x:f_ek+f_kl,      w:f_kf,  col:'#9A94E8', lbl:'Abg.-Kl. Feldger.' },
-      { id:'klemm_s', x:f_ek+f_kl+f_kf, w:f_ks,  col:'#E8C448', lbl:'Abg.-Kl. Sensoren' },
+      { id:'klemm_e', x:0,              w:f_ek,  col:ZONE_COLORS.klemm_e, lbl:'Einsp.-Kl.' },
+      { id:'klemm_l', x:f_ek,           w:f_kl,  col:ZONE_COLORS.klemm_l, lbl:'Abg.-Kl. Leistung' },
+      { id:'klemm_f', x:f_ek+f_kl,      w:f_kf,  col:ZONE_COLORS.klemm_f, lbl:'Abg.-Kl. Feldger.' },
+      { id:'klemm_s', x:f_ek+f_kl+f_kf, w:f_ks,  col:ZONE_COLORS.klemm_s, lbl:'Abg.-Kl. Sensoren' },
     ]},
   };
 

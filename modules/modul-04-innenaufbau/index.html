@@ -217,6 +217,10 @@ legend{
   display:flex;align-items:center;justify-content:center;
 }
 #svg-wrap svg{display:block;}
+/* Zonentexte im SVG nur auf dem Bildschirm ausblenden – die Legende
+   (.cabinet-legend) übernimmt die Erklärung. Im Ausdruck (@media print
+   unten) werden sie wieder eingeblendet, da dort keine Legende danebenliegt. */
+#svg-inner .zone-label-layer{display:none;}
 .no-data-msg{
   color:var(--tx3);font-size:12px;text-align:center;padding:20px;
 }
@@ -315,6 +319,7 @@ legend{
   .eingabeleiste{display:none;}
   .fuellstand-strip{display:none;}
   .layout-3col{grid-template-columns:200px 1fr 300px;}
+  #svg-inner .zone-label-layer{display:inline;}
 }
 </style>
 </head>
@@ -513,10 +518,12 @@ const ZONE_LABELS = {
   klemm_l:'Abg.-Kl. Leistung', klemm_f:'Abg.-Kl. Feldgeräte', klemm_s:'Abg.-Kl. Sensoren'
 };
 // Einzige Quelle für Zonenfarben – genutzt von buildFuellstand(), der
-// Zonen-Legende (buildLegend()) und den Klemmleisten-Rects in buildSVG().
+// Zonen-Legende (buildLegend()), buildLayout() (Zonen-Rects) und den
+// Klemmleisten-Rects in buildSVG(). Modulübergreifend identisch mit Modul 3
+// gehalten (siehe CLAUDE.md, gesperrte Konvention).
 const ZONE_COLORS = {
-  klemm_e:'#D4A84B', uss:'#D4A84B', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA',
-  klemm_l:'#2DBD8E', klemm_f:'#9A94E8', klemm_s:'#E8C448'
+  klemm_e:'#D8A916', uss:'#EBDBA0', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA',
+  klemm_l:'#2DBD8E', klemm_f:'#9A94E8', klemm_s:'#C14FA0'
 };
 // leist/steuer: Höhe ist ein flexibles Mehrreihen-Budget → Kanal+Klemmraum-Modell.
 // uss/klemm_*: Höhe = h_klemm = tatsächliche Einbauhöhe (M3: "ÜSS h_sub_mm = h_klemm"),
@@ -783,10 +790,10 @@ function buildLayout(zp) {
     evert: { h_mm: h_evert, zones: zp.useEvKanal
       ? [
           { id:'kanal_vl', x:0,    w:f_vk,   col:'#888',    lbl:'' },
-          { id:'evert',    x:f_vk, w:1-f_vk, col:'#C8720E', lbl:'Energieverteilung' },
+          { id:'evert',    x:f_vk, w:1-f_vk, col:ZONE_COLORS.evert, lbl:'Energieverteilung' },
         ]
       : [
-          { id:'evert', x:0, w:1, col:'#C8720E', lbl:'Energieverteilung' }
+          { id:'evert', x:0, w:1, col:ZONE_COLORS.evert, lbl:'Energieverteilung' }
         ]
     },
     kanal_h: { h_mm: h_kanal_h, zones: [
@@ -804,46 +811,46 @@ function buildLayout(zp) {
 
     leist_uss_ueber: { h_mm: h_klemm, zones: [
       { id:'kanal_vl', x:0,          w:f_vk,  col:'#888',    lbl:'', noStroke:true },
-      { id:'uss',      x:f_vk,        w:f_uss,  col:'#D4A84B', lbl:'ÜSS + Sich.' },
-      { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'uss',      x:f_vk,        w:f_uss,  col:ZONE_COLORS.uss, lbl:'ÜSS + Sich.' },
+      { id:'leist',    x:f_vk+f_uss,  w:f_l_u,  col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
       { id:'kanal_vr', x:1-f_vk,      w:f_vk,   col:'#888',    lbl:'', noStroke:true },
     ]},
     leist_ext_ueber: { h_mm: h_leist_ext, zones: [
       { id:'kanal_vl',  x:0,     w:f_vk,  col:'#888',    lbl:'', noStroke:true },
-      { id:'leist_ext', x:f_vk,  w:f_s_u,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
+      { id:'leist_ext', x:f_vk,  w:f_s_u,  col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
       { id:'kanal_vr',  x:1-f_vk, w:f_vk, col:'#888',    lbl:'', noStroke:true },
     ]},
     steuer_ueber: { h_mm: h_steuer, zones: [
       { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'' },
-      { id:'steuer',   x:f_vk,  w:f_s_u,  col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'steuer',   x:f_vk,  w:f_s_u,  col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'' },
     ]},
 
     leist_uss_neben: { h_mm: h_klemm, zones: [
       { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
-      { id:'uss',      x:f_vk,           w:f_uss,      col:'#D4A84B', lbl:'ÜSS + Sich.' },
-      { id:'leist',    x:f_vk+f_uss,     w:f_l_n,      col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'uss',      x:f_vk,           w:f_uss,      col:ZONE_COLORS.uss, lbl:'ÜSS + Sich.' },
+      { id:'leist',    x:f_vk+f_uss,     w:f_l_n,      col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
+      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'', noStroke:true },
     ]},
     leist_ext_neben: { h_mm: h_leist_ext, zones: [
       { id:'kanal_vl',  x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
-      { id:'leist_ext', x:f_vk,           w:b_leist/b, col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'steuer',    x:f_vk+b_leist/b, w:f_s_n,     col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'leist_ext', x:f_vk,           w:b_leist/b, col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
+      { id:'steuer',    x:f_vk+b_leist/b, w:f_s_n,     col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr',  x:1-f_vk,         w:f_vk,      col:'#888',    lbl:'', noStroke:true },
     ]},
     leist_neben_b: { h_mm: h_leist, zones: [
       { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'' },
-      { id:'leist',    x:f_vk,           w:b_leist/b,  col:'#C84E2E', lbl:'Leistungsbaugr.' },
-      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:'#4BBECA', lbl:'Steuerbaugr./DDC' },
+      { id:'leist',    x:f_vk,           w:b_leist/b,  col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
+      { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
       { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'' },
     ]},
 
     klemm: { h_mm: h_klemm, zones: [
-      { id:'klemm_e', x:0,              w:f_ek,  col:'#D4A84B', lbl:'Einsp.-Kl.' },
-      { id:'klemm_l', x:f_ek,           w:f_kl,  col:'#2DBD8E', lbl:'Abg.-Kl. Leistung' },
-      { id:'klemm_f', x:f_ek+f_kl,      w:f_kf,  col:'#9A94E8', lbl:'Abg.-Kl. Feldger.' },
-      { id:'klemm_s', x:f_ek+f_kl+f_kf, w:f_ks,  col:'#E8C448', lbl:'Abg.-Kl. Sensoren' },
+      { id:'klemm_e', x:0,              w:f_ek,  col:ZONE_COLORS.klemm_e, lbl:'Einsp.-Kl.' },
+      { id:'klemm_l', x:f_ek,           w:f_kl,  col:ZONE_COLORS.klemm_l, lbl:'Abg.-Kl. Leistung' },
+      { id:'klemm_f', x:f_ek+f_kl,      w:f_kf,  col:ZONE_COLORS.klemm_f, lbl:'Abg.-Kl. Feldger.' },
+      { id:'klemm_s', x:f_ek+f_kl+f_kf, w:f_ks,  col:ZONE_COLORS.klemm_s, lbl:'Abg.-Kl. Sensoren' },
     ]},
   };
 
@@ -1330,12 +1337,12 @@ function buildSVG(zp, layout, zones) {
     const z = zones[zn];
     if(!z) return;
 
+    // Dynamisch beim Bestücken entstehende Kanäle sehen aus wie die
+    // statischen Struktur-Kanäle aus Modul 3 (grau, kein Textlabel) –
+    // sonst zwei optisch unterschiedliche "Kanal-Sprachen" im selben Bild.
     z.channels.forEach(ch => {
       const cx = ch.x_mm*sc, cy = ch.y_mm*sc, cw = ch.w_mm*sc, chh = ch.h_mm*sc;
-      svg += `<rect x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" width="${cw.toFixed(1)}" height="${chh.toFixed(1)}" fill="#0000000C" stroke="none"/>`;
-      if(chh > 8) {
-        svg += `<text x="${(cx+3).toFixed(1)}" y="${(cy+chh/2).toFixed(1)}" dominant-baseline="middle" font-size="5" font-family="system-ui,sans-serif" fill="#00000066">Kanal</text>`;
-      }
+      svg += `<rect x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" width="${cw.toFixed(1)}" height="${chh.toFixed(1)}" fill="#888" fill-opacity="0.22" stroke="none"/>`;
     });
 
     z.rows.forEach(row => {
@@ -1389,7 +1396,9 @@ function buildSVG(zp, layout, zones) {
 
   // Zonen-/Klemmleisten-Beschriftungen als letzte Ebene – liegen damit immer
   // über den Bauteil-Blöcken, unabhängig davon wie weit eine Zone belegt ist.
-  svg += svgLabels;
+  // Zonentexte nur auf dem Bildschirm ausblenden (siehe CSS .zone-label-layer) –
+  // im Ausdruck bleiben sie erhalten, da dort keine Legende danebenliegt.
+  svg += `<g class="zone-label-layer">${svgLabels}</g>`;
 
   svg += `</svg>`;
   svgEl.innerHTML = svg;
