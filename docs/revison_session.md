@@ -307,7 +307,8 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 9b. ~~Modul 4 – Funktionsbereich-Taxonomie (10 statt 5 Bereiche), Design-Feinschliff~~ ✅ abgeschlossen Session 24
 9c. ~~Modul 4 – Bedarfsbasierte Breiten-Umverteilung Klemmleisten (klemm_l/f/s)~~ ✅ abgeschlossen Session 25
 9d. ~~Modul 4 – Fortlaufender Verdrahtungskanal je Bauteilreihe (Leistung/Steuerung, über- und nebeneinander)~~ ✅ abgeschlossen Session 26 – Bug: Kanal wurde nur vor der ersten Reihe je Band gesetzt statt vor jeder Reihe; Fix per bandübergreifendem `kanalPending`-Flag. **Nachkorrektur (Session 26, Live-Screenshot des Nutzers):** erster Fix setzte fälschlich zusätzlich einen Kanal vor Reihe 1 (dort existiert bereits eine feste M3-Kanalzone) – `kanalPending` startet jetzt mit `false`, siehe CLAUDE.md
-9e. **Modul 4 – Idee 2 (zurückgestellt): Höhen-Umverteilung Leistung/Steuerung** mit verschiebendem
+9e. ~~Modul 4 – Zonenbeschriftung: Vordergrund-Ebene + robuster Zeilenumbruch~~ ✅ abgeschlossen Session 26 – Zonentext wurde von Bauteil-Blöcken überdeckt (Zeichenreihenfolge) und lief bei schmalen Zonen (Nebeneinander) rechts aus dem Feld (wortbasierter Umbruch konnte einzelne lange Wörter wie „Steuerbaugr./DDC" nicht brechen). Fix: Beschriftungen werden in `buildSVG()` erst nach Kanälen/Bauteilen gezeichnet (eigene Vordergrund-Ebene, simuliert über Zeichenreihenfolge, plus heller Textumriss), `wrapSVGText()` bricht zusätzlich hart um, siehe CLAUDE.md
+9f. **Modul 4 – Idee 2 (zurückgestellt): Höhen-Umverteilung Leistung/Steuerung** mit verschiebendem
     Kabelkanal, analog zur Klemmleisten-Umverteilung. Energieverteilung bleibt fix. Braucht eigene
     Abstimmung: Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg „Nebeneinander" (Breite) vs.
     „Übereinander" (Höhe).
