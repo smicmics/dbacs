@@ -374,14 +374,17 @@ Nutzer-Feedback nach Test der neuen Legende: einige Zonenfarben sahen sich zu
 sollten Zonenfarben nicht länger mehrfach unabhängig gepflegt werden.
 ```
 const ZONE_COLORS = {
-  klemm_e:'#D8A916', uss:'#EBDBA0', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA',
+  klemm_e:'#EBDBA0', uss:'#D8A916', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA',
   klemm_l:'#2DBD8E', klemm_f:'#9A94E8', klemm_s:'#C14FA0'
 };
 ```
-- **Geänderte Werte:** `klemm_e` (Einspeisung) kräftigeres Gold-Gelb, `uss`
-  (ÜSS) blasses, entsättigtes Gelb – vorher beide identisch `#D4A84B`.
-  `klemm_s` (Abg.-Kl. Sensoren) Magenta statt Gelbton – vorher `#E8C448`.
-  `evert`, `leist`, `steuer`, `klemm_l`, `klemm_f` unverändert.
+- **Geänderte Werte:** `klemm_e` (Einspeisung) blasses, entsättigtes Gelb,
+  `uss` (ÜSS) kräftigeres Gold-Gelb – vorher beide identisch `#D4A84B`.
+  Erster Korrekturversuch hatte die Zuordnung umgekehrt (Einspeisung stark,
+  ÜSS blass); auf Nutzerwunsch in derselben Session getauscht – finale
+  Zuordnung ist die oben stehende. `klemm_s` (Abg.-Kl. Sensoren) Magenta statt
+  Gelbton – vorher `#E8C448`. `evert`, `leist`, `steuer`, `klemm_l`, `klemm_f`
+  unverändert.
 - **Mechanismus:** kein gemeinsames externes File (Architektur bleibt
   Single-File-HTML pro Modul, kein zusätzlicher `fetch()` nötig, Farben sind
   synchron beim ersten Rendern verfügbar). Stattdessen führt jedes Modul
