@@ -337,6 +337,13 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - Eingebunden in `placeBauteile()` direkt vor der `KLEMM_ZONEN`-Schleife; `buildSVG()` zeichnet das Zonenraster für diese 3 IDs jetzt aus den umverteilten Bändern (`zones[zn].bands`) statt aus `layout.svgRows` (M3-Statik).
 - **Idee 2 (Leistung/Steuerung, Höhen-Umverteilung mit verschiebendem Kabelkanal) bewusst zurückgestellt** – eigene Abstimmungsrunde nötig (Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg für „Nebeneinander" vs. „Übereinander").
 
+### Modul 4 – Fortlaufender Verdrahtungskanal je Bauteilreihe (Session 26, gesperrt)
+- **Problem:** Elektronische Betriebsmittel (Schütz, Motorschutzschalter, Relais, DDC-Modul) haben oben UND unten elektrische Anschlüsse. `placeInBands()` setzte den Verdrahtungskanal (40 mm) bisher nur vor der jeweils ersten Reihe eines Bandes; alle Folgereihen innerhalb desselben Bandes wurden ohne Kanal direkt gestapelt (kein Verdrahtungsraum unter den Bauteilen). Beim Wechsel in ein neues Band (z. B. Leistung → Leistung-Ext) konnte zusätzlich ein abschließender Kanal am Bandende auf den Start-Kanal des nächsten Bandes treffen → zwei Kanäle übereinander, Platzverschwendung ohne Nutzen.
+- **Lösung:** `kanalPending`-Flag läuft in `placeInBands()` durchgehend über alle Bänder einer Zone hinweg (nicht mehr pro Band zurückgesetzt). Vor jeder Reihe – auch bandübergreifend – wird genau ein Kanal gesetzt; zwei benachbarte Reihen teilen sich den Kanal an ihrer gemeinsamen Grenze (kein Doppel-Kanal).
+- **Kein abschließender Kanal nach der letzten Reihe:** Leistung und Steuerung münden (in beiden KE-Positionen, Übereinander wie Nebeneinander) immer direkt in eine feste M3-Kanalzone (`kanal_ls`/`kanal_h`/`kanal_ev`), die die untere Anschlussseite der letzten Reihe bereits abdeckt. Der verbleibende Rest des letzten Bandes bleibt als zusätzlicher Klemmraum ungenutzt – akzeptiert, da der Installationsbereich dadurch insgesamt besser ausgenutzt wird als durch einen bandweise garantierten, aber oft sinnlos gestapelten Extra-Kanal.
+- Betrifft `placeInBands()`, verwendet für `leist`/`steuer` (immer) sowie `evert` (nur wenn `!zp.useEvKanal`) – gilt also für alle drei mit gleicher Begründung.
+- Geprüft für Leistung + Steuerung, Übereinander und Nebeneinander, inkl. bandübergreifendem Wechsel (z. B. Leistung-Ext → Leistung-ÜSS-Reihe): korrekt alternierendes Kanal-Reihe-Kanal-Reihe-Muster, kein Doppel-Kanal an Bandgrenzen.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

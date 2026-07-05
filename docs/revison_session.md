@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 4. Juli 2026 – Session 25 (Modul 4: bedarfsbasierte Breiten-Umverteilung Klemmleisten)
+**Stand:** 5. Juli 2026 – Session 26 (Modul 4: fortlaufender Verdrahtungskanal je Bauteilreihe, Leistung/Steuerung)
 
 **Meilenstein:** Git-Tag `meilenstein-2026-07-04-modul4-design` (Sessions 22–24) + vollständiges Backup (ZIP, Git-Bundle, Claude-Gedächtnis) unter `C:\Users\SMI\Backups\dbacs\`.
 
@@ -306,7 +306,8 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 9a. ~~Modul 4 – Layout-Neuordnung (Schranksicht dominant, skaliert wie M3, Eingabeleiste + Füllstand-Streifen volle Breite)~~ ✅ abgeschlossen Session 23
 9b. ~~Modul 4 – Funktionsbereich-Taxonomie (10 statt 5 Bereiche), Design-Feinschliff~~ ✅ abgeschlossen Session 24
 9c. ~~Modul 4 – Bedarfsbasierte Breiten-Umverteilung Klemmleisten (klemm_l/f/s)~~ ✅ abgeschlossen Session 25
-9d. **Modul 4 – Idee 2 (zurückgestellt): Höhen-Umverteilung Leistung/Steuerung** mit verschiebendem
+9d. ~~Modul 4 – Fortlaufender Verdrahtungskanal je Bauteilreihe (Leistung/Steuerung, über- und nebeneinander)~~ ✅ abgeschlossen Session 26 – Bug: Kanal wurde nur vor der ersten Reihe je Band gesetzt statt vor jeder Reihe; Fix per bandübergreifendem `kanalPending`-Flag, siehe CLAUDE.md
+9e. **Modul 4 – Idee 2 (zurückgestellt): Höhen-Umverteilung Leistung/Steuerung** mit verschiebendem
     Kabelkanal, analog zur Klemmleisten-Umverteilung. Energieverteilung bleibt fix. Braucht eigene
     Abstimmung: Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg „Nebeneinander" (Breite) vs.
     „Übereinander" (Höhe).

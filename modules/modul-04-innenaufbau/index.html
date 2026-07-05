@@ -911,9 +911,20 @@ function getZoneBands(zp) {
 }
 
 // ── Bauteile in die vorgegebenen Bänder platzieren ────────────────────
-// Reihenfolge je Band: Kanal(40mm) → Reihe → Kanal → Reihe → … → Kanal.
-// Passt eine Reihe nicht mehr in das aktuelle Band, wird im nächsten
-// Band derselben Zone weitergemacht; sind alle Bänder voll, Overflow.
+// Elektronische Betriebsmittel (Schütz, Motorschutz, Relais, DDC-Modul)
+// haben oben UND unten elektrische Anschlüsse – jede Reihe braucht also
+// einen Verdrahtungskanal darüber. Zwei benachbarte Reihen teilen sich
+// genau einen Kanal an ihrer gemeinsamen Grenze (kein Doppel-Kanal).
+// `kanalPending` läuft über Bandgrenzen hinweg durch, damit der Kanal
+// auch beim Wechsel in das nächste Band (z. B. Leistung → Leistung-Ext)
+// nicht verloren geht oder doppelt gesetzt wird. Nach der letzten Reihe
+// wird bewusst KEIN abschließender Kanal mehr angehängt: Leistung/Steuerung
+// münden immer direkt in eine feste M3-Kanalzone (kanal_ls/kanal_h/kanal_ev),
+// die die untere Anschlussseite der letzten Reihe bereits abdeckt – der
+// verbleibende Rest des Bandes wird stattdessen als zusätzlicher Klemmraum
+// frei gelassen (akzeptabel). Passt eine Reihe nicht mehr in das aktuelle
+// Band, wird im nächsten Band derselben Zone weitergemacht; sind alle
+// Bänder voll, Overflow.
 function placeInBands(devs, bands, klemmraum) {
   const H_KANAL = 40;
   const rows = [];
@@ -921,6 +932,7 @@ function placeInBands(devs, bands, klemmraum) {
   let idx = 0;
   let mm_used = 0;
   let placedCount = 0;   // laufende Positionsnummer je Zone
+  let kanalPending = true; // vor der nächsten Reihe (auch bandübergreifend) muss ein Kanal gesetzt werden
 
   for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
     const band = bands[bi];
@@ -928,7 +940,6 @@ function placeInBands(devs, bands, klemmraum) {
     if (te_per_row <= 0) continue;
 
     let y_local = 0;
-    let kanalGesetzt = false;
     while (idx < devs.length) {
       let te = 0, j = idx;
       while (j < devs.length) {
@@ -938,14 +949,13 @@ function placeInBands(devs, bands, klemmraum) {
       const batch = devs.slice(idx, j);
       const h_dev = Math.max(...batch.map(d => d.h_mm));
       const h_row = h_dev + 2*klemmraum;
-      const kanalOben = kanalGesetzt ? 0 : H_KANAL;
+      const kanalHier = kanalPending ? H_KANAL : 0;
 
-      if (y_local + kanalOben + h_row > band.h_mm) break;
+      if (y_local + kanalHier + h_row > band.h_mm) break;
 
-      if (kanalOben) {
+      if (kanalHier) {
         channels.push({ x_mm: band.x_mm, y_mm: band.y_mm + y_local, w_mm: band.w_mm, h_mm: H_KANAL });
         y_local += H_KANAL;
-        kanalGesetzt = true;
       }
 
       let col = 0;
@@ -953,10 +963,7 @@ function placeInBands(devs, bands, klemmraum) {
       rows.push({ mode:'row', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm + y_local, h_mm: h_row, klemmraum, blocks });
       y_local += h_row;
       idx = j;
-    }
-    if (kanalGesetzt && y_local + H_KANAL <= band.h_mm) {
-      channels.push({ x_mm: band.x_mm, y_mm: band.y_mm + y_local, w_mm: band.w_mm, h_mm: H_KANAL });
-      y_local += H_KANAL;
+      kanalPending = true; // die nächste Reihe (dieses oder das nächste Band) braucht wieder einen Kanal darüber
     }
     mm_used += y_local;
   }
