@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 5. Juli 2026 – Session 27 (Modul 4: Bauteil-Datenbasis über Excel-Pipeline nachgezogen, Recherche + Befüllung 18 neuer Katalogeinträge)
+**Stand:** 5. Juli 2026 – Session 27 (Modul 4: Bauteil-Datenbasis über Excel-Pipeline nachgezogen, Recherche + Befüllung 18 neuer Katalogeinträge; Klemmen-Herstellerbereinigung auf Phoenix Contact UT/PT-Reihe, 41 Katalogzeilen)
 
 **Meilenstein:** Git-Tag `meilenstein-2026-07-04-modul4-design` (Sessions 22–24) + Git-Tag `meilenstein-2026-07-05-modul4-abgeschlossen` (Sessions 25–26, Modul 4 Design/Darstellung fertig, vor Beginn der Bauteile/Funktionsgruppen-Integration) – je vollständiges Backup (ZIP, Git-Bundle, Claude-Gedächtnis) unter `C:\Users\SMI\Backups\dbacs\`.
 
@@ -316,6 +316,7 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
     Abstimmung: Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg „Nebeneinander" (Breite) vs.
     „Übereinander" (Höhe).
 9j. ~~Modul 4 – Bauteil-Datenbasis über Excel-Pipeline nachgezogen~~ ✅ abgeschlossen Session 27 – `einzelbauteile.json`/`baugruppen.json` liefen als einzige DBs bisher nicht über Excel; jetzt neue Sheets `einzelbauteile`/`baugruppen`/`baugruppen_bauteile` (Verknüpfungstabelle). Schema erweitert: `b_mm` (reale Breite) jetzt Hauptfeld statt `te_breite` (wird abgeleitet), `datenpunkt_typ`/`-anzahl`/`klemmen_zusatz` (Datenfelder für spätere DDC-Kapazitätslogik, noch unausgewertet), `funktionsbereiche`/`automationsfunktionen`/`geprueft` bei Baugruppen. 18 neue Katalogeinträge recherchiert (Klemmen Phoenix/Wago mit Querschnittsbereich, ÜSS-Vorsicherung D03/100A statt NH00, Dehn-Feinschutz, Siemens-Steuertrafos mit Spannungsangabe, Desigo PXC100-D, Metz Connect KRS-E06/KMA-F8 als LVB-Nachfolger des alten BTR-Relais). Dabei Bug gefunden+gefixt: `buildStueckliste()`/`exportCSV()` stürzten bei fehlendem `preis_eur` ab (neue unbepreiste Einträge) – zeigen jetzt „–". Siehe CLAUDE.md für Details.
+9k. ~~Modul 4 – Klemmen-Herstellerbereinigung auf Phoenix Contact~~ ✅ abgeschlossen Session 27b – Nutzer hat alle bisherigen Klemmen-Zeilen (gemischte Hersteller) selbst in Excel gelöscht und Phoenix Contact als alleiniges Planungsfabrikat festgelegt: UT-Reihe (Schraubanschluss, 5 Größen × 5 Farben inkl. eigener `-PE`-Schutzleitervariante) für Einspeisung, PT-Reihe (Push-in, 5 Größen × 3 Farben, gleicher Typ für alle drei Abgangsklemmen-Zonen) + Messertrennklemme PT 2,5-MT für Feldgeräte/Sensoren – 41 neue Katalogzeilen. Bestehende Baugruppen-Referenzen auf die gelöschten Weidmüller-Artikel (19 Zeilen in `baugruppen_bauteile`) wurden auf die neuen Phoenix-Äquivalente ungemappt, damit keine Baugruppe unbemerkt ein Bauteil verliert. Siehe CLAUDE.md für Details.
 10. **Modul 4 – Grundlagenarbeit Bauteildaten/Baugruppen:** ⏳ Session 27
     begonnen – 18 neue Einzelbauteile recherchiert + über die Excel-Pipeline
     eingepflegt (siehe 9j/15). **Noch offen:** vier Einträge mit unverifizierten

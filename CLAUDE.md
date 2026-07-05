@@ -557,6 +557,49 @@ nachgezogen, konsistent mit allen anderen 7 DBs.
   automatische Mehrzonen-Platzierung zur Laufzeit, Zone „Tür" – siehe
   `docs/revison_session.md`.
 
+### Modul 4 – Klemmen-Herstellerbereinigung: Phoenix Contact als Planungsfabrikat (Session 27b, gesperrt)
+Nutzer hat nach erster Durchsicht der Excel-Tabelle festgestellt, dass zu
+viele Hersteller für Klemmen gemischt waren, und alle bisherigen
+Klemmen-Zeilen im `einzelbauteile`-Sheet selbst gelöscht (Weidmüller
+W-Series + die zuvor recherchierten Phoenix-Einzelstücke).
+
+- **Planungsfabrikat Klemmen: ausschließlich Phoenix Contact** (Reihenklemmen-
+  Programm). Zwei Baureihen, klar nach Zone getrennt:
+  - **Einspeisung (`klemm_e`): UT-Reihe, Schraubanschluss.** 5 Baugrößen
+    (UT 2,5/4/6/10/16, deckt 1,5–25 mm² ab) × 5 Farben je Größe (braun=L1,
+    schwarz=L2, grau=L3, blau=N, grün-gelb=PE als eigene `-PE`-Schutzleiter-
+    variante, nicht nur eingefärbte Standardklemme) = 25 Katalogzeilen.
+  - **Abgangsklemmen Leistung/Feldgeräte/Sensoren (`klemm_l`/`klemm_f`/
+    `klemm_s`): PT-Reihe, Push-in (starr + flexibel), gleicher Klemmentyp
+    für alle drei Zonen.** 5 Baugrößen (PT 2,5/4/6/10/16 N, deckt
+    0,14–25 mm² ab) × 3 Farben (grau, blau=N, grün-gelb=PE) = 15
+    Katalogzeilen. Zonen-Zuordnung läuft wie gehabt über den bestehenden
+    Baugruppen-Override-Mechanismus (Katalog-Default `klemm_l`, pro
+    Verwendung auf `klemm_f`/`klemm_s` überschreibbar) – **kein
+    Schema-Umbau nötig**, genau wie in Session 27 als "Mehrzonen-Fähigkeit"
+    vorgesehen.
+  - **Messertrennklemme PT 2,5-MT** (0,14–4 mm²) für Feldgeräte/Sensoren mit
+    Trenn-/Testfunktion, ergänzend zu den normalen PT-Durchgangsklemmen.
+  - Alle Bezeichnungen enthalten jetzt den Querschnittsbereich (Nutzer-
+    Vorgabe, z. B. „Durchgangsklemme UT 4, 0,14–6 mm², braun (L1)").
+- **Bestehende Baugruppen-Referenzen ummappen, nicht nur neu hinzufügen:**
+  die gelöschten Weidmüller-Artikel (`W-Series 1010200000/1010210000/
+  1010290000`) wurden in 6 Baugruppen über 19 `baugruppen_bauteile`-Zeilen
+  referenziert. Diese wurden 1:1 auf die neuen Phoenix-PT-Äquivalente
+  ungemappt (2,5 mm² grau → `3209510`, 2,5 mm² PE → `3209536`, 4 mm² grau →
+  `3211757`), sonst hätten bestehende Baugruppen still ein Bauteil verloren
+  (Modul 4 überspringt unbekannte `artikel_nr`-Referenzen ohne Fehler –
+  genau das Risiko, vor dem in der vorherigen Session gewarnt wurde).
+- **Recherche-Methode:** Bestellnummern je Baugröße/Farbe einzeln über
+  Phoenix-Contact-Produktseiten-Suchtreffer verifiziert (nicht geraten).
+  Zwei Bauteil-Höhen (PT 4, PT 16 N) sind aus der Nachbar-Baugröße
+  interpoliert statt einzeln verifiziert – als `quelle_hinweis` in der
+  Excel-Zeile vermerkt, Nutzer prüft das selbst gegen die Herstellerseite
+  nach ("Web-Test").
+- Geprüft im Browser: Einspeisung (5 Klemmen L1/L2/L3/N/PE) und eine
+  bestehende Baugruppe mit den neu gemappten Abgangsklemmen platzieren sich
+  beide korrekt ohne Overflow.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

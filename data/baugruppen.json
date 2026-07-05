@@ -14,12 +14,12 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 4,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "W-Series 1010290000",
+        "artikel_nr": "3209536",
         "menge": 1,
         "zone": "klemm_l"
       },
@@ -48,12 +48,12 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010210000",
+        "artikel_nr": "3211757",
         "menge": 4,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "W-Series 1010290000",
+        "artikel_nr": "3209536",
         "menge": 1,
         "zone": "klemm_l"
       },
@@ -78,7 +78,7 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 3,
         "zone": "klemm_f"
       },
@@ -103,7 +103,7 @@
         "menge": 2
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 4,
         "zone": "klemm_f"
       },
@@ -124,7 +124,7 @@
     "beschreibung": "Klemmenanschluss für passive Temperaturfühler NTC, PT100 oder PT1000",
     "bauteile": [
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 2,
         "zone": "klemm_s"
       },
@@ -145,7 +145,7 @@
     "beschreibung": "Klemmenanschluss für aktive Sensoren 24VDC mit 0-10V oder 4-20mA Ausgang",
     "bauteile": [
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 3,
         "zone": "klemm_s"
       },
@@ -174,12 +174,12 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 4,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "W-Series 1010290000",
+        "artikel_nr": "3209536",
         "menge": 1,
         "zone": "klemm_l"
       },
@@ -208,12 +208,12 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 4,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "W-Series 1010290000",
+        "artikel_nr": "3209536",
         "menge": 1,
         "zone": "klemm_l"
       },
@@ -238,7 +238,7 @@
         "menge": 2
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 4,
         "zone": "klemm_f"
       },
@@ -263,7 +263,7 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 3,
         "zone": "klemm_f"
       },
@@ -292,12 +292,12 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 4,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "W-Series 1010290000",
+        "artikel_nr": "3209536",
         "menge": 1,
         "zone": "klemm_l"
       },
@@ -326,7 +326,7 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 2,
         "zone": "klemm_l"
       },
@@ -347,7 +347,7 @@
     "beschreibung": "Klemmenanschluss für DALI-Bus-Segment (+DALI, -DALI, PE, Meldeklemme)",
     "bauteile": [
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 4,
         "zone": "klemm_f"
       },
@@ -372,7 +372,7 @@
         "menge": 1
       },
       {
-        "artikel_nr": "W-Series 1010200000",
+        "artikel_nr": "3209510",
         "menge": 2,
         "zone": "klemm_l"
       }
