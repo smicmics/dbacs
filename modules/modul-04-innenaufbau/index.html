@@ -425,36 +425,36 @@ legend{
 <!-- ── Füllstand-Streifen (volle Breite, kompakt) ── -->
 <div class="fuellstand-strip" id="fuellstand-wrap">
   <div class="fs-mini" id="fs-klemme-mini" title="Einspeiseklemmen">
-    <div class="fs-mini-label"><span style="color:#D4A84B">Einsp.-Kl.</span><span id="fs-klemme-txt">–</span></div>
-    <div class="fs-mini-bar-bg"><div id="fs-klemme-bar" class="fs-mini-bar" style="width:0%;background:#D4A84B"></div></div>
+    <div class="fs-mini-label"><span id="fs-klemme-lbl" style="color:#EBDBA0">Einsp.-Kl.</span><span id="fs-klemme-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-klemme-bar" class="fs-mini-bar" style="width:0%;background:#EBDBA0"></div></div>
   </div>
   <div class="fs-mini" id="fs-uss-mini" title="Überspannungsschutz & Vorsicherung">
-    <div class="fs-mini-label"><span style="color:#D4A84B">ÜSS</span><span id="fs-uss-txt">–</span></div>
-    <div class="fs-mini-bar-bg"><div id="fs-uss-bar" class="fs-mini-bar" style="width:0%;background:#D4A84B"></div></div>
+    <div class="fs-mini-label"><span id="fs-uss-lbl" style="color:#D8A916">ÜSS</span><span id="fs-uss-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-uss-bar" class="fs-mini-bar" style="width:0%;background:#D8A916"></div></div>
   </div>
   <div class="fs-mini" id="fs-evert-mini" title="Energieverteilung">
-    <div class="fs-mini-label"><span style="color:#C8720E">Energievert.</span><span id="fs-evert-txt">–</span></div>
+    <div class="fs-mini-label"><span id="fs-evert-lbl" style="color:#C8720E">Energievert.</span><span id="fs-evert-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-evert-bar" class="fs-mini-bar" style="width:0%;background:#C8720E"></div></div>
   </div>
   <div class="fs-mini" id="fs-leist-mini" title="Leistungsbaugruppe">
-    <div class="fs-mini-label"><span style="color:#C84E2E">Leistung</span><span id="fs-leist-txt">–</span></div>
+    <div class="fs-mini-label"><span id="fs-leist-lbl" style="color:#C84E2E">Leistung</span><span id="fs-leist-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-leist-bar" class="fs-mini-bar" style="width:0%;background:#C84E2E"></div></div>
   </div>
   <div class="fs-mini" id="fs-steuer-mini" title="Steuerbaugruppe">
-    <div class="fs-mini-label"><span style="color:#4BBECA">Steuerung</span><span id="fs-steuer-txt">–</span></div>
+    <div class="fs-mini-label"><span id="fs-steuer-lbl" style="color:#4BBECA">Steuerung</span><span id="fs-steuer-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-steuer-bar" class="fs-mini-bar" style="width:0%;background:#4BBECA"></div></div>
   </div>
   <div class="fs-mini" id="fs-klemml-mini" title="Abg.-Kl. Leistung">
-    <div class="fs-mini-label"><span style="color:#2DBD8E">Kl. Leist.</span><span id="fs-klemml-txt">–</span></div>
+    <div class="fs-mini-label"><span id="fs-klemml-lbl" style="color:#2DBD8E">Kl. Leist.</span><span id="fs-klemml-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-klemml-bar" class="fs-mini-bar" style="width:0%;background:#2DBD8E"></div></div>
   </div>
   <div class="fs-mini" id="fs-klemmf-mini" title="Abg.-Kl. Feldgeräte">
-    <div class="fs-mini-label"><span style="color:#9A94E8">Kl. Feld.</span><span id="fs-klemmf-txt">–</span></div>
+    <div class="fs-mini-label"><span id="fs-klemmf-lbl" style="color:#9A94E8">Kl. Feld.</span><span id="fs-klemmf-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-klemmf-bar" class="fs-mini-bar" style="width:0%;background:#9A94E8"></div></div>
   </div>
   <div class="fs-mini" id="fs-klemms-mini" title="Abg.-Kl. Sensoren">
-    <div class="fs-mini-label"><span style="color:#E8C448">Kl. Sens.</span><span id="fs-klemms-txt">–</span></div>
-    <div class="fs-mini-bar-bg"><div id="fs-klemms-bar" class="fs-mini-bar" style="width:0%;background:#E8C448"></div></div>
+    <div class="fs-mini-label"><span id="fs-klemms-lbl" style="color:#C14FA0">Kl. Sens.</span><span id="fs-klemms-txt">–</span></div>
+    <div class="fs-mini-bar-bg"><div id="fs-klemms-bar" class="fs-mini-bar" style="width:0%;background:#C14FA0"></div></div>
   </div>
   <span class="fs-kanal-mini" id="fs-kanal-info">Kanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)</span>
 </div>
@@ -1205,9 +1205,11 @@ function buildFuellstand(zones, zp) {
     const bar  = document.getElementById(`fs-${id}-bar`);
     const txt  = document.getElementById(`fs-${id}-txt`);
     const mini = document.getElementById(`fs-${id}-mini`);
+    const lbl  = document.getElementById(`fs-${id}-lbl`);
     const teStr = z && z.te_belegt > 0 ? `${z.te_belegt} TE · ` : '';
     txt.textContent = avail > 0 ? Math.round(pct) + '%' : '–';
     if(mini) mini.title = `${ZONE_LABELS[zone]}: ${avail > 0 ? `${teStr}${Math.round(used)} / ${Math.round(avail)} mm` : 'keine Daten'}`;
+    if(lbl) lbl.style.color = ZONE_COLORS[zone];
     bar.style.width = Math.min(100, pct) + '%';
     bar.style.background = pct > 100 ? '#E04444' : (pct > 80 ? '#D4A84B' : ZONE_COLORS[zone]);
   });

@@ -397,6 +397,16 @@ const ZONE_COLORS = {
   Verdrahtungskanäle (`z.channels` in `buildSVG()`) nutzen jetzt `fill="#888"
   fill-opacity="0.22"` statt `#0000000C` und haben kein `"Kanal"`-Textlabel
   mehr – optisch identisch zu den statischen Struktur-Kanälen aus Modul 3.
+- **Modul 4 – Nachtrag Füllstand-Streifen:** Die Zonennamen im Füllstand-
+  Streifen (`fs-*-lbl`, z. B. „Einsp.-Kl.", „ÜSS") waren fest im HTML
+  verdrahtet und wurden von `buildFuellstand()` nie aktualisiert – nur der
+  Balken selbst bekam per JS die aktuelle `ZONE_COLORS`-Farbe, das Label
+  daneben blieb auf dem alten Stand hängen (dem Nutzer beim Testen
+  aufgefallen). Jeder `<span>` hat jetzt eine `id="fs-<id>-lbl"`,
+  `buildFuellstand()` setzt `lbl.style.color = ZONE_COLORS[zone]` – Label und
+  Balken laufen damit nie wieder auseinander. Die statischen HTML-
+  Startwerte wurden zusätzlich auf den aktuellen Stand korrigiert (nur als
+  Fallback vor dem ersten `calculate()`-Aufruf relevant).
 - **Modul 4 – Zonentext nur auf dem Bildschirm ausgeblendet:** Da die Legende
   bereits Farbe → Zonenname erklärt, entfällt der Zonentext im SVG jetzt für
   die Bildschirmdarstellung (`svg += '<g class="zone-label-layer">...</g>'`,
