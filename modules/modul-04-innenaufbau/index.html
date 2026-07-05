@@ -912,19 +912,22 @@ function getZoneBands(zp) {
 
 // ── Bauteile in die vorgegebenen Bänder platzieren ────────────────────
 // Elektronische Betriebsmittel (Schütz, Motorschutz, Relais, DDC-Modul)
-// haben oben UND unten elektrische Anschlüsse – jede Reihe braucht also
-// einen Verdrahtungskanal darüber. Zwei benachbarte Reihen teilen sich
-// genau einen Kanal an ihrer gemeinsamen Grenze (kein Doppel-Kanal).
-// `kanalPending` läuft über Bandgrenzen hinweg durch, damit der Kanal
-// auch beim Wechsel in das nächste Band (z. B. Leistung → Leistung-Ext)
-// nicht verloren geht oder doppelt gesetzt wird. Nach der letzten Reihe
-// wird bewusst KEIN abschließender Kanal mehr angehängt: Leistung/Steuerung
-// münden immer direkt in eine feste M3-Kanalzone (kanal_ls/kanal_h/kanal_ev),
-// die die untere Anschlussseite der letzten Reihe bereits abdeckt – der
-// verbleibende Rest des Bandes wird stattdessen als zusätzlicher Klemmraum
-// frei gelassen (akzeptabel). Passt eine Reihe nicht mehr in das aktuelle
-// Band, wird im nächsten Band derselben Zone weitergemacht; sind alle
-// Bänder voll, Overflow.
+// haben oben UND unten elektrische Anschlüsse. Die erste Reihe einer Zone
+// grenzt aber immer direkt an eine bereits bestehende feste M3-Kanalzone
+// (kanal_h/kanal_ls/kanal_ev), die ihr oben schon Verdrahtungsraum liefert –
+// vor der ersten Reihe wird deshalb KEIN zusätzlicher Kanal gesetzt (sonst
+// zwei Kanäle direkt übereinander). Ab der zweiten Reihe existiert dort
+// oben aber noch nichts: der Kanal wird jeweils NACH einer Reihe eingefügt,
+// bevor die nächste beginnt – zwei benachbarte Reihen teilen sich so genau
+// einen Kanal an ihrer gemeinsamen Grenze. `kanalPending` läuft über
+// Bandgrenzen hinweg durch, damit das auch beim Wechsel in das nächste Band
+// (z. B. Leistung → Leistung-Ext) konsistent bleibt. Nach der letzten Reihe
+// wird ebenfalls KEIN abschließender Kanal mehr angehängt: die Zone mündet
+// immer direkt in die nächste feste M3-Kanalzone, die die untere
+// Anschlussseite der letzten Reihe bereits abdeckt – der verbleibende Rest
+// des Bandes wird stattdessen als zusätzlicher Klemmraum frei gelassen
+// (akzeptabel). Passt eine Reihe nicht mehr in das aktuelle Band, wird im
+// nächsten Band derselben Zone weitergemacht; sind alle Bänder voll, Overflow.
 function placeInBands(devs, bands, klemmraum) {
   const H_KANAL = 40;
   const rows = [];
@@ -932,7 +935,7 @@ function placeInBands(devs, bands, klemmraum) {
   let idx = 0;
   let mm_used = 0;
   let placedCount = 0;   // laufende Positionsnummer je Zone
-  let kanalPending = true; // vor der nächsten Reihe (auch bandübergreifend) muss ein Kanal gesetzt werden
+  let kanalPending = false; // vor der ersten Reihe kein Kanal – die feste M3-Kanalzone davor deckt das bereits ab
 
   for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
     const band = bands[bi];
