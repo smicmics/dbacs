@@ -1,7 +1,7 @@
 # DBACS – Revisionsstand
 **Stand:** 5. Juli 2026 – Session 26 (Modul 4: Verdrahtungskanal-Fix, Zonentext-Vordergrund + Zeilenumbruch, Zonen-Legende + sichtbare Bauteil-Nummerierung, Zonenfarben-Konsolidierung Modul 3+4, Höhenprüfung Hutschienen-Zonen + Beschriftung schmaler Bauteile)
 
-**Meilenstein:** Git-Tag `meilenstein-2026-07-04-modul4-design` (Sessions 22–24) + vollständiges Backup (ZIP, Git-Bundle, Claude-Gedächtnis) unter `C:\Users\SMI\Backups\dbacs\`.
+**Meilenstein:** Git-Tag `meilenstein-2026-07-04-modul4-design` (Sessions 22–24) + Git-Tag `meilenstein-2026-07-05-modul4-abgeschlossen` (Sessions 25–26, Modul 4 Design/Darstellung fertig, vor Beginn der Bauteile/Funktionsgruppen-Integration) – je vollständiges Backup (ZIP, Git-Bundle, Claude-Gedächtnis) unter `C:\Users\SMI\Backups\dbacs\`.
 
 **Hinweis Deployment (Session 24+26):** GitHub-Pages-Deploy ist nun dreimal im „deploy"-Job fehlgeschlagen (Commits `0bef940`, `4f93b7b` in Session 24, `6a62c2e` in Session 26 – Build jeweils erfolgreich, nur der Pages-Deploy-Schritt). Session 26: Nutzer hat den Job manuell über GitHub Actions neu gestartet; `Last-Modified`-Header der Live-Seite bestätigte vor dem Neustart den veralteten Stand (04.07., Session 25). Bei erneutem Auftreten den Workflow (`.github/workflows/*.yml`) selbst prüfen statt weiter als reine Instabilität zu werten.
 
