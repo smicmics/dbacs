@@ -352,6 +352,22 @@ Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht ne
 - **Lösung:** `wrapSVGText()` bricht jetzt zusätzlich hart in `maxChars`-Stücke um, wenn ein einzelnes Wort für sich genommen schon breiter als die Zone ist. Bei extrem schmalen Zonen (Testfall 45 mm) entstehen dadurch viele kurze Zeilen (im Extremfall 1–2 Zeichen je Zeile) – optisch nicht schön, aber der Text bleibt garantiert innerhalb der Zonenbreite. Realistische Zonenbreiten (≥ 90 mm) brechen sinnvoll in 2–3 Zeilen.
 - Diese Ebenen-Anpassung betrifft ausschließlich Modul 4 (Modul 3 platziert keine Bauteile über den Zonentext, dort besteht das Überdeckungsproblem nicht); die `wrapSVGText()`-Kopie in Modul 3 hat weiterhin nur den wortbasierten Umbruch ohne harten Fallback – bei Bedarf dort separat nachziehen.
 
+### Modul 4 – Zonen-Legende + sichtbare Bauteil-Nummerierung (Session 26, gesperrt)
+- **Idee des Nutzers:** Da die Zonen unterschiedliche Farben haben, hilft eine Farb-Legende zusätzlich zum (nach obigem Fix zwar lesbaren, aber bei schmalen Zonen weiterhin knappen) Zonentext. Kombiniert mit einer am Block sichtbaren Positionsnummer lässt sich ein Bauteil aus der Stückliste heraus im Schrankbild wiederfinden – nicht nur „was ist verbaut", sondern auch „wo genau".
+- **Drei Design-Entscheidungen vom Nutzer bestätigt (Standardempfehlung jeweils übernommen):**
+  1. Legende zeigt **nur die 8 Zonenfarben** (`ZONE_LABELS`/`ZONE_COLORS`), nicht die Baugruppen-Instanzfarben (`BG_COLORS`) – die gibt es schon als `.bel-dot` in der Belegungsliste, und `ci` verschiebt sich beim Löschen von Einträgen (instabile Legende).
+  2. Nummerierung bleibt **pro Zone** (wie bisher) – `placeInBands()`, `placeInKlemmRow()`, `aggregateStueckliste()`, `buildIdxMap()`, `formatIdxList()` unverändert. Jede Nummer ist im Kontext ihrer Zonenfarbe bzw. des Zonen-Badges in der Stückliste eindeutig.
+  3. Sichtbare Nummer auf dem Block **ergänzt** die Kurzbezeichnung (`MSS`, `Sch.`), ersetzt sie nicht.
+- **`ZONE_COLORS`-Konstante neu** (neben `ZONE_LABELS`, ~Zeile 498) – einzige Quelle für Zonenfarben. Ersetzt die bisher doppelt geführten Farbwerte in `buildFuellstand()` (lokale `color`-Map) und `KLEMM_REDIST_DEF` in `buildSVG()` (dritte Kopie für `klemm_l`/`klemm_f`/`klemm_s`).
+- **`buildLegend()`** (neu, vor `wrapSVGText()`) rendert `<div id="cabinet-legend">` (Geschwisterelement von `#svg-wrap` in `.panel-mid`, unterhalb der Schranksicht) aus `ZONE_LABELS`/`ZONE_COLORS` – Aufruf aus `calculate()`. Da `#svg-wrap` `flex:1` in einer `flex-direction:column`-Spalte ist, nimmt sich die Legende nur ihre eigene Höhe; die bestehende Skalierung (`sc = Math.min(availW/zp.b, availH/layout.totalH)`, misst `wrapEl.clientHeight` live) passt sich ohne Codeänderung an.
+- **Sichtbare Bauteil-Nummer** in `buildSVG()`'s Block-Loop (kein neuer Layer nötig – die Nummer liegt immer auf dem eigenen Block, nie im Bereich eines Nachbarblocks, anders als die Zonentexte): dreistufig nach Platzangebot –
+  1. `bw > 28 && bh > 8` und genug Höhe für zwei Zeilen (`bh >= fs+fsIdx+2`): Kurzbezeichnung + `#idx` als zwei `<tspan>` untereinander.
+  2. Gleiche Breiten-/Höhenschwelle, aber zu wenig Höhe für zwei Zeilen: nur die Kurzbezeichnung (wie vor diesem Fix).
+  3. Zu schmal für die Kurzbezeichnung, aber breit genug für die Nummer allein (Passgenauigkeit über dieselbe Zeichenbreiten-Heuristik wie `wrapSVGText`, `cw = fs*0.63`): nur `#idx`.
+  4. Darunter: kein Text – Mouseover-Tooltip (`<title>#idx · Bezeichnung</title>`, unverändert) bleibt Fallback.
+- **Druck:** Keine neue `@media print`-Regel nötig – die Stückliste (mit vollem Bezeichnungstext + Idx-Bereichen wie `#3–#5, #7`) druckt bereits unverändert mit und deckt das vom Nutzer gewünschte „Mouseover-Volltext beim Druck sichern" bereits ab. Die neue Legende ist ein normales, nicht ausgeblendetes Panel-Element und druckt automatisch mit; `.legend-dot` bekommt zusätzlich `-webkit-print-color-adjust:exact;print-color-adjust:exact`, da Browser Hintergrundfarben beim Drucken sonst standardmäßig unterdrücken.
+- Kein neues `printFullLayout()`/`buildFullLayoutSVG()` (wie Modul 3) – bewusst nicht entwickelt, da die Stückliste die Volltext-Anforderung bereits erfüllt.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

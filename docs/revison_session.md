@@ -1,5 +1,5 @@
 # DBACS – Revisionsstand
-**Stand:** 5. Juli 2026 – Session 26 (Modul 4: fortlaufender Verdrahtungskanal je Bauteilreihe, Leistung/Steuerung)
+**Stand:** 5. Juli 2026 – Session 26 (Modul 4: Verdrahtungskanal-Fix, Zonentext-Vordergrund + Zeilenumbruch, Zonen-Legende + sichtbare Bauteil-Nummerierung)
 
 **Meilenstein:** Git-Tag `meilenstein-2026-07-04-modul4-design` (Sessions 22–24) + vollständiges Backup (ZIP, Git-Bundle, Claude-Gedächtnis) unter `C:\Users\SMI\Backups\dbacs\`.
 
@@ -308,7 +308,8 @@ m03_n_te, m03_b_kanal_v, m03_h_kanal_h, m03_b_ek   ← Session 19 (Grundlage Mod
 9c. ~~Modul 4 – Bedarfsbasierte Breiten-Umverteilung Klemmleisten (klemm_l/f/s)~~ ✅ abgeschlossen Session 25
 9d. ~~Modul 4 – Fortlaufender Verdrahtungskanal je Bauteilreihe (Leistung/Steuerung, über- und nebeneinander)~~ ✅ abgeschlossen Session 26 – Bug: Kanal wurde nur vor der ersten Reihe je Band gesetzt statt vor jeder Reihe; Fix per bandübergreifendem `kanalPending`-Flag. **Nachkorrektur (Session 26, Live-Screenshot des Nutzers):** erster Fix setzte fälschlich zusätzlich einen Kanal vor Reihe 1 (dort existiert bereits eine feste M3-Kanalzone) – `kanalPending` startet jetzt mit `false`, siehe CLAUDE.md
 9e. ~~Modul 4 – Zonenbeschriftung: Vordergrund-Ebene + robuster Zeilenumbruch~~ ✅ abgeschlossen Session 26 – Zonentext wurde von Bauteil-Blöcken überdeckt (Zeichenreihenfolge) und lief bei schmalen Zonen (Nebeneinander) rechts aus dem Feld (wortbasierter Umbruch konnte einzelne lange Wörter wie „Steuerbaugr./DDC" nicht brechen). Fix: Beschriftungen werden in `buildSVG()` erst nach Kanälen/Bauteilen gezeichnet (eigene Vordergrund-Ebene, simuliert über Zeichenreihenfolge, plus heller Textumriss), `wrapSVGText()` bricht zusätzlich hart um, siehe CLAUDE.md
-9f. **Modul 4 – Idee 2 (zurückgestellt): Höhen-Umverteilung Leistung/Steuerung** mit verschiebendem
+9f. ~~Modul 4 – Zonen-Legende + sichtbare Bauteil-Nummerierung~~ ✅ abgeschlossen Session 26 – Legende (`ZONE_LABELS`/neue `ZONE_COLORS`-Konstante, `buildLegend()`) unter der Schranksicht erklärt die 8 Zonenfarben; Bauteil-Blöcke zeigen jetzt zusätzlich zur Kurzbezeichnung ihre Positionsnummer (`#idx`, dreistufig je nach Platzangebot), sodass sich Stückliste (`#3–#5, #7`) und Schrankbild direkt abgleichen lassen. Nummerierung bleibt bewusst pro Zone (keine Änderung an Platzierung/Stückliste). Kein neues Druck-Layout nötig – Stückliste druckt bereits vollständig mit, siehe CLAUDE.md
+9g. **Modul 4 – Idee 2 (zurückgestellt): Höhen-Umverteilung Leistung/Steuerung** mit verschiebendem
     Kabelkanal, analog zur Klemmleisten-Umverteilung. Energieverteilung bleibt fix. Braucht eigene
     Abstimmung: Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg „Nebeneinander" (Breite) vs.
     „Übereinander" (Höhe).
