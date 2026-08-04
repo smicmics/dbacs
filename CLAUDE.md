@@ -619,6 +619,43 @@ W-Series + die zuvor recherchierten Phoenix-Einzelstücke).
   Bewusst zeilenbasiert (nicht feldbasiert wie die informelle Grünfärbung) –
   gleiche Granularität wie bei `baugruppen`, kein Sonderfall nötig.
 
+### Modul 4 – Bedarfsgesteuerte Reserve für Klemmenbereiche (Session 28, gesperrt)
+- **Problem:** `redistributeKlemmBands()` (Session 25) verteilte die
+  gemeinsame Breite von `klemm_l`/`klemm_f`/`klemm_s` bei jedem Aufruf
+  bedingungslos neu, auch wenn keine Zone gefährdet war, und ohne dass
+  geprüft wurde, ob eine spendende Zone dadurch selbst zu knapp wird.
+- **Neues Eingabefeld `reserve_pct`** (Default 20 %, editierbar 0–50 %,
+  persistiert als `m04_reserve_pct`, Muster identisch zu `klemmraum_mm`) –
+  **bewusst schrankweit und generisch benannt, nicht `klemm_*`:** der Wert
+  gilt konzeptionell für alle Bereiche außer den Einspeiseklemmen
+  (`klemm_e`), auch wenn er in dieser Session nur in
+  `redistributeKlemmBands()` ausgewertet wird. Eine spätere Anwendung auf
+  `leist`/`steuer`/`evert` soll ohne Umbenennung möglich sein.
+- **Neuer Algorithmus in `redistributeKlemmBands(bandsAll, queues,
+  reservePct)`:** je Zone `requiredWidth = demandMM/(1-reservePct)`;
+  `deficit = max(0, requiredWidth-origWidth)`, `surplus = max(0,
+  origWidth-requiredWidth)`. Ohne Deficit irgendwo bleiben die
+  Modul-3-Originalbreiten unverändert (keine Umverteilung ohne Anlass).
+  Bei Deficit wird proportional aus dem verfügbaren `totalSurplus`
+  entnommen (`takeRatio = min(1, totalSurplus/totalDeficit)`) – eine
+  Spenderzone gibt nie mehr ab, als ihr eigener Überschuss über ihre
+  eigene Reserve-Grenze hinaus hergibt. Reicht der Überschuss nicht,
+  bleibt der Rest unerfüllt; der bestehende Overflow-Mechanismus in
+  `placeInKlemmRow()` (Breiten-/Höhenprüfung) greift dann unverändert.
+- Zustandslos wie schon Session 25: komplette Neuberechnung bei jedem
+  `calculate()`-Aufruf, kein Event-getriebenes "pro Klemme prüfen" nötig,
+  da `queues[zone]` ohnehin bei jedem Aufruf komplett aus `belegung`
+  (Baugruppen-aufgelöst **und** direkt gesetzte Einzelbauteile) neu
+  aufgebaut wird.
+- `klemm_e` und `uss` bleiben unverändert außen vor.
+- **Bewusst nicht Teil dieser Session:** Anwendung der Reserve auf
+  `leist`/`steuer`/`evert`, ein zusätzliches Schaltschrankfeld bei
+  endgültigem Überlauf (beides zurückgestellt für spätere Sessions).
+- Verifiziert direkt gegen die produktive Funktion im Browser (3 Fälle:
+  kein Deficit → unverändert; Deficit + ausreichender Spender →
+  proportionale Umverteilung ohne Unterschreitung der Spender-Reserve;
+  Deficit > verfügbarer Surplus → Teil-Entlastung, Rest bleibt Overflow).
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

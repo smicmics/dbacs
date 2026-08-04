@@ -375,6 +375,10 @@ legend{
     <label>Klemmraum je Seite (mm)</label>
     <input id="klemmraum_mm" type="number" value="20" min="5" max="50" style="width:70px" oninput="onKlemmraumChange()">
   </div>
+  <div class="eb-field" title="Gilt für alle Bereiche außer Einspeiseklemmen">
+    <label>Reserve Schaltschrank (%)<span class="var">reserve_pct</span></label>
+    <input id="reserve_pct" type="number" value="20" min="0" max="50" style="width:70px" oninput="onReserveChange()">
+  </div>
 
   <div class="eb-sep"></div>
 
@@ -598,6 +602,10 @@ function init() {
   const kr = localStorage.getItem('m04_klemmraum_mm');
   if(kr) _v('klemmraum_mm', kr);
 
+  // Reserve (schrankweit)
+  const rp = localStorage.getItem('m04_reserve_pct');
+  if(rp) _v('reserve_pct', rp);
+
   // Belegung wiederherstellen (ältere Einträge ohne "typ" = Baugruppe)
   const bels = localStorage.getItem('m04_belegung');
   if(bels) try { belegung = JSON.parse(bels); } catch(e){}
@@ -756,6 +764,12 @@ function renderBelegung() {
 // ── Klemmraum ────────────────────────────────────────────────────────
 function onKlemmraumChange() {
   localStorage.setItem('m04_klemmraum_mm', gs('klemmraum_mm'));
+  calculate();
+}
+
+// ── Reserve (schrankweit, gilt für alle Bereiche außer klemm_e) ───────
+function onReserveChange() {
+  localStorage.setItem('m04_reserve_pct', gs('reserve_pct'));
   calculate();
 }
 
@@ -999,34 +1013,53 @@ function placeInBands(devs, bands, klemmraum) {
   return { rows, channels, overflow: idx < devs.length, mm_used };
 }
 
-// ── Bedarfsbasierte Breiten-Umverteilung Klemmleisten ─────────────────
+// ── Bedarfsgesteuerte Reserve-Umverteilung Klemmleisten ───────────────
 // Abg.-Kl. Leistung/Feldgeräte/Sensoren (klemm_l/klemm_f/klemm_s) teilen sich
-// eine gemeinsame Gesamtbreite (= Summe ihrer ursprünglichen Modul-3-Bänder).
-// Statt der starren M3-Aufteilung bekommt jede Unterzone so viel Breite wie
-// ihre aktuelle Belegung tatsächlich braucht; überschüssige Breite wird im
-// Modul-3-Ursprungsverhältnis verteilt (Füllstand bleibt aussagekräftig).
+// eine gemeinsame Gesamtbreite (= Summe ihrer ursprünglichen Modul-3-Bänder,
+// bleibt als Pool konstant). Umverteilt wird NUR, wenn eine Zone bei ihrer
+// ursprünglichen M3-Breite die schrankweite Reserve (reservePct, Default 20%,
+// gilt für alle Bereiche außer klemm_e) unterschreiten würde ("droht
+// überzulaufen") – ist niemand gefährdet, bleiben die M3-Originalbreiten
+// unangetastet. Eine Zone gibt dabei nie mehr ab, als ihr eigener Überschuss
+// über ihre eigene Reserve-Grenze hinaus hergibt ("verdrängt keine andere
+// Klemme ihres Bereichs"). Reicht der verfügbare Überschuss nicht, bleibt der
+// Rest unerfüllt – placeInKlemmRow() erzeugt dann den bekannten Overflow.
 // klemm_e (Einspeiseklemmen) ist davon ausgenommen und bleibt unverändert fix.
-function redistributeKlemmBands(bandsAll, queues) {
+function redistributeKlemmBands(bandsAll, queues, reservePct) {
   const KEYS = ['klemm_l', 'klemm_f', 'klemm_s'];
   const origBands = {};
   KEYS.forEach(k => { origBands[k] = bandsAll[k] || []; });
 
-  const origShare = {};
-  KEYS.forEach(k => { origShare[k] = origBands[k].reduce((a, bd) => a + bd.w_mm, 0); });
-  const totalWidth = KEYS.reduce((s, k) => s + origShare[k], 0);
+  const origWidth = {};
+  KEYS.forEach(k => { origWidth[k] = origBands[k].reduce((a, bd) => a + bd.w_mm, 0); });
 
   const demandMM = {};
   KEYS.forEach(k => { demandMM[k] = (queues[k] || []).reduce((s, d) => s + d.te, 0) * TE_MM; });
-  const totalDemand = KEYS.reduce((s, k) => s + demandMM[k], 0);
+
+  const keepFactor = 1 - reservePct;
+  const requiredWidth = {};
+  KEYS.forEach(k => { requiredWidth[k] = keepFactor > 0 ? demandMM[k] / keepFactor : demandMM[k]; });
+
+  const deficit = {}, surplus = {};
+  KEYS.forEach(k => {
+    deficit[k] = Math.max(0, requiredWidth[k] - origWidth[k]);
+    surplus[k] = Math.max(0, origWidth[k] - requiredWidth[k]);
+  });
+  const totalDeficit = KEYS.reduce((s, k) => s + deficit[k], 0);
+  const totalSurplus = KEYS.reduce((s, k) => s + surplus[k], 0);
 
   const newWidth = {};
-  if (totalDemand <= totalWidth) {
-    const rest = totalWidth - totalDemand;
-    const totalOrigShare = KEYS.reduce((s, k) => s + origShare[k], 0) || 1;
-    KEYS.forEach(k => { newWidth[k] = demandMM[k] + rest * (origShare[k] / totalOrigShare); });
+  if (totalDeficit === 0) {
+    // Niemand gefährdet – M3-Originalbreiten unverändert lassen.
+    KEYS.forEach(k => { newWidth[k] = origWidth[k]; });
   } else {
-    // Echter Überlauf: jede Zone bekommt einen zu ihrem Bedarf proportionalen Anteil
-    KEYS.forEach(k => { newWidth[k] = totalWidth * (demandMM[k] / totalDemand); });
+    const takeRatio = totalSurplus > 0 ? Math.min(1, totalSurplus / totalDeficit) : 0;
+    const takenTotal = totalDeficit * takeRatio;
+    KEYS.forEach(k => {
+      newWidth[k] = origWidth[k];
+      if (deficit[k] > 0) newWidth[k] += deficit[k] * takeRatio;
+      if (surplus[k] > 0) newWidth[k] -= takenTotal * (surplus[k] / totalSurplus);
+    });
   }
 
   const firstBand = origBands[KEYS[0]][0];
@@ -1085,6 +1118,7 @@ function placeInKlemmRow(devs, bands) {
 // ── Berechnung ───────────────────────────────────────────────────────
 function calculate() {
   const klemmraum = Math.max(5, g('klemmraum_mm') || 20);
+  const reservePct = Math.min(0.5, Math.max(0, (g('reserve_pct') || 20) / 100));
   const zp = buildZp();
   buildLegend();
 
@@ -1097,7 +1131,7 @@ function calculate() {
   }
 
   const layout = getZoneBands(zp);
-  const zones  = placeBauteile(layout.bands, klemmraum, zp);
+  const zones  = placeBauteile(layout.bands, klemmraum, zp, reservePct);
 
   buildFuellstand(zones, zp);
   buildSVG(zp, layout, zones);
@@ -1105,7 +1139,7 @@ function calculate() {
 }
 
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
-function placeBauteile(bandsAll, klemmraum, zp) {
+function placeBauteile(bandsAll, klemmraum, zp, reservePct) {
   // Gerätewarteschlange je Zone aufbauen – aus Baugruppen UND Direktbauteilen.
   // Zone je Bauteil: Baugruppen-Override (bt.zone) vor Katalog-Default (eb.zone).
   const queues = {};
@@ -1156,7 +1190,7 @@ function placeBauteile(bandsAll, klemmraum, zp) {
   // Klemmenzeilen (klemm_e/uss/klemm_l/klemm_f/klemm_s): je eine Hutschiene,
   // Kapazität als Breite (mm) statt Höhe, kein Kanal/Klemmraum.
   // klemm_l/klemm_f/klemm_s: Breite wird bedarfsbasiert umverteilt (klemm_e/uss bleiben fix).
-  const redistributedKlemm = redistributeKlemmBands(bandsAll, queues);
+  const redistributedKlemm = redistributeKlemmBands(bandsAll, queues, reservePct);
   KLEMM_ZONEN.forEach(zn => {
     const devs  = queues[zn] || [];
     const bands = redistributedKlemm[zn] || bandsAll[zn] || [];
