@@ -185,6 +185,11 @@ legend{
   padding:0 8px;border:none;border-radius:2px;font-size:10px;font-weight:700;
   cursor:pointer;line-height:13px;height:13px;white-space:nowrap;
 }
+.rowbreak-lbl{
+  display:flex;align-items:center;gap:3px;font-size:10px;color:var(--tx2);
+  white-space:nowrap;flex-shrink:0;cursor:pointer;
+}
+.rowbreak-lbl input[type=checkbox]{width:12px;height:12px;flex-shrink:0;cursor:pointer;}
 .btn-add-sm{background:var(--green);color:#000;}
 .btn-sub-sm{background:var(--bg3);color:var(--tx2);border:1px solid var(--bords);}
 .btn-add-sm:hover,.btn-sub-sm:hover{opacity:.85;}
@@ -422,6 +427,9 @@ legend{
           <button class="btn-add-sm" onclick="addBaugruppe()" title="Menge hinzufügen">+</button>
           <button class="btn-sub-sm" onclick="removeBaugruppeQty()" title="Menge abziehen">&#8722;</button>
         </div>
+        <label class="rowbreak-lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
+          <input type="checkbox" id="bg_rowbreak">neue Reihe
+        </label>
       </div>
     </div>
   </div>
@@ -439,6 +447,9 @@ legend{
         <button class="btn-add-sm" onclick="addEinzelbauteil()" title="Menge hinzufügen">+</button>
         <button class="btn-sub-sm" onclick="removeEinzelbauteilQty()" title="Menge abziehen">&#8722;</button>
       </div>
+      <label class="rowbreak-lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
+        <input type="checkbox" id="einzel_rowbreak">neue Reihe
+      </label>
     </div>
   </div>
 
@@ -719,11 +730,13 @@ function addBaugruppe() {
   const bgId  = gs('bg_auswahl');
   const menge = Math.max(1, g('bg_menge'));
   if(!bgId) return;
+  const rowBreak = document.getElementById('bg_rowbreak').checked;
   const ex = belegung.find(b => b.typ === 'baugruppe' && b.bg_id === bgId);
   if(ex) {
     ex.menge += menge;
+    if(rowBreak) ex.rowBreak = true;
   } else {
-    belegung.push({typ:'baugruppe', bg_id: bgId, menge, ci: belegung.length % BG_COLORS.length});
+    belegung.push({typ:'baugruppe', bg_id: bgId, menge, ci: belegung.length % BG_COLORS.length, rowBreak});
   }
   saveBelegung();
   renderBelegung();
@@ -754,11 +767,13 @@ function addEinzelbauteil() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
   if(!artikelNr) return;
+  const rowBreak = document.getElementById('einzel_rowbreak').checked;
   const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
   if(ex) {
     ex.menge += menge;
+    if(rowBreak) ex.rowBreak = true;
   } else {
-    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length});
+    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, rowBreak});
   }
   saveBelegung();
   renderBelegung();
@@ -891,9 +906,9 @@ function buildLayout(zp) {
       { id:'kanal_vr',  x:1-f_vk, w:f_vk, col:'#888',    lbl:'', noStroke:true },
     ]},
     steuer_ueber: { h_mm: h_steuer, zones: [
-      { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'' },
+      { id:'kanal_vl', x:0,     w:f_vk,  col:'#888',    lbl:'', noStroke:true },
       { id:'steuer',   x:f_vk,  w:f_s_u,  col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
-      { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'' },
+      { id:'kanal_vr', x:1-f_vk, w:f_vk,  col:'#888',    lbl:'', noStroke:true },
     ]},
 
     leist_uss_neben: { h_mm: h_klemm, zones: [
@@ -910,10 +925,10 @@ function buildLayout(zp) {
       { id:'kanal_vr',  x:1-f_vk,         w:f_vk,      col:'#888',    lbl:'', noStroke:true },
     ]},
     leist_neben_b: { h_mm: h_leist, zones: [
-      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'' },
+      { id:'kanal_vl', x:0,              w:f_vk,      col:'#888',    lbl:'', noStroke:true },
       { id:'leist',    x:f_vk,           w:b_leist/b,  col:ZONE_COLORS.leist, lbl:'Leistungsbaugr.' },
       { id:'steuer',   x:f_vk+b_leist/b, w:f_s_n,      col:ZONE_COLORS.steuer, lbl:'Steuerbaugr./DDC' },
-      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'' },
+      { id:'kanal_vr', x:1-f_vk,         w:f_vk,       col:'#888',    lbl:'', noStroke:true },
     ]},
 
     klemm: { h_mm: h_klemm, zones: [
@@ -1032,6 +1047,14 @@ function getZoneBands(zp) {
 // nah genug, um genutzt zu werden. Passt eine Reihe nicht mehr in das
 // aktuelle Band, wird im nächsten Band derselben Zone weitergemacht; sind
 // alle Bänder voll, Overflow.
+// Erzwungener Zeilenumbruch (Session 28c): ein Device mit `rowBreak:true`
+// beendet die aktuelle Batch sofort, auch wenn TE-Breite noch reichen
+// würde – das Gerät startet zwangsläufig eine neue Reihe. Quelle des
+// Flags: manuell über die "neue Reihe"-Checkbox beim Hinzufügen
+// (`belegung[i].rowBreak`) oder datengetrieben aus `baugruppen_bauteile`
+// (`bt.rowBreak`, z. B. "Motorschutzschalter immer über dem Schütz").
+// Verhindert u. a., dass ein später hinzugefügtes großes Bauteil eine
+// bereits kompakte Reihe aus kleineren Bauteilen unnötig aufbläht.
 function placeInBands(devs, bands, klemmraum) {
   const H_KANAL = 40;
   const rows = [];
@@ -1051,7 +1074,7 @@ function placeInBands(devs, bands, klemmraum) {
     while (idx < devs.length) {
       let te = 0, j = idx;
       while (j < devs.length) {
-        if (te + devs[j].te > te_per_row && j > idx) break;
+        if (j > idx && (devs[j].rowBreak || te + devs[j].te > te_per_row)) break;
         te += devs[j].te; j++;
       }
       const batch = devs.slice(idx, j);
@@ -1249,13 +1272,14 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct) {
       if(!eb || eb.te_breite <= 0 || !queues[eb.zone]) return;
       const farbe = BG_COLORS[item.ci];
       for(let q = 0; q < item.menge; q++) {
-        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr});
+        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: q === 0 && !!item.rowBreak});
       }
       return;
     }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
     const farbe = BG_COLORS[item.ci];
+    let firstDeviceOfItem = true; // für manuellen rowBreak: nur das allererste Gerät dieser Belegungszeile
     for(let inst = 0; inst < item.menge; inst++) {
       bg.bauteile.forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
@@ -1263,7 +1287,9 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct) {
         const zone = bt.zone || eb.zone;
         if(!queues[zone]) return;
         for(let q = 0; q < bt.menge; q++) {
-          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr});
+          const rowBreak = (q === 0 && !!bt.rowBreak) || (firstDeviceOfItem && !!item.rowBreak);
+          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak});
+          firstDeviceOfItem = false;
         }
       });
     }

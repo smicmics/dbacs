@@ -30,6 +30,10 @@ from pathlib import Path
 
 EXCEL_FILE = Path(__file__).parent / 'ga_komponenten.xlsx'
 
+# DDC-Datenpunkt-Felder je Bauteil (nur bei automationsanbindung=true befüllt):
+# bei ddc_io-Modulen = bereitgestellte Kapazität je Typ, sonst = Bedarf je Typ.
+DP_FELDER = ['dp_ai', 'dp_ao', 'dp_bi', 'dp_bo', 'dp_fb_ai', 'dp_fb_ao', 'dp_fb_bi', 'dp_fb_bo']
+
 
 def export_kabel_nym_j(wb):
     SHEET = 'kabel_nym_j'
@@ -324,10 +328,11 @@ def export_einzelbauteile(wb):
             entry['kategorie'] = str(rec['kategorie'])
         if rec.get('einbaulage') is not None:
             entry['einbaulage'] = str(rec['einbaulage'])
-        if rec.get('datenpunkt_typ') is not None:
-            entry['datenpunkt_typ'] = str(rec['datenpunkt_typ'])
-        if rec.get('datenpunkt_anzahl') is not None:
-            entry['datenpunkt_anzahl'] = int(rec['datenpunkt_anzahl'])
+        if rec.get('automationsanbindung'):
+            entry['automationsanbindung'] = True
+            for dp_feld in DP_FELDER:
+                if rec.get(dp_feld):
+                    entry[dp_feld] = int(rec[dp_feld])
         if rec.get('klemmen_zusatz') is not None:
             entry['klemmen_zusatz'] = int(rec['klemmen_zusatz'])
         if rec.get('preis_stueck_eur') is not None:
@@ -373,6 +378,8 @@ def export_baugruppen(wb):
         bt = {'artikel_nr': str(rec['artikel_nr']), 'menge': int(rec['menge'])}
         if rec.get('zone') is not None:
             bt['zone'] = str(rec['zone'])
+        if rec.get('zeilenumbruch_davor'):
+            bt['rowBreak'] = True
         bauteile_je_bg.setdefault(str(bg_id), []).append(bt)
 
     ws = wb[SHEET]

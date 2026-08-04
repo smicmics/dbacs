@@ -723,6 +723,90 @@ W-Series + die zuvor recherchierten Phoenix-Einzelstücke).
   Einzelbauteil analog; No-Op-Fall (Abziehen ohne bestehenden Eintrag)
   bestätigt.
 
+### Modul 4 – Kanal-Rand-Fix, erzwungener Zeilenumbruch, DDC-Datenpunkte-Schema (Session 28c, gesperrt)
+Vier Beobachtungen aus einem wahllosen Test-Platzierungslauf (Screenshot),
+in drei parallelen Explore-Agents untersucht, davon zwei diese Session
+umgesetzt und eine als Datenschema vorbereitet:
+
+- **Kanal-Rand-Inkonsistenz (unabhängiger, vorbestehender Bug, nicht durch
+  Session 28/28b verursacht):** 4 statische Zonen-Definitionen in
+  `buildLayout()` (`steuer_ueber`, `leist_neben_b` – ihre `kanal_vl`/
+  `kanal_vr`-Streifen) fehlte `noStroke:true`, dadurch bekamen sie einen
+  sichtbaren 0,6px-Rand, während alle anderen Kanäle (statisch wie
+  dynamisch) randlos sind. Einfache Ergänzung, keine Logikänderung.
+- **Erzwungener Zeilenumbruch (`rowBreak`), gemeinsamer Mechanismus für
+  zwei Probleme:** (1) ein später hinzugefügtes größeres Bauteil (Beispiel
+  Steuertrafo) wurde vom Greedy-Packer an eine bereits kompakte Reihe
+  angehängt und blähte deren Höhe unnötig auf; (2) Positionierungsregeln
+  wie „Motorschutzschalter immer in der Reihe über dem Schütz" waren nicht
+  abbildbar. Beide Fälle lösen denselben Mechanismus aus: ein Device mit
+  `rowBreak:true` beendet die aktuelle Batch in `placeInBands()` sofort
+  (`if (j > idx && (devs[j].rowBreak || te + devs[j].te > te_per_row))
+  break;` – wiederverwendet den bereits bestehenden `j>idx`-Guard-Stil der
+  TE-Überlauf-Prüfung). Zwei Quellen für das Flag, beide münden in dasselbe
+  Device-Feld:
+  - **Manuell** (Checkbox „neue Reihe" bei beiden Add-Zeilen,
+    `#bg_rowbreak`/`#einzel_rowbreak`): `addBaugruppe()`/
+    `addEinzelbauteil()` setzen `belegung[i].rowBreak = true`. Wirkt nur
+    auf das dem Queue-Aufbau nach ERSTE Gerät der gesamten
+    Belegungszeile (`firstDeviceOfItem`-Flag in `placeBauteile()`) –
+    bekannte Einschränkung bei Baugruppen mit Bauteilen in mehreren
+    Zonen (das gemeinte Bauteil könnte in einer anderen Zone landen als
+    das tatsächlich erste in `bg.bauteile[]`); für den Hauptfall
+    (Direktbauteil wie den Steuertrafo, `typ:'einzel'`, immer nur eine
+    Zone) nicht relevant. Kein Zurücksetzen über UI in dieser Runde.
+  - **Datengetrieben** (`baugruppen_bauteile`-Sheet, neue Spalte
+    `zeilenumbruch_davor`): `xlsx_to_json.py`, `export_baugruppen()` gibt
+    bei gesetztem Flag `bt.rowBreak = true` aus. Beispiel „MSS über
+    Schütz": Flag beim Schütz-Eintrag setzen (MSS steht im
+    `bauteile[]`-Array bereits davor).
+  - Kein Effekt auf `placeInKlemmRow()` (Klemmenzeilen kennen kein
+    Reihen-Konzept).
+  - **Bewusst nicht Teil dieser Session:** Beispiel 2 aus der
+    Nutzeranfrage („DDC-Module als Block zusammenhalten, keine anderen
+    Bauteile dazwischen") – andersartiges Constraint (Gruppierung statt
+    Umbruch-vor-Bauteil), eigene Session.
+  - Verifiziert direkt gegen `placeInBands()`: 5 Geräte (4×20mm + 1×90mm)
+    ohne `rowBreak` → 1 Reihe, Höhe 120mm (durch das große Gerät
+    aufgebläht); mit `rowBreak` auf dem großen Gerät → 2 Reihen, erste
+    bleibt kompakt bei 50mm, zweite (nur das große Gerät) 120mm – exakt
+    das Steuertrafo-Szenario aus dem Screenshot behoben.
+- **DDC-Datenpunkte-Schema neu strukturiert (nur Datenmodell, keine
+  Laufzeit-Auswertung – Nutzer-Vorgabe):** die bisherigen, nie befüllten
+  Felder `datenpunkt_typ`/`datenpunkt_anzahl` (pauschale Summe, keine
+  Typ-Aufschlüsselung) werden ersetzt durch 8 einzelne Zählfelder je
+  Bauteil – `dp_ai`, `dp_ao`, `dp_bi`, `dp_bo`, `dp_fb_ai`, `dp_fb_ao`,
+  `dp_fb_bi`, `dp_fb_bo` (neue Konstante `DP_FELDER` in
+  `xlsx_to_json.py`) – plus neue Spalte `automationsanbindung`
+  (Boolean), die vermeidet, dieselbe Katalogzeile für „mit/ohne
+  Automation" doppelt führen zu müssen. Bei `bauteil_typ==='ddc_io'`
+  beschreiben die 8 Felder künftig die bereitgestellte KAPAZITÄT je Typ
+  (z. B. PXA30-W2: `dp_ai=4, dp_ao=4, dp_bi=8, dp_bo=8` statt der
+  bisherigen pauschalen `datenpunkt_anzahl=24`), bei allen anderen
+  Bauteilen den BEDARF je Typ – Angebot/Bedarf-Unterscheidung rein über
+  `bauteil_typ`, kein zusätzliches Datenfeld. `export_einzelbauteile()`
+  emittiert die Felder nur bei `automationsanbindung=true` (schlankes
+  JSON für die übrigen ~40 Bauteile, analog zum bestehenden Muster für
+  optionale Felder).
+- **Bewusst nicht Teil dieser Session (Folge-Aufgaben):** die eigentliche
+  Recherche/Dateneingabe der `dp_*`-Werte für alle Katalogeinträge
+  (Nutzer pflegt Excel selbst, wie immer); Migration der beiden
+  bestehenden `datenpunkt_anzahl`-Werte (PXA30-W2/PXA30-N) auf die neuen
+  Felder (nicht automatisch ableitbar, nur bei diesen beiden aus der
+  Bezeichnung „8DI/8DO/4AI/4AO" bekannt); der Laufzeit-Toggle in Modul 4
+  (analog `reserve_pct`: „Automationsanbindung berücksichtigen? Ja/Nein",
+  aktiv → Auswahl mit `automationsanbindung=true` zählt gegen das von
+  platzierten DDC-Modulen bereitgestellte Kontingent je Typ, inaktiv →
+  keine Verrechnung) inkl. einer weichen Budget-Warnung analog zur
+  Reserve-Warnung – ohne befüllte Daten nicht sinnvoll baubar/testbar.
+- Verifiziert per synthetischem Python-Test (WSL) gegen die geänderte
+  Extraktionslogik: ohne `automationsanbindung` → keine `dp_*`-Felder
+  (Regression-Schutz für die ~40 unveränderten Bauteile); DDC-Modul mit
+  8/8/4/4-Verteilung → korrekt übernommen; Sensor mit nur 1× AI → korrekt;
+  `automationsanbindung=true` ganz ohne `dp_*`-Werte → nur das Flag, keine
+  Nullen. `zeilenumbruch_davor`→`bt.rowBreak` ebenso synthetisch geprüft.
+  `python3 -m py_compile xlsx_to_json.py` fehlerfrei.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
