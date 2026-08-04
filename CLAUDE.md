@@ -672,6 +672,57 @@ W-Series + die zuvor recherchierten Phoenix-Einzelstücke).
   proportionale Umverteilung ohne Unterschreitung der Spender-Reserve;
   Deficit > verfügbarer Surplus → Teil-Entlastung, Rest bleibt Overflow).
 
+### Modul 4 – Abschließender Kanal unter letzter Reihe & Mengen-Minus (Session 28b, gesperrt)
+- **Bug in `placeInBands()` (Session 26):** die Annahme „letzte Reihe grenzt
+  immer direkt an die nächste feste M3-Kanalzone" stimmte nur, wenn die
+  Zone bis zum letzten mm ausgelastet war. Bei Platzreserve (Normalfall)
+  blieb zwischen letzter Reihe und dem festen Kanal eine unmarkierte
+  Lücke ohne Verdrahtungsmöglichkeit – der Fehler wanderte bei jeder neu
+  hinzugefügten Reihe nur weiter, statt behoben zu sein (vom Nutzer per
+  Live-Screenshot aufgedeckt).
+- **Fix:** neue Variable `last` (statt nur `kanalPending`) merkt sich
+  Band-Index, `yLocal` und `h_row` der zuletzt platzierten Reihe. Nach der
+  kompletten Platzierung (äußere `for`-Schleife über `bands` fertig) wird
+  einmalig geprüft: `remaining = band.h_mm - last.yLocal`. Ist
+  `remaining >= H_KANAL + last.h_row` (d. h. Kanal + eine weitere,
+  ähnlich große Reihe würde noch passen), wird ein abschließender Kanal
+  gesetzt (`mm_used += H_KANAL`). Reicht der Rest nicht, bleibt er
+  unmarkiert – der ohnehin vorhandene feste M3-Kanal am Zonenende ist
+  dann nah genug. `last.h_row` (nicht die tatsächliche nächste
+  Bauteilgröße, die es ja nicht mehr gibt) dient als Schätzwert für „ein
+  weiteres Bauteil plus Klemmraum" – bewusste Vereinfachung, da keine
+  bessere Referenzgröße existiert.
+- Der bestehende `kanalPending`-Mechanismus (Kanal *zwischen* zwei
+  tatsächlich platzierten Reihen, bandgrenzen-übergreifend) bleibt
+  unverändert – nur der fehlende Abschluss nach der letzten Reihe kommt
+  hinzu. Gilt wie bisher nur für `leist`/`steuer`/`evert` (ohne
+  Schienensystem); `placeInKlemmRow()` (Klemmenzeilen) unberührt.
+- Verifiziert per synthetischen Funktionstests direkt gegen `placeInBands()`
+  im Browser: Platzreserve übrig → Kanal erscheint; Zone fast randvoll
+  (Rest < Kanal+Reihe) → kein Kanal; mehrere Reihen mit Rest danach →
+  Zwischen-Kanäle unverändert + korrekter Abschluss-Kanal; echter
+  Breiten-Overflow → letzte tatsächlich platzierte Reihe bekommt trotzdem
+  korrekt ihren Abschluss-Kanal (oder korrekt keinen, wenn der Rest zu
+  knapp ist), `overflow`-Flag unverändert.
+- **Mengen-Minus in der Add-Zeile (nicht in der Belegungsliste!):** Nutzer-
+  Vorgabe war explizit „neben der Stückzahl" – also in `.bg-add-row`
+  (Baugruppe UND Einzelbauteil), nicht als Löschen-Ersatz beim bestehenden
+  `bel-rm`-„×" in der Belegungsliste. Statt des einzelnen `btn-add`-Buttons
+  jetzt `.btn-stack` (`flex-direction:column`, 2px gap) mit zwei kleinen
+  Buttons `.btn-add-sm`/`.btn-sub-sm` (Höhe je 13px, zusammen exakt 28px =
+  Höhe von Mengenfeld/Dropdown, wie vom Nutzer gefordert „Platzbedarf
+  identisch").
+- `removeBaugruppeQty()`/`removeEinzelbauteilQty()` (neu, symmetrisch zu
+  `addBaugruppe()`/`addEinzelbauteil()`): ziehen die im Mengenfeld
+  stehende Zahl vom bestehenden Belegungseintrag der aktuell im Dropdown
+  gewählten Baugruppe/des Bauteils ab (nicht fix −1). Kein bestehender
+  Eintrag → No-Op (nichts abzuziehen). `menge <= 0` nach dem Abzug →
+  Eintrag wird entfernt, `ci`-Farben aller verbleibenden Einträge werden
+  wie bei `removeBelegungItem()` neu durchnummeriert.
+- Verifiziert im Browser: 5 hinzugefügt → −2 → 3 → −3 → Eintrag entfernt;
+  Einzelbauteil analog; No-Op-Fall (Abziehen ohne bestehenden Eintrag)
+  bestätigt.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

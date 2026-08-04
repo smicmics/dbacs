@@ -180,6 +180,14 @@ legend{
   white-space:nowrap;
 }
 .btn-add:hover{opacity:.85;}
+.btn-stack{display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
+.btn-add-sm,.btn-sub-sm{
+  padding:0 8px;border:none;border-radius:2px;font-size:10px;font-weight:700;
+  cursor:pointer;line-height:13px;height:13px;white-space:nowrap;
+}
+.btn-add-sm{background:var(--green);color:#000;}
+.btn-sub-sm{background:var(--bg3);color:var(--tx2);border:1px solid var(--bords);}
+.btn-add-sm:hover,.btn-sub-sm:hover{opacity:.85;}
 
 /* ── Belegungsliste ── */
 .bel-zeile{
@@ -410,7 +418,10 @@ legend{
           <option value="">Laden …</option>
         </select>
         <input id="bg_menge" type="number" value="1" min="1" max="99">
-        <button class="btn-add" onclick="addBaugruppe()">+</button>
+        <div class="btn-stack">
+          <button class="btn-add-sm" onclick="addBaugruppe()" title="Menge hinzufügen">+</button>
+          <button class="btn-sub-sm" onclick="removeBaugruppeQty()" title="Menge abziehen">&#8722;</button>
+        </div>
       </div>
     </div>
   </div>
@@ -424,7 +435,10 @@ legend{
         <option value="">Laden …</option>
       </select>
       <input id="einzel_menge" type="number" value="1" min="1" max="99">
-      <button class="btn-add" onclick="addEinzelbauteil()">+</button>
+      <div class="btn-stack">
+        <button class="btn-add-sm" onclick="addEinzelbauteil()" title="Menge hinzufügen">+</button>
+        <button class="btn-sub-sm" onclick="removeEinzelbauteilQty()" title="Menge abziehen">&#8722;</button>
+      </div>
     </div>
   </div>
 
@@ -716,6 +730,26 @@ function addBaugruppe() {
   calculate();
 }
 
+// Zieht die aktuell im Mengenfeld stehende Stückzahl von der bereits
+// bestehenden Belegung der ausgewählten Baugruppe ab (Korrektur ohne die
+// ganze Zeile neu anlegen zu müssen). Ohne bestehenden Eintrag passiert
+// nichts – es gibt nichts abzuziehen.
+function removeBaugruppeQty() {
+  const bgId  = gs('bg_auswahl');
+  const menge = Math.max(1, g('bg_menge'));
+  if(!bgId) return;
+  const idx = belegung.findIndex(b => b.typ === 'baugruppe' && b.bg_id === bgId);
+  if(idx === -1) return;
+  belegung[idx].menge -= menge;
+  if(belegung[idx].menge <= 0) {
+    belegung.splice(idx, 1);
+    belegung.forEach((b, i) => { b.ci = i % BG_COLORS.length; });
+  }
+  saveBelegung();
+  renderBelegung();
+  calculate();
+}
+
 function addEinzelbauteil() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
@@ -725,6 +759,23 @@ function addEinzelbauteil() {
     ex.menge += menge;
   } else {
     belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length});
+  }
+  saveBelegung();
+  renderBelegung();
+  calculate();
+}
+
+// Symmetrisch zu removeBaugruppeQty(), für Einzelbauteile.
+function removeEinzelbauteilQty() {
+  const artikelNr = gs('einzel_auswahl');
+  const menge = Math.max(1, g('einzel_menge'));
+  if(!artikelNr) return;
+  const idx = belegung.findIndex(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
+  if(idx === -1) return;
+  belegung[idx].menge -= menge;
+  if(belegung[idx].menge <= 0) {
+    belegung.splice(idx, 1);
+    belegung.forEach((b, i) => { b.ci = i % BG_COLORS.length; });
   }
   saveBelegung();
   renderBelegung();
@@ -965,13 +1016,22 @@ function getZoneBands(zp) {
 // bevor die nächste beginnt – zwei benachbarte Reihen teilen sich so genau
 // einen Kanal an ihrer gemeinsamen Grenze. `kanalPending` läuft über
 // Bandgrenzen hinweg durch, damit das auch beim Wechsel in das nächste Band
-// (z. B. Leistung → Leistung-Ext) konsistent bleibt. Nach der letzten Reihe
-// wird ebenfalls KEIN abschließender Kanal mehr angehängt: die Zone mündet
-// immer direkt in die nächste feste M3-Kanalzone, die die untere
-// Anschlussseite der letzten Reihe bereits abdeckt – der verbleibende Rest
-// des Bandes wird stattdessen als zusätzlicher Klemmraum frei gelassen
-// (akzeptabel). Passt eine Reihe nicht mehr in das aktuelle Band, wird im
-// nächsten Band derselben Zone weitergemacht; sind alle Bänder voll, Overflow.
+// (z. B. Leistung → Leistung-Ext) konsistent bleibt.
+// Abschließender Kanal nach der LETZTEN platzierten Reihe (Session 28b,
+// Korrektur einer Session-26-Fehlannahme): früher wurde angenommen, die
+// letzte Reihe grenze immer direkt an die nächste feste M3-Kanalzone –
+// das stimmt nur, wenn die Zone bis zum letzten mm ausgelastet ist. Bei
+// Platzreserve (Normalfall) blieb zwischen letzter Reihe und festem Kanal
+// eine unmarkierte Lücke ohne Verdrahtungsmöglichkeit; der Fehler wanderte
+// bei jeder neu hinzugefügten Reihe nur weiter, statt behoben zu sein.
+// Jetzt wird nach der gesamten Platzierung geprüft, ob im Restband der
+// zuletzt platzierten Reihe noch Platz für Kanal + eine weitere,
+// ähnlich große Reihe wäre – wenn ja, wird der Kanal gesetzt (Reserve wird
+// sonst nie verdrahtbar). Reicht der Rest dafür nicht, bleibt er
+// unmarkiert – der ohnehin vorhandene feste M3-Kanal am Zonenende ist dann
+// nah genug, um genutzt zu werden. Passt eine Reihe nicht mehr in das
+// aktuelle Band, wird im nächsten Band derselben Zone weitergemacht; sind
+// alle Bänder voll, Overflow.
 function placeInBands(devs, bands, klemmraum) {
   const H_KANAL = 40;
   const rows = [];
@@ -980,6 +1040,7 @@ function placeInBands(devs, bands, klemmraum) {
   let mm_used = 0;
   let placedCount = 0;   // laufende Positionsnummer je Zone
   let kanalPending = false; // vor der ersten Reihe kein Kanal – die feste M3-Kanalzone davor deckt das bereits ab
+  let last = null; // { bandIdx, yLocal, h_row } der zuletzt platzierten Reihe – für den abschließenden Kanal
 
   for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
     const band = bands[bi];
@@ -1011,8 +1072,18 @@ function placeInBands(devs, bands, klemmraum) {
       y_local += h_row;
       idx = j;
       kanalPending = true; // die nächste Reihe (dieses oder das nächste Band) braucht wieder einen Kanal darüber
+      last = { bandIdx: bi, yLocal: y_local, h_row };
     }
     mm_used += y_local;
+  }
+
+  if (last) {
+    const band = bands[last.bandIdx];
+    const remaining = band.h_mm - last.yLocal;
+    if (remaining >= H_KANAL + last.h_row) {
+      channels.push({ x_mm: band.x_mm, y_mm: band.y_mm + last.yLocal, w_mm: band.w_mm, h_mm: H_KANAL });
+      mm_used += H_KANAL;
+    }
   }
 
   return { rows, channels, overflow: idx < devs.length, mm_used };
