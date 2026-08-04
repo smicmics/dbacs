@@ -240,7 +240,6 @@
     "h_mm": 90.0,
     "zone": "steuer",
     "kategorie": "DDC-Automationseinrichtung",
-    "datenpunkt_anzahl": 24,
     "preis_eur": 420.0,
     "geprueft": false
   },
@@ -254,7 +253,6 @@
     "h_mm": 90.0,
     "zone": "steuer",
     "kategorie": "DDC-Automationseinrichtung",
-    "datenpunkt_anzahl": 8,
     "preis_eur": 280.0,
     "geprueft": false
   },
