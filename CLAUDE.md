@@ -648,6 +648,22 @@ W-Series + die zuvor recherchierten Phoenix-Einzelstücke).
   (Baugruppen-aufgelöst **und** direkt gesetzte Einzelbauteile) neu
   aufgebaut wird.
 - `klemm_e` und `uss` bleiben unverändert außen vor.
+- **Weiche Reserve-Warnung (Nutzer-Feedback nach erstem Live-Test):** der
+  bestehende rote "!"-Overflow-Marker im Schrankbild (`placeInKlemmRow()`,
+  `overflow`-Flag) reagiert nur auf harten Kapazitäts-Overflow – eine Zone
+  kann ihre Bauteile noch vollständig unterbringen und trotzdem unter dem
+  Reserve-Ziel liegen, ohne dass irgendwo ein Hinweis erscheint. Deshalb
+  meldet `redistributeKlemmBands()` zusätzlich `shortfall`
+  (`totalDeficit > 0 && totalSurplus < totalDeficit` – die Reserve konnte
+  trotz Umverteilung für mindestens eine Zone nicht erreicht werden), gibt
+  jetzt `{ bands, shortfall }` zurück (vorher nur `bands`).
+  `placeBauteile()` reicht es als `reserveShortfall` durch (Rückgabe jetzt
+  `{ zones, reserveShortfall }`, vorher nur `zones`), `calculate()` ruft
+  `updateReserveWarning(reserveShortfall)`. Ein Warndreieck
+  (`#reserve-warn`, `⚠`, Farbe `#E04444` wie der SVG-Overflow) erscheint
+  neben dem `reserve_pct`-Eingabefeld statt im Schrankbild – bewusst
+  getrennt vom harten Overflow-"!", da der Nutzer hier gezielt den
+  Reserve-Wert nachjustieren kann, wenn die Abweichung gering ist.
 - **Bewusst nicht Teil dieser Session:** Anwendung der Reserve auf
   `leist`/`steuer`/`evert`, ein zusätzliches Schaltschrankfeld bei
   endgültigem Überlauf (beides zurückgestellt für spätere Sessions).

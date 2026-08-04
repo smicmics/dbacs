@@ -72,6 +72,8 @@ header a:hover{color:var(--tx2);}
   color:var(--tx);font-size:12px;padding:4px 7px;height:28px;
 }
 .eb-field input[disabled]{color:var(--tx2);cursor:not-allowed;}
+.eb-reserve-row{display:flex;align-items:center;gap:6px;}
+.reserve-warn{color:#E04444;font-size:14px;cursor:default;}
 .eb-mb-row{display:flex;align-items:center;gap:5px;}
 .eb-mb-row input{width:62px;text-align:right;}
 .eb-mb-row span{color:var(--tx3);font-size:11px;}
@@ -377,7 +379,10 @@ legend{
   </div>
   <div class="eb-field" title="Gilt für alle Bereiche außer Einspeiseklemmen">
     <label>Reserve Schaltschrank (%)<span class="var">reserve_pct</span></label>
-    <input id="reserve_pct" type="number" value="20" min="0" max="50" style="width:70px" oninput="onReserveChange()">
+    <div class="eb-reserve-row">
+      <input id="reserve_pct" type="number" value="20" min="0" max="50" style="width:70px" oninput="onReserveChange()">
+      <span id="reserve-warn" class="reserve-warn" style="display:none" title="Reserve konnte für mindestens einen Bereich nicht gehalten werden – Wert ggf. anpassen">&#9888;</span>
+    </div>
   </div>
 
   <div class="eb-sep"></div>
@@ -1025,6 +1030,12 @@ function placeInBands(devs, bands, klemmraum) {
 // Klemme ihres Bereichs"). Reicht der verfügbare Überschuss nicht, bleibt der
 // Rest unerfüllt – placeInKlemmRow() erzeugt dann den bekannten Overflow.
 // klemm_e (Einspeiseklemmen) ist davon ausgenommen und bleibt unverändert fix.
+// `shortfall` (Rückgabe) meldet zusätzlich, ob die Reserve trotz Umverteilung
+// für mindestens eine Zone nicht erreichbar war (totalSurplus < totalDeficit)
+// – bewusst getrennt vom harten `overflow` in placeInKlemmRow(): eine Zone
+// kann ihre Geräte noch vollständig unterbringen und trotzdem unter dem
+// Reserve-Ziel liegen (weiche Warnung am Reserve-Eingabefeld statt am
+// Schrankbild, siehe updateReserveWarning()).
 function redistributeKlemmBands(bandsAll, queues, reservePct) {
   const KEYS = ['klemm_l', 'klemm_f', 'klemm_s'];
   const origBands = {};
@@ -1062,16 +1073,18 @@ function redistributeKlemmBands(bandsAll, queues, reservePct) {
     });
   }
 
+  const shortfall = totalDeficit > 0 && totalSurplus < totalDeficit;
+
   const firstBand = origBands[KEYS[0]][0];
   const newBands = {};
-  if (!firstBand) { KEYS.forEach(k => { newBands[k] = origBands[k]; }); return newBands; }
+  if (!firstBand) { KEYS.forEach(k => { newBands[k] = origBands[k]; }); return { bands: newBands, shortfall: false }; }
 
   let x = firstBand.x_mm;
   KEYS.forEach(k => {
     newBands[k] = [{ x_mm: x, y_mm: firstBand.y_mm, w_mm: newWidth[k], h_mm: firstBand.h_mm }];
     x += newWidth[k];
   });
-  return newBands;
+  return { bands: newBands, shortfall };
 }
 
 // ── Klemmenzeile platzieren (eine Hutschiene, keine Kanal/Klemmraum-Klammerung) ──
@@ -1127,15 +1140,29 @@ function calculate() {
     document.getElementById('svg-inner').style.display = 'none';
     buildFuellstand(null, null);
     buildStueckliste(null);
+    updateReserveWarning(false);
     return;
   }
 
   const layout = getZoneBands(zp);
-  const zones  = placeBauteile(layout.bands, klemmraum, zp, reservePct);
+  const { zones, reserveShortfall } = placeBauteile(layout.bands, klemmraum, zp, reservePct);
 
   buildFuellstand(zones, zp);
   buildSVG(zp, layout, zones);
   buildStueckliste(zones);
+  updateReserveWarning(reserveShortfall);
+}
+
+// ── Weiche Reserve-Warnung (getrennt vom harten Overflow-"!" im Schrankbild) ──
+// Meldet, wenn die schrankweite Reserve (reserve_pct) für mindestens eine
+// Klemmenzone trotz Umverteilung nicht gehalten werden konnte, obwohl die
+// Geräte selbst noch vollständig platziert wurden (kein harter Overflow) –
+// Hinweis direkt am Eingabefeld, damit der Nutzer die Reserve bei Bedarf
+// (geringe Abweichung) gezielt anpassen kann, statt nur im Schrankbild nach
+// einem roten "!" zu suchen, das hier noch gar nicht erscheint.
+function updateReserveWarning(shortfall) {
+  const warn = document.getElementById('reserve-warn');
+  if (warn) warn.style.display = shortfall ? 'inline' : 'none';
 }
 
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
@@ -1190,7 +1217,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct) {
   // Klemmenzeilen (klemm_e/uss/klemm_l/klemm_f/klemm_s): je eine Hutschiene,
   // Kapazität als Breite (mm) statt Höhe, kein Kanal/Klemmraum.
   // klemm_l/klemm_f/klemm_s: Breite wird bedarfsbasiert umverteilt (klemm_e/uss bleiben fix).
-  const redistributedKlemm = redistributeKlemmBands(bandsAll, queues, reservePct);
+  const { bands: redistributedKlemm, shortfall: reserveShortfall } = redistributeKlemmBands(bandsAll, queues, reservePct);
   KLEMM_ZONEN.forEach(zn => {
     const devs  = queues[zn] || [];
     const bands = redistributedKlemm[zn] || bandsAll[zn] || [];
@@ -1229,7 +1256,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct) {
     };
   }
 
-  return zones;
+  return { zones, reserveShortfall };
 }
 
 function kurzLabel(eb) {
