@@ -240,6 +240,11 @@
     "h_mm": 90.0,
     "zone": "steuer",
     "kategorie": "DDC-Automationseinrichtung",
+    "automationsanbindung": true,
+    "dp_ai": 4,
+    "dp_ao": 4,
+    "dp_bi": 8,
+    "dp_bo": 8,
     "preis_eur": 420.0,
     "geprueft": false
   },

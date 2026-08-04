@@ -207,6 +207,9 @@ legend{
   font-size:14px;padding:0 2px;line-height:1;flex-shrink:0;
 }
 .bel-rm:hover{color:#E04444;}
+.ddc-auto-hdr{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px;}
+.bel-zeile-auto{border-style:dashed;font-style:italic;}
+.bel-zeile-auto .bel-name{color:var(--tx2);}
 
 /* ── Reihenhöhen ── */
 .reihe-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
@@ -397,6 +400,13 @@ legend{
       <span id="reserve-warn" class="reserve-warn" style="display:none" title="Reserve konnte für mindestens einen Bereich nicht gehalten werden – Wert ggf. anpassen">&#9888;</span>
     </div>
   </div>
+  <div class="eb-field" title="Reserve für DDC-Datenpunkte (AI/AO/BI/BO) – unabhängig von der Schaltschrank-Reserve">
+    <label>Reserve Datenpunkte (%)<span class="var">ddc_reserve_pct</span></label>
+    <div class="eb-reserve-row">
+      <input id="ddc_reserve_pct" type="number" value="20" min="0" max="50" style="width:70px" oninput="onDdcReserveChange()">
+      <span id="ddc-warn" class="reserve-warn" style="display:none" title="Für mindestens einen Datenpunkttyp ist kein passendes DDC-Modul im Katalog verfügbar">&#9888;</span>
+    </div>
+  </div>
 
   <div class="eb-sep"></div>
 
@@ -501,6 +511,7 @@ legend{
     <div id="belegung-liste">
       <p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>
     </div>
+    <div id="ddc-auto-liste"></div>
   </div>
 
   <!-- ── Mittleres Panel ── -->
@@ -568,6 +579,10 @@ const ZONE_COLORS = {
 const REIHEN_ZONEN = ['leist','steuer'];
 const KLEMM_ZONEN  = ['klemm_e','uss','klemm_l','klemm_f','klemm_s'];
 const ALLE_ZONEN   = ['klemm_e','uss','evert','leist','steuer','klemm_l','klemm_f','klemm_s'];
+// DDC-Datenpunkttypen (siehe data/xlsx_to_json.py, DP_FELDER) – bei
+// bauteil_typ==='ddc_io' bereitgestellte Kapazität je Typ, sonst Bedarf je Typ.
+const DP_TYPES = ['dp_ai','dp_ao','dp_bi','dp_bo','dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo'];
+const DP_LABELS = {dp_ai:'AI', dp_ao:'AO', dp_bi:'BI', dp_bo:'BO', dp_fb_ai:'Feldbus AI', dp_fb_ao:'Feldbus AO', dp_fb_bi:'Feldbus BI', dp_fb_bo:'Feldbus BO'};
 
 // ── Daten ────────────────────────────────────────────────────────────
 let EINZELBAUTEILE_DB = [];
@@ -635,6 +650,10 @@ function init() {
   // Reserve (schrankweit)
   const rp = localStorage.getItem('m04_reserve_pct');
   if(rp) _v('reserve_pct', rp);
+
+  // Reserve (DDC-Datenpunkte)
+  const ddcrp = localStorage.getItem('m04_ddc_reserve_pct');
+  if(ddcrp) _v('ddc_reserve_pct', ddcrp);
 
   // Belegung wiederherstellen (ältere Einträge ohne "typ" = Baugruppe)
   const bels = localStorage.getItem('m04_belegung');
@@ -841,6 +860,12 @@ function onKlemmraumChange() {
 // ── Reserve (schrankweit, gilt für alle Bereiche außer klemm_e) ───────
 function onReserveChange() {
   localStorage.setItem('m04_reserve_pct', gs('reserve_pct'));
+  calculate();
+}
+
+// ── Reserve (DDC-Datenpunkte, unabhängig von der Schaltschrank-Reserve) ──
+function onDdcReserveChange() {
+  localStorage.setItem('m04_ddc_reserve_pct', gs('ddc_reserve_pct'));
   calculate();
 }
 
@@ -1235,16 +1260,19 @@ function calculate() {
     buildFuellstand(null, null);
     buildStueckliste(null);
     updateReserveWarning(false);
+    updateDdcAutoDisplay(null);
     return;
   }
 
+  const ddcReservePct = Math.min(0.5, Math.max(0, (g('ddc_reserve_pct') || 20) / 100));
   const layout = getZoneBands(zp);
-  const { zones, reserveShortfall } = placeBauteile(layout.bands, klemmraum, zp, reservePct);
+  const { zones, reserveShortfall, ddcAuto } = placeBauteile(layout.bands, klemmraum, zp, reservePct, ddcReservePct);
 
   buildFuellstand(zones, zp);
   buildSVG(zp, layout, zones);
   buildStueckliste(zones);
   updateReserveWarning(reserveShortfall);
+  updateDdcAutoDisplay(ddcAuto);
 }
 
 // ── Weiche Reserve-Warnung (getrennt vom harten Overflow-"!" im Schrankbild) ──
@@ -1259,18 +1287,105 @@ function updateReserveWarning(shortfall) {
   if (warn) warn.style.display = shortfall ? 'inline' : 'none';
 }
 
+// ── Automatisch ergänzte DDC-Module anzeigen ──────────────────────────
+// Eigener, nicht editierbarer Abschnitt unterhalb der normalen
+// Belegungsliste – bewusst NICHT Teil von `belegung`/renderBelegung(),
+// da die Modul-Stückzahl vollständig aus dem aktuellen Bedarf abgeleitet
+// wird (siehe computeDdcAutoModules()) und bei jeder Neuberechnung neu
+// entsteht; ein "×"/"−" zum Entfernen ergäbe hier keinen Sinn – weniger
+// Bedarf (z. B. Sensor-Baugruppe entfernt) reduziert die Stückzahl von
+// selbst. Das DDC-Warndreieck (separat vom Reserve-Warndreieck) meldet,
+// wenn für mindestens einen Datenpunkttyp kein passendes Modul im
+// Katalog existiert (aktuell z. B. alle Feldbus-Typen).
+function updateDdcAutoDisplay(ddcAuto) {
+  const el = document.getElementById('ddc-auto-liste');
+  const warn = document.getElementById('ddc-warn');
+  if (el) {
+    el.innerHTML = (ddcAuto && ddcAuto.modules.length)
+      ? '<div class="ddc-auto-hdr">Automatisch ergänzt (DDC)</div>' + ddcAuto.modules.map(m =>
+          `<div class="bel-zeile bel-zeile-auto" title="${m.eb.bezeichnung} – automatisch ergänzt, da vorhandene DDC-Module nicht ausreichen">
+             <span class="bel-dot" style="background:#6B6862"></span>
+             <span class="bel-name">${m.menge}× ${m.eb.bezeichnung}</span>
+           </div>`).join('')
+      : '';
+  }
+  if (warn) {
+    const unmet = ddcAuto ? ddcAuto.unmet : [];
+    warn.style.display = unmet.length ? 'inline' : 'none';
+    if (unmet.length) warn.title = 'Kein passendes DDC-Modul im Katalog für: ' + unmet.map(t => DP_LABELS[t]).join(', ');
+  }
+}
+
+// ── DDC-Datenpunkte: Unterdeckung ermitteln, passende Module ergänzen ──
+// Zustandslos wie die Reserve-Umverteilung der Klemmen: bei jedem
+// calculate()-Aufruf komplett neu aus dem aktuellen Bedarf berechnet – wird
+// ein Bauteil/eine Baugruppe wieder entfernt, sinkt der Bedarf und damit
+// automatisch auch die berechnete Modul-Stückzahl (keine manuelle Pflege
+// nötig, siehe Nutzer-Vorgabe "wird automatisch mitreduziert").
+// Je Typ (dp_ai/ao/bi/bo/fb_ai/fb_ao/fb_bi/fb_bo) wird das am besten
+// passende ddc_io-Modul gesucht (deckt möglichst viele der aktuell noch
+// offenen Typen gleichzeitig ab, um nicht unnötig verschiedene Modultypen
+// zu mischen) – Feldbus-Typ-Bedarf kann nur durch ein Modul mit derselben
+// Feldbus-Kapazität gedeckt werden (Nutzer-Vorgabe: Typ muss exakt passen).
+// Gibt es kein passendes Modul im Katalog, bleibt der Typ in `unmet` stehen
+// (führt zur weichen DDC-Warnung, keine automatische Platzierung).
+function computeDdcAutoModules(demand, supply, reservePct) {
+  const keepFactor = 1 - reservePct;
+  const remaining = {};
+  DP_TYPES.forEach(t => {
+    const required = keepFactor > 0 ? demand[t] / keepFactor : demand[t];
+    remaining[t] = Math.max(0, required - supply[t]);
+  });
+
+  const ddcModule_DB = EINZELBAUTEILE_DB.filter(e => e.bauteil_typ === 'ddc_io' && e.automationsanbindung);
+  const modules = []; // [{eb, menge}]
+  const unmet = [];
+
+  DP_TYPES.forEach(type => {
+    if (remaining[type] <= 0) return;
+    const candidates = ddcModule_DB.filter(m => (m[type] || 0) > 0);
+    if (!candidates.length) { unmet.push(type); return; }
+    candidates.sort((a, b) => {
+      const scoreA = DP_TYPES.filter(t => remaining[t] > 0 && (a[t] || 0) > 0).length;
+      const scoreB = DP_TYPES.filter(t => remaining[t] > 0 && (b[t] || 0) > 0).length;
+      if (scoreB !== scoreA) return scoreB - scoreA;
+      return (b[type] || 0) - (a[type] || 0);
+    });
+    const chosen = candidates[0];
+    const menge = Math.max(0, ...DP_TYPES
+      .filter(t => remaining[t] > 0 && (chosen[t] || 0) > 0)
+      .map(t => Math.ceil(remaining[t] / chosen[t])));
+    if (menge <= 0) return;
+    let entry = modules.find(m => m.eb.artikel_nr === chosen.artikel_nr);
+    if (!entry) { entry = { eb: chosen, menge: 0 }; modules.push(entry); }
+    entry.menge += menge;
+    DP_TYPES.forEach(t => { if (chosen[t]) remaining[t] = Math.max(0, remaining[t] - chosen[t] * menge); });
+  });
+
+  return { modules, unmet: [...new Set(unmet)] };
+}
+
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
-function placeBauteile(bandsAll, klemmraum, zp, reservePct) {
+function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
   // Gerätewarteschlange je Zone aufbauen – aus Baugruppen UND Direktbauteilen.
   // Zone je Bauteil: Baugruppen-Override (bt.zone) vor Katalog-Default (eb.zone).
   const queues = {};
   ALLE_ZONEN.forEach(z => queues[z] = []);
+
+  const dpDemand = {}, dpSupply = {};
+  DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
+  function accumulateDp(eb, menge) {
+    if (!eb.automationsanbindung) return;
+    const target = eb.bauteil_typ === 'ddc_io' ? dpSupply : dpDemand;
+    DP_TYPES.forEach(t => { if (eb[t]) target[t] += eb[t] * menge; });
+  }
 
   belegung.forEach(item => {
     if(item.typ === 'einzel') {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
       if(!eb || eb.te_breite <= 0 || !queues[eb.zone]) return;
       const farbe = BG_COLORS[item.ci];
+      accumulateDp(eb, item.menge);
       for(let q = 0; q < item.menge; q++) {
         queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: q === 0 && !!item.rowBreak});
       }
@@ -1286,12 +1401,21 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct) {
         if(!eb || eb.te_breite <= 0) return;
         const zone = bt.zone || eb.zone;
         if(!queues[zone]) return;
+        accumulateDp(eb, bt.menge);
         for(let q = 0; q < bt.menge; q++) {
           const rowBreak = (q === 0 && !!bt.rowBreak) || (firstDeviceOfItem && !!item.rowBreak);
           queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak});
           firstDeviceOfItem = false;
         }
       });
+    }
+  });
+
+  const ddcAuto = computeDdcAutoModules(dpDemand, dpSupply, ddcReservePct);
+  ddcAuto.modules.forEach(mod => {
+    const eb = mod.eb;
+    for (let q = 0; q < mod.menge; q++) {
+      queues.steuer.push({te: eb.te_breite, h_mm: eb.h_mm, farbe: '#6B6862', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
     }
   });
 
@@ -1353,7 +1477,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct) {
     };
   }
 
-  return { zones, reserveShortfall };
+  return { zones, reserveShortfall, ddcAuto };
 }
 
 function kurzLabel(eb) {

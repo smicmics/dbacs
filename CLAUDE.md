@@ -807,6 +807,81 @@ umgesetzt und eine als Datenschema vorbereitet:
   Nullen. `zeilenumbruch_davor`→`bt.rowBreak` ebenso synthetisch geprüft.
   `python3 -m py_compile xlsx_to_json.py` fehlerfrei.
 
+### Modul 4 – DDC-Datenpunkte: dynamische Verbrauchsrechnung & Auto-Modul-Platzierung (Session 28d, gesperrt)
+Löst den in Session 28c bewusst zurückgestellten Laufzeit-Teil ein: die
+Excel-Struktur allein verbrauchte noch keine Datenpunkte. Vier
+Design-Entscheidungen vom Nutzer bestätigt (Standardempfehlung jeweils
+übernommen):
+1. **Eigener Reserve-Wert für Datenpunkte** (`ddc_reserve_pct`, Default
+   20 %, Muster identisch zu `reserve_pct`/`klemmraum_mm`, eigenes
+   Eingabefeld „Reserve Datenpunkte (%)") – bewusst getrennt von der
+   Schaltschrank-Reserve, da physikalisch andere Ressource.
+2. **Auto-Module sichtbar in einem eigenen Abschnitt** unterhalb der
+   Belegungsliste (`#ddc-auto-liste`, `.bel-zeile-auto`: gestrichelter
+   Rahmen, kursiv, kein „×"/„−" – nicht editierbar).
+3. **Vollständig zustandslos** (wie die Klemmen-Reserve-Umverteilung):
+   keine persistierte Modul-Zeile in `belegung`, sondern bei jedem
+   `calculate()`-Aufruf komplett neu aus dem aktuellen Bedarf berechnet –
+   wird eine Baugruppe/ein Bauteil entfernt, sinkt die berechnete
+   Modul-Stückzahl automatisch mit, ohne manuelles Eingreifen.
+4. **Feldbus-Typ muss exakt passen** – ein `dp_fb_bi`-Bedarf kann nur
+   durch ein Modul gedeckt werden, das selbst `dp_fb_bi` bereitstellt;
+   kein Modul verfügbar → Datenpunkttyp landet in `unmet`, keine
+   automatische Platzierung, stattdessen weiche Warnung.
+
+**Kernstück `computeDdcAutoModules(demand, supply, reservePct)`** (neu,
+vor `placeBauteile()`): je Datenpunkttyp (`DP_TYPES`, 8 Werte, neue
+Konstante analog `DP_FELDER` in `xlsx_to_json.py`) `requiredWithReserve =
+demand/(1-reservePct)`, `remaining = max(0, requiredWithReserve -
+supply)`. Für jeden Typ mit `remaining>0`: passendes `ddc_io`-Modul aus
+`EINZELBAUTEILE_DB` suchen (nur `automationsanbindung=true`), das diesen
+Typ bereitstellt – bei mehreren Kandidaten wird das Modul bevorzugt, das
+die meisten der *aktuell noch offenen* Typen gleichzeitig abdeckt (verhindert
+unnötiges Mischen verschiedener Modultypen), Stückzahl = Maximum über alle
+von diesem Modul gedeckten offenen Typen von `ceil(remaining/kapazität)`.
+Nach Zuweisung werden alle davon betroffenen `remaining`-Werte reduziert,
+sodass bereits gedeckte Typen beim Durchlaufen der restlichen `DP_TYPES`
+übersprungen werden. Kein Kandidat gefunden → Typ landet in `unmet`.
+Bekannte Vereinfachung (dokumentiert, nicht Session-blockierend): die
+Kandidatenauswahl ist ein einfacher Greedy-Heuristik, kein globales
+Optimum über alle Typen hinweg – bei aktuell nur einem verlässlich
+befüllten Modul (PXA30-W2) ohne praktische Auswirkung.
+
+**Bedarf/Angebot-Ermittlung in `placeBauteile()`:** neue `accumulateDp(eb,
+menge)`-Hilfsfunktion, aufgerufen für jedes Bauteil beim bestehenden
+Queue-Aufbau (Baugruppen-aufgelöst UND Direktbauteile) – bei
+`automationsanbindung=true` fließt es abhängig von `bauteil_typ` entweder
+in `dpDemand` (Verbraucher) oder `dpSupply` (bereits manuell platzierte
+`ddc_io`-Module) je Typ ein. Danach werden die von
+`computeDdcAutoModules()` ermittelten Zusatz-Module direkt in
+`queues.steuer` eingefügt (`auto:true`-Flag, Titel-Suffix „(automatisch
+ergänzt)", Farbe `#6B6862` neutral-grau statt Baugruppen-Farbe) und
+durchlaufen ab dort exakt dieselbe `placeInBands()`-Platzierung wie
+manuell hinzugefügte Bauteile – landen automatisch in der Stückliste
+(`aggregateStueckliste()` aggregiert ohnehin nach `artikel_nr`/Zone aus
+den platzierten Blöcken, keine Änderung dort nötig).
+`placeBauteile()`-Rückgabe erweitert um `ddcAuto` (`{modules, unmet}`),
+`calculate()` reicht es an neue Funktion `updateDdcAutoDisplay()` durch
+(rendert `#ddc-auto-liste`, toggelt `#ddc-warn` mit dynamischem Tooltip,
+der die konkret unerfüllten Typen benennt – analog `updateReserveWarning()`,
+aber bewusst getrennt, da inhaltlich andere Ressource).
+- **Bewusst nicht Teil dieser Session:** eine echte Multi-Typ-Optimierung
+  der Modulauswahl (aktuell Greedy); Berücksichtigung der Feldbus-Typen in
+  der Praxis (kein Katalogeintrag hat bisher `dp_fb_*`-Kapazität – jeder
+  Feldbus-Bedarf erzeugt aktuell immer die Warnung).
+- Verifiziert direkt gegen die produktiven Funktionen im Browser: kleiner
+  Bedarf ohne Angebot → 1× PXA30-W2 (rechnerisch: 2 AI/5 BI Bedarf,
+  20 % Reserve → 1 Modul reicht für beides gleichzeitig); hoher Bedarf →
+  4× PXA30-W2; Bedarf bereits durch vorhandenes Angebot gedeckt → keine
+  Auto-Module; Feldbus-Bedarf ohne Katalog-Match → `unmet` korrekt,
+  Warnsymbol aktiv, keine Platzierung. End-to-End mit temporärem
+  Test-Sensor-Bauteil (nur in-memory, nicht persistiert) bestätigt: Queue-
+  Aufbau, Sidebar-Anzeige und tatsächliche physische Platzierung über
+  `placeInBands()` funktionieren zusammen korrekt. `EINZELBAUTEILE_DB` im
+  Browser-Cache war beim ersten Testlauf veraltet (Server liefert frische
+  Daten, reines Client-Cache-Problem des Testbrowsers) – nach Neuladen
+  ohne Cache bestätigt, kein Code-Bug.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
