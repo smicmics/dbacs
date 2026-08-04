@@ -882,6 +882,58 @@ aber bewusst getrennt, da inhaltlich andere Ressource).
   Daten, reines Client-Cache-Problem des Testbrowsers) – nach Neuladen
   ohne Cache bestätigt, kein Code-Bug.
 
+### Modul 4 – DDC-Fachwissen & Auto-Modul-Ratchet statt Auto-Reduktion (Session 28e, gesperrt)
+**Fachliche Klarstellung vom Nutzer (Grundlage für die künftige
+Excel-Struktur, in dieser Session noch nicht umgesetzt):** eine vollständige
+DDC-Automationseinrichtung besteht aus Spannungsversorgung (Netzteil einer
+Baureihe), CPU, mehreren E/A-Modulen mit physikalischen Datenpunkten
+(AI/AO/BI/BO) und optional Kommunikationsmodulen für Feldbus-Integration
+(FB_AI/FB_AO/FB_BI/FB_BO). **Wichtig:** die CPU selbst verarbeitet
+Datenpunkte, erlaubt aber keinen elektrischen Anschluss – das leisten
+ausschließlich die E/A-Module. Der in Session 28c/28d gewählte Ansatz
+(`bauteil_typ==='ddc_io'` als Kapazitätsquelle, `dp_*`-Felder je Typ) wurde
+vom Nutzer als grundsätzlich richtig bestätigt. **Offen für eine spätere
+Session:** eine Excel-Struktur, die CPU, Netzteil und E/A-Module sauber
+unterscheidbar macht (aktuell modelliert `bauteil_typ:'ddc_io'` nur
+E/A-Kapazität – CPU/Netzteil-Bauteile mit eigener Rolle existieren im
+Katalog noch nicht).
+
+**Korrektur der Auto-Modul-Reduktion aus Session 28d:** die dort getroffene
+Nutzer-Entscheidung „Modul wird automatisch mitreduziert" wurde nach
+Rücksprache revidiert. Begründung: DBACS hat keine feste Positions-/
+Kanalzuordnung einzelner Feldgeräte zu einzelnen I/O-Kanälen eines Moduls.
+Sinkt der Bedarf und die Modulanzahl wird rein aus der aktuellen Summe neu
+berechnet, ist nicht bekannt, WELCHES konkrete Modul entfallen würde, und
+die verbleibenden Module rücken nicht automatisch auf einen festen Platz
+auf. Ein real installiertes Modul wird in der Praxis auch nicht spontan
+wieder ausgebaut, nur weil ein Bauteil aus der Planung entfernt wird. Die
+vollständige Lösung (Kanal-/Positionstracking je Feldgerät) ist ein
+eigenständiges konzeptionelles Thema für eine spätere Session.
+- **Neuer Mechanismus – Ratchet statt Neuberechnung:** neue globale
+  State-Variable `ddcWatermark` (`{artikel_nr: höchste bisher berechnete
+  Menge}`, persistiert als `m04_ddc_watermark`, geladen beim Start wie
+  `belegung`). Neue Funktion `applyDdcWatermark(ddcAuto)` (aufgerufen in
+  `placeBauteile()` direkt nach `computeDdcAutoModules()`): hebt jede
+  Modul-Menge im Ergebnis auf mindestens den bisherigen Watermark-Wert an
+  und aktualisiert den Watermark nach oben, wenn der aktuelle Bedarf ihn
+  übersteigt. Ein Artikel, der im aktuellen Durchlauf gar keinen Bedarf
+  mehr hat (nicht in `ddcAuto.modules` enthalten), wird trotzdem mit
+  seinem Watermark-Stand wieder in die Liste aufgenommen, sofern der
+  Katalogeintrag noch existiert.
+- `computeDdcAutoModules()` selbst bleibt unverändert eine reine,
+  zustandslose Berechnungsfunktion (Bedarf/Angebot/Reserve → Ergebnis) –
+  der Ratchet ist bewusst als separater Schritt danach implementiert,
+  damit die Kernberechnung isoliert testbar bleibt.
+- **Bewusst nicht Teil dieser Session:** eine Möglichkeit, den Watermark
+  manuell zurückzusetzen (z. B. bei echtem Rückbau von Hardware oder
+  Projekt-Neustart) – aktuell nur über direktes Löschen von
+  `m04_ddc_watermark` im Browser-Speicher möglich, keine UI dafür.
+- Verifiziert direkt gegen die produktiven Funktionen im Browser:
+  hoher Bedarf → 2× PXA30-W2; Bedarf sinkt auf einen Wert, der rechnerisch
+  nur noch 1 Modul rechtfertigen würde → bleibt bei 2 (Ratchet hält);
+  Bedarf steigt über den bisherigen Watermark → wächst korrekt auf 4;
+  `m04_ddc_watermark` persistiert korrekt zwischen den Aufrufen.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

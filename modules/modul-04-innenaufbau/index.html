@@ -588,6 +588,9 @@ const DP_LABELS = {dp_ai:'AI', dp_ao:'AO', dp_bi:'BI', dp_bo:'BO', dp_fb_ai:'Fel
 let EINZELBAUTEILE_DB = [];
 let BAUGRUPPEN_DB     = [];
 let belegung          = [];  // [{typ:'baugruppe', bg_id, menge, ci}, {typ:'einzel', artikel_nr, menge, ci}, ...]
+// DDC-Auto-Modul-Ratchet (Session 28e): { artikel_nr: hoechste bisher berechnete
+// Menge }. Sinkt nie von selbst, siehe applyDdcWatermark() weiter unten.
+let ddcWatermark       = {};
 
 // ── DOM-Helfer ───────────────────────────────────────────────────────
 const g  = id => +document.getElementById(id).value;
@@ -659,6 +662,10 @@ function init() {
   const bels = localStorage.getItem('m04_belegung');
   if(bels) try { belegung = JSON.parse(bels); } catch(e){}
   belegung.forEach(b => { if(!b.typ) b.typ = 'baugruppe'; });
+
+  // DDC-Auto-Modul-Ratchet wiederherstellen
+  const wm = localStorage.getItem('m04_ddc_watermark');
+  if(wm) try { ddcWatermark = JSON.parse(wm); } catch(e){}
 
   loadMontagebereich(gs('schrank_typ'));
   setGewerk('lueftung');
@@ -1303,7 +1310,7 @@ function updateDdcAutoDisplay(ddcAuto) {
   if (el) {
     el.innerHTML = (ddcAuto && ddcAuto.modules.length)
       ? '<div class="ddc-auto-hdr">Automatisch ergänzt (DDC)</div>' + ddcAuto.modules.map(m =>
-          `<div class="bel-zeile bel-zeile-auto" title="${m.eb.bezeichnung} – automatisch ergänzt, da vorhandene DDC-Module nicht ausreichen">
+          `<div class="bel-zeile bel-zeile-auto" title="${m.eb.bezeichnung} – automatisch ergänzt, da vorhandene DDC-Module nicht ausreichen. Bleibt bestehen, auch wenn der Bedarf später sinkt (siehe CLAUDE.md, Session 28e).">
              <span class="bel-dot" style="background:#6B6862"></span>
              <span class="bel-name">${m.menge}× ${m.eb.bezeichnung}</span>
            </div>`).join('')
@@ -1317,11 +1324,12 @@ function updateDdcAutoDisplay(ddcAuto) {
 }
 
 // ── DDC-Datenpunkte: Unterdeckung ermitteln, passende Module ergänzen ──
-// Zustandslos wie die Reserve-Umverteilung der Klemmen: bei jedem
-// calculate()-Aufruf komplett neu aus dem aktuellen Bedarf berechnet – wird
-// ein Bauteil/eine Baugruppe wieder entfernt, sinkt der Bedarf und damit
-// automatisch auch die berechnete Modul-Stückzahl (keine manuelle Pflege
-// nötig, siehe Nutzer-Vorgabe "wird automatisch mitreduziert").
+// Berechnet den reinen AUGENBLICKLICHEN Bedarf aus der aktuellen Belegung
+// (für sich genommen zustandslos, wie die Reserve-Umverteilung der
+// Klemmen). Das Ergebnis wird direkt danach in placeBauteile() durch
+// applyDdcWatermark() geschickt, die dafür sorgt, dass die Modul-Stückzahl
+// NICHT von selbst wieder sinkt (Session 28e, Korrektur einer
+// Session-28d-Fehlannahme – siehe dortiger Kommentar).
 // Je Typ (dp_ai/ao/bi/bo/fb_ai/fb_ao/fb_bi/fb_bo) wird das am besten
 // passende ddc_io-Modul gesucht (deckt möglichst viele der aktuell noch
 // offenen Typen gleichzeitig ab, um nicht unnötig verschiedene Modultypen
@@ -1363,6 +1371,44 @@ function computeDdcAutoModules(demand, supply, reservePct) {
   });
 
   return { modules, unmet: [...new Set(unmet)] };
+}
+
+// ── DDC-Auto-Modul-Ratchet (Session 28e) ──────────────────────────────
+// Nutzer-Entscheidung nach Rücksprache: einmal als nötig erkannte
+// Auto-Module werden NICHT automatisch wieder entfernt/reduziert, wenn
+// der Bedarf später sinkt (z. B. eine Baugruppe wird per "−" entfernt).
+// Grund: DBACS hat aktuell keine feste Positions-/Kanalzuordnung einzelner
+// Feldgeräte zu einzelnen I/O-Kanälen eines Moduls – bei reiner
+// Mengen-Neuberechnung wäre nicht bekannt, WELCHES konkrete Modul dann
+// entfallen würde, und die verbleibenden Module würden nicht automatisch
+// "aufrücken". Ein echtes physisches Modul wird in der Praxis auch nicht
+// spontan wieder ausgebaut, nur weil ein Bauteil aus der Planung entfernt
+// wird. Die vollständige Lösung (Kanal-/Positionstracking je Feldgerät)
+// ist ein eigenständiges konzeptionelles Thema für eine spätere Session –
+// bis dahin: Ratchet, nur hochzählen. `ddcWatermark` (global, persistiert
+// als m04_ddc_watermark) hält je Artikel-Nr. die höchste bisher berechnete
+// Menge fest; `ddcAuto.modules` wird direkt auf mindestens diesen Stand
+// angehoben, auch wenn der aktuelle Bedarf für diesen Artikel inzwischen
+// auf 0 gefallen ist.
+function applyDdcWatermark(ddcAuto) {
+  let changed = false;
+  ddcAuto.modules.forEach(mod => {
+    const prev = ddcWatermark[mod.eb.artikel_nr] || 0;
+    if (mod.menge > prev) { ddcWatermark[mod.eb.artikel_nr] = mod.menge; changed = true; }
+  });
+  Object.keys(ddcWatermark).forEach(artikel => {
+    const wmMenge = ddcWatermark[artikel];
+    if (wmMenge <= 0) return;
+    let entry = ddcAuto.modules.find(m => m.eb.artikel_nr === artikel);
+    if (!entry) {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikel);
+      if (!eb) return; // Katalogeintrag entfernt/umbenannt – Watermark kann nicht mehr aufgelöst werden
+      entry = { eb, menge: 0 };
+      ddcAuto.modules.push(entry);
+    }
+    if (entry.menge < wmMenge) entry.menge = wmMenge;
+  });
+  if (changed) localStorage.setItem('m04_ddc_watermark', JSON.stringify(ddcWatermark));
 }
 
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
@@ -1412,6 +1458,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
   });
 
   const ddcAuto = computeDdcAutoModules(dpDemand, dpSupply, ddcReservePct);
+  applyDdcWatermark(ddcAuto);
   ddcAuto.modules.forEach(mod => {
     const eb = mod.eb;
     for (let q = 0; q < mod.menge; q++) {
