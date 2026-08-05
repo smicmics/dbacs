@@ -1236,6 +1236,58 @@ normalen Reihe.
   „Bedarfsgesteuerte Historie (batches-Modell)" unten für die vollständige
   Lösung, die dieses Modell ersetzt.
 
+### Modul 7 – Fehlerliste kopieren + Recherche-/Korrektur-Workflow (Session 36, gesperrt)
+Nutzer-Vorschlag: die Datenqualitäts-Chips (Session 35) zeigen zwar Probleme
+an, aber es fehlte ein Weg, eine konkrete Trefferliste (z. B. „Fehlender
+Preis") aus dem Browser heraus an Claude zu übergeben, damit dieser dazu im
+Netz recherchiert und die Werte direkt in `ga_komponenten.xlsx` einträgt.
+- **Neuer Button `📋 Liste kopieren`** (`copyList()`, neben `result-count`):
+  kopiert die aktuell gefilterte Liste (respektiert Tab, aktiven DQ-Chip,
+  Suche und alle Dropdown-Filter über das bereits vorhandene
+  `getFilteredList()`) als einfachen Text in die Zwischenablage. Format:
+  Kopfzeile mit Werkzeug-/Filterbezeichnung (`currentFilterLabel()`, baut
+  aus `activeFilter`/Suchbegriff/aktiven Selects einen lesbaren Satz wie
+  „Fehlender Preis" oder „Zone: Abg.-Kl. Sensoren · Hersteller: Siemens"),
+  dann Trefferzahl, dann eine Pipe-getrennte Tabelle (Einzelbauteile:
+  Artikel-Nr./Bezeichnung/Hersteller/Bauteil-Typ/Zone – Baugruppen:
+  ID/Name/Gewerk/Anzahl Bauteile) – bewusst kein CSV-Datei-Download (wie
+  Modul 4s `exportCSV()`), sondern direkt zwischenablage-fähiger Text zum
+  Einfügen in den Chat, das ist der eigentliche Anwendungsfall.
+- **Zwischenablage-Zugriff zweistufig:** `navigator.clipboard.writeText()`
+  zuerst, bei Fehlschlag (z. B. fehlender Fokus/Berechtigung)
+  `document.execCommand('copy')` über ein verstecktes Textarea als Fallback
+  (`fallbackCopy()`). Beide Pfade im Browser gegen die produktive Funktion
+  getestet – die moderne Clipboard-API schlägt in automatisierten
+  Testkontexten grundsätzlich mit „Document is not focused" fehl (Browser-
+  Sicherheitsmechanismus, kein Bug), der Fallback greift dort zuverlässig;
+  bei echter Nutzerinteraktion (Klick im eigenen Browser) hat das Dokument
+  Fokus, `writeText()` funktioniert direkt.
+- **Vorgesehener Workflow, ab jetzt Standardvorgehen für Katalogpflege:**
+  1. Nutzer wählt in Modul 7 einen DQ-Chip oder eigene Filter, klickt
+     „Liste kopieren", fügt den Text hier im Chat ein.
+  2. Claude recherchiert zu den genannten Artikeln im Netz (WebSearch/
+     WebFetch – Herstellerseiten/Distributoren, siehe Session-27-Hinweis:
+     Siemens-HIT-Portal funktioniert nicht per WebFetch, auf
+     Distributor-Datenblätter ausweichen).
+  3. Claude trägt recherchierte Werte **direkt in `ga_komponenten.xlsx`**
+     ein (Python/openpyxl, wie schon in Session 27 für neue Katalogeinträge
+     praktiziert) – vorher immer auf die `~$ga_komponenten.xlsx`-Lockdatei
+     prüfen (Excel-Datei muss geschlossen sein, sonst `PermissionError`).
+  4. `python3 xlsx_to_json.py` in WSL ausführen, alle 9 JSON-Dateien neu
+     exportieren, committen.
+  5. In Modul 7 verifizieren, dass der entsprechende DQ-Chip-Zähler
+     gesunken ist (z. B. „Fehlender Preis" von 49 auf einen kleineren Wert).
+  Das ändert nichts an der gesperrten Session-35-Architektur (Modul 7
+  bleibt rein lesend) – der Schreibzugriff läuft weiterhin außerhalb des
+  Browsers, jetzt nur mit einem definierten Übergabeformat statt loser
+  Zuruf-Liste.
+- Verifiziert direkt gegen die produktiven Funktionen: Filter „Fehlender
+  Preis" aktiviert → `currentFilterLabel()` liefert „Fehlender Preis",
+  `getFilteredList()` liefert korrekt 49 Treffer; erzeugter Text-Block
+  geprüft (Kopfzeilen + Pipe-Tabelle, erste 3 Zeilen inhaltlich korrekt
+  gegen die echten Datensätze abgeglichen); Button-Feedback „✓ Kopiert"
+  erscheint nach Aufruf über den `execCommand`-Fallback-Pfad.
+
 ### Modul 7 – Stammdatenpflege Artikeldaten (Session 35, gesperrt)
 Neues Modul, direkt im Anschluss an die Session-34-Pause von Modul 4 gebaut.
 **Titel:** „Modul 7 · Stammdatenpflege · Artikeldaten"

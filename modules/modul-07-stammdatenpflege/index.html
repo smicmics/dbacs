@@ -72,6 +72,11 @@ header a:hover{color:var(--tx2);}
 #result-count{font-size:11px;color:var(--tx3);white-space:nowrap;}
 .link-reset{font-size:11px;color:var(--green);text-decoration:none;white-space:nowrap;}
 .link-reset:hover{text-decoration:underline;}
+.btn-copy{
+  font-size:11px;padding:5px 10px;border-radius:4px;cursor:pointer;white-space:nowrap;
+  background:var(--bg3);border:1px solid var(--green);color:var(--green);
+}
+.btn-copy:hover{background:var(--green);color:#000;}
 
 /* ── Layout ── */
 .layout-2col{display:grid;grid-template-columns:1fr 380px;}
@@ -205,6 +210,7 @@ header a:hover{color:var(--tx2);}
     <select id="f_gewerk" onchange="applyFilters()"><option value="">Gewerk: Alle</option></select>
   </div>
   <span id="result-count">– Treffer</span>
+  <button id="btn-copy-list" class="btn-copy" onclick="copyList()" title="Aktuell gefilterte Liste als Text in die Zwischenablage kopieren – z. B. zum Einfügen im Chat für eine Recherche-Anfrage">📋 Liste kopieren</button>
   <a href="#" class="link-reset" onclick="resetFilters();return false;">Zurücksetzen</a>
 </div>
 
@@ -412,6 +418,86 @@ function resetFilters() {
   render();
 }
 function applyFilters() { render(); }
+
+// Beschreibt den aktuell aktiven Filter-Zustand in einem Satz – wird der
+// kopierten Liste vorangestellt, damit beim Einfügen im Chat sofort klar
+// ist, worum es geht (z. B. "Fehlender Preis"), ohne dass der Nutzer das
+// separat erklären muss.
+function currentFilterLabel() {
+  const parts = [];
+  if (activeFilter === 'ungeprueft_eb') parts.push('Ungeprüft (Einzelbauteile)');
+  if (activeFilter === 'ungeprueft_bg') parts.push('Ungeprüft (Baugruppen)');
+  if (activeFilter === 'kein_preis') parts.push('Fehlender Preis');
+  if (activeFilter === 'orphans') parts.push('Verwaiste Referenzen');
+  const q = document.getElementById('search').value.trim();
+  if (q) parts.push(`Suche "${q}"`);
+  if (activeTab === 'einzel') {
+    const zone = document.getElementById('f_zone').value;
+    if (zone) parts.push(`Zone: ${ZONE_LABELS[zone]}`);
+    const hersteller = document.getElementById('f_hersteller').value;
+    if (hersteller) parts.push(`Hersteller: ${hersteller}`);
+    const kategorie = document.getElementById('f_kategorie').value;
+    if (kategorie) parts.push(`Kategorie: ${kategorie}`);
+    const typ = document.getElementById('f_bauteil_typ').value;
+    if (typ) parts.push(`Typ: ${typ}`);
+  } else {
+    const gewerk = document.getElementById('f_gewerk').value;
+    if (gewerk) parts.push(`Gewerk: ${gewerk}`);
+  }
+  return parts.length ? parts.join(' · ') : 'Kein Filter (alle Einträge)';
+}
+
+// ── Fehlerliste kopieren ─────────────────────────────────────────────
+// Kopiert die aktuell gefilterte Liste als einfachen Text in die
+// Zwischenablage – gedacht zum Einfügen im Chat, damit Claude gezielt zu
+// den genannten Artikeln recherchieren und die Werte in ga_komponenten.xlsx
+// nachtragen kann (Excel bleibt die Quelle, dieses Modul liest nur).
+function copyList() {
+  const list = getFilteredList();
+  const label = currentFilterLabel();
+  const tabName = activeTab === 'einzel' ? 'Einzelbauteile' : 'Baugruppen';
+  const lines = [
+    'DBACS Stammdatenpflege – Fehlerliste',
+    `Filter: ${label}`,
+    `Tabelle: ${tabName} (${list.length} Treffer)`,
+    ''
+  ];
+  if (activeTab === 'einzel') {
+    lines.push('Artikel-Nr. | Bezeichnung | Hersteller | Bauteil-Typ | Zone');
+    list.forEach(e => lines.push(`${e.artikel_nr} | ${e.bezeichnung} | ${e.hersteller} | ${e.bauteil_typ} | ${e.zone || '–'}`));
+  } else {
+    lines.push('ID | Name | Gewerk | Anzahl Bauteile');
+    list.forEach(b => lines.push(`${b.id} | ${b.name} | ${b.gewerk} | ${b.bauteile.length}`));
+  }
+  copyToClipboard(lines.join('\n'));
+}
+
+function copyToClipboard(text) {
+  const btn = document.getElementById('btn-copy-list');
+  const showDone = () => {
+    if (!btn) return;
+    const orig = btn.textContent;
+    btn.textContent = '✓ Kopiert';
+    setTimeout(() => { btn.textContent = orig; }, 1800);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(showDone).catch(() => fallbackCopy(text, showDone));
+  } else {
+    fallbackCopy(text, showDone);
+  }
+}
+// Fallback für Browser/Kontexte ohne Clipboard-API-Berechtigung.
+function fallbackCopy(text, onDone) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); onDone(); } catch (e) { /* Kopieren nicht möglich, kein Fallback verfügbar */ }
+  document.body.removeChild(ta);
+}
 
 // Datenqualitäts-Chip als Filter anwenden – wechselt bei Bedarf den Tab
 // (Baugruppen-Probleme zeigen sich nur im Baugruppen-Tab) und setzt alle
