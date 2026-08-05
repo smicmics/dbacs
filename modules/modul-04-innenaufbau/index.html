@@ -108,10 +108,20 @@ header a:hover{color:var(--tx2);}
   background:var(--bg2);border-bottom:1px solid var(--bord);
   padding:8px 18px;flex-shrink:0;
 }
-.fs-mini{display:flex;flex-direction:column;gap:2px;flex:1 1 100px;min-width:90px;max-width:150px;}
+/* fs-mini dient seit Session 33 zusätzlich als Zonen-Filter für die
+   Einzelbauteil-Auswahl (löst die separaten .zone-tab-Buttons aus Session
+   32 ab – die Auslastungsanzeige zeigt die Zonen ohnehin schon an, ein
+   zweites Buttonset war redundant) – daher klickbar mit aktivem Zustand. */
+.fs-mini{display:flex;flex-direction:column;gap:2px;flex:1 1 100px;min-width:90px;max-width:150px;
+  cursor:pointer;padding:3px 6px;border-radius:4px;border:1px solid transparent;margin:-3px -6px;}
+.fs-mini:hover{background:var(--bg3);}
+.fs-mini.active{background:var(--bg4);border-color:var(--blue);}
 .fs-mini-label{font-size:9.5px;color:var(--tx2);display:flex;justify-content:space-between;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .fs-mini-bar-bg{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;border:1px solid var(--bord);}
 .fs-mini-bar{height:100%;border-radius:3px;transition:width .3s;}
+.fs-mini.fs-mini-alle{flex-direction:row;align-items:center;justify-content:center;flex:0 0 auto;min-width:50px;
+  font-size:9.5px;color:var(--tx2);font-weight:600;}
+.fs-mini.fs-mini-alle.active{color:#fff;}
 .fs-kanal-mini{font-size:9.5px;color:var(--tx3);white-space:nowrap;margin-left:auto;padding-left:14px;border-left:1px solid var(--bord);}
 
 /* ── 3-Spalten Layout ── */
@@ -189,22 +199,6 @@ legend{
 }
 .gewerk-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
 .gewerk-tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
-
-/* ── Zonen-Filter Einzelbauteile (Session 32) ──
-   Eigene, kompaktere Buttons statt .gewerk-tab wiederzuverwenden – filtert
-   nach den 8 physikalischen Platzierungszonen (ZONE_LABELS/ZONE_COLORS,
-   siehe Legende), NICHT nach dem gleichnamigen "Funktionsbereich" der
-   Baugruppen-Tabs oben (10 Gewerke aus baugruppen.json) – bewusst andere
-   Bezeichnung ("Zone") und andere Optik, um die beiden Filter-Ebenen nicht
-   zu verwechseln. */
-.zone-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
-.zone-tab{
-  display:flex;align-items:center;gap:4px;font-size:9.5px;padding:3px 7px;border-radius:3px;cursor:pointer;
-  background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);white-space:nowrap;
-}
-.zone-tab .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.zone-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
-.zone-tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
 
 /* ── BG-Auswahl ── */
 .bg-add-row{display:flex;gap:6px;margin-top:6px;min-width:0;}
@@ -488,7 +482,6 @@ legend{
 
     <div class="eb-field" style="width:320px;">
       <label>Spezifische Auswahl Einzelbauteile</label>
-      <div class="zone-tabs" id="einzel-zone-tabs"></div>
       <div class="bg-add-row">
         <select id="einzel_auswahl" style="flex:1" onchange="updateRowbreakAvailability()">
           <option value="">Laden …</option>
@@ -508,40 +501,44 @@ legend{
   <p class="eb-hint" id="hint_quelle">Bitte Schrank-Typ wählen</p>
 </div>
 
-<!-- ── Füllstand-Streifen (volle Breite, kompakt) ── -->
+<!-- ── Füllstand-Streifen (volle Breite, kompakt) ──
+     Jedes Feld ist zugleich Zonen-Filter für die Einzelbauteil-Auswahl
+     (Session 33) – Klick ruft setEinzelZone(zone) auf, .active markiert die
+     aktuelle Auswahl. "Alle" (ohne Prozentangabe) ist Standard. -->
 <div class="fuellstand-strip" id="fuellstand-wrap">
-  <div class="fs-mini" id="fs-klemme-mini" title="Einspeiseklemmen">
+  <div class="fs-mini" id="fs-klemme-mini" data-zone="klemm_e" title="Einspeiseklemmen" onclick="setEinzelZone('klemm_e')">
     <div class="fs-mini-label"><span id="fs-klemme-lbl" style="color:#EBDBA0">Einsp.-Kl.</span><span id="fs-klemme-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-klemme-bar" class="fs-mini-bar" style="width:0%;background:#EBDBA0"></div></div>
   </div>
-  <div class="fs-mini" id="fs-uss-mini" title="Überspannungsschutz & Vorsicherung">
+  <div class="fs-mini" id="fs-uss-mini" data-zone="uss" title="Überspannungsschutz & Vorsicherung" onclick="setEinzelZone('uss')">
     <div class="fs-mini-label"><span id="fs-uss-lbl" style="color:#D8A916">ÜSS</span><span id="fs-uss-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-uss-bar" class="fs-mini-bar" style="width:0%;background:#D8A916"></div></div>
   </div>
-  <div class="fs-mini" id="fs-evert-mini" title="Energieverteilung">
+  <div class="fs-mini" id="fs-evert-mini" data-zone="evert" title="Energieverteilung" onclick="setEinzelZone('evert')">
     <div class="fs-mini-label"><span id="fs-evert-lbl" style="color:#C8720E">Energievert.</span><span id="fs-evert-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-evert-bar" class="fs-mini-bar" style="width:0%;background:#C8720E"></div></div>
   </div>
-  <div class="fs-mini" id="fs-leist-mini" title="Leistungsbaugruppe">
+  <div class="fs-mini" id="fs-leist-mini" data-zone="leist" title="Leistungsbaugruppe" onclick="setEinzelZone('leist')">
     <div class="fs-mini-label"><span id="fs-leist-lbl" style="color:#C84E2E">Leistung</span><span id="fs-leist-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-leist-bar" class="fs-mini-bar" style="width:0%;background:#C84E2E"></div></div>
   </div>
-  <div class="fs-mini" id="fs-steuer-mini" title="Steuerbaugruppe">
+  <div class="fs-mini" id="fs-steuer-mini" data-zone="steuer" title="Steuerbaugruppe" onclick="setEinzelZone('steuer')">
     <div class="fs-mini-label"><span id="fs-steuer-lbl" style="color:#4BBECA">Steuerung</span><span id="fs-steuer-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-steuer-bar" class="fs-mini-bar" style="width:0%;background:#4BBECA"></div></div>
   </div>
-  <div class="fs-mini" id="fs-klemml-mini" title="Abg.-Kl. Leistung">
+  <div class="fs-mini" id="fs-klemml-mini" data-zone="klemm_l" title="Abg.-Kl. Leistung" onclick="setEinzelZone('klemm_l')">
     <div class="fs-mini-label"><span id="fs-klemml-lbl" style="color:#2DBD8E">Kl. Leist.</span><span id="fs-klemml-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-klemml-bar" class="fs-mini-bar" style="width:0%;background:#2DBD8E"></div></div>
   </div>
-  <div class="fs-mini" id="fs-klemmf-mini" title="Abg.-Kl. Feldgeräte">
+  <div class="fs-mini" id="fs-klemmf-mini" data-zone="klemm_f" title="Abg.-Kl. Feldgeräte" onclick="setEinzelZone('klemm_f')">
     <div class="fs-mini-label"><span id="fs-klemmf-lbl" style="color:#9A94E8">Kl. Feld.</span><span id="fs-klemmf-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-klemmf-bar" class="fs-mini-bar" style="width:0%;background:#9A94E8"></div></div>
   </div>
-  <div class="fs-mini" id="fs-klemms-mini" title="Abg.-Kl. Sensoren">
+  <div class="fs-mini" id="fs-klemms-mini" data-zone="klemm_s" title="Abg.-Kl. Sensoren" onclick="setEinzelZone('klemm_s')">
     <div class="fs-mini-label"><span id="fs-klemms-lbl" style="color:#C14FA0">Kl. Sens.</span><span id="fs-klemms-txt">–</span></div>
     <div class="fs-mini-bar-bg"><div id="fs-klemms-bar" class="fs-mini-bar" style="width:0%;background:#C14FA0"></div></div>
   </div>
+  <div class="fs-mini fs-mini-alle active" id="fs-alle-mini" data-zone="alle" title="Alle Zonen anzeigen" onclick="setEinzelZone('alle')">Alle</div>
   <span class="fs-kanal-mini" id="fs-kanal-info">Kanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)</span>
 </div>
 
@@ -713,42 +710,29 @@ function init() {
 
   loadMontagebereich(gs('schrank_typ'));
   setGewerk('lueftung');
-  buildEinzelZoneTabs();
   populateEinzelAuswahl();
   renderBelegung();
   calculate();
 }
 
-// ── Zonen-Filter Einzelbauteile (Session 32) ───────────────────────────
+// ── Zonen-Filter Einzelbauteile (Session 32, umgebaut Session 33) ──────
 // Filtert die Direktbauteil-Auswahl nach den 8 physikalischen
 // Platzierungszonen (dieselbe Taxonomie wie Legende/Füllstand-Streifen,
 // ZONE_LABELS/ZONE_COLORS) statt die komplette, lange Liste immer
-// ungefiltert zu zeigen. Bewusst NICHT dieselben Buttons/Bezeichnung wie
-// die "Funktionsbereich"-Tabs der Baugruppen-Auswahl (die filtern nach
-// `gewerk` aus baugruppen.json – eine andere, 10-teilige Taxonomie) – daher
-// eigene Klasse `.zone-tab` und eigenes Label "Zone", um die beiden
-// Filter-Ebenen nicht zu vermischen. Absichtlich noch KEINE Möglichkeit,
-// ein Bauteil abweichend von seiner Katalog-Zone (`eb.zone`) zu platzieren
-// (z. B. eine Leistungs-Klemme manuell in die Sensoren-Zone) – dafür fehlt
-// noch ein Datenbankfeld, geplant für Modul 7 (Stammdatenpflege).
+// ungefiltert zu zeigen. Session 32 hatte dafür noch eigene Buttons
+// (.zone-tab) – Nutzer-Vorschlag: der Füllstand-Streifen zeigt die Zonen
+// ohnehin schon an, ein zweites Buttonset war redundant. Jetzt sind die
+// `.fs-mini`-Felder selbst klickbar (siehe HTML, onclick="setEinzelZone(…)"),
+// plus ein zusätzliches "Alle"-Feld ohne Prozentangabe (Default). Absichtlich
+// weiterhin KEINE Möglichkeit, ein Bauteil abweichend von seiner Katalog-Zone
+// (`eb.zone`) zu platzieren (z. B. eine Leistungs-Klemme manuell in die
+// Sensoren-Zone) – dafür fehlt noch ein Datenbankfeld, geplant für Modul 7
+// (Stammdatenpflege).
 let einzelZoneFilter = 'alle';
-
-function buildEinzelZoneTabs() {
-  const wrap = document.getElementById('einzel-zone-tabs');
-  if(!wrap) return;
-  const alleBtn = `<button class="zone-tab${einzelZoneFilter === 'alle' ? ' active' : ''}" data-zone="alle" onclick="setEinzelZone('alle')" title="Alle Zonen">Alle</button>`;
-  const zoneBtns = ALLE_ZONEN.map(zn => {
-    const kurz = { klemm_e:'Einsp.-Kl.', uss:'ÜSS', evert:'Energievert.', leist:'Leistung', steuer:'Steuerung',
-                   klemm_l:'Kl. Leist.', klemm_f:'Kl. Feld.', klemm_s:'Kl. Sens.' }[zn];
-    return `<button class="zone-tab${einzelZoneFilter === zn ? ' active' : ''}" data-zone="${zn}" onclick="setEinzelZone('${zn}')" title="${ZONE_LABELS[zn]}">`
-         + `<span class="dot" style="background:${ZONE_COLORS[zn]}"></span>${kurz}</button>`;
-  }).join('');
-  wrap.innerHTML = alleBtn + zoneBtns;
-}
 
 function setEinzelZone(zone) {
   einzelZoneFilter = zone;
-  document.querySelectorAll('#einzel-zone-tabs .zone-tab').forEach(b => b.classList.toggle('active', b.dataset.zone === zone));
+  document.querySelectorAll('.fs-mini[data-zone]').forEach(el => el.classList.toggle('active', el.dataset.zone === zone));
   populateEinzelAuswahl();
 }
 

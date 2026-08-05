@@ -1232,7 +1232,41 @@ normalen Reihe.
   „Bedarfsgesteuerte Historie (batches-Modell)" unten für die vollständige
   Lösung, die dieses Modell ersetzt.
 
-### Modul 4 – Zonen-Filter für Einzelbauteil-Auswahl (Session 32, gesperrt)
+### Modul 4 – Zonen-Filter über den Füllstand-Streifen statt eigener Buttons (Session 33, gesperrt)
+Nutzer-Vorschlag direkt nach Session 32: die separaten `.zone-tab`-Buttons
+sind redundant, da der Füllstand-Streifen die 8 Zonen (inkl. Farbe/Kurzlabel)
+ohnehin schon anzeigt. Besser: die bestehenden `.fs-mini`-Felder selbst
+klickbar machen und nur ein zusätzliches "Alle"-Feld (ohne Prozentangabe,
+Standard) ans Ende stellen – spart die zweite UI-Ebene komplett.
+- **Ablösung, nicht Ergänzung:** `.zone-tabs`/`.zone-tab`-CSS, das
+  `#einzel-zone-tabs`-Element und `buildEinzelZoneTabs()` aus Session 32
+  sind vollständig entfernt (kein toter Code). `einzelZoneFilter` (globaler
+  State) und der Filter in `populateEinzelAuswahl()` (`e.zone ===
+  einzelZoneFilter`) bleiben unverändert – nur die Bedienoberfläche wurde
+  getauscht.
+- **Umsetzung:** jedes der 8 `.fs-mini`-Felder bekommt `data-zone="…"` +
+  `onclick="setEinzelZone('…')"`. Ein 9. Feld `#fs-alle-mini`
+  (`.fs-mini.fs-mini-alle`, `data-zone="alle"`, initial `class="active"`)
+  ohne Balken/Prozentanzeige steht am Ende der Zonenliste, vor dem
+  Kanal-Info-Text (`.fs-kanal-mini`, der ohnehin per `margin-left:auto`
+  ganz rechts bleibt, unabhängig von der DOM-Position). `setEinzelZone()`
+  toggelt jetzt `.active` auf `.fs-mini[data-zone]` statt auf `.zone-tab`.
+  CSS: `.fs-mini{cursor:pointer;padding:3px 6px;margin:-3px -6px}` (Klick-
+  fläche vergrößert, visueller Fußabdruck durch das negative Margin
+  unverändert) + `.active{background:var(--bg4);border-color:var(--blue)}`.
+- **Kompatibilität mit `buildFuellstand()` geprüft:** die Funktion setzt bei
+  jedem `calculate()` nur `.title`/`.style.color`/Balkenbreite, fasst
+  `classList` nicht an – der Zonen-Filter-Zustand bleibt über beliebig viele
+  Neuberechnungen hinweg stabil (verifiziert: Klick auf `Kl. Leist.` →
+  `calculate()` erneut ausgeführt → Feld weiterhin aktiv, Tooltip trotzdem
+  korrekt aktualisiert).
+- Verifiziert im Browser: Default „Alle" aktiv (56 Einträge), Klick auf
+  „Steuerung" filtert auf 7 Treffer und aktiviert/deaktiviert die Felder
+  korrekt gegenseitig, Klick zurück auf „Alle" stellt 56 wieder her; kein
+  Layout-Überlauf im Streifen (10 Elemente inkl. Kanal-Info, Streifenhöhe
+  unverändert ~40px).
+
+### Modul 4 – Zonen-Filter für Einzelbauteil-Auswahl (Session 32, gesperrt – Bedienoberfläche in Session 33 abgelöst, Filterlogik selbst unverändert)
 Nutzer-Feedback: das Dropdown "Spezifische Auswahl Einzelbauteile" zeigte
 immer alle ~56 Katalogeinträge ungefiltert (nur nach `kategorie` in
 Optgroups sortiert) – bei wachsendem Katalog unübersichtlich. Zusätzlich
