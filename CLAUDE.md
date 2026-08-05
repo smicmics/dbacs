@@ -1236,6 +1236,87 @@ normalen Reihe.
   „Bedarfsgesteuerte Historie (batches-Modell)" unten für die vollständige
   Lösung, die dieses Modell ersetzt.
 
+### Baugruppen-Schema: DIN-276-basierte ID + Feld-Korrektur (Session 37, gesperrt)
+Nutzer will die textbasierte `id` in `baugruppen.json` (z. B.
+`luefter_1stufig_2kw`) mittelfristig durch ein eindeutiges, kodiertes
+Zahlenschema ersetzen, da mit wachsender Katalogzahl zu viele nah beieinander
+liegende Text-Ids entstehen. **Zweistufig umgesetzt: Session 37 korrigiert
+nur die Feld-STRUKTUR (Excel-Header, Skript, Modul 7), die eigentliche
+Inhalts-Migration (neue Id-Werte, `gewerk` auf DIN-276-Codes umstellen,
+Modul-4-Tabs anpassen) ist bewusst ein separater Folge-Schritt** –
+ausdrücklicher Nutzerwunsch: „Bevor die Excel Tabelle inhaltlich geändert
+wird, sollten wir die Felder darin korrigieren."
+
+**Ziel-ID-Schema (vereinbart, noch nicht angewendet):**
+`<3-stelliger DIN-276-Gewerke-Code>_<6-stellige fortlaufende Nummer je
+Gewerke-Gruppe>`, z. B. `480_000001`. DIN-276-Codes:
+```
+410 Sanitär                                  445 Beleuchtungsanlagen
+420 Wärmeversorgungsanlagen                  450 Informations-/Sicherheitstechnik
+430 Raumlufttechnische Anlagen                460 Aufzugsanlagen
+434 Kältetechnische Anlagen                   470 Nutzungsspezifische Anlagen
+440 Elektroanlagen                            480 Gebäudeautomation
+                                               490 Sonstige Anlagen
+```
+Die 6-stellige Nummer zählt **pro Gewerke-Gruppe** separat hoch (nicht global).
+
+**In dieser Session bereits korrigiert (Feld-Struktur, `baugruppen`-Sheet):**
+- Excel-Header umbenannt: `funktionsbereiche` → `funktionsbereich` (Spalte E),
+  `automationsfunktionen` → `automationsanbindung` (Spalte G) – via openpyxl
+  direkt in `ga_komponenten.xlsx` geschrieben (Lockdatei vorher geprüft,
+  keine gehalten). Bestehende Zellwerte unverändert (Spalte G war und ist
+  bei allen 15 Zeilen leer).
+- `xlsx_to_json.py` `export_baugruppen()`: `funktionsbereich` jetzt einzelner
+  Klartext-String (kein Komma-Split mehr zu einem Array – ergab beim
+  bisherigen `funktionsbereiche` ohnehin immer genau 1 Wert, deckungsgleich
+  mit `gewerk`). `automationsanbindung` jetzt Boolean nach demselben Muster
+  wie bei `einzelbauteile.automationsanbindung` (`if rec.get(...): entry[...]
+  = True`, Feld fehlt komplett wenn falsy – keine Sonderbehandlung, exakt
+  dieselbe Semantik: „wird zur Laufzeit ausgewertet, ob DDC/Automation für
+  dieses Objekt berücksichtigt werden muss" – vom Nutzer für beide Ebenen
+  (Einzelbauteil UND Baugruppe) explizit bestätigt).
+- `data/baugruppen.json` neu exportiert (`funktionsbereiche:[...]` →
+  `funktionsbereich:"..."` bei allen 15 Einträgen, `automationsanbindung`
+  bei keinem Eintrag gesetzt, da Excel-Spalte durchgehend leer war).
+- Modul 7 `FIELD_DEFS_BG` an die neuen Feldnamen/Typen angepasst
+  (`funktionsbereich` als einfacher Text statt `v.join(', ')`,
+  `automationsanbindung` als Ja/Nein wie bei den Einzelbauteil-Feldern).
+- `gewerk`-Spalte selbst **unverändert** (Name UND Werte) – Skript behandelt
+  sie ohnehin nur als reinen Text-Durchreicher, keine Anpassung nötig, bis
+  die Werte inhaltlich auf DIN-276-Codes umgestellt werden.
+- Geprüft: Modul 4 funktioniert unverändert (`filterBaugruppen()` matcht
+  weiterhin korrekt auf die bestehenden `gewerk`-Textwerte, da diese noch
+  nicht migriert sind); Modul 7 zeigt `funktionsbereich`/`automationsanbindung`
+  korrekt im Detail-Panel, alte Feldnamen tauchen nirgends mehr auf.
+
+**Vom Nutzer für den Folge-Schritt (Inhalts-Migration) bereits entschieden,
+hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
+- `gewerk` wird künftig direkt der numerische DIN-276-Code als Text (z. B.
+  `"430"`), nicht mehr ein Kurzname wie `"lueftung"`.
+- Modul 4s Funktionsbereich-Tabs werden auf die 11 DIN-276-Kategorien
+  angeglichen (neue Tabs „Aufzug" (460) und „Sonstige" (490) ergänzen).
+- **Offene Detailfrage, noch nicht vom Nutzer entschieden:** wie sich die
+  bestehenden 10 Funktionsbereich-Tabs (`schaltschrank, automation, elektro,
+  beleuchtung, netzwerk, lueftung, heizung, kaelte, sanitaer,
+  nutzungsspezifisch`, Session 24) exakt auf die 11 DIN-276-Codes abbilden:
+  (a) 450 „Informations-/Sicherheitstechnik" hat keine eindeutige
+  Entsprechung – am ehesten `netzwerk`, aber nicht vom Nutzer bestätigt;
+  (b) der bestehende Tab `schaltschrank` hat KEIN DIN-276-Äquivalent (DIN 276
+  kennt keine eigene „Schaltschrank"-Anlagengruppe) – unklar ob er als
+  zusätzlicher Nicht-DIN-Tab bestehen bleibt oder entfällt. Vor Umsetzung
+  der Modul-4-Tab-Angleichung mit dem Nutzer klären.
+- **Sobald `gewerk` auf DIN-276-Codes umgestellt wird, muss `filterBaugruppen()`
+  in Modul 4 zwingend auf `b.funktionsbereich` statt `b.gewerk` umgestellt
+  werden** (Reihenfolge wichtig!) – sonst zeigen alle Tabs plötzlich 0
+  Treffer, weil die Tab-Buttons weiterhin Text-Keys wie `data-gewerk="lueftung"`
+  gegen dann-numerische `gewerk`-Werte matchen würden. `funktionsbereich`
+  ist laut Nutzer explizit „der Klartext zum Gewerk als Zahl... in den
+  Filterbuttons von Modul 4" – d. h. der stabile, für die UI-Filterung
+  vorgesehene Text-Key, unabhängig vom numerischen `gewerk`-Code.
+- Migration der bestehenden 15 `id`-Werte auf das neue Schema + Anpassung
+  der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile` – noch nicht
+  begonnen.
+
 ### Modul 7 – Fehlerliste kopieren + Recherche-/Korrektur-Workflow (Session 36, gesperrt)
 Nutzer-Vorschlag: die Datenqualitäts-Chips (Session 35) zeigen zwar Probleme
 an, aber es fehlte ein Weg, eine konkrete Trefferliste (z. B. „Fehlender

@@ -353,6 +353,15 @@ def export_einzelbauteile(wb):
 
 
 def export_baugruppen(wb):
+    # Feld-Korrektur Session 37: 'funktionsbereiche' (Komma-Liste) -> 'funktionsbereich'
+    # (einzelner Klartext-Wert, Companion zu 'gewerk'); 'automationsfunktionen'
+    # (Komma-Liste) -> 'automationsanbindung' (Boolean, gleicher Name/gleiche
+    # Semantik wie bei einzelbauteile). 'gewerk' selbst ist unveraendert als
+    # Spalte, soll aber laut Nutzer-Entscheidung kuenftig den 3-stelligen
+    # DIN-276-Code als Text tragen (z.B. "430") statt eines Kurznamens wie
+    # "lueftung" -- diese inhaltliche Migration der Bestandsdaten ist bewusst
+    # noch NICHT Teil dieser Aenderung (erst Feld-Struktur, dann Inhalte),
+    # siehe CLAUDE.md.
     SHEET = 'baugruppen'
     JOIN_SHEET = 'baugruppen_bauteile'
     JSON_FILE = Path(__file__).parent / 'baugruppen.json'
@@ -399,10 +408,10 @@ def export_baugruppen(wb):
             'beschreibung': str(rec['beschreibung']),
             'bauteile':    bauteile_je_bg.get(str(rec['id']), []),
         }
-        if rec.get('funktionsbereiche') is not None:
-            entry['funktionsbereiche'] = [s.strip() for s in str(rec['funktionsbereiche']).split(',') if s.strip()]
-        if rec.get('automationsfunktionen') is not None:
-            entry['automationsfunktionen'] = [s.strip() for s in str(rec['automationsfunktionen']).split(',') if s.strip()]
+        if rec.get('funktionsbereich') is not None:
+            entry['funktionsbereich'] = str(rec['funktionsbereich'])
+        if rec.get('automationsanbindung'):
+            entry['automationsanbindung'] = True
         entry['geprueft'] = bool(rec.get('geprueft'))
         rows.append(entry)
 

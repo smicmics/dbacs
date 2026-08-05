@@ -289,9 +289,9 @@ const FIELD_DEFS_BG = [
   {k:'id', l:'ID'},
   {k:'name', l:'Name'},
   {k:'gewerk', l:'Gewerk'},
+  {k:'funktionsbereich', l:'Funktionsbereich'},
   {k:'beschreibung', l:'Beschreibung'},
-  {k:'funktionsbereiche', l:'Funktionsbereiche', f:v => v.join(', ')},
-  {k:'automationsfunktionen', l:'Automationsfunktionen', f:v => v.join(', ')},
+  {k:'automationsanbindung', l:'Automationsanbindung', f:v => v ? 'Ja' : 'Nein'},
   {k:'geprueft', l:'Geprüft', f:v => v ? 'Ja' : 'Nein'}
 ];
 
