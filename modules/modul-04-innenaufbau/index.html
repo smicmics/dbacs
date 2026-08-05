@@ -210,6 +210,8 @@ legend{
   white-space:nowrap;flex-shrink:0;cursor:pointer;
 }
 .rowbreak-lbl input[type=checkbox]{width:12px;height:12px;flex-shrink:0;cursor:pointer;}
+.rowbreak-lbl-disabled{color:var(--tx3);cursor:not-allowed;}
+.rowbreak-lbl-disabled input[type=checkbox]{cursor:not-allowed;}
 .btn-add-sm{background:var(--green);color:#000;}
 .btn-sub-sm{background:var(--bg3);color:var(--tx2);border:1px solid var(--bords);}
 .btn-add-sm:hover,.btn-sub-sm:hover{opacity:.85;}
@@ -471,7 +473,7 @@ legend{
     <div class="eb-field" style="width:320px;">
       <label>Spezifische Auswahl Einzelbauteile</label>
       <div class="bg-add-row">
-        <select id="einzel_auswahl" style="flex:1">
+        <select id="einzel_auswahl" style="flex:1" onchange="updateRowbreakAvailability()">
           <option value="">Laden …</option>
         </select>
         <input id="einzel_menge" type="number" value="1" min="1" max="99">
@@ -479,7 +481,7 @@ legend{
           <button class="btn-add-sm" onclick="addEinzelbauteil()" title="Menge hinzufügen">+</button>
           <button class="btn-sub-sm" onclick="removeEinzelbauteilQty()" title="Menge abziehen">&#8722;</button>
         </div>
-        <label class="rowbreak-lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
+        <label class="rowbreak-lbl" id="einzel_rowbreak_lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
           <input type="checkbox" id="einzel_rowbreak">neue Reihe
         </label>
       </div>
@@ -716,6 +718,25 @@ function populateEinzelAuswahl() {
     });
     sel.appendChild(og);
   });
+  updateRowbreakAvailability();
+}
+
+// "neue Reihe" nur bedienbar, wenn das aktuell gewählte Einzelbauteil
+// tatsächlich in einer Reihen-Zone landet (siehe REIHEN_ZONEN) – sonst
+// hätte die Checkbox keine Wirkung (Session 28h).
+function updateRowbreakAvailability() {
+  const box = document.getElementById('einzel_rowbreak');
+  const lbl = document.getElementById('einzel_rowbreak_lbl');
+  if(!box || !lbl) return;
+  const artikelNr = gs('einzel_auswahl');
+  const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
+  const wirktHier = !!eb && REIHEN_ZONEN.includes(eb.zone);
+  box.disabled = !wirktHier;
+  if(!wirktHier) box.checked = false;
+  lbl.classList.toggle('rowbreak-lbl-disabled', !wirktHier);
+  lbl.title = wirktHier
+    ? 'Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen'
+    : 'Ohne Wirkung: dieses Bauteil landet in einer Zone ohne Reihen-Konzept (z. B. Klemmenzone)';
 }
 
 // ── Schrank-Typ ──────────────────────────────────────────────────────
@@ -823,7 +844,14 @@ function addEinzelbauteil() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
   if(!artikelNr) return;
-  const rowBreak = document.getElementById('einzel_rowbreak').checked;
+  // "neue Reihe" wirkt nur in Zonen mit Reihen-Modell (placeInBands, siehe
+  // REIHEN_ZONEN) – Klemmenzonen (placeInKlemmRow) kennen kein
+  // Reihen-Konzept. Ohne diese Sperre verhinderte das Häkchen dort trotzdem
+  // das Mergen gleicher Artikel (Session 28h-Bug: jede Klemmen-Einfügung
+  // landete als eigener Belegungseintrag mit eigener Farbe, obwohl die
+  // Checkbox dort gar keine Wirkung hat).
+  const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
+  const rowBreak = !!eb && REIHEN_ZONEN.includes(eb.zone) && document.getElementById('einzel_rowbreak').checked;
   if(!rowBreak) {
     const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr && !b.rowBreak);
     if(ex) {

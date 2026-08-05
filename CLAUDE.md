@@ -1079,6 +1079,36 @@ existieren können.
   zusammen in der ursprünglichen Reihe, alle erzwungenen Einfügungen
   gruppieren sich korrekt in einer eigenen Reihe, kein Overflow.
 
+### Modul 4 – "neue Reihe" auf Reihen-Zonen begrenzt (Session 28h, gesperrt)
+Nutzer-Fund: das "neue Reihe"-Häkchen ist laut eigenem Tooltip schon immer
+nur für Leistung/Steuerung vorgesehen (Reihen-Konzept, `placeInBands()`),
+wirkte im Code aber unabhängig von der Zielzone des gewählten Bauteils. Bei
+Klemmen (`placeInKlemmRow()`, kein Reihen-Konzept) hatte das zwar keinen
+Effekt auf die Platzierung selbst, verhinderte aber trotzdem das Mergen
+gleicher Artikel in `addEinzelbauteil()` (Session 28g: "kein Merge, wenn
+rowBreak aktiv") – jede Klemmen-Einfügung landete dadurch unnötig als
+eigener Belegungseintrag mit eigener Farbe.
+- **Fix in `addEinzelbauteil()`:** `rowBreak` wird nur noch dann als
+  aktiv gewertet, wenn `EINZELBAUTEILE_DB`-Eintrag des gewählten Artikels
+  eine Zone aus `REIHEN_ZONEN` (`leist`/`steuer`) hat – unabhängig vom
+  tatsächlichen Häkchen-Status. Für alle anderen Zonen (Klemmen, ÜSS,
+  Einspeisung, Energieverteilung mit Schienensystem) mergt die Einfügung
+  jetzt wie vor Session 28g normal, das Häkchen bleibt wirkungslos statt
+  fälschlich Belegungs-Fragmentierung auszulösen.
+- **UX-Ergänzung:** neue Funktion `updateRowbreakAvailability()` (Aufruf
+  bei `onchange` von `#einzel_auswahl` sowie einmalig aus
+  `populateEinzelAuswahl()`) deaktiviert die Checkbox optisch
+  (`.rowbreak-lbl-disabled`, Tooltip erklärt warum) und setzt sie
+  automatisch zurück, sobald ein Bauteil außerhalb `leist`/`steuer`
+  gewählt ist – verhindert von vornherein, dass der Nutzer ein wirkungsloses
+  Häkchen setzt.
+- Verifiziert im Browser: Checkbox für Klemmen-Artikel deaktiviert
+  (`disabled=true`), für Steuerung/Leistung-Artikel aktiv; 4×
+  `addEinzelbauteil()` derselben Klemme mit zwangsweise "checked"
+  gesetztem Häkchen (Code-Fix unabhängig vom UI-Disabled-Zustand geprüft)
+  mergt korrekt zu einem Eintrag `menge:4`; Kontrolltest mit PXA30-W2
+  (Zone `steuer`) fragmentiert weiterhin korrekt wie vor diesem Fix.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
