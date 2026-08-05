@@ -1256,8 +1256,21 @@ Modul 4 – bewusst nur dokumentiert, nicht entschieden oder umgesetzt:
    Zwei-Cursor-Platzierungsmodell stößt hier an seine Grenzen – eine
    gezielte Bauteil-Auswahl für Reihen-/Positionswechsel wäre nötig, statt
    eines globalen Flags pro Artikel.
+4. **Bedarfsbasierte Breiten-/Höhen-Umverteilung auch für Leistung und
+   Steuerung.** Existiert bereits für die drei Klemmleisten-Zonen
+   (`redistributeKlemmBands()`, Session 25: `klemm_l`/`klemm_f`/`klemm_s`
+   teilen sich eine feste Gesamtbreite, jede Zone wächst nach TE-Bedarf,
+   Rest proportional verteilt) – fehlt für `leist`/`steuer` noch. Deckt sich
+   mit der bereits in Session 25 als "Idee 2" zurückgestellten Idee (dort
+   als Höhen-Umverteilung mit wanderndem Kabelkanal skizziert, Energie-
+   verteilung bleibt fix). Nachträglich vom Nutzer ergänzt (Session 34,
+   nachdem der Sicherungspunkt schon gesetzt war) – braucht eigene
+   Abstimmung: Mindesthöhe `h_leist ≥ h_klemm`, separater Rechenweg
+   Nebeneinander (Breite) vs. Übereinander (Höhe), Verhältnis zum
+   `placeInBands()`-Kanal/Klemmraum-Modell (anders als das reine
+   Breiten-Modell der Klemmleisten).
 
-Alle drei Punkte bleiben zurückgestellt, bis Modul 7 eine saubere
+Alle vier Punkte bleiben zurückgestellt, bis Modul 7 eine saubere
 Datengrundlage geschaffen hat. Sicherungspunkt für diese Pause: Git-Tag
 `meilenstein-2026-08-06-modul4-pause-vor-modul7` (siehe Memory für Details
 zum Backup).
