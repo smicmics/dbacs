@@ -1109,6 +1109,53 @@ eigener Belegungseintrag mit eigener Farbe.
   mergt korrekt zu einem Eintrag `menge:4`; Kontrolltest mit PXA30-W2
   (Zone `steuer`) fragmentiert weiterhin korrekt wie vor diesem Fix.
 
+### Modul 4 – Belegung bleibt ein Eintrag je Artikel: `forcedMenge` statt Mehrfach-Einträge (Session 28i, gesperrt)
+Nutzer-Fund: mehrfaches Hinzufügen desselben DDC-Moduls mit "neue Reihe"
+erzeugte pro Klick einen eigenen Belegungseintrag mit eigener Farbe (z. B.
+"6× Desigo...", "1× Desigo...", "1× Desigo...", "1× Desigo..." statt "9×
+Desigo..."). Ursache: die Session-28g-Entscheidung "nie mergen bei aktivem
+`rowBreak`" – als Fix für den Session-28f-Bug gedacht – ging zu weit. Die
+Belegungsliste soll laut Nutzer-Vorgabe immer genau EINEN Eintrag je
+Artikel mit der Gesamtmenge zeigen ("Die Belegung zeigt die Anzahl der
+gleichen Bauteile auf. Das ist die Aufgabe").
+- **Neues Modell:** `belegung[i].rowBreak` (Boolean) ersetzt durch
+  `belegung[i].forcedMenge` (Zahl) – merkt sich, wie viele der
+  `menge`-Gesamtmenge als "neue Reihe" gelten sollen. `addEinzelbauteil()`
+  mergt jetzt IMMER in einen bestehenden Eintrag desselben Artikels
+  (kein Sonderfall mehr), erhöht bei aktivem Häkchen zusätzlich
+  `forcedMenge` um die neu hinzugefügte Menge. `removeEinzelbauteilQty()`
+  entsprechend vereinfacht (wieder ein einziger Treffer statt
+  Rückwärtssuche über mehrere Einträge), kappt `forcedMenge` auf die
+  verbleibende `menge` (zieht bevorzugt von der erzwungenen Teilmenge ab).
+- **Queue-Aufbau in `placeBauteile()`:** pro Einzelbauteil-Eintrag werden
+  zuerst `menge-forcedMenge` normale Einheiten (`rowBreak:false`) und
+  danach `forcedMenge` erzwungene Einheiten (`rowBreak:true`) in die Queue
+  gepusht – löst weiterhin den Session-28f-Bug (nur die zuletzt als
+  erzwungen hinzugefügte Teilmenge bricht um, nie rückwirkend bereits
+  eingereihte normale Einheiten), UND erzeugt dabei keinen separaten
+  Belegungseintrag mehr. Das Zwei-Cursor-Modell aus `placeInBands()`
+  (Session 28g) gruppiert alle `rowBreak:true`-Einheiten ohnehin
+  automatisch in derselben erzwungenen Reihe, unabhängig davon, aus
+  wie vielen historischen Hinzufüge-Aktionen sie stammen – dafür war keine
+  weitere Änderung an der Platzierungs-Engine nötig.
+- Verifiziert direkt gegen die produktiven Funktionen im Browser: exaktes
+  Screenshot-Szenario (6×+1×+1×+1× PXA30-W2, alle mit Häkchen) → ein
+  Belegungseintrag `menge:9, forcedMenge:9`, eine Farbe, alle 9 Einheiten
+  in derselben Reihe platziert; gemischtes Szenario (2× normal, dann 3×
+  erzwungen) → ein Eintrag `menge:5, forcedMenge:3`, Platzierung
+  `[[normal,normal],[forciert,forciert,forciert]]` – die 2 normalen
+  Einheiten bleiben unverändert, nur die 3 zuletzt hinzugefügten brechen um.
+
+**Bug 1 (Farbe Energieverteilung ≠ Legende) – ungeklärt, kein Code-Fehler
+gefunden:** alle 8 Kombinationen aus Schienensystem/KE-Position/Anordnung
+direkt gegen `getZoneBands()` getestet – die `evert`-Zone bekommt in jedem
+Fall exakt `ZONE_COLORS.evert` (`#C8720E`), identisch zur Legende. Naheliegendste
+Erklärung: platzierte Bauteil-Blöcke nutzen `BG_COLORS` (zyklisch je
+Belegungseintrag), nicht die Zonenfarbe – bei einer stark befüllten Zone
+verschwindet deren blasser 22%-Hintergrund optisch fast vollständig
+dahinter. Braucht zur weiteren Klärung einen Screenshot mit sichtbarer
+Legende neben der betroffenen Fläche, falls es kein Wahrnehmungseffekt ist.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert

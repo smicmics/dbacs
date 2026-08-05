@@ -831,58 +831,56 @@ function removeBaugruppeQty() {
   calculate();
 }
 
-// Bei aktivem "neue Reihe"-Häkchen wird NIE in einen bestehenden Eintrag
-// gemergt, auch nicht in einen bereits bestehenden gleichen Artikel –
-// sonst würde `rowBreak` rückwirkend auf früher platzierte, längst
-// eingereihte Einheiten desselben Artikels wirken (Session-28f-Bug: ein
-// erzwungener Wechsel betraf plötzlich ALLE gleichartigen Geräte statt nur
-// die gerade neu hinzugefügten). Jede erzwungene Einfügung bekommt daher
-// immer einen eigenen, kleinen Belegungseintrag (Session 28g). Unforcierte
-// Einfügungen mergen weiterhin, aber nur in einen ebenfalls unforcierten
-// bestehenden Eintrag – nie in einen forcierten hinein.
+// Belegung zeigt bewusst EINEN Eintrag je Artikel mit der Gesamtmenge –
+// "wie viele gleiche Bauteile" ist ihre Aufgabe, nicht die Historie der
+// einzelnen Hinzufügungen. Session 28g hatte das aufgegeben (nie mergen bei
+// aktivem "neue Reihe", um den Session-28f-Bug zu vermeiden), was
+// stattdessen einen NEUEN Bug erzeugte (Session 28i): mehrfaches
+// Hinzufügen desselben Artikels mit Häkchen erzeugte unnötig viele
+// Einträge mit wechselnden Farben. Lösung: `menge` bleibt EIN Feld, ein
+// zusätzliches `forcedMenge` merkt sich, wie viele der Gesamtmenge als
+// "neue Reihe" gelten sollen – beim Queue-Aufbau in placeBauteile() werden
+// zuerst `menge-forcedMenge` normale Einheiten und danach `forcedMenge`
+// erzwungene Einheiten gepusht (siehe dort). Damit bleiben immer nur die
+// ZULETZT als erzwungen hinzugefügten Einheiten erzwungen – bereits
+// platzierte normale Einheiten werden nie rückwirkend betroffen (löst
+// Session 28f), UND es entsteht dabei kein zusätzlicher Belegungseintrag
+// (löst Session 28i).
 function addEinzelbauteil() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
   if(!artikelNr) return;
   // "neue Reihe" wirkt nur in Zonen mit Reihen-Modell (placeInBands, siehe
   // REIHEN_ZONEN) – Klemmenzonen (placeInKlemmRow) kennen kein
-  // Reihen-Konzept. Ohne diese Sperre verhinderte das Häkchen dort trotzdem
-  // das Mergen gleicher Artikel (Session 28h-Bug: jede Klemmen-Einfügung
-  // landete als eigener Belegungseintrag mit eigener Farbe, obwohl die
-  // Checkbox dort gar keine Wirkung hat).
+  // Reihen-Konzept (Session 28h).
   const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
-  const rowBreak = !!eb && REIHEN_ZONEN.includes(eb.zone) && document.getElementById('einzel_rowbreak').checked;
-  if(!rowBreak) {
-    const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr && !b.rowBreak);
-    if(ex) {
-      ex.menge += menge;
-      saveBelegung();
-      renderBelegung();
-      calculate();
-      return;
-    }
+  const forced = !!eb && REIHEN_ZONEN.includes(eb.zone) && document.getElementById('einzel_rowbreak').checked;
+  const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
+  if(ex) {
+    ex.menge += menge;
+    if(forced) ex.forcedMenge = (ex.forcedMenge || 0) + menge;
+  } else {
+    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, forcedMenge: forced ? menge : 0});
   }
-  belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, rowBreak});
   saveBelegung();
   renderBelegung();
   calculate();
 }
 
-// Symmetrisch zu removeBaugruppeQty(), für Einzelbauteile. Sucht vom ZULETZT
-// hinzugefügten passenden Eintrag rückwärts (nicht vom ersten) – seit
-// Session 28g kann derselbe Artikel mehrfach in `belegung` stehen (normale
-// und erzwungene Einfügungen bleiben getrennt), "−" soll intuitiv die
-// zuletzt hinzugefügte Menge zuerst zurücknehmen.
+// Symmetrisch zu removeBaugruppeQty(), für Einzelbauteile. Zieht bevorzugt
+// von der erzwungenen Teilmenge ab (siehe addEinzelbauteil()) – ohne
+// nachvollziehbare "letzte Aktion" wird die kleinere, "spezielle"
+// Teilmenge zuerst reduziert.
 function removeEinzelbauteilQty() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
   if(!artikelNr) return;
-  let idx = -1;
-  for(let i = belegung.length - 1; i >= 0; i--) {
-    if(belegung[i].typ === 'einzel' && belegung[i].artikel_nr === artikelNr) { idx = i; break; }
-  }
+  const idx = belegung.findIndex(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
   if(idx === -1) return;
   belegung[idx].menge -= menge;
+  if(belegung[idx].menge > 0) {
+    belegung[idx].forcedMenge = Math.min(belegung[idx].forcedMenge || 0, belegung[idx].menge);
+  }
   if(belegung[idx].menge <= 0) {
     belegung.splice(idx, 1);
     belegung.forEach((b, i) => { b.ci = i % BG_COLORS.length; });
@@ -1565,8 +1563,17 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
       if(!eb || eb.te_breite <= 0 || !queues[eb.zone]) return;
       const farbe = BG_COLORS[item.ci];
       accumulateDp(eb, item.menge);
-      for(let q = 0; q < item.menge; q++) {
-        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!item.rowBreak});
+      // Zuerst die normalen Einheiten, danach die erzwungenen (siehe
+      // addEinzelbauteil()) – die zuletzt hinzugefügten Einheiten bleiben so
+      // erzwungen, ohne dass frühere, bereits eingereihte Einheiten
+      // rückwirkend betroffen sind.
+      const forcedMenge = Math.min(item.forcedMenge || 0, item.menge);
+      const normalMenge = item.menge - forcedMenge;
+      for(let q = 0; q < normalMenge; q++) {
+        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: false});
+      }
+      for(let q = 0; q < forcedMenge; q++) {
+        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: true});
       }
       return;
     }
