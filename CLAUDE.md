@@ -1232,6 +1232,45 @@ normalen Reihe.
   „Bedarfsgesteuerte Historie (batches-Modell)" unten für die vollständige
   Lösung, die dieses Modell ersetzt.
 
+### Modul 4 – Zonen-Filter für Einzelbauteil-Auswahl (Session 32, gesperrt)
+Nutzer-Feedback: das Dropdown "Spezifische Auswahl Einzelbauteile" zeigte
+immer alle ~56 Katalogeinträge ungefiltert (nur nach `kategorie` in
+Optgroups sortiert) – bei wachsendem Katalog unübersichtlich. Zusätzlich
+auffällig: Klemmen lassen sich als Direktbauteil nur in ihre Katalog-Zone
+setzen (z. B. PT-Klemmen alle `zone:"klemm_l""), nicht in `klemm_f`/`klemm_s`,
+obwohl es dieselbe physische Klemme ist.
+- **Begriffsklärung (wichtig):** "Funktionsbereich" ist im UI bereits die
+  Bezeichnung der 10 Baugruppen-Tabs (`gewerk` aus `baugruppen.json`,
+  Session 24). Die vom Nutzer gemeinten "Sensorbereich"/"Feldgerätebereich"/
+  "Leistung" sind die 8 physikalischen Platzierungszonen aus
+  `ZONE_LABELS`/`ZONE_COLORS` (identisch zur Legende, Session 26). Neue
+  Filter-Ebene bewusst als "Zone" benannt (`.zone-tab`, eigene CSS-Klasse),
+  um nicht mit den bestehenden Funktionsbereich-Tabs zu kollidieren.
+- **Umsetzung (nur Teil 1 des Nutzervorschlags – Filter, kein Zonen-
+  Override):** `buildEinzelZoneTabs()` rendert 9 Buttons ("Alle" +
+  `ALLE_ZONEN`, Farbpunkt + Kurzlabel identisch zum Füllstand-Streifen: z. B.
+  "Kl. Feld.", "Kl. Sens.") in `#einzel-zone-tabs`, oberhalb des
+  `einzel_auswahl`-Dropdowns in der 320px-Spalte. `setEinzelZone(zone)`
+  setzt `einzelZoneFilter` (globaler State, Default `'alle'`) und ruft
+  `populateEinzelAuswahl()` neu auf. `populateEinzelAuswahl()` filtert
+  `EINZELBAUTEILE_DB` zusätzlich auf `e.zone === einzelZoneFilter` (bei
+  `'alle'` keine Einschränkung), Kategorie-Optgroups wie bisher. Aktuelle
+  Auswahl bleibt beim Zonenwechsel erhalten, wenn der Artikel im neuen
+  Filter noch vorkommt, sonst wird zurückgesetzt.
+- **Bewusst NICHT umgesetzt (Teil 2, vom Nutzer explizit auf später
+  vertagt):** eine Klemme (oder ein anderes Bauteil) manuell in eine andere
+  als ihre Katalog-Zone setzen. Das erfordert ein neues Datenbankfeld (z. B.
+  welche Zonen ein Artikel zusätzlich zulässt) und soll im Rahmen von
+  Modul 7 (Stammdatenpflege Artikeldaten, siehe Memory) sauber mitgeplant
+  werden statt jetzt als Übergangslösung.
+- Verifiziert im Browser: 9 Tabs gerendert, Filter auf `klemm_s` liefert
+  korrekt 0 Treffer (kein Katalogeintrag hat aktuell diese Zone als
+  Default – bestätigt exakt das vom Nutzer beschriebene Problem), Filter auf
+  `steuer` liefert 7 Treffer, `alle` wieder 56; keine Layout-Überläufe
+  innerhalb der 320px-Spalte (Buttons brechen sauber um); Auswahl bleibt
+  über einen Zonenwechsel hinweg erhalten, wenn der Artikel weiterhin im
+  gefilterten Ergebnis ist, sonst korrekt zurückgesetzt.
+
 ### Modul 4 – Vertikale Zentrierung in Leist./Steuer./Evert-Reihen (Session 31, gesperrt)
 Nutzer-Fund per Screenshot beim Testen: in Klemmenzeilen (`placeInKlemmRow()`)
 werden Bauteile bereits vertikal zentriert dargestellt, in Leistung/Steuerung/

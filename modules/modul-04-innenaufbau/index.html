@@ -190,6 +190,22 @@ legend{
 .gewerk-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
 .gewerk-tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
 
+/* ── Zonen-Filter Einzelbauteile (Session 32) ──
+   Eigene, kompaktere Buttons statt .gewerk-tab wiederzuverwenden – filtert
+   nach den 8 physikalischen Platzierungszonen (ZONE_LABELS/ZONE_COLORS,
+   siehe Legende), NICHT nach dem gleichnamigen "Funktionsbereich" der
+   Baugruppen-Tabs oben (10 Gewerke aus baugruppen.json) – bewusst andere
+   Bezeichnung ("Zone") und andere Optik, um die beiden Filter-Ebenen nicht
+   zu verwechseln. */
+.zone-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
+.zone-tab{
+  display:flex;align-items:center;gap:4px;font-size:9.5px;padding:3px 7px;border-radius:3px;cursor:pointer;
+  background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);white-space:nowrap;
+}
+.zone-tab .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.zone-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.zone-tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
+
 /* ── BG-Auswahl ── */
 .bg-add-row{display:flex;gap:6px;margin-top:6px;min-width:0;}
 .bg-add-row input[type=number]{width:55px;flex-shrink:0;}
@@ -472,6 +488,7 @@ legend{
 
     <div class="eb-field" style="width:320px;">
       <label>Spezifische Auswahl Einzelbauteile</label>
+      <div class="zone-tabs" id="einzel-zone-tabs"></div>
       <div class="bg-add-row">
         <select id="einzel_auswahl" style="flex:1" onchange="updateRowbreakAvailability()">
           <option value="">Laden …</option>
@@ -696,19 +713,54 @@ function init() {
 
   loadMontagebereich(gs('schrank_typ'));
   setGewerk('lueftung');
+  buildEinzelZoneTabs();
   populateEinzelAuswahl();
   renderBelegung();
   calculate();
 }
 
-// ── Direktbauteil-Dropdown (gruppiert nach Kategorie) ─────────────────
+// ── Zonen-Filter Einzelbauteile (Session 32) ───────────────────────────
+// Filtert die Direktbauteil-Auswahl nach den 8 physikalischen
+// Platzierungszonen (dieselbe Taxonomie wie Legende/Füllstand-Streifen,
+// ZONE_LABELS/ZONE_COLORS) statt die komplette, lange Liste immer
+// ungefiltert zu zeigen. Bewusst NICHT dieselben Buttons/Bezeichnung wie
+// die "Funktionsbereich"-Tabs der Baugruppen-Auswahl (die filtern nach
+// `gewerk` aus baugruppen.json – eine andere, 10-teilige Taxonomie) – daher
+// eigene Klasse `.zone-tab` und eigenes Label "Zone", um die beiden
+// Filter-Ebenen nicht zu vermischen. Absichtlich noch KEINE Möglichkeit,
+// ein Bauteil abweichend von seiner Katalog-Zone (`eb.zone`) zu platzieren
+// (z. B. eine Leistungs-Klemme manuell in die Sensoren-Zone) – dafür fehlt
+// noch ein Datenbankfeld, geplant für Modul 7 (Stammdatenpflege).
+let einzelZoneFilter = 'alle';
+
+function buildEinzelZoneTabs() {
+  const wrap = document.getElementById('einzel-zone-tabs');
+  if(!wrap) return;
+  const alleBtn = `<button class="zone-tab${einzelZoneFilter === 'alle' ? ' active' : ''}" data-zone="alle" onclick="setEinzelZone('alle')" title="Alle Zonen">Alle</button>`;
+  const zoneBtns = ALLE_ZONEN.map(zn => {
+    const kurz = { klemm_e:'Einsp.-Kl.', uss:'ÜSS', evert:'Energievert.', leist:'Leistung', steuer:'Steuerung',
+                   klemm_l:'Kl. Leist.', klemm_f:'Kl. Feld.', klemm_s:'Kl. Sens.' }[zn];
+    return `<button class="zone-tab${einzelZoneFilter === zn ? ' active' : ''}" data-zone="${zn}" onclick="setEinzelZone('${zn}')" title="${ZONE_LABELS[zn]}">`
+         + `<span class="dot" style="background:${ZONE_COLORS[zn]}"></span>${kurz}</button>`;
+  }).join('');
+  wrap.innerHTML = alleBtn + zoneBtns;
+}
+
+function setEinzelZone(zone) {
+  einzelZoneFilter = zone;
+  document.querySelectorAll('#einzel-zone-tabs .zone-tab').forEach(b => b.classList.toggle('active', b.dataset.zone === zone));
+  populateEinzelAuswahl();
+}
+
+// ── Direktbauteil-Dropdown (gruppiert nach Kategorie, gefiltert nach Zone) ──
 function populateEinzelAuswahl() {
   const sel = document.getElementById('einzel_auswahl');
+  const prevSelected = sel.value;
   sel.innerHTML = '<option value="">— Bauteil wählen —</option>';
   const kategorien = {};
-  EINZELBAUTEILE_DB.filter(e => e.kategorie).forEach(e => {
-    (kategorien[e.kategorie] = kategorien[e.kategorie] || []).push(e);
-  });
+  EINZELBAUTEILE_DB
+    .filter(e => e.kategorie && (einzelZoneFilter === 'alle' || e.zone === einzelZoneFilter))
+    .forEach(e => { (kategorien[e.kategorie] = kategorien[e.kategorie] || []).push(e); });
   Object.keys(kategorien).sort().forEach(kat => {
     const og = document.createElement('optgroup');
     og.label = kat;
@@ -720,6 +772,11 @@ function populateEinzelAuswahl() {
     });
     sel.appendChild(og);
   });
+  // Auswahl über einen Zonenwechsel hinweg erhalten, wenn der Artikel im
+  // gefilterten Ergebnis noch vorhanden ist – sonst zurücksetzen.
+  if(prevSelected && Array.from(sel.options).some(o => o.value === prevSelected)) {
+    sel.value = prevSelected;
+  }
   updateRowbreakAvailability();
 }
 
