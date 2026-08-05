@@ -55,12 +55,26 @@ header a:hover{color:var(--tx2);}
 #proj-asp    {width:185px;}
 #proj-docnr  {width:200px;color:var(--tx2);}
 
-/* ── Eingabeleiste (volle Breite, unter dem Header) ── */
+/* ── Eingabeleiste (volle Breite, unter dem Header) ──────────────────
+   2-zeiliges Grid (Session 28f): Spalte 1 = linke Gruppe (Schranktyp…
+   Reserve Datenpunkte auf Zeile 1, DDC-Zusammenfassung auf Zeile 2),
+   Spalte 2 = durchgehender Trenner über beide Zeilen, Spalte 3 = rechte
+   Gruppe (Funktionsbereich auf Zeile 1, Baugruppe+Einzelbauteile auf
+   Zeile 2 – Baugruppe startet dadurch auf derselben x-Position wie
+   Funktionsbereich). Vermeidet, dass "Einzelbauteile" bei zu wenig
+   Breite unkontrolliert umbricht und die Schranksicht darunter verkleinert. */
 .eingabeleiste{
-  display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 22px;
+  display:grid;grid-template-columns:max-content auto 1fr;
+  column-gap:22px;row-gap:10px;align-items:end;
   background:var(--bg2);border-bottom:1px solid var(--bord);
   padding:10px 18px;flex-shrink:0;
 }
+.eb-row1-left{grid-column:1;grid-row:1;display:flex;align-items:flex-end;gap:12px 22px;flex-wrap:wrap;}
+.eb-sep-vert{grid-column:2;grid-row:1 / 3;width:1px;background:var(--bord);}
+.eb-funktionsbereich{grid-column:3;grid-row:1;}
+.eb-funktionsbereich .gewerk-tabs{margin-bottom:0;}
+#ddc-summary-field{grid-column:1;grid-row:2;}
+.eb-row2-right{grid-column:3;grid-row:2;display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap;}
 .eb-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
 .eb-field label{
   font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
@@ -77,10 +91,16 @@ header a:hover{color:var(--tx2);}
 .eb-mb-row{display:flex;align-items:center;gap:5px;}
 .eb-mb-row input{width:62px;text-align:right;}
 .eb-mb-row span{color:var(--tx3);font-size:11px;}
-.eb-sep{width:1px;align-self:stretch;background:var(--bord);}
-.eb-group{display:flex;align-items:flex-end;gap:8px;}
-.eb-group .gewerk-tabs{margin-bottom:0;}
-.eb-hint{flex-basis:100%;font-size:10px;color:var(--tx3);}
+.ddc-summary-row{display:flex;flex-wrap:wrap;gap:5px;min-height:28px;align-items:center;}
+.ddc-chip{
+  font-size:10px;padding:3px 7px;border-radius:3px;white-space:nowrap;
+  border:1px solid var(--bords);color:var(--tx2);background:var(--bg);
+}
+.ddc-chip-ok{border-color:var(--bords);color:var(--tx2);}
+.ddc-chip-warn{border-color:#D4A84B;color:#D4A84B;}
+.ddc-chip-over{border-color:#E04444;color:#E04444;}
+.ddc-chip-empty{font-size:10px;color:var(--tx3);}
+.eb-hint{grid-column:1 / 4;grid-row:3;font-size:10px;color:var(--tx3);}
 
 /* ── Füllstand-Streifen (volle Breite, kompakt) ── */
 .fuellstand-strip{
@@ -371,61 +391,69 @@ legend{
   </div>
 </header>
 
-<!-- ── Eingabeleiste (volle Breite) ── -->
+<!-- ── Eingabeleiste (volle Breite, 2-zeiliges Grid) ── -->
 <div class="eingabeleiste">
-  <div class="eb-field">
-    <label>Schranktyp<span class="var">schrank_typ</span></label>
-    <select id="schrank_typ" onchange="onTypChange()">
-      <option value="">— bitte wählen —</option>
-      <option value="wandschrank">Wandschrank</option>
-      <option value="standschrank">Standschrank</option>
-    </select>
-  </div>
-  <div class="eb-field">
-    <label>Montagebereich B×H (mm)<span class="var" id="var_b">b/h_mplatte_mbereich_mm</span></label>
-    <div class="eb-mb-row">
-      <input id="b_mplatte_mbereich_mm" type="number" value="0" disabled>
-      <span>×</span>
-      <input id="h_mplatte_mbereich_mm" type="number" value="0" disabled>
-    </div>
-  </div>
-  <div class="eb-field">
-    <label>Klemmraum je Seite (mm)</label>
-    <input id="klemmraum_mm" type="number" value="20" min="5" max="50" style="width:70px" oninput="onKlemmraumChange()">
-  </div>
-  <div class="eb-field" title="Gilt für alle Bereiche außer Einspeiseklemmen">
-    <label>Reserve Schaltschrank (%)<span class="var">reserve_pct</span></label>
-    <div class="eb-reserve-row">
-      <input id="reserve_pct" type="number" value="20" min="0" max="50" style="width:70px" oninput="onReserveChange()">
-      <span id="reserve-warn" class="reserve-warn" style="display:none" title="Reserve konnte für mindestens einen Bereich nicht gehalten werden – Wert ggf. anpassen">&#9888;</span>
-    </div>
-  </div>
-  <div class="eb-field" title="Reserve für DDC-Datenpunkte (AI/AO/BI/BO) – unabhängig von der Schaltschrank-Reserve">
-    <label>Reserve Datenpunkte (%)<span class="var">ddc_reserve_pct</span></label>
-    <div class="eb-reserve-row">
-      <input id="ddc_reserve_pct" type="number" value="20" min="0" max="50" style="width:70px" oninput="onDdcReserveChange()">
-      <span id="ddc-warn" class="reserve-warn" style="display:none" title="Für mindestens einen Datenpunkttyp ist kein passendes DDC-Modul im Katalog verfügbar">&#9888;</span>
-    </div>
-  </div>
-
-  <div class="eb-sep"></div>
-
-  <div class="eb-group">
+  <div class="eb-row1-left">
     <div class="eb-field">
-      <label>Funktionsbereich</label>
-      <div class="gewerk-tabs">
-        <button class="gewerk-tab" id="tab-schaltschrank" data-gewerk="schaltschrank" onclick="setGewerk('schaltschrank')">Schaltschrank</button>
-        <button class="gewerk-tab" id="tab-automation" data-gewerk="automation" onclick="setGewerk('automation')">Automation</button>
-        <button class="gewerk-tab" id="tab-elektro" data-gewerk="elektro" onclick="setGewerk('elektro')">Elektro</button>
-        <button class="gewerk-tab" id="tab-beleuchtung" data-gewerk="beleuchtung" onclick="setGewerk('beleuchtung')">Beleuchtung</button>
-        <button class="gewerk-tab" id="tab-netzwerk" data-gewerk="netzwerk" onclick="setGewerk('netzwerk')">Netzwerk</button>
-        <button class="gewerk-tab active" id="tab-lueftung" data-gewerk="lueftung" onclick="setGewerk('lueftung')">Lüftung</button>
-        <button class="gewerk-tab" id="tab-heizung" data-gewerk="heizung" onclick="setGewerk('heizung')">Heizung</button>
-        <button class="gewerk-tab" id="tab-kaelte" data-gewerk="kaelte" onclick="setGewerk('kaelte')">Kälte</button>
-        <button class="gewerk-tab" id="tab-sanitaer" data-gewerk="sanitaer" onclick="setGewerk('sanitaer')">Sanitär</button>
-        <button class="gewerk-tab" id="tab-nutzungsspezifisch" data-gewerk="nutzungsspezifisch" onclick="setGewerk('nutzungsspezifisch')">Nutzungsspezifisch</button>
+      <label>Schranktyp<span class="var">schrank_typ</span></label>
+      <select id="schrank_typ" onchange="onTypChange()">
+        <option value="">— bitte wählen —</option>
+        <option value="wandschrank">Wandschrank</option>
+        <option value="standschrank">Standschrank</option>
+      </select>
+    </div>
+    <div class="eb-field">
+      <label>Montagebereich B×H (mm)<span class="var" id="var_b">b/h_mplatte_mbereich_mm</span></label>
+      <div class="eb-mb-row">
+        <input id="b_mplatte_mbereich_mm" type="number" value="0" disabled>
+        <span>×</span>
+        <input id="h_mplatte_mbereich_mm" type="number" value="0" disabled>
       </div>
     </div>
+    <div class="eb-field">
+      <label>Klemmraum je Seite (mm)</label>
+      <input id="klemmraum_mm" type="number" value="20" min="5" max="50" style="width:70px" oninput="onKlemmraumChange()">
+    </div>
+    <div class="eb-field" title="Gilt für alle Bereiche außer Einspeiseklemmen">
+      <label>Reserve Schaltschrank (%)<span class="var">reserve_pct</span></label>
+      <div class="eb-reserve-row">
+        <input id="reserve_pct" type="number" value="20" min="0" max="50" style="width:70px" oninput="onReserveChange()">
+        <span id="reserve-warn" class="reserve-warn" style="display:none" title="Reserve konnte für mindestens einen Bereich nicht gehalten werden – Wert ggf. anpassen">&#9888;</span>
+      </div>
+    </div>
+    <div class="eb-field" title="Reserve für DDC-Datenpunkte (AI/AO/BI/BO) – unabhängig von der Schaltschrank-Reserve">
+      <label>Reserve Datenpunkte (%)<span class="var">ddc_reserve_pct</span></label>
+      <div class="eb-reserve-row">
+        <input id="ddc_reserve_pct" type="number" value="20" min="0" max="50" style="width:70px" oninput="onDdcReserveChange()">
+        <span id="ddc-warn" class="reserve-warn" style="display:none" title="Für mindestens einen Datenpunkttyp ist kein passendes DDC-Modul im Katalog verfügbar">&#9888;</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="eb-sep-vert"></div>
+
+  <div class="eb-field eb-funktionsbereich">
+    <label>Funktionsbereich</label>
+    <div class="gewerk-tabs">
+      <button class="gewerk-tab" id="tab-schaltschrank" data-gewerk="schaltschrank" onclick="setGewerk('schaltschrank')">Schaltschrank</button>
+      <button class="gewerk-tab" id="tab-automation" data-gewerk="automation" onclick="setGewerk('automation')">Automation</button>
+      <button class="gewerk-tab" id="tab-elektro" data-gewerk="elektro" onclick="setGewerk('elektro')">Elektro</button>
+      <button class="gewerk-tab" id="tab-beleuchtung" data-gewerk="beleuchtung" onclick="setGewerk('beleuchtung')">Beleuchtung</button>
+      <button class="gewerk-tab" id="tab-netzwerk" data-gewerk="netzwerk" onclick="setGewerk('netzwerk')">Netzwerk</button>
+      <button class="gewerk-tab active" id="tab-lueftung" data-gewerk="lueftung" onclick="setGewerk('lueftung')">Lüftung</button>
+      <button class="gewerk-tab" id="tab-heizung" data-gewerk="heizung" onclick="setGewerk('heizung')">Heizung</button>
+      <button class="gewerk-tab" id="tab-kaelte" data-gewerk="kaelte" onclick="setGewerk('kaelte')">Kälte</button>
+      <button class="gewerk-tab" id="tab-sanitaer" data-gewerk="sanitaer" onclick="setGewerk('sanitaer')">Sanitär</button>
+      <button class="gewerk-tab" id="tab-nutzungsspezifisch" data-gewerk="nutzungsspezifisch" onclick="setGewerk('nutzungsspezifisch')">Nutzungsspezifisch</button>
+    </div>
+  </div>
+
+  <div class="eb-field" id="ddc-summary-field" title="Kapazität/belegt je physikalischem Datenpunkttyp – Summe aus manuell und automatisch platzierten DDC-Modulen">
+    <label>DDC-Automationseinrichtung</label>
+    <div class="ddc-summary-row" id="ddc-summary-row"><span class="ddc-chip-empty">–</span></div>
+  </div>
+
+  <div class="eb-row2-right">
     <div class="eb-field" style="width:320px;">
       <label>Baugruppe</label>
       <div class="bg-add-row">
@@ -437,29 +465,24 @@ legend{
           <button class="btn-add-sm" onclick="addBaugruppe()" title="Menge hinzufügen">+</button>
           <button class="btn-sub-sm" onclick="removeBaugruppeQty()" title="Menge abziehen">&#8722;</button>
         </div>
-        <label class="rowbreak-lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
-          <input type="checkbox" id="bg_rowbreak">neue Reihe
-        </label>
       </div>
     </div>
-  </div>
 
-  <div class="eb-sep"></div>
-
-  <div class="eb-field" style="width:320px;">
-    <label>Spezifische Auswahl Einzelbauteile</label>
-    <div class="bg-add-row">
-      <select id="einzel_auswahl" style="flex:1">
-        <option value="">Laden …</option>
-      </select>
-      <input id="einzel_menge" type="number" value="1" min="1" max="99">
-      <div class="btn-stack">
-        <button class="btn-add-sm" onclick="addEinzelbauteil()" title="Menge hinzufügen">+</button>
-        <button class="btn-sub-sm" onclick="removeEinzelbauteilQty()" title="Menge abziehen">&#8722;</button>
+    <div class="eb-field" style="width:320px;">
+      <label>Spezifische Auswahl Einzelbauteile</label>
+      <div class="bg-add-row">
+        <select id="einzel_auswahl" style="flex:1">
+          <option value="">Laden …</option>
+        </select>
+        <input id="einzel_menge" type="number" value="1" min="1" max="99">
+        <div class="btn-stack">
+          <button class="btn-add-sm" onclick="addEinzelbauteil()" title="Menge hinzufügen">+</button>
+          <button class="btn-sub-sm" onclick="removeEinzelbauteilQty()" title="Menge abziehen">&#8722;</button>
+        </div>
+        <label class="rowbreak-lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
+          <input type="checkbox" id="einzel_rowbreak">neue Reihe
+        </label>
       </div>
-      <label class="rowbreak-lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
-        <input type="checkbox" id="einzel_rowbreak">neue Reihe
-      </label>
     </div>
   </div>
 
@@ -756,13 +779,11 @@ function addBaugruppe() {
   const bgId  = gs('bg_auswahl');
   const menge = Math.max(1, g('bg_menge'));
   if(!bgId) return;
-  const rowBreak = document.getElementById('bg_rowbreak').checked;
   const ex = belegung.find(b => b.typ === 'baugruppe' && b.bg_id === bgId);
   if(ex) {
     ex.menge += menge;
-    if(rowBreak) ex.rowBreak = true;
   } else {
-    belegung.push({typ:'baugruppe', bg_id: bgId, menge, ci: belegung.length % BG_COLORS.length, rowBreak});
+    belegung.push({typ:'baugruppe', bg_id: bgId, menge, ci: belegung.length % BG_COLORS.length});
   }
   saveBelegung();
   renderBelegung();
@@ -1268,16 +1289,18 @@ function calculate() {
     buildStueckliste(null);
     updateReserveWarning(false);
     updateDdcAutoDisplay(null);
+    updateDdcSummary(null);
     return;
   }
 
   const ddcReservePct = Math.min(0.5, Math.max(0, (g('ddc_reserve_pct') || 20) / 100));
   const layout = getZoneBands(zp);
-  const { zones, reserveShortfall, ddcAuto } = placeBauteile(layout.bands, klemmraum, zp, reservePct, ddcReservePct);
+  const { zones, reserveShortfall, ddcAuto, ddcSummary } = placeBauteile(layout.bands, klemmraum, zp, reservePct, ddcReservePct);
 
   buildFuellstand(zones, zp);
   buildSVG(zp, layout, zones);
   buildStueckliste(zones);
+  updateDdcSummary(ddcSummary);
   updateReserveWarning(reserveShortfall);
   updateDdcAutoDisplay(ddcAuto);
 }
@@ -1321,6 +1344,24 @@ function updateDdcAutoDisplay(ddcAuto) {
     warn.style.display = unmet.length ? 'inline' : 'none';
     if (unmet.length) warn.title = 'Kein passendes DDC-Modul im Katalog für: ' + unmet.map(t => DP_LABELS[t]).join(', ');
   }
+}
+
+// ── DDC-Automationseinrichtung: Kapazität/belegt je physikalischem Typ ──
+// Zeigt nur AI/AO/BI/BO (keine Feldbus-Typen – Nutzer-Vorgabe "physikalische
+// Datenpunkttypen"), am Anfang der Eingabeleiste, unter Schranktyp. Farbe je
+// Chip nach Auslastung wie bei den Füllstand-Mini-Balken (>100% rot, >80%
+// amber, sonst neutral).
+const DP_SUMMARY_LABELS = {dp_ai:'AI', dp_ao:'AO', dp_bi:'BI', dp_bo:'BO'};
+function updateDdcSummary(ddcSummary) {
+  const el = document.getElementById('ddc-summary-row');
+  if (!el) return;
+  if (!ddcSummary) { el.innerHTML = '<span class="ddc-chip-empty">–</span>'; return; }
+  el.innerHTML = Object.entries(DP_SUMMARY_LABELS).map(([t, lbl]) => {
+    const s = ddcSummary[t];
+    const pct = s.cap > 0 ? Math.round((s.used / s.cap) * 100) : (s.used > 0 ? 100 : 0);
+    const cls = s.used > s.cap ? 'ddc-chip-over' : (pct > 80 ? 'ddc-chip-warn' : 'ddc-chip-ok');
+    return `<span class="ddc-chip ${cls}" title="${lbl}: ${s.used} von ${s.cap} Datenpunkten belegt">${lbl} ${s.used}/${s.cap} · ${pct}%</span>`;
+  }).join('');
 }
 
 // ── DDC-Datenpunkte: Unterdeckung ermitteln, passende Module ergänzen ──
@@ -1440,7 +1481,6 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
     const farbe = BG_COLORS[item.ci];
-    let firstDeviceOfItem = true; // für manuellen rowBreak: nur das allererste Gerät dieser Belegungszeile
     for(let inst = 0; inst < item.menge; inst++) {
       bg.bauteile.forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
@@ -1449,9 +1489,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
         if(!queues[zone]) return;
         accumulateDp(eb, bt.menge);
         for(let q = 0; q < bt.menge; q++) {
-          const rowBreak = (q === 0 && !!bt.rowBreak) || (firstDeviceOfItem && !!item.rowBreak);
-          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak});
-          firstDeviceOfItem = false;
+          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: q === 0 && !!bt.rowBreak});
         }
       });
     }
@@ -1464,6 +1502,15 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
     for (let q = 0; q < mod.menge; q++) {
       queues.steuer.push({te: eb.te_breite, h_mm: eb.h_mm, farbe: '#6B6862', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
     }
+  });
+
+  // DDC-Zusammenfassung (nur physikalische Typen, keine Feldbus-Typen) für
+  // die Eingabeleiste: Kapazität = bereits manuell platzierte ddc_io-Module
+  // + automatisch ergänzte (inkl. Ratchet-Stand); belegt = Bedarf.
+  const ddcSummary = {};
+  ['dp_ai', 'dp_ao', 'dp_bi', 'dp_bo'].forEach(t => {
+    const cap = dpSupply[t] + ddcAuto.modules.reduce((s, m) => s + (m.eb[t] || 0) * m.menge, 0);
+    ddcSummary[t] = { cap, used: dpDemand[t] };
   });
 
   const zones = {};
@@ -1524,7 +1571,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
     };
   }
 
-  return { zones, reserveShortfall, ddcAuto };
+  return { zones, reserveShortfall, ddcAuto, ddcSummary };
 }
 
 function kurzLabel(eb) {

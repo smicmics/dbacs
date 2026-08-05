@@ -934,6 +934,67 @@ eigenständiges konzeptionelles Thema für eine spätere Session.
   Bedarf steigt über den bisherigen Watermark → wächst korrekt auf 4;
   `m04_ddc_watermark` persistiert korrekt zwischen den Aufrufen.
 
+### Modul 4 – Eingabeleiste 2-zeiliges Grid, DDC-Zusammenfassung, Rowbreak nur Einzelbauteile (Session 28f, gesperrt)
+Nach Live-Test mit allen bisherigen Session-28-Änderungen drei Beobachtungen:
+
+- **Eingabeleiste brach unkontrolliert um:** „Spezifische Auswahl
+  Einzelbauteile" rutschte bei normaler Fensterbreite in eine eigene Zeile
+  (reines Flexbox-`flex-wrap`, kein kontrollierter Umbruch), was die
+  Schranksicht darunter verkleinerte. **Fix:** `.eingabeleiste` von Flexbox
+  auf CSS Grid umgestellt (`grid-template-columns:max-content auto 1fr`,
+  2 Zeilen). Zeile 1 = linke Feldgruppe (Schranktyp…Reserve Datenpunkte,
+  `.eb-row1-left`) + Funktionsbereich (`.eb-funktionsbereich`); Zeile 2 =
+  DDC-Zusammenfassung (`#ddc-summary-field`, Spalte 1 – direkt unter der
+  linken Feldgruppe) + Baugruppe/Einzelbauteile (`.eb-row2-right`, Spalte 3
+  – Baugruppe beginnt dadurch exakt auf derselben x-Position wie
+  Funktionsbereich in Zeile 1, da beide dieselbe Grid-Spalte nutzen; kein
+  manuelles Breiten-Abgleichen nötig). Ein durchgehender Trenner
+  (`.eb-sep-vert`, `grid-row:1/3`) trennt beide Spalten über beide Zeilen
+  hinweg als ein zusammenhängender Block. Verifiziert per
+  `getBoundingClientRect()` im Browser bei 1280px und 1920px Breite: `x`
+  von `#ddc-summary-field` == `x` von `.eb-row1-left`, `x` von
+  `.eb-row2-right` == `x` von `.eb-funktionsbereich`, exakte Übereinstimmung
+  in beiden Fällen.
+- **Neue DDC-Automationseinrichtung-Zusammenfassung** (`#ddc-summary-row`,
+  `updateDdcSummary()`, aufgerufen aus `calculate()`): zeigt kompakt für
+  jeden der 4 PHYSIKALISCHEN Datenpunkttypen (AI/AO/BI/BO – bewusst ohne
+  Feldbus-Typen, Nutzer-Vorgabe) `belegt/Kapazität · Prozent` als Chip.
+  `placeBauteile()` liefert dafür neu `ddcSummary` zurück: `cap = dpSupply
+  + Summe(automatisch ergänzte Module × deren Kapazität)`, `used =
+  dpDemand`. Farbcodierung wie Füllstand-Balken (>100% rot `.ddc-chip-over`,
+  >80% amber `.ddc-chip-warn`, sonst neutral `.ddc-chip-ok`). Verifiziert:
+  3× Testsensor (1 AI Bedarf) + 1 manuell platziertes PXA30-W2 (4 AI
+  Kapazität) → „AI 3/4 · 75%" korrekt; ohne manuelles Modul (nur Bedarf,
+  Auto-Modul greift) → Kapazität stammt korrekt aus dem automatisch
+  ergänzten Modul.
+- **„Neue Reihe"-Checkbox bei Baugruppe entfernt** (nur noch bei
+  Einzelbauteile): Nutzer-Einwand berechtigt – eine Baugruppe besteht i. d. R.
+  aus mehreren Bauteilen, unklar welches davon die neue Reihe erzwingen
+  sollte. `#bg_rowbreak` aus HTML entfernt, `addBaugruppe()` liest/setzt
+  kein `rowBreak` mehr, `firstDeviceOfItem`/`item.rowBreak`-Zweig in
+  `placeBauteile()`s Baugruppen-Auflösung entfernt. Der **datengetriebene**
+  `bt.rowBreak` (aus `baugruppen_bauteile`-Sheet, `zeilenumbruch_davor`,
+  Beispiel „MSS über Schütz") bleibt unverändert bestehen – der beantwortet
+  die „welches Bauteil"-Frage bereits explizit auf Bauteil-Ebene und ist
+  von dieser Einschränkung nicht betroffen.
+- **Gemeldeter "neue Reihe funktioniert nicht"-Bug:** ausführlich gegen die
+  produktiven Funktionen nachgestellt (echte `addEinzelbauteil()` inkl.
+  Checkbox, echte `placeBauteile()`, synthetische aber realistische
+  Zonen-Geometrie über `m03_*`-localStorage, da der Testbrowser keinen
+  echten Modul-1-3-Datenfluss hat). Mit ausreichend Zonenhöhe platziert der
+  komplette Pfad (Checkbox → `belegung[i].rowBreak` → erstes Gerät der
+  Queue → `placeInBands()`) korrekt in einer neuen Reihe – **kein Bug
+  gefunden**. Bei knapper Zonenhöhe (Testfall 300 mm) verschwindet das
+  zusätzliche Modul stattdessen korrekt in den harten Overflow (Kanal +
+  neue Reihe passen nicht mehr), was sich falsch anfühlen kann, weil der
+  Füllstand-Balken dabei täuschend niedrig bleibt (`mm_used` zählt nur
+  tatsächlich Platziertes, nicht das, was durch Overflow verlorenging) –
+  vermuteter, aber nicht am Originalfall verifizierter Zusammenhang mit dem
+  gemeldeten Verhalten. Nicht abschließend geklärt, da die exakte reale
+  Zonen-Geometrie des Nutzers nicht reproduzierbar war; falls der Bug nach
+  diesem Layout-Fix weiter auftritt, mit konkretem Artikel + Menge +
+  sichtbarem Overflow-Status ("!" im Schrankbild ja/nein) erneut prüfen.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
