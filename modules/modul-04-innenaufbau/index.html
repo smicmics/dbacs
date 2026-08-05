@@ -881,10 +881,10 @@ function removeEinzelbauteilQty() {
   if(!artikelNr) return;
   const idx = belegung.findIndex(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
   if(idx === -1) return;
-  belegung[idx].menge -= menge;
-  if(belegung[idx].menge > 0) {
-    belegung[idx].forcedMenge = Math.min(belegung[idx].forcedMenge || 0, belegung[idx].menge);
-  }
+  const item = belegung[idx];
+  const forcedRemove = Math.min(item.forcedMenge || 0, menge);
+  item.forcedMenge = (item.forcedMenge || 0) - forcedRemove;
+  item.menge -= menge;
   if(belegung[idx].menge <= 0) {
     belegung.splice(idx, 1);
     belegung.forEach((b, i) => { b.ci = i % BG_COLORS.length; });

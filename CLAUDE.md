@@ -1201,6 +1201,27 @@ derselben `item.ci`) – fehlte nur die Konsolidierung der Einträge selbst.
   SVG-Darstellung – Stückliste/Belegung zeigen weiterhin die volle,
   korrekte Menge.
 
+### Modul 4 – Bugfix: Mengen-Minus zog aus der falschen Teilmenge ab (Session 29, gesperrt)
+Nutzer-Fund beim Testen: nach Hinzufügen normaler + per "neue Reihe" erzwungener
+Einheiten desselben Artikels entfernte der "−"-Button in der Add-Zeile nicht die
+zuletzt hinzugefügten (erzwungenen) Einheiten, sondern Einheiten aus der ersten,
+normalen Reihe.
+- **Ursache:** `removeEinzelbauteilQty()` zog `menge` nur vom Gesamtwert ab und
+  kappte `forcedMenge` lediglich nachträglich (`Math.min(forcedMenge, menge)`) –
+  das griff nur, wenn die neue Gesamtmenge unter den bisherigen `forcedMenge`-Wert
+  fiel. Da `menge - forcedMenge` (= normaler Anteil, Reihe 1) beim Queue-Aufbau
+  in `placeBauteile()` immer zuerst eingereiht wird, schrumpfte dadurch faktisch
+  immer der normale Anteil zuerst – entgegen dem bereits dokumentierten Kommentar
+  ("zieht bevorzugt von der erzwungenen Teilmenge ab", Session 28i).
+- **Fix:** `removeEinzelbauteilQty()` zieht jetzt zuerst explizit vom `forcedMenge`-
+  Wert ab (`forcedRemove = Math.min(forcedMenge, menge)`), erst der übersteigende
+  Rest reduziert die Gesamtmenge weiter (wirkt sich dann automatisch auf den
+  normalen Anteil aus). Kein Effekt auf `addEinzelbauteil()`/`consolidateBelegung()`.
+- Verifiziert direkt gegen die produktiven Funktionen: 5 normal + 3 erzwungen
+  hinzugefügt (`menge:8, forcedMenge:3`) → "−2" → `menge:6, forcedMenge:1` (normaler
+  Anteil bleibt korrekt bei 5); `placeBauteile()`-Ergebnis zeigt Reihe 1 weiterhin
+  mit 5 Geräten, Reihe 2 (erzwungen) korrekt auf 1 Gerät geschrumpft.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
