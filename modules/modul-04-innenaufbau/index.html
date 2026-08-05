@@ -810,29 +810,49 @@ function removeBaugruppeQty() {
   calculate();
 }
 
+// Bei aktivem "neue Reihe"-Häkchen wird NIE in einen bestehenden Eintrag
+// gemergt, auch nicht in einen bereits bestehenden gleichen Artikel –
+// sonst würde `rowBreak` rückwirkend auf früher platzierte, längst
+// eingereihte Einheiten desselben Artikels wirken (Session-28f-Bug: ein
+// erzwungener Wechsel betraf plötzlich ALLE gleichartigen Geräte statt nur
+// die gerade neu hinzugefügten). Jede erzwungene Einfügung bekommt daher
+// immer einen eigenen, kleinen Belegungseintrag (Session 28g). Unforcierte
+// Einfügungen mergen weiterhin, aber nur in einen ebenfalls unforcierten
+// bestehenden Eintrag – nie in einen forcierten hinein.
 function addEinzelbauteil() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
   if(!artikelNr) return;
   const rowBreak = document.getElementById('einzel_rowbreak').checked;
-  const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
-  if(ex) {
-    ex.menge += menge;
-    if(rowBreak) ex.rowBreak = true;
-  } else {
-    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, rowBreak});
+  if(!rowBreak) {
+    const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr && !b.rowBreak);
+    if(ex) {
+      ex.menge += menge;
+      saveBelegung();
+      renderBelegung();
+      calculate();
+      return;
+    }
   }
+  belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, rowBreak});
   saveBelegung();
   renderBelegung();
   calculate();
 }
 
-// Symmetrisch zu removeBaugruppeQty(), für Einzelbauteile.
+// Symmetrisch zu removeBaugruppeQty(), für Einzelbauteile. Sucht vom ZULETZT
+// hinzugefügten passenden Eintrag rückwärts (nicht vom ersten) – seit
+// Session 28g kann derselbe Artikel mehrfach in `belegung` stehen (normale
+// und erzwungene Einfügungen bleiben getrennt), "−" soll intuitiv die
+// zuletzt hinzugefügte Menge zuerst zurücknehmen.
 function removeEinzelbauteilQty() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
   if(!artikelNr) return;
-  const idx = belegung.findIndex(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
+  let idx = -1;
+  for(let i = belegung.length - 1; i >= 0; i--) {
+    if(belegung[i].typ === 'einzel' && belegung[i].artikel_nr === artikelNr) { idx = i; break; }
+  }
   if(idx === -1) return;
   belegung[idx].menge -= menge;
   if(belegung[idx].menge <= 0) {
@@ -1073,69 +1093,110 @@ function getZoneBands(zp) {
   return { svgRows, totalH: y, bands };
 }
 
-// ── Bauteile in die vorgegebenen Bänder platzieren ────────────────────
-// Elektronische Betriebsmittel (Schütz, Motorschutz, Relais, DDC-Modul)
-// haben oben UND unten elektrische Anschlüsse. Die erste Reihe einer Zone
-// grenzt aber immer direkt an eine bereits bestehende feste M3-Kanalzone
-// (kanal_h/kanal_ls/kanal_ev), die ihr oben schon Verdrahtungsraum liefert –
-// vor der ersten Reihe wird deshalb KEIN zusätzlicher Kanal gesetzt (sonst
-// zwei Kanäle direkt übereinander). Ab der zweiten Reihe existiert dort
-// oben aber noch nichts: der Kanal wird jeweils NACH einer Reihe eingefügt,
-// bevor die nächste beginnt – zwei benachbarte Reihen teilen sich so genau
-// einen Kanal an ihrer gemeinsamen Grenze. `kanalPending` läuft über
-// Bandgrenzen hinweg durch, damit das auch beim Wechsel in das nächste Band
-// (z. B. Leistung → Leistung-Ext) konsistent bleibt.
-// Abschließender Kanal nach der LETZTEN platzierten Reihe (Session 28b,
-// Korrektur einer Session-26-Fehlannahme): früher wurde angenommen, die
-// letzte Reihe grenze immer direkt an die nächste feste M3-Kanalzone –
-// das stimmt nur, wenn die Zone bis zum letzten mm ausgelastet ist. Bei
-// Platzreserve (Normalfall) blieb zwischen letzter Reihe und festem Kanal
-// eine unmarkierte Lücke ohne Verdrahtungsmöglichkeit; der Fehler wanderte
-// bei jeder neu hinzugefügten Reihe nur weiter, statt behoben zu sein.
-// Jetzt wird nach der gesamten Platzierung geprüft, ob im Restband der
-// zuletzt platzierten Reihe noch Platz für Kanal + eine weitere,
-// ähnlich große Reihe wäre – wenn ja, wird der Kanal gesetzt (Reserve wird
-// sonst nie verdrahtbar). Reicht der Rest dafür nicht, bleibt er
-// unmarkiert – der ohnehin vorhandene feste M3-Kanal am Zonenende ist dann
-// nah genug, um genutzt zu werden. Passt eine Reihe nicht mehr in das
-// aktuelle Band, wird im nächsten Band derselben Zone weitergemacht; sind
-// alle Bänder voll, Overflow.
-// Erzwungener Zeilenumbruch (Session 28c): ein Device mit `rowBreak:true`
-// beendet die aktuelle Batch sofort, auch wenn TE-Breite noch reichen
-// würde – das Gerät startet zwangsläufig eine neue Reihe. Quelle des
-// Flags: manuell über die "neue Reihe"-Checkbox beim Hinzufügen
-// (`belegung[i].rowBreak`) oder datengetrieben aus `baugruppen_bauteile`
-// (`bt.rowBreak`, z. B. "Motorschutzschalter immer über dem Schütz").
-// Verhindert u. a., dass ein später hinzugefügtes großes Bauteil eine
-// bereits kompakte Reihe aus kleineren Bauteilen unnötig aufbläht.
+// ── Bauteile in die vorgegebenen Bänder platzieren (Session 28g) ──────
+// Zwei-Durchläufe-Modell, löst drei am 2×-Baugruppe-Testfall beobachtete
+// Probleme des alten reinen Vorwärts-Läufers (Session 28c): (1) ein
+// erzwungener Zeilenumbruch wirkte auf ALLE gleichartigen Geräte statt nur
+// die gerade eingefügten, (2) Folge-Geräte landeten immer hinter der neuen
+// Reihe statt in einer noch nicht vollen Reihe davor, (3) ein nachträglich
+// wachsender Reihen-Höhenbedarf ließ sich nicht sauber "nach unten
+// verschieben", da Y-Positionen live mitgeführt wurden.
+//
+// Durchlauf 1 (unten, assignDevicesToRows): ordnet Geräte abstrakten Reihen
+// zu (nur Blöcke + Höhe, keine Y-Position, keine Bandzuordnung) – über zwei
+// Cursor. `normalCursor` zeigt auf die Reihe, in die nicht-erzwungene
+// Geräte weiter einsortiert werden (füllt bestehende Reihen zuerst auf,
+// bevor eine neue am ENDE der Liste entsteht). `forcedCursor` zeigt auf die
+// zuletzt für einen erzwungenen Wechsel angelegte Reihe – ein Gerät mit
+// `rowBreak:true` versucht zuerst dort anzuhängen; reicht der Platz nicht
+// (oder existiert noch keine), wird eine neue Reihe DIREKT NACH der
+// aktuellen forcedCursor- bzw. (beim allerersten Mal) normalCursor-Position
+// eingefügt (`splice`, nicht ans Ende!) – so bleiben alle erzwungenen
+// Einfügungen als ein zusammenhängender Block gruppiert, während
+// `normalCursor` unverändert bleibt und nachfolgende normale Geräte
+// weiterhin die ursprüngliche Reihe auffüllen ("Einfügeposition kehrt
+// zurück"). Bekannte Vereinfachung: für die TE-Passt-Prüfung wird die
+// Breite des ERSTEN Bandes der Zone verwendet, da Durchlauf 1 die
+// tatsächliche Bandzuordnung noch nicht kennt – in der Praxis haben
+// leist/leist_ext bisher identische Breite, bei künftig abweichenden
+// Mehrband-Breiten wäre das nachzuschärfen.
+//
+// Durchlauf 2 (im Funktionskörper): berechnet Y-Positionen rein sequenziell
+// aus der fertigen Reihenliste – erste Reihe ohne Kanal (grenzt an die
+// feste M3-Kanalzone), ab der zweiten Reihe 40mm-Kanal davor
+// (`kanalPending`), Bandwechsel bei Höhenüberlauf, Overflow wenn nicht alle
+// Reihen irgendwo Platz finden. Weil hier alles neu von oben berechnet
+// wird, löst eine nachträglich (in Durchlauf 1) gewachsene Reihenhöhe das
+// "alles darunter rückt runter"-Verhalten ohne Sonderfall – es wird ja
+// ohnehin komplett neu positioniert. Abschließender Kanal nach der letzten
+// Reihe (Session 28b) unverändert: wenn im Restband der letzten Reihe noch
+// Platz für Kanal + eine weitere, ähnlich große Reihe wäre, wird er
+// gesetzt, sonst deckt der ohnehin vorhandene feste M3-Kanal den Rest ab.
+function assignDevicesToRows(devs, te_per_row) {
+  const rowsAbs = []; // [{ blocks:[...devs], h_dev, w_used }]
+  let normalCursor = -1;
+  let forcedCursor = -1;
+
+  const newRow = () => ({ blocks: [], h_dev: 0, w_used: 0 });
+  const addToRow = (ri, d) => {
+    const r = rowsAbs[ri];
+    r.blocks.push(d);
+    r.w_used += d.te;
+    r.h_dev = Math.max(r.h_dev, d.h_mm);
+  };
+
+  devs.forEach(d => {
+    if (d.rowBreak) {
+      if (forcedCursor >= 0 && rowsAbs[forcedCursor].w_used + d.te <= te_per_row) {
+        addToRow(forcedCursor, d);
+      } else {
+        const insertAt = forcedCursor >= 0 ? forcedCursor + 1 : normalCursor + 1;
+        rowsAbs.splice(insertAt, 0, newRow());
+        if (normalCursor >= insertAt) normalCursor++;
+        forcedCursor = insertAt;
+        addToRow(insertAt, d);
+      }
+    } else {
+      if (normalCursor >= 0 && rowsAbs[normalCursor].w_used + d.te <= te_per_row) {
+        addToRow(normalCursor, d);
+      } else {
+        rowsAbs.push(newRow());
+        normalCursor = rowsAbs.length - 1;
+        addToRow(normalCursor, d);
+      }
+    }
+  });
+  return rowsAbs;
+}
+
 function placeInBands(devs, bands, klemmraum) {
   const H_KANAL = 40;
+  const te_per_row = bands.length && bands[0].w_mm > 0 ? Math.floor(bands[0].w_mm / TE_MM) : 0;
+  const rowsAbs = assignDevicesToRows(devs, te_per_row);
+
   const rows = [];
   const channels = [];
-  let idx = 0;
+  let placedCount = 0;   // laufende Positionsnummer je Zone (über alle Blöcke)
+  let placedRows = 0;
   let mm_used = 0;
-  let placedCount = 0;   // laufende Positionsnummer je Zone
+  let bi = 0, y_local = 0;
   let kanalPending = false; // vor der ersten Reihe kein Kanal – die feste M3-Kanalzone davor deckt das bereits ab
   let last = null; // { bandIdx, yLocal, h_row } der zuletzt platzierten Reihe – für den abschließenden Kanal
 
-  for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
-    const band = bands[bi];
-    const te_per_row = band.w_mm > 0 ? Math.floor(band.w_mm / TE_MM) : 0;
-    if (te_per_row <= 0) continue;
+  for (let ri = 0; ri < rowsAbs.length; ri++) {
+    const rowAbs = rowsAbs[ri];
+    const h_row = rowAbs.h_dev + 2*klemmraum;
+    let placed = false;
 
-    let y_local = 0;
-    while (idx < devs.length) {
-      let te = 0, j = idx;
-      while (j < devs.length) {
-        if (j > idx && (devs[j].rowBreak || te + devs[j].te > te_per_row)) break;
-        te += devs[j].te; j++;
-      }
-      const batch = devs.slice(idx, j);
-      const h_dev = Math.max(...batch.map(d => d.h_mm));
-      const h_row = h_dev + 2*klemmraum;
+    while (bi < bands.length) {
+      const band = bands[bi];
+      const bandTePerRow = band.w_mm > 0 ? Math.floor(band.w_mm / TE_MM) : 0;
+      if (bandTePerRow <= 0) { mm_used += y_local; y_local = 0; bi++; continue; }
+
       const kanalHier = kanalPending ? H_KANAL : 0;
-
-      if (y_local + kanalHier + h_row > band.h_mm) break;
+      if (y_local + kanalHier + h_row > band.h_mm) {
+        mm_used += y_local; y_local = 0; bi++; continue;
+      }
 
       if (kanalHier) {
         channels.push({ x_mm: band.x_mm, y_mm: band.y_mm + y_local, w_mm: band.w_mm, h_mm: H_KANAL });
@@ -1143,15 +1204,18 @@ function placeInBands(devs, bands, klemmraum) {
       }
 
       let col = 0;
-      const blocks = batch.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title, artikel_nr:d.artikel_nr, idx:++placedCount}; col += d.te; return bl; });
+      const blocks = rowAbs.blocks.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title, artikel_nr:d.artikel_nr, idx:++placedCount}; col += d.te; return bl; });
       rows.push({ mode:'row', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm + y_local, h_mm: h_row, klemmraum, blocks });
       y_local += h_row;
-      idx = j;
       kanalPending = true; // die nächste Reihe (dieses oder das nächste Band) braucht wieder einen Kanal darüber
       last = { bandIdx: bi, yLocal: y_local, h_row };
+      placed = true;
+      placedRows++;
+      break;
     }
-    mm_used += y_local;
+    if (!placed) break; // alle Bänder erschöpft – restliche Reihen bleiben unplatziert (Overflow)
   }
+  mm_used += y_local;
 
   if (last) {
     const band = bands[last.bandIdx];
@@ -1162,7 +1226,7 @@ function placeInBands(devs, bands, klemmraum) {
     }
   }
 
-  return { rows, channels, overflow: idx < devs.length, mm_used };
+  return { rows, channels, overflow: placedRows < rowsAbs.length, mm_used };
 }
 
 // ── Bedarfsgesteuerte Reserve-Umverteilung Klemmleisten ───────────────
@@ -1474,7 +1538,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
       const farbe = BG_COLORS[item.ci];
       accumulateDp(eb, item.menge);
       for(let q = 0; q < item.menge; q++) {
-        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: q === 0 && !!item.rowBreak});
+        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!item.rowBreak});
       }
       return;
     }
@@ -1489,7 +1553,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
         if(!queues[zone]) return;
         accumulateDp(eb, bt.menge);
         for(let q = 0; q < bt.menge; q++) {
-          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: q === 0 && !!bt.rowBreak});
+          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak});
         }
       });
     }

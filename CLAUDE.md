@@ -995,6 +995,90 @@ Nach Live-Test mit allen bisherigen Session-28-Änderungen drei Beobachtungen:
   diesem Layout-Fix weiter auftritt, mit konkretem Artikel + Menge +
   sichtbarem Overflow-Status ("!" im Schrankbild ja/nein) erneut prüfen.
 
+### Modul 4 – Platzierungs-Engine mit Einfüge-Cursor (Session 28g, gesperrt)
+Der in Session 28f als "nicht abschließend geklärt" markierte Bug hatte doch
+eine Code-Ursache: mit realem Test (2× Baugruppe "Lüftermotor 1-stufig bis
+2 kW" + mehrfaches Hinzufügen "Desigo PX..." mit "neue Reihe"-Häkchen)
+zeigte sich, dass ein erzwungener Zeilenwechsel auf ALLE gleichartigen
+Geräte wirkte statt nur die gerade eingefügten, und Folge-Geräte sich immer
+hinter der neuen Reihe einreihten statt in eine noch nicht volle Reihe
+davor zurückzukehren. Ursache: `rowBreak` war ein klebriges Boolean auf dem
+(ggf. über mehrere Klicks gemergten) Belegungseintrag, und `placeInBands()`
+war ein reiner Vorwärts-Läufer ohne Rücksprung-Fähigkeit. Auf Vorschlag des
+Nutzers wurde die Platzierungs-Engine grundlegend neu strukturiert (Phase 1
+einer größeren, mehrteiligen Neugestaltung – Abstands-Datenschema,
+Baugruppen-Editor-Modul und das Füllen der Excel-Datenlücke für das
+MSS/Schütz-Beispiel sind bewusst zurückgestellte Folgephasen).
+
+**Kein Merge über einen erzwungenen Wechsel hinweg** (`addEinzelbauteil()`):
+ist die "neue Reihe"-Checkbox aktiv, wird IMMER ein neuer, eigenständiger
+`belegung`-Eintrag angelegt (`rowBreak:true`), auch wenn derselbe Artikel
+schon vorhanden ist – nie mehr in einen bestehenden Eintrag gemergt. Nur
+unforcierte Einfügungen mergen weiterhin, und auch nur in einen ebenfalls
+unforcierten bestehenden Eintrag. Jede erzwungene Aktion bekommt so eine
+eigene, stabile Identität, deren `rowBreak` sich nie rückwirkend auf
+früher platzierte Einheiten desselben Artikels auswirkt. `queues[zone]`
+bekommt `rowBreak` jetzt für ALLE Einheiten eines forcierten Eintrags
+(vorher nur für Einheit 0) – sonst würde nur das erste von mehreren
+gleichzeitig hinzugefügten Geräten gruppiert, der Rest fiele zurück in die
+normale Reihe (im Test direkt aufgefallen: 2× "neue Reihe" mit Menge>1
+gruppierte nur je 1 Gerät korrekt). `removeEinzelbauteilQty()`: sucht jetzt
+vom ZULETZT hinzugefügten passenden Eintrag rückwärts (nicht vom ersten),
+da seit dieser Session mehrere Einträge desselben Artikels nebeneinander
+existieren können.
+
+**`placeInBands()` komplett neu strukturiert – zwei Durchläufe statt einem:**
+- *Durchlauf 1* (neue Funktion `assignDevicesToRows()`): ordnet Geräte
+  abstrakten Reihen zu (nur Blöcke + Höhe, keine Y-Position, keine
+  Bandzuordnung) über zwei Cursor. `normalCursor` zeigt auf die Reihe, in
+  die nicht-erzwungene Geräte weiter einsortiert werden (füllt bestehende
+  Reihen zuerst auf, neue Reihe entsteht erst am ENDE der Liste, wenn
+  nötig). `forcedCursor` zeigt auf die zuletzt für einen erzwungenen
+  Wechsel angelegte Reihe – ein Gerät mit `rowBreak:true` versucht zuerst
+  dort anzuhängen; reicht der Platz nicht (oder existiert noch keine), wird
+  eine neue Reihe direkt nach der aktuellen `forcedCursor`- bzw. (beim
+  allerersten Mal) `normalCursor`-Position eingefügt (`Array.splice`, nicht
+  ans Ende!) – alle erzwungenen Einfügungen bleiben so als ein
+  zusammenhängender Block gruppiert, unabhängig davon, wie viele normale
+  Geräte inzwischen dazwischen hinzugefügt wurden. `normalCursor` bleibt
+  von alldem unberührt, wodurch nachfolgende normale Geräte automatisch
+  zur ursprünglichen Reihe zurückkehren.
+- *Durchlauf 2* (im Funktionskörper von `placeInBands()`): berechnet
+  Y-Positionen rein sequenziell aus der fertigen Reihenliste – Kanäle
+  (`kanalPending`), Bandwechsel und Overflow inhaltlich wie bisher, aber
+  jetzt nachgelagert statt live mitgeführt. Löst das
+  Höhenwachstum-Verschiebeproblem praktisch von selbst: wächst eine
+  frühere Reihe (weil Durchlauf 1 ein höheres Gerät dort eingefügt hat),
+  rutscht in Durchlauf 2 automatisch alles Folgende (Kanäle, weitere
+  Reihen) nach unten, da ohnehin komplett neu von oben positioniert wird –
+  kein Sonderfall zum "Verschieben" nötig.
+- **Bekannte, dokumentierte Vereinfachung:** Durchlauf 1 kennt die
+  tatsächliche Bandzuordnung noch nicht und nutzt die Breite des ERSTEN
+  Bandes der Zone als Näherung für die TE-Passt-Prüfung. Bei Zonen mit
+  mehreren Bändern UNTERSCHIEDLICHER Breite (aktuell nicht der Fall –
+  `leist`/`leist_ext` haben identische Breite) könnte das nachgeschärft
+  werden müssen.
+- Rückgabeform unverändert (`{rows, channels, overflow, mm_used}`) – kein
+  Änderungsbedarf in `placeBauteile()`, `buildSVG()`, `buildFuellstand()`.
+  `placeBauteile()`s Queue-Aufbau selbst brauchte keine strukturelle
+  Änderung, nur den oben genannten `rowBreak`-Fix (alle statt nur Einheit 0).
+- **Bewusst nicht Teil dieser Session (Folgephasen):** Abstands-/
+  Positionierungs-Datenschema (Herstellervorgaben oben/unten/links/rechts,
+  Wärmeabfuhr), Baugruppen-Editor-Modul, Excel-Datenlücke für
+  `zeilenumbruch_davor` beim MSS/Schütz-Beispiel füllen.
+- Verifiziert direkt gegen die produktiven Funktionen im Browser: alle 4
+  im Plan festgelegten Testfälle bestehen exakt (getrenntes
+  rowBreak-Scoping bei mehreren Einheiten, Rückkehr zum Normal-Cursor nach
+  erzwungenem Wechsel, Höhenwachstum verschiebt nachfolgende Reihen/Kanäle
+  korrekt, zwei erzwungene Wechsel ohne normales Gerät dazwischen landen in
+  derselben Reihe); alle Session-28b/28c-Regressionstests (abschließender
+  Kanal, Platzreserve, randvolle Zone, Steuertrafo-Szenario, Overflow)
+  liefern identische Ergebnisse wie vor dem Umbau; End-to-End-Test mit dem
+  exakten Screenshot-Szenario (2× Lüftermotor-Baugruppe + 5×/2× Desigo
+  PXA30-W2/N mit "neue Reihe") bestätigt: Baugruppen-PXA30-N bleiben
+  zusammen in der ursprünglichen Reihe, alle erzwungenen Einfügungen
+  gruppieren sich korrekt in einer eigenen Reihe, kein Overflow.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
