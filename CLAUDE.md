@@ -1232,6 +1232,36 @@ normalen Reihe.
   „Bedarfsgesteuerte Historie (batches-Modell)" unten für die vollständige
   Lösung, die dieses Modell ersetzt.
 
+### Modul 4 – pausiert vor Modul 7: offene Punkte Bauteil-Positionierung (Session 34, notiert – keine Entscheidung, kein Code)
+Nutzer pausiert Modul 4 nach den erfolgreichen Einzelbauteil-Platzierungstests
+(Sessions 29–33), um mit Modul 7 (Stammdatenpflege Artikeldaten) zu beginnen.
+Vor der Pause explizit benannte, noch offene Positionierungs-Themen für
+Modul 4 – bewusst nur dokumentiert, nicht entschieden oder umgesetzt:
+1. **Abstandslogik zu allen Seiten nach Herstellerangabe** (z. B. Schütze,
+   Leistungsschalter, alle wärmeerzeugenden Bauteile). Deckt sich mit dem
+   bereits in Session 28g als Folgephase notierten "Abstands-/
+   Positionierungs-Datenschema (Herstellervorgaben oben/unten/links/rechts,
+   Wärmeabfuhr)". Aktuell kennt DBACS je Katalogeintrag nur `h_mm`/`b_mm`/
+   `te_breite`, keine gerichteten Mindestabstände zu Nachbarbauteilen.
+2. **Positionierungslogik für hintereinander zu positionierende Bauteile**
+   (z. B. DDC-Module). Neuer Punkt, noch nicht im Detail spezifiziert –
+   Verhältnis zur bestehenden Reihen-Logik (`placeInBands()`/
+   `assignDevicesToRows()`, Session 28g) muss noch geklärt werden.
+3. **Positionierungslogik für die Anordnung von Bauteilen innerhalb einer
+   Baugruppe** (z. B. Motorschutzschalter über Schütz). Deckt sich mit dem
+   bereits im Memory festgehaltenen Punkt "Baugruppen-'neue Reihe'-
+   Generalisierung" (05.08.2026), dem `zeilenumbruch_davor`-Datenfeld aus
+   Session 28c und dem ursprünglichen Backlog-Punkt 12 aus
+   `docs/revison_session.md`. Nutzer-Einschätzung vom 05.08.: das aktuelle
+   Zwei-Cursor-Platzierungsmodell stößt hier an seine Grenzen – eine
+   gezielte Bauteil-Auswahl für Reihen-/Positionswechsel wäre nötig, statt
+   eines globalen Flags pro Artikel.
+
+Alle drei Punkte bleiben zurückgestellt, bis Modul 7 eine saubere
+Datengrundlage geschaffen hat. Sicherungspunkt für diese Pause: Git-Tag
+`meilenstein-2026-08-06-modul4-pause-vor-modul7` (siehe Memory für Details
+zum Backup).
+
 ### Modul 4 – Zonen-Filter über den Füllstand-Streifen statt eigener Buttons (Session 33, gesperrt)
 Nutzer-Vorschlag direkt nach Session 32: die separaten `.zone-tab`-Buttons
 sind redundant, da der Füllstand-Streifen die 8 Zonen (inkl. Farbe/Kurzlabel)
