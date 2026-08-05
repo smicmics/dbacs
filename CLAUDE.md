@@ -41,7 +41,9 @@ dbacs/
 ├── modules/
 │   ├── modul-01-schaltschrank/index.html        h_ke-Rechner (Wandschrank) ✅
 │   ├── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
-│   └── modul-03-architektur/index.html        TE-Berechnung & Reihenkapazität ✅
+│   ├── modul-03-architektur/index.html          TE-Berechnung & Reihenkapazität ✅
+│   ├── modul-04-innenaufbau/index.html          Baugruppen · Innenaufbau ✅
+│   └── modul-07-stammdatenpflege/index.html     Artikeldaten-Katalog-Browser (rein lesend) ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html            Referenzzeichnung Wandschrank (nicht bearbeiten)
 │   └── standschrank_frontansicht.html           Referenzzeichnung Standschrank (nicht bearbeiten)
@@ -74,6 +76,8 @@ dbacs/
 | Modul 1 | https://smicmics.github.io/dbacs/modules/modul-01-schaltschrank/ |
 | Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
 | Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-architektur/ |
+| Modul 4 | https://smicmics.github.io/dbacs/modules/modul-04-innenaufbau/ |
+| Modul 7 | https://smicmics.github.io/dbacs/modules/modul-07-stammdatenpflege/ |
 | Deploy-Trigger | `git push origin main` → GitHub Pages baut automatisch |
 
 ---
@@ -1231,6 +1235,113 @@ normalen Reihe.
   erzwungene Summe, nicht WANN welcher Teil hinzugefügt wurde. Siehe
   „Bedarfsgesteuerte Historie (batches-Modell)" unten für die vollständige
   Lösung, die dieses Modell ersetzt.
+
+### Modul 7 – Stammdatenpflege Artikeldaten (Session 35, gesperrt)
+Neues Modul, direkt im Anschluss an die Session-34-Pause von Modul 4 gebaut.
+**Titel:** „Modul 7 · Stammdatenpflege · Artikeldaten"
+**Datei:** `modules/modul-07-stammdatenpflege/index.html`
+
+**Architektur-Entscheidung (mit dem Nutzer geklärt, zentral für dieses
+Modul):** Modul 7 ist **rein lesend**. `data/ga_komponenten.xlsx` bleibt die
+einzige Stelle, an der Artikel-/Baugruppendaten geändert werden – Modul 7
+lädt nur die von `xlsx_to_json.py` bereits exportierten
+`einzelbauteile.json`/`baugruppen.json` per `fetch()`, exakt wie jedes
+andere DBACS-Modul. Das widerspricht **nicht** der gesperrten
+Session-27-Entscheidung „Pflegewerkzeug bleibt Excel, kein eigenes
+Editor-Modul" – Modul 7 editiert nichts, es macht nur sichtbar, was in Excel
+noch nachgetragen/korrigiert werden sollte. Kein Eingriff in
+`xlsx_to_json.py` oder die Excel-Datei.
+
+**Umfang:** nur `einzelbauteile.json` (73 Einträge) + `baugruppen.json`
+(15 Einträge) – nicht die übrigen 7 Datenbanken (bewusst zurückgestellt,
+falls später gewünscht).
+
+**Drei kombinierte Facetten in einem Werkzeug** (Nutzer: „keine Präferenz"
+zwischen den drei Vorschlägen → zu einem Tool kombiniert statt drei
+getrennte Screens):
+1. **Katalog-Browser:** zwei Tabs (Einzelbauteile/Baugruppen), Volltextsuche
+   (Artikel-Nr./Bezeichnung/Hersteller bzw. ID/Name) + Dropdown-Filter
+   (Zone/Hersteller/Kategorie/Bauteil-Typ bzw. Gewerk).
+2. **Datenqualitäts-Leiste** (`#dq-bar`, `computeDataQuality()`, einmalig
+   client-seitig berechnet, keine neue Datenquelle): ungeprüfte
+   Einzelbauteile/Baugruppen (`geprueft:false`), Einzelbauteile ohne
+   `preis_eur`, verwaiste `artikel_nr`-Referenzen in `baugruppen[].bauteile[]`
+   (Artikel, der in keiner `einzelbauteile.json` mehr existiert), Zonen ohne
+   Katalogeintrag. Jeder Chip ist zugleich Filter (`applyDQFilter()`) – Klick
+   wechselt bei Bedarf den Tab und setzt alle übrigen Filter zurück, damit
+   die im Chip genannte Zahl exakt der gefilterten Trefferliste entspricht.
+   **Wichtig:** da zum Zeitpunkt des Baus 73/73 Einzelbauteile
+   `geprueft:false` waren, ist das bewusst NICHT als Zeile-für-Zeile-
+   Warnfarbe umgesetzt (wirkt sonst wie ein kaputtes Modul), sondern nur als
+   aggregierte Kennzahl + dezenter grauer `flag-dot` (nicht rot/amber) je
+   Zeile. Rot (`flag-dot err`) ist echten Defekten vorbehalten (verwaiste
+   Referenz), Amber (`flag-dot warn`) fehlendem Preis.
+3. **Verwendungsnachweis:** `USAGE_MAP` (Artikel-Nr. → Liste der
+   Baugruppen, die ihn referenzieren, mit Menge/Zone-Override), einmalig in
+   `computeDataQuality()` aufgebaut. Detail-Panel eines Einzelbauteils zeigt
+   die Liste, jede Zeile klickbar (`jumpTo('baugruppen', bg_id)`) und springt
+   zur Baugruppe; deren Detail zeigt umgekehrt die aufgelöste
+   Bauteile-Tabelle (Lookup `artikel_nr` → `EINZELBAUTEILE_DB`). Ein nicht
+   auflösbarer Eintrag (Orphan) wird direkt dort rot mit „⚠ Nicht im
+   Einzelbauteile-Katalog gefunden" markiert – macht den Datenqualitäts-Fall
+   exakt an der Stelle sichtbar, wo die fehlerhafte Referenz liegt.
+
+**Feld-Definitionen datengetrieben, nicht hartcodiert pro Objekt:**
+`FIELD_DEFS_EB`/`FIELD_DEFS_BG` (Array aus `{k, l, f}` – Key, Label,
+optionale Formatierfunktion), `renderFieldTable()` rendert eine Zeile **nur
+wenn das Feld im jeweiligen Datensatz vorhanden ist** – viele Felder aus dem
+`einzelbauteile`-Schema sind optional (`dp_*`, `preis_*`, `klemmen_zusatz`,
+`einbaulage`) und werden nie als erfundene „0"/„–"-Platzhalterzeile
+gerendert, wenn sie im konkreten Datensatz fehlen.
+
+**Struktur wiederverwendet, nicht neu erfunden** (verifiziert gegen die
+echten Dateien vor dem Bauen): `:root`-Theme-Tokens, Header/`.proj-fields`,
+`saveProjFields()`/`loadProjFields()`/`updateDocNr()` (Modul-Suffix `M07`),
+`printErgebnis()` (`@page`-Injection außerhalb `@media print`) 1:1 aus
+Modul 4 übernommen (Modul 4 statt Modul 3 als Vorlage gewählt, weil Modul 4
+zusätzlich den Session-19-Fix hat, `proj-docnr` auch direkt in localStorage
+zu schreiben). `ZONE_LABELS`/`ZONE_COLORS`/`ALLE_ZONEN` identisch zu
+Modul 3/4 (gesperrte modulübergreifende Konvention) – keine neuen Zonenfarben
+erfunden. Header-Link bleibt `../../index.html`, Footer-Link
+`../../web/index.html` – Inkonsistenz existiert identisch in allen
+bestehenden Modulen, hier bewusst repliziert statt einseitig „repariert".
+
+**Druck:** `printErgebnis()` druckt die aktuell gefilterte Tabellenansicht
+(nicht das Detail-Panel) – Hauptnutzen ist eine Abarbeitungsliste gegen
+Excel (z. B. „alle Einträge ohne Preis"), ein einzelnes Detail mit
+klickbarer Navigation eignet sich nicht für einen statischen Ausdruck.
+`@media print` blendet `.dq-bar`/`.toolbar`/`.panel-detail`/`.btn-row`/
+`.site-footer` aus, Corporate-Header-Druck-CSS aus Modul 3/4 übernommen.
+
+**Landing Page (`web/index.html`):** neue `module-card--active` zwischen
+Modul-04-Karte und dem Modul-05-Platzhalter eingefügt (Modul 05/06 bleiben
+`--planned`-Platzhalter, unverändert), `hero-stats` „4"→„5" bei „Module
+aktiv". Die vorbestehende, veraltete „Softwarearchitektur/
+Datenbankstrategie"-Sektion der Startseite (beschreibt ein SQLite/sql.js-
+Pipeline-Konzept, das nicht der Realität entspricht) wurde bewusst NICHT im
+Rahmen dieses Moduls korrigiert – unabhängiges Aufräum-Thema, siehe
+Backlog.
+
+**Bewusst nicht Teil dieser Session:** die Anwendung dieses Browser-Konzepts
+auf die übrigen 7 JSON-Datenbanken; irgendeine Form von Schreibzugriff/Edit-
+UI (auch nicht für `geprueft` allein); das in Session 28i/28g bereits
+zurückgestellte Thema „Zonen-Override für Einzelbauteile außerhalb von
+Baugruppen" (eigenes Datenschema-Thema, keine Auswirkung auf dieses rein
+lesende Modul).
+
+Verifiziert direkt gegen die produktiven Funktionen im Browser: Datenqualitäts-
+Zahlen exakt wie gegen die committeten JSON-Dateien vorab per PowerShell
+berechnet (73/73 ungeprüft, 49/73 ohne Preis, 0/15 Baugruppen ungeprüft, 0
+Referenzen verwaist, Zonenlücke `klemm_s`); Suche nach echter Artikel-Nr.
+liefert genau 1 Treffer; Zonenfilter `klemm_e`→25/`klemm_s`→0 Treffer;
+Verwendungsnachweis für `3209510` zeigt korrekt `Lüftermotor 1-stufig bis
+2 kW`/Menge 4/Zone `klemm_l`, Klick springt zur Baugruppe und löst dort alle
+5 Bauteile ohne Orphan-Warnung auf; synthetischer In-Memory-Test (nicht
+committet) bestätigt Orphan-Erkennung: injizierte ungültige Artikel-Nr.
+erhöht den DQ-Zähler korrekt auf 1, färbt die betroffene Zeile/den
+Detail-Eintrag rot, nach Entfernen wieder 0; Startseite zeigt die neue
+Modul-07-Karte korrekt zwischen 04 und dem Platzhalter, Link löst auf
+`modules/modul-07-stammdatenpflege/` auf, `hero-stats` zeigt „5".
 
 ### Modul 4 – pausiert vor Modul 7: offene Punkte Bauteil-Positionierung (Session 34, notiert – keine Entscheidung, kein Code)
 Nutzer pausiert Modul 4 nach den erfolgreichen Einzelbauteil-Platzierungstests

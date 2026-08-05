@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBACS · Modul 7 · Stammdatenpflege · Artikeldaten</title>
+<style>
+:root{
+  --bg:    #1A1A18;
+  --bg2:   #222220;
+  --bg3:   #2A2A28;
+  --bg4:   #303030;
+  --bord:  #3A3835;
+  --bords: #5A5855;
+  --tx:    #E0DED8;
+  --tx2:   #9A9890;
+  --tx3:   #666460;
+  --green: #2DBD8E;
+  --orange:#C8720E;
+  --blue:  #7A74CC;
+  --font:  system-ui,-apple-system,sans-serif;
+  --mono:  'Courier New',Courier,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;}
+
+/* ── Header ── */
+header{
+  background:#111110;color:#E0DED8;
+  padding:10px 22px 12px;display:flex;align-items:flex-start;gap:18px;
+  border-bottom:1px solid var(--bord);flex-wrap:wrap;
+}
+header h1{font-size:15px;font-weight:700;letter-spacing:-.01em;}
+header p{font-size:11px;color:var(--tx3);margin-top:1px;}
+header .title{flex:1;min-width:200px;}
+header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;margin-top:3px;}
+header a:hover{color:var(--tx2);}
+.header-logo{height:48px;width:48px;object-fit:contain;flex-shrink:0;}
+@media print{.copyright-line{display:none !important;}}
+
+.proj-fields{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:flex-end;width:100%;}
+.proj-field{display:flex;flex-direction:column;gap:3px;}
+.proj-field label{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;}
+.proj-field input{
+  background:var(--bg3);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:12px;padding:3px 8px;
+}
+.proj-field input:focus{outline:none;border-color:var(--green);}
+#proj-name   {width:220px;}
+#proj-nummer {width:130px;}
+#proj-asp    {width:185px;}
+#proj-docnr  {width:200px;color:var(--tx2);}
+
+/* ── Datenqualitäts-Leiste ── */
+.dq-bar{display:flex;flex-wrap:wrap;gap:8px;background:var(--bg2);border-bottom:1px solid var(--bord);padding:10px 18px;}
+.dq-chip{font-size:11px;padding:5px 11px;border-radius:4px;background:var(--bg3);border:1px solid var(--bords);color:var(--tx2);cursor:pointer;}
+.dq-chip:hover{border-color:var(--tx2);color:var(--tx);}
+.dq-chip.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.dq-chip--warn{border-color:#D4A84B;color:#D4A84B;}
+.dq-chip--info{cursor:default;color:var(--tx3);background:transparent;border-style:dashed;}
+
+/* ── Toolbar ── */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--bg2);border-bottom:1px solid var(--bord);padding:10px 18px;}
+.tabs{display:flex;gap:6px;}
+.tab{font-size:12px;padding:6px 12px;border-radius:4px;cursor:pointer;background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);}
+.tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
+#search{flex:1;min-width:200px;padding:6px 10px;background:var(--bg);border:1px solid var(--bords);border-radius:3px;color:var(--tx);font-size:12px;}
+#search:focus{outline:none;border-color:var(--green);}
+.filters{display:flex;gap:6px;flex-wrap:wrap;}
+.filters select{padding:5px 8px;background:var(--bg);border:1px solid var(--bords);border-radius:3px;color:var(--tx);font-size:12px;}
+#result-count{font-size:11px;color:var(--tx3);white-space:nowrap;}
+.link-reset{font-size:11px;color:var(--green);text-decoration:none;white-space:nowrap;}
+.link-reset:hover{text-decoration:underline;}
+
+/* ── Layout ── */
+.layout-2col{display:grid;grid-template-columns:1fr 380px;}
+.panel-list{overflow-x:auto;}
+.panel-detail{background:var(--bg2);border-left:1px solid var(--bord);padding:16px;}
+.panel-detail h3{font-size:14px;margin-bottom:10px;}
+.panel-detail h4{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--tx3);margin:14px 0 6px;}
+.hint-text{color:var(--tx3);font-size:12px;padding:24px 18px;}
+
+/* ── Katalog-Tabelle ── */
+.catalog-table{width:100%;border-collapse:collapse;font-size:12px;}
+.catalog-table th{background:var(--bg3);color:var(--tx2);font-weight:600;padding:6px 8px;text-align:left;border-bottom:1.5px solid var(--bords);white-space:nowrap;}
+.catalog-table td{padding:5px 8px;border-bottom:.5px solid var(--bord);vertical-align:middle;}
+.catalog-table tr{cursor:pointer;}
+.catalog-table tbody tr:hover td{background:var(--bg3);}
+.catalog-table tr.row-active td{background:var(--bg4);}
+.catalog-table .num{text-align:right;font-family:var(--mono);}
+.catalog-table .mono{font-family:var(--mono);font-size:11px;}
+
+/* ── Detail: Feldtabelle ── */
+.field-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px;}
+.field-table td{padding:4px 0;border-bottom:.5px solid var(--bord);vertical-align:top;}
+.field-table .fk{color:var(--tx3);width:45%;padding-right:8px;}
+.field-table .fv{color:var(--tx);font-family:var(--mono);font-size:11px;}
+
+/* ── Detail: Verwendungs-/Bauteil-Tabelle ── */
+.usage-table{width:100%;border-collapse:collapse;font-size:11px;}
+.usage-table th{color:var(--tx3);text-align:left;padding:4px 6px;border-bottom:1px solid var(--bords);}
+.usage-table td{padding:4px 6px;border-bottom:.5px solid var(--bord);}
+.usage-table tr.clickable-row{cursor:pointer;}
+.usage-table tr.clickable-row:hover td{background:var(--bg3);}
+.usage-table tr.row-orphan td{color:#E04444;}
+
+/* ── Flags/Zonen-Punkte ── */
+.flag-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:3px;}
+.flag-dot.muted{background:var(--tx3);}
+.flag-dot.warn{background:#D4A84B;}
+.flag-dot.err{background:#E04444;}
+.zone-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;}
+
+/* ── Print-Button ── */
+.btn-row{padding:14px 18px;}
+.btn-print{
+  padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;
+  background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
+}
+.btn-print:hover{border-color:var(--tx2);color:var(--tx);}
+
+/* ── Footer ── */
+.site-footer{
+  background:#111110;border-top:1px solid var(--bord);
+  padding:10px 22px;font-size:11px;color:var(--tx3);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.site-footer a{color:var(--tx3);text-decoration:none;}
+.site-footer a:hover{color:var(--tx2);}
+
+/* ── Druck ── */
+@media print{
+  body{background:#fff;color:#000;}
+  .dq-bar, .toolbar, .panel-detail, .btn-row, .site-footer{display:none !important;}
+  .layout-2col{display:block;}
+  .panel-list{width:100%;}
+  header{
+    background:#EFEFEC !important;border-bottom:1.5px solid #BBBBBB;
+    padding:8px 10px;min-height:54px;margin-bottom:10px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .proj-fields{
+    display:flex !important;gap:0;flex:1;align-items:center;
+    border-left:1px solid #CCC;padding-left:14px;margin-left:14px;margin-top:0;
+  }
+  .proj-field input{
+    font-size:8.5px;color:#111 !important;font-weight:500;
+    border:none;border-bottom:0.5px solid #BBB;background:transparent;
+    padding:0 0 2px;width:100%;
+  }
+  .catalog-table{font-size:9px;}
+  .catalog-table th{background:#eee;color:#222;}
+  .catalog-table td{color:#000;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
+  <div class="title">
+    <h1>Modul 7 · Stammdatenpflege · Artikeldaten</h1>
+    <p>Katalog-Browser · Datenqualität · Verwendungsnachweis</p>
+    <p class="copyright-line" style="font-size:10px;color:var(--tx3);margin-top:2px;">© 2026 Stephan Michler</p>
+  </div>
+  <a href="../../index.html">← Startseite</a>
+  <div class="proj-fields">
+    <div class="proj-field">
+      <label for="proj-name">Projekt</label>
+      <input id="proj-name" type="text" placeholder="Projektbezeichnung" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-nummer">Projektnummer</label>
+      <input id="proj-nummer" type="text" placeholder="z. B. 2024-001" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-asp">ASP</label>
+      <input id="proj-asp" type="text" placeholder="Automationsschwerpunkt" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-docnr">Dokument-Nr.</label>
+      <input id="proj-docnr" type="text" readonly>
+    </div>
+  </div>
+</header>
+
+<!-- ── Datenqualitäts-Leiste (Chips sind zugleich Filter) ── -->
+<div class="dq-bar" id="dq-bar"></div>
+
+<!-- ── Toolbar: Tabs, Suche, Filter ── -->
+<div class="toolbar">
+  <div class="tabs">
+    <button class="tab active" data-tab="einzel" onclick="switchTab('einzel')">Einzelbauteile (<span id="tab-count-einzel">–</span>)</button>
+    <button class="tab" data-tab="baugruppen" onclick="switchTab('baugruppen')">Baugruppen (<span id="tab-count-baugruppen">–</span>)</button>
+  </div>
+  <input id="search" type="text" placeholder="Suche: Artikel-Nr., Bezeichnung, Hersteller…" oninput="applyFilters()">
+  <div id="filters-einzel" class="filters">
+    <select id="f_zone" onchange="applyFilters()"><option value="">Zone: Alle</option></select>
+    <select id="f_hersteller" onchange="applyFilters()"><option value="">Hersteller: Alle</option></select>
+    <select id="f_kategorie" onchange="applyFilters()"><option value="">Kategorie: Alle</option></select>
+    <select id="f_bauteil_typ" onchange="applyFilters()"><option value="">Typ: Alle</option></select>
+  </div>
+  <div id="filters-baugruppen" class="filters" style="display:none">
+    <select id="f_gewerk" onchange="applyFilters()"><option value="">Gewerk: Alle</option></select>
+  </div>
+  <span id="result-count">– Treffer</span>
+  <a href="#" class="link-reset" onclick="resetFilters();return false;">Zurücksetzen</a>
+</div>
+
+<!-- ── Katalog + Detail ── -->
+<div class="layout-2col">
+  <section class="panel-list">
+    <table class="catalog-table">
+      <thead id="tbl-head"></thead>
+      <tbody id="tbl-body"></tbody>
+    </table>
+  </section>
+  <aside class="panel-detail" id="detail-panel">
+    <p class="hint-text">Zeile auswählen, um Details zu sehen.</p>
+  </aside>
+</div>
+
+<div class="btn-row">
+  <button class="btn-print" onclick="printErgebnis()">⎙ Drucken</button>
+</div>
+
+<footer class="site-footer">
+  <span class="copyright-line">© 2026 Stephan Michler · DBACS · Modul 7</span>
+  <span>DBACS · GA-Planung · Stammdatenpflege</span>
+</footer>
+
+<script>
+// ── Zonen (identisch zu Modul 3/4, gesperrte modulübergreifende Konvention,
+// siehe CLAUDE.md) ──────────────────────────────────────────────────────
+const ALLE_ZONEN = ['klemm_e','uss','evert','leist','steuer','klemm_l','klemm_f','klemm_s'];
+const ZONE_LABELS = {
+  klemm_e:'Einspeiseklemmen', uss:'Überspannungsschutz & Vorsicherung', evert:'Energieverteilung',
+  leist:'Leistungsbaugruppe', steuer:'Steuerbaugruppe',
+  klemm_l:'Abg.-Kl. Leistung', klemm_f:'Abg.-Kl. Feldgeräte', klemm_s:'Abg.-Kl. Sensoren'
+};
+const ZONE_KURZ = {
+  klemm_e:'Einsp.-Kl.', uss:'ÜSS', evert:'Energievert.', leist:'Leistung', steuer:'Steuerung',
+  klemm_l:'Kl. Leist.', klemm_f:'Kl. Feld.', klemm_s:'Kl. Sens.'
+};
+const ZONE_COLORS = {
+  klemm_e:'#EBDBA0', uss:'#D8A916', evert:'#C8720E', leist:'#C84E2E', steuer:'#4BBECA',
+  klemm_l:'#2DBD8E', klemm_f:'#9A94E8', klemm_s:'#C14FA0'
+};
+
+// Vollständige Feld-Definitionen (siehe data/xlsx_to_json.py) – ein Feld
+// wird nur gerendert, wenn im jeweiligen Datensatz tatsächlich vorhanden
+// (viele sind optional, z. B. dp_*/preis_*/klemmen_zusatz), nie als
+// erfundene "0"/"–"-Platzhalterzeile.
+const FIELD_DEFS_EB = [
+  {k:'artikel_nr', l:'Artikel-Nr.'},
+  {k:'bezeichnung', l:'Bezeichnung'},
+  {k:'hersteller', l:'Hersteller'},
+  {k:'bauteil_typ', l:'Bauteil-Typ'},
+  {k:'kategorie', l:'Kategorie'},
+  {k:'zone', l:'Zone', f:v => ZONE_LABELS[v] || v},
+  {k:'b_mm', l:'Breite (mm)'},
+  {k:'h_mm', l:'Höhe (mm)'},
+  {k:'te_breite', l:'TE-Breite'},
+  {k:'einbaulage', l:'Einbaulage'},
+  {k:'automationsanbindung', l:'Automationsanbindung', f:v => v ? 'Ja' : 'Nein'},
+  {k:'dp_ai', l:'Datenpunkte AI'},
+  {k:'dp_ao', l:'Datenpunkte AO'},
+  {k:'dp_bi', l:'Datenpunkte BI'},
+  {k:'dp_bo', l:'Datenpunkte BO'},
+  {k:'dp_fb_ai', l:'Datenpunkte Feldbus AI'},
+  {k:'dp_fb_ao', l:'Datenpunkte Feldbus AO'},
+  {k:'dp_fb_bi', l:'Datenpunkte Feldbus BI'},
+  {k:'dp_fb_bo', l:'Datenpunkte Feldbus BO'},
+  {k:'klemmen_zusatz', l:'Klemmen-Zusatz'},
+  {k:'preis_eur', l:'Preis (€/Stk.)', f:v => v.toFixed(2)},
+  {k:'preis_lieferung_eur', l:'Preis Lieferung (€)', f:v => v.toFixed(2)},
+  {k:'montage_minuten', l:'Montage (min)'},
+  {k:'preis_gesamt_eur', l:'Preis gesamt (€)', f:v => v.toFixed(2)},
+  {k:'geprueft', l:'Geprüft', f:v => v ? 'Ja' : 'Nein'}
+];
+const FIELD_DEFS_BG = [
+  {k:'id', l:'ID'},
+  {k:'name', l:'Name'},
+  {k:'gewerk', l:'Gewerk'},
+  {k:'beschreibung', l:'Beschreibung'},
+  {k:'funktionsbereiche', l:'Funktionsbereiche', f:v => v.join(', ')},
+  {k:'automationsfunktionen', l:'Automationsfunktionen', f:v => v.join(', ')},
+  {k:'geprueft', l:'Geprüft', f:v => v ? 'Ja' : 'Nein'}
+];
+
+// ── Zustand ──────────────────────────────────────────────────────────
+let EINZELBAUTEILE_DB = [];
+let BAUGRUPPEN_DB     = [];
+let EB_IDS             = new Set();  // artikel_nr-Menge für O(1)-Referenzprüfung
+let USAGE_MAP          = new Map();  // artikel_nr -> [{bg_id,bg_name,gewerk,menge,zone}, ...]
+let DQ                 = {};         // Datenqualitäts-Kennzahlen, einmalig berechnet
+let activeTab           = 'einzel';
+let activeFilter         = null;      // 'ungeprueft_eb' | 'ungeprueft_bg' | 'kein_preis' | 'orphans' | null
+let selected             = null;      // {type:'einzel'|'baugruppen', id}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── Datenladen (rein lesend – fetch() wie in jedem anderen Modul; die
+// Excel-Datei data/ga_komponenten.xlsx bleibt die einzige Stelle, an der
+// Artikel-/Baugruppendaten geändert werden, siehe CLAUDE.md Session 27+35) ──
+async function loadData() {
+  try {
+    [EINZELBAUTEILE_DB, BAUGRUPPEN_DB] = await Promise.all([
+      fetch('../../data/einzelbauteile.json').then(r => r.json()),
+      fetch('../../data/baugruppen.json').then(r => r.json())
+    ]);
+    init();
+  } catch (e) {
+    document.getElementById('tbl-body').innerHTML =
+      '<tr><td class="hint-text">Datenbank konnte nicht geladen werden. Bitte lokalen Server verwenden.</td></tr>';
+  }
+}
+
+function init() {
+  loadProjFields();
+  computeDataQuality();
+  document.getElementById('tab-count-einzel').textContent = EINZELBAUTEILE_DB.length;
+  document.getElementById('tab-count-baugruppen').textContent = BAUGRUPPEN_DB.length;
+  populateFilterOptions();
+  updateTabUI();
+  render();
+}
+
+// ── Datenqualität (einmalig client-seitig berechnet, Daten ändern sich
+// zur Laufzeit nicht – reine Anzeige, kein Schreibzugriff) ──────────────
+function computeDataQuality() {
+  EB_IDS = new Set(EINZELBAUTEILE_DB.map(e => e.artikel_nr));
+  USAGE_MAP = new Map();
+  const orphans = [];
+  BAUGRUPPEN_DB.forEach(bg => bg.bauteile.forEach(bt => {
+    if (!USAGE_MAP.has(bt.artikel_nr)) USAGE_MAP.set(bt.artikel_nr, []);
+    USAGE_MAP.get(bt.artikel_nr).push({ bg_id: bg.id, bg_name: bg.name, gewerk: bg.gewerk, menge: bt.menge, zone: bt.zone });
+    if (!EB_IDS.has(bt.artikel_nr)) orphans.push({ bg_id: bg.id, bg_name: bg.name, artikel_nr: bt.artikel_nr });
+  }));
+  const zoneCounts = Object.fromEntries(ALLE_ZONEN.map(z => [z, 0]));
+  EINZELBAUTEILE_DB.forEach(e => { if (e.zone in zoneCounts) zoneCounts[e.zone]++; });
+  DQ = {
+    ebUngeprueft: EINZELBAUTEILE_DB.filter(e => !e.geprueft),
+    ebOhnePreis:  EINZELBAUTEILE_DB.filter(e => !('preis_eur' in e)),
+    bgUngeprueft: BAUGRUPPEN_DB.filter(b => !b.geprueft),
+    orphans,
+    zoneCounts,
+    leereZonen: ALLE_ZONEN.filter(z => zoneCounts[z] === 0)
+  };
+}
+
+function bgOrphanCount(b) {
+  return b.bauteile.filter(bt => !EB_IDS.has(bt.artikel_nr)).length;
+}
+
+function findUsages(artikelNr) {
+  return USAGE_MAP.get(artikelNr) || [];
+}
+
+// ── Filter-Optionen befüllen ─────────────────────────────────────────
+function fillSelect(id, values) {
+  const sel = document.getElementById(id);
+  values.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v; opt.textContent = v;
+    sel.appendChild(opt);
+  });
+}
+function populateFilterOptions() {
+  const selZone = document.getElementById('f_zone');
+  ALLE_ZONEN.forEach(z => {
+    const opt = document.createElement('option');
+    opt.value = z;
+    opt.textContent = `${ZONE_LABELS[z]} (${DQ.zoneCounts[z]})`;
+    selZone.appendChild(opt);
+  });
+  const uniq = (arr, key) => [...new Set(arr.map(x => x[key]).filter(Boolean))].sort();
+  fillSelect('f_hersteller', uniq(EINZELBAUTEILE_DB, 'hersteller'));
+  fillSelect('f_kategorie', uniq(EINZELBAUTEILE_DB, 'kategorie'));
+  fillSelect('f_bauteil_typ', uniq(EINZELBAUTEILE_DB, 'bauteil_typ'));
+  fillSelect('f_gewerk', uniq(BAUGRUPPEN_DB, 'gewerk'));
+}
+function resetFilterSelects() {
+  ['f_zone','f_hersteller','f_kategorie','f_bauteil_typ','f_gewerk'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+// ── Tabs / Filter-Zustand ────────────────────────────────────────────
+function updateTabUI() {
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === activeTab));
+  document.getElementById('filters-einzel').style.display = activeTab === 'einzel' ? 'flex' : 'none';
+  document.getElementById('filters-baugruppen').style.display = activeTab === 'baugruppen' ? 'flex' : 'none';
+}
+function switchTab(tab) {
+  activeTab = tab;
+  activeFilter = null;
+  selected = null;
+  document.getElementById('search').value = '';
+  resetFilterSelects();
+  updateTabUI();
+  render();
+}
+function resetFilters() {
+  activeFilter = null;
+  selected = null;
+  document.getElementById('search').value = '';
+  resetFilterSelects();
+  render();
+}
+function applyFilters() { render(); }
+
+// Datenqualitäts-Chip als Filter anwenden – wechselt bei Bedarf den Tab
+// (Baugruppen-Probleme zeigen sich nur im Baugruppen-Tab) und setzt alle
+// übrigen Filter zurück, damit die im Chip genannte Zahl exakt mit der
+// gefilterten Trefferliste übereinstimmt.
+function applyDQFilter(key) {
+  document.getElementById('search').value = '';
+  resetFilterSelects();
+  selected = null;
+  if (key === 'leere_zone') {
+    activeTab = 'einzel';
+    activeFilter = null;
+    updateTabUI();
+    if (DQ.leereZonen.length) document.getElementById('f_zone').value = DQ.leereZonen[0];
+  } else {
+    activeTab = (key === 'ungeprueft_bg' || key === 'orphans') ? 'baugruppen' : 'einzel';
+    activeFilter = key;
+    updateTabUI();
+  }
+  render();
+}
+
+// ── Gefilterte Liste ─────────────────────────────────────────────────
+function getFilteredList() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  if (activeTab === 'einzel') {
+    let list = EINZELBAUTEILE_DB;
+    const zone = document.getElementById('f_zone').value;
+    const hersteller = document.getElementById('f_hersteller').value;
+    const kategorie = document.getElementById('f_kategorie').value;
+    const typ = document.getElementById('f_bauteil_typ').value;
+    if (zone) list = list.filter(e => e.zone === zone);
+    if (hersteller) list = list.filter(e => e.hersteller === hersteller);
+    if (kategorie) list = list.filter(e => e.kategorie === kategorie);
+    if (typ) list = list.filter(e => e.bauteil_typ === typ);
+    if (q) list = list.filter(e => `${e.artikel_nr} ${e.bezeichnung} ${e.hersteller}`.toLowerCase().includes(q));
+    if (activeFilter === 'ungeprueft_eb') list = list.filter(e => !e.geprueft);
+    if (activeFilter === 'kein_preis') list = list.filter(e => !('preis_eur' in e));
+    return list;
+  }
+  let list = BAUGRUPPEN_DB;
+  const gewerk = document.getElementById('f_gewerk').value;
+  if (gewerk) list = list.filter(b => b.gewerk === gewerk);
+  if (q) list = list.filter(b => `${b.id} ${b.name}`.toLowerCase().includes(q));
+  if (activeFilter === 'ungeprueft_bg') list = list.filter(b => !b.geprueft);
+  if (activeFilter === 'orphans') list = list.filter(b => bgOrphanCount(b) > 0);
+  return list;
+}
+
+// ── Rendering ────────────────────────────────────────────────────────
+function render() {
+  renderDQBar();
+  renderTable();
+  renderDetail();
+}
+
+function renderDQBar() {
+  const bar = document.getElementById('dq-bar');
+  const chip = (key, label) => `<div class="dq-chip${activeFilter === key ? ' active' : ''}" data-dq="${key}">${label}</div>`;
+  let zoneChip;
+  if (DQ.leereZonen.length) {
+    zoneChip = `<div class="dq-chip dq-chip--warn" data-dq="leere_zone">Zonen ohne Katalogeintrag: ${DQ.leereZonen.map(z => ZONE_KURZ[z]).join(', ')}</div>`;
+  } else {
+    zoneChip = `<div class="dq-chip dq-chip--info">Alle Zonen abgedeckt</div>`;
+  }
+  bar.innerHTML =
+    chip('ungeprueft_eb', `Ungeprüft (Einzelbauteile): ${DQ.ebUngeprueft.length}/${EINZELBAUTEILE_DB.length}`) +
+    chip('ungeprueft_bg', `Ungeprüft (Baugruppen): ${DQ.bgUngeprueft.length}/${BAUGRUPPEN_DB.length}`) +
+    chip('kein_preis', `Fehlender Preis: ${DQ.ebOhnePreis.length}/${EINZELBAUTEILE_DB.length}`) +
+    chip('orphans', `Verwaiste Referenzen: ${DQ.orphans.length}`) +
+    zoneChip;
+}
+
+function renderTable() {
+  const list = getFilteredList();
+  document.getElementById('result-count').textContent = `${list.length} Treffer`;
+  const thead = document.getElementById('tbl-head');
+  const tbody = document.getElementById('tbl-body');
+
+  if (activeTab === 'einzel') {
+    thead.innerHTML = '<tr><th>Artikel-Nr.</th><th>Bezeichnung</th><th>Hersteller</th><th>Typ</th><th>Zone</th><th>TE</th><th>Preis</th><th>Geprüft</th><th>Verw.</th><th>Flags</th></tr>';
+    tbody.innerHTML = list.map(e => {
+      const sel = selected && selected.type === 'einzel' && selected.id === e.artikel_nr ? ' row-active' : '';
+      const flags = [];
+      if (!e.geprueft) flags.push('<span class="flag-dot muted" title="Ungeprüft"></span>');
+      if (!('preis_eur' in e)) flags.push('<span class="flag-dot warn" title="Kein Preis hinterlegt"></span>');
+      return `<tr class="${sel}" data-sel-type="einzel" data-sel-id="${esc(e.artikel_nr)}">
+        <td class="mono">${esc(e.artikel_nr)}</td>
+        <td>${esc(e.bezeichnung)}</td>
+        <td>${esc(e.hersteller)}</td>
+        <td>${esc(e.bauteil_typ)}</td>
+        <td><span class="zone-dot" style="background:${ZONE_COLORS[e.zone] || '#666'}"></span>${esc(ZONE_KURZ[e.zone] || e.zone || '–')}</td>
+        <td class="num">${e.te_breite ?? '–'}</td>
+        <td class="num">${'preis_eur' in e ? e.preis_eur.toFixed(2) : '–'}</td>
+        <td>${e.geprueft ? 'Ja' : 'Nein'}</td>
+        <td class="num">${(USAGE_MAP.get(e.artikel_nr) || []).length}</td>
+        <td>${flags.join('')}</td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="10" class="hint-text">Keine Treffer.</td></tr>';
+  } else {
+    thead.innerHTML = '<tr><th>ID</th><th>Name</th><th>Gewerk</th><th>Bauteile</th><th>Geprüft</th><th>Flags</th></tr>';
+    tbody.innerHTML = list.map(b => {
+      const sel = selected && selected.type === 'baugruppen' && selected.id === b.id ? ' row-active' : '';
+      const orphanCount = bgOrphanCount(b);
+      const flags = [];
+      if (!b.geprueft) flags.push('<span class="flag-dot muted" title="Ungeprüft"></span>');
+      if (orphanCount > 0) flags.push(`<span class="flag-dot err" title="${orphanCount} verwaiste Referenz(en)"></span>`);
+      return `<tr class="${sel}" data-sel-type="baugruppen" data-sel-id="${esc(b.id)}">
+        <td class="mono">${esc(b.id)}</td>
+        <td>${esc(b.name)}</td>
+        <td>${esc(b.gewerk)}</td>
+        <td class="num">${b.bauteile.length}</td>
+        <td>${b.geprueft ? 'Ja' : 'Nein'}</td>
+        <td>${flags.join('')}</td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="6" class="hint-text">Keine Treffer.</td></tr>';
+  }
+}
+
+function renderFieldTable(obj, defs) {
+  const rows = defs
+    .filter(d => obj[d.k] !== undefined && obj[d.k] !== null)
+    .map(d => `<tr><td class="fk">${esc(d.l)}</td><td class="fv">${esc(String(d.f ? d.f(obj[d.k]) : obj[d.k]))}</td></tr>`)
+    .join('');
+  return `<table class="field-table">${rows}</table>`;
+}
+
+function renderDetail() {
+  const panel = document.getElementById('detail-panel');
+  if (!selected) {
+    panel.innerHTML = '<p class="hint-text">Zeile auswählen, um Details zu sehen.</p>';
+    return;
+  }
+  if (selected.type === 'einzel') {
+    const e = EINZELBAUTEILE_DB.find(x => x.artikel_nr === selected.id);
+    if (!e) { panel.innerHTML = '<p class="hint-text">Bauteil nicht gefunden.</p>'; return; }
+    const usages = findUsages(e.artikel_nr);
+    const usageRows = usages.map(u => `<tr class="clickable-row" data-jump-type="baugruppen" data-jump-id="${esc(u.bg_id)}">
+        <td>${esc(u.bg_name)}</td><td>${esc(u.gewerk)}</td><td class="num">${u.menge}</td>
+        <td>${esc(ZONE_KURZ[u.zone || e.zone] || u.zone || e.zone || '–')}</td>
+      </tr>`).join('');
+    panel.innerHTML = `
+      <h3>${esc(e.bezeichnung)}</h3>
+      ${renderFieldTable(e, FIELD_DEFS_EB)}
+      <h4>Verwendungsnachweis (${usages.length})</h4>
+      ${usages.length
+        ? `<table class="usage-table"><thead><tr><th>Baugruppe</th><th>Gewerk</th><th>Menge</th><th>Zone</th></tr></thead><tbody>${usageRows}</tbody></table>`
+        : '<p class="hint-text">Wird in keiner Baugruppe verwendet.</p>'}
+    `;
+  } else {
+    const b = BAUGRUPPEN_DB.find(x => x.id === selected.id);
+    if (!b) { panel.innerHTML = '<p class="hint-text">Baugruppe nicht gefunden.</p>'; return; }
+    const rows = b.bauteile.map(bt => {
+      const eb = EINZELBAUTEILE_DB.find(x => x.artikel_nr === bt.artikel_nr);
+      if (!eb) {
+        return `<tr class="row-orphan"><td colspan="4">⚠ ${esc(bt.artikel_nr)} – nicht im Einzelbauteile-Katalog gefunden</td></tr>`;
+      }
+      const zone = bt.zone || eb.zone;
+      return `<tr class="clickable-row" data-jump-type="einzel" data-jump-id="${esc(eb.artikel_nr)}">
+        <td>${esc(eb.bezeichnung)}</td><td>${esc(eb.hersteller)}</td><td class="num">${bt.menge}</td>
+        <td>${esc(ZONE_KURZ[zone] || zone || '–')}</td>
+      </tr>`;
+    }).join('');
+    panel.innerHTML = `
+      <h3>${esc(b.name)}</h3>
+      ${renderFieldTable(b, FIELD_DEFS_BG)}
+      <h4>Bauteile (${b.bauteile.length})</h4>
+      <table class="usage-table"><thead><tr><th>Bezeichnung</th><th>Hersteller</th><th>Menge</th><th>Zone</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    `;
+  }
+}
+
+function selectItem(type, id) {
+  selected = { type, id };
+  render();
+}
+function jumpTo(type, id) {
+  activeTab = type;
+  activeFilter = null;
+  document.getElementById('search').value = '';
+  resetFilterSelects();
+  updateTabUI();
+  selected = { type, id };
+  render();
+}
+
+// Ein delegierter Click-Handler statt Dutzender Inline-Listener – deckt
+// DQ-Chips, Tabellenzeilen (Auswahl) und Verwendungs-/Bauteil-Zeilen im
+// Detail-Panel (Sprung zum jeweils anderen Tab) ab.
+document.addEventListener('click', e => {
+  const dqEl = e.target.closest('.dq-chip[data-dq]');
+  if (dqEl) { applyDQFilter(dqEl.dataset.dq); return; }
+  const jumpEl = e.target.closest('[data-jump-type]');
+  if (jumpEl) { jumpTo(jumpEl.dataset.jumpType, jumpEl.dataset.jumpId); return; }
+  const selEl = e.target.closest('tr[data-sel-type]');
+  if (selEl) { selectItem(selEl.dataset.selType, selEl.dataset.selId); return; }
+});
+
+// ── Projektfelder speichern/laden (identisch zu Modul 4) ──────────────
+function updateDocNr() {
+  const nr  = document.getElementById('proj-nummer').value.trim();
+  const asp = document.getElementById('proj-asp').value.trim();
+  const doc = [nr, asp, 'M07'].filter(Boolean).join('-');
+  document.getElementById('proj-docnr').value = doc || '–';
+}
+function saveProjFields() {
+  ['proj-name','proj-nummer','proj-asp'].forEach(id =>
+    localStorage.setItem(id, document.getElementById(id).value));
+  updateDocNr();
+  localStorage.setItem('proj-docnr', document.getElementById('proj-docnr').value);
+}
+function loadProjFields() {
+  ['proj-name','proj-nummer','proj-asp'].forEach(id => {
+    const v = localStorage.getItem(id);
+    if (v !== null) document.getElementById(id).value = v;
+  });
+  updateDocNr();
+}
+
+// ── Ergebnis drucken (identisch zu Modul 1–4) ──────────────────────────
+function printErgebnis() {
+  const s = document.createElement('style');
+  s.textContent = '@page{size:A4 landscape;margin:10mm 12mm}';
+  document.head.appendChild(s);
+  window.print();
+  document.head.removeChild(s);
+}
+
+// ── Start ────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
