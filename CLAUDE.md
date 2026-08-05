@@ -1221,6 +1221,60 @@ normalen Reihe.
   hinzugefügt (`menge:8, forcedMenge:3`) → "−2" → `menge:6, forcedMenge:1` (normaler
   Anteil bleibt korrekt bei 5); `placeBauteile()`-Ergebnis zeigt Reihe 1 weiterhin
   mit 5 Geräten, Reihe 2 (erzwungen) korrekt auf 1 Gerät geschrumpft.
+- **Nachtrag (Session 30): Diagnose war unvollständig.** Der Fix oben war nur für
+  den Sonderfall korrekt, dass die zuletzt hinzugefügte Aktion tatsächlich die
+  erzwungene war. Wurde in umgekehrter Reihenfolge hinzugefügt (z. B. erst
+  "neue Reihe", danach normal), zog Minus weiterhin fälschlich vom erzwungenen
+  (dann aber älteren) Anteil ab, statt vom tatsächlich zuletzt hinzugefügten
+  normalen Anteil – vom Nutzer beim weiteren Testen aufgedeckt. Ursache: das
+  Zwei-Zähler-Modell (`menge`/`forcedMenge`) kennt nur die AGGREGIERTE
+  erzwungene Summe, nicht WANN welcher Teil hinzugefügt wurde. Siehe
+  „Bedarfsgesteuerte Historie (batches-Modell)" unten für die vollständige
+  Lösung, die dieses Modell ersetzt.
+
+### Modul 4 – Belegungs-Historie als LIFO-Stapel (`batches`-Modell, Session 30, gesperrt)
+Löst den in Session 29 unvollständig behobenen Bug endgültig: der Nutzer stellte
+fest, dass Minus weiterhin nicht zuverlässig "das zuletzt platzierte Modul"
+entfernte, sondern je nach Reihenfolge der Hinzufüge-Aktionen (normal/"neue
+Reihe") das falsche entfernen konnte.
+- **Ursache (grundsätzlich):** `menge` + `forcedMenge` sind nur zwei
+  Summen-Zähler ohne Zeitachse. Damit lässt sich nicht rekonstruieren, ob
+  zuletzt eine normale oder eine erzwungene Menge hinzugefügt wurde, sobald
+  beide Aktionstypen abwechselnd vorkommen (z. B. normal→erzwungen→normal).
+- **Fix – neues Feld `batches`:** ersetzt `forcedMenge` durch einen
+  chronologischen Stapel `[{n, forced}, ...]` (ältester Eintrag zuerst) je
+  Belegungseintrag. `addEinzelbauteil()` hängt bei jedem Hinzufügen einen
+  neuen Batch an (`pushBatch()` – verschmilzt mit dem letzten Batch, wenn
+  dieser denselben `forced`-Status hat, sonst neuer Eintrag).
+  `removeEinzelbauteilQty()` entfernt jetzt echtes LIFO: reduziert immer erst
+  den LETZTEN Batch, springt bei Erschöpfung zum davorliegenden – unabhängig
+  vom `forced`-Status. `item.menge` wird danach als Summe aller
+  `batch.n`-Werte neu berechnet (keine Drift möglich).
+- **`getBatches(item)`** migriert alte Einträge (ohne `batches`, nur
+  `forcedMenge` aus Session 28i oder `rowBreak`-Boolean aus Session 28g/28h)
+  transparent beim ersten Zugriff – exakt wie schon die bestehende
+  `consolidateBelegung()`-Selbstheilung, nur eine Modellgeneration weiter.
+- **`consolidateBelegung()`** verkettet beim Zusammenführen mehrerer
+  Einträge desselben Artikels deren Batches in `belegung`-Reihenfolge
+  (chronologisch korrekt, da neue Einträge immer ans Ende von `belegung`
+  gepusht werden) statt nur die `forcedMenge`-Zahlen zu addieren.
+- **`placeBauteile()`-Queue-Aufbau unverändert in der Logik** (erst alle
+  normalen, dann alle erzwungenen Einheiten einer Zone/eines Artikels als
+  ein Block, siehe Session 28i) – berechnet die dafür nötige
+  Gesamtsumme der erzwungenen Einheiten jetzt aber aus
+  `getBatches(item).filter(b=>b.forced)` statt aus dem entfernten
+  `forcedMenge`-Zähler. Kein Effekt auf `placeInBands()`/
+  `assignDevicesToRows()` (Session 28g) selbst.
+- Verifiziert direkt gegen die produktiven Funktionen im Browser, zwei
+  Szenarien: (1) erzwungen(3)→normal(5), dann "−2" → entfernt korrekt vom
+  normalen (zuletzt hinzugefügten) Anteil, `batches` danach
+  `[{n:3,forced:true},{n:3,forced:false}]` – der zuvor fehlerhafte Fall aus
+  Session 29 ist jetzt korrekt. (2) normal(2)→erzwungen(3)→normal(4), dann
+  "−5" → verbraucht den letzten Batch (4 normal) vollständig und danach 1
+  aus dem davorliegenden erzwungenen Batch, Ergebnis
+  `[{n:2,forced:false},{n:2,forced:true}]` – LIFO über mehrere Batches
+  hinweg bestätigt. End-to-End über `calculate()` fehlerfrei, Stückliste
+  und Belegungsliste zeigen konsistente Mengen, keine Konsolenfehler.
 
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen

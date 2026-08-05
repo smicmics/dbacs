@@ -840,15 +840,39 @@ function removeBaugruppeQty() {
 // aktivem "neue Reihe", um den Session-28f-Bug zu vermeiden), was
 // stattdessen einen NEUEN Bug erzeugte (Session 28i): mehrfaches
 // Hinzufügen desselben Artikels mit Häkchen erzeugte unnötig viele
-// Einträge mit wechselnden Farben. Lösung: `menge` bleibt EIN Feld, ein
-// zusätzliches `forcedMenge` merkt sich, wie viele der Gesamtmenge als
-// "neue Reihe" gelten sollen – beim Queue-Aufbau in placeBauteile() werden
-// zuerst `menge-forcedMenge` normale Einheiten und danach `forcedMenge`
-// erzwungene Einheiten gepusht (siehe dort). Damit bleiben immer nur die
-// ZULETZT als erzwungen hinzugefügten Einheiten erzwungen – bereits
-// platzierte normale Einheiten werden nie rückwirkend betroffen (löst
-// Session 28f), UND es entsteht dabei kein zusätzlicher Belegungseintrag
-// (löst Session 28i).
+// Einträge mit wechselnden Farben.
+//
+// `menge` bleibt EIN Feld für die Anzeige. Die tatsächliche Reihenfolge der
+// Hinzufüge-Aktionen wird zusätzlich in `batches` gehalten (Session 30) –
+// ein chronologischer Stapel `[{n, forced}, ...]`, ältester Eintrag zuerst.
+// Grund: das vorherige Modell (ein einzelner `forcedMenge`-Zähler, Session
+// 28i) kannte nur "wie viele insgesamt sind erzwungen", nicht WANN sie
+// hinzugefügt wurden – removeEinzelbauteilQty() zog deshalb immer zuerst
+// vom erzwungenen Anteil ab, auch wenn in Wahrheit zuletzt eine normale
+// Menge hinzugefügt wurde (Session-29-Fix war nur für den Sonderfall
+// "erzwungen war die letzte Aktion" korrekt, siehe CLAUDE.md). `batches`
+// löst das: Minus entfernt jetzt immer vom Ende des Stapels (echtes LIFO),
+// unabhängig vom Häkchen-Status. Für den Queue-Aufbau in placeBauteile()
+// (Reihenfolge "erst normal, dann erzwungen" innerhalb einer Zone) wird die
+// Gesamtsumme der `forced`-Batches weiterhin als ein Block behandelt – das
+// bleibt unverändert, nur WELCHE Einheiten in diesen Block fallen, folgt
+// jetzt der echten Historie statt eines einzelnen Zählers.
+function getBatches(item) {
+  if (item.batches) return item.batches;
+  const forced = item.forcedMenge !== undefined ? item.forcedMenge : (item.rowBreak ? item.menge : 0);
+  const normal = item.menge - forced;
+  const batches = [];
+  if (normal > 0) batches.push({n: normal, forced: false});
+  if (forced > 0) batches.push({n: forced, forced: true});
+  return batches;
+}
+
+function pushBatch(batches, n, forced) {
+  const last = batches[batches.length - 1];
+  if (last && last.forced === forced) last.n += n;
+  else batches.push({n, forced});
+}
+
 function addEinzelbauteil() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
@@ -861,9 +885,10 @@ function addEinzelbauteil() {
   const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
   if(ex) {
     ex.menge += menge;
-    if(forced) ex.forcedMenge = (ex.forcedMenge || 0) + menge;
+    ex.batches = getBatches(ex);
+    pushBatch(ex.batches, menge, forced);
   } else {
-    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, forcedMenge: forced ? menge : 0});
+    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced}]});
   }
   consolidateBelegung();
   saveBelegung();
@@ -871,10 +896,10 @@ function addEinzelbauteil() {
   calculate();
 }
 
-// Symmetrisch zu removeBaugruppeQty(), für Einzelbauteile. Zieht bevorzugt
-// von der erzwungenen Teilmenge ab (siehe addEinzelbauteil()) – ohne
-// nachvollziehbare "letzte Aktion" wird die kleinere, "spezielle"
-// Teilmenge zuerst reduziert.
+// Symmetrisch zu removeBaugruppeQty(), für Einzelbauteile. Entfernt vom
+// Ende des `batches`-Stapels (LIFO) – die zuletzt hinzugefügte Teilmenge
+// verschwindet zuerst, unabhängig davon ob sie normal oder "neue Reihe"
+// war (siehe addEinzelbauteil()).
 function removeEinzelbauteilQty() {
   const artikelNr = gs('einzel_auswahl');
   const menge = Math.max(1, g('einzel_menge'));
@@ -882,10 +907,18 @@ function removeEinzelbauteilQty() {
   const idx = belegung.findIndex(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
   if(idx === -1) return;
   const item = belegung[idx];
-  const forcedRemove = Math.min(item.forcedMenge || 0, menge);
-  item.forcedMenge = (item.forcedMenge || 0) - forcedRemove;
-  item.menge -= menge;
-  if(belegung[idx].menge <= 0) {
+  const batches = getBatches(item);
+  let remaining = menge;
+  while (remaining > 0 && batches.length) {
+    const last = batches[batches.length - 1];
+    const take = Math.min(last.n, remaining);
+    last.n -= take;
+    remaining -= take;
+    if (last.n <= 0) batches.pop();
+  }
+  item.batches = batches;
+  item.menge = batches.reduce((s, b) => s + b.n, 0);
+  if(item.menge <= 0) {
     belegung.splice(idx, 1);
     belegung.forEach((b, i) => { b.ci = i % BG_COLORS.length; });
   }
@@ -908,29 +941,30 @@ function saveBelegung() {
 
 // Fasst alle Belegungseinträge mit demselben Artikel (bzw. derselben
 // Baugruppe) zu genau einem zusammen (Session 28j). Selbstheilung für
-// Daten, die noch aus der Zeit vor dem forcedMenge-Modell (Session 28i)
-// fragmentiert im Browser liegen, UND Absicherung gegen erneute
-// Fragmentierung – "gleiche Bauteile" sollen immer als ein Eintrag mit
-// einer Farbe erscheinen, unabhängig von der Hinzufüge-Historie. Farbe
-// folgt der ersten gefundenen Instanz (Reihenfolge in `belegung`).
-// Migriert nebenbei das alte `rowBreak`-Boolean (Session 28g/28h) auf
-// `forcedMenge`: ein solcher Alt-Eintrag hatte immer nur einen Artikel und
-// war komplett erzwungen, entspricht also forcedMenge = menge.
+// Daten, die noch aus der Zeit vor dem batches-Modell (Session 30, vorher
+// forcedMenge Session 28i) fragmentiert im Browser liegen, UND Absicherung
+// gegen erneute Fragmentierung – "gleiche Bauteile" sollen immer als ein
+// Eintrag mit einer Farbe erscheinen, unabhängig von der Hinzufüge-
+// Historie. Farbe folgt der ersten gefundenen Instanz (Reihenfolge in
+// `belegung`). Migriert nebenbei das alte `rowBreak`-Boolean (Session
+// 28g/28h) sowie den alten `forcedMenge`-Zähler (Session 28i) über
+// getBatches() auf das `batches`-Modell; die Batches mehrerer zu
+// mergender Einträge werden in `belegung`-Reihenfolge aneinandergehängt
+// (chronologisch korrekt, da neue Einträge immer ans Ende gepusht werden).
 function consolidateBelegung() {
   const seen = new Map();
   const result = [];
   belegung.forEach(item => {
     const key = item.typ + ':' + (item.typ === 'einzel' ? item.artikel_nr : item.bg_id);
-    const itemForced = item.typ === 'einzel'
-      ? (item.forcedMenge !== undefined ? item.forcedMenge : (item.rowBreak ? item.menge : 0))
-      : 0;
     const merged = seen.get(key);
     if (merged) {
       merged.menge += item.menge;
-      if (item.typ === 'einzel') merged.forcedMenge = (merged.forcedMenge || 0) + itemForced;
+      if (item.typ === 'einzel') {
+        getBatches(item).forEach(b => pushBatch(merged.batches, b.n, b.forced));
+      }
     } else {
       const copy = Object.assign({}, item);
-      if (copy.typ === 'einzel') { copy.forcedMenge = itemForced; delete copy.rowBreak; }
+      if (copy.typ === 'einzel') { copy.batches = getBatches(item).map(b => Object.assign({}, b)); delete copy.rowBreak; delete copy.forcedMenge; }
       seen.set(key, copy);
       result.push(copy);
     }
@@ -1603,8 +1637,10 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
       // Zuerst die normalen Einheiten, danach die erzwungenen (siehe
       // addEinzelbauteil()) – die zuletzt hinzugefügten Einheiten bleiben so
       // erzwungen, ohne dass frühere, bereits eingereihte Einheiten
-      // rückwirkend betroffen sind.
-      const forcedMenge = Math.min(item.forcedMenge || 0, item.menge);
+      // rückwirkend betroffen sind. Summe der `forced`-Batches (Session 30,
+      // ersetzt den alten einzelnen forcedMenge-Zähler) ergibt weiterhin
+      // einen einzigen Block für den Zeilen-Cursor in placeInBands().
+      const forcedMenge = getBatches(item).filter(b => b.forced).reduce((s, b) => s + b.n, 0);
       const normalMenge = item.menge - forcedMenge;
       for(let q = 0; q < normalMenge; q++) {
         queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: false});
