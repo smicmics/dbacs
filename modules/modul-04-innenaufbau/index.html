@@ -1949,9 +1949,16 @@ function buildSVG(zp, layout, zones) {
         const bx = (row.x_mm + blk.col*TE_MM) * sc;
         const bw = Math.max(1, blk.te*TE_MM*sc - 1);
         const bh = Math.max(2, blk.h_mm*sc);
+        // Beide Modi zentrieren das Gerät vertikal in seinem verfügbaren Raum:
+        // Klemmenzeile über die volle Zeilenhöhe, Leist./Steuer./Evert
+        // (placeInBands, Session 31) über die reine Gerätehöhe zwischen den
+        // beiden Klemmräumen – bildet die reale Hutschienen-Befestigung ab,
+        // die meist an der vertikalen Mitte des Bauteils sitzt, statt am
+        // oberen Rand. Reiner Anzeige-Fix, der Platzbedarf (h_row = h_dev +
+        // 2×Klemmraum) bleibt unverändert.
         const by0 = row.mode === 'klemm'
-          ? (row.y_mm + (row.h_mm - blk.h_mm)/2) * sc   // Klemmenzeile: Gerät vertikal zentriert
-          : (row.y_mm + row.klemmraum) * sc;            // Leist./Steuer./Evert: nach Klemmraum oben
+          ? (row.y_mm + (row.h_mm - blk.h_mm)/2) * sc
+          : (row.y_mm + row.klemmraum + (row.h_mm - 2*row.klemmraum - blk.h_mm)/2) * sc;
         svg += `<rect x="${bx.toFixed(1)}" y="${by0.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" fill="${blk.farbe}" stroke="#000" stroke-opacity="0.3" stroke-width="0.5" rx="1"><title>#${blk.idx} · ${blk.title}</title></rect>`;
         const idxStr = '#' + blk.idx;
         const cx = bx + bw/2, cy = by0 + bh/2;

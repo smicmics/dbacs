@@ -1232,6 +1232,34 @@ normalen Reihe.
   „Bedarfsgesteuerte Historie (batches-Modell)" unten für die vollständige
   Lösung, die dieses Modell ersetzt.
 
+### Modul 4 – Vertikale Zentrierung in Leist./Steuer./Evert-Reihen (Session 31, gesperrt)
+Nutzer-Fund per Screenshot beim Testen: in Klemmenzeilen (`placeInKlemmRow()`)
+werden Bauteile bereits vertikal zentriert dargestellt, in Leistung/Steuerung/
+Energieverteilung-mit-Schiene (`placeInBands()`, mode `row`) dagegen bisher
+immer bündig nach dem oberen Klemmraum ausgerichtet. Bei mehreren Geräten
+unterschiedlicher Höhe in derselben Reihe (Reihenhöhe = höchstes Gerät +
+2×Klemmraum) saßen niedrigere Geräte dadurch sichtbar "zu hoch" statt an der
+gemeinsamen Hutschienen-Mitte. Nutzerfrage: ist mittige Platzierung wegen der
+Klemmraum-Definition komplex? Antwort: nein – reine Formel-Anpassung.
+- **Fix in `buildSVG()`:** `by0` für `row.mode !== 'klemm'` zentriert jetzt
+  ebenfalls: `row.y_mm + row.klemmraum + (row.h_mm - 2*row.klemmraum -
+  blk.h_mm)/2` statt `row.y_mm + row.klemmraum`. Alle Geräte einer Reihe
+  teilen sich dadurch dieselbe vertikale Mitte (= angenommene
+  Hutschienen-Position in der Zeilenmitte), unabhängig von ihrer
+  individuellen Höhe.
+- **Rein visuell, kein Effekt auf Platzbedarf/Platzierungslogik:**
+  `h_row = h_dev + 2×Klemmraum` (Session 21) bleibt unverändert – nur WO
+  innerhalb dieses bereits reservierten Raums das Gerät gezeichnet wird,
+  ändert sich. `placeInBands()`/`assignDevicesToRows()` unangetastet.
+- Verifiziert im Browser: zwei Geräte unterschiedlicher Höhe (90 mm und
+  130 mm) in derselben Steuerung-Reihe – berechnete Blockmitten stimmen
+  exakt überein (beide bei der halben Reihenhöhe), im gerenderten SVG
+  bestätigt (Rundungsdifferenz < 0,1 px durch `toFixed(1)`).
+- **Offen:** echte Hutschienen-Befestigungspunkte sind nicht bei jedem
+  Bauteil exakt die geometrische Mitte (kann herstellerabhängig variieren) –
+  DBACS modelliert aktuell keinen expliziten Rail-Attachment-Offset pro
+  Katalogeintrag, geometrische Mitte ist eine bewusste Vereinfachung.
+
 ### Modul 4 – Belegungs-Historie als LIFO-Stapel (`batches`-Modell, Session 30, gesperrt)
 Löst den in Session 29 unvollständig behobenen Bug endgültig: der Nutzer stellte
 fest, dass Minus weiterhin nicht zuverlässig "das zuletzt platzierte Modul"
