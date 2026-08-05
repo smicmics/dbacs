@@ -1156,6 +1156,51 @@ verschwindet deren blasser 22%-Hintergrund optisch fast vollständig
 dahinter. Braucht zur weiteren Klärung einen Screenshot mit sichtbarer
 Legende neben der betroffenen Fläche, falls es kein Wahrnehmungseffekt ist.
 
+### Modul 4 – Belegung selbstheilend konsolidieren (Session 28j, gesperrt)
+Nutzer-Fund per Screenshot: trotz Session 28i blieben mehrere getrennte
+"Desigo PX Erweiterungsmodul..."-Einträge mit unterschiedlichen Farben
+bestehen. Ursache: Session 28i verhindert nur NEUE Fragmentierung – der
+Nutzer-Browser hatte aus einer früheren Session (28g/28h, altes
+`rowBreak`-Boolean-Modell) bereits mehrere getrennte Einträge desselben
+Artikels in `localStorage` liegen, die vom neuen Merge-Code nie
+rückwirkend zusammengeführt wurden. Das erklärt vermutlich auch die
+gemeldete "Minus-Fläche hat keinen Erfolg": `removeEinzelbauteilQty()`
+fand nur den erst-passenden Eintrag, während der Nutzer einen anderen im
+Blick hatte. Das gemeldete "Bauteile verschwinden nach Reihenwechsel" ist
+dagegen **kein Bug**, sondern korrektes Overflow-Verhalten – verifiziert:
+`aggregateStueckliste()` baut immer direkt aus `belegung` auf (volle
+Menge), nicht aus den platzierten SVG-Blöcken; bei Platzmangel bleibt
+`belegung[i].menge` unverändert korrekt, nur die SVG-Darstellung kann
+nicht alle Einheiten zeigen (`overflow:true`, rotes "!"). Der Nutzer-Wunsch
+"erzwungene Reihenwechsel brauchen keine eigene Farbe, das ermöglicht auch
+eine Gruppierung" war bereits technisch erfüllt (Farbe kam in
+`placeBauteile()` für normale und erzwungene Einheiten schon immer aus
+derselben `item.ci`) – fehlte nur die Konsolidierung der Einträge selbst.
+- **Neue Funktion `consolidateBelegung()`:** fasst alle Einträge mit
+  gleichem Schlüssel (`typ:artikel_nr` bzw. `typ:bg_id`) zu genau einem
+  zusammen, summiert `menge` (und bei Einzelbauteilen `forcedMenge`),
+  vergibt Farben (`ci`) neu durchlaufend. Migriert dabei auch das alte
+  `rowBreak`-Boolean (Session 28g/28h) nach `forcedMenge` – ein solcher
+  Alt-Eintrag war immer vollständig erzwungen (`forcedMenge = menge`).
+- **Aufruf an drei Stellen:** (1) beim Laden direkt nach dem Wiederherstellen
+  von `belegung` aus `localStorage` (Selbstheilung bestehender
+  fragmentierter Daten, inkl. sofortigem `saveBelegung()` damit die
+  Bereinigung persistiert), (2) am Ende von `addBaugruppe()`, (3) am Ende
+  von `addEinzelbauteil()` (doppelte Absicherung – die bestehende
+  Merge-Logik in beiden Funktionen sollte das ohnehin verhindern, aber
+  `consolidateBelegung()` fängt jeden übersehenen Fall ab).
+- Verifiziert direkt gegen die produktiven Funktionen im Browser: exakt
+  nachgestellter Screenshot-Zustand (5 getrennte PXA30-W2-Einträge,
+  teils altes `rowBreak`, teils neues `forcedMenge`, macht Menge
+  16+1+1+1+1=20) → nach `init()` ein einziger Eintrag `menge:20,
+  forcedMenge:20`, korrekt in `localStorage` persistiert; "−" auf dem
+  konsolidierten Eintrag reduziert korrekt (20→15, `forcedMenge` wird
+  passend mitgekappt); Overflow-Szenario (20× erzwungen in eine knapp
+  bemessene Zone) bestätigt `belegung[0].menge` bleibt bei 20, nur
+  `zones.steuer.overflow=true` und `platziertGesamt<20` in der
+  SVG-Darstellung – Stückliste/Belegung zeigen weiterhin die volle,
+  korrekte Menge.
+
 ### Code-Review Fixes (Session 19, gesperrt)
 - `buildFullLayoutSVG()` M3: `h_mb_layout = mp_h − h_ke + h_abst` — h_abst war vorher vergessen
 - `saveZoneInputs()`/`loadZoneInputs()` M3: `m03_h_kanal_h` + `m03_b_kanal_v` werden jetzt persistiert
