@@ -8,7 +8,6 @@ Exportiert folgende Sheets aus ga_komponenten.xlsx:
   - standschraenke        → standschraenke.json         (nur aktive Einträge)
   - sockel                → sockel.json                 (nur aktive Einträge)
   - bodenbleche           → bodenbleche.json            (nur aktive Einträge)
-  - reiheneinbaugeraete   → reiheneinbaugeraete.json    (nur aktive Einträge)
   - einzelbauteile        → einzelbauteile.json         (nur aktive Einträge)
   - baugruppen +
     baugruppen_bauteile   → baugruppen.json             (nur aktive Baugruppen;
@@ -24,6 +23,13 @@ Reine Referenz-Sheets (kein Export, keine eigene JSON-Datei):
                           Beide Sheets sind rein für die menschliche Lesbarkeit
                           in Excel gedacht; die Variablen/Codes selbst bleiben
                           die Datengrundlage für xlsx_to_json.py und die Module.
+  - planungsfabrikate     Kategorie -> bevorzugter Hersteller (Rittal/Siemens/
+                          Phoenix Contact/Dehn), reine Dokumentation.
+
+'reiheneinbaugeraete' (Sheet + reiheneinbaugeraete.json) in Session 40 komplett
+entfernt: unverifizierte Session-20-Altlast, nie von einem Modul geladen,
+enthielt Dubletten zu bereits besser modellierten einzelbauteile-Eintraegen.
+Siehe CLAUDE.md Session 40.
 
 Namenskonvention Excel-Spalten vs. JSON-Ausgabe (Session 39): 'artikel_nr'
 (Excel-Spalte, einheitlich für alle Artikel-/Bestellnummern-Felder über alle
@@ -274,45 +280,6 @@ def export_bodenbleche(wb):
     print(f'{len(rows)} Bodenblech-Saetze exportiert → {JSON_FILE.name}')
 
 
-def export_reiheneinbaugeraete(wb):
-    SHEET = 'reiheneinbaugeraete'
-    JSON_FILE = Path(__file__).parent / 'reiheneinbaugeraete.json'
-
-    if SHEET not in wb.sheetnames:
-        print(f'HINWEIS: Sheet "{SHEET}" nicht gefunden – uebersprungen.')
-        return
-
-    ws = wb[SHEET]
-    headers = [cell.value for cell in next(ws.iter_rows(min_row=1, max_row=1))]
-
-    rows = []
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        if not any(row):
-            continue
-        rec = dict(zip(headers, row))
-        if not rec.get('aktiv'):
-            continue
-        rows.append({
-            'hersteller':            str(rec['hersteller']),
-            'bezeichnung':           str(rec['bezeichnung']),
-            'bestellnummer':         str(rec['artikel_nr']),
-            'kategorie':             str(rec['kategorie']),
-            'n_te':                  int(rec['n_te']),
-            'nennstrom_a':           float(rec['nennstrom_a'])        if rec.get('nennstrom_a')        is not None else None,
-            'n_pole':                int(rec['n_pole'])               if rec.get('n_pole')               is not None else None,
-            'ausloesekennlinie':     str(rec['ausloesekennlinie'])    if rec.get('ausloesekennlinie')    is not None else None,
-            'preis_stueckpreis_eur': float(rec['preis_stueck_eur']) if rec.get('preis_stueck_eur') is not None else None,
-            'preis_lieferung_eur':   float(rec['preis_lieferung_eur'])   if rec.get('preis_lieferung_eur')   is not None else None,
-            'preis_montage_eur':     float(rec['preis_montage_eur'])     if rec.get('preis_montage_eur')     is not None else None,
-            'preis_gesamt_eur':      float(rec['preis_gesamt_eur'])      if rec.get('preis_gesamt_eur')      is not None else None,
-        })
-
-    with open(JSON_FILE, 'w', encoding='utf-8') as f:
-        json.dump(rows, f, ensure_ascii=False, indent=2)
-
-    print(f'{len(rows)} Reiheneinbaugeraete exportiert → {JSON_FILE.name}')
-
-
 def export_einzelbauteile(wb):
     SHEET = 'einzelbauteile'
     JSON_FILE = Path(__file__).parent / 'einzelbauteile.json'
@@ -451,7 +418,6 @@ def main():
     export_standschraenke(wb)
     export_sockel(wb)
     export_bodenbleche(wb)
-    export_reiheneinbaugeraete(wb)
     export_einzelbauteile(wb)
     export_baugruppen(wb)
 
