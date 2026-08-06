@@ -100,6 +100,8 @@ header a:hover{color:var(--tx2);}
 .ddc-chip-warn{border-color:#D4A84B;color:#D4A84B;}
 .ddc-chip-over{border-color:#E04444;color:#E04444;}
 .ddc-chip-empty{font-size:10px;color:var(--tx3);}
+.ddc-summary-grp{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-right:10px;}
+.ddc-grp-lbl{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.03em;margin-right:2px;}
 .eb-hint{grid-column:1 / 4;grid-row:3;font-size:10px;color:var(--tx3);}
 
 /* ── Füllstand-Streifen (volle Breite, kompakt) ── */
@@ -222,6 +224,9 @@ legend{
 .rowbreak-lbl input[type=checkbox]{width:12px;height:12px;flex-shrink:0;cursor:pointer;}
 .rowbreak-lbl-disabled{color:var(--tx3);cursor:not-allowed;}
 .rowbreak-lbl-disabled input[type=checkbox]{cursor:not-allowed;}
+.ddc-auf-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px;}
+.ddc-auf-row .rowbreak-lbl{gap:4px;}
+#ddc_protokoll{font-size:10px;padding:1px 4px;background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;}
 .btn-add-sm{background:var(--green);color:#000;}
 .btn-sub-sm{background:var(--bg3);color:var(--tx2);border:1px solid var(--bords);}
 .btn-add-sm:hover,.btn-sub-sm:hover{opacity:.85;}
@@ -461,7 +466,7 @@ legend{
     </div>
   </div>
 
-  <div class="eb-field" id="ddc-summary-field" title="Kapazität/belegt je physikalischem Datenpunkttyp – Summe aus manuell und automatisch platzierten DDC-Modulen">
+  <div class="eb-field" id="ddc-summary-field" title="Kapazität/belegt je Datenpunkttyp – physikalisch (manuell + automatisch platzierte DDC-Module) sowie kommunikativ je Feldbus-Protokoll (nur manuell platzierte Module/CPU)">
     <label>DDC-Automationseinrichtung</label>
     <div class="ddc-summary-row" id="ddc-summary-row"><span class="ddc-chip-empty">–</span></div>
   </div>
@@ -484,7 +489,7 @@ legend{
     <div class="eb-field" style="width:320px;">
       <label>Spezifische Auswahl Einzelbauteile</label>
       <div class="bg-add-row">
-        <select id="einzel_auswahl" style="flex:1" onchange="updateRowbreakAvailability()">
+        <select id="einzel_auswahl" style="flex:1" onchange="updateRowbreakAvailability();updateDdcAufschaltungUI()">
           <option value="">Laden …</option>
         </select>
         <input id="einzel_menge" type="number" value="1" min="1" max="99">
@@ -495,6 +500,19 @@ legend{
         <label class="rowbreak-lbl" id="einzel_rowbreak_lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
           <input type="checkbox" id="einzel_rowbreak">neue Reihe
         </label>
+      </div>
+      <div class="ddc-auf-row" id="ddc_auf_row" style="display:none">
+        <label class="rowbreak-lbl" title="Bauteil belegt physische Datenpunkte (AI/AO/BI/BO) an einem DDC-Modul">
+          <input type="checkbox" id="ddc_physisch" checked onchange="calculate()">DDC physikalisch
+        </label>
+        <label class="rowbreak-lbl" title="Bauteil belegt zusätzlich/stattdessen kommunikative Datenpunkte über ein Feldbus-Protokoll">
+          <input type="checkbox" id="ddc_kommunikativ" onchange="updateDdcProtokollVisibility();calculate()">DDC kommunikativ
+        </label>
+        <select id="ddc_protokoll" style="display:none" onchange="calculate()">
+          <option value="mbus">M-Bus</option>
+          <option value="modbus_rtu">Modbus RTU</option>
+          <option value="modbus_tcp">Modbus TCP/IP</option>
+        </select>
       </div>
     </div>
   </div>
@@ -623,6 +641,27 @@ const ALLE_ZONEN   = ['klemm_e','uss','evert','leist','steuer','klemm_l','klemm_
 // bauteil_typ==='ddc_io' bereitgestellte Kapazität je Typ, sonst Bedarf je Typ.
 const DP_TYPES = ['dp_ai','dp_ao','dp_bi','dp_bo','dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo'];
 const DP_LABELS = {dp_ai:'AI', dp_ao:'AO', dp_bi:'BI', dp_bo:'BO', dp_fb_ai:'Feldbus AI', dp_fb_ao:'Feldbus AO', dp_fb_bi:'Feldbus BI', dp_fb_bo:'Feldbus BO'};
+// Physikalische Datenpunkte (feste Verdrahtung an ein DDC-Modul) vs.
+// kommunikative Datenpunkte (per Feldbus-Protokoll übertragen) – Session 41.
+// PHYS_DP_TYPES bleibt die Grundlage für computeDdcAutoModules() (automatische
+// Modul-Ergänzung, unverändert seit Session 28d). Kommunikative Datenpunkte
+// bekommen zusätzlich zum Typ (AI/AO/BI/BO) noch eine Protokoll-Dimension
+// (M-Bus/Modbus RTU/Modbus TCP – exakter Match erforderlich, ein Modbus-RTU-
+// Bedarf darf nicht durch M-Bus-Kapazität gedeckt werden) und werden bewusst
+// NICHT automatisch durch computeDdcAutoModules() ergänzt (noch keine
+// verifizierten Gateway-Kapazitätsdaten im Katalog) – nur als Kapazitäts-
+// Übersicht angezeigt (updateDdcSummary()), manuelle Modulwahl durch den Nutzer.
+const PHYS_DP_TYPES = ['dp_ai','dp_ao','dp_bi','dp_bo'];
+const FB_DP_TYPES = ['dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo'];
+const FB_TYPE_LABEL = {dp_fb_ai:'AI', dp_fb_ao:'AO', dp_fb_bi:'BI', dp_fb_bo:'BO'};
+const FB_SUMMARY_GROUPS = [
+  {key:'mbus', label:'Komm. M-Bus'},
+  {key:'modbus_rtu', label:'Komm. Modbus RTU'},
+  {key:'modbus_tcp', label:'Komm. Modbus TCP/IP'},
+];
+// DDC-Module/CPU (liefern Datenpunkt-Kapazität) vs. Feldgeräte (verbrauchen
+// sie) – dieselbe Unterscheidung wie in accumulateDp()/computeDdcAutoModules().
+const isDdcSupplyTyp = t => t === 'ddc_io' || t === 'ddc_cpu';
 
 // ── Daten ────────────────────────────────────────────────────────────
 let EINZELBAUTEILE_DB = [];
@@ -783,6 +822,37 @@ function updateRowbreakAvailability() {
     : 'Ohne Wirkung: dieses Bauteil landet in einer Zone ohne Reihen-Konzept (z. B. Klemmenzone)';
 }
 
+// DDC-Aufschaltung physikalisch/kommunikativ (Session 41): nur bei Bauteilen
+// mit automationsanbindung=true UND die selbst KEIN DDC-Modul/CPU sind
+// (Module/CPU liefern Kapazität, sie werden nicht "an DDC angeschlossen").
+// "physikalisch" ist per Vorgabe standardmäßig gesetzt, "kommunikativ" nicht;
+// die Protokoll-Auswahl erscheint erst, wenn "kommunikativ" aktiv ist.
+function updateDdcAufschaltungUI() {
+  const row = document.getElementById('ddc_auf_row');
+  if(!row) return;
+  const artikelNr = gs('einzel_auswahl');
+  const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
+  const wirktHier = !!eb && eb.automationsanbindung && !isDdcSupplyTyp(eb.bauteil_typ);
+  row.style.display = wirktHier ? 'flex' : 'none';
+  if(wirktHier) {
+    document.getElementById('ddc_physisch').checked = true;
+    document.getElementById('ddc_kommunikativ').checked = false;
+    const sel = document.getElementById('ddc_protokoll');
+    if(eb.feldbus_protokoll) {
+      const erster = eb.feldbus_protokoll.split(',')[0].trim();
+      if([...sel.options].some(o => o.value === erster)) sel.value = erster;
+    }
+  }
+  updateDdcProtokollVisibility();
+}
+
+function updateDdcProtokollVisibility() {
+  const box = document.getElementById('ddc_kommunikativ');
+  const sel = document.getElementById('ddc_protokoll');
+  if(!box || !sel) return;
+  sel.style.display = box.checked ? 'inline-block' : 'none';
+}
+
 // ── Schrank-Typ ──────────────────────────────────────────────────────
 function onTypChange() {
   const typ = gs('schrank_typ');
@@ -924,13 +994,22 @@ function addEinzelbauteil() {
   // Reihen-Konzept (Session 28h).
   const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
   const forced = !!eb && REIHEN_ZONEN.includes(eb.zone) && document.getElementById('einzel_rowbreak').checked;
+  // DDC-Aufschaltung (Session 41): gilt je Artikel fuer die GESAMTE Menge in
+  // der Belegung (wie ci/Farbe), nicht je Batch – bei erneutem Hinzufuegen
+  // desselben Artikels mit anderer Checkbox-Wahl wird die Wahl aktualisiert.
+  const ddcWirktHier = !!eb && eb.automationsanbindung && !isDdcSupplyTyp(eb.bauteil_typ);
+  const ddcPhysisch = ddcWirktHier && document.getElementById('ddc_physisch').checked;
+  const ddcKommunikativ = ddcWirktHier && document.getElementById('ddc_kommunikativ').checked;
+  const ddcProtokoll = ddcKommunikativ ? gs('ddc_protokoll') : null;
   const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
   if(ex) {
     ex.menge += menge;
     ex.batches = getBatches(ex);
     pushBatch(ex.batches, menge, forced);
+    if(ddcWirktHier) { ex.ddcPhysisch = ddcPhysisch; ex.ddcKommunikativ = ddcKommunikativ; ex.ddcProtokoll = ddcProtokoll; }
   } else {
-    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced}]});
+    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced}],
+      ddcPhysisch, ddcKommunikativ, ddcProtokoll});
   }
   consolidateBelegung();
   saveBelegung();
@@ -1549,22 +1628,31 @@ function updateDdcAutoDisplay(ddcAuto) {
   }
 }
 
-// ── DDC-Automationseinrichtung: Kapazität/belegt je physikalischem Typ ──
-// Zeigt nur AI/AO/BI/BO (keine Feldbus-Typen – Nutzer-Vorgabe "physikalische
-// Datenpunkttypen"), am Anfang der Eingabeleiste, unter Schranktyp. Farbe je
-// Chip nach Auslastung wie bei den Füllstand-Mini-Balken (>100% rot, >80%
-// amber, sonst neutral).
+// ── DDC-Automationseinrichtung: Kapazität/belegt je Datenpunkttyp ──────
+// Erste Gruppe "Physikalisch" (AI/AO/BI/BO, feste Verdrahtung an ein
+// DDC-Modul) wie bisher, plus 3 neue Gruppen für kommunikative (Feldbus-)
+// Datenpunkte je Protokoll (M-Bus/Modbus RTU/Modbus TCP – Session 41,
+// FB_SUMMARY_GROUPS) – ein Modbus-RTU-Bedarf darf nur durch Modbus-RTU-
+// Kapazität gedeckt werden, daher komplett getrennte Gruppen statt einer
+// gemeinsamen "Feldbus"-Summe. Farbe je Chip nach Auslastung wie bei den
+// Füllstand-Mini-Balken (>100% rot, >80% amber, sonst neutral).
 const DP_SUMMARY_LABELS = {dp_ai:'AI', dp_ao:'AO', dp_bi:'BI', dp_bo:'BO'};
+function ddcChip(lbl, s) {
+  const pct = s.cap > 0 ? Math.round((s.used / s.cap) * 100) : (s.used > 0 ? 100 : 0);
+  const cls = s.used > s.cap ? 'ddc-chip-over' : (pct > 80 ? 'ddc-chip-warn' : 'ddc-chip-ok');
+  return `<span class="ddc-chip ${cls}" title="${lbl}: ${s.used} von ${s.cap} Datenpunkten belegt">${lbl} ${s.used}/${s.cap} · ${pct}%</span>`;
+}
 function updateDdcSummary(ddcSummary) {
   const el = document.getElementById('ddc-summary-row');
   if (!el) return;
   if (!ddcSummary) { el.innerHTML = '<span class="ddc-chip-empty">–</span>'; return; }
-  el.innerHTML = Object.entries(DP_SUMMARY_LABELS).map(([t, lbl]) => {
-    const s = ddcSummary[t];
-    const pct = s.cap > 0 ? Math.round((s.used / s.cap) * 100) : (s.used > 0 ? 100 : 0);
-    const cls = s.used > s.cap ? 'ddc-chip-over' : (pct > 80 ? 'ddc-chip-warn' : 'ddc-chip-ok');
-    return `<span class="ddc-chip ${cls}" title="${lbl}: ${s.used} von ${s.cap} Datenpunkten belegt">${lbl} ${s.used}/${s.cap} · ${pct}%</span>`;
-  }).join('');
+  let html = '<div class="ddc-summary-grp"><span class="ddc-grp-lbl">Physikalisch</span>' +
+    Object.entries(DP_SUMMARY_LABELS).map(([t, lbl]) => ddcChip(lbl, ddcSummary[t])).join('') + '</div>';
+  FB_SUMMARY_GROUPS.forEach(g => {
+    html += `<div class="ddc-summary-grp"><span class="ddc-grp-lbl">${g.label}</span>` +
+      FB_DP_TYPES.map(t => ddcChip(FB_TYPE_LABEL[t], ddcSummary[g.key + '__' + t])).join('') + '</div>';
+  });
+  el.innerHTML = html;
 }
 
 // ── DDC-Datenpunkte: Unterdeckung ermitteln, passende Module ergänzen ──
@@ -1574,17 +1662,19 @@ function updateDdcSummary(ddcSummary) {
 // applyDdcWatermark() geschickt, die dafür sorgt, dass die Modul-Stückzahl
 // NICHT von selbst wieder sinkt (Session 28e, Korrektur einer
 // Session-28d-Fehlannahme – siehe dortiger Kommentar).
-// Je Typ (dp_ai/ao/bi/bo/fb_ai/fb_ao/fb_bi/fb_bo) wird das am besten
-// passende ddc_io-Modul gesucht (deckt möglichst viele der aktuell noch
-// offenen Typen gleichzeitig ab, um nicht unnötig verschiedene Modultypen
-// zu mischen) – Feldbus-Typ-Bedarf kann nur durch ein Modul mit derselben
-// Feldbus-Kapazität gedeckt werden (Nutzer-Vorgabe: Typ muss exakt passen).
+// Je physikalischem Typ (dp_ai/ao/bi/bo) wird das am besten passende
+// ddc_io-Modul gesucht (deckt möglichst viele der aktuell noch offenen Typen
+// gleichzeitig ab, um nicht unnötig verschiedene Modultypen zu mischen).
 // Gibt es kein passendes Modul im Katalog, bleibt der Typ in `unmet` stehen
 // (führt zur weichen DDC-Warnung, keine automatische Platzierung).
+// Kommunikative (Feldbus-)Datenpunkte laufen NICHT mehr über diese Funktion
+// (Session 41 – jetzt je Protokoll getrennt in placeBauteile()/fbDemand/
+// fbSupply erfasst) – noch keine automatische Modul-Ergänzung dafür, siehe
+// PHYS_DP_TYPES-Kommentar weiter oben.
 function computeDdcAutoModules(demand, supply, reservePct) {
   const keepFactor = 1 - reservePct;
   const remaining = {};
-  DP_TYPES.forEach(t => {
+  PHYS_DP_TYPES.forEach(t => {
     const required = keepFactor > 0 ? demand[t] / keepFactor : demand[t];
     remaining[t] = Math.max(0, required - supply[t]);
   });
@@ -1593,25 +1683,25 @@ function computeDdcAutoModules(demand, supply, reservePct) {
   const modules = []; // [{eb, menge}]
   const unmet = [];
 
-  DP_TYPES.forEach(type => {
+  PHYS_DP_TYPES.forEach(type => {
     if (remaining[type] <= 0) return;
     const candidates = ddcModule_DB.filter(m => (m[type] || 0) > 0);
     if (!candidates.length) { unmet.push(type); return; }
     candidates.sort((a, b) => {
-      const scoreA = DP_TYPES.filter(t => remaining[t] > 0 && (a[t] || 0) > 0).length;
-      const scoreB = DP_TYPES.filter(t => remaining[t] > 0 && (b[t] || 0) > 0).length;
+      const scoreA = PHYS_DP_TYPES.filter(t => remaining[t] > 0 && (a[t] || 0) > 0).length;
+      const scoreB = PHYS_DP_TYPES.filter(t => remaining[t] > 0 && (b[t] || 0) > 0).length;
       if (scoreB !== scoreA) return scoreB - scoreA;
       return (b[type] || 0) - (a[type] || 0);
     });
     const chosen = candidates[0];
-    const menge = Math.max(0, ...DP_TYPES
+    const menge = Math.max(0, ...PHYS_DP_TYPES
       .filter(t => remaining[t] > 0 && (chosen[t] || 0) > 0)
       .map(t => Math.ceil(remaining[t] / chosen[t])));
     if (menge <= 0) return;
     let entry = modules.find(m => m.eb.artikel_nr === chosen.artikel_nr);
     if (!entry) { entry = { eb: chosen, menge: 0 }; modules.push(entry); }
     entry.menge += menge;
-    DP_TYPES.forEach(t => { if (chosen[t]) remaining[t] = Math.max(0, remaining[t] - chosen[t] * menge); });
+    PHYS_DP_TYPES.forEach(t => { if (chosen[t]) remaining[t] = Math.max(0, remaining[t] - chosen[t] * menge); });
   });
 
   return { modules, unmet: [...new Set(unmet)] };
@@ -1663,14 +1753,38 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
   ALLE_ZONEN.forEach(z => queues[z] = []);
 
   const dpDemand = {}, dpSupply = {};
-  DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
-  function accumulateDp(eb, menge) {
+  PHYS_DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
+  const fbDemand = {}, fbSupply = {};
+  FB_SUMMARY_GROUPS.forEach(g => {
+    fbDemand[g.key] = {}; fbSupply[g.key] = {};
+    FB_DP_TYPES.forEach(t => { fbDemand[g.key][t] = 0; fbSupply[g.key][t] = 0; });
+  });
+  // opts nur fuer typ:'einzel' (Session 41) – steuert, ob dieses Bauteil
+  // physikalisch und/oder kommunikativ (mit welchem Protokoll) an die DDC
+  // angeschlossen wird. Baugruppen-Bauteile (kein opts-Argument) zaehlen wie
+  // bisher voll physikalisch, kommunikativ mangels Protokoll-Angabe nicht.
+  function accumulateDp(eb, menge, opts) {
     if (!eb.automationsanbindung) return;
-    // ddc_cpu (Automationsstation) liefert wie ddc_io (TXM-Module) Kapazitaet,
-    // wird aber in computeDdcAutoModules() bewusst NICHT als Auto-Platzierungs-
-    // Kandidat gefuehrt (kein automatisches Vervielfachen der CPU), siehe Session 41.
-    const target = (eb.bauteil_typ === 'ddc_io' || eb.bauteil_typ === 'ddc_cpu') ? dpSupply : dpDemand;
-    DP_TYPES.forEach(t => { if (eb[t]) target[t] += eb[t] * menge; });
+    if (isDdcSupplyTyp(eb.bauteil_typ)) {
+      // ddc_cpu (Automationsstation) liefert wie ddc_io (TXM-Module)
+      // Kapazitaet, wird aber in computeDdcAutoModules() bewusst NICHT als
+      // Auto-Platzierungs-Kandidat gefuehrt (keine automatische CPU-
+      // Vervielfachung), siehe Session 41.
+      PHYS_DP_TYPES.forEach(t => { if (eb[t]) dpSupply[t] += eb[t] * menge; });
+      if (eb.feldbus_protokoll) {
+        eb.feldbus_protokoll.split(',').map(s => s.trim()).forEach(p => {
+          if (!fbSupply[p]) return;
+          FB_DP_TYPES.forEach(t => { if (eb[t]) fbSupply[p][t] += eb[t] * menge; });
+        });
+      }
+      return;
+    }
+    const physisch = opts ? opts.physisch : true;
+    if (physisch) PHYS_DP_TYPES.forEach(t => { if (eb[t]) dpDemand[t] += eb[t] * menge; });
+    const protokoll = opts && opts.kommunikativ ? opts.protokoll : null;
+    if (protokoll && fbDemand[protokoll]) {
+      FB_DP_TYPES.forEach(t => { if (eb[t]) fbDemand[protokoll][t] += eb[t] * menge; });
+    }
   }
 
   belegung.forEach(item => {
@@ -1678,7 +1792,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
       if(!eb || eb.te_breite <= 0 || !queues[eb.zone]) return;
       const farbe = BG_COLORS[item.ci];
-      accumulateDp(eb, item.menge);
+      accumulateDp(eb, item.menge, {physisch: item.ddcPhysisch !== false, kommunikativ: !!item.ddcKommunikativ, protokoll: item.ddcProtokoll});
       // Zuerst die normalen Einheiten, danach die erzwungenen (siehe
       // addEinzelbauteil()) – die zuletzt hinzugefügten Einheiten bleiben so
       // erzwungen, ohne dass frühere, bereits eingereihte Einheiten
@@ -1721,13 +1835,20 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
     }
   });
 
-  // DDC-Zusammenfassung (nur physikalische Typen, keine Feldbus-Typen) für
-  // die Eingabeleiste: Kapazität = bereits manuell platzierte ddc_io-Module
-  // + automatisch ergänzte (inkl. Ratchet-Stand); belegt = Bedarf.
+  // DDC-Zusammenfassung für die Eingabeleiste: physikalisch wie bisher
+  // (Kapazität = manuell platzierte ddc_io-Module + automatisch ergänzte,
+  // inkl. Ratchet-Stand), kommunikativ je Protokoll neu (Session 41) – dort
+  // (noch) keine Auto-Ergänzung, Kapazität kommt nur aus manuell platzierten
+  // Modulen/CPU mit passendem feldbus_protokoll.
   const ddcSummary = {};
-  ['dp_ai', 'dp_ao', 'dp_bi', 'dp_bo'].forEach(t => {
+  PHYS_DP_TYPES.forEach(t => {
     const cap = dpSupply[t] + ddcAuto.modules.reduce((s, m) => s + (m.eb[t] || 0) * m.menge, 0);
     ddcSummary[t] = { cap, used: dpDemand[t] };
+  });
+  FB_SUMMARY_GROUPS.forEach(g => {
+    FB_DP_TYPES.forEach(t => {
+      ddcSummary[g.key + '__' + t] = { cap: fbSupply[g.key][t], used: fbDemand[g.key][t] };
+    });
   });
 
   const zones = {};

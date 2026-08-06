@@ -1317,6 +1317,33 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – DDC-Aufschaltung physikalisch/kommunikativ je Bauteil, Kommunikative-Datenpunkte-Übersicht (Session 41 Nachtrag, gesperrt)
+Direkte Fortsetzung. Nutzer-Vorgabe: die bestehende „DDC-Automationseinrichtung"-Übersicht in der Eingabeleiste zeigte nur physikalische Datenpunkte (AI/AO/BI/BO) – kommunikative fehlten komplett, obwohl das Schema (`dp_fb_*` + `feldbus_protokoll`, Session 41 vormittags) sie bereits trägt. Ziel: prüfbar machen, ob die CPU/Gateway-Kapazität je Protokoll für die Gesamt-Datenpunktmenge reicht, praxisnah je Einzelbauteil entscheidbar (Beispiel Nutzer: „Pumpe 1-stufig" – physikalische Rückmeldung Betrieb/Störung UND/ODER kommunikatives Auslesen von Energiedaten über Modbus RTU).
+
+**Neue UI in der „Spezifische Auswahl Einzelbauteile"-Zeile** (`#ddc_auf_row`, nur sichtbar wenn das gewählte Bauteil `automationsanbindung=true` hat und selbst KEIN DDC-Modul/CPU ist – Module liefern Kapazität, werden nicht „an DDC angeschlossen"):
+- Checkbox „DDC physikalisch" – standardmäßig **aktiviert**, abwählbar.
+- Checkbox „DDC kommunikativ" – standardmäßig **deaktiviert**.
+- Protokoll-`<select>` (M-Bus/Modbus RTU/Modbus TCP/IP) – **nur sichtbar, wenn „kommunikativ" aktiv ist** (`updateDdcProtokollVisibility()`), vorbelegt mit dem ersten in `feldbus_protokoll` des Katalogeintrags genannten Protokoll falls vorhanden.
+- Beide Checkboxes unabhängig wählbar: eins, beide oder keins – exakt wie vom Nutzer gefordert.
+
+**Datenmodell:** `belegung`-Einträge (`typ:'einzel'`) bekommen `ddcPhysisch`/`ddcKommunikativ`/`ddcProtokoll` – gilt je Artikel für die **gesamte** Menge (wie `ci`/Farbe), nicht pro Batch; erneutes Hinzufügen mit anderer Checkbox-Wahl überschreibt die Wahl für den ganzen Eintrag (bewusste Vereinfachung, analog zu anderen Item-weiten Feldern). Baugruppen-Bauteile (`bt`) bekommen (noch) keine eigene Aufschaltungs-Wahl – Baugruppen sind aktuell leer, dieselbe Erweiterung (analog zum bestehenden `bt.zone`-Override-Muster) ist ein natürlicher Folge-Schritt sobald Baugruppen wieder existieren.
+
+**`accumulateDp()` grundlegend umgebaut:**
+- Neue Konstanten `PHYS_DP_TYPES` (dp_ai/ao/bi/bo) und `FB_DP_TYPES` (dp_fb_ai/ao/bi/bo) statt der bisherigen gemeinsamen `DP_TYPES`-Liste für Kapazitäts-/Bedarfsrechnung. `DP_TYPES`/`DP_LABELS` bleiben für `updateDdcAutoDisplay()`s Label-Lookup bestehen.
+- `isDdcSupplyTyp(t)` – neuer Helper (`t==='ddc_io'||t==='ddc_cpu'`), jetzt zentral genutzt in `accumulateDp()` UND `updateDdcAufschaltungUI()`/`addEinzelbauteil()` (vorher war die gleiche Prüfung an zwei Stellen dupliziert).
+- Supply-Seite (DDC-Module/CPU): physikalische Kapazität wie bisher in `dpSupply`; kommunikative Kapazität NEU in `fbSupply[protokoll][typ]` – geroutet über `eb.feldbus_protokoll` (Komma-getrennt möglich, jedes genannte Protokoll bekommt die volle Kapazität gutgeschrieben – bewusste Vereinfachung für Module, die mehrere Transportwege am selben Punktepool anbieten, dokumentierte Grenze: kein Modul im Katalog hat aktuell echte `dp_fb_*`-Werte, daher noch nicht in der Praxis relevant).
+- Demand-Seite (Feldgeräte): `opts.physisch`/`opts.kommunikativ`/`opts.protokoll` aus dem Belegungseintrag steuern, ob `dpDemand` (physikalisch) und/oder `fbDemand[protokoll]` (kommunikativ) erhöht werden. Baugruppen-Bauteile ohne `opts` verhalten sich wie bisher (physisch immer, kommunikativ nie – mangels Protokoll-Angabe).
+
+**`computeDdcAutoModules()` auf `PHYS_DP_TYPES` beschränkt** (vorher liefen dp_fb_* mit durch die Funktion, obwohl `dpDemand`/`dpSupply` dafür gar keine Werte mehr hatten – hätte sonst zu einer dauerhaften Fehlwarnung „kein passendes Modul" für alle vier Feldbus-Typen geführt). **Bewusst keine automatische Modul-Ergänzung für kommunikative Datenpunkte** – dafür gibt es noch keine verifizierten Gateway-Kapazitätsdaten im Katalog; die neue Summen-Anzeige liefert die nötige Sichtbarkeit (rot/amber/ok wie gehabt), der Nutzer wählt bei Bedarf manuell ein passendes Modul.
+
+**`updateDdcSummary()` zeigt jetzt 4 Gruppen** statt einer: „Physikalisch" (wie bisher AI/AO/BI/BO) + `FB_SUMMARY_GROUPS` („Komm. M-Bus", „Komm. Modbus RTU", „Komm. Modbus TCP/IP", je AI/AO/BI/BO) – 16 Chips gesamt, in eigene `.ddc-summary-grp`-Container mit `.ddc-grp-lbl`-Gruppenbeschriftung gruppiert (der äußere Flex-Container umbricht ganze Gruppen zeilenweise). `ddcChip()`-Hilfsfunktion aus der bisherigen Inline-Logik extrahiert, jetzt von allen 4 Gruppen wiederverwendet.
+
+**Excel-Schema:** neues Feld `dp_beschreibung` (Freitext-Bemerkungsfeld, `einzelbauteile`) – erklärt in Klartext, welche konkreten Datenpunkte sich hinter den `dp_*`/`dp_fb_*`-Zahlen verbergen (Nutzer-Vorgabe, Beispiel: „physikalisch: BI=Rückmeldung Betrieb, BI=Rückmeldung Störung; kommunikativ (Modbus RTU): AI=Wirkleistung"). Noch bei keinem Katalogeintrag befüllt (keine echten Feldgeräte mit Datenpunkt-Bedarf im Katalog – nur die Supply-Seite TXM/PXC existiert bisher).
+
+**Bewusst nicht Teil dieser Erweiterung:** automatische Modul-Ergänzung für kommunikative Kapazität (s. o.); DDC-Aufschaltung auf Baugruppen-Bauteil-Ebene (`baugruppen_bauteile`); ein Bauteil mit MEHREREN gleichzeitig unterstützten Protokollen (aktuell genau ein Protokoll pro Belegungseintrag wählbar).
+
+Verifiziert im Browser mit einem synthetischen Test-Feldgerät (nicht committet, nur In-Memory): 2× physikalische BI + 1× kommunikative AI über Modbus RTU, 3-fach hinzugefügt. Ergebnis exakt wie erwartet: „Physikalisch BI 6/16 · 38%" (Kapazität automatisch durch TXM-Module gedeckt, Regression von `computeDdcAutoModules()` bestätigt funktionsfähig), „Komm. Modbus RTU AI 3/0 · 100%" korrekt rot (`ddc-chip-over`, Bedarf ohne verfügbare Kapazität – genau das gewünschte Signal „hier fehlt noch Kapazität"), M-Bus und Modbus TCP/IP korrekt unberührt bei 0/0. UI-Sichtbarkeits-/Checkbox-Verhalten (Zeile erscheint nur bei DDC-fähigen Feldgeräten, Protokoll-Auswahl nur bei aktivem „kommunikativ") einzeln bestätigt. Keine Konsolenfehler.
+
 ### Siemens Desigo PX – Architektur verstanden, PXA30-x korrigiert, TX-I/O-Familie ergänzt (Session 41, gesperrt)
 Direkte Fortsetzung von Session 40. Nutzer wollte vor dem Neuaufbau der Baugruppen prüfen, ob das Siemens-Architekturverständnis ausreicht, um Einzelbauteile korrekt zuzuordnen.
 

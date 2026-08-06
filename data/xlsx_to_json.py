@@ -57,11 +57,16 @@ EXCEL_FILE = Path(__file__).parent / 'ga_komponenten.xlsx'
 # DDC-Datenpunkt-Felder je Bauteil (nur bei automationsanbindung=true befüllt):
 # bei ddc_io-Modulen = bereitgestellte Kapazität je Typ, sonst = Bedarf je Typ.
 # dp_fb_* (kommunikative/Feldbus-Datenpunkte) brauchen zusaetzlich das Feld
-# 'feldbus_protokoll' (Session 41): welches Protokoll (z.B. "modbus_rtu",
-# "modbus_tcp", "mbus") dieser Datenpunkt-Bedarf/diese -Kapazitaet nutzt -
-# ein Modbus-Bedarf darf nur durch Modbus-Kapazitaet gedeckt werden, nicht
-# durch M-Bus o.ae. Auswertung/Laufzeit-Protokollauswahl ist noch NICHT in
-# Modul 4 implementiert (Modul 4 pausiert), siehe CLAUDE.md Session 41.
+# 'feldbus_protokoll' (Session 41): welches Protokoll dieser Datenpunkt-
+# Bedarf/diese -Kapazitaet nutzt - gueltige Werte EXAKT 'mbus', 'modbus_rtu'
+# oder 'modbus_tcp' (muessen woertlich zu Modul 4s FB_SUMMARY_GROUPS-Keys
+# passen). Ein Modbus-RTU-Bedarf darf nur durch Modbus-RTU-Kapazitaet gedeckt
+# werden, nicht durch M-Bus o.ae. - Modul 4 fuehrt dafuer 3 getrennte
+# Kapazitaets-/Bedarfs-Gruppen (Eingabeleiste "DDC-Automationseinrichtung").
+# 'dp_beschreibung' (Freitext, Session 41): erklaert in Klartext, welche
+# konkreten Datenpunkte sich hinter den dp_*/dp_fb_*-Zahlen verbergen (z.B.
+# "physikalisch: BI=Rueckmeldung Betrieb, BI=Rueckmeldung Stoerung, DO=Schalt-
+# befehl; kommunikativ (Modbus RTU): AI=Wirkleistung, AI=Energiezaehler").
 DP_FELDER = ['dp_ai', 'dp_ao', 'dp_bi', 'dp_bo', 'dp_fb_ai', 'dp_fb_ao', 'dp_fb_bi', 'dp_fb_bo']
 
 
@@ -326,6 +331,8 @@ def export_einzelbauteile(wb):
                     entry[dp_feld] = int(rec[dp_feld])
             if rec.get('feldbus_protokoll') is not None:
                 entry['feldbus_protokoll'] = str(rec['feldbus_protokoll'])
+        if rec.get('dp_beschreibung') is not None:
+            entry['dp_beschreibung'] = str(rec['dp_beschreibung'])
         if rec.get('lvb_integriert') is not None:
             entry['lvb_integriert'] = bool(rec['lvb_integriert'])
         if rec.get('klemmen_zusatz') is not None:
