@@ -373,28 +373,6 @@
     "geprueft": false
   },
   {
-    "artikel_nr": "110661",
-    "bezeichnung": "Schnittstellenmodul KRS-E06 mit Handbedienebene (LVB digital/binär), 24VAC/DC, 6A",
-    "hersteller": "Metz Connect",
-    "bauteil_typ": "koppelrelais",
-    "b_mm": 22.5,
-    "te_breite": 2,
-    "h_mm": 61.3,
-    "zone": "steuer",
-    "geprueft": false
-  },
-  {
-    "artikel_nr": "110730",
-    "bezeichnung": "Analogwertgeber KMA-F8 mit Handbedienebene (LVB analog 0-10V)",
-    "hersteller": "Metz Connect",
-    "bauteil_typ": "koppelrelais",
-    "b_mm": 11.2,
-    "te_breite": 1,
-    "h_mm": 87.5,
-    "zone": "steuer",
-    "geprueft": false
-  },
-  {
     "artikel_nr": "3044077",
     "bezeichnung": "Durchgangsklemme UT 2,5 BN, 0,14-4 mm², braun (L1)",
     "hersteller": "Phoenix Contact",
@@ -884,6 +862,17 @@
     "h_mm": 62.2,
     "zone": "klemm_f",
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6316-7",
+    "bezeichnung": "LSS 5SL6 C16 A, 3-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "b_mm": 54.0,
+    "te_breite": 3,
+    "h_mm": 90.0,
+    "zone": "leist",
     "geprueft": false
   }
 ]

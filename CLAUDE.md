@@ -1318,6 +1318,31 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Excel-Feldklärungen, Klartext-Spalten, Planungsfabrikate, erste Katalogbereinigung (Session 40, gesperrt)
+Direkte Fortsetzung von Session 39 – Nutzer hat sich die Excel-Datei angesehen und gezielt zu einzelnen Feldern nachgefragt.
+
+**Feldklärungen `einzelbauteile` (verifiziert gegen den tatsächlichen Code, nicht aus dem Gedächtnis):**
+- `bauteil_typ` ist erforderlich – zwei konkrete Verwendungen in Modul 4: (1) unterscheidet DDC-Kapazität von DDC-Bedarf (`bauteil_typ==='ddc_io'`), (2) liefert das Kurz-Label auf dem platzierten Block (`kurzLabel()`). Fund: 4 von 11 `bauteil_typ`-Werten (`ddc_io`, `lasttrenner`, `ueberspannung`, `sicherung`) hatten kein Label und fielen auf die ersten 4 Zeichen der Bezeichnung zurück – ergänzt (DDC/LT/ÜSS/Sich.).
+- `kategorie` ≠ `zone` – `kategorie` ist eine rein optische `<optgroup>`-Gruppierung im Direktbauteil-Dropdown (Modul 4), unabhängig von der physischen Platzierungszone. **Fund:** `populateEinzelAuswahl()` filtert Bauteile OHNE `kategorie` komplett aus dem Dropdown heraus (`filter(e => e.kategorie && ...)`), nicht nur ungruppiert – betraf 20 von 76 Bauteilen (v. a. Schütze, Motorschutzschalter, LSS, Koppelrelais), bisher folgenlos, da diese Typen nur über Baugruppen verwendet werden. Muss bei der geplanten Katalogbereinigung mit behoben werden (jedes Bauteil braucht eine `kategorie`).
+- `einbaulage` ist rein beschreibend, wird nirgends in der Berechnung ausgewertet (nur Anzeige in Modul 7 falls vorhanden), aktuell 0/76 befüllt. Nicht erforderlich.
+- `automationsanbindung` ist eine Katalogeigenschaft („nimmt an der DDC-Datenpunkt-Bilanz teil"), keine Laufzeitentscheidung – die automatische DDC-Modul-Ergänzung läuft bereits vollautomatisch (`computeDdcAutoModules()`, Session 28d). Nur 1 von 76 Bauteilen hat das Flag gesetzt (PXA30-W2) – reine Datenlücke, kein Design-Mangel.
+
+**Inline-Klartext-Spalten ergänzt (VLOOKUP-Formeln, keine Auswirkung auf `xlsx_to_json.py` – 0 Diff verifiziert):**
+- `einzelbauteile.zone_bezeichnung`, `baugruppen_bauteile.zone_bezeichnung` (gegen `zonen`-Sheet)
+- `baugruppen.funktionsbereich_bezeichnung` (gegen `funktionsbereiche`-Sheet)
+- Wert erscheint live beim Öffnen in Excel (Formel, keine statischen Werte) – kein manuelles Neu-Berechnen nötig (Excel-Standardeinstellung „Automatisch").
+
+**Neues Referenz-Sheet `planungsfabrikate`:** Kategorie → bevorzugter Hersteller, dokumentiert die bereits gelebte Praxis (Rittal/Schaltschränke, Siemens/Automation+Schütze+Sicherungen, Phoenix Contact/Klemmen+Netzteile, Dehn/Überspannungsschutz) plus die in dieser Session geklärte Zuordnung Koppelrelais/Schnittstellenmodule → **Phoenix Contact** (Nutzer-Entscheidung, Metz-Connect-Bestandsartikel KRS-E06/KMA-F8 auf `aktiv=false` gesetzt statt gelöscht).
+
+**Erste Katalogbereinigung – `reiheneinbaugeraete` vs. `einzelbauteile`:**
+- Keine echten Dubletten *innerhalb* von `einzelbauteile` (0 doppelte `artikel_nr` – die scheinbaren „Dopplungen" gleicher Maße sind legitime Farb-/Pol-Varianten, z. B. UT-Klemmen L1/L2/L3/N/PE, nicht anfassen).
+- Aber 3 echte Dubletten *zwischen* den Sheets gefunden: Siemens-LSS `5SL6106-7`/`5SL6110-7`/`5SL6116-7` existierten identisch in `reiheneinbaugeraete` UND (besser modelliert, mit echten mm-Maßen + Preis) in `einzelbauteile` – aus `reiheneinbaugeraete` entfernt (24→21 Zeilen).
+- Neuer, recherchierter Katalogeintrag `5SL6316-7` (Siemens LSS 3-polig 16 A) in `einzelbauteile` ergänzt – dabei einen Fehler in der Alt-Quelle korrigiert: dort stand „Charakteristik B", mehrere unabhängige Händlerquellen (elektro4000.de u. a.) bestätigen übereinstimmend „Charakteristik C". `h_mm=90` weicht von den bereits vorhandenen 1-/2-poligen 5SL6-Einträgen (`h_mm=81`, ebenfalls `geprueft=false`) ab – Diskrepanz bewusst nicht stillschweigend angeglichen, im `quelle_hinweis` vermerkt.
+- **Weiterer Fund (nicht korrigiert, nur dokumentiert):** die verbliebenen `reiheneinbaugeraete`-Altdaten für Siemens `5SV3316-6` (FI-Schutzschalter) tragen `nennstrom_a: 16`, mehrere unabhängige Händlerquellen zeigen aber übereinstimmend 63 A für diese Bestellnummer – Artikelnummer und Stromangabe passen nicht zusammen. Bewusst nicht blind überschrieben (Gefahr, echte Fertigungsdaten falsch zu setzen), siehe „Nächster Schritt" unten.
+- **Bewusst nicht abgeschlossen:** die vollständige Ersetzung der übrigen ~18 Eaton-Einträge (Sicherungshalter D01/D02, Hilfskontakte, FI-Schutzschalter) durch Siemens-Äquivalente (Nutzer-Entscheidung: „Ersetzen durch Siemens") – für einige Siemens-Ersatzteile (5SG7113/5SG7133 Neozed-Lasttrennschalter, exakte FI-Schutzschalter-Höhe, 2×Hilfsschalter 5ST3010/5ST3011) konnten keine ausreichend verlässlichen mm-Maße aus Web-Recherche gewonnen werden – bewusst nicht geraten (gesperrte Konvention seit Session 27: „mangels verifizierter Abmessungen aktiv=false statt geraten"). `reiheneinbaugeraete`-Sheet bleibt vorerst bestehen (weiterhin von keinem Modul geladen, daher risikofrei), bis diese Recherche fortgesetzt wird.
+
+**Nächster Schritt (mit Nutzer abzustimmen, nicht in dieser Session begonnen):** restliche Eaton→Siemens-Ersetzung fortsetzen (Neozed-Lasttrennschalter-Maße, FI-Schutzschalter-Höhe, Hilfsschalter-Maße verifizieren), den `5SV3316-6`-Nennstrom-Widerspruch klären, danach `reiheneinbaugeraete`-Sheet vollständig auflösen/löschen (Inhalte in `einzelbauteile` überführt), `kategorie`-Lücke (20 Bauteile) schließen.
+
 ### Excel-Konsistenzpflege: fehlende Sheets rekonstruiert, Feldnamen vereinheitlicht, 2 Referenz-Sheets (Session 39, gesperrt)
 Nutzer-Entscheidung: Claude pflegt `ga_komponenten.xlsx` ab jetzt direkt (statt nur Recherchewerte zuzuliefern), Nutzer arbeitet nur noch bei Bedarf selbst darin. Ausgangspunkt war eine Nutzerfrage zum Zweck der 7 damaligen Arbeitsblätter – dabei fiel eine strukturelle Lücke auf.
 

@@ -1789,7 +1789,8 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
 }
 
 function kurzLabel(eb) {
-  const m = {schuetz:'Sch.', motorschutz:'MSS', lss:'LSS', klemme:'Kl.', koppelrelais:'KR', netzteil:'NT', sonstige:'–'};
+  const m = {schuetz:'Sch.', motorschutz:'MSS', lss:'LSS', klemme:'Kl.', koppelrelais:'KR', netzteil:'NT', sonstige:'–',
+             ddc_io:'DDC', lasttrenner:'LT', ueberspannung:'ÜSS', sicherung:'Sich.'};
   return m[eb.bauteil_typ] || eb.bezeichnung.substring(0, 4);
 }
 
