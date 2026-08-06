@@ -358,6 +358,32 @@
     "geprueft": false
   },
   {
+    "artikel_nr": "110661",
+    "bezeichnung": "Schnittstellenmodul KRS-E06 mit Handbedienebene (LVB digital/binär), 24VAC/DC, 6A",
+    "hersteller": "Metz Connect",
+    "bauteil_typ": "koppelrelais",
+    "b_mm": 22.5,
+    "te_breite": 2,
+    "h_mm": 61.3,
+    "zone": "steuer",
+    "kategorie": "LVB-Relais (Vorrangbedienung)",
+    "lvb_integriert": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "110730",
+    "bezeichnung": "Analogwertgeber KMA-F8 mit Handbedienebene (LVB analog 0-10V)",
+    "hersteller": "Metz Connect",
+    "bauteil_typ": "koppelrelais",
+    "b_mm": 11.2,
+    "te_breite": 1,
+    "h_mm": 87.5,
+    "zone": "steuer",
+    "kategorie": "LVB-Relais (Vorrangbedienung)",
+    "lvb_integriert": true,
+    "geprueft": false
+  },
+  {
     "artikel_nr": "3044077",
     "bezeichnung": "Durchgangsklemme UT 2,5 BN, 0,14-4 mm², braun (L1)",
     "hersteller": "Phoenix Contact",

@@ -1317,6 +1317,13 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### LVB-Relais: Metz Connect als Ausnahme vom Phoenix-Contact-Planungsfabrikat (Session 41 Nachtrag 2, gesperrt)
+Nutzer-Fund: `PLC-RSC-24DC/21` (Phoenix Contact, aktuell einziges aktives Koppelrelais im Katalog) ist ein **einfaches** Koppelrelais – kein LVB-Relais (Lokale Vorrangbedienung). Es fehlen Handschalter und die Rückmeldekontakte, mit denen der Handbetrieb an die DDC zurückgemeldet wird. Ursache: Session-40-Entscheidung „Koppelrelais → Phoenix Contact" wurde zu pauschal getroffen, ohne zu prüfen, ob Phoenix diese spezielle LVB-Funktion überhaupt abdeckt – dabei wurden die zuvor schon im Katalog vorhandenen, passenden Metz-Connect-Einträge `110661`/`110730` fälschlich deaktiviert.
+- **Recherche (Session 41):** kein Phoenix-Contact-Äquivalent gefunden (allgemeine Koppelrelais-Palette, RIFLINE-Reihe, direkte Wettbewerber-Suche – alle ohne Treffer für Hand/Auto-Schalter + DDC-Rückmeldung, weder binär noch analog).
+- **Fix:** `110661` (KRS-E06, digitale/binäre LVB) und `110730` (KMA-F8, analoge LVB 0–10V) wieder auf `aktiv=true` gesetzt – beide waren bereits korrekt mit Maßen/Beschreibung/Quellenangabe hinterlegt (Session 27, „Nachfolger des BTR-Relais"), nur die Aktivierung fehlte. Beide bekommen jetzt `kategorie:"LVB-Relais (Vorrangbedienung)"` (vorher `None`) und `lvb_integriert:true` (neues Feld aus dem DDC-Aufschaltungs-Feature, siehe oben – konsequent auch hier verwendet).
+- **`planungsfabrikate`-Sheet aktualisiert:** bestehende Koppelrelais-Zeile präzisiert auf „Koppelrelais (einfache Schnittstelle, keine LVB-Funktion)" → weiterhin Phoenix Contact; neue eigene Zeile „LVB-Relais (Vorrangbedienung binär/analog...)" → **Metz Connect**, mit Begründung der Ausnahme im Hinweisfeld.
+- Katalog jetzt 79 aktive Bauteile (77+2). Verifiziert im Browser: beide Metz-Connect-Einträge korrekt geladen, 79/79 im Modul-4-Dropdown sichtbar.
+
 ### Modul 4 – DDC-Aufschaltung physikalisch/kommunikativ je Bauteil, Kommunikative-Datenpunkte-Übersicht (Session 41 Nachtrag, gesperrt)
 Direkte Fortsetzung. Nutzer-Vorgabe: die bestehende „DDC-Automationseinrichtung"-Übersicht in der Eingabeleiste zeigte nur physikalische Datenpunkte (AI/AO/BI/BO) – kommunikative fehlten komplett, obwohl das Schema (`dp_fb_*` + `feldbus_protokoll`, Session 41 vormittags) sie bereits trägt. Ziel: prüfbar machen, ob die CPU/Gateway-Kapazität je Protokoll für die Gesamt-Datenpunktmenge reicht, praxisnah je Einzelbauteil entscheidbar (Beispiel Nutzer: „Pumpe 1-stufig" – physikalische Rückmeldung Betrieb/Störung UND/ODER kommunikatives Auslesen von Energiedaten über Modbus RTU).
 
