@@ -1,8 +1,8 @@
 [
   {
-    "id": "luefter_1stufig_2kw",
+    "id": "430_000001",
     "name": "Lüftermotor 1-stufig bis 2 kW",
-    "gewerk": "lueftung",
+    "gewerk": "430",
     "beschreibung": "Motorsteuerung für 1-stufige Lüfter bis 2 kW, mit Motorschutz und Schütz 24VDC",
     "bauteile": [
       {
@@ -32,9 +32,9 @@
     "geprueft": true
   },
   {
-    "id": "luefter_1stufig_5kw",
+    "id": "430_000002",
     "name": "Lüftermotor 1-stufig bis 5,5 kW",
-    "gewerk": "lueftung",
+    "gewerk": "430",
     "beschreibung": "Motorsteuerung für 1-stufige Lüfter bis 5,5 kW, mit Motorschutz und Schütz 24VDC",
     "bauteile": [
       {
@@ -64,9 +64,9 @@
     "geprueft": true
   },
   {
-    "id": "ventilantrieb_on_off",
+    "id": "430_000003",
     "name": "Ventilantrieb On/Off 24VDC",
-    "gewerk": "lueftung",
+    "gewerk": "430",
     "beschreibung": "Steuerung für schaltende Ventilantriebe (Klappe, Kugelhahn) 24VDC, Auf/Zu",
     "bauteile": [
       {
@@ -87,9 +87,9 @@
     "geprueft": true
   },
   {
-    "id": "ventilantrieb_stetig",
+    "id": "430_000004",
     "name": "Ventilantrieb stetig 3-Punkt",
-    "gewerk": "lueftung",
+    "gewerk": "430",
     "beschreibung": "Steuerung für stetige Ventilantriebe 3-Punkt AUF/ZU, zwei Koppelrelais",
     "bauteile": [
       {
@@ -110,9 +110,9 @@
     "geprueft": true
   },
   {
-    "id": "sensor_passiv_rlt",
+    "id": "430_000005",
     "name": "Passiver Sensor (NTC/PT100/PT1000)",
-    "gewerk": "lueftung",
+    "gewerk": "430",
     "beschreibung": "Klemmenanschluss für passive Temperaturfühler NTC, PT100 oder PT1000",
     "bauteile": [
       {
@@ -129,9 +129,9 @@
     "geprueft": true
   },
   {
-    "id": "sensor_aktiv_24v",
+    "id": "430_000006",
     "name": "Aktiver Sensor 24VDC (CO2, Druck, Feuchte)",
-    "gewerk": "lueftung",
+    "gewerk": "430",
     "beschreibung": "Klemmenanschluss für aktive Sensoren 24VDC mit 0-10V oder 4-20mA Ausgang",
     "bauteile": [
       {
@@ -148,9 +148,9 @@
     "geprueft": true
   },
   {
-    "id": "pumpe_1kw",
+    "id": "420_000001",
     "name": "Umwälzpumpe bis 1 kW",
-    "gewerk": "heizung",
+    "gewerk": "420",
     "beschreibung": "Motorsteuerung für kleine Heizungs- oder Kältepumpen bis 1 kW",
     "bauteile": [
       {
@@ -180,9 +180,9 @@
     "geprueft": true
   },
   {
-    "id": "pumpe_3kw",
+    "id": "420_000002",
     "name": "Umwälzpumpe bis 3 kW",
-    "gewerk": "heizung",
+    "gewerk": "420",
     "beschreibung": "Motorsteuerung für Heizungs- oder Kältepumpen bis 3 kW",
     "bauteile": [
       {
@@ -212,9 +212,9 @@
     "geprueft": true
   },
   {
-    "id": "pumpe_betr_stoer",
+    "id": "420_000003",
     "name": "Pumpe mit Betriebs- und Störmeldung",
-    "gewerk": "heizung",
+    "gewerk": "420",
     "beschreibung": "Rückmeldung Betrieb und Störung über zwei Koppelrelais (potentialfrei)",
     "bauteile": [
       {
@@ -235,9 +235,9 @@
     "geprueft": true
   },
   {
-    "id": "ventilantrieb_hkl",
+    "id": "420_000004",
     "name": "Heizungsventil stetig 0-10V",
-    "gewerk": "heizung",
+    "gewerk": "420",
     "beschreibung": "Steuerung für stufenlose Heizungsventile oder Mischer 0-10V, mit Abschaltrelais",
     "bauteile": [
       {
@@ -258,9 +258,9 @@
     "geprueft": true
   },
   {
-    "id": "pumpe_san_1kw",
+    "id": "410_000001",
     "name": "Warmwasser-Zirkulationspumpe bis 1 kW",
-    "gewerk": "sanitaer",
+    "gewerk": "410",
     "beschreibung": "Motorsteuerung für Trinkwasser-Zirkulationspumpen bis 1 kW",
     "bauteile": [
       {
@@ -290,9 +290,9 @@
     "geprueft": true
   },
   {
-    "id": "beleuchtung_schaltkreis",
+    "id": "445_000001",
     "name": "Lichtschaltkreis (schaltend)",
-    "gewerk": "beleuchtung",
+    "gewerk": "445",
     "beschreibung": "Absicherung und Schaltrelais für einen Beleuchtungsschaltkreis bis 10 A",
     "bauteile": [
       {
@@ -317,9 +317,9 @@
     "geprueft": true
   },
   {
-    "id": "dali_segment",
+    "id": "445_000002",
     "name": "DALI-Bus Segment Anschluss",
-    "gewerk": "beleuchtung",
+    "gewerk": "445",
     "beschreibung": "Klemmenanschluss für DALI-Bus-Segment (+DALI, -DALI, PE, Meldeklemme)",
     "bauteile": [
       {
@@ -336,9 +336,9 @@
     "geprueft": true
   },
   {
-    "id": "lss_abzweig_1p",
+    "id": "440_000001",
     "name": "Abzweig-LSS 1-polig B10 A",
-    "gewerk": "elektro",
+    "gewerk": "440",
     "beschreibung": "Einzelner Leitungsschutzschalter für einpolige Abzweige bis 10 A",
     "bauteile": [
       {
@@ -355,9 +355,9 @@
     "geprueft": true
   },
   {
-    "id": "netzteil_24v_60w",
+    "id": "440_000002",
     "name": "Netzteil 24VDC / 2,5 A (60 W)",
-    "gewerk": "elektro",
+    "gewerk": "440",
     "beschreibung": "Spannungsversorgung 24VDC 60W für DDC-Steuerung, inkl. vorgeschalteter Absicherung",
     "bauteile": [
       {

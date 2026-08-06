@@ -1313,9 +1313,91 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   ist laut Nutzer explizit „der Klartext zum Gewerk als Zahl... in den
   Filterbuttons von Modul 4" – d. h. der stabile, für die UI-Filterung
   vorgesehene Text-Key, unabhängig vom numerischen `gewerk`-Code.
-- Migration der bestehenden 15 `id`-Werte auf das neue Schema + Anpassung
-  der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile` – noch nicht
-  begonnen.
+- ~~Migration der bestehenden 15 `id`-Werte auf das neue Schema + Anpassung
+  der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
+  abgeschlossen Session 38, siehe unten.
+
+### Baugruppen-Schema: DIN-276-Inhaltsmigration abgeschlossen (Session 38, gesperrt)
+Löst den in Session 37 zurückgestellten Folge-Schritt ein: `gewerk` trägt jetzt
+den numerischen DIN-276-Code als Text, `id` folgt dem Zielschema
+`<Code>_<6-stellig>`. `funktionsbereich` bleibt unverändert der Text-Key für
+die Modul-4-Tab-Filterung (war für alle 15 Bestandszeilen ohnehin schon
+identisch zum alten `gewerk`-Kurznamen, brauchte keine Änderung).
+
+**Vom Nutzer geklärte offene Fragen aus Session 37:**
+- `450 Informations-/Sicherheitstechnik` → Funktionsbereich `netzwerk`. Deckt
+  laut Nutzer nicht nur Netzwerktechnik, sondern auch Sicherheitstechnik
+  (Brandmelde-/Gefahrenmeldeanlagen) ab – dafür sind aktuell noch keine
+  Baugruppen angelegt.
+- Der bestehende `schaltschrank`-Tab entfällt ersatzlos, geht inhaltlich in
+  `480 Gebäudeautomation` (Funktionsbereich `automation`) auf.
+- Nutzer-Hinweis (informativ, keine Code-Konsequenz in dieser Session):
+  Gebäudeautomation (480) kann inhaltlich auch Netzwerk-Aspekte umfassen –
+  Übereinstimmungen zwischen `automation` und `netzwerk` sind also möglich
+  und kein Modellierungsfehler.
+- Der in Session 28j als ungeklärt notierte Punkt „Farbe Energieverteilung
+  wirkt im Screenshot abweichend von der Legende" ist vom Nutzer als
+  erledigt/nicht weiter zu verfolgen bestätigt (Code war bereits korrekt,
+  vermutlich reiner Wahrnehmungseffekt) – aus dem offenen Backlog gestrichen.
+
+**Migration `gewerk` → DIN-276-Code (alle 15 Bestandszeilen, per Skript in
+`ga_komponenten.xlsx` geschrieben, `~$`-Lockdatei vorher geprüft):**
+`lueftung→430` (6×), `heizung→420` (4×), `sanitaer→410` (1×),
+`beleuchtung→445` (2×), `elektro→440` (2×). Kein Bestandseintrag trug bisher
+`schaltschrank` oder `automation` – die beiden Fälle betreffen aktuell keine
+existierenden Baugruppen, nur die Tab-Struktur.
+
+**Migration `id` → `<Code>_<6-stellig>`, Nummerierung je Code fortlaufend in
+Blattreihenfolge, `baugruppen_bauteile.bg_id` 1:1 nachgezogen (51 Zeilen):**
+```
+luefter_1stufig_2kw     → 430_000001    pumpe_1kw       → 420_000001
+luefter_1stufig_5kw     → 430_000002    pumpe_3kw       → 420_000002
+ventilantrieb_on_off    → 430_000003    pumpe_betr_stoer→ 420_000003
+ventilantrieb_stetig    → 430_000004    ventilantrieb_hkl → 420_000004
+sensor_passiv_rlt       → 430_000005    pumpe_san_1kw   → 410_000001
+sensor_aktiv_24v        → 430_000006    beleuchtung_schaltkreis → 445_000001
+lss_abzweig_1p          → 440_000001    dali_segment    → 445_000002
+netzteil_24v_60w        → 440_000002
+```
+`xlsx_to_json.py` brauchte keine Codeänderung (`gewerk`/`id` werden ohnehin
+nur als Text durchgereicht) – nur `python3 xlsx_to_json.py` neu ausgeführt.
+
+**Modul 4 – 11 Funktionsbereich-Tabs statt 10, DIN-276-Reihenfolge:**
+`sanitaer(410)`, `heizung(420)`, `lueftung(430, weiterhin Default-Tab)`,
+`kaelte(434)`, `elektro(440)`, `beleuchtung(445)`, `netzwerk(450)`,
+**`aufzug(460)` neu**, `nutzungsspezifisch(470)`, `automation(480)`,
+**`sonstige(490)` neu** – `schaltschrank`-Tab entfernt. Jeder Button trägt
+zusätzlich ein `title`-Tooltip mit vollem DIN-276-Code+Name. `filterBaugruppen()`
+matcht jetzt zwingend `b.funktionsbereich` statt `b.gewerk` (wie in Session 37
+als Reihenfolge-Voraussetzung dokumentiert – Tabs zuerst umgestellt, danach
+diese Änderung, sonst hätten alle Tabs 0 Treffer gezeigt).
+
+**Bug gefunden + gefixt (unabhängig von der DIN-276-Migration selbst):**
+`.gewerk-tabs` nutzte ein festes CSS-Grid (`grid-template-columns:repeat(6,auto)`).
+Bei 11 statt 10 Tabs war die Summe der Spaltenbreiten größer als der
+320px-Container – CSS Grid mit `auto`-Spalten wraps NICHT automatisch in eine
+neue Zeile, wenn der Inhalt nicht passt, sondern überläuft breitenmäßig.
+Ergebnis: 5 Tabs (Kälte, Elektro, Beleuchtung, Automation, Sonstige) waren
+zwar im DOM vorhanden, aber unsichtbar/nicht klickbar außerhalb des
+sichtbaren Bereichs. Fix: `.gewerk-tabs` auf `display:flex;flex-wrap:wrap`
+umgestellt – Tabs verteilen sich jetzt automatisch auf so viele Zeilen wie
+nötig, unabhängig von der genauen Tab-Anzahl (robuster für künftige
+Tab-Änderungen als ein fest kodiertes Spaltenraster).
+
+**Bewusst nicht Teil dieser Session:** Baugruppen für die weiterhin leeren
+Funktionsbereiche (`kaelte`, `netzwerk`/Sicherheitstechnik, `aufzug`,
+`nutzungsspezifisch`, `automation`, `sonstige`) anlegen – reine
+Struktur-/ID-Migration, keine neuen Inhalte. Modul 4 bleibt wie in Session 34
+festgelegt pausiert, bis diese Datengrundlage weiter ausgebaut ist.
+
+Verifiziert direkt gegen die produktiven Funktionen im Browser (lokaler
+Server, `.claude/launch.json`): alle 11 Tabs im DOM, bei ausreichender
+Fensterbreite (≥1920px) alle in einer Zeile sichtbar, bei schmalerer Breite
+korrekt mehrzeilig umgebrochen; `filterBaugruppen()` liefert je Tab exakt die
+erwarteten Trefferzahlen (sanitaer 1, heizung 4, lueftung 6, elektro 2,
+beleuchtung 2, alle sechs neuen/leeren Bereiche 0); End-to-End-Test
+`addBaugruppe('430_000001')` platziert korrekt (Belegung, Schranksicht,
+Stückliste mit Preisen), keine Konsolenfehler.
 
 ### Modul 7 – Fehlerliste kopieren + Recherche-/Korrektur-Workflow (Session 36, gesperrt)
 Nutzer-Vorschlag: die Datenqualitäts-Chips (Session 35) zeigen zwar Probleme

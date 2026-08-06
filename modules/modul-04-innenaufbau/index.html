@@ -191,7 +191,7 @@ legend{
 .hint-text a:hover{text-decoration:underline;}
 
 /* ── Gewerk-Tabs ── */
-.gewerk-tabs{display:grid;grid-template-columns:repeat(5,auto);grid-auto-rows:auto;gap:5px 6px;margin-bottom:8px;}
+.gewerk-tabs{display:flex;flex-wrap:wrap;gap:5px 6px;margin-bottom:8px;}
 .gewerk-tab{
   font-size:10px;padding:4px 9px;border-radius:3px;cursor:pointer;
   background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
@@ -447,16 +447,17 @@ legend{
   <div class="eb-field eb-funktionsbereich">
     <label>Funktionsbereich</label>
     <div class="gewerk-tabs">
-      <button class="gewerk-tab" id="tab-schaltschrank" data-gewerk="schaltschrank" onclick="setGewerk('schaltschrank')">Schaltschrank</button>
-      <button class="gewerk-tab" id="tab-automation" data-gewerk="automation" onclick="setGewerk('automation')">Automation</button>
-      <button class="gewerk-tab" id="tab-elektro" data-gewerk="elektro" onclick="setGewerk('elektro')">Elektro</button>
-      <button class="gewerk-tab" id="tab-beleuchtung" data-gewerk="beleuchtung" onclick="setGewerk('beleuchtung')">Beleuchtung</button>
-      <button class="gewerk-tab" id="tab-netzwerk" data-gewerk="netzwerk" onclick="setGewerk('netzwerk')">Netzwerk</button>
-      <button class="gewerk-tab active" id="tab-lueftung" data-gewerk="lueftung" onclick="setGewerk('lueftung')">Lüftung</button>
-      <button class="gewerk-tab" id="tab-heizung" data-gewerk="heizung" onclick="setGewerk('heizung')">Heizung</button>
-      <button class="gewerk-tab" id="tab-kaelte" data-gewerk="kaelte" onclick="setGewerk('kaelte')">Kälte</button>
-      <button class="gewerk-tab" id="tab-sanitaer" data-gewerk="sanitaer" onclick="setGewerk('sanitaer')">Sanitär</button>
-      <button class="gewerk-tab" id="tab-nutzungsspezifisch" data-gewerk="nutzungsspezifisch" onclick="setGewerk('nutzungsspezifisch')">Nutzungsspezifisch</button>
+      <button class="gewerk-tab" id="tab-sanitaer" data-gewerk="sanitaer" title="410 · Sanitär" onclick="setGewerk('sanitaer')">Sanitär</button>
+      <button class="gewerk-tab" id="tab-heizung" data-gewerk="heizung" title="420 · Wärmeversorgungsanlagen" onclick="setGewerk('heizung')">Heizung</button>
+      <button class="gewerk-tab active" id="tab-lueftung" data-gewerk="lueftung" title="430 · Raumlufttechnische Anlagen" onclick="setGewerk('lueftung')">Lüftung</button>
+      <button class="gewerk-tab" id="tab-kaelte" data-gewerk="kaelte" title="434 · Kältetechnische Anlagen" onclick="setGewerk('kaelte')">Kälte</button>
+      <button class="gewerk-tab" id="tab-elektro" data-gewerk="elektro" title="440 · Elektroanlagen" onclick="setGewerk('elektro')">Elektro</button>
+      <button class="gewerk-tab" id="tab-beleuchtung" data-gewerk="beleuchtung" title="445 · Beleuchtungsanlagen" onclick="setGewerk('beleuchtung')">Beleuchtung</button>
+      <button class="gewerk-tab" id="tab-netzwerk" data-gewerk="netzwerk" title="450 · Informations-/Sicherheitstechnik (Netzwerk, Brandmelde-/Gefahrenmeldeanlagen)" onclick="setGewerk('netzwerk')">Netzwerk</button>
+      <button class="gewerk-tab" id="tab-aufzug" data-gewerk="aufzug" title="460 · Aufzugsanlagen" onclick="setGewerk('aufzug')">Aufzug</button>
+      <button class="gewerk-tab" id="tab-nutzungsspezifisch" data-gewerk="nutzungsspezifisch" title="470 · Nutzungsspezifische Anlagen" onclick="setGewerk('nutzungsspezifisch')">Nutzungsspezifisch</button>
+      <button class="gewerk-tab" id="tab-automation" data-gewerk="automation" title="480 · Gebäudeautomation" onclick="setGewerk('automation')">Automation</button>
+      <button class="gewerk-tab" id="tab-sonstige" data-gewerk="sonstige" title="490 · Sonstige Anlagen" onclick="setGewerk('sonstige')">Sonstige</button>
     </div>
   </div>
 
@@ -829,7 +830,7 @@ function filterBaugruppen(gew) {
   const sel = document.getElementById('bg_auswahl');
   const cur = sel.value;
   sel.innerHTML = '<option value="">— Baugruppe wählen —</option>';
-  BAUGRUPPEN_DB.filter(b => b.gewerk === gew).forEach(b => {
+  BAUGRUPPEN_DB.filter(b => b.funktionsbereich === gew).forEach(b => {
     const opt = document.createElement('option');
     opt.value = b.id;
     opt.textContent = b.name;
