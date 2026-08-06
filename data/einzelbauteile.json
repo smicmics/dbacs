@@ -8,6 +8,7 @@
     "te_breite": 2,
     "h_mm": 70.0,
     "zone": "leist",
+    "kategorie": "Schütze",
     "preis_eur": 19.5,
     "geprueft": false
   },
@@ -20,6 +21,7 @@
     "te_breite": 2,
     "h_mm": 70.0,
     "zone": "leist",
+    "kategorie": "Schütze",
     "preis_eur": 22.0,
     "geprueft": false
   },
@@ -32,6 +34,7 @@
     "te_breite": 2,
     "h_mm": 70.0,
     "zone": "leist",
+    "kategorie": "Schütze",
     "preis_eur": 24.5,
     "geprueft": false
   },
@@ -44,6 +47,7 @@
     "te_breite": 3,
     "h_mm": 80.0,
     "zone": "leist",
+    "kategorie": "Schütze",
     "preis_eur": 32.0,
     "geprueft": false
   },
@@ -56,6 +60,7 @@
     "te_breite": 3,
     "h_mm": 80.0,
     "zone": "leist",
+    "kategorie": "Schütze",
     "preis_eur": 38.0,
     "geprueft": false
   },
@@ -68,6 +73,7 @@
     "te_breite": 3,
     "h_mm": 77.0,
     "zone": "leist",
+    "kategorie": "Motorschutzschalter",
     "preis_eur": 35.0,
     "geprueft": false
   },
@@ -80,6 +86,7 @@
     "te_breite": 3,
     "h_mm": 77.0,
     "zone": "leist",
+    "kategorie": "Motorschutzschalter",
     "preis_eur": 35.0,
     "geprueft": false
   },
@@ -92,6 +99,7 @@
     "te_breite": 3,
     "h_mm": 77.0,
     "zone": "leist",
+    "kategorie": "Motorschutzschalter",
     "preis_eur": 35.0,
     "geprueft": false
   },
@@ -104,6 +112,7 @@
     "te_breite": 3,
     "h_mm": 77.0,
     "zone": "leist",
+    "kategorie": "Motorschutzschalter",
     "preis_eur": 37.0,
     "geprueft": false
   },
@@ -116,6 +125,7 @@
     "te_breite": 1,
     "h_mm": 81.0,
     "zone": "leist",
+    "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.5,
     "geprueft": false
   },
@@ -128,6 +138,7 @@
     "te_breite": 1,
     "h_mm": 81.0,
     "zone": "leist",
+    "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.5,
     "geprueft": false
   },
@@ -140,6 +151,7 @@
     "te_breite": 1,
     "h_mm": 81.0,
     "zone": "leist",
+    "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.8,
     "geprueft": false
   },
@@ -152,6 +164,7 @@
     "te_breite": 2,
     "h_mm": 81.0,
     "zone": "leist",
+    "kategorie": "Leitungsschutzschalter",
     "preis_eur": 16.5,
     "geprueft": false
   },
@@ -164,6 +177,7 @@
     "te_breite": 2,
     "h_mm": 81.0,
     "zone": "leist",
+    "kategorie": "Leitungsschutzschalter",
     "preis_eur": 17.0,
     "geprueft": false
   },
@@ -176,6 +190,7 @@
     "te_breite": 2,
     "h_mm": 81.0,
     "zone": "leist",
+    "kategorie": "Leitungsschutzschalter",
     "preis_eur": 17.5,
     "geprueft": false
   },
@@ -188,6 +203,7 @@
     "te_breite": 1,
     "h_mm": 75.0,
     "zone": "steuer",
+    "kategorie": "Koppelrelais",
     "preis_eur": 14.5,
     "geprueft": false
   },
@@ -842,6 +858,7 @@
     "te_breite": 3,
     "h_mm": 90.0,
     "zone": "leist",
+    "kategorie": "Leitungsschutzschalter",
     "geprueft": false
   },
   {
