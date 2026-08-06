@@ -1317,6 +1317,17 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Schütze vervollständigt: 24V AC + 230V AC über den gesamten Leistungsbereich (Session 41 Nachtrag 3, gesperrt)
+Nutzer-Fund: von 5 Schützen im Katalog hatten nur die ersten beiden (3RT2015, 3kW) eine Wahl zwischen AC- und DC-Spule; die übrigen (4/5,5/7,5 kW) nur 24V DC. In der Gebäudeautomation werden Schütze aber überwiegend mit Wechselspannung (24V AC oder 230V AC) angesteuert, 230V AC fehlte komplett. Nutzer-Vorgabe: auf Basis 230V (und 24V) Leistungen bis ~25kW schaltbar machen, Recherche bei Siemens (Planungsfabrikat).
+
+**Recherchiert (Siemens SIRIUS 3RT2), 13 neue Katalogeinträge:**
+- **S00-Baugröße** (36×70mm, wie bestehende 3RT2015/3RT2016): `3RT2015-1AP01` (3kW, 230V AC), `3RT2016-1AB01` (4kW, 24V AC), `3RT2016-1AP01` (4kW, 230V AC) – alle Bestellnummern direkt bestätigt.
+- **S0-Baugröße** (45×85mm, aus zwei unabhängigen Quellen für unterschiedliche Leistungsstufen übereinstimmend bestätigt): `3RT2024-1AB00`/`3RT2024-1AP00` (5,5kW), `3RT2025-1AB00`/`3RT2025-1AP04` (7,5kW) – direkt bestätigt; `3RT2026-1AB00`/`3RT2026-1AP00` (11kW), `3RT2027-1AB00`/`3RT2027-1AP00` (15kW) – Bestellnummer teils nach dem bei 3RT2024/3RT2025 bestätigten Suffix-Muster abgeleitet, nicht für jede einzeln direkt verifiziert (im `quelle_hinweis` vermerkt, vor Bestellung gegenprüfen).
+- **S2-Baugröße** (55×130mm, nur eine Quelle mit unklarer Achsbeschriftung, nicht gegengeprüft): `3RT2036-3AB00`/`3RT2036-3AP00` (22kW – der nächste Standard-Leistungsschritt bei Siemens nach 22kW ist 30kW, „25kW" existiert nicht als exakte Kataloggröße).
+- **Wichtiger Fund, nicht rückwirkend korrigiert:** die neu bestätigten S0-Maße 45×85mm weichen von den bestehenden `3RT2023-1BB40`/`3RT2025-1BB40`-Einträgen (54×80mm) ab – deren Maße waren von Anfang an nur aus der TE-Breite genähert (`„b_mm = te_breite*18, Näherung"`, Session 20), nie real verifiziert. Nur dokumentiert, nicht angefasst (außerhalb des heutigen Auftrags).
+- Alle neuen Einträge: `kategorie:"Schütze"`, `zone:"leist"`, `geprueft:false`.
+- Katalog jetzt 92 aktive Bauteile (18 Schütze insgesamt). Verifiziert im Browser: 92/92 im Modul-4-Dropdown, keine Dubletten.
+
 ### LVB-Relais: Metz Connect als Ausnahme vom Phoenix-Contact-Planungsfabrikat (Session 41 Nachtrag 2, gesperrt)
 Nutzer-Fund: `PLC-RSC-24DC/21` (Phoenix Contact, aktuell einziges aktives Koppelrelais im Katalog) ist ein **einfaches** Koppelrelais – kein LVB-Relais (Lokale Vorrangbedienung). Es fehlen Handschalter und die Rückmeldekontakte, mit denen der Handbetrieb an die DDC zurückgemeldet wird. Ursache: Session-40-Entscheidung „Koppelrelais → Phoenix Contact" wurde zu pauschal getroffen, ohne zu prüfen, ob Phoenix diese spezielle LVB-Funktion überhaupt abdeckt – dabei wurden die zuvor schon im Katalog vorhandenen, passenden Metz-Connect-Einträge `110661`/`110730` fälschlich deaktiviert.
 - **Recherche (Session 41):** kein Phoenix-Contact-Äquivalent gefunden (allgemeine Koppelrelais-Palette, RIFLINE-Reihe, direkte Wettbewerber-Suche – alle ohne Treffer für Hand/Auto-Schalter + DDC-Rückmeldung, weder binär noch analog).
