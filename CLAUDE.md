@@ -1317,6 +1317,29 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Siemens Desigo PX – Architektur verstanden, PXA30-x korrigiert, TX-I/O-Familie ergänzt (Session 41, gesperrt)
+Direkte Fortsetzung von Session 40. Nutzer wollte vor dem Neuaufbau der Baugruppen prüfen, ob das Siemens-Architekturverständnis ausreicht, um Einzelbauteile korrekt zuzuordnen.
+
+**Architektur (recherchiert, vom Nutzer bestätigt):**
+- **Ebene 1 – Automationsstation/CPU:** Serie `PXC` (aktuelle Generation PXC3/4/5/7, z. B. `PXC5.E24`, `PXC7.E400L`). Unterscheidet sich in Kommunikationsfähigkeit (nativ BACnet/IP, BACnet/SC, BACnet MS/TP; RS485 für Modbus RTU/TCP eingebaut, bis 500 Punkte) und Datenpunkt-Verarbeitungsumfang (im Namen kodiert, z. B. E400L=400 Punkte, E400S=100 Punkte). Hat **keine eigenen Feld-Anschlussklemmen**.
+- **Ebene 2 – Ein-/Ausgabemodule: TX-I/O-Familie (`TXM1.x`), NICHT `PXA30-x`.** Wichtigster Korrekturfund: `PXA30-N` ("Modul für BACnet über Ethernet/IP") und `PXA30-W2` ("Erweiterungsmodul für grafische Web-Funktionen") sind Kommunikations-/HMI-Zusatzkarten für die CPU selbst – **keine physischen I/O-Quellen**, obwohl der alte Katalogeintrag `PXA30-W2` fälschlich "8DI/8DO/4AI/4AO" + `dp_ai/dp_ao/dp_bi/dp_bo`-Kapazität auswies. **Beide Einträge gelöscht.**
+- **Datenpunkttyp-Kombination bei TXM-Modulen** genau wie vom Nutzer beschrieben: manche verarbeiten nur einen Typ (`TXM1.8D`/`TXM1.16D` = nur DI, `TXM1.6R`/`TXM1.6R-M` = nur DO), manche sind universell/kombiniert (`TXM1.8U`/`TXM1.8U-ML`, jeder Kanal einzeln als AI/AO/DI/DO konfigurierbar).
+- **LVB-Unterscheidung bestätigt** (LVB = „Lokale Vorrangbedienebene", Siemens-eigene TX-I/O-Bedienungsanleitung zitiert): Basisvariante ohne LVB (`TXM1.6R`) vs. `-M`/`-ML`-Suffix **mit** integriertem Wippenschalter Hand/Auto je Kanal (`TXM1.6R-M`, `TXM1.8U-ML`) – bei LVB-Varianten kein externes Koppelrelais (Phoenix PLC-RSC) nötig, sonst schon.
+- **Alle TXM1.x-Module dieser Baugröße teilen sich dasselbe Gehäuse** 64×77,5mm (B×H, über zwei unabhängige Quellen bestätigt) – unabhängig vom Datenpunkttyp/-anzahl.
+
+**Neue Felder `einzelbauteile` (Session 41):**
+- `feldbus_protokoll` (Text, z. B. "modbus_rtu,modbus_tcp") – ergänzt `dp_fb_ai/ao/bi/bo`: welches Protokoll dieser Bedarf/diese Kapazität nutzt. **Noch nicht in Modul 4 ausgewertet** (Modul pausiert) – Nutzer-Vorgabe: das Protokoll muss künftig zur Laufzeit auswählbar sein, damit das richtige Kommunikationsmodul platziert wird. Modbus-Bedarf darf nur durch Modbus-Kapazität gedeckt werden, nicht durch M-Bus o. ä. (analog zur bereits bestehenden Regel „Feldbus-Typ muss exakt passen", Session 28d – hier zusätzlich noch die Protokoll-Dimension).
+- `lvb_integriert` (Boolean) – nur bei Ausgabe-fähigen ddc_io-Modulen relevant.
+- 6 neue `einzelbauteile`-Zeilen: `TXM1.8D`, `TXM1.16D`, `TXM1.6R` (275€, Siemens-HIT-Listenpreis AT), `TXM1.6R-M` (319€), `TXM1.8U` (404€, universelle Kapazität bewusst NICHT in dp_ai/ao/bi/bo aufgeteilt – Feldstruktur bildet flexible Kanäle nicht ab, offene Modul-4-Erweiterung), `TXM1.8U-ML`.
+
+**Bewusst offen gelassen, nicht geraten:**
+- **M-Bus-Modul für aktuelle PXC5/7-Generation:** nur für die ältere `PXC..D`-Baureihe ein Modul (`PXA40-RS`) gefunden, für die aktuelle Generation keine Bestätigung – nicht hinzugefügt.
+- **PXC-Controller selbst:** keine Gehäusemaße auffindbar (HIT-Portal weiterhin nicht per WebFetch nutzbar, mehrere Versuche über verschiedene URL-Pfade, alle 403/leere JS-Hülle) – noch nicht im Katalog. Muss vor der ersten Baugruppen-Neuanlage nachgeholt werden (jede Baugruppe mit DDC-Anbindung braucht mindestens 1 CPU + passende TXM-Module).
+
+**Katalog-Strukturaudit (76 aktive Bauteile nach dieser Session):** 0 doppelte `artikel_nr`, 0 fehlende `zone`/`b_mm`/`h_mm` (strukturell vollständig), **17 ohne `kategorie`** (weiterhin offen, macht sie im Modul-4-Dropdown unsichtbar), **51 ohne `preis_eur`**, **0 mit `geprueft=true`** (noch kein einziges Bauteil von Menschenhand verifiziert).
+
+**Preisrecherche – Qualitätsunterschied dokumentiert, bewusst nicht pauschal aufgefüllt:** Siemens-Preise über HIT-Portal als echte Herstellerlistenpreise erreichbar (3 TXM-Module damit bepreist). Für Phoenix Contact/Dehn nur Händler-Straßenpreise (inkl. MwSt./Handelsspanne) auffindbar, kein öffentliches Herstellerpreisportal gefunden – nicht unter `preis_eur` eingetragen, um Preisqualitäten nicht zu vermischen. Verbleibt offene Aufgabe, u. a. 25 UT-Einspeiseklemmen (5 Baugrößen), diverse Dehn-/Siemens-Einzelteile.
+
 ### Excel-Feldklärungen, Klartext-Spalten, Planungsfabrikate, erste Katalogbereinigung (Session 40, gesperrt)
 Direkte Fortsetzung von Session 39 – Nutzer hat sich die Excel-Datei angesehen und gezielt zu einzelnen Feldern nachgefragt.
 

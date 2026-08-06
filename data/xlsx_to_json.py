@@ -56,6 +56,12 @@ EXCEL_FILE = Path(__file__).parent / 'ga_komponenten.xlsx'
 
 # DDC-Datenpunkt-Felder je Bauteil (nur bei automationsanbindung=true befüllt):
 # bei ddc_io-Modulen = bereitgestellte Kapazität je Typ, sonst = Bedarf je Typ.
+# dp_fb_* (kommunikative/Feldbus-Datenpunkte) brauchen zusaetzlich das Feld
+# 'feldbus_protokoll' (Session 41): welches Protokoll (z.B. "modbus_rtu",
+# "modbus_tcp", "mbus") dieser Datenpunkt-Bedarf/diese -Kapazitaet nutzt -
+# ein Modbus-Bedarf darf nur durch Modbus-Kapazitaet gedeckt werden, nicht
+# durch M-Bus o.ae. Auswertung/Laufzeit-Protokollauswahl ist noch NICHT in
+# Modul 4 implementiert (Modul 4 pausiert), siehe CLAUDE.md Session 41.
 DP_FELDER = ['dp_ai', 'dp_ao', 'dp_bi', 'dp_bo', 'dp_fb_ai', 'dp_fb_ao', 'dp_fb_bi', 'dp_fb_bo']
 
 
@@ -318,6 +324,10 @@ def export_einzelbauteile(wb):
             for dp_feld in DP_FELDER:
                 if rec.get(dp_feld):
                     entry[dp_feld] = int(rec[dp_feld])
+            if rec.get('feldbus_protokoll') is not None:
+                entry['feldbus_protokoll'] = str(rec['feldbus_protokoll'])
+        if rec.get('lvb_integriert') is not None:
+            entry['lvb_integriert'] = bool(rec['lvb_integriert'])
         if rec.get('klemmen_zusatz') is not None:
             entry['klemmen_zusatz'] = int(rec['klemmen_zusatz'])
         if rec.get('preis_stueck_eur') is not None:
