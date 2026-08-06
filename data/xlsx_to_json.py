@@ -16,6 +16,24 @@ Exportiert folgende Sheets aus ga_komponenten.xlsx:
                                                           Verknüpfungstabelle
                                                           zusammengebaut)
 
+Reine Referenz-Sheets (kein Export, keine eigene JSON-Datei):
+  - funktionsbereiche     Klartext-Nachschlagewerk zu 'gewerk'/'funktionsbereich'
+                          (baugruppen) – 11 DIN-276-Kategorien.
+  - zonen                 Klartext-Nachschlagewerk zu 'zone' (einzelbauteile,
+                          baugruppen_bauteile) – 8 physische Platzierungszonen.
+                          Beide Sheets sind rein für die menschliche Lesbarkeit
+                          in Excel gedacht; die Variablen/Codes selbst bleiben
+                          die Datengrundlage für xlsx_to_json.py und die Module.
+
+Namenskonvention Excel-Spalten vs. JSON-Ausgabe (Session 39): 'artikel_nr'
+(Excel-Spalte, einheitlich für alle Artikel-/Bestellnummern-Felder über alle
+Sheets, ersetzt das frühere uneinheitliche 'bestellnummer') und
+'preis_stueck_eur' (Excel-Spalte, ersetzt 'preis_stueckpreis_eur') werden beim
+Einlesen zwar konsistent benannt, die bereits bestehenden JSON-Ausgabeschlüssel
+('bestellnummer', 'preis_stueckpreis_eur') bleiben bewusst unverändert, um
+keine Aenderungen an den Modul-1-4/7-JS-Dateien zu erzwingen, die diese Keys
+bereits konsumieren.
+
 Aufruf (aus data/-Verzeichnis):
     python3 xlsx_to_json.py
 
@@ -88,13 +106,13 @@ def export_wandschraenke(wb):
         rows.append({
             'hersteller':            str(rec['hersteller']),
             'bezeichnung':           str(rec['bezeichnung']),
-            'bestellnummer':         str(rec['bestellnummer']),
+            'bestellnummer':         str(rec['artikel_nr']),
             'b_gehaeuse_aussen_mm':  int(rec['b_gehaeuse_aussen_mm']),
             'h_gehaeuse_aussen_mm':  int(rec['h_gehaeuse_aussen_mm']),
             't_gehaeuse_aussen_mm':  int(rec['t_gehaeuse_aussen_mm']),
             'b_mplatte_mm':          int(rec['b_mplatte_mm']),
             'h_mplatte_mm':          int(rec['h_mplatte_mm']),
-            'preis_stueckpreis_eur': float(rec['preis_stueckpreis_eur']) if rec.get('preis_stueckpreis_eur') is not None else None,
+            'preis_stueckpreis_eur': float(rec['preis_stueck_eur']) if rec.get('preis_stueck_eur') is not None else None,
             'preis_lieferung_eur':   float(rec['preis_lieferung_eur'])   if rec.get('preis_lieferung_eur')   is not None else None,
             'preis_montage_eur':     float(rec['preis_montage_eur'])     if rec.get('preis_montage_eur')     is not None else None,
             'preis_gesamt_eur':      float(rec['preis_gesamt_eur'])      if rec.get('preis_gesamt_eur')      is not None else None,
@@ -127,13 +145,13 @@ def export_kabelzugschellen(wb):
         rows.append({
             'hersteller':          str(rec['hersteller']),
             'bezeichnung':         str(rec['bezeichnung']),
-            'bestellnummer':       str(rec['bestellnummer']),
+            'bestellnummer':       str(rec['artikel_nr']),
             'd_kabel_min_mm':      float(rec['d_kabel_min_mm']),
             'd_kabel_max_mm':      float(rec['d_kabel_max_mm']),
             'h_schelle_mm':        float(rec['h_schelle_mm']),
             'b_schelle_mm':        float(rec['b_schelle_mm']),
             't_schelle_mm':        float(rec['t_schelle_mm']),
-            'preis_stueckpreis_eur': float(rec['preis_stueckpreis_eur']) if rec.get('preis_stueckpreis_eur') is not None else None,
+            'preis_stueckpreis_eur': float(rec['preis_stueck_eur']) if rec.get('preis_stueck_eur') is not None else None,
             'preis_lieferung_eur':   float(rec['preis_lieferung_eur'])   if rec.get('preis_lieferung_eur')   is not None else None,
             'preis_montage_eur':     float(rec['preis_montage_eur'])     if rec.get('preis_montage_eur')     is not None else None,
             'preis_gesamt_eur':      float(rec['preis_gesamt_eur'])      if rec.get('preis_gesamt_eur')      is not None else None,
@@ -166,13 +184,13 @@ def export_standschraenke(wb):
         rows.append({
             'hersteller':            str(rec['hersteller']),
             'bezeichnung':           str(rec['bezeichnung']),
-            'bestellnummer':         str(rec['bestellnummer']),
+            'bestellnummer':         str(rec['artikel_nr']),
             'b_gehaeuse_aussen_mm':  int(rec['b_gehaeuse_aussen_mm']),
             'h_gehaeuse_aussen_mm':  int(rec['h_gehaeuse_aussen_mm']),
             't_gehaeuse_aussen_mm':  int(rec['t_gehaeuse_aussen_mm']),
             'b_mplatte_mm':          int(rec['b_mplatte_mm']),
             'h_mplatte_mm':          int(rec['h_mplatte_mm']),
-            'preis_stueckpreis_eur': float(rec['preis_stueckpreis_eur']) if rec.get('preis_stueckpreis_eur') is not None else None,
+            'preis_stueckpreis_eur': float(rec['preis_stueck_eur']) if rec.get('preis_stueck_eur') is not None else None,
             'preis_lieferung_eur':   float(rec['preis_lieferung_eur'])   if rec.get('preis_lieferung_eur')   is not None else None,
             'preis_montage_eur':     float(rec['preis_montage_eur'])     if rec.get('preis_montage_eur')     is not None else None,
             'preis_gesamt_eur':      float(rec['preis_gesamt_eur'])      if rec.get('preis_gesamt_eur')      is not None else None,
@@ -205,10 +223,10 @@ def export_sockel(wb):
         rows.append({
             'hersteller':            str(rec['hersteller']),
             'bezeichnung':           str(rec['bezeichnung']),
-            'bestellnummer':         str(rec['bestellnummer']),
+            'bestellnummer':         str(rec['artikel_nr']),
             'b_gehaeuse_aussen_mm':  int(rec['b_gehaeuse_aussen_mm']),
             'h_sockel_mm':           int(rec['h_sockel_mm']),
-            'preis_stueckpreis_eur': float(rec['preis_stueckpreis_eur']) if rec.get('preis_stueckpreis_eur') is not None else None,
+            'preis_stueckpreis_eur': float(rec['preis_stueck_eur']) if rec.get('preis_stueck_eur') is not None else None,
             'preis_lieferung_eur':   float(rec['preis_lieferung_eur'])   if rec.get('preis_lieferung_eur')   is not None else None,
             'preis_montage_eur':     float(rec['preis_montage_eur'])     if rec.get('preis_montage_eur')     is not None else None,
             'preis_gesamt_eur':      float(rec['preis_gesamt_eur'])      if rec.get('preis_gesamt_eur')      is not None else None,
@@ -241,10 +259,10 @@ def export_bodenbleche(wb):
         rows.append({
             'hersteller':            str(rec['hersteller']),
             'bezeichnung':           str(rec['bezeichnung']),
-            'bestellnummer':         str(rec['bestellnummer']),
+            'bestellnummer':         str(rec['artikel_nr']),
             'b_gehaeuse_aussen_mm':  int(rec['b_gehaeuse_aussen_mm']),
             'anzahl_platten':        int(rec['anzahl_platten']),
-            'preis_stueckpreis_eur': float(rec['preis_stueckpreis_eur']) if rec.get('preis_stueckpreis_eur') is not None else None,
+            'preis_stueckpreis_eur': float(rec['preis_stueck_eur']) if rec.get('preis_stueck_eur') is not None else None,
             'preis_lieferung_eur':   float(rec['preis_lieferung_eur'])   if rec.get('preis_lieferung_eur')   is not None else None,
             'preis_montage_eur':     float(rec['preis_montage_eur'])     if rec.get('preis_montage_eur')     is not None else None,
             'preis_gesamt_eur':      float(rec['preis_gesamt_eur'])      if rec.get('preis_gesamt_eur')      is not None else None,
@@ -277,13 +295,13 @@ def export_reiheneinbaugeraete(wb):
         rows.append({
             'hersteller':            str(rec['hersteller']),
             'bezeichnung':           str(rec['bezeichnung']),
-            'bestellnummer':         str(rec['bestellnummer']),
+            'bestellnummer':         str(rec['artikel_nr']),
             'kategorie':             str(rec['kategorie']),
             'n_te':                  int(rec['n_te']),
             'nennstrom_a':           float(rec['nennstrom_a'])        if rec.get('nennstrom_a')        is not None else None,
             'n_pole':                int(rec['n_pole'])               if rec.get('n_pole')               is not None else None,
             'ausloesekennlinie':     str(rec['ausloesekennlinie'])    if rec.get('ausloesekennlinie')    is not None else None,
-            'preis_stueckpreis_eur': float(rec['preis_stueckpreis_eur']) if rec.get('preis_stueckpreis_eur') is not None else None,
+            'preis_stueckpreis_eur': float(rec['preis_stueck_eur']) if rec.get('preis_stueck_eur') is not None else None,
             'preis_lieferung_eur':   float(rec['preis_lieferung_eur'])   if rec.get('preis_lieferung_eur')   is not None else None,
             'preis_montage_eur':     float(rec['preis_montage_eur'])     if rec.get('preis_montage_eur')     is not None else None,
             'preis_gesamt_eur':      float(rec['preis_gesamt_eur'])      if rec.get('preis_gesamt_eur')      is not None else None,

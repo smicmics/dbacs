@@ -58,7 +58,7 @@ dbacs/
 │   ├── reiheneinbaugeraete.json                 Reiheneinbaugeräte-DB (Sicherungsautomaten etc., committed)
 │   ├── einzelbauteile.json                      Modul-4-Bauteilkatalog (committed, seit Session 27 über Excel gepflegt)
 │   ├── baugruppen.json                          Modul-4-Baugruppen-DB (committed, seit Session 27 über Excel gepflegt)
-│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (9 Sheets, `einzelbauteile`/`baugruppen`+`baugruppen_bauteile`-Verknüpfungstabelle seit Session 27)
+│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (9 Datensheets + 2 reine Referenz-Sheets `funktionsbereiche`/`zonen`, `einzelbauteile`/`baugruppen`+`baugruppen_bauteile`-Verknüpfungstabelle seit Session 27)
 └── docs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
     └── archiv/                                  ältere Session-Dokumentationen
@@ -127,7 +127,8 @@ Diese Regeln gelten für alle Module und werden nicht neu diskutiert:
 - **GitHub Pages kompatibel** – relative Pfade, kein Server-Backend, offline-fähig
 - **Sprache** – UI-Texte und Dokumentation auf Deutsch
 - **Datenhaltung** – Excel als Source of Truth → `data/xlsx_to_json.py` → JSON (committed) → `fetch()` im Browser
-- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → exportiert alle 6 JSON-Dateien → alle committen
+- **Entwickler-Workflow Daten:** Excel bearbeiten → in WSL: `cd /mnt/c/users/smi/cowork/dbacs/data && python3 xlsx_to_json.py` → exportiert alle 9 JSON-Dateien → alle committen
+- **Seit Session 39: Claude pflegt `ga_komponenten.xlsx` direkt** (Nutzer-Entscheidung) – nicht mehr nur Recherche-Werte liefern, sondern selbst per Skript in die Excel-Datei schreiben. Vor jedem Schreibzugriff `~$ga_komponenten.xlsx`-Lockdatei prüfen (Excel muss geschlossen sein) UND vor strukturellen Änderungen (neue Sheets, Spalten-Umbenennungen) eine Kopie nach `C:\Users\SMI\Backups\dbacs\excel\` sichern – die Datei ist NICHT git-versioniert, es gibt sonst kein Sicherheitsnetz.
 - **Excel nicht versioniert** – `data/*.xlsx` ist in `.gitignore`, nur JSON wird committed
 
 ---
@@ -1316,6 +1317,87 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
 - ~~Migration der bestehenden 15 `id`-Werte auf das neue Schema + Anpassung
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
+
+### Excel-Konsistenzpflege: fehlende Sheets rekonstruiert, Feldnamen vereinheitlicht, 2 Referenz-Sheets (Session 39, gesperrt)
+Nutzer-Entscheidung: Claude pflegt `ga_komponenten.xlsx` ab jetzt direkt (statt nur Recherchewerte zuzuliefern), Nutzer arbeitet nur noch bei Bedarf selbst darin. Ausgangspunkt war eine Nutzerfrage zum Zweck der 7 damaligen Arbeitsblätter – dabei fiel eine strukturelle Lücke auf.
+
+**Begriffsklärung Funktionsbereich vs. Zone (wichtig, wird an mehreren Stellen
+durcheinandergebracht – auch vom Nutzer in der Ausgangsfrage):**
+- **Funktionsbereich** (`baugruppen.funktionsbereich`/`gewerk`) = DIN-276-Kategorie
+  einer ganzen Baugruppe (z. B. „Lüftung"). Existiert NUR bei Baugruppen, nicht bei
+  Einzelbauteilen – dasselbe Bauteil (z. B. eine Klemme) wird in ganz
+  unterschiedlichen Funktionsbereichen verwendet.
+- **Zone** (`einzelbauteile.zone`, `baugruppen_bauteile.zone` als Override) = die
+  physische Platzierungszone IM SCHRANK (`klemm_e`/`uss`/`evert`/`leist`/`steuer`/
+  `klemm_l`/`klemm_f`/`klemm_s`), unabhängig vom Funktionsbereich. Was der Nutzer in
+  seiner Ausgangsfrage bei `einzelbauteile`/`baugruppen_bauteile` als
+  „Funktionsbereich, wo das Bauteil platziert werden muss" bezeichnete, ist
+  tatsächlich die Zone.
+
+**Kritischer Fund: 4 Datenbanken waren von der Excel-Pipeline abgekoppelt.**
+Die Sheets `standschraenke`, `sockel`, `bodenbleche`, `reiheneinbaugeraete`
+existierten in `ga_komponenten.xlsx` schlicht nicht mehr (nur noch 6 Sheets
+vorhanden), obwohl die zugehörigen JSON-Dateien weiterhin committed sind und
+`standschraenke.json`/`sockel.json` produktiv von Modul 2 geladen werden. Diese
+4 DBs waren dadurch nur noch per Hand-Edit der JSON-Datei pflegbar – Verstoß
+gegen die gesperrte Architekturregel „Excel ist Source of Truth". Ursache nicht
+mehr rekonstruierbar (vermutlich beim Anlegen eines neuen `ga_komponenten.xlsx`
+zwischenzeitlich nicht mitgenommen). **Fix:** alle 4 Sheets 1:1 aus den bereits
+committeten JSON-Dateien rekonstruiert (11/8/4/24 Zeilen) – reine
+Wiederherstellung, keine inhaltliche Änderung. `bodenbleche`/`reiheneinbaugeraete`
+werden aktuell von keinem Modul geladen (geprüft), sind aber Teil der
+dokumentierten Dateistruktur und jetzt wieder korrekt pflegbar.
+
+**Feldnamen-Konsistenz hergestellt (nur Excel-Spalten, JSON-Ausgabeschema
+bewusst unverändert – siehe unten):**
+- `bestellnummer` (wandschraenke, kabelzugschellen, + die 4 wiederhergestellten
+  Sheets) → **`artikel_nr`**, vereinheitlicht mit `einzelbauteile`.
+- `preis_stueckpreis_eur` (dieselben Sheets) → **`preis_stueck_eur`**,
+  vereinheitlicht mit `einzelbauteile`.
+- `aktiv` in `kabel_nym_j`/`kabelzugschellen` war als 1/0 statt Boolean
+  gespeichert (funktional identisch, aber uneinheitlich) → auf `True`/`False`
+  normalisiert, wie in allen anderen Sheets.
+- **Bewusste Entscheidung:** die JSON-Ausgabeschlüssel selbst (`bestellnummer`,
+  `preis_stueckpreis_eur`) bleiben unverändert – nur `xlsx_to_json.py`s
+  Lese-Seite (`rec['artikel_nr']` statt `rec['bestellnummer']` usw.) wurde
+  angepasst. Damit bleibt die Vereinheitlichung auf die Excel-Datei begrenzt,
+  ohne Modul-1/2/4/7-JS-Code anzufassen oder JSON-Konsumenten zu brechen. Falls
+  gewünscht, ist eine spätere Angleichung auch der JSON-/Modul-Feldnamen ein
+  separater, größerer Folge-Schritt (nicht Teil dieser Session).
+- Referenzielle Integrität geprüft: 0 verwaiste `artikel_nr` in
+  `baugruppen_bauteile` (51/51 lösen auf), 0 verwaiste `bg_id` (bereits bei der
+  Session-38-Migration verifiziert).
+
+**Zwei neue reine Referenz-Arbeitsblätter (keine Datenquelle für
+`xlsx_to_json.py`, nur Klartext-Nachschlagewerk für die Excel-Pflege von Hand):**
+- `funktionsbereiche`: `code` (DIN-276, z. B. `430`), `funktionsbereich`
+  (Text-Key wie in `baugruppen.funktionsbereich`, z. B. `lueftung`),
+  `bezeichnung` (Klartext, z. B. „Raumlufttechnische Anlagen") – 11 Zeilen,
+  siehe Session 38 für die Zuordnung.
+- `zonen`: `zone` (Code wie in `einzelbauteile.zone`, z. B. `klemm_l`),
+  `bezeichnung` (Klartext aus `ZONE_LABELS` in Modul 3/4, z. B. „Abg.-Kl.
+  Leistung") – 8 Zeilen.
+- Beide Sheets sind bewusst reine Lese-Hilfen: die Variable/der Code bleibt in
+  den Datenspalten (`gewerk`, `funktionsbereich`, `zone`) die tatsächliche
+  Datengrundlage; die Klartext-Spalte dient nur der menschlichen Lesbarkeit
+  beim manuellen Editieren in Excel.
+
+**Sicherung vor dem Eingriff:** Kopie von `ga_komponenten.xlsx` nach
+`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-konsistenzpflege_*.xlsx`
+(die Datei ist nicht git-versioniert, kein anderes Sicherheitsnetz vorhanden).
+
+Verifiziert: `xlsx_to_json.py` neu ausgeführt, alle 9 JSON-Dateien gegen den
+committeten Stand geprüft – `wandschraenke.json`, `kabelzugschellen.json`,
+`einzelbauteile.json`, `baugruppen.json`, `kabel_nym_j.json` bytegleich (0
+Diff trotz Spalten-Umbenennung, bestätigt die chirurgische Read-Side-Änderung);
+`standschraenke.json`/`sockel.json`/`bodenbleche.json` nur fehlender
+Zeilenumbruch am Dateiende (kosmetisch); `reiheneinbaugeraete.json` verliert
+das nie exportierte `aktiv`-Feld (jetzt konsistent mit allen Sibling-DBs) und
+zeigt `nennstrom_a` jetzt als Float (`16.0` statt `16`, entspricht dem im
+Skript immer schon vorgesehenen `float()`-Cast) – ohne Modul-Ladezugriff ohne
+jede Auswirkung. Modul 2 im Browser gegen den lokalen Server getestet: alle 11
+Standschränke + beide Sockelhöhen laden korrekt, keine Konsolenfehler, keine
+fehlgeschlagenen Requests.
 
 ### Baugruppen-Schema: DIN-276-Inhaltsmigration abgeschlossen (Session 38, gesperrt)
 Löst den in Session 37 zurückgestellten Folge-Schritt ein: `gewerk` trägt jetzt
