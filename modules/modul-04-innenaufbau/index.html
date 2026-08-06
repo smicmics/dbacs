@@ -1666,7 +1666,10 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
   DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
   function accumulateDp(eb, menge) {
     if (!eb.automationsanbindung) return;
-    const target = eb.bauteil_typ === 'ddc_io' ? dpSupply : dpDemand;
+    // ddc_cpu (Automationsstation) liefert wie ddc_io (TXM-Module) Kapazitaet,
+    // wird aber in computeDdcAutoModules() bewusst NICHT als Auto-Platzierungs-
+    // Kandidat gefuehrt (kein automatisches Vervielfachen der CPU), siehe Session 41.
+    const target = (eb.bauteil_typ === 'ddc_io' || eb.bauteil_typ === 'ddc_cpu') ? dpSupply : dpDemand;
     DP_TYPES.forEach(t => { if (eb[t]) target[t] += eb[t] * menge; });
   }
 
@@ -1790,7 +1793,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
 
 function kurzLabel(eb) {
   const m = {schuetz:'Sch.', motorschutz:'MSS', lss:'LSS', klemme:'Kl.', koppelrelais:'KR', netzteil:'NT', sonstige:'–',
-             ddc_io:'DDC', lasttrenner:'LT', ueberspannung:'ÜSS', sicherung:'Sich.'};
+             ddc_io:'DDC', ddc_cpu:'CPU', lasttrenner:'LT', ueberspannung:'ÜSS', sicherung:'Sich.'};
   return m[eb.bauteil_typ] || eb.bezeichnung.substring(0, 4);
 }
 

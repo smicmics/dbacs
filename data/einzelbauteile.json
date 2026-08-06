@@ -949,5 +949,21 @@
     "automationsanbindung": true,
     "lvb_integriert": true,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "PXC4.E16",
+    "bezeichnung": "Desigo PX Automationsstation, 16 Ein-/Ausgaenge (12 universell + 4 Relais), BACnet/IP, Modbus",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ddc_cpu",
+    "b_mm": 198.0,
+    "te_breite": 11,
+    "h_mm": 124.0,
+    "zone": "steuer",
+    "kategorie": "DDC-Automationseinrichtung",
+    "automationsanbindung": true,
+    "dp_bo": 4,
+    "feldbus_protokoll": "modbus_rtu,modbus_tcp",
+    "preis_eur": 1159.26,
+    "geprueft": false
   }
 ]
