@@ -393,6 +393,35 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Katalog: Zonen-/Kategorie-Korrekturen + erste Türbauteile (Session 42, gesperrt/teilweise offen)
+Nutzer geht die Excel-Tabelle händisch durch und meldet gezielte Korrekturen + neue Bauteile.
+
+**Korrekturen (umgesetzt):**
+- `3RH2911-1FA22` (Hilfsschalterblock): `bauteil_typ` `sonstige`→`schuetz` – funktioniert nur zusammen mit einem Schütz, gehört fachlich dorthin.
+- `BXT BAS`/`BXT ML4 BE24` (Dehn BLITZDUCTOR XT): `zone` `uss`→`steuer` – Feinschutz für Einzeladern sitzt im Automationsfeld (Steuerbaugruppe/DDC), nicht an der Haupteinspeisung/ÜSS.
+- Wachendorff-Gateway `HD67812-KNX-XXX-B2`: `kategorie` ergänzt (`DDC-Automationseinrichtung`) – Zone war bereits korrekt `steuer`.
+- Moxa-Switch: `EDS-208A`→`EDS-205` umbenannt (vom Nutzer explizit benanntes Modell), Maße jetzt verifiziert (moxa.com: 24,9×100×74mm B×T×H), `aktiv=true`. Preis weiterhin offen (nicht auf moxa.com gelistet).
+- 7× Leitungsschutzschalter (`5SL6...`): `zone` `leist`→`evert` – gehören zur Energieverteilung, nicht zur Leistungsbaugruppe.
+
+**Neue Kategorie `Fronttafel-/Türeinbau`** + Konzept „Türbauteile": Bauteile, die im Türblatt statt auf der Montageplatte sitzen, nutzen das bestehende `keine_platzierung_mp`-Feld (Session 41 Nachtrag 4/5, ursprünglich für den aufgesteckten Hilfsschalterblock gedacht) – kein neues Schema nötig, gleiche Semantik: keine SVG-Platzierung, erscheint aber in der Stückliste.
+
+**3 neue Katalogeinträge (umgesetzt):**
+- `3LD2504-0TK51` (Siemens Hauptschalter 3-polig 63A/22kW, Fronttafeleinbau mit Drehantrieb) – 90×106×110,5mm, 65,69€ inkl. MwSt (alles-mit-stecker.de, kein bestätigter Siemens-Listenpreis), `keine_platzierung_mp=true`.
+- `3SU1102-6AA40-3AA0`/`3SU1102-6AA20-3AA0` (Siemens SIRIUS ACT Signalleuchte 22mm grün/rot, 24V AC/DC) – `b_mm`/`h_mm`=22 (Ausschnitt-Ø, keine reale Rechteckgröße), grün mit Preis (27,48€ exkl. MwSt, best4automation.com), rot ohne Preis (Bestellnummer nach Siemens-Nomenklaturmuster abgeleitet, nicht einzeln gegengeprüft).
+
+**Bewusst NICHT hinzugefügt (Datenlage zu dünn, keine geratenen Werte):**
+- **Touchscreen:** Kandidat Siemens SIMATIC KTP400 Basic PN (`6AV2123-2DB03-0AX0`) gefunden, aber weder Maße noch Herstellerlistenpreis bestätigt (nur ein Gebrauchtmarkt-Preis) – nicht übernommen.
+- **Phasenkontrollleuchte weiß:** technische Unklarheit ungelöst – ein einfacher weißer Meldeleuchtenkopf (z. B. Metzler, 22mm, ~6,49–6,99€) ist etwas anderes als ein echtes 3-Phasen-Kontrollgerät (z. B. „RK Phasenkontrollleuchte ATK 25"); welches der Nutzer meint, ist offen.
+- **Störentriegelungstaster:** Kandidat Siemens SIRIUS ACT Leuchtdrucktaste gelb `3SU1156-0AB30-1BA0` gefunden, Preis nicht verifiziert.
+- **Phasenwächter:** Kandidat Siemens `3UG4512-2AR20`, Maße nur von einem verwandten 3UG4-Modell (3UG4815, andere Bauform) übernommen, nicht für dieses Modell einzeln bestätigt.
+- **Hauptschalter Grundplattenmontage mit Welle zur Fronttür:** nur Zubehörteile gefunden (Türkupplungsdrehantrieb `3LD9343-2CA`, Verlängerungsachse 600mm `3LD9345-1C`, ~22,83€/Stk aus 5er-Pack), der eigentliche Grundplatten-Schalterkörper (mit Montageplatten-Platzbedarf, wie vom Nutzer gefordert) noch nicht identifiziert.
+- **3-phasiger Steuertrafo 400V/400V:** kein bestätigtes Siemens-Katalogprodukt gefunden – Siemens-4AP-Baureihe sind Stufentransformatoren (z. B. 400V→230V/115V), kein 1:1-Trenntransformator; unklar ob der Nutzer tatsächlich ein 1:1-Trenntransformator (galvanische Trennung, dann ggf. Planungsfabrikat-Ausnahme wie beim LVB-Relais nötig) oder einen Stufentrafo meint.
+- **Bediengerät vs. Touchscreen:** beide Begriffe vom Nutzer als zwei getrennte Positionen genannt, aber unklar was ein "Bediengerät" ohne Touch/Display konkret sein soll (Siemens führt aktuell kaum noch einfache Nicht-Touch-Basic-Panels).
+
+**Preisrecherche „fast überall fehlt der Preis":** 70 von 98 damals aktiven Bauteilen ohne `preis_eur` – bewusst NICHT in dieser Session pauschal abgearbeitet (zu großer Umfang für eine Sitzung, Risiko oberflächlicher/falscher Recherche). Größter Einzelblock: 41 Phoenix-Contact-UT/PT-Klemmen (nur ~10 tatsächliche Preis-Lookups nötig, da Farbvarianten derselben Baugröße meist gleich bepreist sind). Verbleibt offene Folgeaufgabe.
+
+Verifiziert: `xlsx_to_json.py` neu exportiert (102 aktive Bauteile), alle 9 geänderten/neuen Einträge per Skript gegen die JSON-Ausgabe gegengeprüft, Modul 4 im Browser fehlerfrei geladen (102/102 im Dropdown, keine Konsolenfehler).
+
 ### Modul 4 – Statistik-Chips: Mindestbreite gegen Prozent-Überlauf (Session 41 Nachtrag 8, gesperrt)
 Nutzer-Fund unmittelbar nach Nachtrag 7: die Prozentangaben in den Statistik-Chips liefen über den Chip-Rahmen hinaus. Ursache: `grid-template-columns:auto repeat(4,minmax(0,1fr))` – der explizite `0`-Mindestwert überschreibt für Grid-Spalten die sonst übliche inhaltsbasierte Mindestgröße, wodurch die Spalte schmaler werden kann als der `white-space:nowrap`-Chip-Text, der dadurch sichtbar über die Spaltengrenze hinausläuft (Chip-Hintergrund/-Rahmen bleiben schmal, Text ragt heraus).
 - **Fix:** `minmax(0,1fr)` → `minmax(108px,1fr)` – 108px wurde direkt im Browser gegen den ungünstigsten realistischen Chip-Inhalt gemessen (`"BO 999/999 · 100%"`, dreistelliger Datenpunktwert, 100% als vom Nutzer vorgegebener Auslastungs-Höchstwert), 103,86px gemessen + Puffer aufgerundet.
