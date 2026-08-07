@@ -1317,6 +1317,12 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Statistik-Chips: Mindestbreite gegen Prozent-Überlauf (Session 41 Nachtrag 8, gesperrt)
+Nutzer-Fund unmittelbar nach Nachtrag 7: die Prozentangaben in den Statistik-Chips liefen über den Chip-Rahmen hinaus. Ursache: `grid-template-columns:auto repeat(4,minmax(0,1fr))` – der explizite `0`-Mindestwert überschreibt für Grid-Spalten die sonst übliche inhaltsbasierte Mindestgröße, wodurch die Spalte schmaler werden kann als der `white-space:nowrap`-Chip-Text, der dadurch sichtbar über die Spaltengrenze hinausläuft (Chip-Hintergrund/-Rahmen bleiben schmal, Text ragt heraus).
+- **Fix:** `minmax(0,1fr)` → `minmax(108px,1fr)` – 108px wurde direkt im Browser gegen den ungünstigsten realistischen Chip-Inhalt gemessen (`"BO 999/999 · 100%"`, dreistelliger Datenpunktwert, 100% als vom Nutzer vorgegebener Auslastungs-Höchstwert), 103,86px gemessen + Puffer aufgerundet.
+- **`.eb-block-statistik` von `flex:0 1 380px` auf `flex:0 0 600px`** (fix, kein Schrumpfen mehr) – 380px reichte nicht für 5 Spalten (Label + 4×108px + 4×8px Gap ≈ 573px Bedarf). Nutzer-Vorgabe: das Eingabefeld darf dafür schmaler werden, „da ist ja Platz genug" – `.eb-block-eingabe` (`flex:1 1 420px`) gibt automatisch nach, ohne dass Funktionsbereich-Tabs, Baugruppen- oder Einzelbauteil-Auswahl umbrechen (bei 1920px verifiziert: Eingabe-Block schrumpft von ~1144px auf 824px, alle Elemente bleiben einzeilig und innerhalb des Blocks).
+- Verifiziert direkt im Browser: synthetischer Extremfall (alle 16 Chips auf `used:999,cap:999` gesetzt) → `overflowingCount:0` (vorher 16/16 liefen über); reale Werte (TXM-Modul-Test) unverändert korrekt dargestellt; kein horizontaler Overflow der gesamten Eingabeleiste bei 1920px.
+
 ### Modul 4 – Statistik spaltengenau ausgerichtet, Datenpunkttyp-Farbschema, Eingabeleiste kompakter (Session 41 Nachtrag 7, gesperrt)
 Nutzer-Fund per Screenshot bei 1920px (direkte Fortsetzung von Nachtrag 6): das 3-Blöcke-Layout funktionierte, aber drei Feinheiten störten – Statistik hatte deutlich mehr Breite reserviert als sie brauchte, die letzte Zeile der Grundeingaben ließ sich noch einsparen, und die 4 Statistik-Gruppen (Physikalisch + 3× Kommunikativ) standen als lose Flex-Zeilen nicht spaltengenau untereinander.
 

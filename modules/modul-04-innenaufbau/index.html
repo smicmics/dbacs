@@ -88,7 +88,7 @@ header a:hover{color:var(--tx2);}
 .eb-block:first-child{padding-left:0;}
 .eb-block:last-child{border-right:none;padding-right:0;}
 .eb-block-grund{flex:0 0 460px;}
-.eb-block-statistik{flex:0 1 380px;}
+.eb-block-statistik{flex:0 0 600px;}
 .eb-block-eingabe{flex:1 1 420px;}
 .eb-block-title{
   font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
@@ -117,7 +117,7 @@ header a:hover{color:var(--tx2);}
    Elternzeile und richten sich spaltengenau an allen 4 Zeilen aus, statt
    wie zuvor als lose Flex-Wrap-Häppchen zu "verschachteln" (Nutzer-Vorgabe). */
 .ddc-summary-row{
-  display:grid;grid-template-columns:auto repeat(4,minmax(0,1fr));
+  display:grid;grid-template-columns:auto repeat(4,minmax(108px,1fr));
   gap:4px 8px;align-items:center;min-height:28px;
 }
 .ddc-summary-grp{display:contents;}
