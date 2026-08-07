@@ -129,7 +129,7 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 81.0,
-    "zone": "leist",
+    "zone": "evert",
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.5,
     "geprueft": false
@@ -142,7 +142,7 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 81.0,
-    "zone": "leist",
+    "zone": "evert",
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.5,
     "geprueft": false
@@ -155,7 +155,7 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 81.0,
-    "zone": "leist",
+    "zone": "evert",
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.8,
     "geprueft": false
@@ -168,7 +168,7 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 81.0,
-    "zone": "leist",
+    "zone": "evert",
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 16.5,
     "geprueft": false
@@ -181,7 +181,7 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 81.0,
-    "zone": "leist",
+    "zone": "evert",
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 17.0,
     "geprueft": false
@@ -194,7 +194,7 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 81.0,
-    "zone": "leist",
+    "zone": "evert",
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 17.5,
     "geprueft": false
@@ -322,7 +322,7 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 90.0,
-    "zone": "uss",
+    "zone": "steuer",
     "kategorie": "Überspannungsschutz & Vorsicherung",
     "geprueft": false
   },
@@ -334,7 +334,7 @@
     "b_mm": 12.0,
     "te_breite": 1,
     "h_mm": 90.0,
-    "zone": "uss",
+    "zone": "steuer",
     "kategorie": "Überspannungsschutz & Vorsicherung",
     "geprueft": false
   },
@@ -386,6 +386,18 @@
     "zone": "steuer",
     "kategorie": "LVB-Relais (Vorrangbedienung)",
     "lvb_integriert": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EDS-205",
+    "bezeichnung": "Industrieswitch 5-Port unmanaged, Hutschiene (Regler-Netzwerkanbindung)",
+    "hersteller": "Moxa",
+    "bauteil_typ": "sonstige",
+    "b_mm": 25.0,
+    "te_breite": 2,
+    "h_mm": 74.0,
+    "zone": "steuer",
+    "kategorie": "DDC-Automationseinrichtung",
     "geprueft": false
   },
   {
@@ -888,7 +900,7 @@
     "b_mm": 54.0,
     "te_breite": 3,
     "h_mm": 90.0,
-    "zone": "leist",
+    "zone": "evert",
     "kategorie": "Leitungsschutzschalter",
     "geprueft": false
   },
@@ -1170,7 +1182,7 @@
     "artikel_nr": "3RH2911-1FA22",
     "bezeichnung": "Hilfsschalterblock frontseitig, 2S+2Ö, aufsteckbar auf Schütz 3RT2/3RH2, baugrößenunabhängig",
     "hersteller": "Siemens",
-    "bauteil_typ": "sonstige",
+    "bauteil_typ": "schuetz",
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 37.5,
@@ -1239,6 +1251,47 @@
     "h_mm": 140.0,
     "zone": "leist",
     "kategorie": "Motorschutzschalter",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3LD2504-0TK51",
+    "bezeichnung": "Hauptschalter 3-polig, 63A, 22kW/400V AC-23, Fronttafeleinbau mit Drehantrieb",
+    "hersteller": "Siemens",
+    "bauteil_typ": "sonstige",
+    "b_mm": 90.0,
+    "te_breite": 5,
+    "h_mm": 106.0,
+    "zone": "evert",
+    "kategorie": "Fronttafel-/Türeinbau",
+    "keine_platzierung_mp": true,
+    "preis_eur": 65.69,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3SU1102-6AA40-3AA0",
+    "bezeichnung": "Signalleuchte SIRIUS ACT 22mm, LED grün, 24V AC/DC, Fronttafeleinbau, Federklemme",
+    "hersteller": "Siemens",
+    "bauteil_typ": "sonstige",
+    "b_mm": 22.0,
+    "te_breite": 2,
+    "h_mm": 22.0,
+    "zone": "steuer",
+    "kategorie": "Fronttafel-/Türeinbau",
+    "keine_platzierung_mp": true,
+    "preis_eur": 27.48,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3SU1102-6AA20-3AA0",
+    "bezeichnung": "Signalleuchte SIRIUS ACT 22mm, LED rot, 24V AC/DC, Fronttafeleinbau, Federklemme",
+    "hersteller": "Siemens",
+    "bauteil_typ": "sonstige",
+    "b_mm": 22.0,
+    "te_breite": 2,
+    "h_mm": 22.0,
+    "zone": "steuer",
+    "kategorie": "Fronttafel-/Türeinbau",
+    "keine_platzierung_mp": true,
     "geprueft": false
   }
 ]
