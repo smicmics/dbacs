@@ -67,6 +67,16 @@ EXCEL_FILE = Path(__file__).parent / 'ga_komponenten.xlsx'
 # konkreten Datenpunkte sich hinter den dp_*/dp_fb_*-Zahlen verbergen (z.B.
 # "physikalisch: BI=Rueckmeldung Betrieb, BI=Rueckmeldung Stoerung, DO=Schalt-
 # befehl; kommunikativ (Modbus RTU): AI=Wirkleistung, AI=Energiezaehler").
+# 'keine_platzierung_mp' (Boolean, Session 41): Bauteil wird auf ein anderes
+# Bauteil aufgesteckt (z.B. Hilfsschalterblock auf ein Schuetz) und braucht
+# dadurch KEIN eigenes TE-Feld auf der Montageplatte - erscheint in Modul 4
+# weiterhin in der Stueckliste, wird aber nicht im Schrankbild platziert/
+# gezeichnet.
+# 'zubehoer_artikel_nr' (Text, Session 41 Nachtrag 5): Grundausstattung -
+# artikel_nr eines Bauteils, das automatisch in gleicher Menge mitgezaehlt
+# wird, sobald DIESES Bauteil in Modul 4 hinzugefuegt wird (z.B. Schuetz ->
+# Hilfsschalterblock). Kein Stromlaufplan-Anspruch, nur Platzbedarf/Preis -
+# Nutzer-Vorgabe.
 DP_FELDER = ['dp_ai', 'dp_ao', 'dp_bi', 'dp_bo', 'dp_fb_ai', 'dp_fb_ao', 'dp_fb_bi', 'dp_fb_bo']
 
 
@@ -333,6 +343,10 @@ def export_einzelbauteile(wb):
                 entry['feldbus_protokoll'] = str(rec['feldbus_protokoll'])
         if rec.get('dp_beschreibung') is not None:
             entry['dp_beschreibung'] = str(rec['dp_beschreibung'])
+        if rec.get('keine_platzierung_mp'):
+            entry['keine_platzierung_mp'] = True
+        if rec.get('zubehoer_artikel_nr') is not None:
+            entry['zubehoer_artikel_nr'] = str(rec['zubehoer_artikel_nr'])
         if rec.get('lvb_integriert') is not None:
             entry['lvb_integriert'] = bool(rec['lvb_integriert'])
         if rec.get('klemmen_zusatz') is not None:

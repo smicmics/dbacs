@@ -1011,10 +1011,50 @@ function addEinzelbauteil() {
     belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced}],
       ddcPhysisch, ddcKommunikativ, ddcProtokoll});
   }
+  if(eb) syncZubehoer(eb, menge);
   consolidateBelegung();
   saveBelegung();
   renderBelegung();
   calculate();
+}
+
+// Grundausstattung (Session 41 Nachtrag 5): manche Bauteile (z.B. Schütze)
+// werden bei uns immer mit einem Zubehörteil ausgeliefert (z.B. Hilfsschalter-
+// block für die DDC-Rückmeldung) – Nutzer-Vorgabe: "planen keine vollständige
+// Schaltschranklösung mit Stromlaufplan, sondern ermitteln Platzbedarf/Preis",
+// daher wird das Zubehör nicht einzeln ausgewählt, sondern folgt automatisch
+// der Menge des Hauptbauteils (`eb.zubehoer_artikel_nr`, Excel-Feld). Eigener
+// Belegungseintrag (für Stückliste/Preis, `keine_platzierung_mp` verhindert
+// eine eigene Grafik), aber ohne UI-Interaktion (kein rowBreak/DDC-Wahl -
+// das Zubehör selbst ist nicht automationsfähig).
+function syncZubehoer(eb, delta) {
+  if(!eb.zubehoer_artikel_nr || !delta) return;
+  const zEb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === eb.zubehoer_artikel_nr);
+  if(!zEb) return;
+  const ex = belegung.find(b => b.typ === 'einzel' && b.artikel_nr === eb.zubehoer_artikel_nr);
+  if(delta > 0) {
+    if(ex) {
+      ex.menge += delta;
+      ex.batches = getBatches(ex);
+      pushBatch(ex.batches, delta, false);
+    } else {
+      belegung.push({typ:'einzel', artikel_nr: eb.zubehoer_artikel_nr, menge: delta, ci: belegung.length % BG_COLORS.length, batches: [{n: delta, forced:false}]});
+    }
+    return;
+  }
+  if(!ex) return;
+  let remaining = -delta;
+  const batches = getBatches(ex);
+  while(remaining > 0 && batches.length) {
+    const last = batches[batches.length - 1];
+    const take = Math.min(last.n, remaining);
+    last.n -= take;
+    remaining -= take;
+    if(last.n <= 0) batches.pop();
+  }
+  ex.batches = batches;
+  ex.menge = batches.reduce((s, b) => s + b.n, 0);
+  if(ex.menge <= 0) belegung = belegung.filter(b => b !== ex);
 }
 
 // Symmetrisch zu removeBaugruppeQty(), für Einzelbauteile. Entfernt vom
@@ -1039,6 +1079,9 @@ function removeEinzelbauteilQty() {
   }
   item.batches = batches;
   item.menge = batches.reduce((s, b) => s + b.n, 0);
+  const tatsaechlichEntfernt = menge - remaining;
+  const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
+  if(eb) syncZubehoer(eb, -tatsaechlichEntfernt);
   if(item.menge <= 0) {
     belegung.splice(idx, 1);
     belegung.forEach((b, i) => { b.ci = i % BG_COLORS.length; });
@@ -1049,7 +1092,12 @@ function removeEinzelbauteilQty() {
 }
 
 function removeBelegungItem(i) {
-  belegung.splice(i, 1);
+  const item = belegung[i];
+  if(item && item.typ === 'einzel') {
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
+    if(eb) syncZubehoer(eb, -item.menge);
+  }
+  belegung.splice(belegung.indexOf(item), 1);
   belegung.forEach((b, idx) => { b.ci = idx % BG_COLORS.length; });
   saveBelegung();
   renderBelegung();
@@ -1799,13 +1847,20 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
       // rückwirkend betroffen sind. Summe der `forced`-Batches (Session 30,
       // ersetzt den alten einzelnen forcedMenge-Zähler) ergibt weiterhin
       // einen einzigen Block für den Zeilen-Cursor in placeInBands().
-      const forcedMenge = getBatches(item).filter(b => b.forced).reduce((s, b) => s + b.n, 0);
-      const normalMenge = item.menge - forcedMenge;
-      for(let q = 0; q < normalMenge; q++) {
-        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: false});
-      }
-      for(let q = 0; q < forcedMenge; q++) {
-        queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: true});
+      // keine_platzierung_mp (Session 41): Bauteil wird auf ein anderes
+      // Bauteil aufgesteckt (z.B. Hilfsschalterblock auf ein Schütz) - braucht
+      // kein eigenes TE-Feld auf der Montageplatte, bleibt aber in der
+      // Stückliste (aggregateStueckliste() baut unabhängig von queues/zones
+      // direkt aus belegung auf, siehe Session 28j).
+      if(!eb.keine_platzierung_mp) {
+        const forcedMenge = getBatches(item).filter(b => b.forced).reduce((s, b) => s + b.n, 0);
+        const normalMenge = item.menge - forcedMenge;
+        for(let q = 0; q < normalMenge; q++) {
+          queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: false});
+        }
+        for(let q = 0; q < forcedMenge; q++) {
+          queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: true});
+        }
       }
       return;
     }
@@ -1819,6 +1874,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
         const zone = bt.zone || eb.zone;
         if(!queues[zone]) return;
         accumulateDp(eb, bt.menge);
+        if(eb.keine_platzierung_mp) return;
         for(let q = 0; q < bt.menge; q++) {
           queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak});
         }

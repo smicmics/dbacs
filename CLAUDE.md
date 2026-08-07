@@ -1317,6 +1317,23 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Schütz-Zubehör: Hilfsschalterblock als automatische Grundausstattung, Motorschutzschalter ergänzt, S0-Maße korrigiert (Session 41 Nachtrag 4+5, gesperrt)
+Direkte Fortsetzung. Nutzer-Fund: die neu ergänzten Schütze haben nur Leistungs- und Spulenanschlüsse, keine Hilfskontakte – für eine DDC-Rückmeldung (Betrieb/Störung) wird aber mindestens ein Hilfskontakt gebraucht. Lösung ist ein aufsteckbarer Hilfsschalterblock, der laut Nutzer nur in der Höhe aufbaut und keinen eigenen Platz auf der Montageplatte braucht – „soll nicht dargestellt werden, taucht nur in der Bauteilliste auf".
+
+**Verifizierte S0-Maße nachgetragen:** `3RT2023-1BB40`/`3RT2025-1BB40` (bestehend) sowie alle 6 in Nachtrag 3 neu ergänzten S0-Schütze (`3RT2024`/`3RT2025`/`3RT2026`/`3RT2027`, je AB00/AP00-Variante) von der ursprünglichen Näherung (54×80mm) bzw. vorläufigen Schätzung (45×85mm) auf **45×102mm** korrigiert – direkt am eigenen Katalogeintrag `3RT2025-1BB40` verifiziert (102×45×97mm B×H×T, RS Components/Conrad-Datenblatt).
+
+**Neues Feld `keine_platzierung_mp`** (Boolean, `einzelbauteile`): Bauteil wird auf ein anderes Bauteil aufgesteckt, braucht kein eigenes TE-Feld auf der Montageplatte. In Modul 4 (`placeBauteile()`) wird ein so geflaggtes Bauteil **nicht** in `queues[zone]` eingereiht (keine SVG-Grafik), erscheint aber unverändert in der Stückliste – `aggregateStueckliste()` baut ohnehin unabhängig von der Platzierung direkt aus `belegung`/`baugruppen` auf (Session 28j), daher kein Sonderfall dort nötig. Erster Eintrag: `3RH2911-1FA22` (Hilfsschalterblock, 2S+2Ö, frontseitig aufsteckbar, baugrößenunabhängig für S00/S0/S2 – EIN Bestellnummer deckt alle unsere Schütz-Baugrößen ab), Maße 36×37,5mm.
+
+**Kurskorrektur während der Umsetzung (Nutzer):** statt den Hilfsschalterblock manuell auswählbar zu machen, soll er **automatisch jedes Schütz begleiten** („Grundausstattung") – Begründung: DDC-Anbindung funktioniert dann immer, unbenutzte Kontakte sind kein Problem, und das Tool ermittelt ohnehin nur Platzbedarf/Preis, keinen vollständigen Stromlaufplan. Umsetzung:
+- Neues Feld `zubehoer_artikel_nr` (Text, `einzelbauteile`) – bei allen 18 Schützen auf `3RH2911-1FA22` gesetzt.
+- Neue Funktion `syncZubehoer(eb, delta)`: legt bei positivem `delta` einen eigenen `belegung`-Eintrag für das Zubehör an/erhöht ihn (gleiche Menge wie das Hauptbauteil, ohne eigene UI-Interaktion – kein rowBreak, keine DDC-Aufschaltungs-Wahl, da das Zubehör selbst nicht automationsfähig ist), bei negativem `delta` reduziert/entfernt sie ihn passend (LIFO wie die bestehende Batch-Logik).
+- Aufgerufen in `addEinzelbauteil()` (positiv), `removeEinzelbauteilQty()` (negativ, mit der tatsächlich entfernten Menge `menge - remaining`, nicht der angeforderten) und `removeBelegungItem()` (negativ, beim direkten Löschen einer Zeile aus der Belegungsliste – dort zusätzlich `belegung.indexOf(item)` statt des ursprünglichen Index `i` verwendet, da `syncZubehoer` das Array vorher mutieren kann).
+- **Bewusst nicht Teil dieser Session:** dieselbe automatische Mitführung für Baugruppen-Bauteile (`bg.bauteile`) – aktuell nicht testbar, da alle Baugruppen leer sind (Session 40); beim Neuaufbau der Baugruppen nachziehen, sobald ein Schütz erstmals wieder Teil einer Baugruppe ist.
+
+**5 neue Motorschutzschalter** (Siemens 3RV2, passend zu den in Nachtrag 3 ergänzten Schütz-Leistungsstufen, bisher endete der Katalog bei 4kW/10A): `3RV2021-4AA20` (10–16A, 5,5kW), `3RV2021-4BA10` (13–20A, 7,5kW, Preis 74,44€ verifiziert), `3RV2021-4DA10` (18–25A, 11kW – Herstellerangabe „Bemessungsbetriebsleistung 11kW" direkt bestätigt, Preis 89,00€), `3RV2031-4EA10` (22–32A, 15kW), `3RV2041-4HA10` (36–50A, 22kW, Maße nicht einzeln bestätigt, von benachbarter Baugröße übernommen).
+
+Verifiziert im Browser: 2× Schütz hinzugefügt → automatisch 2× Hilfsschalterblock in der Belegung; Schütz landet im Schrankbild, Hilfsschalterblock nicht (`placedInSvg:false`); beide korrekt in der Stückliste (`aggregateStueckliste()`). Katalog jetzt 98 aktive Bauteile.
+
 ### Schütze vervollständigt: 24V AC + 230V AC über den gesamten Leistungsbereich (Session 41 Nachtrag 3, gesperrt)
 Nutzer-Fund: von 5 Schützen im Katalog hatten nur die ersten beiden (3RT2015, 3kW) eine Wahl zwischen AC- und DC-Spule; die übrigen (4/5,5/7,5 kW) nur 24V DC. In der Gebäudeautomation werden Schütze aber überwiegend mit Wechselspannung (24V AC oder 230V AC) angesteuert, 230V AC fehlte komplett. Nutzer-Vorgabe: auf Basis 230V (und 24V) Leistungen bis ~25kW schaltbar machen, Recherche bei Siemens (Planungsfabrikat).
 
