@@ -323,7 +323,7 @@
     "te_breite": 1,
     "h_mm": 90.0,
     "zone": "steuer",
-    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "kategorie": "Überspannungsschutz",
     "geprueft": false
   },
   {
@@ -335,7 +335,7 @@
     "te_breite": 1,
     "h_mm": 90.0,
     "zone": "steuer",
-    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "kategorie": "Überspannungsschutz",
     "geprueft": false
   },
   {
@@ -371,7 +371,7 @@
     "te_breite": 2,
     "h_mm": 61.3,
     "zone": "steuer",
-    "kategorie": "LVB-Relais (Vorrangbedienung)",
+    "kategorie": "Koppelrelais",
     "lvb_integriert": true,
     "geprueft": false
   },
@@ -384,7 +384,7 @@
     "te_breite": 1,
     "h_mm": 87.5,
     "zone": "steuer",
-    "kategorie": "LVB-Relais (Vorrangbedienung)",
+    "kategorie": "Koppelrelais",
     "lvb_integriert": true,
     "geprueft": false
   },
@@ -397,7 +397,7 @@
     "te_breite": 2,
     "h_mm": 74.0,
     "zone": "steuer",
-    "kategorie": "DDC-Automationseinrichtung",
+    "kategorie": "Netzwerkeinrichtung",
     "geprueft": false
   },
   {
@@ -1261,7 +1261,7 @@
     "b_mm": 90.0,
     "te_breite": 5,
     "h_mm": 106.0,
-    "zone": "evert",
+    "zone": "tuer",
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
     "preis_eur": 65.69,
@@ -1271,11 +1271,11 @@
     "artikel_nr": "3SU1102-6AA40-3AA0",
     "bezeichnung": "Signalleuchte SIRIUS ACT 22mm, LED grün, 24V AC/DC, Fronttafeleinbau, Federklemme",
     "hersteller": "Siemens",
-    "bauteil_typ": "sonstige",
+    "bauteil_typ": "signalleuchte",
     "b_mm": 22.0,
     "te_breite": 2,
     "h_mm": 22.0,
-    "zone": "steuer",
+    "zone": "leist",
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
     "preis_eur": 27.48,
@@ -1285,11 +1285,11 @@
     "artikel_nr": "3SU1102-6AA20-3AA0",
     "bezeichnung": "Signalleuchte SIRIUS ACT 22mm, LED rot, 24V AC/DC, Fronttafeleinbau, Federklemme",
     "hersteller": "Siemens",
-    "bauteil_typ": "sonstige",
+    "bauteil_typ": "signalleuchte",
     "b_mm": 22.0,
     "te_breite": 2,
     "h_mm": 22.0,
-    "zone": "steuer",
+    "zone": "leist",
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
     "geprueft": false
