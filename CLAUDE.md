@@ -393,6 +393,20 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Zone "Fronttafel/Tür" + Kategorie-Korrekturen (Session 43, gesperrt)
+Direkte Fortsetzung von Session 42 – Nutzer prüft die Zone-Filterung („Automation = Steuerung") und findet weitere Fehlzuordnungen. **Klärung der 3-Felder-Verwirrung (Nutzerfrage):** `bauteil_typ` wird nur für zwei Dinge ausgewertet – (1) `isDdcSupplyTyp()` unterscheidet DDC-Kapazität (`ddc_io`/`ddc_cpu`) von -Bedarf, (2) `kurzLabel()` liefert das SVG-Kurzlabel. **Hat keinerlei Einfluss auf die Dropdown-Filterung** – die läuft ausschließlich über `kategorie` (Optgroup) + `zone` (Zonen-Filter-Chips), verifiziert direkt gegen `populateEinzelAuswahl()`.
+
+- **Neue Zone `tuer` („Fronttafel/Tür")** für Bauteile ohne Montageplatten-Platzbedarf (`keine_platzierung_mp`). Bewusst NICHT in `ALLE_ZONEN`/`ZONE_LABELS`/`ZONE_COLORS` aufgenommen – diese Konstanten sind laut Kommentar „einzige Quelle" für physische Zonen mit SVG-Rects/Füllstand-Kapazität, `tuer` hat keine. Eigener, unabhängiger Filter-Chip `#fs-tuer-mini` (Muster wie `#fs-alle-mini`, kein Balken) im Füllstand-Streifen, nutzt den bereits generischen `setEinzelZone()`-Mechanismus (matcht nur `data-zone`, keine Abhängigkeit von `ALLE_ZONEN`) – keine Änderung an `placeBauteile()`/`buildFuellstand()`/`buildLegend()` nötig oder gewünscht. Referenz-Sheet `zonen` um `tuer`/„Fronttafel/Tür" ergänzt.
+- `3LD2504-0TK51` (Hauptschalter Fronttafeleinbau): `zone` `evert`→`tuer`.
+- `BXT BAS`/`BXT ML4 BE24` (Blitzductor): eigene `kategorie` „Überspannungsschutz" statt der bisherigen „...& Vorsicherung" – hat keine eigene Vorsicherung wie die Haupt-ÜSS-Zeile (952300/5SG1812, die behält die alte Kategorie).
+- `EDS-205` + Wachendorff-Gateway (`HD67812-KNX-XXX-B2`): `kategorie` `DDC-Automationseinrichtung`→`Netzwerkeinrichtung` (Netzwerk-/Kommunikationsgeräte, keine DDC-I/O-Kapazität – Prinzip vom Nutzer nur für den Switch genannt, hier konsequent auch aufs Gateway angewendet).
+- Signalleuchte grün/rot: `zone` `steuer`→`leist` (funktionale statt physische Zuordnung – bei `keine_platzierung_mp` ohnehin ohne SVG-Auswirkung), `bauteil_typ` `sonstige`→neuer Wert `signalleuchte` (bündelt künftig auch die noch offene Phasenkontrollleuchte).
+- LVB-Relais (`110661`, `110730`) + Koppelrelais (`PLC-RSC-24DC/21`) in einer `kategorie` „Koppelrelais" zusammengeführt – `lvb_integriert` bleibt die technische Unterscheidung, kein Informationsverlust.
+
+**Bewusst zurückgestellt (Nutzer-Vorgabe „erst morgen, wegen Kontingentverbrauch"):** ein „Info-Feature", das `keine_platzierung_mp` in der Excel-Tabelle selbst sichtbar/erkennbar macht (aktuell nur im `quelle_hinweis`-Freitext erkennbar) – noch nicht spezifiziert, nächste Sitzung.
+
+Verifiziert direkt im Browser: Zonen-Filter „Tür" zeigt korrekt genau den Hauptschalter; alle 9 geänderten Einträge gegen `EINZELBAUTEILE_DB` geprüft (zone/kategorie/bauteil_typ wie vorgesehen); neue Kategorien „Netzwerkeinrichtung"/„Überspannungsschutz" erscheinen, „LVB-Relais (Vorrangbedienung)" als eigene Kategorie korrekt verschwunden; keine Konsolenfehler.
+
 ### Katalog: Zonen-/Kategorie-Korrekturen + erste Türbauteile (Session 42, gesperrt/teilweise offen)
 Nutzer geht die Excel-Tabelle händisch durch und meldet gezielte Korrekturen + neue Bauteile.
 
