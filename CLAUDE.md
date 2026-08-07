@@ -1317,6 +1317,21 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Eingabeleiste 3-Blöcke-Layout (Session 41 Nachtrag 6, gesperrt)
+Nutzer-Fund per Screenshot: die neue, 16 Chips umfassende DDC-Statistik (Session 41 Nachtrag) hat die Baugruppen-/Einzelbauteil-Auswahl aus dem sichtbaren Bereich gedrängt – derselbe Grundfehler wie schon bei den Funktionsbereich-Tabs in Session 40 (eine Grid-Spalte mit `max-content`-Breite lässt Flex-Wrap-Kinder nicht wirklich umbrechen, die Spalte wächst stattdessen unbegrenzt).
+
+**Fix – komplette Neuordnung der `.eingabeleiste` auf 3 feste Blöcke nebeneinander** (löst das 2-zeilige Grid aus Session 28f endgültig ab):
+- `.eingabeleiste{display:flex;flex-wrap:wrap}` statt `display:grid` mit `max-content`-Spalte.
+- Jeder Block (`.eb-block`) ein Flex-Kind mit `min-width:0` und eigenem `flex-basis` (`eb-block-grund` fest 360px, `eb-block-statistik`/`eb-block-eingabe` flexibel mit Mindestbreite) – das ist der eigentliche Fix: Flex-Kinder mit `min-width:0` respektieren die Elternbreite und brechen intern um, eine `max-content`-Grid-Spalte tut das nicht.
+- **Block 1 „Grund- & Reserveangaben":** Schranktyp, Montagebereich, Klemmraum, Reserve Schaltschrank, Reserve Datenpunkte – in 3 Zeilen (2+2+1) gruppiert, Blockbreite 360px so gewählt, dass genau 2 Felder pro Zeile nebeneinanderpassen (erster Versuch mit 300px brach jedes Feld einzeln um, dadurch 5 statt 3 Zeilen – zu hoch).
+- **Block 2 „Statistik":** DDC-Automationseinrichtung – `.ddc-summary-row` von `flex-wrap` auf `flex-direction:column` umgestellt, jede der 4 Gruppen (Physikalisch + 3× Kommunikativ) bekommt jetzt ihre eigene Zeile statt gemeinsam zu fließen – bleibt dadurch unabhängig von der Blockbreite lesbar.
+- **Block 3 „Eingabe · Funktionsbereich":** Funktionsbereich-Tabs, Baugruppe, Einzelbauteile (inkl. DDC-Aufschaltungs-Zeile) – jetzt untereinander statt nebeneinander in eigener Spalte.
+- Alle IDs unverändert (`schrank_typ`, `bg_auswahl`, `einzel_auswahl`, `ddc-summary-row` usw.) – reine HTML-Umgruppierung/CSS-Neubau, keine JS-Änderungen nötig.
+
+Verifiziert im Browser (1920px, mit synthetischem Testgerät + TXM-Modul für realistische DDC-Daten): alle 3 Blöcke nebeneinander, keiner überschreitet den Viewport (`allWithinViewport:true` für Funktionsbereich-Tabs, Baugruppe-Feld, Einzelbauteil-Feld, „−"-Button); die 4 Statistik-Gruppen stapeln sich korrekt einzeln (top-Werte 180/208/236/264px), Inhalt (701px) passt in den Block (742px). Bei 1920px und 1280px kein horizontaler Overflow durch die Eingabeleiste selbst.
+
+**Nebenbefund, nicht behoben (außerhalb des heutigen Auftrags):** bei 1280px Breite überschreitet `.panel-mid` (Schranksicht/SVG-Bereich) den Viewport unabhängig von der Eingabeleiste und auch mit leerer Belegung – vorbestehendes, von der heutigen Änderung unabhängiges Verhalten, nicht weiter untersucht.
+
 ### Schütz-Zubehör: Hilfsschalterblock als automatische Grundausstattung, Motorschutzschalter ergänzt, S0-Maße korrigiert (Session 41 Nachtrag 4+5, gesperrt)
 Direkte Fortsetzung. Nutzer-Fund: die neu ergänzten Schütze haben nur Leistungs- und Spulenanschlüsse, keine Hilfskontakte – für eine DDC-Rückmeldung (Betrieb/Störung) wird aber mindestens ein Hilfskontakt gebraucht. Lösung ist ein aufsteckbarer Hilfsschalterblock, der laut Nutzer nur in der Höhe aufbaut und keinen eigenen Platz auf der Montageplatte braucht – „soll nicht dargestellt werden, taucht nur in der Bauteilliste auf".
 
