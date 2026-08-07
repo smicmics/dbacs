@@ -20,6 +20,15 @@
   --blue:  #7A74CC;
   --font:  system-ui,-apple-system,sans-serif;
   --mono:  'Courier New',Courier,monospace;
+  /* Datenpunkttyp-Farbschema (Session 41 Nachtrag 7) – gilt einheitlich für
+     AI/AO/BI/BO, unabhängig davon ob physikalisch oder kommunikativ (Modbus/
+     M-Bus). Bewusst eigene, von --blue/--orange/--green unterscheidbare
+     Töne, damit Typ-Identität nicht mit Zonenfarben oder dem grünen
+     "OK"-Status verwechselt wird. */
+  --dp-ai: #A374E0;  /* Violett */
+  --dp-ao: #E07BB0;  /* Rosa */
+  --dp-bi: #4E8FE0;  /* Blau */
+  --dp-bo: #DE5B54;  /* Rot */
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;}
@@ -78,8 +87,8 @@ header a:hover{color:var(--tx2);}
 }
 .eb-block:first-child{padding-left:0;}
 .eb-block:last-child{border-right:none;padding-right:0;}
-.eb-block-grund{flex:0 0 360px;}
-.eb-block-statistik{flex:1 1 380px;}
+.eb-block-grund{flex:0 0 460px;}
+.eb-block-statistik{flex:0 1 380px;}
 .eb-block-eingabe{flex:1 1 420px;}
 .eb-block-title{
   font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
@@ -102,20 +111,34 @@ header a:hover{color:var(--tx2);}
 .eb-mb-row{display:flex;align-items:center;gap:5px;}
 .eb-mb-row input{width:62px;text-align:right;}
 .eb-mb-row span{color:var(--tx3);font-size:11px;}
-.ddc-summary-row{display:flex;flex-direction:column;gap:5px;min-height:28px;}
-.ddc-chip{
-  font-size:10px;padding:3px 7px;border-radius:3px;white-space:nowrap;
-  border:1px solid var(--bords);color:var(--tx2);background:var(--bg);
+/* Statistik als echte Tabelle (Session 41 Nachtrag 7): Grid mit 5 Spalten
+   (Gruppenlabel + AI/AO/BI/BO), jede Gruppe `.ddc-summary-grp{display:contents}`
+   – ihre Kinder (Label + 4 Chips) werden dadurch direkte Grid-Items der
+   Elternzeile und richten sich spaltengenau an allen 4 Zeilen aus, statt
+   wie zuvor als lose Flex-Wrap-Häppchen zu "verschachteln" (Nutzer-Vorgabe). */
+.ddc-summary-row{
+  display:grid;grid-template-columns:auto repeat(4,minmax(0,1fr));
+  gap:4px 8px;align-items:center;min-height:28px;
 }
-.ddc-chip-ok{border-color:var(--bords);color:var(--tx2);}
-.ddc-chip-warn{border-color:#D4A84B;color:#D4A84B;}
-.ddc-chip-over{border-color:#E04444;color:#E04444;}
+.ddc-summary-grp{display:contents;}
+.ddc-chip{
+  font-size:10px;padding:3px 6px;border-radius:3px;white-space:nowrap;
+  text-align:center;border:1px solid var(--bords);color:var(--tx2);background:var(--bg);
+}
+/* Status signalisiert über Hintergrund-Tönung + Fettung, NICHT über Rahmen-/
+   Textfarbe – die bleibt immer der Datenpunkttyp-Farbe vorbehalten (s.u.),
+   sonst wäre z.B. ein überlasteter BO-Chip (Typfarbe rot) nicht von der
+   allgemeinen Überlastungs-Warnung unterscheidbar. */
+.ddc-chip-warn{background:rgba(212,168,75,.22);font-weight:600;}
+.ddc-chip-over{background:rgba(224,68,68,.26);font-weight:700;}
 .ddc-chip-empty{font-size:10px;color:var(--tx3);}
-/* Jede Protokoll-/Physikalisch-Gruppe eine eigene Zeile statt gemeinsamem
-   Fließtext – macht die Statistik als eigener Block kompakt lesbar,
-   unabhängig von der Blockbreite (Session 41 Nachtrag 6). */
-.ddc-summary-grp{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
-.ddc-grp-lbl{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.03em;min-width:78px;}
+/* Datenpunkttyp-Farbschema – siehe :root, gilt für Rahmen+Text, egal ob
+   physikalisch oder kommunikativ (Modbus/M-Bus). */
+.dp-ai{border-color:var(--dp-ai);color:var(--dp-ai);}
+.dp-ao{border-color:var(--dp-ao);color:var(--dp-ao);}
+.dp-bi{border-color:var(--dp-bi);color:var(--dp-bi);}
+.dp-bo{border-color:var(--dp-bo);color:var(--dp-bo);}
+.ddc-grp-lbl{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
 .eb-hint{width:100%;font-size:10px;color:var(--tx3);margin-top:4px;}
 
 /* ── Füllstand-Streifen (volle Breite, kompakt) ── */
@@ -456,8 +479,6 @@ legend{
           <span id="reserve-warn" class="reserve-warn" style="display:none" title="Reserve konnte für mindestens einen Bereich nicht gehalten werden – Wert ggf. anpassen">&#9888;</span>
         </div>
       </div>
-    </div>
-    <div class="eb-block-row">
       <div class="eb-field" title="Reserve für DDC-Datenpunkte (AI/AO/BI/BO) – unabhängig von der Schaltschrank-Reserve">
         <label>Reserve Datenpunkte (%)<span class="var">ddc_reserve_pct</span></label>
         <div class="eb-reserve-row">
@@ -671,6 +692,13 @@ const DP_LABELS = {dp_ai:'AI', dp_ao:'AO', dp_bi:'BI', dp_bo:'BO', dp_fb_ai:'Fel
 const PHYS_DP_TYPES = ['dp_ai','dp_ao','dp_bi','dp_bo'];
 const FB_DP_TYPES = ['dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo'];
 const FB_TYPE_LABEL = {dp_fb_ai:'AI', dp_fb_ao:'AO', dp_fb_bi:'BI', dp_fb_bo:'BO'};
+// Datenpunkttyp-Farbschema (Session 41 Nachtrag 7) – einzige Quelle, Werte
+// identisch zu den CSS-Variablen --dp-ai/--dp-ao/--dp-bi/--dp-bo (:root).
+// Gilt einheitlich für AI/AO/BI/BO unabhängig davon, ob physikalisch oder
+// kommunikativ (Modbus/M-Bus) – Nutzer-Vorgabe: Text+Rahmen der Statistik-
+// Chips tragen immer die Typfarbe, der Belegungsstatus (ok/warn/über)
+// signalisiert stattdessen per Hintergrund-Tönung (siehe .ddc-chip-warn/-over).
+const DP_TYPE_COLORS = {ai:'#A374E0', ao:'#E07BB0', bi:'#4E8FE0', bo:'#DE5B54'};
 const FB_SUMMARY_GROUPS = [
   {key:'mbus', label:'Komm. M-Bus'},
   {key:'modbus_rtu', label:'Komm. Modbus RTU'},
@@ -1704,8 +1732,9 @@ function updateDdcAutoDisplay(ddcAuto) {
 const DP_SUMMARY_LABELS = {dp_ai:'AI', dp_ao:'AO', dp_bi:'BI', dp_bo:'BO'};
 function ddcChip(lbl, s) {
   const pct = s.cap > 0 ? Math.round((s.used / s.cap) * 100) : (s.used > 0 ? 100 : 0);
-  const cls = s.used > s.cap ? 'ddc-chip-over' : (pct > 80 ? 'ddc-chip-warn' : 'ddc-chip-ok');
-  return `<span class="ddc-chip ${cls}" title="${lbl}: ${s.used} von ${s.cap} Datenpunkten belegt">${lbl} ${s.used}/${s.cap} · ${pct}%</span>`;
+  const statusCls = s.used > s.cap ? 'ddc-chip-over' : (pct > 80 ? 'ddc-chip-warn' : 'ddc-chip-ok');
+  const typCls = 'dp-' + lbl.toLowerCase(); // lbl ist immer "AI"/"AO"/"BI"/"BO" (DP_SUMMARY_LABELS/FB_TYPE_LABEL)
+  return `<span class="ddc-chip ${typCls} ${statusCls}" title="${lbl}: ${s.used} von ${s.cap} Datenpunkten belegt">${lbl} ${s.used}/${s.cap} · ${pct}%</span>`;
 }
 function updateDdcSummary(ddcSummary) {
   const el = document.getElementById('ddc-summary-row');

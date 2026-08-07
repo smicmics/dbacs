@@ -1317,6 +1317,22 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Statistik spaltengenau ausgerichtet, Datenpunkttyp-Farbschema, Eingabeleiste kompakter (Session 41 Nachtrag 7, gesperrt)
+Nutzer-Fund per Screenshot bei 1920px (direkte Fortsetzung von Nachtrag 6): das 3-Blöcke-Layout funktionierte, aber drei Feinheiten störten – Statistik hatte deutlich mehr Breite reserviert als sie brauchte, die letzte Zeile der Grundeingaben ließ sich noch einsparen, und die 4 Statistik-Gruppen (Physikalisch + 3× Kommunikativ) standen als lose Flex-Zeilen nicht spaltengenau untereinander.
+
+**Spaltengenaue Statistik-Tabelle:** `.ddc-summary-row` von `flex-direction:column` (Nachtrag 6) auf `display:grid;grid-template-columns:auto repeat(4,minmax(0,1fr))` umgestellt. Jede der 4 Gruppen (`.ddc-summary-grp`) bekommt `display:contents` – dadurch werden ihre Kinder (Gruppenlabel + 4 Chips AI/AO/BI/BO) direkte Grid-Items der Elternzeile und richten sich automatisch spaltengenau an allen 4 Zeilen aus, ganz ohne echtes `<table>`-Markup. `ddcChip()`/`updateDdcSummary()` unverändert in der Aufrufreihenfolge, nur das umgebende Markup nutzt jetzt diese Grid-Struktur.
+
+**Datenpunkttyp-Farbschema, zentral gespeichert – gilt für Rahmen UND Text, unabhängig ob physikalisch oder kommunikativ:**
+```
+--dp-ai: #A374E0  Violett      --dp-bi: #4E8FE0  Blau
+--dp-ao: #E07BB0  Rosa         --dp-bo: #DE5B54  Rot
+```
+Als CSS-Variablen in `:root` UND als JS-Konstante `DP_TYPE_COLORS` (identische Werte, `:root` ist die primäre Quelle, JS-Konstante nur für den Fall künftiger JS-seitiger Nutzung) – `.dp-ai/.dp-ao/.dp-bi/.dp-bo`-Klassen setzen `border-color`+`color`. `ddcChip()` leitet die Klasse aus dem übergebenen Label ab (`'dp-' + lbl.toLowerCase()`), greift dadurch identisch für alle 4 Gruppen. **Status (Warn/Overflow) bewusst getrennt von der Typfarbe:** `.ddc-chip-warn`/`.ddc-chip-over` färben nicht mehr Rahmen/Text um, sondern nur `background`-Tönung + `font-weight` – sonst wäre ein überlasteter BO-Chip (Typfarbe bereits Rot) nicht von der allgemeinen Überlastungs-Warnung unterscheidbar gewesen.
+
+**Eingabeleiste kompakter – echte Ursache war ein Zeilenumbruch, nicht nur die Zeilenanzahl:** „Reserve Datenpunkte (%)" aus der bisherigen 3. Zeile des Grund-Blocks in die 2. Zeile verschoben (jetzt Klemmraum + Reserve Schaltschrank + Reserve Datenpunkte in einer Zeile) – das allein änderte die Gesamthöhe der Eingabeleiste zunächst NICHT (`leisteHeight` blieb bei 257px), weil `.eb-block-grund` mit `flex:0 0 360px` zu schmal war, um 3 Felder nebeneinander zu zeigen (Breitenbedarf 433px gegen verfügbare 339px) – die Zeile brach dadurch intern um zwei Zeilen, der vermeintlich eingesparte Zeilenumbruch wanderte nur innerhalb des Blocks statt zu verschwinden. **Fix:** `.eb-block-grund` von 360px auf 460px verbreitert (misst 3 nebeneinanderstehende Felder plus Blockpadding), wodurch Zeile 2 wieder einzeilig wird. `.eb-block-statistik` bleibt bei `flex:0 1 380px` (kein Wachstum über den tatsächlichen Bedarf hinaus), `.eb-block-eingabe` bleibt `flex:1 1 420px` (wächst weiter mit dem verbleibenden Platz).
+
+Verifiziert direkt gegen die produktiven Funktionen im Browser (1920px, synthetisches Testgerät `TEST-PUMPE` mit physikalischem + kommunikativem Modbus-RTU-Bedarf, plus TXM1.6R für reale Statistik-Werte): Grid-Spaltenausrichtung exakt (`aiLeftsAligned:true`, `boRightsAligned:true` – linke/rechte Kante aller 4 AI- bzw. BO-Chips pixelgleich); Chip-Klassen korrekt (`ddc-chip dp-ai ddc-chip-ok` usw.); Gesamthöhe `.eingabeleiste` sinkt durch den Breiten-Fix von 257px auf 201,75px – die vom Nutzer gewünschte zusätzliche Zeile für die Schranksicht ist damit real vorhanden (nicht nur verschoben). Bei 1280px Breite bleibt der bereits in Nachtrag 6 dokumentierte, unabhängige `.panel-mid`-Overflow bestehen (nicht Teil dieser Änderung, weiterhin bewusst nicht behoben).
+
 ### Modul 4 – Eingabeleiste 3-Blöcke-Layout (Session 41 Nachtrag 6, gesperrt)
 Nutzer-Fund per Screenshot: die neue, 16 Chips umfassende DDC-Statistik (Session 41 Nachtrag) hat die Baugruppen-/Einzelbauteil-Auswahl aus dem sichtbaren Bereich gedrängt – derselbe Grundfehler wie schon bei den Funktionsbereich-Tabs in Session 40 (eine Grid-Spalte mit `max-content`-Breite lässt Flex-Wrap-Kinder nicht wirklich umbrechen, die Spalte wächst stattdessen unbegrenzt).
 
