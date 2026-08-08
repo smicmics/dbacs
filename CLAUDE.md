@@ -393,6 +393,31 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Katalog: GA-Schaltschrank-Bauteile für HLS/Elektro/Sanitär + Sicherheitstechnik-Schnittstellen (Session 45, gesperrt)
+Nutzer-Auftrag (autonom, „ohne Rückfrage", 1-2h Recherche): Katalog um typische Komponenten für GA-Schaltschränke ergänzen. Anwendungskontext vom Nutzer vorgegeben: Überwachung/Steuerung von HLS+Elektro+Sanitär in Büro-/Verwaltungs-/Rechenzentrum-/Labor-/Schulgebäuden, zusätzlich Schnittstellen zu sicherheitsrelevanten Fremdsystemen (BMA, ZUKO, Videoüberwachung, Gaslöschanlagen). Fokus explizit auf Bauteile, die in Schaltschrank ODER Tür eingebaut werden (keine Feldgeräte/Sensoren/Aktoren außerhalb des Schranks). Planungsfabrikat Automation bleibt Siemens (bestehende Entscheidung, keine weiteren Automationshersteller).
+
+**14 neue Katalogeinträge, 3 neue Kategorien:**
+- **Frequenzumrichter** (neu) – Siemens SINAMICS G120C für Pumpen-/Lüfterantriebe mit Drehzahlregelung, 4 Baugrößen über den typischen HLK-Leistungsbereich: 0,75kW (FSAA), 3kW (FSA), 5,5kW (FSB, mit verifiziertem RS-Preis), 15kW (FSC). `bauteil_typ:'frequenzumrichter'`, zone `leist`.
+- **Zeitrelais** (neu) – Phoenix Contact ETD-Serie, Multifunktion 0,05s–1h. `bauteil_typ:'zeitrelais'`, zone `steuer`.
+- **Steckdose/Zubehör** (neu) – Phoenix Contact SD-D/SC Hutschienen-Schuko-Steckdose für Wartungszwecke. `bauteil_typ:'steckdose'`, zone `evert`.
+- **Fronttafel-/Türeinbau erweitert:** Wahlschalter Hand-0-Automatik (SIRIUS ACT 3-Stufen-Komplettgerät – Beschriftung selbst ist ein separates Schild ohne eigenen Bestellschlüssel) + Not-Halt-Pilzdrucktaster (SIRIUS ACT, Drehentriegelung nach DIN EN ISO 13850). Beide `keine_platzierung_mp`, neue `bauteil_typ`-Werte `wahlschalter`/`nothalt`.
+- **Koppelrelais erweitert:** 2-Wechsler-Variante (Phoenix PLC-RSC-24DC/21-21) ergänzend zum bestehenden 1-Wechsler-Modell – für Fälle mit höherem Kontaktbedarf (z. B. gleichzeitig Sammel- und Einzelmeldung aus einem Fremdsystem).
+- **Energieverteilung-Schutzeinrichtungen erweitert:** 2× FI-Schutzschalter (Siemens SENTRON 5SV3, 25A/40A, neuer `bauteil_typ:'fi_schutzschalter'`) – **ersetzt inhaltlich** die in Session 40 wegen Datenqualitätsproblemen (falsche Artikelnummer/Nennstrom-Zuordnung) komplett gelöschten `reiheneinbaugeraete`-Altdaten, diesmal mit neu verifizierten Bestellnummern direkt in `einzelbauteile`.
+- **Netzversorgung/Transformatoren erweitert:** größeres Netzteil (Phoenix QUINT-PS, 20A/480W, für hohen DDC-Punktzahl-/Modulbedarf) + **3-phasiger Steuertrafo** (Siemens 4AP2142-8BC40-0HA0, 1000VA) – löst die in Session 43 zurückgestellte Frage eigenständig: die 4AP-Baureihe hat mehrere Primär-/Sekundär-Anzapfungen (u. a. 400V-Sekundärabgriff verfügbar), deckt damit sowohl den ursprünglich gefragten „400V/400V"-Trennfall als auch klassische Steuerspannungserzeugung ab.
+- **Netzwerkeinrichtung:** Phoenix Contact FL SWITCH SFNB 5TX ergänzt – löst das seit Session 40 offene Planungsfabrikat-TODO auf (Phoenix Contact, konsistent zu Klemmen/Netzteilen/Koppelrelais). Der bereits vorhandene, verifizierte Moxa EDS-205 (Session 42) bleibt zusätzlich aktiv (beide Hersteller in Deutschland gängig für Industrie-Switches).
+
+**`kurzLabel()` in Modul 4** um alle 7 neuen `bauteil_typ`-Werte ergänzt (plus das bisher fehlende `signalleuchte` aus Session 43 nachgetragen).
+
+**`planungsfabrikate`-Sheet aktualisiert:** Netzwerktechnik-TODO aufgelöst, 4 neue Zeilen für die neuen Kategorien ergänzt (alle konsistent zu den bereits etablierten Herstellern Siemens/Phoenix Contact – keine neuen Marken eingeführt, wie vom Nutzer gefordert „keine Exoten").
+
+**Bewusst NICHT ergänzt (Datenlage zu dünn, keine geratenen Werte):**
+- **DIN-Schienen-USV** (Phoenix QUINT-UPS) – keine verlässlichen Abmessungen gefunden.
+- **RJ45-Patchpanel** (Phoenix FL-PP-RJ45) – keine verlässlichen Abmessungen/Preise gefunden.
+
+**Preise:** nur bei 4 von 14 Einträgen ein Preis eingetragen (Frequenzumrichter 5,5kW, Koppelrelais 2W, Zeitrelais, Netzteil 20A, Steckdose) – bei den übrigen ausschließlich Gebrauchtmarkt-/Auktionspreise gefunden, nicht übernommen (Nutzer-Vorgabe „keine Börsen/Gebrauchtmärkte"). Bleibt offene Folgeaufgabe wie der Rest der ~70 preislosen Bestandsartikel.
+
+Verifiziert direkt im Browser: 116/116 aktive Bauteile geladen, alle 10 stichprobenartig geprüften neuen Artikel mit korrekter Zone/Kategorie/Maßen; 5 davon real platziert (Belegung → Stückliste), jeweils in der erwarteten Zone gelandet; keine Konsolenfehler.
+
 ### Modul 4 – Mehrfachzonen-Bug behoben + Zonen-Auswahl umplatziert (Session 44 Nachtrag, gesperrt)
 Zwei Nutzer-Funde direkt nach dem Test der Session-44-Funktion:
 
