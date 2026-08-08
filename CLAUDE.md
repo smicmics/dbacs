@@ -393,6 +393,16 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Mehrfachzonen-Bug behoben + Zonen-Auswahl umplatziert (Session 44 Nachtrag, gesperrt)
+Zwei Nutzer-Funde direkt nach dem Test der Session-44-Funktion:
+
+- **Bug: Zone galt item-weit statt pro Hinzufüge-Aktion.** `addEinzelbauteil()` schrieb die gewählte Zone auf `ex.zone` (item-weit, analog zu `ddcPhysisch`) – wurde dieselbe Klemme erst mit 5 Stück in `klemm_l`, dann mit 3 Stück in `klemm_s` hinzugefügt, sprang rückwirkend die GESAMTE Menge (alle 8) nach `klemm_s`. Anders als eine DDC-Eigenschaft (beschreibt eine feste technische Eigenschaft des Artikels) ist die Zone pro Hinzufüge-Aktion potenziell unterschiedlich – das „gilt item-weit"-Muster passte hier nicht.
+- **Fix: `zone` ist jetzt Teil jedes einzelnen `batches`-Eintrags**, gleichrangig mit `forced`. `pushBatch(batches, n, forced, zone)` verschmilzt nur noch, wenn sowohl `forced` als auch `zone` mit dem letzten Batch übereinstimmen. `placeBauteile()`/`aggregateStueckliste()` iterieren beim direkten Einzelbauteil-Zweig jetzt je Batch (statt einmal item-weit) und lösen die Zone pro Batch auf (`b.zone`, Fallback `eb.zone[0]`) – dadurch können in einem Belegungseintrag gleichzeitig Mengen in mehreren Zonen koexistieren, korrekt getrennt in Platzierung und Stückliste.
+- **`removeEinzelbauteilQty()` jetzt zonenbewusst:** bei Mehrfachzonen-Artikeln zieht „−" nur von Batches der aktuell im Zonen-Dropdown gewählten Zone ab (LIFO innerhalb dieser Zone), nicht mehr blind vom zeitlich letzten Batch unabhängig von dessen Zone. Einzelzonen-Artikel verhalten sich unverändert (reines LIFO wie seit Session 30).
+- **Layout-Fund:** die Zonen-Auswahl-Zeile (`#zone_auf_row`) saß als eigene Zeile in der Eingabeleiste und schob die Schranksicht bei jedem Erscheinen nach unten. **Verlegt in den Füllstand-Streifen, rechts neben „Alle"** (`.fuellstand-strip`, `flex-wrap:wrap` hat dort bei normaler Fensterbreite noch Platz) – erscheint weiterhin nur bei Mehrfachzonen-Artikeln (`updateZoneAuswahlUI()`), ändert aber nie die Streifenhöhe oder die Position der Schranksicht darunter. Kompakte eigene CSS-Klasse `.fs-zone-auswahl` statt der bisherigen `.ddc-auf-row`-Wiederverwendung.
+
+Verifiziert direkt im Browser (1920px): 5×Klemme in `klemm_l` + 3×dieselbe Klemme in `klemm_s` → zwei getrennte Batches, zwei getrennte Stückliste-Zeilen (5/3), keine Vermischung; „−2" mit Zonen-Auswahl auf `klemm_s` reduziert korrekt nur `klemm_s` (3→1), `klemm_l` bleibt bei 5 unangetastet; Zonen-Auswahl erscheint exakt auf gleicher Höhe/rechts neben „Alle", Füllstand-Streifen-Höhe (40,25px) und Schranksicht-Position identisch mit und ohne sichtbare Zonen-Auswahl; keine Konsolenfehler.
+
 ### Modul 4 – Mehrfachzonen für Bauteile (Session 44, gesperrt)
 Nutzer-Verständnisfrage: Baugruppen können pro Bauteil-Eintrag schon länger eine Zone überschreiben (`bt.zone || eb.zone`, Session 22). Für direkt ausgewählte Einzelbauteile fehlte das – eine Klemme mit Katalog-Default `klemm_l` ließ sich nicht direkt in `klemm_f`/`klemm_s` platzieren, ohne die Katalogzeile zu verdreifachen (bereits in Session 32 „Teil 2" als offener Punkt notiert). Nutzer-Vorschlag: `zone` als Array modellieren, erster Eintrag = Default.
 
