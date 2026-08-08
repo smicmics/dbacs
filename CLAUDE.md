@@ -393,6 +393,82 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Türansicht neben Innenansicht (Session 47, gesperrt)
+Nutzer-Idee direkt im Anschluss an Session 46 (Türbauteile jetzt vollständig
+katalogisiert): da Zone `tuer` bereits alle Fronttafel-/Türeinbaugeräte
+korrekt trägt und deren Maße (`b_mm`/`h_mm`) sowie die echten Gehäuse-
+Außenmaße (Modul 1/2) bereits vorhanden sind, fehlt nur noch die
+Layoutlogik für eine zweite, separate Ansicht der Tür.
+
+**Türmaße = echte Gehäuse-Außenmaße, nicht der Montagebereich (Nutzer-
+Entscheidung, per `AskUserQuestion` bestätigt).** Fund: Modul 1 und Modul 2
+schreiben `m01_B`/`m01_H` bzw. `m02_B`/`m02_H` bereits seit Session 19 in
+localStorage (`b_gehaeuse_aussen_mm`/`h_gehaeuse_aussen_mm` der
+Variablen-Konvention) – **keine Änderung an Modul 1/2 nötig**, nur
+`getGehaeuseAussenmasse(typ)` in Modul 4 liest diese Werte passend zum
+gewählten `schrank_typ` (`pfx = wandschrank→m01, standschrank→m02`, gleiches
+Muster wie `loadMontagebereich()`).
+
+**Ergonomische Höhen-Bänder** (`TUER_BAND_*`, Anteil der Türhöhe von unten,
+Nutzer-Vorgabe, gestützt durch Recherche zu DIN EN 60204-1 – Hauptschalter/
+Netztrenneinrichtung 0,6–1,9 m, empfohlen <1,7 m – und DIN 18040 –
+Bedienhöhe 0,85–1,05 m):
+```
+HAUPTSCHALTER    0.40   (etwas unterhalb der Türmitte)
+PHASENKONTROLLE  0.48   (Signalleuchte weiß, über dem Hauptschalter)
+QUITTIERUNG      0.56   (Sammelstörmeldeleuchte rot + Quittiertaster)
+HANDSCHALTER     0.68   (Wahlschalter/Not-Halt + Betriebsmeldeleuchte grün)
+MESSGERAET       0.85   (oberes Drittel, Gesichtshöhe – Energiezähler/Touchpanel)
+```
+`tuerBand(eb)` klassifiziert bewusst grob nach `bauteil_typ` (+ Bezeichnungs-
+Text bei `signalleuchte` zur Farbunterscheidung weiß/rot/grün) – keine
+Zuordnung zu einem bestimmten Stromkreis, da dafür keine Datengrundlage
+existiert.
+
+**Zentrierte Reihen-Anordnung, gruppiert strikt nach Band (nicht nach
+Bauteiltyp):** alle Bauteile desselben Bandes bilden EINE gemeinsame, um die
+Türmitte (`b/2`) zentrierte Reihe – wichtig für das Quittierungs-Band, das
+sowohl die rote Signalleuchte als auch den Quittiertaster enthält; eine
+Gruppierung nach Bauteiltyp hätte dort zwei sich überlappende Zeilen an
+derselben Höhe erzeugt (im Design vor dem Schreiben erkannt und vermieden).
+Reihenfolge/Position einzelner Bauteile innerhalb eines Bandes ist die
+Einfüge-Reihenfolge aus `belegung` – keine explizite Links-Mitte-Rechts-
+Steuerung für z. B. „3 Phasenkontrollleuchten, mittlere zuerst".
+
+**Datenquelle `getTuerItems()`:** durchsucht `belegung` nach
+`typ:'einzel'`-Einträgen, deren Katalogeintrag `keine_platzierung_mp===true`
+UND `zone.includes('tuer')` ist – identische Zwei-Feld-Prüfung wie in
+`placeBauteile()`, nur zusätzlich auf die Tür-Zone eingeschränkt. Baugruppen-
+Bauteile (`bt`) bewusst nicht berücksichtigt (Baugruppen sind weiterhin leer,
+Session 40).
+
+**Neuer `bauteil_typ` `hauptschalter`** (vorher `sonstige`, zu generisch für
+die Bandzuordnung) für `3LD2504-0TK51` – einzige Inhaltsänderung im Katalog
+dieser Session, `kurzLabel()` um `hauptschalter:'HS'` ergänzt.
+
+**UI:** `.panel-mid` zeigt jetzt `#svg-wrap` (Schranksicht) und `#tuer-wrap`
+(Türansicht, fix 260px breit) nebeneinander in `.schrank-views-row`
+(`display:flex`). `buildTuerAnsicht()` wird am Ende von `calculate()`
+aufgerufen (nach `buildSVG()`) und blendet `#tuer-wrap` per
+`display:none`/`flex` selbst ein/aus – **kein Zusatzcode in der frühen
+Rückkehr von `calculate()` bei fehlenden Montagebereich-Daten war nötig**
+(dort wird `#tuer-wrap` ebenfalls explizit auf `none` gesetzt, analog zu
+`#svg-msg`/`#svg-inner`). Ohne Türbauteile in der Belegung bleibt die
+gesamte Ansicht ausgeblendet (Nutzer-Vorgabe „Haben wir keine
+Türeinbaugeräte, entfällt die Anzeige").
+
+Verifiziert direkt gegen die produktiven Funktionen im Browser (lokaler
+Server, synthetische Belegung mit Hauptschalter + 3× weiße Signalleuchte +
+rote Signalleuchte + Quittiertaster + Energiezähler UMG 96RM, Wandschrank
+800×2000mm): SVG-Koordinaten der gerenderten Rects direkt ausgelesen und
+gegen die erwarteten Bänder geprüft – Hauptschalter unterhalb der 3
+Phasenkontrollleuchten, diese wiederum unterhalb der Quittierungs-Reihe
+(rote Leuchte + Taster nebeneinander in EINER Zeile, wie gefordert),
+Energiezähler nahe der Türoberkante; alle Bauteile korrekt um die Türmitte
+zentriert (x-Mittelpunkte ≈ 106 bei 212,8px Türbreite). Leere Belegung →
+`#tuer-wrap` korrekt `display:none`; kein `schrank_typ` gewählt → ebenfalls
+`none`. Keine Konsolenfehler.
+
 ### Katalog: Zone-Korrektur Türbauteile + Signalleuchte weiß, Wischrelais, Störquittiertaster, M-Bus-Pegelwandler, Energiezähler (Session 46, gesperrt/teilweise offen)
 Direkte Fortsetzung von Session 45 – Nutzer korrigiert die Zonen-Zuordnung und ergänzt weitere Bauteile.
 
