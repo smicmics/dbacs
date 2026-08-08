@@ -162,6 +162,12 @@ header a:hover{color:var(--tx2);}
   font-size:9.5px;color:var(--tx2);font-weight:600;}
 .fs-mini.fs-mini-alle.active{color:#fff;}
 .fs-kanal-mini{font-size:9.5px;color:var(--tx3);white-space:nowrap;margin-left:auto;padding-left:14px;border-left:1px solid var(--bord);}
+/* Zonen-Auswahl fuer Mehrfachzonen-Direktbauteile (Session 44) – sitzt
+   bewusst im Füllstand-Streifen statt in der Eingabeleiste, damit sie beim
+   Erscheinen keine zusätzliche Zeile aufbaut und die Schranksicht darunter
+   verschiebt (Nutzer-Fund). Erscheint nur bei Bedarf (updateZoneAuswahlUI()). */
+.fs-zone-auswahl{display:none;align-items:center;gap:4px;font-size:9.5px;color:var(--tx2);white-space:nowrap;}
+.fs-zone-auswahl select{font-size:10px;padding:1px 3px;height:20px;border-radius:3px;background:var(--bg);border:1px solid var(--bords);color:var(--tx);}
 
 /* ── 3-Spalten Layout ── */
 .layout-3col{
@@ -539,12 +545,6 @@ legend{
           <input type="checkbox" id="einzel_rowbreak">neue Reihe
         </label>
       </div>
-      <div class="ddc-auf-row" id="zone_auf_row" style="display:none">
-        <label class="rowbreak-lbl" title="Dieses Bauteil ist für mehrere Zonen zugelassen – wählt, in welcher Zone es dieses Mal platziert werden soll (gilt für die gesamte Menge dieses Artikels in der Belegung)">
-          Zone
-          <select id="zone_auswahl" onchange="updateRowbreakAvailability()"></select>
-        </label>
-      </div>
       <div class="ddc-auf-row" id="ddc_auf_row" style="display:none">
         <label class="rowbreak-lbl" title="Bauteil belegt physische Datenpunkte (AI/AO/BI/BO) an einem DDC-Modul">
           <input type="checkbox" id="ddc_physisch" checked onchange="calculate()">DDC physikalisch
@@ -603,6 +603,9 @@ legend{
   </div>
   <div class="fs-mini fs-mini-alle" id="fs-tuer-mini" data-zone="tuer" title="Fronttafel-/Türeinbau – kein Platzbedarf auf der Montageplatte, erscheint nur in der Stückliste" onclick="setEinzelZone('tuer')">Tür</div>
   <div class="fs-mini fs-mini-alle active" id="fs-alle-mini" data-zone="alle" title="Alle Zonen anzeigen" onclick="setEinzelZone('alle')">Alle</div>
+  <span class="fs-zone-auswahl" id="zone_auf_row" style="display:none" title="Gewähltes Bauteil ist für mehrere Zonen zugelassen – wählt, in welcher Zone die aktuell hinzugefügte Menge platziert wird">
+    Zone <select id="zone_auswahl" onchange="updateRowbreakAvailability()"></select>
+  </span>
   <span class="fs-kanal-mini" id="fs-kanal-info">Kanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)</span>
 </div>
 
@@ -869,7 +872,7 @@ function updateZoneAuswahlUI() {
   const artikelNr = gs('einzel_auswahl');
   const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
   const wirktHier = !!eb && eb.zone.length > 1;
-  row.style.display = wirktHier ? 'flex' : 'none';
+  row.style.display = wirktHier ? 'inline-flex' : 'none';
   if(wirktHier) {
     sel.innerHTML = eb.zone.map(z => `<option value="${z}">${ZONE_LABELS[z] || z}</option>`).join('');
   }
@@ -1054,15 +1057,20 @@ function getBatches(item) {
   const forced = item.forcedMenge !== undefined ? item.forcedMenge : (item.rowBreak ? item.menge : 0);
   const normal = item.menge - forced;
   const batches = [];
-  if (normal > 0) batches.push({n: normal, forced: false});
-  if (forced > 0) batches.push({n: forced, forced: true});
+  if (normal > 0) batches.push({n: normal, forced: false, zone: item.zone});
+  if (forced > 0) batches.push({n: forced, forced: true, zone: item.zone});
   return batches;
 }
 
-function pushBatch(batches, n, forced) {
+// zone gehoert seit Session 44 zum Batch (nicht mehr item-weit) - zwei
+// Batches verschmelzen nur, wenn sowohl forced ALS AUCH zone uebereinstimmen.
+// Ohne den zone-Vergleich wuerde z.B. "5x Klemme in klemm_l" + "3x dieselbe
+// Klemme in klemm_s" faelschlich zu einem Batch verschmelzen und die
+// gesamten 8 Stueck landen in der zuletzt gewaehlten Zone (Nutzer-Fund).
+function pushBatch(batches, n, forced, zone) {
   const last = batches[batches.length - 1];
-  if (last && last.forced === forced) last.n += n;
-  else batches.push({n, forced});
+  if (last && last.forced === forced && last.zone === zone) last.n += n;
+  else batches.push({n, forced, zone});
 }
 
 function addEinzelbauteil() {
@@ -1076,8 +1084,9 @@ function addEinzelbauteil() {
   // Zone-Wahl (Session 44): eb.zone ist ein Array erlaubter Zonen, bei
   // Mehrfachzonen-Artikeln (z.B. PT-Klemmen) explizit ueber #zone_auswahl
   // gewaehlt, sonst Katalog-Default eb.zone[0] – siehe getSelectedEinzelZone().
-  // Gilt wie ddcPhysisch/-Kommunikativ je Artikel fuer die GESAMTE Menge,
-  // nicht pro Batch.
+  // Anders als ddcPhysisch/-Kommunikativ gilt das NICHT item-weit, sondern
+  // pro Batch (siehe pushBatch) – sonst wuerde ein spaeteres Hinzufuegen in
+  // Zone B rueckwirkend die bereits in Zone A platzierte Menge umziehen.
   const zone = eb ? getSelectedEinzelZone(eb) : null;
   const forced = !!eb && REIHEN_ZONEN.includes(zone) && document.getElementById('einzel_rowbreak').checked;
   // DDC-Aufschaltung (Session 41): gilt je Artikel fuer die GESAMTE Menge in
@@ -1091,12 +1100,11 @@ function addEinzelbauteil() {
   if(ex) {
     ex.menge += menge;
     ex.batches = getBatches(ex);
-    pushBatch(ex.batches, menge, forced);
-    if(zone) ex.zone = zone;
+    pushBatch(ex.batches, menge, forced, zone);
     if(ddcWirktHier) { ex.ddcPhysisch = ddcPhysisch; ex.ddcKommunikativ = ddcKommunikativ; ex.ddcProtokoll = ddcProtokoll; }
   } else {
-    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced}],
-      zone, ddcPhysisch, ddcKommunikativ, ddcProtokoll});
+    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced, zone}],
+      ddcPhysisch, ddcKommunikativ, ddcProtokoll});
   }
   if(eb) syncZubehoer(eb, menge);
   consolidateBelegung();
@@ -1155,19 +1163,26 @@ function removeEinzelbauteilQty() {
   const idx = belegung.findIndex(b => b.typ === 'einzel' && b.artikel_nr === artikelNr);
   if(idx === -1) return;
   const item = belegung[idx];
+  const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
+  // Mehrfachzonen-Artikel (Session 44): "−" zieht nur von Batches der
+  // aktuell gewaehlten Zone ab (LIFO innerhalb dieser Zone), damit gezielt
+  // z.B. nur die klemm_s-Menge reduziert werden kann, ohne klemm_l
+  // anzutasten. Einzelzonen-Artikel: Zone ist ohnehin bei allen Batches
+  // gleich, Verhalten bleibt reines LIFO wie bisher.
+  const zielZone = eb ? getSelectedEinzelZone(eb) : null;
+  const mehrZonen = !!eb && eb.zone.length > 1;
   const batches = getBatches(item);
   let remaining = menge;
-  while (remaining > 0 && batches.length) {
-    const last = batches[batches.length - 1];
-    const take = Math.min(last.n, remaining);
-    last.n -= take;
+  for (let i = batches.length - 1; remaining > 0 && i >= 0; i--) {
+    const b = batches[i];
+    if (mehrZonen && b.zone !== zielZone) continue;
+    const take = Math.min(b.n, remaining);
+    b.n -= take;
     remaining -= take;
-    if (last.n <= 0) batches.pop();
   }
-  item.batches = batches;
+  item.batches = batches.filter(b => b.n > 0);
   item.menge = batches.reduce((s, b) => s + b.n, 0);
   const tatsaechlichEntfernt = menge - remaining;
-  const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
   if(eb) syncZubehoer(eb, -tatsaechlichEntfernt);
   if(item.menge <= 0) {
     belegung.splice(idx, 1);
@@ -1216,7 +1231,7 @@ function consolidateBelegung() {
     if (merged) {
       merged.menge += item.menge;
       if (item.typ === 'einzel') {
-        getBatches(item).forEach(b => pushBatch(merged.batches, b.n, b.forced));
+        getBatches(item).forEach(b => pushBatch(merged.batches, b.n, b.forced, b.zone));
       }
     } else {
       const copy = Object.assign({}, item);
@@ -1929,32 +1944,28 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
   belegung.forEach(item => {
     if(item.typ === 'einzel') {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
-      // Zone: explizite Wahl aus der Belegung (item.zone, Session 44 –
-      // Mehrfachzonen-Artikel wie PT-Klemmen) vor Katalog-Default eb.zone[0].
-      const zone = (item.zone && eb && eb.zone.includes(item.zone)) ? item.zone : (eb ? eb.zone[0] : null);
-      if(!eb || eb.te_breite <= 0 || !queues[zone]) return;
+      if(!eb || eb.te_breite <= 0) return;
       const farbe = BG_COLORS[item.ci];
       accumulateDp(eb, item.menge, {physisch: item.ddcPhysisch !== false, kommunikativ: !!item.ddcKommunikativ, protokoll: item.ddcProtokoll});
-      // Zuerst die normalen Einheiten, danach die erzwungenen (siehe
-      // addEinzelbauteil()) – die zuletzt hinzugefügten Einheiten bleiben so
-      // erzwungen, ohne dass frühere, bereits eingereihte Einheiten
-      // rückwirkend betroffen sind. Summe der `forced`-Batches (Session 30,
-      // ersetzt den alten einzelnen forcedMenge-Zähler) ergibt weiterhin
-      // einen einzigen Block für den Zeilen-Cursor in placeInBands().
       // keine_platzierung_mp (Session 41): Bauteil wird auf ein anderes
       // Bauteil aufgesteckt (z.B. Hilfsschalterblock auf ein Schütz) - braucht
       // kein eigenes TE-Feld auf der Montageplatte, bleibt aber in der
       // Stückliste (aggregateStueckliste() baut unabhängig von queues/zones
       // direkt aus belegung auf, siehe Session 28j).
       if(!eb.keine_platzierung_mp) {
-        const forcedMenge = getBatches(item).filter(b => b.forced).reduce((s, b) => s + b.n, 0);
-        const normalMenge = item.menge - forcedMenge;
-        for(let q = 0; q < normalMenge; q++) {
-          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: false});
-        }
-        for(let q = 0; q < forcedMenge; q++) {
-          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: true});
-        }
+        // Je Batch platzieren (Session 44): Zone UND rowBreak (forced) sind
+        // jetzt Batch-Eigenschaften, nicht mehr item-weit – ein Artikel kann
+        // gleichzeitig normale Einheiten in Zone A und erzwungene/normale in
+        // Zone B haben. Reihenfolge innerhalb einer Zone bleibt "erst
+        // normal, dann erzwungen" automatisch erhalten, da Batches in
+        // chronologischer Hinzufuege-Reihenfolge vorliegen (siehe pushBatch).
+        getBatches(item).forEach(b => {
+          const zone = (b.zone && eb.zone.includes(b.zone)) ? b.zone : eb.zone[0];
+          if(!queues[zone]) return;
+          for(let q = 0; q < b.n; q++) {
+            queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!b.forced});
+          }
+        });
       }
       return;
     }
@@ -2345,7 +2356,10 @@ function aggregateStueckliste() {
   belegung.forEach(item => {
     if(item.typ === 'einzel') {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
-      if(eb) add(item.artikel_nr, (item.zone && eb.zone.includes(item.zone)) ? item.zone : eb.zone[0], item.menge);
+      // Je Batch aggregieren (Session 44) - ein Mehrfachzonen-Artikel kann
+      // Mengen in mehreren Zonen haben, add() summiert ueber den bereits
+      // bestehenden Schluessel artikel_nr::zone korrekt getrennt.
+      if(eb) getBatches(item).forEach(b => add(item.artikel_nr, (b.zone && eb.zone.includes(b.zone)) ? b.zone : eb.zone[0], b.n));
       return;
     }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
