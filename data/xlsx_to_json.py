@@ -19,10 +19,19 @@ Reine Referenz-Sheets (kein Export, keine eigene JSON-Datei):
   - funktionsbereiche     Klartext-Nachschlagewerk zu 'gewerk'/'funktionsbereich'
                           (baugruppen) – 11 DIN-276-Kategorien.
   - zonen                 Klartext-Nachschlagewerk zu 'zone' (einzelbauteile,
-                          baugruppen_bauteile) – 8 physische Platzierungszonen.
+                          baugruppen_bauteile) – physische Platzierungszonen.
                           Beide Sheets sind rein für die menschliche Lesbarkeit
                           in Excel gedacht; die Variablen/Codes selbst bleiben
                           die Datengrundlage für xlsx_to_json.py und die Module.
+
+'einzelbauteile.zone' (Session 44): immer als Array exportiert, auch bei nur
+einer Zone – Excel-Zelle ist eine Komma-Liste (z.B. "klemm_l,klemm_f,klemm_s"
+bei den PT-Klemmen, die baugleich in mehreren Abgangs-Klemmenzonen verwendbar
+sind, ohne die Katalogzeile zu verdreifachen). Erster Eintrag ist der Default.
+Modul 4 laesst den Nutzer bei Direktbauteil-Auswahl explizit waehlen, welche
+der erlaubten Zonen fuer die jeweilige Menge gilt (#zone_auswahl), analog zum
+laenger bestehenden bt.zone-Override bei Baugruppen-Bauteilen (der bleibt ein
+einzelner String je Verwendung, kein Array). Siehe CLAUDE.md Session 44.
   - planungsfabrikate     Kategorie -> bevorzugter Hersteller (Rittal/Siemens/
                           Phoenix Contact/Dehn), reine Dokumentation.
 
@@ -328,7 +337,10 @@ def export_einzelbauteile(wb):
             'b_mm':        b_mm,
             'te_breite':   math.ceil(b_mm / 18) if b_mm is not None else None,
             'h_mm':        float(rec['h_mm']) if rec.get('h_mm') is not None else None,
-            'zone':        str(rec['zone']) if rec.get('zone') is not None else None,
+            # Session 44: zone ist immer ein Array erlaubter Zonen, erster Eintrag
+            # ist der Default (z.B. PT-Klemmen: klemm_l,klemm_f,klemm_s) - auch bei
+            # nur einer Zone, damit Modul 4 nicht zwischen Skalar/Array unterscheiden muss.
+            'zone':        [z.strip() for z in str(rec['zone']).split(',')] if rec.get('zone') is not None else None,
         }
         if rec.get('kategorie') is not None:
             entry['kategorie'] = str(rec['kategorie'])

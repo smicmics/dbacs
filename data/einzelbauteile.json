@@ -7,7 +7,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 70.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "preis_eur": 19.5,
@@ -21,7 +23,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 70.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "preis_eur": 22.0,
@@ -35,7 +39,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 70.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "preis_eur": 24.5,
@@ -49,7 +55,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "preis_eur": 32.0,
@@ -63,7 +71,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "preis_eur": 38.0,
@@ -77,7 +87,9 @@
     "b_mm": 54.0,
     "te_breite": 3,
     "h_mm": 77.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "preis_eur": 35.0,
     "geprueft": false
@@ -90,7 +102,9 @@
     "b_mm": 54.0,
     "te_breite": 3,
     "h_mm": 77.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "preis_eur": 35.0,
     "geprueft": false
@@ -103,7 +117,9 @@
     "b_mm": 54.0,
     "te_breite": 3,
     "h_mm": 77.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "preis_eur": 35.0,
     "geprueft": false
@@ -116,7 +132,9 @@
     "b_mm": 54.0,
     "te_breite": 3,
     "h_mm": 77.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "preis_eur": 37.0,
     "geprueft": false
@@ -129,7 +147,9 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 81.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.5,
     "geprueft": false
@@ -142,7 +162,9 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 81.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.5,
     "geprueft": false
@@ -155,7 +177,9 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 81.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 8.8,
     "geprueft": false
@@ -168,7 +192,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 81.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 16.5,
     "geprueft": false
@@ -181,7 +207,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 81.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 17.0,
     "geprueft": false
@@ -194,7 +222,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 81.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Leitungsschutzschalter",
     "preis_eur": 17.5,
     "geprueft": false
@@ -207,7 +237,9 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 75.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Koppelrelais",
     "preis_eur": 14.5,
     "geprueft": false
@@ -220,7 +252,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 130.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Netzversorgung/Transformatoren",
     "preis_eur": 145.0,
     "geprueft": false
@@ -233,7 +267,9 @@
     "b_mm": 54.0,
     "te_breite": 3,
     "h_mm": 130.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Netzversorgung/Transformatoren",
     "preis_eur": 195.0,
     "geprueft": false
@@ -246,7 +282,9 @@
     "b_mm": 72.0,
     "te_breite": 4,
     "h_mm": 130.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Netzversorgung/Transformatoren",
     "preis_eur": 280.0,
     "geprueft": false
@@ -259,7 +297,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 75.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
     "preis_eur": 18.0,
     "geprueft": false
@@ -272,7 +312,9 @@
     "b_mm": 90.0,
     "te_breite": 5,
     "h_mm": 155.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
     "preis_eur": 95.0,
     "geprueft": false
@@ -285,7 +327,9 @@
     "b_mm": 108.0,
     "te_breite": 6,
     "h_mm": 175.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
     "preis_eur": 130.0,
     "geprueft": false
@@ -298,7 +342,9 @@
     "b_mm": 54.0,
     "te_breite": 3,
     "h_mm": 90.0,
-    "zone": "uss",
+    "zone": [
+      "uss"
+    ],
     "kategorie": "Überspannungsschutz & Vorsicherung",
     "geprueft": false
   },
@@ -310,7 +356,9 @@
     "b_mm": 44.0,
     "te_breite": 3,
     "h_mm": 45.0,
-    "zone": "uss",
+    "zone": [
+      "uss"
+    ],
     "kategorie": "Überspannungsschutz & Vorsicherung",
     "geprueft": false
   },
@@ -322,7 +370,9 @@
     "b_mm": 18.0,
     "te_breite": 1,
     "h_mm": 90.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Überspannungsschutz",
     "geprueft": false
   },
@@ -334,7 +384,9 @@
     "b_mm": 12.0,
     "te_breite": 1,
     "h_mm": 90.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Überspannungsschutz",
     "geprueft": false
   },
@@ -346,7 +398,9 @@
     "b_mm": 144.0,
     "te_breite": 8,
     "h_mm": 152.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Netzversorgung/Transformatoren",
     "geprueft": false
   },
@@ -358,7 +412,9 @@
     "b_mm": 192.0,
     "te_breite": 11,
     "h_mm": 74.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "DDC-Automationseinrichtung",
     "geprueft": false
   },
@@ -370,7 +426,9 @@
     "b_mm": 22.5,
     "te_breite": 2,
     "h_mm": 61.3,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Koppelrelais",
     "lvb_integriert": true,
     "geprueft": false
@@ -383,7 +441,9 @@
     "b_mm": 11.2,
     "te_breite": 1,
     "h_mm": 87.5,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Koppelrelais",
     "lvb_integriert": true,
     "geprueft": false
@@ -396,7 +456,9 @@
     "b_mm": 25.0,
     "te_breite": 2,
     "h_mm": 74.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "Netzwerkeinrichtung",
     "geprueft": false
   },
@@ -408,7 +470,9 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 47.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -420,7 +484,9 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 47.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -432,7 +498,9 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 47.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -444,7 +512,9 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 47.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -456,7 +526,9 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 47.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -468,7 +540,9 @@
     "b_mm": 6.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -480,7 +554,9 @@
     "b_mm": 6.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -492,7 +568,9 @@
     "b_mm": 6.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -504,7 +582,9 @@
     "b_mm": 6.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -516,7 +596,9 @@
     "b_mm": 6.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -528,7 +610,9 @@
     "b_mm": 8.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -540,7 +624,9 @@
     "b_mm": 8.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -552,7 +638,9 @@
     "b_mm": 8.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -564,7 +652,9 @@
     "b_mm": 8.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -576,7 +666,9 @@
     "b_mm": 8.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -588,7 +680,9 @@
     "b_mm": 10.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -600,7 +694,9 @@
     "b_mm": 10.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -612,7 +708,9 @@
     "b_mm": 10.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -624,7 +722,9 @@
     "b_mm": 10.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -636,7 +736,9 @@
     "b_mm": 10.2,
     "te_breite": 1,
     "h_mm": 47.7,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -648,7 +750,9 @@
     "b_mm": 12.2,
     "te_breite": 1,
     "h_mm": 55.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -660,7 +764,9 @@
     "b_mm": 12.2,
     "te_breite": 1,
     "h_mm": 55.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -672,7 +778,9 @@
     "b_mm": 12.2,
     "te_breite": 1,
     "h_mm": 55.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -684,7 +792,9 @@
     "b_mm": 12.2,
     "te_breite": 1,
     "h_mm": 55.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -696,7 +806,9 @@
     "b_mm": 12.2,
     "te_breite": 1,
     "h_mm": 55.5,
-    "zone": "klemm_e",
+    "zone": [
+      "klemm_e"
+    ],
     "kategorie": "Einspeiseklemmen",
     "geprueft": false
   },
@@ -708,7 +820,11 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 48.6,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -720,7 +836,11 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 48.6,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -732,7 +852,11 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 48.6,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -744,7 +868,11 @@
     "b_mm": 6.2,
     "te_breite": 1,
     "h_mm": 56.0,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -756,7 +884,11 @@
     "b_mm": 6.2,
     "te_breite": 1,
     "h_mm": 56.0,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -768,7 +900,11 @@
     "b_mm": 6.2,
     "te_breite": 1,
     "h_mm": 56.0,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -780,7 +916,11 @@
     "b_mm": 8.2,
     "te_breite": 1,
     "h_mm": 57.7,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -792,7 +932,11 @@
     "b_mm": 8.2,
     "te_breite": 1,
     "h_mm": 57.7,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -804,7 +948,11 @@
     "b_mm": 8.2,
     "te_breite": 1,
     "h_mm": 57.7,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -816,7 +964,11 @@
     "b_mm": 10.2,
     "te_breite": 1,
     "h_mm": 67.7,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -828,7 +980,11 @@
     "b_mm": 10.2,
     "te_breite": 1,
     "h_mm": 67.7,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -840,7 +996,11 @@
     "b_mm": 10.2,
     "te_breite": 1,
     "h_mm": 67.7,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -852,7 +1012,11 @@
     "b_mm": 12.2,
     "te_breite": 1,
     "h_mm": 75.4,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -864,7 +1028,11 @@
     "b_mm": 12.2,
     "te_breite": 1,
     "h_mm": 75.4,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -876,7 +1044,11 @@
     "b_mm": 12.2,
     "te_breite": 1,
     "h_mm": 75.4,
-    "zone": "klemm_l",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -888,7 +1060,11 @@
     "b_mm": 5.2,
     "te_breite": 1,
     "h_mm": 62.2,
-    "zone": "klemm_f",
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   },
@@ -900,7 +1076,9 @@
     "b_mm": 54.0,
     "te_breite": 3,
     "h_mm": 90.0,
-    "zone": "evert",
+    "zone": [
+      "evert"
+    ],
     "kategorie": "Leitungsschutzschalter",
     "geprueft": false
   },
@@ -912,7 +1090,9 @@
     "b_mm": 64.0,
     "te_breite": 4,
     "h_mm": 77.5,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "dp_bi": 8,
@@ -926,7 +1106,9 @@
     "b_mm": 64.0,
     "te_breite": 4,
     "h_mm": 77.5,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "dp_bi": 16,
@@ -940,7 +1122,9 @@
     "b_mm": 64.0,
     "te_breite": 4,
     "h_mm": 77.5,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "dp_bo": 6,
@@ -956,7 +1140,9 @@
     "b_mm": 64.0,
     "te_breite": 4,
     "h_mm": 77.5,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "dp_bo": 6,
@@ -972,7 +1158,9 @@
     "b_mm": 64.0,
     "te_breite": 4,
     "h_mm": 77.5,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "lvb_integriert": false,
@@ -987,7 +1175,9 @@
     "b_mm": 64.0,
     "te_breite": 4,
     "h_mm": 77.5,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "lvb_integriert": true,
@@ -1001,7 +1191,9 @@
     "b_mm": 198.0,
     "te_breite": 11,
     "h_mm": 124.0,
-    "zone": "steuer",
+    "zone": [
+      "steuer"
+    ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "dp_bo": 4,
@@ -1017,7 +1209,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 70.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1030,7 +1224,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 70.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1043,7 +1239,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 70.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1056,7 +1254,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1069,7 +1269,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1082,7 +1284,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1095,7 +1299,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1108,7 +1314,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1121,7 +1329,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1134,7 +1344,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1147,7 +1359,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 102.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1160,7 +1374,9 @@
     "b_mm": 55.0,
     "te_breite": 4,
     "h_mm": 130.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1173,7 +1389,9 @@
     "b_mm": 55.0,
     "te_breite": 4,
     "h_mm": 130.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
     "geprueft": false
@@ -1186,7 +1404,9 @@
     "b_mm": 36.0,
     "te_breite": 2,
     "h_mm": 37.5,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Hilfsschalterblock",
     "keine_platzierung_mp": true,
     "geprueft": false
@@ -1199,7 +1419,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 97.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "geprueft": false
   },
@@ -1211,7 +1433,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 97.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "preis_eur": 74.44,
     "geprueft": false
@@ -1224,7 +1448,9 @@
     "b_mm": 45.0,
     "te_breite": 3,
     "h_mm": 97.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "preis_eur": 89.0,
     "geprueft": false
@@ -1237,7 +1463,9 @@
     "b_mm": 55.0,
     "te_breite": 4,
     "h_mm": 140.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "geprueft": false
   },
@@ -1249,7 +1477,9 @@
     "b_mm": 55.0,
     "te_breite": 4,
     "h_mm": 140.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Motorschutzschalter",
     "geprueft": false
   },
@@ -1261,7 +1491,9 @@
     "b_mm": 90.0,
     "te_breite": 5,
     "h_mm": 106.0,
-    "zone": "tuer",
+    "zone": [
+      "tuer"
+    ],
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
     "preis_eur": 65.69,
@@ -1275,7 +1507,9 @@
     "b_mm": 22.0,
     "te_breite": 2,
     "h_mm": 22.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
     "preis_eur": 27.48,
@@ -1289,7 +1523,9 @@
     "b_mm": 22.0,
     "te_breite": 2,
     "h_mm": 22.0,
-    "zone": "leist",
+    "zone": [
+      "leist"
+    ],
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
     "geprueft": false

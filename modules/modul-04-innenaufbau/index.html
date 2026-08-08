@@ -527,7 +527,7 @@ legend{
     <div class="eb-field">
       <label>Spezifische Auswahl Einzelbauteile</label>
       <div class="bg-add-row">
-        <select id="einzel_auswahl" style="flex:1" onchange="updateRowbreakAvailability();updateDdcAufschaltungUI()">
+        <select id="einzel_auswahl" style="flex:1" onchange="updateZoneAuswahlUI();updateRowbreakAvailability();updateDdcAufschaltungUI()">
           <option value="">Laden …</option>
         </select>
         <input id="einzel_menge" type="number" value="1" min="1" max="99">
@@ -537,6 +537,12 @@ legend{
         </div>
         <label class="rowbreak-lbl" id="einzel_rowbreak_lbl" title="Erzwingt eine neue Reihe für dieses Bauteil, statt es an die aktuelle Reihe anzuhängen (nur Leistung/Steuerung)">
           <input type="checkbox" id="einzel_rowbreak">neue Reihe
+        </label>
+      </div>
+      <div class="ddc-auf-row" id="zone_auf_row" style="display:none">
+        <label class="rowbreak-lbl" title="Dieses Bauteil ist für mehrere Zonen zugelassen – wählt, in welcher Zone es dieses Mal platziert werden soll (gilt für die gesamte Menge dieses Artikels in der Belegung)">
+          Zone
+          <select id="zone_auswahl" onchange="updateRowbreakAvailability()"></select>
         </label>
       </div>
       <div class="ddc-auf-row" id="ddc_auf_row" style="display:none">
@@ -829,7 +835,7 @@ function populateEinzelAuswahl() {
   sel.innerHTML = '<option value="">— Bauteil wählen —</option>';
   const kategorien = {};
   EINZELBAUTEILE_DB
-    .filter(e => e.kategorie && (einzelZoneFilter === 'alle' || e.zone === einzelZoneFilter))
+    .filter(e => e.kategorie && (einzelZoneFilter === 'alle' || e.zone.includes(einzelZoneFilter)))
     .forEach(e => { (kategorien[e.kategorie] = kategorien[e.kategorie] || []).push(e); });
   Object.keys(kategorien).sort().forEach(kat => {
     const og = document.createElement('optgroup');
@@ -847,7 +853,35 @@ function populateEinzelAuswahl() {
   if(prevSelected && Array.from(sel.options).some(o => o.value === prevSelected)) {
     sel.value = prevSelected;
   }
+  updateZoneAuswahlUI();
   updateRowbreakAvailability();
+}
+
+// Katalog-Zone eines Artikels ist ein Array erlaubter Zonen (Session 44,
+// z.B. PT-Klemmen: klemm_l/klemm_f/klemm_s gemeinsam), erster Eintrag ist
+// der Default. Direktbauteile brauchen dafuer eine explizite Wahl, WELCHE
+// der erlaubten Zonen dieses Mal gilt - Baugruppen-Bauteile haben das
+// bereits laenger über bt.zone (siehe placeBauteile()).
+function updateZoneAuswahlUI() {
+  const row = document.getElementById('zone_auf_row');
+  const sel = document.getElementById('zone_auswahl');
+  if(!row || !sel) return;
+  const artikelNr = gs('einzel_auswahl');
+  const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
+  const wirktHier = !!eb && eb.zone.length > 1;
+  row.style.display = wirktHier ? 'flex' : 'none';
+  if(wirktHier) {
+    sel.innerHTML = eb.zone.map(z => `<option value="${z}">${ZONE_LABELS[z] || z}</option>`).join('');
+  }
+}
+
+// Effektive Zone des aktuell im Dropdown gewaehlten Artikels: die explizite
+// Wahl aus #zone_auswahl (falls sichtbar, also mehrere Zonen erlaubt),
+// sonst der Katalog-Default eb.zone[0].
+function getSelectedEinzelZone(eb) {
+  const row = document.getElementById('zone_auf_row');
+  if(row && row.style.display !== 'none') return gs('zone_auswahl');
+  return eb.zone[0];
 }
 
 // "neue Reihe" nur bedienbar, wenn das aktuell gewählte Einzelbauteil
@@ -859,7 +893,7 @@ function updateRowbreakAvailability() {
   if(!box || !lbl) return;
   const artikelNr = gs('einzel_auswahl');
   const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
-  const wirktHier = !!eb && REIHEN_ZONEN.includes(eb.zone);
+  const wirktHier = !!eb && REIHEN_ZONEN.includes(getSelectedEinzelZone(eb));
   box.disabled = !wirktHier;
   if(!wirktHier) box.checked = false;
   lbl.classList.toggle('rowbreak-lbl-disabled', !wirktHier);
@@ -1039,7 +1073,13 @@ function addEinzelbauteil() {
   // REIHEN_ZONEN) – Klemmenzonen (placeInKlemmRow) kennen kein
   // Reihen-Konzept (Session 28h).
   const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
-  const forced = !!eb && REIHEN_ZONEN.includes(eb.zone) && document.getElementById('einzel_rowbreak').checked;
+  // Zone-Wahl (Session 44): eb.zone ist ein Array erlaubter Zonen, bei
+  // Mehrfachzonen-Artikeln (z.B. PT-Klemmen) explizit ueber #zone_auswahl
+  // gewaehlt, sonst Katalog-Default eb.zone[0] – siehe getSelectedEinzelZone().
+  // Gilt wie ddcPhysisch/-Kommunikativ je Artikel fuer die GESAMTE Menge,
+  // nicht pro Batch.
+  const zone = eb ? getSelectedEinzelZone(eb) : null;
+  const forced = !!eb && REIHEN_ZONEN.includes(zone) && document.getElementById('einzel_rowbreak').checked;
   // DDC-Aufschaltung (Session 41): gilt je Artikel fuer die GESAMTE Menge in
   // der Belegung (wie ci/Farbe), nicht je Batch – bei erneutem Hinzufuegen
   // desselben Artikels mit anderer Checkbox-Wahl wird die Wahl aktualisiert.
@@ -1052,10 +1092,11 @@ function addEinzelbauteil() {
     ex.menge += menge;
     ex.batches = getBatches(ex);
     pushBatch(ex.batches, menge, forced);
+    if(zone) ex.zone = zone;
     if(ddcWirktHier) { ex.ddcPhysisch = ddcPhysisch; ex.ddcKommunikativ = ddcKommunikativ; ex.ddcProtokoll = ddcProtokoll; }
   } else {
     belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced}],
-      ddcPhysisch, ddcKommunikativ, ddcProtokoll});
+      zone, ddcPhysisch, ddcKommunikativ, ddcProtokoll});
   }
   if(eb) syncZubehoer(eb, menge);
   consolidateBelegung();
@@ -1843,7 +1884,10 @@ function applyDdcWatermark(ddcAuto) {
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
 function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
   // Gerätewarteschlange je Zone aufbauen – aus Baugruppen UND Direktbauteilen.
-  // Zone je Bauteil: Baugruppen-Override (bt.zone) vor Katalog-Default (eb.zone).
+  // Zone je Bauteil: eb.zone ist ein Array erlaubter Zonen (Session 44),
+  // erster Eintrag = Default. Baugruppen-Bauteile: expliziter Override
+  // bt.zone vor eb.zone[0]. Direktbauteile: explizite Wahl item.zone
+  // (siehe getSelectedEinzelZone()) vor eb.zone[0].
   const queues = {};
   ALLE_ZONEN.forEach(z => queues[z] = []);
 
@@ -1885,7 +1929,10 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
   belegung.forEach(item => {
     if(item.typ === 'einzel') {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
-      if(!eb || eb.te_breite <= 0 || !queues[eb.zone]) return;
+      // Zone: explizite Wahl aus der Belegung (item.zone, Session 44 –
+      // Mehrfachzonen-Artikel wie PT-Klemmen) vor Katalog-Default eb.zone[0].
+      const zone = (item.zone && eb && eb.zone.includes(item.zone)) ? item.zone : (eb ? eb.zone[0] : null);
+      if(!eb || eb.te_breite <= 0 || !queues[zone]) return;
       const farbe = BG_COLORS[item.ci];
       accumulateDp(eb, item.menge, {physisch: item.ddcPhysisch !== false, kommunikativ: !!item.ddcKommunikativ, protokoll: item.ddcProtokoll});
       // Zuerst die normalen Einheiten, danach die erzwungenen (siehe
@@ -1903,10 +1950,10 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
         const forcedMenge = getBatches(item).filter(b => b.forced).reduce((s, b) => s + b.n, 0);
         const normalMenge = item.menge - forcedMenge;
         for(let q = 0; q < normalMenge; q++) {
-          queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: false});
+          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: false});
         }
         for(let q = 0; q < forcedMenge; q++) {
-          queues[eb.zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: true});
+          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: true});
         }
       }
       return;
@@ -1918,7 +1965,7 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
       bg.bauteile.forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
         if(!eb || eb.te_breite <= 0) return;
-        const zone = bt.zone || eb.zone;
+        const zone = bt.zone || eb.zone[0];
         if(!queues[zone]) return;
         accumulateDp(eb, bt.menge);
         if(eb.keine_platzierung_mp) return;
@@ -2298,7 +2345,7 @@ function aggregateStueckliste() {
   belegung.forEach(item => {
     if(item.typ === 'einzel') {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
-      if(eb) add(item.artikel_nr, eb.zone, item.menge);
+      if(eb) add(item.artikel_nr, (item.zone && eb.zone.includes(item.zone)) ? item.zone : eb.zone[0], item.menge);
       return;
     }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
@@ -2306,7 +2353,7 @@ function aggregateStueckliste() {
     bg.bauteile.forEach(bt => {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
       if(!eb) return;
-      add(bt.artikel_nr, bt.zone || eb.zone, bt.menge * item.menge);
+      add(bt.artikel_nr, bt.zone || eb.zone[0], bt.menge * item.menge);
     });
   });
   const order = {klemm_e:0, uss:1, evert:2, leist:3, steuer:4, klemm_l:5, klemm_f:6, klemm_s:7};
