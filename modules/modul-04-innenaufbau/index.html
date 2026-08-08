@@ -2137,8 +2137,12 @@ function getGehaeuseAussenmasse(typ) {
 // grüne LED > rote LED, exakt wie vom Nutzer vorgegeben.
 const TUER_BAND_HAUPTSCHALTER    = 0.40;
 const TUER_BAND_PHASENKONTROLLE  = 0.48;
-const TUER_BAND_QUITTIERUNG      = 0.56;
-const TUER_BAND_BETRIEBSMELDUNG  = 0.62;
+// Handschalter/grün/rot bilden eine enger gestaffelte Dreiergruppe – Nutzer-
+// Korrektur (Session 47 Nachtrag 2): der Abstand zwischen diesen drei Bändern
+// ist nur noch halb so groß wie zuvor (0,03 statt 0,06), damit die Gruppe
+// sich klar vom eigenständigen Not-Halt-Band darüber absetzt.
+const TUER_BAND_QUITTIERUNG      = 0.62;
+const TUER_BAND_BETRIEBSMELDUNG  = 0.65;
 const TUER_BAND_HANDSCHALTER     = 0.68;
 const TUER_BAND_NOTHALT          = 0.74;
 const TUER_BAND_MESSGERAET       = 0.85;
