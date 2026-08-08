@@ -1487,7 +1487,7 @@
     "artikel_nr": "3LD2504-0TK51",
     "bezeichnung": "Hauptschalter 3-polig, 63A, 22kW/400V AC-23, Fronttafeleinbau mit Drehantrieb",
     "hersteller": "Siemens",
-    "bauteil_typ": "sonstige",
+    "bauteil_typ": "hauptschalter",
     "b_mm": 90.0,
     "te_breite": 5,
     "h_mm": 106.0,

@@ -309,12 +309,21 @@ legend{
 .fuell-kanal-info{font-size:10px;color:var(--tx3);margin-top:6px;padding-top:6px;border-top:1px solid var(--bord);}
 
 /* ── SVG Container ── */
+.schrank-views-row{display:flex;gap:12px;flex:1;min-height:0;}
 #svg-wrap{
   border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
   min-height:200px;overflow:hidden;flex:1;
   display:flex;align-items:center;justify-content:center;
 }
 #svg-wrap svg{display:block;}
+/* Türansicht (Session 47): schmalere zweite Ansicht neben der Schranksicht,
+   nur sichtbar wenn Türbauteile in der Belegung sind (siehe buildTuerAnsicht()) */
+#tuer-wrap{
+  border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
+  min-height:200px;overflow:hidden;flex:0 0 260px;
+  display:flex;align-items:center;justify-content:center;
+}
+#tuer-wrap svg{display:block;}
 /* Zonentexte im SVG nur auf dem Bildschirm ausblenden – die Legende
    (.cabinet-legend) übernimmt die Erklärung. Im Ausdruck (@media print
    unten) werden sie wieder eingeblendet, da dort keine Legende danebenliegt. */
@@ -624,10 +633,17 @@ legend{
   <div class="panel-mid">
     <h2>Schranksicht</h2>
 
-    <!-- SVG Schranksicht -->
-    <div id="svg-wrap">
-      <div class="no-data-msg" id="svg-msg">Bitte Schrank-Typ wählen und Daten aus Modul 1–3 laden</div>
-      <div id="svg-inner" style="display:none"></div>
+    <!-- SVG Schranksicht + Türansicht nebeneinander -->
+    <div class="schrank-views-row">
+      <div id="svg-wrap">
+        <div class="no-data-msg" id="svg-msg">Bitte Schrank-Typ wählen und Daten aus Modul 1–3 laden</div>
+        <div id="svg-inner" style="display:none"></div>
+      </div>
+      <!-- Türansicht: nur sichtbar, wenn mindestens ein Türbauteil belegt ist
+           (Session 47) -->
+      <div id="tuer-wrap" style="display:none">
+        <div id="tuer-inner"></div>
+      </div>
     </div>
 
     <!-- Zonen-Legende -->
@@ -1725,6 +1741,7 @@ function calculate() {
   if (!zp.b || !zp.h) {
     document.getElementById('svg-msg').style.display = '';
     document.getElementById('svg-inner').style.display = 'none';
+    document.getElementById('tuer-wrap').style.display = 'none';
     buildFuellstand(null, null);
     buildStueckliste(null);
     updateReserveWarning(false);
@@ -1739,6 +1756,7 @@ function calculate() {
 
   buildFuellstand(zones, zp);
   buildSVG(zp, layout, zones);
+  buildTuerAnsicht();
   buildStueckliste(zones);
   updateDdcSummary(ddcSummary);
   updateReserveWarning(reserveShortfall);
@@ -2086,8 +2104,114 @@ function kurzLabel(eb) {
              ddc_io:'DDC', ddc_cpu:'CPU', lasttrenner:'LT', ueberspannung:'ÜSS', sicherung:'Sich.',
              signalleuchte:'SL', frequenzumrichter:'FU', wahlschalter:'WS', nothalt:'NH',
              fi_schutzschalter:'FI', zeitrelais:'ZR', steckdose:'STD', quittiertaster:'QT',
-             pegelwandler:'PW', messgeraet:'MG'};
+             pegelwandler:'PW', messgeraet:'MG', hauptschalter:'HS'};
   return m[eb.bauteil_typ] || eb.bezeichnung.substring(0, 4);
+}
+
+// ── Türansicht (Session 47) ────────────────────────────────────────────
+// Zeigt die Fronttafel/Tür separat neben der Schranksicht, mit den dort
+// montierten Bauteilen (zone 'tuer', immer keine_platzierung_mp) an
+// ergonomisch typischen Positionen. Türmaße = echte Gehäuse-Außenmaße
+// (m01_B/H bzw. m02_B/H, NICHT der kleinere Montagebereich) – beide Module
+// schreiben diese Werte bereits seit Session 19 in localStorage, keine
+// Änderung an Modul 1/2 nötig (Session-47-Fund).
+function getGehaeuseAussenmasse(typ) {
+  if (!typ) return null;
+  const pfx = typ === 'wandschrank' ? 'm01' : 'm02';
+  const b = localStorage.getItem(`${pfx}_B`);
+  const h = localStorage.getItem(`${pfx}_H`);
+  if (b === null || h === null || !(+b) || !(+h)) return null;
+  return { b: +b, h: +h };
+}
+
+// Ergonomische Höhen-Bänder als Anteil der Türhöhe (0=unten, 1=oben) –
+// Nutzer-Erfahrungswerte, gestützt durch DIN EN 60204-1 (Hauptschalter
+// 0,6–1,9m, empfohlen <1,7m) und DIN 18040 (Bedienhöhe 0,85–1,05m):
+// Hauptschalter etwas unterhalb der Türmitte, darüber Phasenkontroll-
+// leuchten, darüber Sammelstörmeldeleuchte+Quittierung, eine Ebene darüber
+// Handschalter+Betriebs-/Störmeldeleuchten, im oberen Drittel (Gesichtshöhe
+// eines stehenden Menschen) Messgeräte/Touchpanel.
+const TUER_BAND_HAUPTSCHALTER   = 0.40;
+const TUER_BAND_PHASENKONTROLLE = 0.48;
+const TUER_BAND_QUITTIERUNG     = 0.56;
+const TUER_BAND_HANDSCHALTER    = 0.68;
+const TUER_BAND_MESSGERAET      = 0.85;
+
+// Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
+// werden nach bauteil_typ/Farbe gruppiert, nicht einzeln einem bestimmten
+// Handschalter/Stromkreis zugeordnet (dafür fehlt eine Datengrundlage,
+// welches Bauteil zu welchem Stromkreis gehört).
+function tuerBand(eb) {
+  if (eb.bauteil_typ === 'hauptschalter') return TUER_BAND_HAUPTSCHALTER;
+  if (eb.bauteil_typ === 'signalleuchte') {
+    if (eb.bezeichnung.includes('weiß')) return TUER_BAND_PHASENKONTROLLE;
+    if (eb.bezeichnung.includes('rot'))  return TUER_BAND_QUITTIERUNG;
+    return TUER_BAND_HANDSCHALTER; // grün/sonstige: Betriebsmeldeleuchte
+  }
+  if (eb.bauteil_typ === 'quittiertaster') return TUER_BAND_QUITTIERUNG;
+  if (eb.bauteil_typ === 'wahlschalter' || eb.bauteil_typ === 'nothalt') return TUER_BAND_HANDSCHALTER;
+  if (eb.bauteil_typ === 'messgeraet') return TUER_BAND_MESSGERAET;
+  return TUER_BAND_HANDSCHALTER; // Fallback für künftige Tür-Bauteiltypen (z.B. Touchpanel)
+}
+
+// Direktbauteile mit zone 'tuer' aus der Belegung sammeln (je Menge einzeln
+// aufgelistet). Baugruppen-Bauteile bewusst noch nicht berücksichtigt –
+// Baugruppen sind aktuell leer (siehe CLAUDE.md Session 40), bei Bedarf
+// hier analog zu placeBauteile()s bg.bauteile-Zweig nachziehen.
+function getTuerItems() {
+  const items = [];
+  belegung.forEach(item => {
+    if (item.typ !== 'einzel') return;
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
+    if (!eb || !eb.keine_platzierung_mp || !eb.zone.includes('tuer')) return;
+    for (let q = 0; q < item.menge; q++) items.push(eb);
+  });
+  return items;
+}
+
+function buildTuerAnsicht() {
+  const wrap = document.getElementById('tuer-wrap');
+  const inner = document.getElementById('tuer-inner');
+  const typ = gs('schrank_typ');
+  const items = getTuerItems();
+  const masse = getGehaeuseAussenmasse(typ);
+  if (!items.length || !masse) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'flex';
+
+  const PAD = 10;
+  const availW = Math.max(100, wrap.clientWidth  - 2*PAD - 4);
+  const availH = Math.max(100, wrap.clientHeight - 2*PAD - 4);
+  const sc = Math.min(availW / masse.b, availH / masse.h);
+  const DW = masse.b * sc, DH = masse.h * sc;
+
+  let svg = `<svg viewBox="${-PAD} ${-PAD} ${(DW+PAD*2).toFixed(1)} ${(DH+PAD*2).toFixed(1)}" xmlns="http://www.w3.org/2000/svg" width="${(DW+PAD*2).toFixed(0)}" height="${(DH+PAD*2).toFixed(0)}">`;
+  svg += `<rect x="0" y="0" width="${DW.toFixed(1)}" height="${DH.toFixed(1)}" fill="#FDFCF8" rx="2" stroke="#BBB" stroke-width="1"/>`;
+
+  // Nach Höhenband gruppieren – ein Band kann mehrere Bauteiltypen enthalten
+  // (z.B. Handschalter UND Betriebsmeldeleuchten auf derselben Ebene), diese
+  // werden als EINE gemeinsame, um die Türmitte zentrierte Reihe gezeichnet.
+  const bands = {};
+  items.forEach(eb => { (bands[tuerBand(eb)] = bands[tuerBand(eb)] || []).push(eb); });
+
+  Object.entries(bands).forEach(([bandStr, list]) => {
+    const band = +bandStr;
+    const gap = 8; // mm Abstand zwischen Bauteilmitten innerhalb einer Reihe
+    const totalW = list.reduce((s, eb) => s + (eb.b_mm || 22), 0) + gap * (list.length - 1);
+    let x = masse.b / 2 - totalW / 2; // um die Türmitte zentriert (Nutzer-Vorgabe)
+    const y = masse.h * (1 - band);   // band=0 unten, SVG-Y wächst nach unten
+    list.forEach(eb => {
+      const bw = eb.b_mm || 22, bh = eb.h_mm || 22;
+      const bx = x * sc, by = (y - bh/2) * sc, bwpx = Math.max(3, bw*sc), bhpx = Math.max(3, bh*sc);
+      svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="#4BBECA" fill-opacity="0.75" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
+      if (bwpx > 12 && bhpx > 8) {
+        svg += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
+      }
+      x += bw + gap;
+    });
+  });
+
+  svg += '</svg>';
+  inner.innerHTML = svg;
 }
 
 // ── Füllstand-Streifen (kompakt) ──────────────────────────────────────
