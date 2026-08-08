@@ -2135,17 +2135,22 @@ function getGehaeuseAussenmasse(typ) {
 // Nachtrag): Handschalter/grün/rot waren zuvor teils auf derselben Ebene –
 // jetzt strikt getrennt, Reihenfolge von oben nach unten: Handschalter >
 // grüne LED > rote LED, exakt wie vom Nutzer vorgegeben.
-const TUER_BAND_HAUPTSCHALTER    = 0.40;
-const TUER_BAND_PHASENKONTROLLE  = 0.48;
+const TUER_BAND_HAUPTSCHALTER     = 0.40;
+const TUER_BAND_PHASENKONTROLLE   = 0.48;
+// Quittiertaster sitzt eine eigene Ebene über der Phasenkontrolle, NICHT
+// mehr zusammen mit der roten Signalleuchte – Nutzer-Korrektur (Session 47
+// Nachtrag 3): "Die Quittiertaste gehört über die Phasenleuchtenzone, nicht
+// in die Reihe mit den roten LEDs".
+const TUER_BAND_QUITTIERTASTER    = 0.52;
 // Handschalter/grün/rot bilden eine enger gestaffelte Dreiergruppe – Nutzer-
 // Korrektur (Session 47 Nachtrag 2): der Abstand zwischen diesen drei Bändern
 // ist nur noch halb so groß wie zuvor (0,03 statt 0,06), damit die Gruppe
 // sich klar vom eigenständigen Not-Halt-Band darüber absetzt.
-const TUER_BAND_QUITTIERUNG      = 0.62;
-const TUER_BAND_BETRIEBSMELDUNG  = 0.65;
-const TUER_BAND_HANDSCHALTER     = 0.68;
-const TUER_BAND_NOTHALT          = 0.74;
-const TUER_BAND_MESSGERAET       = 0.85;
+const TUER_BAND_STOERMELDUNG      = 0.62; // rote Signalleuchte
+const TUER_BAND_BETRIEBSMELDUNG   = 0.65; // grüne Signalleuchte
+const TUER_BAND_HANDSCHALTER      = 0.68;
+const TUER_BAND_NOTHALT           = 0.74;
+const TUER_BAND_MESSGERAET        = 0.85;
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
 // werden nach bauteil_typ/Farbe gruppiert, nicht einzeln einem bestimmten
@@ -2159,23 +2164,26 @@ function tuerBand(eb) {
   if (eb.bauteil_typ === 'nothalt') return TUER_BAND_NOTHALT;
   if (eb.bauteil_typ === 'signalleuchte') {
     if (eb.bezeichnung.includes('weiß')) return TUER_BAND_PHASENKONTROLLE;
-    if (eb.bezeichnung.includes('rot'))  return TUER_BAND_QUITTIERUNG;
+    if (eb.bezeichnung.includes('rot'))  return TUER_BAND_STOERMELDUNG;
     return TUER_BAND_BETRIEBSMELDUNG; // grün
   }
-  if (eb.bauteil_typ === 'quittiertaster') return TUER_BAND_QUITTIERUNG;
+  if (eb.bauteil_typ === 'quittiertaster') return TUER_BAND_QUITTIERTASTER;
   if (eb.bauteil_typ === 'wahlschalter') return TUER_BAND_HANDSCHALTER;
   if (eb.bauteil_typ === 'messgeraet') return TUER_BAND_MESSGERAET;
   return TUER_BAND_HANDSCHALTER; // Fallback für künftige Tür-Bauteiltypen (z.B. Touchpanel)
 }
 
-// Symbolfarbe je Türbauteil – Nutzer-Vorgabe (Session 47 Nachtrag): Signal-
-// leuchten in ihrer echten Leuchtfarbe (weiß/rot/grün), Hauptschalter und
-// Not-Halt in Rot (physische Gehäusefarbe bzw. Warncharakter). Alle
-// übrigen Türbauteile (Wahlschalter, Quittiertaster, Messgerät) behalten
-// die bisherige neutrale Akzentfarbe – dafür wurde keine Änderung verlangt.
+// Symbolfarbe je Türbauteil – Nutzer-Vorgabe (Session 47 Nachtrag/Nachtrag 3):
+// Signalleuchten in ihrer echten Leuchtfarbe (weiß/rot/grün), Hauptschalter
+// und Not-Halt in Rot (physische Gehäusefarbe bzw. Warncharakter),
+// Handschalter (Wahlschalter) in Grau, Messgeräte in Gelb. Quittiertaster
+// behält die bisherige neutrale Akzentfarbe – dafür wurde keine Änderung
+// verlangt (physisch blau, siehe Katalog, aber nicht explizit angefragt).
 const TUER_FARBE_WEISS = '#FDFCF8';
 const TUER_FARBE_ROT   = '#DE5B54';
 const TUER_FARBE_GRUEN = '#2DBD8E';
+const TUER_FARBE_GRAU  = '#9A9890';
+const TUER_FARBE_GELB  = '#D4A84B';
 const TUER_FARBE_STD   = '#4BBECA';
 function tuerFarbe(eb) {
   if (eb.bauteil_typ === 'hauptschalter' || eb.bauteil_typ === 'nothalt') return TUER_FARBE_ROT;
@@ -2184,6 +2192,8 @@ function tuerFarbe(eb) {
     if (eb.bezeichnung.includes('rot'))  return TUER_FARBE_ROT;
     return TUER_FARBE_GRUEN; // grün
   }
+  if (eb.bauteil_typ === 'wahlschalter') return TUER_FARBE_GRAU;
+  if (eb.bauteil_typ === 'messgeraet') return TUER_FARBE_GELB;
   return TUER_FARBE_STD;
 }
 

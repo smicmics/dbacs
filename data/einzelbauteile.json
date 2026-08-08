@@ -1783,9 +1783,9 @@
     "bezeichnung": "M-Bus Pegelwandler PW20, für bis zu 20 Endgeräte, RS232",
     "hersteller": "Relay GmbH",
     "bauteil_typ": "pegelwandler",
-    "b_mm": null,
-    "te_breite": null,
-    "h_mm": null,
+    "b_mm": 56.0,
+    "te_breite": 4,
+    "h_mm": 78.0,
     "zone": [
       "steuer"
     ],
@@ -1797,9 +1797,9 @@
     "bezeichnung": "M-Bus Pegelwandler PW60, für bis zu 60 Endgeräte, RS232/RS485",
     "hersteller": "Relay GmbH",
     "bauteil_typ": "pegelwandler",
-    "b_mm": null,
-    "te_breite": null,
-    "h_mm": null,
+    "b_mm": 70.0,
+    "te_breite": 4,
+    "h_mm": 78.0,
     "zone": [
       "steuer"
     ],
