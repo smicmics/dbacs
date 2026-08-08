@@ -403,6 +403,8 @@ Zwei Nutzer-Funde direkt nach dem Test der Session-44-Funktion:
 
 Verifiziert direkt im Browser (1920px): 5×Klemme in `klemm_l` + 3×dieselbe Klemme in `klemm_s` → zwei getrennte Batches, zwei getrennte Stückliste-Zeilen (5/3), keine Vermischung; „−2" mit Zonen-Auswahl auf `klemm_s` reduziert korrekt nur `klemm_s` (3→1), `klemm_l` bleibt bei 5 unangetastet; Zonen-Auswahl erscheint exakt auf gleicher Höhe/rechts neben „Alle", Füllstand-Streifen-Höhe (40,25px) und Schranksicht-Position identisch mit und ohne sichtbare Zonen-Auswahl; keine Konsolenfehler.
 
+**Nachtrag (Komfort, gleicher Tag):** Ist beim Öffnen der Zonen-Auswahl bereits ein Klemmleisten-Filter aktiv (`einzelZoneFilter`, z. B. „Sensoren"), wird dieser automatisch als Vorauswahl übernommen (`updateZoneAuswahlUI()`), sofern er zu den erlaubten Zonen des gewählten Artikels gehört – bei „Alle" oder unpassendem Filter bleibt der bisherige Default (`eb.zone[0]`). Bleibt jederzeit manuell änderbar. Verifiziert: Filter „Sensoren" → Vorauswahl `klemm_s`; Filter „Feldgeräte" → `klemm_f`; Filter „Alle" → Default `klemm_l`.
+
 ### Modul 4 – Mehrfachzonen für Bauteile (Session 44, gesperrt)
 Nutzer-Verständnisfrage: Baugruppen können pro Bauteil-Eintrag schon länger eine Zone überschreiben (`bt.zone || eb.zone`, Session 22). Für direkt ausgewählte Einzelbauteile fehlte das – eine Klemme mit Katalog-Default `klemm_l` ließ sich nicht direkt in `klemm_f`/`klemm_s` platzieren, ohne die Katalogzeile zu verdreifachen (bereits in Session 32 „Teil 2" als offener Punkt notiert). Nutzer-Vorschlag: `zone` als Array modellieren, erster Eintrag = Default.
 
