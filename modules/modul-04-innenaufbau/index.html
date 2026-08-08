@@ -2128,30 +2128,59 @@ function getGehaeuseAussenmasse(typ) {
 // Nutzer-Erfahrungswerte, gestützt durch DIN EN 60204-1 (Hauptschalter
 // 0,6–1,9m, empfohlen <1,7m) und DIN 18040 (Bedienhöhe 0,85–1,05m):
 // Hauptschalter etwas unterhalb der Türmitte, darüber Phasenkontroll-
-// leuchten, darüber Sammelstörmeldeleuchte+Quittierung, eine Ebene darüber
-// Handschalter+Betriebs-/Störmeldeleuchten, im oberen Drittel (Gesichtshöhe
-// eines stehenden Menschen) Messgeräte/Touchpanel.
-const TUER_BAND_HAUPTSCHALTER   = 0.40;
-const TUER_BAND_PHASENKONTROLLE = 0.48;
-const TUER_BAND_QUITTIERUNG     = 0.56;
-const TUER_BAND_HANDSCHALTER    = 0.68;
-const TUER_BAND_MESSGERAET      = 0.85;
+// leuchten, darüber Sammelstörmeldeleuchte+Quittierung, darüber die
+// Betriebsmeldeleuchte (grün), darüber der Handschalter, darüber (exklusiv,
+// siehe tuerBand()) der Not-Halt, im oberen Drittel (Gesichtshöhe eines
+// stehenden Menschen) Messgeräte/Touchpanel. Nutzer-Korrektur (Session 47
+// Nachtrag): Handschalter/grün/rot waren zuvor teils auf derselben Ebene –
+// jetzt strikt getrennt, Reihenfolge von oben nach unten: Handschalter >
+// grüne LED > rote LED, exakt wie vom Nutzer vorgegeben.
+const TUER_BAND_HAUPTSCHALTER    = 0.40;
+const TUER_BAND_PHASENKONTROLLE  = 0.48;
+const TUER_BAND_QUITTIERUNG      = 0.56;
+const TUER_BAND_BETRIEBSMELDUNG  = 0.62;
+const TUER_BAND_HANDSCHALTER     = 0.68;
+const TUER_BAND_NOTHALT          = 0.74;
+const TUER_BAND_MESSGERAET       = 0.85;
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
 // werden nach bauteil_typ/Farbe gruppiert, nicht einzeln einem bestimmten
 // Handschalter/Stromkreis zugeordnet (dafür fehlt eine Datengrundlage,
-// welches Bauteil zu welchem Stromkreis gehört).
+// welches Bauteil zu welchem Stromkreis gehört). Der Not-Halt (Pilzdruck-
+// taster) bekommt sein eigenes, von keinem anderen Bauteiltyp genutztes
+// Band – Nutzer-Vorgabe: "darf auf der gleichen Ebene kein anderes Bauteil
+// sein" (Session 47 Nachtrag).
 function tuerBand(eb) {
   if (eb.bauteil_typ === 'hauptschalter') return TUER_BAND_HAUPTSCHALTER;
+  if (eb.bauteil_typ === 'nothalt') return TUER_BAND_NOTHALT;
   if (eb.bauteil_typ === 'signalleuchte') {
     if (eb.bezeichnung.includes('weiß')) return TUER_BAND_PHASENKONTROLLE;
     if (eb.bezeichnung.includes('rot'))  return TUER_BAND_QUITTIERUNG;
-    return TUER_BAND_HANDSCHALTER; // grün/sonstige: Betriebsmeldeleuchte
+    return TUER_BAND_BETRIEBSMELDUNG; // grün
   }
   if (eb.bauteil_typ === 'quittiertaster') return TUER_BAND_QUITTIERUNG;
-  if (eb.bauteil_typ === 'wahlschalter' || eb.bauteil_typ === 'nothalt') return TUER_BAND_HANDSCHALTER;
+  if (eb.bauteil_typ === 'wahlschalter') return TUER_BAND_HANDSCHALTER;
   if (eb.bauteil_typ === 'messgeraet') return TUER_BAND_MESSGERAET;
   return TUER_BAND_HANDSCHALTER; // Fallback für künftige Tür-Bauteiltypen (z.B. Touchpanel)
+}
+
+// Symbolfarbe je Türbauteil – Nutzer-Vorgabe (Session 47 Nachtrag): Signal-
+// leuchten in ihrer echten Leuchtfarbe (weiß/rot/grün), Hauptschalter und
+// Not-Halt in Rot (physische Gehäusefarbe bzw. Warncharakter). Alle
+// übrigen Türbauteile (Wahlschalter, Quittiertaster, Messgerät) behalten
+// die bisherige neutrale Akzentfarbe – dafür wurde keine Änderung verlangt.
+const TUER_FARBE_WEISS = '#FDFCF8';
+const TUER_FARBE_ROT   = '#DE5B54';
+const TUER_FARBE_GRUEN = '#2DBD8E';
+const TUER_FARBE_STD   = '#4BBECA';
+function tuerFarbe(eb) {
+  if (eb.bauteil_typ === 'hauptschalter' || eb.bauteil_typ === 'nothalt') return TUER_FARBE_ROT;
+  if (eb.bauteil_typ === 'signalleuchte') {
+    if (eb.bezeichnung.includes('weiß')) return TUER_FARBE_WEISS;
+    if (eb.bezeichnung.includes('rot'))  return TUER_FARBE_ROT;
+    return TUER_FARBE_GRUEN; // grün
+  }
+  return TUER_FARBE_STD;
 }
 
 // Direktbauteile mit zone 'tuer' aus der Belegung sammeln (je Menge einzeln
@@ -2202,7 +2231,8 @@ function buildTuerAnsicht() {
     list.forEach(eb => {
       const bw = eb.b_mm || 22, bh = eb.h_mm || 22;
       const bx = x * sc, by = (y - bh/2) * sc, bwpx = Math.max(3, bw*sc), bhpx = Math.max(3, bh*sc);
-      svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="#4BBECA" fill-opacity="0.75" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
+      const farbe = tuerFarbe(eb);
+      svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="${farbe}" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
       if (bwpx > 12 && bhpx > 8) {
         svg += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
       }
