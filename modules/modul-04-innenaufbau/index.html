@@ -875,6 +875,14 @@ function updateZoneAuswahlUI() {
   row.style.display = wirktHier ? 'inline-flex' : 'none';
   if(wirktHier) {
     sel.innerHTML = eb.zone.map(z => `<option value="${z}">${ZONE_LABELS[z] || z}</option>`).join('');
+    // Komfort (Nutzer-Vorschlag): ist gerade ein Zonen-Filter aktiv und
+    // zaehlt er zu den erlaubten Zonen dieses Artikels, wird er als
+    // Vorauswahl uebernommen (z.B. Filter "Sensoren" gesetzt -> Klemme
+    // wird direkt fuer klemm_s vorausgewaehlt) - bleibt jederzeit manuell
+    // aenderbar, kein Zwang.
+    if(einzelZoneFilter !== 'alle' && eb.zone.includes(einzelZoneFilter)) {
+      sel.value = einzelZoneFilter;
+    }
   }
 }
 
