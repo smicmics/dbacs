@@ -2085,7 +2085,8 @@ function kurzLabel(eb) {
   const m = {schuetz:'Sch.', motorschutz:'MSS', lss:'LSS', klemme:'Kl.', koppelrelais:'KR', netzteil:'NT', sonstige:'–',
              ddc_io:'DDC', ddc_cpu:'CPU', lasttrenner:'LT', ueberspannung:'ÜSS', sicherung:'Sich.',
              signalleuchte:'SL', frequenzumrichter:'FU', wahlschalter:'WS', nothalt:'NH',
-             fi_schutzschalter:'FI', zeitrelais:'ZR', steckdose:'STD'};
+             fi_schutzschalter:'FI', zeitrelais:'ZR', steckdose:'STD', quittiertaster:'QT',
+             pegelwandler:'PW', messgeraet:'MG'};
   return m[eb.bauteil_typ] || eb.bezeichnung.substring(0, 4);
 }
 
