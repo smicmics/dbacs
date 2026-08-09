@@ -393,6 +393,63 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Mehrfeld-Schaltschränke Nachtrag 4: Kettentest Modul 2 → Modul 3 → Modul 4 (Session 48, gesperrt)
+Direkte Fortsetzung von Nachtrag 3, gleicher Tag – Nutzer-Auftrag: „Meine
+Tests gingen alle mit der gerade gespeicherten Variante mit Kabeleinführung
+von unten. Kannst Du das auch für die anderen Fälle im Modul 2 testen,
+bspw. Kabeleinführung von oben. Ich möchte sicherstellen, dass die
+gewählten Konfigurationen beginnend bei Modul 2 über die gesamte Kette bis
+zu Modul 4 durchgereicht werden." Wichtiger Fund VOR dem eigentlichen Test:
+alle bisherigen Session-48-Tests hatten `b`/`h` direkt synthetisch per
+`localStorage.setItem('m02_b_mplatte_mbereich_standschrank_mm', ...)`
+gesetzt, statt sie über eine echte Modul-2-Berechnung zu erzeugen – die
+Modul-2→Modul-3-Übergabe selbst (`loadFromModul()`, drei Schlüssel:
+`m02_b_mplatte_mbereich_standschrank_mm`/`m02_h_...`/`m02_ke_pos`) war
+dadurch bisher nie tatsächlich end-to-end durchlaufen worden.
+
+**Vier reale Modul-2→3→4-Ketten getestet** (über die UI-Felder in Modul 2
+gesetzt, `calculate()` ausgelöst, dann zu Modul 3/4 navigiert und dort
+`schrank_typ` gewählt – kein synthetisches localStorage-Seeding):
+1. Rittal VX 8806.000 (800×2000mm), Sockel 100mm aktiv, Zugentlastung ja,
+   Kabelkanal ja, **KE oben** (die vom Nutzer benannte Hauptlücke).
+2. Rittal VX 8205.000 (1200×2000mm, deutlich breiter), Sockel 200mm, KE
+   oben – prüft ob unterschiedliche `b_mb`-Werte (nicht nur `h_mb`) korrekt
+   durchgereicht werden.
+3. Rittal VX 8604.000 (600×2000mm), **kein Sockel, keine Zugentlastung,
+   kein Kabelkanal**, KE unten – prüft ob ein reduziertes `h_ke` (87mm statt
+   203mm) korrekt zu einem größeren `h_mb` führt (1861mm statt 1745mm) und
+   ob „kein Sockel" sauber durch die Kette läuft.
+4. Wie 3, aber KE oben + `zone_modus=getrennt_els` (3 Felder) – prüft das
+   Zusammenspiel KE-Position × Mehrfeld-Feldtyp-System.
+
+Bei jedem der vier Fälle geprüft: `b_mb`/`h_mb`/`ke_pos` aus Modul 2 exakt
+identisch in Modul 3 UND Modul 4 wiedergefunden; `buildLayout()`/
+`buildLayoutForFeldtyp()`-Zeilenreihenfolge korrekt an `ke_pos` angepasst
+(KE oben → Klemmzeile zuerst/Energieverteilung zuletzt; KE unten exakt
+umgekehrt) – direkt an den gerenderten SVG-Rect-y-Koordinaten in Modul 3
+UND Modul 4 verifiziert, nicht nur am rohen Zeilen-Array; Höhenbilanz
+(Summe Zeilenhöhen = `h`) exakt bei `uebereinander` in jedem Fall; keine
+Konsolenfehler in Modul 3 oder Modul 4 bei irgendeiner der vier Ketten.
+**Kein neuer Bug in der Modul-2→3→4-Übergabe selbst gefunden** – die drei
+durchgereichten Werte werden in jedem getesteten Fall korrekt übernommen
+und korrekt ausgewertet.
+
+**Nebenbefund beim Testen von Fall 1 (führte zur Korrektur eines zu eng
+gefassten Nachtrag-2-Befunds):** beim Testen von `nebeneinander` mit einem
+ECHTEN Modul-2-Ergebnis (699×1745mm, `schiene='nein'`) trat derselbe
+Höhenüberschuss auf wie der in Nachtrag 2 nur für Drehstrom+Schiene+
+Nebeneinander dokumentierte Fall (dort 6mm bei 699×1499mm) – hier 5mm bei
+699×1745mm, OHNE Schienensystem. Zeigt: der Rundungsfehler ist nicht an
+Netztyp/Schiene gebunden, sondern tritt bei JEDER `nebeneinander`-Kombi­
+nation auf, bei der `h_verfügbar/2` nicht durch 5 teilbar ist – die
+99×1499mm-Kombination aus Nachtrag 2 hatte für andere Netztyp/Schiene-Werte
+zufällig einen Rest von 0. CLAUDE.md-Eintrag in Nachtrag 2 entsprechend
+korrigiert. Weiterhin bewusst NICHT gefixt (gesperrte Formel, siehe dort).
+
+Verifiziert direkt im Browser (lokaler Server, vier vollständige Ketten
+Modul 2 → Modul 3 → Modul 4, echte UI-Eingaben statt synthetischem
+localStorage): alle vier Fälle wie oben beschrieben bestätigt.
+
 ### Mehrfeld-Schaltschränke Phase 2+3 Nachtrag 3: zone_anordnung-Sperre aufgehoben (Session 48, gesperrt)
 Direkte Fortsetzung von Nachtrag 2, gleicher Tag – Nutzer-Fund während der
 eigenen Sichtprüfung: „Der Fall Mehrere Felder Leistung und Steuerung
@@ -527,8 +584,15 @@ teilung (gesperrte Entscheidung)" bereits fest dokumentierte Formel
 („Leistung/Steuerung: ... gleiche Höhe je ~50 % b_inner (Nebeneinander)"),
 Änderung an einer gesperrten Berechnung ohne explizite Nutzer-Freigabe wäre
 eigenmächtig. Nur dem Nutzer zur Kenntnis/Entscheidung vorgelegt (geringe
-Praxisrelevanz: 6 mm auf ≈1500 mm ≈ 0,4 %, betrifft ausschließlich
-Drehstrom+Schienensystem+Nebeneinander).
+Praxisrelevanz: 6 mm auf ≈1500 mm ≈ 0,4 %). **Ursprüngliche Eingrenzung
+„betrifft ausschließlich Drehstrom+Schienensystem+Nebeneinander" beim
+M2→M3→M4-Kettentest (Nachtrag 4) als zu eng erkannt und korrigiert** – das
+Muster ist tatsächlich AllGEMEIN für `nebeneinander` (jede `netztyp`/
+`schiene`-Kombination), sobald `h_verfügbar/2` nicht exakt durch 5 teilbar
+ist; bei 699×1499 mm rundete sich das für andere Kombinationen zufällig auf
+0 mm, bei anderen b/h-Werten (z. B. 499×1861 mm, reales Modul-2-Ergebnis
+ohne Sockel/Zugentlastung) trat derselbe Fehlerklasse mit 5 mm Überschuss
+auf – unabhängig von Netztyp/Schiene. Siehe Nachtrag 4.
 
 Verifiziert direkt im Browser (lokaler Server, Standschrank 699×1499 mm):
 Modul-4-Maßstab-Fix mit 3- und 7-Felder-Szenario bestätigt (identische
