@@ -393,6 +393,46 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Mehrfeld-Schaltschränke Phase 2+3 Nachtrag 3: zone_anordnung-Sperre aufgehoben (Session 48, gesperrt)
+Direkte Fortsetzung von Nachtrag 2, gleicher Tag – Nutzer-Fund während der
+eigenen Sichtprüfung: „Der Fall Mehrere Felder Leistung und Steuerung
+nebeneinander fehlt" (In Modul 3), präzisiert kurz danach: „Der Fall Mehrere
+Felder Einspeisefeld separat hat auch keine Steuerung und Leistung
+nebeneinander" – d. h. betraf nicht nur `je_feld`, sondern jeden
+Mehrfeld-`zone_modus`.
+
+**Root Cause:** zwei unabhängige Stellen sperrten „Nebeneinander" für jede
+Mehrfeld-Konfiguration vollständig:
+1. `calculateZones()` setzte `document.getElementById('zone_anordnung').disabled
+   = isMehreFelder` – eine Alt-Sperre aus der Zeit VOR dem Feldtyp-System
+   (damals war „Mehrere Felder" nur ein unfertiger Platzhalter, der dieselbe
+   1-Feld-Ansicht N-mal wiederholte, für den `anordnung` keine Rolle spielte).
+2. `buildZoneSVG()`s Mehrfeld-Zweig überschrieb die tatsächliche Auswahl in
+   der Sidebar-Vorschau IMMER hart auf `anordnung:'uebereinander'`
+   (`zpUeber`-Objekt) – selbst wenn die Sperre aufgehoben worden wäre, hätte
+   die Vorschau die Nutzerwahl ignoriert.
+
+Beide Sperren stammen aus der Vor-Feldtyp-Ära und sind mit dem seit Session
+48 vollständig ausgebauten `buildLayoutForFeldtyp()` nicht mehr nötig – der
+eigene Konfigurationssweep (Nachtrag 2, Punkt 4) hatte bereits belegt, dass
+alle Feldtypen A–E nebeneinander strukturell korrekt rechnen (0 fehlende
+Zonen in allen 40 getesteten Kombinationen). **Fix:** Sperre 1 entfernt,
+Sperre 2 durch direkte Verwendung von `zp` (statt `zpUeber`) ersetzt – die
+Vorschau zeigt jetzt exakt das, was der Nutzer ausgewählt hat, für jeden
+`zone_modus`. Modul 4 brauchte keine Änderung – es liest `anordnung`
+ohnehin nur aus `localStorage.getItem('m03_zone_anordnung')`, ohne eigene
+Sperre.
+
+Verifiziert direkt im Browser: `zone_anordnung`-Dropdown bleibt bei
+`getrennt_els` UND `je_feld` UND `einsp_misch` aktiv bedienbar; Auswahl
+„Nebeneinander" bei `getrennt_els` (3 Felder) zeigt korrekt in Feld 1
+(Einspeisung, Typ C) zwei nebeneinanderliegende Energieverteilung-Anteile
+(da bei Nebeneinander sowohl Leistung ALS AUCH Steuerung aus der ÜSS-Zeile
+entfallen, beide werden durch den Nachtrag-2-Fix einzeln durch
+Energieverteilung ersetzt), Höhenbilanz weiterhin korrekt; Modul 4 zeigt
+dieselbe Konfiguration fehlerfrei (keine Konsolenfehler) mit sichtbarem
+Energieverteilung-Streifen in Feld 1.
+
 ### Mehrfeld-Schaltschränke Phase 2+3 Nachtrag 2: Maßlinien, Evert-Reclaim, M4-Maßstab (Session 48, gesperrt/teilweise offen)
 Direkte Fortsetzung von Phase 2+3, gleicher Tag – Nutzer-Korrekturauftrag
 nach eigener Sichtprüfung: „Die Maße fehlen bei den Ansichten mit mehreren
@@ -1433,7 +1473,11 @@ Vollständiger Sitzungsverlauf archiviert in `docs/archiv/claude-md-modul4-sessi
 - Leistung/Steuerung: verbleibende Höhe ÷ 2 (Übereinander) oder gleiche Höhe je ~50 % b_inner (Nebeneinander)
 - **Zonenreihenfolge KE oben**: Klemmen → H.Kanal → Leistung → [H.Kanal L/S → Steuerung] → Evert
 - **Zonenreihenfolge KE unten**: Evert → [Steuerung → H.Kanal L/S →] Leistung → H.Kanal → Klemmen
-- `zone_anordnung` (Nebeneinander/Übereinander) wird disabled wenn `zone_modus === 'je_feld'`
+- ~~`zone_anordnung` (Nebeneinander/Übereinander) wird disabled wenn `zone_modus === 'je_feld'`~~
+  **aufgehoben Session 48 Nachtrag 3** – stammte aus der Zeit vor dem
+  Feldtyp-System, als „Mehrere Felder" nur ein unfertiger Platzhalter war.
+  `zone_anordnung` bleibt jetzt bei JEDEM `zone_modus` wählbar (Nutzer-Fund:
+  „Der Fall Mehrere Felder Leistung und Steuerung nebeneinander fehlt").
 - `buildLayout(zp)` erzeugt Zeilen-Array mit x/w-Fraktionen für SVG-Rendering
 - SVG-Maßlinien: je Zeile rechts, Gesamthöhe außen (gleiche Konvention wie M1/M2)
 - Kabelkanäle als eigene SVG-Zonen dargestellt (Grau `#888`, fill-opacity 0.22)

@@ -721,9 +721,14 @@ function calculateZones(b, h) {
   const b_kanal_v = g('b_kanal_v_mm') || B_KANAL_V_DEF;
   const n_felder  = Math.max(1, g('n_felder') || 3);
 
-  // Mehrere Felder: Anordnungsauswahl sperren
+  // Mehrere Felder: Feld-Anzahl/Feldtyp-Bereich einblenden. Anordnung bleibt
+  // seit Session 48 (Feldtyp-System, buildLayoutForFeldtyp) bewusst NICHT
+  // mehr gesperrt – Nutzer-Fund: "Der Fall Mehrere Felder Leistung und
+  // Steuerung nebeneinander fehlt". Die alte Sperre stammte aus einer Zeit
+  // vor dem Feldtyp-System, als "Mehrere Felder" nur ein unfertiger
+  // Platzhalter war; buildLayoutForFeldtyp() unterstützt nebeneinander für
+  // alle Feldtypen A–E bereits korrekt (im Konfigurationssweep verifiziert).
   const isMehreFelder = modus !== '1feld';
-  document.getElementById('zone_anordnung').disabled = isMehreFelder;
   document.getElementById('zone-feld-section').style.display = isMehreFelder ? '' : 'none';
 
   // ÜSS + Vorsicherung: Breite netztyp-abhängig, liegt im Leistungsbereich (EMV)
@@ -1345,13 +1350,11 @@ function buildZoneSVG(zp) {
     const DR   = 46; // Platz rechts für die Gesamthöhe-Maßlinie (Nutzer-Fund: Maße fehlten hier komplett)
     const VW   = PL + N*fw + (N-1)*GAP + DR + PL;
     const VH   = PT + fph + PB;
-    const zpUeber = { ...zp, anordnung: 'uebereinander' };
-
     let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
       style="width:100%;max-width:${VW}px;display:block;background:#1C1C1A;border-radius:4px;margin-bottom:12px">`;
     for (let fi = 0; fi < N; fi++) {
       const ft   = feldtypSeq[fi];
-      const rows = buildLayoutForFeldtyp(zpUeber, ft);
+      const rows = buildLayoutForFeldtyp(zp, ft);
       const fx = PL + fi*(fw+GAP);
       s += `<text x="${fx+fw/2}" y="${PT-5}" text-anchor="middle"
         font-size="7.5" fill="#9A9890" font-family="system-ui,sans-serif">F ${fi+1} · ${FELDTYP_LABEL[ft]}</text>`;
