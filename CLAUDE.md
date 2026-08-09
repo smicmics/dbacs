@@ -393,6 +393,75 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Mehrfeld-Schaltschränke Nachtrag 6: Feld-/Tür-Kacheln ohne toten Rand (Session 48, gesperrt)
+Direkte Fortsetzung von Nachtrag 5, gleicher Tag – Nutzer-Fund per Screenshot:
+die Schranksicht-Kacheln sind deutlich breiter als die eigentliche
+Schaltschrank-Zeichnung (viel ungenutzter dunkler Rand links/rechts pro
+Kachel), während die Türansicht schon bei nur einem Feld gescrollt werden
+muss. Nutzer-Vermutung: bis zu 6 Kacheln (bzw. 3 Felder + zugehörige Türen)
+sollten ohne Scrollen passen. Ausdrückliche Vorgabe: „Achte darauf, dass du
+nicht die Geometrie der Schränke selbst veränderst – reduziere einfach den
+Rand bis zur Kachel."
+
+**Root Cause 1 (toter Rand):** `.feld-svg-wrap`/`.feld-tuer-wrap` sind
+bewusst großzügig bemessen (`flex:1 0 260px`), DAMIT `buildSVG()`/
+`buildTuerAnsicht()` beim Messen von `wrapEl.clientWidth` genug Breite
+vorfinden und der Maßstab zuverlässig von der Höhe bestimmt wird
+(Nachtrag-2-Fix „verlässt den Maßstab"). Bei den meist hochformatigen
+Schaltschränken bestimmt aber ohnehin die Höhe den Maßstab (`sc =
+min(availW/b, availH/h)`, Höhe ist der bindende Faktor) – die vom
+Flex-Grow zugewiesene Extra-Breite bleibt ungenutzter Rand um die
+Zeichnung. **Fix:** neue Funktion `schrumpfWrapAufInhalt(wrap)`, aufgerufen
+NACH dem Zeichnen (Maßstab bereits fest in den SVG-Attributen `width`/
+`height` verankert) – setzt `wrap.style.flex` exakt auf die gerenderte
+SVG-Breite + 2px (Rahmen). Ändert NICHTS am Maßstab (der ist zu diesem
+Zeitpunkt schon fest), entfernt nur den ungenutzten Rand der Kachel selbst.
+
+**Root Cause 2 (Tür-Zeile hart auf 260px gedeckelt):** `.tueren-row` hatte
+`flex:0 0 260px` – die GESAMTE Tür-Reihe (nicht nur eine Kachel) war fix auf
+260px begrenzt, unabhängig davon wie viele Tür-Kacheln tatsächlich
+gezeichnet werden. Fix: `flex:1 1 auto` (wie `.felder-row`).
+
+**Root Cause 3 (dabei aufgedeckt, vorbestehend):** `.panel-mid` und
+`.schrank-views-row` hatten kein `min-width:0` – als Grid- bzw. Flex-Item
+greift ohne dieses der CSS-Default `min-width:auto`, wodurch die Spalte/
+Zeile NICHT unter die Summe ihres Inhalts schrumpfen kann. Bei vielen
+Feldern (im Test 10) sprengte das den gesamten mittleren Grid-Bereich über
+die Fensterbreite hinaus (`.layout-3col` überlief seitlich, `<body>` bekam
+einen Scrollbalken) STATT dass `.felder-row`s eigenes `overflow-x:auto`
+griff. Fix: `min-width:0` auf `.panel-mid`, `.schrank-views-row` und
+`.tueren-row` ergänzt (`.felder-row` hatte es schon).
+
+**Root Cause 4 (dabei aufgedeckt beim Beheben von Root Cause 3):**
+`.felder-row{flex:1}` bedeutet `flex-basis:0%` – als `.tueren-row` (damals
+`flex:0 1 auto`, Basis = tatsächliche Inhaltsbreite) bei vielen Tür-Kacheln
+allein schon mehr Platz beanspruchte als der Container hatte, ging die
+GESAMTE verfügbare Breite an `.tueren-row` (Basis>0 kann schrumpfen,
+Basis=0% hat nichts zum Schrumpfen), `.felder-row` kollabierte auf 0px
+Breite. Fix: beide Reihen auf `flex:1 1 auto` (gleiche Basis-Art) –
+verfügbare Breite wird jetzt proportional zum tatsächlichen Platzbedarf
+beider Reihen aufgeteilt (mehr Felder → mehr Platz für Felder, mehr
+Türbauteile → mehr Platz für Türen), überschüssiger Inhalt scrollt in der
+jeweils eigenen Reihe statt die andere zu verdrängen oder die Seite zu
+sprengen.
+
+Verifiziert direkt im Browser (1920×1080, Standschrank mit TXM1.16D-Modulen
++ Hauptschalter-Türbauteilen): Einzelkachel-Breite sank von 258px auf
+164–181px (exakt an den SVG-Inhalt angepasst, `wrapWidth === svgWidth`);
+3 Felder + 3 zugehörige Türen (6 Kacheln) passen bei 1920px vollständig
+ohne jedes Scrollen (`felderRowScrollW === felderRowClientW`); Stresstest
+mit 10 Feldern erzeugt korrekt internes Scrollen NUR innerhalb der
+jeweiligen Reihe, kein Seiten-Overflow mehr (`body.scrollWidth ===
+clientWidth`, vorher 4335px bei 1920px Viewport). Bei kleineren Viewports
+(1440px) passen entsprechend weniger Kacheln (rein platzbedingt, kein Bug)
+– das Ergebnis skaliert mit der tatsächlichen Fensterbreite. Maßstab der
+Zeichnungen selbst unverändert (Vorgabe eingehalten) – nur der Kachelrand
+wurde reduziert. Keine Konsolenfehler. **Nebenbefund, nicht Teil dieser
+Änderung:** `.panel-right` (Stückliste) überläuft bei 1920px unabhängig
+davon um ~209px (`maxRight`-Element-Scan bestätigt `.panel-right` als
+Verursacher) – vorbestehend, nicht durch diese Änderung verursacht, nicht
+behoben (außerhalb des heutigen Auftrags).
+
 ### Mehrfeld-Schaltschränke Nachtrag 5: klemm_l gehört nicht ins Einspeisefeld (Session 48, gesperrt)
 Direkte Fortsetzung von Nachtrag 4, gleicher Tag – Nutzer-Korrektur nach
 eigener Prüfung: „Wenn das Einspeisefeld alleine sein soll, dann gibt es

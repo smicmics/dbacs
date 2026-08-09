@@ -190,7 +190,7 @@ header a:hover{color:var(--tx2);}
 .panel-mid{
   padding:16px 18px;background:var(--bg);
   border-right:1px solid var(--bord);height:100%;
-  display:flex;flex-direction:column;
+  display:flex;flex-direction:column;min-width:0;
 }
 .panel-mid h2{
   font-size:10px;font-weight:700;text-transform:uppercase;
@@ -309,12 +309,12 @@ legend{
 .fuell-kanal-info{font-size:10px;color:var(--tx3);margin-top:6px;padding-top:6px;border-top:1px solid var(--bord);}
 
 /* ── SVG Container (Session 48: mehrere Felder möglich) ── */
-.schrank-views-row{display:flex;gap:12px;flex:1;min-height:0;}
+.schrank-views-row{display:flex;gap:12px;flex:1;min-width:0;min-height:0;}
 /* Links: Reihe der Feld-Innenansichten – bei 1 Feld genau 1 Block, füllt
    den verfügbaren Platz wie bisher #svg-wrap; bei mehreren Feldern
    scrollt die Reihe horizontal statt die Blöcke zu stauchen (Bauteil-
    Lesbarkeit hat Vorrang vor Kompaktheit). */
-.felder-row{display:flex;gap:12px;flex:1;min-width:0;min-height:0;overflow-x:auto;}
+.felder-row{display:flex;gap:12px;flex:1 1 auto;min-width:0;min-height:0;overflow-x:auto;}
 .feld-svg-wrap{
   border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
   min-height:200px;min-width:220px;overflow:hidden;flex:1 0 260px;
@@ -324,7 +324,7 @@ legend{
 /* Rechts: Reihe der zugehörigen Türansichten, gleiche Feld-Reihenfolge wie
    links (Session 47 Grundlage, Session 48 auf mehrere Felder erweitert) –
    nur Felder mit mindestens einem Türbauteil bekommen einen Block. */
-.tueren-row{display:flex;gap:12px;flex:0 0 260px;min-height:0;overflow-x:auto;}
+.tueren-row{display:flex;gap:12px;flex:1 1 auto;min-width:0;min-height:0;overflow-x:auto;}
 .feld-tuer-wrap{
   border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
   min-height:200px;overflow:hidden;flex:0 0 260px;
@@ -2014,6 +2014,30 @@ function placeInKlemmRow(devs, bands, startIdx = 0) {
            leftoverDevs: devs.slice(idx), nextIdx: placedCount };
 }
 
+// Nutzer-Fund (Session 48 Nachtrag 6): die Feld-/Tür-Kacheln (`feld-svg-wrap`/
+// `feld-tuer-wrap`) sind per CSS bewusst großzügig bemessen (`flex:1 0 260px`
+// bzw. vormals `flex:0 0 260px`), DAMIT buildSVG()/buildTuerAnsicht() beim
+// Messen von `wrapEl.clientWidth` genug Breite vorfinden und der Maßstab
+// zuverlässig von der HÖHE bestimmt wird (siehe Nachtrag-2-Fix „verlässt den
+// Maßstab") – bei den meist hochformatigen Schaltschränken bleibt dadurch
+// aber sichtbar totter Rand links/rechts neben der eigentlichen Zeichnung
+// übrig. Diese Funktion läuft NACH dem Zeichnen (Maßstab bereits fest in den
+// SVG-Attributen `width`/`height` verankert, siehe Kommentar dort – eine
+// nachträgliche Verkleinerung der Kachel ändert diese Werte nicht mehr) und
+// verkleinert die Kachel exakt auf die tatsächlich gerenderte SVG-Breite
+// (+ 2px für den beidseitigen 1px-Rahmen, `box-sizing:border-box`) – die
+// Zeichnung selbst bleibt unverändert im Maßstab, nur der ungenutzte Rand
+// um sie herum entfällt. Dadurch passen mehr Kacheln nebeneinander, bevor
+// die Reihe horizontal scrollen muss.
+function schrumpfWrapAufInhalt(wrap) {
+  const svg = wrap.querySelector('svg');
+  if (!svg) return;
+  const svgW = parseFloat(svg.getAttribute('width'));
+  if (!svgW) return;
+  wrap.style.minWidth = '0';
+  wrap.style.flex = `0 0 ${Math.ceil(svgW) + 2}px`;
+}
+
 // ── Berechnung ───────────────────────────────────────────────────────
 // Session 48: rendert jetzt N Felder statt einem festen Schrank – die
 // eigentliche Platzierungs-/Kaskadenlogik steckt in calculateFelder(),
@@ -2066,6 +2090,7 @@ function calculate() {
   felder.forEach((feld, i) => {
     const wrap = feldSvgWraps[i];
     buildSVG(feld.zp, feld.layout, feld.zones, wrap, wrap.querySelector('.feld-svg-inner'));
+    schrumpfWrapAufInhalt(wrap);
   });
 
   // Hinweis, dass weitere Felder automatisch erscheinen, sobald sie benötigt
@@ -2092,7 +2117,8 @@ function calculate() {
   felder.forEach((feld, i) => {
     const wrap = feldTuerWraps[i];
     const gezeichnet = buildTuerAnsicht(i + 1, wrap, wrap.querySelector('.feld-tuer-inner'));
-    if (!gezeichnet) wrap.remove();
+    if (!gezeichnet) { wrap.remove(); return; }
+    schrumpfWrapAufInhalt(wrap);
   });
 
   // Füllstand/Stückliste brauchen EINE über alle Felder aggregierte
