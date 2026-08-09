@@ -2485,20 +2485,31 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
     felder.push({ feldtyp: ft, zp, layout, zones: feld.zones });
   };
 
+  // Regel für die Erstansicht (Nutzer-Vorgabe): "Zeige alle Felder, die eine
+  // noch nicht angezeigte Zone besitzen. Alle Zonen müssen sichtbar sein."
+  // D.h. ein repeat-Feldtyp entsteht auch OHNE Bedarf einmalig, wenn er
+  // mindestens eine Zone einführt, die noch in KEINEM bisher erzeugten Feld
+  // vorkam (z.B. Fall 4 "einsp_misch": Typ C allein zeigt weder Leistung
+  // noch Steuerung, also erscheint das erste Folgefeld immer) – führt der
+  // Feldtyp dagegen NUR bereits gezeigte Zonen (z.B. Fall 2 "je_feld": Typ B
+  // ⊆ Typ A), bleibt es beim rein bedarfsgetriebenen Verhalten (kein leeres
+  // Pflichtfeld). Weitere Instanzen über die erste hinaus sind in JEDEM Fall
+  // ausschließlich bedarfsgetrieben.
+  const zonesGezeigt = new Set();
   for (const phase of plan) {
     if (felder.length >= MAX_FELDER) break;
-    if (!phase.repeat) {
-      buildFeld(phase.ft); // Pflichtfeld (Erstfeld/Einspeisung) – immer mindestens eins
-      continue;
+    const zeigtNeueZone = FELDTYP_ZONEN[phase.ft].some(zn => !zonesGezeigt.has(zn));
+    if (!phase.repeat || zeigtNeueZone) {
+      buildFeld(phase.ft); // Pflichtfeld (Erstfeld/Einspeisung, oder erste Zeigt-neue-Zone-Instanz)
+      FELDTYP_ZONEN[phase.ft].forEach(zn => zonesGezeigt.add(zn));
     }
-    // Repeat-Phase (Folgefeld/Leistung/Steuerung): auch die ERSTE Instanz
-    // entsteht nur bei tatsächlichem Bedarf – Nutzer-Fund: ein leeres Feld 2
-    // erschien bisher auch ohne Belegung. "Nur die Felder anzeigen, die
-    // benötigt werden."
+    if (!phase.repeat) continue;
+    // Weitere Instanzen: ausschließlich bei tatsächlichem Bedarf.
     while (felder.length < MAX_FELDER) {
       const vor = restOf(phase.ft);
       if (vor === 0) break; // kein Bedarf für diesen Feldtyp
       buildFeld(phase.ft);
+      FELDTYP_ZONEN[phase.ft].forEach(zn => zonesGezeigt.add(zn));
       if (restOf(phase.ft) >= vor) break; // kein Fortschritt → Abbruch
     }
   }
