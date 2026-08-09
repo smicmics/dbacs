@@ -393,6 +393,116 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Mehrfeld-Schaltschränke Phase 2+3 Nachtrag 2: Maßlinien, Evert-Reclaim, M4-Maßstab (Session 48, gesperrt/teilweise offen)
+Direkte Fortsetzung von Phase 2+3, gleicher Tag – Nutzer-Korrekturauftrag
+nach eigener Sichtprüfung: „Die Maße fehlen bei den Ansichten mit mehreren
+Zonen", „Wir haben nicht alle Fälle berücksichtigt" (4 weitere M3-Optionen
+neben `zone_modus` prüfen) und ein bei der Einspeisung (Typ C) frei
+werdender Leistungsbereich, der „per Definition" der Energieverteilung
+zuzuordnen wäre. Dazwischen ein weiterer Nutzer-Fund: „Die grafische
+Darstellung der Schränke verlässt im Gegensatz zu 1 Feld auch den Maßstab"
+(Modul 4).
+
+**1. Modul 4 – Feld-zu-Feld-Maßstab reparaifert.** Root Cause: `calculate()`
+rief `buildSVG()`/`buildTuerAnsicht()` bisher in EINER Schleife auf, die pro
+Iteration sofort einen Wrap-`<div>` anlegte, anhängte UND direkt im selben
+Schritt `wrapEl.clientWidth` maß – beim ALLERERSTEN Feld war das Flexbox-
+Layout (`#felder-row`/`#tueren-row`) zu diesem Zeitpunkt noch unvollständig
+(nur ein Kind vorhanden), wodurch Feld 1 eine andere (zu große) gemessene
+Breite bekam als alle Folgefelder (korrekt mit allen Geschwistern gemessen).
+Da SVG-Breite/-Höhe als feste Pixelwerte ins Markup geschrieben werden,
+„erstarrte" Feld 1 auf einem falschen Maßstab. **Fix:** beide Renderschleifen
+zweigeteilt – zuerst ALLE Wrap-Container anlegen und anhängen, danach erst
+`buildSVG()`/`buildTuerAnsicht()` aufrufen (liest dann korrekt fertig
+gelayoutete Breiten). Verifiziert: 3- und 7-Felder-Testszenario, alle Felder
+exakt identische Pixelgröße, keine Konsolenfehler.
+
+**2. Modul 3 – Maßlinien in der Mehrfeld-Sidebar-Vorschau ergänzt.** Der
+`modus!=='1feld'`-Zweig von `buildZoneSVG()` zeichnete bisher nur Zonen-
+Rahmen + Feldtyp-/Zonen-Label, keine Maßangaben. Ergänzt: Zeilen-Maßwert
+(mm) je Feld (da sich Zeilenhöhen zwischen Feldtypen unterscheiden, z. B.
+Energieverteilung bei Typ C viel höher als bei Typ A – anders als die
+Zonenbeschriftung, die nur bei Feld 1 gezeigt wird), eine gemeinsame
+Gesamthöhe-Maßlinie rechts (`H=`, alle Felder identisch hoch) und eine
+Breite-Maßlinie unter Feld 1 (`B= ... mm je Feld`). **Fehldiagnose
+unterwegs:** der erste Test zeigte scheinbar gar keine der neuen Maß-Texte
+im SVG – Ursache war kein Code-Bug, sondern `schrank_typ` (bewusst „kein
+Persist", startet nach jedem Reload leer) stand nach einem Reload wieder auf
+„— bitte wählen —", wodurch `b`/`h` auf 0 fielen und `buildZoneSVG()` über
+den `if(!b||!h) return ''` -Guard sofort einen leeren String lieferte – rein
+per UI-Dropdown erneut ausgewählt, waren die Maßlinien korrekt vorhanden.
+
+**3. Typ-C-Bug: freiwerdende Leistungsbreite ging verloren statt an Evert
+(Kernauftrag).** In der ÜSS-Zeile (`leist_uss_ueber`/`leist_uss_neben`)
+bleibt bei Feldtyp C (Einspeisefeld) die ÜSS-Zone erhalten, während Leistung
+(und bei „Nebeneinander" auch Steuerung) entfällt. Die bestehende Schutzregel
+„ÜSS wächst selbst NIE" (`growIds = growIds.filter(id => id !== 'uss')`)
+leerte in genau diesem Fall `growIds` vollständig – die freiwerdende Breite
+hatte dadurch keinen Breiten-Empfänger mehr und verschwand kommentarlos
+(sichtbar als unbeschrifteter Leerraum neben der ÜSS). **Fix, Iteration 1
+(verworfen):** freiwerdende Breite flächengleich (Breitenanteil × Zeilenhöhe)
+in zusätzliche Höhe für das Wachstumsziel (`FELDTYP_GROW_TARGET`, bei Typ C
+= `evert`) umrechnen – exakt wie beim vollständigen Zeilenwegfall. **Beim
+eigenen Nachrechnen als falsch erkannt, bevor an den Nutzer berichtet
+wurde:** anders als beim vollständigen Zeilenwegfall bleibt diese Zeile
+selbst mit ihrer FESTEN physischen Höhe (`h_klemm`, Hutschienenhöhe)
+bestehen – zusätzliche Höhe an anderer Stelle addieren, OHNE diese Zeile zu
+kürzen, hebelt die Höhenbilanz aus: Summe aller Zeilenhöhen überstieg danach
+messbar die tatsächliche Feldhöhe `h` (verifiziert: 1566 mm Summe bei
+`h=1499 mm`, +67 mm Überschuss). **Fix, finale Fassung:** die freiwerdende
+Breite wird NICHT in Höhe umgerechnet, sondern direkt als eigene
+Wachstumsziel-Zone (Farbe/Label aus neuer Konstante `GROW_TARGET_LBL`) an
+derselben Stelle INNERHALB derselben Zeile eingefügt – physisch plausibel
+(Energieverteilung neben der ÜSS auf gleicher Hutschienenhöhe), Zeilenhöhe
+bleibt unverändert, Gesamthöhenbilanz exakt erhalten (verifiziert: 1499 mm
+Summe bei `h=1499 mm`, uebereinander; 1500 vs. 1499 bei nebeneinander –
+1 mm Differenz ist vorbestehendes, unabhängiges ceil5-Rundungsrauschen,
+siehe Punkt 4). Betraf ausschließlich Feldtyp C (Typ D/E landen in der
+äquivalenten Zeile nie bei leerem `growIds`, da dort `leist` bzw. `steuer`
+selbst der verbleibende Breiten-Empfänger ist – geprüft und bestätigt kein
+Analogfall). In Modul 3 UND Modul 4 identisch dupliziert (Konventions-Pflicht
+für `buildLayoutForFeldtyp()`).
+
+**4. Systematischer Konfigurationstest (Nutzer-Auftrag „alle möglichen
+Konfigurationen").** Per Skript alle Kombinationen aus `zone_anordnung`
+(übereinander/nebeneinander) × `zone_netztyp` (Drehstrom/Wechselstrom) ×
+`zone_schiene` (Ja/Nein, nur bei Drehstrom UI-relevant) ×
+`zone_schiene_pol` (3/4/5-polig, nur bei Schiene=Ja) × Feldtyp (A–E) direkt
+im Browser durchgerechnet (nicht einzeln per UI-Klick): Zonen-Mitgliedschaft
+war in JEDER Kombination korrekt (0 fehlende Zonen). **Ein pre-existing,
+von der heutigen Feldtyp-Arbeit unabhängiger Befund:** bei `anordnung=
+'nebeneinander'` + `netztyp='drehstrom'` + `schiene='ja'` (alle 3 Pol-
+Varianten) überschreitet die Summe aller Zeilenhöhen die Feldhöhe `h` um
+6 mm – reproduzierbar auch bei Feldtyp A (Vollfeld/1-Feld-Pass-through, also
+NICHT Teil des heutigen Feldtyp-Systems, sondern bereits im ursprünglichen
+`calculateZones()`/`buildLayout()`). Ursache: für „Nebeneinander" wird
+`h_leist = ceil5(h_verfügbar / 2)` einmal berechnet und für `h_steuer`
+identisch übernommen (fachlich richtig – beide Zonen liegen nebeneinander
+auf gleicher Höhe) – die Zeilen, die diese Höhe nutzen, verwenden sie aber
+EFFEKTIV ZWEIMAL (Summe = `2×h_leist`), wodurch ein `ceil5`-Rundungs-
+Überschuss verdoppelt wird (bei den getesteten 699×1499 mm z. B. `h_verfügbar
+/2 = 492` → `ceil5→495`, `2×495=990` statt `984`, Differenz 6 mm). **Bewusst
+NICHT in dieser Session gefixt** – betrifft eine unter „Modul 3 – Zonenauf­
+teilung (gesperrte Entscheidung)" bereits fest dokumentierte Formel
+(„Leistung/Steuerung: ... gleiche Höhe je ~50 % b_inner (Nebeneinander)"),
+Änderung an einer gesperrten Berechnung ohne explizite Nutzer-Freigabe wäre
+eigenmächtig. Nur dem Nutzer zur Kenntnis/Entscheidung vorgelegt (geringe
+Praxisrelevanz: 6 mm auf ≈1500 mm ≈ 0,4 %, betrifft ausschließlich
+Drehstrom+Schienensystem+Nebeneinander).
+
+Verifiziert direkt im Browser (lokaler Server, Standschrank 699×1499 mm):
+Modul-4-Maßstab-Fix mit 3- und 7-Felder-Szenario bestätigt (identische
+Pixelgrößen); Modul-3-Maßlinien nach UI-Dropdown-Auswahl korrekt sichtbar
+(Zeilen-mm-Werte, `H=1499 mm`, `B=699 mm je Feld`); Typ-C-Fix visuell in
+Modul 3 UND Modul 4 bestätigt (Energieverteilung-farbiger Streifen neben
+ÜSS in Feld 1, keine Lücke mehr) sowie rechnerisch (Höhensumme exakt =
+Feldhöhe); Konfigurationssweep (40 Kombinationen × 5 Feldtypen = 200
+Prüfungen) protokolliert, 0 fehlende Zonen, 1 isolierter Altbefund (Punkt 4).
+Noch NICHT vom Nutzer selbst gegengeprüft (Nutzer kündigte eigene Prüfung
+an, Session pausiert wegen Nutzungslimit) – wie bei Phase 1/2/3 nicht
+vorschnell als final/für Baugruppen-Start freigegeben behandeln, bis der
+Nutzer das explizit bestätigt.
+
 ### Mehrfeld-Schaltschränke Phase 2+3: Fall 3+4 (Session 48 Nachtrag, gesperrt)
 Direkte Fortsetzung von Phase 1, gleicher Tag – Nutzer-Vorgabe „Setze sie
 direkt um" statt die ursprünglich vorgeschlagene Verschiebung auf eine

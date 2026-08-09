@@ -1538,6 +1538,10 @@ function redistributeRowZones(zones, dropIds, growIds) {
 // B braucht keins (dort entfallen nie ganze Zeilen, nur Sub-Zonen innerhalb
 // einer Zeile – siehe buildLayoutForFeldtyp()).
 const FELDTYP_GROW_TARGET = { B: null, C: 'evert', D: 'leist', E: 'steuer' };
+// Label je Wachstumsziel – nur für den Fall gebraucht, dass freiwerdende
+// Breite (nicht ganze Zeilenhöhe) innerhalb derselben Zeile direkt als
+// Wachstumsziel-Zone eingefügt wird (siehe buildLayoutForFeldtyp()).
+const GROW_TARGET_LBL = { evert:'Energieverteilung', leist:'Leistungsbaugr.', steuer:'Steuerbaugr./DDC' };
 
 // Entscheidet, ob eine reine Struktur-Kanalzeile (kanal_h/kanal_ls/kanal_ev/
 // kanal_ev2 – je genau eine Zone, keine echte Platzierungszone) für diesen
@@ -1632,7 +1636,7 @@ function buildLayoutForFeldtyp(zp, feldtyp) {
       return;
     }
     if (keptZones.length < realZones.length) {
-      const dropIds = realZones.filter(z => !zoneSet.includes(norm(z.id))).map(z => z.id);
+      let dropIds = realZones.filter(z => !zoneSet.includes(norm(z.id))).map(z => z.id);
       let growIds = keptZones.map(z => z.id);
       // ÜSS-Sonderregel: freier Platz geht ausschließlich an Leistung, nie an
       // Steuerung, auch wenn beide (nebeneinander-Anordnung) dieselbe Zeile
@@ -1640,11 +1644,28 @@ function buildLayoutForFeldtyp(zp, feldtyp) {
       if (dropIds.includes('uss') && growIds.includes('leist')) growIds = growIds.filter(id => id === 'leist');
       // ÜSS wächst selbst NIE (Nutzer-Vorgabe): es gibt weiterhin nur eine
       // Einspeisung, die geschützt wird – unabhängig davon, wie viel Platz in
-      // der Zeile durch eine wegfallende Leistungs-/Steuerzone frei wird
-      // (Typ C: Leistung+Steuerung entfallen aus der ÜSS-Zeile, ÜSS bleibt
-      // bei seiner ursprünglichen Breite, der Rest bleibt ungenutzt).
+      // der Zeile durch eine wegfallende Leistungs-/Steuerzone frei wird.
       growIds = growIds.filter(id => id !== 'uss');
-      const newRow = { ...row, zones: redistributeRowZones(row.zones, dropIds, growIds) };
+      let zonesIn = row.zones;
+      // Nutzer-Fund (Session 48 Nachtrag): bleibt nach der ÜSS-Schutzregel
+      // KEIN Breiten-Empfänger in dieser Zeile übrig (Typ C: ÜSS bleibt,
+      // Leistung entfällt – ÜSS darf die Fläche nicht übernehmen, aber
+      // irgendwer muss), darf die freiwerdende Breite nicht kommentarlos
+      // verschwinden. ANDERS als beim vollständigen Zeilenwegfall (extraHeight
+      // unten) bleibt diese Zeile mit ihrer festen physischen Höhe (h_klemm =
+      // Hutschienenhöhe) bestehen – die Breite darf deshalb NICHT in
+      // zusätzliche Höhe umgerechnet werden (das würde die Zeilenhöhe von der
+      // tatsächlichen Zeile entkoppeln und in Summe mehr Höhe ergeben als das
+      // Feld hat). Stattdessen wird die freie Breite direkt als eigene
+      // Wachstumsziel-Zone in DERSELBEN Zeile eingefügt (physisch plausibel:
+      // z. B. Energieverteilung neben der ÜSS auf gleicher Hutschienenhöhe).
+      if (growIds.length === 0 && growTarget && !keptZones.some(z => norm(z.id) === growTarget)) {
+        zonesIn = zonesIn.map(z => dropIds.includes(z.id)
+          ? { ...z, id: growTarget, col: ZONE_COLORS[growTarget], lbl: GROW_TARGET_LBL[growTarget] }
+          : z);
+        dropIds = []; // bereits ersetzt statt entfernt – nichts mehr zu droppen
+      }
+      const newRow = { ...row, zones: redistributeRowZones(zonesIn, dropIds, growIds) };
       newRows.push(newRow);
       if (growTarget && keptZones.length === 1 && norm(keptZones[0].id) === growTarget) growRowRef = newRow;
       return;
@@ -2017,13 +2038,25 @@ function calculate() {
 
   // Links: ein Schranksicht-Block je Feld, in Reihenfolge – nur tatsächlich
   // benötigte Felder (calculateFelder() erzeugt Folgefelder ausschließlich
-  // bedarfsgetrieben, siehe dort).
+  // bedarfsgetrieben, siehe dort). Zwei Durchläufe (Nutzer-Fund: "verlässt
+  // den Maßstab"): ERST alle Wrap-Container anlegen, DANN erst buildSVG()
+  // aufrufen und dabei wrapEl.clientWidth lesen – sonst liefert das
+  // Flexbox-Layout beim allerersten Feld eine zu große Breite (es ist zum
+  // Messzeitpunkt noch das einzige Kind der Reihe), während spätere Felder
+  // korrekt (mit allen Geschwistern) gemessen werden. Da SVG-Breite/-Höhe
+  // als feste Pixelwerte ins Markup geschrieben werden, "erstarrt" ein
+  // einmal falsch gemessenes erstes Feld auf einem anderen Maßstab als die
+  // übrigen.
   felderRow.innerHTML = '';
-  felder.forEach(feld => {
+  const feldSvgWraps = felder.map(() => {
     const wrap = document.createElement('div');
     wrap.className = 'feld-svg-wrap';
     wrap.innerHTML = '<div class="feld-svg-inner"></div>';
     felderRow.appendChild(wrap);
+    return wrap;
+  });
+  felder.forEach((feld, i) => {
+    const wrap = feldSvgWraps[i];
     buildSVG(feld.zp, feld.layout, feld.zones, wrap, wrap.querySelector('.feld-svg-inner'));
   });
 
@@ -2038,13 +2071,18 @@ function calculate() {
 
   // Rechts: ein Türansicht-Block je angezeigtem Feld (auch unbelegt – Nutzer-
   // Vorgabe: "Sobald ein Feld angezeigt wird, erfolgt auch die Anzeige der
-  // zugehörigen Tür"), gleiche Reihenfolge wie links.
+  // zugehörigen Tür"), gleiche Reihenfolge wie links. Gleiches Zwei-
+  // Durchlauf-Muster wie oben (erst alle Wraps anlegen, dann erst messen).
   tuerenRow.innerHTML = '';
-  felder.forEach((feld, i) => {
+  const feldTuerWraps = felder.map(() => {
     const wrap = document.createElement('div');
     wrap.className = 'feld-tuer-wrap';
     wrap.innerHTML = '<div class="feld-tuer-inner"></div>';
     tuerenRow.appendChild(wrap);
+    return wrap;
+  });
+  felder.forEach((feld, i) => {
+    const wrap = feldTuerWraps[i];
     const gezeichnet = buildTuerAnsicht(i + 1, wrap, wrap.querySelector('.feld-tuer-inner'));
     if (!gezeichnet) wrap.remove();
   });
