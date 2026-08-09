@@ -392,6 +392,8 @@ legend{
   background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
 }
 .btn-print:hover{border-color:var(--tx2);color:var(--tx);}
+.btn-nav{background:var(--bg3);color:var(--green);border-color:var(--green);margin-top:8px;}
+.btn-nav:hover{background:var(--green);color:#fff;}
 .btn-csv{
   padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;
   background:var(--bg3);border:1px solid var(--green);color:var(--green);
@@ -638,6 +640,7 @@ legend{
       <p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>
     </div>
     <div id="ddc-auto-liste"></div>
+    <button class="btn-print btn-nav" onclick="gotoModul3()">← Zurück zu Modul 3 · Architektur</button>
   </div>
 
   <!-- ── Mittleres Panel ── -->
@@ -2012,6 +2015,19 @@ function placeInKlemmRow(devs, bands, startIdx = 0) {
 
   return { rows, overflow: placedTotal < devs.length, mm_used: te_used * TE_MM,
            leftoverDevs: devs.slice(idx), nextIdx: placedCount };
+}
+
+// ── Navigation ────────────────────────────────────────────────
+// Nutzer-Vorgabe (Session 48 Nachtrag 7): Modul 4 zeigt erst nach der
+// Platzierung, ob die in Modul 3 gewählte Konfiguration (Feldanzahl,
+// Anordnung, Schienensystem etc.) tatsächlich passt – ein direkter Link
+// zurück spart den Umweg über die Startseite, wenn aufgrund der Belegung
+// eine andere Konfiguration gewählt werden soll. Anders als Modul 3s
+// `gotoParentModul()` (verzweigt nach `schrank_typ` auf Modul 1 ODER 2) ist
+// Modul 3 für beide Schranktypen der EINE gemeinsame Vorgänger – keine
+// Fallunterscheidung nötig.
+function gotoModul3() {
+  window.location.href = '../modul-03-architektur/';
 }
 
 // Nutzer-Fund (Session 48 Nachtrag 6): die Feld-/Tür-Kacheln (`feld-svg-wrap`/

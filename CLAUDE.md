@@ -393,6 +393,33 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Link zurück zu Modul 3 unter der Belegung (Session 48 Nachtrag 7, gesperrt)
+Nutzer-Vorgabe direkt im Anschluss an Nachtrag 6: „Kannst Du unter dem Feld
+Belegung noch ein Zurück-zu-Modul-3-Link erstellen, wie du es bereits in
+Modul 3 getan hast. Die kann besser genutzt werden, wenn aufgrund der
+Belegung ein anderes Modell gewählt werden soll." Modul 3 hat bereits
+`gotoParentModul()`/`btn-goto-modul` (verzweigt je nach `schrank_typ` auf
+Modul 1 oder 2) – Modul 4 bekommt das Analogon für den eigenen Vorgänger.
+
+Neue Funktion `gotoModul3()` (keine Fallunterscheidung nötig, da Modul 3
+für Wand- UND Standschrank derselbe gemeinsame Vorgänger ist – anders als
+Modul 3s Verzweigung auf Modul 1/2). Button `<button class="btn-print
+btn-nav" onclick="gotoModul3()">← Zurück zu Modul 3 · Architektur</button>`
+direkt unter `#belegung-liste`/`#ddc-auto-liste` im linken Panel
+(`.panel-in`) platziert – exakt an der Stelle, an der der Nutzer nach dem
+Sichten der Belegung/Platzierung entscheidet, ob die Modul-3-Konfiguration
+(Feldanzahl, Anordnung, Schienensystem etc.) angepasst werden muss. Neue
+CSS-Klasse `.btn-nav` 1:1 aus Modul 2/3 übernommen (grüner Rahmen/Text,
+Hover-Invertierung). Ergänzt den bereits bestehenden, aber weniger
+prominent platzierten Footer-Link „← Modul 3 · Zonenaufteilung" – bewusst
+kein Duplikat-Problem, sondern zwei unterschiedliche Zugriffspunkte
+(Footer = generische Modulübersicht, neuer Button = kontextbezogen direkt
+bei der Belegung).
+
+Verifiziert direkt im Browser: Button erscheint korrekt unter der
+Belegungsliste, `gotoModul3()` navigiert zu `../modul-03-architektur/`,
+keine Konsolenfehler.
+
 ### Mehrfeld-Schaltschränke Nachtrag 6: Feld-/Tür-Kacheln ohne toten Rand (Session 48, gesperrt)
 Direkte Fortsetzung von Nachtrag 5, gleicher Tag – Nutzer-Fund per Screenshot:
 die Schranksicht-Kacheln sind deutlich breiter als die eigentliche
