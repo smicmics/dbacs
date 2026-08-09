@@ -393,6 +393,143 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Mehrfeld-Schaltschränke Phase 1: gleichartige Folgefelder (Session 48, gesperrt/teilweise offen)
+Nutzer-Auftrag direkt im Anschluss an Session 47 (Türansicht): Modul 3
+hatte bereits ein `zone_modus`-Dropdown „1 Feld"/„Mehrere Felder" +
+Feldanzahl-Eingabe, aber die Zonenberechnung lief immer nur einfeldig –
+„Mehrere Felder" wiederholte im Sidebar-Vorschau-SVG nur dasselbe
+Einzelfeld-Layout N-mal identisch. Modul 4 las `m03_zone_modus`/
+`m03_n_felder` überhaupt nicht. Nutzer-Vorgabe: vollständige Mehrfeld-
+Unterstützung mit 4 Fällen (1 Feld / gleichartige Folgefelder /
+Einspeisung-Leistung-Steuerung getrennt / Einspeisung getrennt von
+Mischfeld) – Umfang und Layout-Fragen per `AskUserQuestion` geklärt
+(„Alle 4 Fälle vollständig", „Alle Felder in einer Reihe nebeneinander").
+Plan-Mode-Recherche (2 Explore-Agenten + 1 Plan-Agent) ergab: Modul 4
+dupliziert `buildLayout()` Byte-für-Byte aus Modul 3 (bestehende
+Konvention) – jede Feldtyp-Logik muss identisch in beiden Modulen stehen.
+**Diese Session liefert Phase 1 (Fall 1+2), Fall 3+4 folgen als
+Phase 2/3.**
+
+**Feldtyp-Modell (5 Typen A–E, nur A/B in Phase 1 implementiert):**
+```
+A Vollfeld/Erstfeld: alle 8 Zonen
+B Folgefeld (Fall 2 ab Feld 2): wie A ohne klemm_e+uss –
+  klemm_e-Breite → klemm_l/f/s (proportional), uss-Breite → leist
+C Einspeisefeld (Fall 3/4 Feld 1, Phase 2): klemm_e,uss,evert,klemm_l
+D Leistungsfeld (Fall 3, Phase 2): leist(+ext),klemm_l
+E Steuerfeld (Fall 3, Phase 2): steuer,klemm_f,klemm_s
+```
+`zone_modus` → Feldsequenz (`FELDPLAN`, `*`=erweitert sich automatisch
+bei eigenem Überlauf): `1feld→[A]`, `je_feld→[A,B*]`,
+`getrennt_els→[C*,D*,E*]` (Phase 2), `einsp_misch→[C,B*]` (Phase 3 –
+Nutzer bestätigt: Feld 1 = Einspeisungsfeld wie Fall 3, ab Feld 2 exakt
+Fall-2-Folgefeld, keine neue Berechnungslogik nötig). Fall 3: Leistungs-
+und Steuerfeld erweitern sich unabhängig voneinander bei eigenem
+Überlauf (Nutzer bestätigt, analog Fall 2).
+
+**Wichtige Architektur-Erkenntnis (spart eine ursprünglich geplante
+`m03_feldtypen_json`-Persistenz):** `zp` (Zonenparameter aus
+`calculateZones()`) ist für ALLE Feldtypen identisch – jedes Feld ist ein
+gleich großes Schaltschrankfeld (Montagebereich B×H aus Modul 1/2), nur
+die ZEILEN-Transformation (`buildLayoutForFeldtyp(zp, feldtyp)`)
+unterscheidet sich je Typ. Modul 4s `buildZpForFeldtyp()` ist deshalb nur
+ein Alias für das bestehende `buildZp()` – keine neuen localStorage-Keys
+nötig, die bereits vorhandenen flachen `m03_*`-Keys reichen.
+
+**Modul 3:** `FELDTYP_ZONEN`/`FELDPLAN`/`redistributeRowZones()`/
+`buildLayoutForFeldtyp()` neu (nach `buildLayout()`). Typ A = Pass-through
+(Regressionsschutz). Typ B: `redistributeRowZones(zones, dropIds,
+growIds)` entfernt Sub-Zonen aus einer Layout-Zeile, verteilt ihre Breite
+proportional auf die verbleibenden Ziel-Zonen und packt die Zeile
+lückenlos neu (x-Positionen) – funktioniert rein auf dem bestehenden
+Zeilen-Array, keine Änderung an `buildLayout()` selbst nötig. Wandschrank-
+Sperre: `calculateZones()` liest `schrank_typ` selbst, `modusRaw`
+(Nutzer-Wahl) wird unverändert persistiert, nur der *effektive* `modus`
+(für die Berechnung) wird bei Wandschrank auf `'1feld'` erzwungen – ein
+Rückwechsel zu Standschrank stellt die vorherige Mehrfeld-Wahl wieder
+her. `buildZoneSVG()` generalisiert: zeigt `expandFeldplan(modus,
+n_felder)` (letzte `repeat`-Phase füllt bis n_felder auf) mit Feldtyp-
+Label im Spaltenkopf, statt der bisherigen `je_feld`-Sonderbehandlung.
+
+**Modul 4:** `FELDTYP_ZONEN`/`FELDPLAN`/`buildLayoutForFeldtyp()`
+identisch dupliziert. `placeInBands()`/`placeInKlemmRow()` bekommen
+`startIdx`-Parameter und liefern zusätzlich `leftoverDevs`+`nextIdx` –
+ein Zonen-Rest, der in einem Feld nicht mehr passte, läuft so 1:1 als
+`devs`-Eingabe ins nächste Feld weiter. `placeBauteile()` aufgeteilt in
+`buildQueues()` (unverändert: `belegung` bleibt bewusst NICHT
+feldbewusst, reine Artikel-Bestandsliste, Warteschlangen + DDC-Statistik
+projektglobal einmal aufgebaut) und `placeBauteileForField(bandsAll,
+klemmraum, feldtyp, queues, idxCounters, reservePct, useEvKanal)`
+(platziert nur die Zonen dieses Feldtyps, verbraucht `queues[zone]`
+destruktiv). Neu `calculateFelder()`: Orchestrator-Schleife über
+`FELDPLAN[modus]`, erzeugt je Phase mindestens ein Pflichtfeld, erweitert
+`repeat`-Phasen demand-getrieben solange die zugehörigen Zonen noch
+Warteschlangenrest haben – Schutz gegen Endlosschleife über
+`MAX_FELDER=20`-Deckel und „kein Fortschritt"-Abbruch (z. B. Einzelbauteil
+größer als jede Zone), dann bleibt das bestehende rote „!" am letzten
+Feld sichtbar statt den Tab einzufrieren.
+
+**Türbauteile bekommen einen expliziten Feld-Bezug (Nutzer-Korrektur
+während der Planung):** ursprünglich geplant war „alles in Feld 1
+zeichnen" (kein Datenmodell-Aufwand) – der Nutzer wollte stattdessen
+echte Feldzuordnung: „Ich ordne ja pro Feld zu. Da gehört dann auch die
+Türe zu." `batches`-Einträge mit `zone==='tuer'` bekommen ein `feld`-
+Attribut (1-basiert, Default 1), analog zur Session-44-Zonenwahl über
+eine neue UI-Zeile `#feld_auf_row` (nur sichtbar bei `zone_modus!=='1feld'`
+und Tür-Artikel, Optionen aus `letzteFelder` mit Feldtyp-Label).
+`getTuerItems(feldIndex)` filtert jetzt pro Feld, `removeEinzelbauteilQty()`
+respektiert bei Türbauteilen zusätzlich das im Dropdown gewählte Feld
+(LIFO nur innerhalb dieses Feldes, analog zum bestehenden Zonen-Filter).
+
+**Layout – zwei Panorama-Reihen statt fester Einzel-Container (Nutzer-
+Vorgabe: „links werden die Felder nacheinander angezeigt, rechts die
+Türen nacheinander... Innen- und Außenansicht wie sie später aussehen
+werden"):** `#svg-wrap`/`#tuer-wrap` (feste IDs) ersetzt durch
+`#felder-row`/`#tueren-row` (Flex-Reihen mit horizontalem Scroll statt
+Stauchen bei vielen Feldern) – `calculate()` erzeugt pro Feld dynamisch
+ein `.feld-svg-wrap`- bzw. `.feld-tuer-wrap`-Element, `buildSVG()`/
+`buildTuerAnsicht()` nehmen jetzt Container-Elemente statt fester IDs
+entgegen (`buildTuerAnsicht(feldIndex, wrap, inner)` gibt `true`/`false`
+zurück, ob ein Türbauteil-Panel tatsächlich gezeichnet wurde – Felder
+ohne Türbauteile bekommen keinen Block). Füllstand-Streifen und
+Stückliste bleiben unverändert (keine Code-Änderung an `buildFuellstand`/
+`buildStueckliste` nötig): `calculate()` aggregiert `mm_used`/`mm_total`/
+`channels`/`rows` je Zone über alle Felder zu einem einzigen `aggZones`-
+Objekt, `te_belegt` kommt aus einer einmaligen Bedarfs-Momentaufnahme
+(`totalDemandTe`) vor der ersten Platzierung – Positionsnummern (`idx`)
+sind dank fortlaufender `idxCounters` bereits feldübergreifend eindeutig,
+`buildIdxMap()`/`aggregateStueckliste()` brauchten keine Änderung.
+
+**Bewusst nicht Teil dieser Session (Phase 2/3):** Fall 3 (Einspeisung/
+Leistung/Steuerung getrennt) und Fall 4 (Einspeisung getrennt von
+Mischfeld) – Feldtypen C/D/E sind in `FELDTYP_ZONEN`/`FELDPLAN` bereits
+als Konstanten angelegt, aber `buildLayoutForFeldtyp()` fällt für sie
+noch auf das Vollfeld-Layout zurück (kein neuer `zone_modus`-Dropdown-
+Eintrag, daher in der Praxis noch nicht erreichbar). `redistributeKlemmBands()`
+braucht für Fall 3 noch einen `keys`-Parameter (1er-Pool bei C/D, 2er-Pool
+bei E) – aktuell hart auf `['klemm_l','klemm_f','klemm_s']` codiert, für
+A/B ausreichend, da beide immer alle drei Klemmzonen gemeinsam führen.
+`buildFullLayoutSVG()` (Druckfunktion) kennt `je_feld` weiterhin nicht –
+niedrige Priorität, eigene Politur-Phase.
+
+Verifiziert direkt im Browser (lokaler Server, synthetische Belegung):
+`1feld` bleibt bei Wandschrank UND Standschrank 100% identisch zum
+Vorzustand (Regressionsnetz, keine Konsolenfehler). `je_feld` mit
+künstlich überladener Belegung (150 Klemmen in `klemm_l`) erzeugt
+automatisch 5 Felder (1×A + 4×B), alle 150 Positionsnummern global
+eindeutig (`#1`–`#150`, keine Duplikate), Füllstand-Streifen zeigt
+korrekt aggregierte 88 %, Stückliste zeigt Gesamtmenge 150 mit
+zusammenhängendem Positionsbereich `#1–#150`. `klemm_e`/`uss` nur in
+Feld 1 (Typ A) vorhanden, alle Folgefelder (Typ B) korrekt ohne. Tür-
+Feldzuordnung: Hauptschalter auf Feld 2 zugeordnet erscheint exakt an
+Position 2 der Türen-Reihe (Feld 1 ohne Türbauteil bekommt keinen
+Block). Endlosschleifen-Schutz: künstliches Bauteil mit `te_breite=280`
+(passt in keine Zone) bricht nach 3 Feldern sauber ab (15 ms
+Rechenzeit, kein Hänger), rotes „!" bleibt sichtbar. Wandschrank-Sperre
+in Modul 3 UND Modul 4 unabhängig verifiziert (`getEffektiveZoneModus()`
+liefert `'1feld'` trotz gespeicherter `'je_feld'`-Wahl, sobald
+`schrank_typ==='wandschrank'`).
+
 ### Modul 4 – Türansicht neben Innenansicht (Session 47, gesperrt)
 Nutzer-Idee direkt im Anschluss an Session 46 (Türbauteile jetzt vollständig
 katalogisiert): da Zone `tuer` bereits alle Fronttafel-/Türeinbaugeräte
