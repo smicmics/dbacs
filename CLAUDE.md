@@ -393,6 +393,43 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Mehrfeld-Schaltschränke Nachtrag 5: klemm_l gehört nicht ins Einspeisefeld (Session 48, gesperrt)
+Direkte Fortsetzung von Nachtrag 4, gleicher Tag – Nutzer-Korrektur nach
+eigener Prüfung: „Wenn das Einspeisefeld alleine sein soll, dann gibt es
+dort keine Zone für Klemmenzone für Leistung. Die gibt es nur dort, wo auch
+eine Zone Leistung existiert." `FELDTYP_ZONEN.C` enthielt bisher fälschlich
+`klemm_l` (Abgangsklemmen Leistung) – fachlich falsch, da ein reines
+Einspeisefeld (Typ C) selbst keine Leistungsbaugruppen führt und die
+zugehörigen Abgangsklemmen daher dort nichts zu suchen haben; sie gehören
+ins Leistungsfeld (Typ D), das `klemm_l` bereits korrekt führt.
+
+**Fix:** `klemm_l` aus `FELDTYP_ZONEN.C` entfernt (`C: ['klemm_e','uss',
+'evert']`, vorher zusätzlich `'klemm_l'`). In der Klemmzeilen-Transformation
+von `buildLayoutForFeldtyp()` galt bisher hart „klemm_e wächst nie" (fester
+physischer Platzbedarf) – das bleibt für alle Feldtypen mit mindestens
+einer weiteren Klemmzone (A/B/D/E) unverändert richtig, aber für Typ C ist
+`klemm_e` nach der Entfernung von `klemm_l` die EINZIGE verbliebene
+Klemmzone in der Zeile. Neue Ausnahme: ist `growIds` (Breiten-Empfänger)
+nach dem üblichen Filter leer UND `klemm_e` im Feldtyp enthalten, wird
+`klemm_e` selbst zum alleinigen Empfänger – die komplette freiwerdende
+Zeilenbreite (vorher zwischen klemm_e und klemm_l aufgeteilt) geht jetzt
+vollständig an die Einspeiseklemmen. In Modul 3 UND Modul 4 identisch
+angewendet (`redistributeKlemmBands()`/`klemmKeysHier` in Modul 4 brauchten
+keine Änderung – beide leiten die relevanten Klemm-Zonen bereits dynamisch
+aus `FELDTYP_ZONEN[feldtyp]` ab, `klemm_l` fällt für Typ C damit automatisch
+weg).
+
+Verifiziert direkt im Browser (echtes Modul-2-Ergebnis 499×1861mm,
+`getrennt_els`, KE oben): `FELDTYP_ZONEN.C` bestätigt ohne `klemm_l`,
+Klemmzeile von Typ C enthält nur noch `klemm_e` mit voller Zeilenbreite
+(`w:1`), Höhenbilanz weiterhin exakt (1861mm = 1861mm) für alle 5
+Feldtypen; Typ A/B/D/E strukturell unverändert (Regressionsschutz).
+End-to-End-Platzierungstest in Modul 4 (20× Einspeiseklemme + 50×
+Abgangsklemme Leistung in die Belegung gelegt): Feld 1 (Typ C) zeigt nur
+noch ein `klemm_e`-Band über die volle Breite, KEIN `klemm_l`-Band mehr;
+die Abgangsklemmen Leistung route korrekt in die Leistungsfelder (Typ D,
+Felder 2+3) – keine Konsolenfehler.
+
 ### Mehrfeld-Schaltschränke Nachtrag 4: Kettentest Modul 2 → Modul 3 → Modul 4 (Session 48, gesperrt)
 Direkte Fortsetzung von Nachtrag 3, gleicher Tag – Nutzer-Auftrag: „Meine
 Tests gingen alle mit der gerade gespeicherten Variante mit Kabeleinführung

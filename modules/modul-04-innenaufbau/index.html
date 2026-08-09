@@ -1503,7 +1503,11 @@ function buildLayout(zp) {
 const FELDTYP_ZONEN = {
   A: ['klemm_e','uss','evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
   B: ['evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
-  C: ['klemm_e','uss','evert','klemm_l'],
+  // C (Einspeisefeld) OHNE klemm_l (Nutzer-Korrektur, Session 48 Nachtrag 5):
+  // Abgangsklemmen Leistung gehören nur dorthin, wo auch eine Leistung-Zone
+  // existiert (Typ D) – ein reines Einspeisefeld hat keine Leistungs-
+  // Abgänge. klemm_e (Einspeiseklemmen) bleibt als einzige Klemmzone.
+  C: ['klemm_e','uss','evert'],
   D: ['leist','leist_ext','klemm_l','evert'],
   E: ['steuer','klemm_f','klemm_s','evert'],
 };
@@ -1511,9 +1515,9 @@ const FELDPLAN = {
   '1feld':        [{ ft:'A', repeat:false }],
   'je_feld':      [{ ft:'A', repeat:false }, { ft:'B', repeat:true }],
   // C (Einspeisung) bewusst repeat:false: es gibt nur EINE Netzeinspeisung
-  // pro Anlage – überläuft klemm_l dennoch (klemm_l gehört auch zu Typ C),
-  // wird der Rest automatisch von Typ D (Leistung, hat ebenfalls klemm_l)
-  // übernommen, nicht durch ein zweites Einspeisungsfeld.
+  // pro Anlage – ein Überlauf von klemm_e wird nicht durch ein zweites
+  // Einspeisungsfeld aufgefangen (klemm_l/f/s gehören seit Nachtrag 5 nicht
+  // mehr zu Typ C, überlaufen also unabhängig davon über Typ D/E weiter).
   'getrennt_els': [{ ft:'C', repeat:false }, { ft:'D', repeat:true }, { ft:'E', repeat:true }],
   'einsp_misch':  [{ ft:'C', repeat:false }, { ft:'B', repeat:true }],
 };
@@ -1619,10 +1623,14 @@ function buildLayoutForFeldtyp(zp, feldtyp) {
 
     // Klemmzeile: klemm_e/klemm_l/klemm_f/klemm_s – Breite entfallender
     // Subzonen geht proportional an die verbleibenden (klemm_e wächst nie,
-    // hat einen festen physischen Platzbedarf, unabhängig vom Feldtyp).
+    // hat einen festen physischen Platzbedarf, unabhängig vom Feldtyp) –
+    // AUSSER klemm_e ist die einzige im Feldtyp verbliebene Klemmzone (Typ C
+    // ohne klemm_l/f/s, Session 48 Nachtrag 5): dann gibt es keinen anderen
+    // Breiten-Empfänger, die gesamte Zeile gehört den Einspeiseklemmen.
     if (row.zones.some(z => z.id.startsWith('klemm_'))) {
       const dropIds = ['klemm_e','klemm_l','klemm_f','klemm_s'].filter(id => !zoneSet.includes(id));
-      const growIds = zoneSet.filter(id => id.startsWith('klemm_') && id !== 'klemm_e');
+      let growIds = zoneSet.filter(id => id.startsWith('klemm_') && id !== 'klemm_e');
+      if (growIds.length === 0 && zoneSet.includes('klemm_e')) growIds = ['klemm_e'];
       newRows.push({ ...row, zones: redistributeRowZones(row.zones, dropIds, growIds) });
       return;
     }
