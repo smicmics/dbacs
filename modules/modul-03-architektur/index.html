@@ -702,7 +702,16 @@ function calculate() {
 
 // ── Zonen-Sidebar + Mindesthöhen berechnen ────────────────────
 function calculateZones(b, h) {
-  const modus     = gs('zone_modus');
+  const typ = gs('schrank_typ');
+  // Wandschrank kennt fachlich kein Nebenfeld (wird bei Überlauf einfach
+  // voll) – zone_modus wird gesperrt und effektiv auf '1feld' erzwungen,
+  // OHNE die gespeicherte Wahl zu überschreiben (Rückwechsel zu
+  // Standschrank stellt sie wieder her). Session 48.
+  const isWandschrank = typ === 'wandschrank';
+  const zoneModusEl = document.getElementById('zone_modus');
+  if (zoneModusEl) zoneModusEl.disabled = isWandschrank;
+  const modusRaw  = gs('zone_modus');           // Nutzer-Wahl, unverändert persistiert
+  const modus     = isWandschrank ? '1feld' : modusRaw; // effektiv, für die Berechnung
   const anordnung = gs('zone_anordnung');
   const netztyp   = gs('zone_netztyp');
   const ke_pos    = gs('zone_ke_pos') || 'unten';
@@ -711,7 +720,7 @@ function calculateZones(b, h) {
   const n_felder  = Math.max(1, g('n_felder') || 3);
 
   // Mehrere Felder: Anordnungsauswahl sperren
-  const isMehreFelder = modus === 'je_feld';
+  const isMehreFelder = modus !== '1feld';
   document.getElementById('zone_anordnung').disabled = isMehreFelder;
   document.getElementById('zone-feld-section').style.display = isMehreFelder ? '' : 'none';
 
@@ -802,8 +811,12 @@ function calculateZones(b, h) {
     diffEl.textContent = '–'; diffEl.className = 'zone-sum-ok';
   }
 
-  // localStorage für Folgemodule
-  localStorage.setItem('m03_zone_modus',     modus);
+  // localStorage für Folgemodule – die ROHE Nutzer-Wahl wird persistiert
+  // (nicht der wandschrank-erzwungene Effektivwert), damit ein Rückwechsel
+  // zu Standschrank die vorherige Mehrfeld-Wahl wiederherstellt. Modul 4
+  // wendet die Wandschrank-Sperre eigenständig anhand seines eigenen
+  // schrank_typ erneut an (siehe dortiger calculateFelder()).
+  localStorage.setItem('m03_zone_modus',     modusRaw);
   localStorage.setItem('m03_zone_anordnung', anordnung);
   localStorage.setItem('m03_zone_netztyp',   netztyp);
   localStorage.setItem('m03_zone_ke_pos',    ke_pos);
@@ -999,6 +1012,95 @@ function buildLayout(zp) {
   return rows;
 }
 
+// ── Mehrfeld-Schaltschränke: Feldtypen (Session 48) ────────────
+// Ein "Feldtyp" ist eine Zonen-Teilmenge des Vollfeld-Layouts (buildLayout()).
+// zp selbst ist für alle Feldtypen identisch (jedes Feld ist ein
+// gleich großes Schaltschrankfeld, Montagebereich B×H aus Modul 1/2) –
+// nur die ZEILEN-Transformation unterscheidet sich je Feldtyp.
+// Phase 1: nur A (Vollfeld/Erstfeld) und B (Folgefeld, Fall 2 – "Mehrere
+// gleichartige Felder"). C/D/E (Einspeisung/Leistung/Steuerung feldseitig
+// getrennt, Fall 3+4) folgen in Phase 2.
+const FELDTYP_ZONEN = {
+  A: ['klemm_e','uss','evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
+  B: ['evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
+  C: ['klemm_e','uss','evert','klemm_l'],
+  D: ['leist','leist_ext','klemm_l'],
+  E: ['steuer','klemm_f','klemm_s'],
+};
+
+// zone_modus → Feldsequenz. '*' (repeat:true) = Phase erweitert sich in
+// Modul 4 automatisch um weitere Felder desselben Typs, solange die
+// zugehörigen Zonen noch unplatzierten Bedarf haben (demand-getrieben).
+const FELDPLAN = {
+  '1feld':        [{ ft:'A', repeat:false }],
+  'je_feld':      [{ ft:'A', repeat:false }, { ft:'B', repeat:true }],
+  'getrennt_els': [{ ft:'C', repeat:true },  { ft:'D', repeat:true }, { ft:'E', repeat:true }],
+  'einsp_misch':  [{ ft:'C', repeat:false }, { ft:'B', repeat:true }],
+};
+
+const FELDTYP_LABEL = {
+  A: 'Vollfeld', B: 'Folgefeld', C: 'Einspeisung', D: 'Leistung', E: 'Steuerung',
+};
+
+// Reine Sidebar-Vorschau-Hilfe: FELDPLAN[modus] auf n Felder "aufblasen" –
+// füllt nur die LETZTE Phase (falls repeat:true) bis n auf. Die echte
+// bedarfsgetriebene Erweiterung (auch mehrerer repeat-Phasen unabhängig
+// voneinander, Fall 3) passiert in Modul 4s calculateFelder().
+function expandFeldplan(modus, n) {
+  const plan = FELDPLAN[modus] || FELDPLAN['1feld'];
+  const seq = plan.map(p => p.ft);
+  const last = plan[plan.length - 1];
+  if (last && last.repeat) {
+    while (seq.length < n) seq.push(last.ft);
+  }
+  return seq;
+}
+
+// Verteilt die Breite entfallender Zonen innerhalb EINER Layout-Zeile
+// proportional auf die verbleibenden "grow"-Zonen und packt die Zeile
+// anschließend lückenlos von links neu (x-Positionen) – Kanalzonen
+// (kanal_vl/vr) bleiben unverändert, da sie nie in dropIds/growIds stehen.
+function redistributeRowZones(zones, dropIds, growIds) {
+  const dropped = zones.filter(z => dropIds.includes(z.id));
+  if (!dropped.length) return zones;
+  const freedW = dropped.reduce((s, z) => s + z.w, 0);
+  const kept = zones.filter(z => !dropIds.includes(z.id));
+  const growSet = kept.filter(z => growIds.includes(z.id));
+  const growTotalW = growSet.reduce((s, z) => s + z.w, 0);
+  if (growTotalW > 0) {
+    growSet.forEach(z => { z.w += freedW * (z.w / growTotalW); });
+  }
+  let x = 0;
+  return kept.sort((a, b) => a.x - b.x).map(z => { const nz = { ...z, x }; x += z.w; return nz; });
+}
+
+// Transformiert das Vollfeld-Zeilenarray (buildLayout()) auf einen der
+// Feldtypen. Typ A = Pass-through (Vollfeld/Erstfeld, unverändert –
+// Regressionsschutz für den bestehenden 1-Feld-Fall).
+function buildLayoutForFeldtyp(zp, feldtyp) {
+  const rows = buildLayout(zp);
+  if (!feldtyp || feldtyp === 'A') return rows;
+
+  if (feldtyp === 'B') {
+    // Folgefeld (Fall 2 ab Feld 2): Einspeiseklemmen entfallen → Breite an
+    // die übrigen Klemmzonen (proportional); ÜSS entfällt → Breite an die
+    // angrenzende Leistungszone (Nutzer-Vorgabe, nicht an Steuerung).
+    return rows.map(row => {
+      const ids = row.zones.map(z => z.id);
+      if (ids.includes('klemm_e')) {
+        return { ...row, zones: redistributeRowZones(row.zones, ['klemm_e'], ['klemm_l','klemm_f','klemm_s']) };
+      }
+      if (ids.includes('uss')) {
+        return { ...row, zones: redistributeRowZones(row.zones, ['uss'], ['leist']) };
+      }
+      return row;
+    });
+  }
+
+  // C/D/E folgen in Phase 2 – bis dahin Fallback auf Vollfeld-Layout.
+  return rows;
+}
+
 // ── TE-Tabelle ────────────────────────────────────────────────
 function buildTETable(p) {
   const isWand   = p.typ === 'wandschrank';
@@ -1085,23 +1187,29 @@ function buildZoneSVG(zp) {
   const pw = Math.round(b * sc);
   const ph = Math.round(h * sc);
 
-  if (modus === 'je_feld') {
-    // Mehrere Felder nebeneinander, je Feld übereinander
-    const N   = n_felder;
+  if (modus !== '1feld') {
+    // Mehrere Felder nebeneinander, je Feld übereinander – Feldtyp-Sequenz
+    // aus FELDPLAN[modus], letzte "repeat"-Phase füllt bis n_felder auf
+    // (Session 48; reine Sidebar-Vorschau, die echte bedarfsgetriebene
+    // Erweiterung passiert in Modul 4).
+    const feldtypSeq = expandFeldplan(modus, n_felder);
+    const N   = feldtypSeq.length;
     const GAP = 5;
     const fw  = Math.min(75, Math.floor((530 - PL - GAP*(N-1)) / N));
     const sc_h = Math.min(400 / h, ph / h);
     const fph  = Math.round(h * sc_h);
     const VW   = PL + N*fw + (N-1)*GAP + PL + 4;
     const VH   = PT + fph + PB;
-    const rows = buildLayout({ ...zp, anordnung: 'uebereinander' });
+    const zpUeber = { ...zp, anordnung: 'uebereinander' };
 
     let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"
       style="width:100%;max-width:${VW}px;display:block;background:#1C1C1A;border-radius:4px;margin-bottom:12px">`;
     for (let fi = 0; fi < N; fi++) {
+      const ft   = feldtypSeq[fi];
+      const rows = buildLayoutForFeldtyp(zpUeber, ft);
       const fx = PL + fi*(fw+GAP);
       s += `<text x="${fx+fw/2}" y="${PT-5}" text-anchor="middle"
-        font-size="7.5" fill="#9A9890" font-family="system-ui,sans-serif">F ${fi+1}</text>`;
+        font-size="7.5" fill="#9A9890" font-family="system-ui,sans-serif">F ${fi+1} · ${FELDTYP_LABEL[ft]}</text>`;
       s += `<rect x="${fx}" y="${PT}" width="${fw}" height="${fph}" fill="#FDFCF8" stroke="#888" stroke-width="0.7"/>`;
       let fy = PT;
       for (const row of rows) {

@@ -308,26 +308,33 @@ legend{
 .fuell-bar{height:100%;border-radius:4px;transition:width .3s;}
 .fuell-kanal-info{font-size:10px;color:var(--tx3);margin-top:6px;padding-top:6px;border-top:1px solid var(--bord);}
 
-/* ── SVG Container ── */
+/* ── SVG Container (Session 48: mehrere Felder möglich) ── */
 .schrank-views-row{display:flex;gap:12px;flex:1;min-height:0;}
-#svg-wrap{
+/* Links: Reihe der Feld-Innenansichten – bei 1 Feld genau 1 Block, füllt
+   den verfügbaren Platz wie bisher #svg-wrap; bei mehreren Feldern
+   scrollt die Reihe horizontal statt die Blöcke zu stauchen (Bauteil-
+   Lesbarkeit hat Vorrang vor Kompaktheit). */
+.felder-row{display:flex;gap:12px;flex:1;min-width:0;min-height:0;overflow-x:auto;}
+.feld-svg-wrap{
   border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
-  min-height:200px;overflow:hidden;flex:1;
+  min-height:200px;min-width:220px;overflow:hidden;flex:1 0 260px;
   display:flex;align-items:center;justify-content:center;
 }
-#svg-wrap svg{display:block;}
-/* Türansicht (Session 47): schmalere zweite Ansicht neben der Schranksicht,
-   nur sichtbar wenn Türbauteile in der Belegung sind (siehe buildTuerAnsicht()) */
-#tuer-wrap{
+.feld-svg-wrap svg{display:block;}
+/* Rechts: Reihe der zugehörigen Türansichten, gleiche Feld-Reihenfolge wie
+   links (Session 47 Grundlage, Session 48 auf mehrere Felder erweitert) –
+   nur Felder mit mindestens einem Türbauteil bekommen einen Block. */
+.tueren-row{display:flex;gap:12px;flex:0 0 260px;min-height:0;overflow-x:auto;}
+.feld-tuer-wrap{
   border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
   min-height:200px;overflow:hidden;flex:0 0 260px;
   display:flex;align-items:center;justify-content:center;
 }
-#tuer-wrap svg{display:block;}
+.feld-tuer-wrap svg{display:block;}
 /* Zonentexte im SVG nur auf dem Bildschirm ausblenden – die Legende
    (.cabinet-legend) übernimmt die Erklärung. Im Ausdruck (@media print
    unten) werden sie wieder eingeblendet, da dort keine Legende danebenliegt. */
-#svg-inner .zone-label-layer{display:none;}
+.feld-svg-inner .zone-label-layer{display:none;}
 .no-data-msg{
   color:var(--tx3);font-size:12px;text-align:center;padding:20px;
 }
@@ -426,7 +433,7 @@ legend{
   .eingabeleiste{display:none;}
   .fuellstand-strip{display:none;}
   .layout-3col{grid-template-columns:200px 1fr 300px;}
-  #svg-inner .zone-label-layer{display:inline;}
+  .feld-svg-inner .zone-label-layer{display:inline;}
 }
 </style>
 </head>
@@ -542,7 +549,7 @@ legend{
     <div class="eb-field">
       <label>Spezifische Auswahl Einzelbauteile</label>
       <div class="bg-add-row">
-        <select id="einzel_auswahl" style="flex:1" onchange="updateZoneAuswahlUI();updateRowbreakAvailability();updateDdcAufschaltungUI()">
+        <select id="einzel_auswahl" style="flex:1" onchange="updateZoneAuswahlUI();updateFeldAuswahlUI();updateRowbreakAvailability();updateDdcAufschaltungUI()">
           <option value="">Laden …</option>
         </select>
         <input id="einzel_menge" type="number" value="1" min="1" max="99">
@@ -615,6 +622,9 @@ legend{
   <span class="fs-zone-auswahl" id="zone_auf_row" style="display:none" title="Gewähltes Bauteil ist für mehrere Zonen zugelassen – wählt, in welcher Zone die aktuell hinzugefügte Menge platziert wird">
     Zone <select id="zone_auswahl" onchange="updateRowbreakAvailability()"></select>
   </span>
+  <span class="fs-zone-auswahl" id="feld_auf_row" style="display:none" title="Türbauteile werden bei mehreren Schaltschrankfeldern gezielt einem Feld zugeordnet (kein automatischer Überlauf wie bei den Innenraum-Zonen)">
+    Feld <select id="feld_auswahl"></select>
+  </span>
   <span class="fs-kanal-mini" id="fs-kanal-info">Kanäle: – mm (Struktur) + – mm (Baugruppen-Reihen)</span>
 </div>
 
@@ -633,17 +643,16 @@ legend{
   <div class="panel-mid">
     <h2>Schranksicht</h2>
 
-    <!-- SVG Schranksicht + Türansicht nebeneinander -->
+    <!-- Feld-Reihe (Innenansichten) + Türen-Reihe nebeneinander (Session 48:
+         mehrere Schaltschrankfelder möglich, je Feld ein Block in beiden
+         Reihen, gleicher Index = gleiche Position – "Innen- und
+         Außenansicht wie sie später aussehen wird"). Bei genau 1 Feld sieht
+         das optisch identisch zum bisherigen Session-47-Layout aus. -->
     <div class="schrank-views-row">
-      <div id="svg-wrap">
+      <div id="felder-row" class="felder-row">
         <div class="no-data-msg" id="svg-msg">Bitte Schrank-Typ wählen und Daten aus Modul 1–3 laden</div>
-        <div id="svg-inner" style="display:none"></div>
       </div>
-      <!-- Türansicht: nur sichtbar, wenn mindestens ein Türbauteil belegt ist
-           (Session 47) -->
-      <div id="tuer-wrap" style="display:none">
-        <div id="tuer-inner"></div>
-      </div>
+      <div id="tueren-row" class="tueren-row"></div>
     </div>
 
     <!-- Zonen-Legende -->
@@ -738,6 +747,10 @@ const isDdcSupplyTyp = t => t === 'ddc_io' || t === 'ddc_cpu';
 let EINZELBAUTEILE_DB = [];
 let BAUGRUPPEN_DB     = [];
 let belegung          = [];  // [{typ:'baugruppe', bg_id, menge, ci}, {typ:'einzel', artikel_nr, menge, ci}, ...]
+// Ergebnis des letzten calculateFelder()-Laufs (Session 48) – speist die
+// Feld-Auswahl (#feld_auf_row) für Türbauteile mit der aktuell bekannten
+// Feld-Sequenz (Anzahl + Feldtyp je Feld).
+let letzteFelder = [];
 // DDC-Auto-Modul-Ratchet (Session 28e): { artikel_nr: hoechste bisher berechnete
 // Menge }. Sinkt nie von selbst, siehe applyDdcWatermark() weiter unten.
 let ddcWatermark       = {};
@@ -909,6 +922,34 @@ function getSelectedEinzelZone(eb) {
   const row = document.getElementById('zone_auf_row');
   if(row && row.style.display !== 'none') return gs('zone_auswahl');
   return eb.zone[0];
+}
+
+// ── Feld-Auswahl für Türbauteile (Session 48) ─────────────────────────
+// Nur bei Mehrfeld-Betrieb sichtbar (zone_modus !== '1feld') UND wenn der
+// gewählte Artikel überhaupt zone 'tuer' erlaubt – Türbauteile werden im
+// Gegensatz zu den Innenraum-Zonen NICHT automatisch über Feldgrenzen
+// hinweg verteilt (kein Kapazitäts-Overflow-Konzept für die Tür), sondern
+// vom Nutzer bewusst genau einem Feld zugeordnet (Nutzer-Vorgabe: "Ich
+// ordne ja pro Feld zu... links werden die Felder nacheinander angezeigt,
+// rechts die Türen nacheinander").
+function updateFeldAuswahlUI() {
+  const row = document.getElementById('feld_auf_row');
+  const sel = document.getElementById('feld_auswahl');
+  if(!row || !sel) return;
+  const artikelNr = gs('einzel_auswahl');
+  const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === artikelNr);
+  const modus = getEffektiveZoneModus();
+  const wirktHier = !!eb && eb.zone.includes('tuer') && modus !== '1feld' && letzteFelder.length > 1;
+  row.style.display = wirktHier ? 'inline-flex' : 'none';
+  if(wirktHier) {
+    sel.innerHTML = letzteFelder.map((f, i) => `<option value="${i+1}">Feld ${i+1} · ${FELDTYP_LABEL[f.feldtyp]}</option>`).join('');
+  }
+}
+
+function getSelectedTuerFeld() {
+  const row = document.getElementById('feld_auf_row');
+  if(row && row.style.display !== 'none') return +gs('feld_auswahl') || 1;
+  return 1;
 }
 
 // "neue Reihe" nur bedienbar, wenn das aktuell gewählte Einzelbauteil
@@ -1091,10 +1132,14 @@ function getBatches(item) {
 // Ohne den zone-Vergleich wuerde z.B. "5x Klemme in klemm_l" + "3x dieselbe
 // Klemme in klemm_s" faelschlich zu einem Batch verschmelzen und die
 // gesamten 8 Stueck landen in der zuletzt gewaehlten Zone (Nutzer-Fund).
-function pushBatch(batches, n, forced, zone) {
+// feld (Session 48): nur für zone==='tuer' gesetzt – ein Feld-Index
+// (1-basiert), analog zu zone bei Mehrfachzonen-Artikeln pro Batch
+// gehalten, damit ein Türbauteil gezielt EINEM Schaltschrankfeld
+// zugeordnet werden kann (siehe getSelectedTuerFeld()/#feld_auf_row).
+function pushBatch(batches, n, forced, zone, feld) {
   const last = batches[batches.length - 1];
-  if (last && last.forced === forced && last.zone === zone) last.n += n;
-  else batches.push({n, forced, zone});
+  if (last && last.forced === forced && last.zone === zone && last.feld === feld) last.n += n;
+  else batches.push({n, forced, zone, feld});
 }
 
 function addEinzelbauteil() {
@@ -1112,6 +1157,8 @@ function addEinzelbauteil() {
   // pro Batch (siehe pushBatch) – sonst wuerde ein spaeteres Hinzufuegen in
   // Zone B rueckwirkend die bereits in Zone A platzierte Menge umziehen.
   const zone = eb ? getSelectedEinzelZone(eb) : null;
+  // Feld-Wahl (Session 48): nur bei Türbauteilen im Mehrfeld-Modus relevant.
+  const feld = zone === 'tuer' ? getSelectedTuerFeld() : undefined;
   const forced = !!eb && REIHEN_ZONEN.includes(zone) && document.getElementById('einzel_rowbreak').checked;
   // DDC-Aufschaltung (Session 41): gilt je Artikel fuer die GESAMTE Menge in
   // der Belegung (wie ci/Farbe), nicht je Batch – bei erneutem Hinzufuegen
@@ -1124,10 +1171,10 @@ function addEinzelbauteil() {
   if(ex) {
     ex.menge += menge;
     ex.batches = getBatches(ex);
-    pushBatch(ex.batches, menge, forced, zone);
+    pushBatch(ex.batches, menge, forced, zone, feld);
     if(ddcWirktHier) { ex.ddcPhysisch = ddcPhysisch; ex.ddcKommunikativ = ddcKommunikativ; ex.ddcProtokoll = ddcProtokoll; }
   } else {
-    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced, zone}],
+    belegung.push({typ:'einzel', artikel_nr: artikelNr, menge, ci: belegung.length % BG_COLORS.length, batches: [{n: menge, forced, zone, feld}],
       ddcPhysisch, ddcKommunikativ, ddcProtokoll});
   }
   if(eb) syncZubehoer(eb, menge);
@@ -1195,11 +1242,16 @@ function removeEinzelbauteilQty() {
   // gleich, Verhalten bleibt reines LIFO wie bisher.
   const zielZone = eb ? getSelectedEinzelZone(eb) : null;
   const mehrZonen = !!eb && eb.zone.length > 1;
+  // Türbauteile (Session 48): "−" zieht zusätzlich nur vom aktuell im
+  // Feld-Dropdown gewählten Feld ab (analog zielZone oben) – sonst könnte
+  // LIFO faelschlich die Menge eines ANDEREN Feldes reduzieren.
+  const zielFeld = zielZone === 'tuer' ? getSelectedTuerFeld() : null;
   const batches = getBatches(item);
   let remaining = menge;
   for (let i = batches.length - 1; remaining > 0 && i >= 0; i--) {
     const b = batches[i];
     if (mehrZonen && b.zone !== zielZone) continue;
+    if (zielFeld !== null && (b.feld || 1) !== zielFeld) continue;
     const take = Math.min(b.n, remaining);
     b.n -= take;
     remaining -= take;
@@ -1434,6 +1486,58 @@ function buildLayout(zp) {
   return rows;
 }
 
+// ── Mehrfeld-Schaltschränke: Feldtypen (Session 48, portiert aus Modul 3 –
+// gleiche Dopplungs-Konvention wie buildLayout() selbst) ───────────────
+const FELDTYP_ZONEN = {
+  A: ['klemm_e','uss','evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
+  B: ['evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
+  C: ['klemm_e','uss','evert','klemm_l'],
+  D: ['leist','leist_ext','klemm_l'],
+  E: ['steuer','klemm_f','klemm_s'],
+};
+const FELDPLAN = {
+  '1feld':        [{ ft:'A', repeat:false }],
+  'je_feld':      [{ ft:'A', repeat:false }, { ft:'B', repeat:true }],
+  'getrennt_els': [{ ft:'C', repeat:true },  { ft:'D', repeat:true }, { ft:'E', repeat:true }],
+  'einsp_misch':  [{ ft:'C', repeat:false }, { ft:'B', repeat:true }],
+};
+const FELDTYP_LABEL = { A: 'Vollfeld', B: 'Folgefeld', C: 'Einspeisung', D: 'Leistung', E: 'Steuerung' };
+
+function redistributeRowZones(zones, dropIds, growIds) {
+  const dropped = zones.filter(z => dropIds.includes(z.id));
+  if (!dropped.length) return zones;
+  const freedW = dropped.reduce((s, z) => s + z.w, 0);
+  const kept = zones.filter(z => !dropIds.includes(z.id));
+  const growSet = kept.filter(z => growIds.includes(z.id));
+  const growTotalW = growSet.reduce((s, z) => s + z.w, 0);
+  if (growTotalW > 0) {
+    growSet.forEach(z => { z.w += freedW * (z.w / growTotalW); });
+  }
+  let x = 0;
+  return kept.sort((a, b) => a.x - b.x).map(z => { const nz = { ...z, x }; x += z.w; return nz; });
+}
+
+function buildLayoutForFeldtyp(zp, feldtyp) {
+  const rows = buildLayout(zp);
+  if (!feldtyp || feldtyp === 'A') return rows;
+
+  if (feldtyp === 'B') {
+    return rows.map(row => {
+      const ids = row.zones.map(z => z.id);
+      if (ids.includes('klemm_e')) {
+        return { ...row, zones: redistributeRowZones(row.zones, ['klemm_e'], ['klemm_l','klemm_f','klemm_s']) };
+      }
+      if (ids.includes('uss')) {
+        return { ...row, zones: redistributeRowZones(row.zones, ['uss'], ['leist']) };
+      }
+      return row;
+    });
+  }
+
+  // C/D/E folgen in Phase 2 – bis dahin Fallback auf Vollfeld-Layout.
+  return rows;
+}
+
 // ── zp aus Modul 3 (localStorage) rekonstruieren ──────────────────────
 function buildZp() {
   const b = g('b_mplatte_mbereich_mm');
@@ -1459,13 +1563,30 @@ function buildZp() {
   };
 }
 
+// zp ist für alle Feldtypen identisch (jedes Feld ist ein gleich großes
+// Schaltschrankfeld, Montagebereich B×H aus Modul 1/2) – nur die
+// Zeilen-Transformation (buildLayoutForFeldtyp) unterscheidet sich je
+// Feldtyp. Eigener Name trotzdem für API-Klarheit an den Aufrufstellen.
+function buildZpForFeldtyp(feldtyp) {
+  return buildZp();
+}
+
+// Wandschrank kennt fachlich kein Nebenfeld (wird bei Überlauf einfach
+// voll) – wendet dieselbe Sperre wie Modul 3 eigenständig an, da beide
+// Module schrank_typ unabhängig lesen (Session 48).
+function getEffektiveZoneModus() {
+  const typ = gs('schrank_typ');
+  const raw = localStorage.getItem('m03_zone_modus') || '1feld';
+  return typ === 'wandschrank' ? '1feld' : raw;
+}
+
 // ── Platzierungs-Bänder je Zone aus dem Layout ableiten ───────────────
 // Jede M3-Unterzone (klemm_e/klemm_l/klemm_f/klemm_s/uss/evert/leist/steuer)
 // bekommt ihr eigenes Band – keine Zusammenfassung mehr (behebt den
 // Überlappungs-Bug: Bauteile respektieren jetzt die echten Zonengrenzen).
 // Liefert außerdem die Zonen-Zeilen (svgRows) für die maßstäbliche Grundzeichnung.
-function getZoneBands(zp) {
-  const rows = buildLayout(zp);
+function getZoneBands(zp, feldtyp) {
+  const rows = buildLayoutForFeldtyp(zp, feldtyp);
   const b = zp.b;
   const bands   = { klemm_e:[], uss:[], evert:[], leist:[], steuer:[], klemm_l:[], klemm_f:[], klemm_s:[] };
   const svgRows = [];
@@ -1561,14 +1682,14 @@ function assignDevicesToRows(devs, te_per_row) {
   return rowsAbs;
 }
 
-function placeInBands(devs, bands, klemmraum) {
+function placeInBands(devs, bands, klemmraum, startIdx = 0) {
   const H_KANAL = 40;
   const te_per_row = bands.length && bands[0].w_mm > 0 ? Math.floor(bands[0].w_mm / TE_MM) : 0;
   const rowsAbs = assignDevicesToRows(devs, te_per_row);
 
   const rows = [];
   const channels = [];
-  let placedCount = 0;   // laufende Positionsnummer je Zone (über alle Blöcke)
+  let placedCount = startIdx;   // laufende Positionsnummer je Zone (über alle Blöcke UND Felder)
   let placedRows = 0;
   let mm_used = 0;
   let bi = 0, y_local = 0;
@@ -1618,7 +1739,11 @@ function placeInBands(devs, bands, klemmraum) {
     }
   }
 
-  return { rows, channels, overflow: placedRows < rowsAbs.length, mm_used };
+  // leftoverDevs (Session 48): Reihen, die in diesem Feld nicht mehr passten
+  // – als flache Geräteliste im Original-devs-Format, damit sie 1:1 als
+  // devs-Eingabe für das nächste Feld (Mehrfeld-Kaskade) weiterlaufen kann.
+  return { rows, channels, overflow: placedRows < rowsAbs.length, mm_used,
+           leftoverDevs: rowsAbs.slice(placedRows).flatMap(r => r.blocks), nextIdx: placedCount };
 }
 
 // ── Bedarfsgesteuerte Reserve-Umverteilung Klemmleisten ───────────────
@@ -1699,11 +1824,11 @@ function redistributeKlemmBands(bandsAll, queues, reservePct) {
 // und dafür zu hoch ist, wird sonst trotzdem "platziert" und im SVG verzerrt
 // dargestellt. Zu hohe Bauteile werden übersprungen (kein Platz, Overflow),
 // die Warteschlange läuft mit den übrigen Geräten weiter.
-function placeInKlemmRow(devs, bands) {
+function placeInKlemmRow(devs, bands, startIdx = 0) {
   const rows = [];
   let idx = 0;
   let te_used = 0;
-  let placedCount = 0;   // laufende Positionsnummer je Zone
+  let placedCount = startIdx;   // laufende Positionsnummer je Zone UND Feld
   let placedTotal = 0;   // tatsächlich platzierte Geräte (für Overflow-Berechnung)
 
   for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
@@ -1728,20 +1853,28 @@ function placeInKlemmRow(devs, bands) {
     }
   }
 
-  return { rows, overflow: placedTotal < devs.length, mm_used: te_used * TE_MM };
+  return { rows, overflow: placedTotal < devs.length, mm_used: te_used * TE_MM,
+           leftoverDevs: devs.slice(idx), nextIdx: placedCount };
 }
 
 // ── Berechnung ───────────────────────────────────────────────────────
+// Session 48: rendert jetzt N Felder statt einem festen Schrank – die
+// eigentliche Platzierungs-/Kaskadenlogik steckt in calculateFelder(),
+// calculate() ist nur noch der DOM-Rendering-Wrapper darüber (Feld-Reihe +
+// Türen-Reihe befüllen, Füllstand/Stückliste über alle Felder aggregieren).
 function calculate() {
   const klemmraum = Math.max(5, g('klemmraum_mm') || 20);
   const reservePct = Math.min(0.5, Math.max(0, (g('reserve_pct') || 20) / 100));
   const zp = buildZp();
   buildLegend();
 
+  const felderRow = document.getElementById('felder-row');
+  const tuerenRow = document.getElementById('tueren-row');
+
   if (!zp.b || !zp.h) {
-    document.getElementById('svg-msg').style.display = '';
-    document.getElementById('svg-inner').style.display = 'none';
-    document.getElementById('tuer-wrap').style.display = 'none';
+    felderRow.innerHTML = '<div class="no-data-msg" id="svg-msg">Bitte Schrank-Typ wählen und Daten aus Modul 1–3 laden</div>';
+    tuerenRow.innerHTML = '';
+    letzteFelder = [];
     buildFuellstand(null, null);
     buildStueckliste(null);
     updateReserveWarning(false);
@@ -1751,13 +1884,52 @@ function calculate() {
   }
 
   const ddcReservePct = Math.min(0.5, Math.max(0, (g('ddc_reserve_pct') || 20) / 100));
-  const layout = getZoneBands(zp);
-  const { zones, reserveShortfall, ddcAuto, ddcSummary } = placeBauteile(layout.bands, klemmraum, zp, reservePct, ddcReservePct);
+  const { felder, reserveShortfall, ddcAuto, ddcSummary, totalDemandTe } = calculateFelder(klemmraum, reservePct, ddcReservePct);
+  letzteFelder = felder;
 
-  buildFuellstand(zones, zp);
-  buildSVG(zp, layout, zones);
-  buildTuerAnsicht();
-  buildStueckliste(zones);
+  // Links: ein Schranksicht-Block je Feld, in Reihenfolge.
+  felderRow.innerHTML = '';
+  felder.forEach(feld => {
+    const wrap = document.createElement('div');
+    wrap.className = 'feld-svg-wrap';
+    wrap.innerHTML = '<div class="feld-svg-inner"></div>';
+    felderRow.appendChild(wrap);
+    buildSVG(feld.zp, feld.layout, feld.zones, wrap, wrap.querySelector('.feld-svg-inner'));
+  });
+
+  // Rechts: ein Türansicht-Block je Feld MIT mindestens einem Türbauteil,
+  // gleiche Reihenfolge wie links (Nutzer-Vorgabe: "links werden die Felder
+  // nacheinander angezeigt, rechts die Türen nacheinander").
+  tuerenRow.innerHTML = '';
+  felder.forEach((feld, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'feld-tuer-wrap';
+    wrap.innerHTML = '<div class="feld-tuer-inner"></div>';
+    tuerenRow.appendChild(wrap);
+    const gezeichnet = buildTuerAnsicht(i + 1, wrap, wrap.querySelector('.feld-tuer-inner'));
+    if (!gezeichnet) wrap.remove();
+  });
+
+  // Füllstand/Stückliste brauchen EINE über alle Felder aggregierte
+  // Zonen-Sicht: mm_used/mm_total/channels/rows je Zone aufsummiert bzw.
+  // konkateniert (Positionsnummern sind dank fortlaufender idxCounters in
+  // calculateFelder() bereits feldübergreifend eindeutig, siehe buildIdxMap()).
+  const aggZones = {};
+  ALLE_ZONEN.forEach(zn => {
+    let mm_total = 0, mm_used = 0; const channels = []; const rows = [];
+    felder.forEach(f => {
+      const z = f.zones[zn];
+      if (!z) return;
+      mm_total += z.mm_total;
+      mm_used  += z.mm_used;
+      if (z.channels) channels.push(...z.channels);
+      if (z.rows) rows.push(...z.rows);
+    });
+    aggZones[zn] = { te_belegt: totalDemandTe[zn] || 0, mm_total, mm_used, channels, rows };
+  });
+
+  buildFuellstand(aggZones, zp);
+  buildStueckliste(aggZones);
   updateDdcSummary(ddcSummary);
   updateReserveWarning(reserveShortfall);
   updateDdcAutoDisplay(ddcAuto);
@@ -1923,8 +2095,13 @@ function applyDdcWatermark(ddcAuto) {
 }
 
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
-function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
-  // Gerätewarteschlange je Zone aufbauen – aus Baugruppen UND Direktbauteilen.
+// ── Gerätewarteschlange je Zone aufbauen (Session 48: aus placeBauteile()
+// extrahiert) – projektglobal, EINMAL pro calculate()-Lauf, unabhängig von
+// der Feldanzahl. `belegung` selbst bleibt bewusst NICHT feldbewusst (reine
+// Artikel-Bestandsliste); der Feld-Bezug entsteht erst beim Platzieren in
+// placeBauteileForField(), die queues[zone] über mehrere Feld-Aufrufe
+// hinweg destruktiv verbraucht (siehe calculateFelder()).
+function buildQueues(ddcReservePct) {
   // Zone je Bauteil: eb.zone ist ein Array erlaubter Zonen (Session 44),
   // erster Eintrag = Default. Baugruppen-Bauteile: expliziter Override
   // bt.zone vor eb.zone[0]. Direktbauteile: explizite Wahl item.zone
@@ -2038,11 +2215,29 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
     });
   });
 
+  return { queues, ddcAuto, ddcSummary };
+}
+
+// ── Bauteile EINES Feldes platzieren (Session 48, aus placeBauteile()
+// extrahiert) – verbraucht `queues[zone]` destruktiv (mutiert die Arrays
+// direkt und schreibt zurück), damit ein Rest, der in diesem Feld nicht
+// mehr passte, im nächsten Feld-Aufruf automatisch weiterläuft (Mehrfeld-
+// Kaskade, siehe calculateFelder()). `idxCounters` läuft ebenso über alle
+// Felder fort, damit Positionsnummern feldübergreifend eindeutig bleiben
+// (wichtig für die Stückliste). Nur die Zonen dieses Feldtyps
+// (FELDTYP_ZONEN[feldtyp]) werden bearbeitet – alle anderen bleiben in
+// `queues` unverändert für ein späteres Feld stehen.
+function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, idxCounters, reservePct, useEvKanal) {
+  const zoneSet = FELDTYP_ZONEN[feldtyp] || FELDTYP_ZONEN.A;
   const zones = {};
+
   REIHEN_ZONEN.forEach(zn => {
+    if (!zoneSet.includes(zn)) return;
     const devs  = queues[zn] || [];
     const bands = bandsAll[zn] || [];
-    const placed = placeInBands(devs, bands, klemmraum);
+    const placed = placeInBands(devs, bands, klemmraum, idxCounters[zn] || 0);
+    idxCounters[zn] = placed.nextIdx;
+    queues[zn] = placed.leftoverDevs;
     zones[zn] = {
       te_belegt: devs.reduce((s,d) => s + d.te, 0),
       mm_total:  bands.reduce((s,bd) => s + bd.h_mm, 0),
@@ -2056,12 +2251,22 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
 
   // Klemmenzeilen (klemm_e/uss/klemm_l/klemm_f/klemm_s): je eine Hutschiene,
   // Kapazität als Breite (mm) statt Höhe, kein Kanal/Klemmraum.
-  // klemm_l/klemm_f/klemm_s: Breite wird bedarfsbasiert umverteilt (klemm_e/uss bleiben fix).
-  const { bands: redistributedKlemm, shortfall: reserveShortfall } = redistributeKlemmBands(bandsAll, queues, reservePct);
+  // klemm_l/klemm_f/klemm_s: Breite wird bedarfsbasiert umverteilt (klemm_e/uss bleiben fix),
+  // aber nur, wenn dieser Feldtyp überhaupt eine der drei Zonen enthält.
+  let reserveShortfall = false;
+  let redistributedKlemm = {};
+  if (['klemm_l','klemm_f','klemm_s'].some(zn => zoneSet.includes(zn))) {
+    const r = redistributeKlemmBands(bandsAll, queues, reservePct);
+    redistributedKlemm = r.bands;
+    reserveShortfall = r.shortfall;
+  }
   KLEMM_ZONEN.forEach(zn => {
+    if (!zoneSet.includes(zn)) return;
     const devs  = queues[zn] || [];
     const bands = redistributedKlemm[zn] || bandsAll[zn] || [];
-    const placed = placeInKlemmRow(devs, bands);
+    const placed = placeInKlemmRow(devs, bands, idxCounters[zn] || 0);
+    idxCounters[zn] = placed.nextIdx;
+    queues[zn] = placed.leftoverDevs;
     zones[zn] = {
       te_belegt: devs.reduce((s,d) => s + d.te, 0),
       mm_total:  bands.reduce((s,bd) => s + bd.w_mm, 0),
@@ -2076,27 +2281,84 @@ function placeBauteile(bandsAll, klemmraum, zp, reservePct, ddcReservePct) {
   // Energieverteilung: mit Schienensystem großzügiges Mehrreihen-Budget
   // (Kanal+Klemmraum), ohne Schienensystem exakt 1 Sicherungshalter-Reihe
   // (kein Zusatzraum – wie ÜSS/Klemmenzeile).
-  const evertDevs  = queues.evert || [];
-  const evertBands = bandsAll.evert || [];
-  if (zp.useEvKanal) {
-    const placed = placeInKlemmRow(evertDevs, evertBands);
-    zones.evert = {
-      te_belegt: evertDevs.reduce((s,d) => s + d.te, 0),
-      mm_total:  evertBands.reduce((s,bd) => s + bd.w_mm, 0),
-      mm_used:   placed.mm_used, overflow: placed.overflow, rows: placed.rows,
-      channels:  [], bands: evertBands
-    };
-  } else {
-    const placed = placeInBands(evertDevs, evertBands, klemmraum);
-    zones.evert = {
-      te_belegt: evertDevs.reduce((s,d) => s + d.te, 0),
-      mm_total:  evertBands.reduce((s,bd) => s + bd.h_mm, 0),
-      mm_used:   placed.mm_used, overflow: placed.overflow, rows: placed.rows,
-      channels:  placed.channels, bands: evertBands
-    };
+  if (zoneSet.includes('evert')) {
+    const evertDevs  = queues.evert || [];
+    const evertBands = bandsAll.evert || [];
+    if (useEvKanal) {
+      const placed = placeInKlemmRow(evertDevs, evertBands, idxCounters.evert || 0);
+      idxCounters.evert = placed.nextIdx;
+      queues.evert = placed.leftoverDevs;
+      zones.evert = {
+        te_belegt: evertDevs.reduce((s,d) => s + d.te, 0),
+        mm_total:  evertBands.reduce((s,bd) => s + bd.w_mm, 0),
+        mm_used:   placed.mm_used, overflow: placed.overflow, rows: placed.rows,
+        channels:  [], bands: evertBands
+      };
+    } else {
+      const placed = placeInBands(evertDevs, evertBands, klemmraum, idxCounters.evert || 0);
+      idxCounters.evert = placed.nextIdx;
+      queues.evert = placed.leftoverDevs;
+      zones.evert = {
+        te_belegt: evertDevs.reduce((s,d) => s + d.te, 0),
+        mm_total:  evertBands.reduce((s,bd) => s + bd.h_mm, 0),
+        mm_used:   placed.mm_used, overflow: placed.overflow, rows: placed.rows,
+        channels:  placed.channels, bands: evertBands
+      };
+    }
   }
 
-  return { zones, reserveShortfall, ddcAuto, ddcSummary };
+  return { zones, reserveShortfall };
+}
+
+// ── Mehrfeld-Orchestrator (Session 48) ────────────────────────────────
+// Baut die Warteschlangen EINMAL global auf und läuft dann die Feldsequenz
+// aus FELDPLAN[modus] ab. Jede "repeat"-Phase erzeugt so lange weitere
+// Felder desselben Feldtyps, wie dessen Zonen noch unplatzierten Bedarf
+// haben ("demand-getrieben") – bricht ab, sobald ein Feld keinen
+// Fortschritt mehr erzielt (Schutz gegen Endlosschleife, z. B. ein
+// Einzelbauteil größer als jede Zone) oder MAX_FELDER erreicht ist. Der
+// harte Overflow (rotes "!") bleibt dann am letzten erzeugten Feld
+// sichtbar, statt den Tab einzufrieren.
+function calculateFelder(klemmraum, reservePct, ddcReservePct) {
+  const modus = getEffektiveZoneModus();
+  const plan = FELDPLAN[modus] || FELDPLAN['1feld'];
+  const { queues, ddcAuto, ddcSummary } = buildQueues(ddcReservePct);
+
+  // Gesamt-Bedarf je Zone EINMAL vor jeder Platzierung erfassen – für die
+  // über alle Felder aggregierte Füllstand-Anzeige (siehe calculate()).
+  const totalDemandTe = {};
+  ALLE_ZONEN.forEach(zn => { totalDemandTe[zn] = (queues[zn] || []).reduce((s,d) => s + d.te, 0); });
+
+  const idxCounters = {};
+  ALLE_ZONEN.forEach(z => idxCounters[z] = 0);
+
+  const MAX_FELDER = 20;
+  const felder = [];
+  let reserveShortfall = false;
+
+  const restOf = ft => FELDTYP_ZONEN[ft].reduce((s, zn) => s + (queues[zn] || []).length, 0);
+  const buildFeld = ft => {
+    const zp = buildZpForFeldtyp(ft);
+    const layout = getZoneBands(zp, ft);
+    const feld = placeBauteileForField(layout.bands, klemmraum, ft, queues, idxCounters, reservePct, zp.useEvKanal);
+    if (feld.reserveShortfall) reserveShortfall = true;
+    felder.push({ feldtyp: ft, zp, layout, zones: feld.zones });
+  };
+
+  for (const phase of plan) {
+    if (felder.length >= MAX_FELDER) break;
+    buildFeld(phase.ft); // Pflichtfeld je Phase, immer mindestens eins
+    if (phase.repeat) {
+      while (felder.length < MAX_FELDER) {
+        const vor = restOf(phase.ft);
+        if (vor === 0) break; // kein weiterer Bedarf für diesen Feldtyp
+        buildFeld(phase.ft);
+        if (restOf(phase.ft) >= vor) break; // kein Fortschritt → Abbruch
+      }
+    }
+  }
+
+  return { felder, ddcAuto, ddcSummary, reserveShortfall, totalDemandTe };
 }
 
 function kurzLabel(eb) {
@@ -2197,28 +2459,35 @@ function tuerFarbe(eb) {
   return TUER_FARBE_STD;
 }
 
-// Direktbauteile mit zone 'tuer' aus der Belegung sammeln (je Menge einzeln
-// aufgelistet). Baugruppen-Bauteile bewusst noch nicht berücksichtigt –
-// Baugruppen sind aktuell leer (siehe CLAUDE.md Session 40), bei Bedarf
-// hier analog zu placeBauteile()s bg.bauteile-Zweig nachziehen.
-function getTuerItems() {
+// Direktbauteile mit zone 'tuer' UND passendem Feld-Index aus der Belegung
+// sammeln (je Menge einzeln aufgelistet). Feld-Index kommt aus dem Batch
+// (Session 48, siehe #feld_auf_row) – Alt-Batches ohne feld (1feld-Modus
+// oder vor Session 48 angelegt) gelten als Feld 1. Baugruppen-Bauteile
+// bewusst noch nicht berücksichtigt – Baugruppen sind aktuell leer (siehe
+// CLAUDE.md Session 40), bei Bedarf hier analog zu placeBauteile()s
+// bg.bauteile-Zweig nachziehen.
+function getTuerItems(feldIndex) {
   const items = [];
   belegung.forEach(item => {
     if (item.typ !== 'einzel') return;
     const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
     if (!eb || !eb.keine_platzierung_mp || !eb.zone.includes('tuer')) return;
-    for (let q = 0; q < item.menge; q++) items.push(eb);
+    getBatches(item).forEach(b => {
+      const feld = b.feld || 1;
+      if (feld !== feldIndex) return;
+      for (let q = 0; q < b.n; q++) items.push(eb);
+    });
   });
   return items;
 }
 
-function buildTuerAnsicht() {
-  const wrap = document.getElementById('tuer-wrap');
-  const inner = document.getElementById('tuer-inner');
+// wrap/inner (Session 48): Container-Elemente statt fester IDs, damit je
+// Feld eine eigene Türansicht in #tueren-row gerendert werden kann.
+function buildTuerAnsicht(feldIndex, wrap, inner) {
   const typ = gs('schrank_typ');
-  const items = getTuerItems();
+  const items = getTuerItems(feldIndex);
   const masse = getGehaeuseAussenmasse(typ);
-  if (!items.length || !masse) { wrap.style.display = 'none'; return; }
+  if (!items.length || !masse) { wrap.style.display = 'none'; return false; }
   wrap.style.display = 'flex';
 
   const PAD = 10;
@@ -2256,6 +2525,7 @@ function buildTuerAnsicht() {
 
   svg += '</svg>';
   inner.innerHTML = svg;
+  return true;
 }
 
 // ── Füllstand-Streifen (kompakt) ──────────────────────────────────────
@@ -2367,21 +2637,16 @@ function markFirstLastOfRun(blocks) {
 }
 
 // ── SVG Schranksicht (Zonenraster aus Modul 3 + physikalische Platzierung) ──
-function buildSVG(zp, layout, zones) {
-  const msgEl = document.getElementById('svg-msg');
-  const svgEl = document.getElementById('svg-inner');
-
-  if(!zp.b || !layout.totalH) {
-    msgEl.style.display = '';
-    svgEl.style.display = 'none';
-    return;
-  }
-  msgEl.style.display = 'none';
-  svgEl.style.display = '';
+// wrapEl/svgEl (Session 48): Container-Elemente statt fester IDs, damit
+// je Feld eine eigene Schranksicht in #felder-row gerendert werden kann
+// (siehe calculate()). zp/layout.totalH sind zu diesem Zeitpunkt immer
+// gültig – die "keine Daten"-Meldung wird zentral in calculate() vor der
+// Feldschleife behandelt.
+function buildSVG(zp, layout, zones, wrapEl, svgEl) {
+  if(!zp.b || !layout.totalH) return;
 
   // Passgenau skalieren wie Modul 3 (buildZoneSVG: sc = Math.min(maxW/b, maxH/h)) –
   // die Schranksicht ist so immer vollständig sichtbar, ohne Innen-Scroll.
-  const wrapEl = document.getElementById('svg-wrap');
   const PAD = 12;
   const availW = Math.max(120, wrapEl.clientWidth  - 2*PAD - 4);
   const availH = Math.max(120, wrapEl.clientHeight - 2*PAD - 4);
