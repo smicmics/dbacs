@@ -331,6 +331,7 @@ legend{
   display:flex;align-items:center;justify-content:center;
 }
 .feld-tuer-wrap svg{display:block;}
+.felder-hint{font-size:11px;color:var(--tx3);margin:6px 2px 0;}
 /* Zonentexte im SVG nur auf dem Bildschirm ausblenden – die Legende
    (.cabinet-legend) übernimmt die Erklärung. Im Ausdruck (@media print
    unten) werden sie wieder eingeblendet, da dort keine Legende danebenliegt. */
@@ -654,6 +655,11 @@ legend{
       </div>
       <div id="tueren-row" class="tueren-row"></div>
     </div>
+
+    <!-- Hinweis bei Mehrfeld-Betrieb: nur tatsächlich benötigte Felder werden
+         angezeigt (Session 48, Nutzer-Fund), Folgefelder erscheinen erst bei
+         Bedarf automatisch. -->
+    <div id="felder-hint" class="felder-hint" style="display:none"></div>
 
     <!-- Zonen-Legende -->
     <div id="cabinet-legend" class="cabinet-legend"></div>
@@ -1488,12 +1494,18 @@ function buildLayout(zp) {
 
 // ── Mehrfeld-Schaltschränke: Feldtypen (Session 48, portiert aus Modul 3 –
 // gleiche Dopplungs-Konvention wie buildLayout() selbst) ───────────────
+// Nutzer-Korrektur (Session 48): Energieverteilung bleibt in JEDEM Feldtyp
+// erhalten, der stromversorgte Bauteile enthält (Leistung UND Steuerung) –
+// "Aus ihr werden die Bauteile der Zone versorgt". Ursprünglich hatte D/E
+// evert fälschlich nur Typ C zugeordnet (als hätte sich Energieverteilung
+// auf ein Feld "konsolidieren" lassen) – physisch braucht aber JEDES Feld
+// mit eigenen Verbrauchern seine eigene lokale Energieverteilung.
 const FELDTYP_ZONEN = {
   A: ['klemm_e','uss','evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
   B: ['evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
   C: ['klemm_e','uss','evert','klemm_l'],
-  D: ['leist','leist_ext','klemm_l'],
-  E: ['steuer','klemm_f','klemm_s'],
+  D: ['leist','leist_ext','klemm_l','evert'],
+  E: ['steuer','klemm_f','klemm_s','evert'],
 };
 const FELDPLAN = {
   '1feld':        [{ ft:'A', repeat:false }],
@@ -1538,6 +1550,34 @@ function kanalNochNoetig(kanalId, zoneSet) {
   if (kanalId === 'kanal_ls') return zoneSet.includes('leist') && zoneSet.includes('steuer');
   if (kanalId === 'kanal_ev' || kanalId === 'kanal_ev2') return zoneSet.includes('evert');
   return true;
+}
+
+// Fasst direkt aufeinanderfolgende Zeilen zusammen, die nach der Drop/Grow-
+// Transformation je nur noch dieselbe EINE echte Zone enthalten (z.B. die
+// ÜSS-Zeile ohne ÜSS, jetzt reine Leistungszeile, direkt gefolgt von der
+// Leistungs-Erweiterungszeile) – Nutzer-Fund: ohne ÜSS gibt es physisch
+// keinen Grund mehr, die Leistungszone in zwei separat begrenzte
+// Bänder (95mm + restliche Höhe) zu zerlegen; ein Bauteil, das in keines
+// der beiden einzeln passt, aber in die SUMME beider Höhen, wechselte
+// bisher unnötig ins nächste Feld. Höhen werden addiert, die Zonenbreiten
+// sind nach der Umverteilung strukturell identisch (beide = volle
+// Zeilenbreite minus Kanalzonen), daher genügt es, eine der beiden
+// Zonenlisten zu übernehmen.
+function mergeAdjacentSameZoneRows(rows, norm) {
+  const merged = [];
+  rows.forEach(row => {
+    const realZones = row.zones.filter(z => !z.id.startsWith('kanal'));
+    const last = merged[merged.length - 1];
+    if (last) {
+      const lastReal = last.zones.filter(z => !z.id.startsWith('kanal'));
+      if (realZones.length === 1 && lastReal.length === 1 && norm(realZones[0].id) === norm(lastReal[0].id)) {
+        last.h_mm += row.h_mm;
+        return;
+      }
+    }
+    merged.push(row);
+  });
+  return merged;
 }
 
 // Transformiert das Vollfeld-Zeilenarray (buildLayout()) auf einen der
@@ -1598,6 +1638,12 @@ function buildLayoutForFeldtyp(zp, feldtyp) {
       // Steuerung, auch wenn beide (nebeneinander-Anordnung) dieselbe Zeile
       // teilen und Steuerung selbst nicht entfällt (gilt für Typ B).
       if (dropIds.includes('uss') && growIds.includes('leist')) growIds = growIds.filter(id => id === 'leist');
+      // ÜSS wächst selbst NIE (Nutzer-Vorgabe): es gibt weiterhin nur eine
+      // Einspeisung, die geschützt wird – unabhängig davon, wie viel Platz in
+      // der Zeile durch eine wegfallende Leistungs-/Steuerzone frei wird
+      // (Typ C: Leistung+Steuerung entfallen aus der ÜSS-Zeile, ÜSS bleibt
+      // bei seiner ursprünglichen Breite, der Rest bleibt ungenutzt).
+      growIds = growIds.filter(id => id !== 'uss');
       const newRow = { ...row, zones: redistributeRowZones(row.zones, dropIds, growIds) };
       newRows.push(newRow);
       if (growTarget && keptZones.length === 1 && norm(keptZones[0].id) === growTarget) growRowRef = newRow;
@@ -1614,7 +1660,7 @@ function buildLayoutForFeldtyp(zp, feldtyp) {
     if (target) target.h_mm += extraHeight;
   }
 
-  return newRows;
+  return mergeAdjacentSameZoneRows(newRows, norm);
 }
 
 // ── zp aus Modul 3 (localStorage) rekonstruieren ──────────────────────
@@ -1969,7 +2015,9 @@ function calculate() {
   const { felder, reserveShortfall, ddcAuto, ddcSummary, totalDemandTe } = calculateFelder(klemmraum, reservePct, ddcReservePct);
   letzteFelder = felder;
 
-  // Links: ein Schranksicht-Block je Feld, in Reihenfolge.
+  // Links: ein Schranksicht-Block je Feld, in Reihenfolge – nur tatsächlich
+  // benötigte Felder (calculateFelder() erzeugt Folgefelder ausschließlich
+  // bedarfsgetrieben, siehe dort).
   felderRow.innerHTML = '';
   felder.forEach(feld => {
     const wrap = document.createElement('div');
@@ -1979,9 +2027,18 @@ function calculate() {
     buildSVG(feld.zp, feld.layout, feld.zones, wrap, wrap.querySelector('.feld-svg-inner'));
   });
 
-  // Rechts: ein Türansicht-Block je Feld MIT mindestens einem Türbauteil,
-  // gleiche Reihenfolge wie links (Nutzer-Vorgabe: "links werden die Felder
-  // nacheinander angezeigt, rechts die Türen nacheinander").
+  // Hinweis, dass weitere Felder automatisch erscheinen, sobald sie benötigt
+  // werden (Nutzer-Vorgabe: "Nur die Felder anzeigen, die benötigt werden").
+  const hintEl = document.getElementById('felder-hint');
+  const modusEff = getEffektiveZoneModus();
+  hintEl.style.display = modusEff !== '1feld' ? '' : 'none';
+  hintEl.textContent = modusEff !== '1feld'
+    ? `${felder.length} Feld${felder.length === 1 ? '' : 'er'} angezeigt – weitere Felder werden automatisch ergänzt, sobald die Belegung mehr Platz benötigt.`
+    : '';
+
+  // Rechts: ein Türansicht-Block je angezeigtem Feld (auch unbelegt – Nutzer-
+  // Vorgabe: "Sobald ein Feld angezeigt wird, erfolgt auch die Anzeige der
+  // zugehörigen Tür"), gleiche Reihenfolge wie links.
   tuerenRow.innerHTML = '';
   felder.forEach((feld, i) => {
     const wrap = document.createElement('div');
@@ -2430,16 +2487,38 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
 
   for (const phase of plan) {
     if (felder.length >= MAX_FELDER) break;
-    buildFeld(phase.ft); // Pflichtfeld je Phase, immer mindestens eins
-    if (phase.repeat) {
-      while (felder.length < MAX_FELDER) {
-        const vor = restOf(phase.ft);
-        if (vor === 0) break; // kein weiterer Bedarf für diesen Feldtyp
-        buildFeld(phase.ft);
-        if (restOf(phase.ft) >= vor) break; // kein Fortschritt → Abbruch
-      }
+    if (!phase.repeat) {
+      buildFeld(phase.ft); // Pflichtfeld (Erstfeld/Einspeisung) – immer mindestens eins
+      continue;
+    }
+    // Repeat-Phase (Folgefeld/Leistung/Steuerung): auch die ERSTE Instanz
+    // entsteht nur bei tatsächlichem Bedarf – Nutzer-Fund: ein leeres Feld 2
+    // erschien bisher auch ohne Belegung. "Nur die Felder anzeigen, die
+    // benötigt werden."
+    while (felder.length < MAX_FELDER) {
+      const vor = restOf(phase.ft);
+      if (vor === 0) break; // kein Bedarf für diesen Feldtyp
+      buildFeld(phase.ft);
+      if (restOf(phase.ft) >= vor) break; // kein Fortschritt → Abbruch
     }
   }
+
+  // Überlauf-Markierung bereinigen (Nutzer-Fund): placeInBands()/
+  // placeInKlemmRow() setzen `overflow` pro FELD, wissen aber nicht, ob der
+  // Rest im NÄCHSTEN Feld erfolgreich untergebracht wurde – bei mehreren
+  // Feldern ist das der Normalfall, kein echter Überlauf mehr. Das rote "!"
+  // darf nur am jeweils LETZTEN Feld einer Zone erscheinen, UND nur wenn
+  // nach Abschluss aller Felder tatsächlich noch unplatzierter Rest in der
+  // Warteschlange steht (harter, echter Überlauf – z. B. MAX_FELDER erreicht
+  // oder "kein Fortschritt").
+  const lastFieldIdxForZone = {};
+  felder.forEach((f, i) => { Object.keys(f.zones).forEach(zn => { lastFieldIdxForZone[zn] = i; }); });
+  felder.forEach((f, i) => {
+    Object.entries(f.zones).forEach(([zn, z]) => {
+      if (!z.overflow) return;
+      z.overflow = lastFieldIdxForZone[zn] === i && (queues[zn] || []).length > 0;
+    });
+  });
 
   return { felder, ddcAuto, ddcSummary, reserveShortfall, totalDemandTe };
 }
@@ -2570,7 +2649,11 @@ function buildTuerAnsicht(feldIndex, wrap, inner) {
   const typ = gs('schrank_typ');
   const items = getTuerItems(feldIndex);
   const masse = getGehaeuseAussenmasse(typ);
-  if (!items.length || !masse) { wrap.style.display = 'none'; return false; }
+  // Nutzer-Vorgabe (Session 48): sobald ein Feld angezeigt wird, erscheint
+  // auch seine Tür – auch unbelegt (löst die alte Session-47-Regel "ohne
+  // Türbauteile entfällt die Anzeige" ab, die nur für den 1-Feld-Fall
+  // galt). Einzig `masse` (Gehäuseaußenmaße) ist ein echter Blocker.
+  if (!masse) { wrap.style.display = 'none'; return false; }
   wrap.style.display = 'flex';
 
   const PAD = 10;

@@ -1022,12 +1022,18 @@ function buildLayout(zp) {
 // Phase 1: nur A (Vollfeld/Erstfeld) und B (Folgefeld, Fall 2 – "Mehrere
 // gleichartige Felder"). C/D/E (Einspeisung/Leistung/Steuerung feldseitig
 // getrennt, Fall 3+4) folgen in Phase 2.
+// Nutzer-Korrektur (Session 48): Energieverteilung bleibt in JEDEM Feldtyp
+// erhalten, der stromversorgte Bauteile enthält (Leistung UND Steuerung) –
+// "Aus ihr werden die Bauteile der Zone versorgt". Ursprünglich hatte D/E
+// evert fälschlich nur Typ C zugeordnet (als hätte sich Energieverteilung
+// auf ein Feld "konsolidieren" lassen) – physisch braucht aber JEDES Feld
+// mit eigenen Verbrauchern seine eigene lokale Energieverteilung.
 const FELDTYP_ZONEN = {
   A: ['klemm_e','uss','evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
   B: ['evert','leist','leist_ext','steuer','klemm_l','klemm_f','klemm_s'],
   C: ['klemm_e','uss','evert','klemm_l'],
-  D: ['leist','leist_ext','klemm_l'],
-  E: ['steuer','klemm_f','klemm_s'],
+  D: ['leist','leist_ext','klemm_l','evert'],
+  E: ['steuer','klemm_f','klemm_s','evert'],
 };
 
 // zone_modus → Feldsequenz. '*' (repeat:true) = Phase erweitert sich in
@@ -1099,6 +1105,34 @@ function kanalNochNoetig(kanalId, zoneSet) {
   return true;
 }
 
+// Fasst direkt aufeinanderfolgende Zeilen zusammen, die nach der Drop/Grow-
+// Transformation je nur noch dieselbe EINE echte Zone enthalten (z.B. die
+// ÜSS-Zeile ohne ÜSS, jetzt reine Leistungszeile, direkt gefolgt von der
+// Leistungs-Erweiterungszeile) – Nutzer-Fund: ohne ÜSS gibt es physisch
+// keinen Grund mehr, die Leistungszone in zwei separat begrenzte
+// Bänder (95mm + restliche Höhe) zu zerlegen; ein Bauteil, das in keines
+// der beiden einzeln passt, aber in die SUMME beider Höhen, wechselte
+// bisher unnötig ins nächste Feld. Höhen werden addiert, die Zonenbreiten
+// sind nach der Umverteilung strukturell identisch (beide = volle
+// Zeilenbreite minus Kanalzonen), daher genügt es, eine der beiden
+// Zonenlisten zu übernehmen.
+function mergeAdjacentSameZoneRows(rows, norm) {
+  const merged = [];
+  rows.forEach(row => {
+    const realZones = row.zones.filter(z => !z.id.startsWith('kanal'));
+    const last = merged[merged.length - 1];
+    if (last) {
+      const lastReal = last.zones.filter(z => !z.id.startsWith('kanal'));
+      if (realZones.length === 1 && lastReal.length === 1 && norm(realZones[0].id) === norm(lastReal[0].id)) {
+        last.h_mm += row.h_mm;
+        return;
+      }
+    }
+    merged.push(row);
+  });
+  return merged;
+}
+
 // Transformiert das Vollfeld-Zeilenarray (buildLayout()) auf einen der
 // Feldtypen. Typ A = Pass-through (Vollfeld/Erstfeld, unverändert –
 // Regressionsschutz für den bestehenden 1-Feld-Fall). B–E laufen über
@@ -1157,6 +1191,12 @@ function buildLayoutForFeldtyp(zp, feldtyp) {
       // Steuerung, auch wenn beide (nebeneinander-Anordnung) dieselbe Zeile
       // teilen und Steuerung selbst nicht entfällt (gilt für Typ B).
       if (dropIds.includes('uss') && growIds.includes('leist')) growIds = growIds.filter(id => id === 'leist');
+      // ÜSS wächst selbst NIE (Nutzer-Vorgabe): es gibt weiterhin nur eine
+      // Einspeisung, die geschützt wird – unabhängig davon, wie viel Platz in
+      // der Zeile durch eine wegfallende Leistungs-/Steuerzone frei wird
+      // (Typ C: Leistung+Steuerung entfallen aus der ÜSS-Zeile, ÜSS bleibt
+      // bei seiner ursprünglichen Breite, der Rest bleibt ungenutzt).
+      growIds = growIds.filter(id => id !== 'uss');
       const newRow = { ...row, zones: redistributeRowZones(row.zones, dropIds, growIds) };
       newRows.push(newRow);
       if (growTarget && keptZones.length === 1 && norm(keptZones[0].id) === growTarget) growRowRef = newRow;
@@ -1173,7 +1213,7 @@ function buildLayoutForFeldtyp(zp, feldtyp) {
     if (target) target.h_mm += extraHeight;
   }
 
-  return newRows;
+  return mergeAdjacentSameZoneRows(newRows, norm);
 }
 
 // ── TE-Tabelle ────────────────────────────────────────────────
