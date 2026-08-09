@@ -1498,7 +1498,11 @@ const FELDTYP_ZONEN = {
 const FELDPLAN = {
   '1feld':        [{ ft:'A', repeat:false }],
   'je_feld':      [{ ft:'A', repeat:false }, { ft:'B', repeat:true }],
-  'getrennt_els': [{ ft:'C', repeat:true },  { ft:'D', repeat:true }, { ft:'E', repeat:true }],
+  // C (Einspeisung) bewusst repeat:false: es gibt nur EINE Netzeinspeisung
+  // pro Anlage – überläuft klemm_l dennoch (klemm_l gehört auch zu Typ C),
+  // wird der Rest automatisch von Typ D (Leistung, hat ebenfalls klemm_l)
+  // übernommen, nicht durch ein zweites Einspeisungsfeld.
+  'getrennt_els': [{ ft:'C', repeat:false }, { ft:'D', repeat:true }, { ft:'E', repeat:true }],
   'einsp_misch':  [{ ft:'C', repeat:false }, { ft:'B', repeat:true }],
 };
 const FELDTYP_LABEL = { A: 'Vollfeld', B: 'Folgefeld', C: 'Einspeisung', D: 'Leistung', E: 'Steuerung' };
@@ -1517,25 +1521,100 @@ function redistributeRowZones(zones, dropIds, growIds) {
   return kept.sort((a, b) => a.x - b.x).map(z => { const nz = { ...z, x }; x += z.w; return nz; });
 }
 
+// Wachstumsziel je Feldtyp: die Zone, die die Höhe VOLLSTÄNDIG entfallender
+// Zeilen (z.B. bei Typ C die komplette Leistungs-/Steuerzeile) übernimmt.
+// B braucht keins (dort entfallen nie ganze Zeilen, nur Sub-Zonen innerhalb
+// einer Zeile – siehe buildLayoutForFeldtyp()).
+const FELDTYP_GROW_TARGET = { B: null, C: 'evert', D: 'leist', E: 'steuer' };
+
+// Entscheidet, ob eine reine Struktur-Kanalzeile (kanal_h/kanal_ls/kanal_ev/
+// kanal_ev2 – je genau eine Zone, keine echte Platzierungszone) für diesen
+// Feldtyp noch gebraucht wird. kanal_h (Klemmen↔Rest) bleibt immer, da jeder
+// Feldtyp mindestens eine Klemmzone hat. kanal_ls trennt Leistung/Steuerung
+// und wird nur gebraucht, wenn BEIDE im Feldtyp vorkommen (nie bei C/D/E
+// einzeln). kanal_ev/kanal_ev2 flankieren Energieverteilung.
+function kanalNochNoetig(kanalId, zoneSet) {
+  if (kanalId === 'kanal_h') return true;
+  if (kanalId === 'kanal_ls') return zoneSet.includes('leist') && zoneSet.includes('steuer');
+  if (kanalId === 'kanal_ev' || kanalId === 'kanal_ev2') return zoneSet.includes('evert');
+  return true;
+}
+
+// Transformiert das Vollfeld-Zeilenarray (buildLayout()) auf einen der
+// Feldtypen. Typ A = Pass-through (Vollfeld/Erstfeld, unverändert –
+// Regressionsschutz für den bestehenden 1-Feld-Fall). B–E laufen über
+// dieselbe generische Zeilen-Transformation: pro Zeile werden die nicht
+// mehr enthaltenen Zonen entfernt und ihre Breite auf die verbleibenden
+// "Geschwister" derselben Zeile verteilt (Klemmzeile: proportional unter
+// den verbleibenden Klemm-Subzonen; ÜSS-Zeile: ausschließlich an Leistung,
+// nie an Steuerung, auch wenn beide dieselbe Zeile teilen – Nutzer-Vorgabe
+// "angrenzende Leistungszone"). Entfällt eine Zeile KOMPLETT (keine ihrer
+// Zonen bleibt), geht ihre Höhe an FELDTYP_GROW_TARGET[feldtyp] – das ist
+// der Fall, der B von C/D/E unterscheidet: B verliert nie eine ganze Zeile,
+// C/D/E verlieren jeweils die Zeilen der beiden nicht enthaltenen
+// Baugruppen-Zonen komplett.
 function buildLayoutForFeldtyp(zp, feldtyp) {
   const rows = buildLayout(zp);
   if (!feldtyp || feldtyp === 'A') return rows;
 
-  if (feldtyp === 'B') {
-    return rows.map(row => {
-      const ids = row.zones.map(z => z.id);
-      if (ids.includes('klemm_e')) {
-        return { ...row, zones: redistributeRowZones(row.zones, ['klemm_e'], ['klemm_l','klemm_f','klemm_s']) };
-      }
-      if (ids.includes('uss')) {
-        return { ...row, zones: redistributeRowZones(row.zones, ['uss'], ['leist']) };
-      }
-      return row;
-    });
+  const zoneSet = FELDTYP_ZONEN[feldtyp] || FELDTYP_ZONEN.A;
+  const growTarget = FELDTYP_GROW_TARGET[feldtyp] || null;
+  const norm = id => id === 'leist_ext' ? 'leist' : id;
+
+  let extraHeight = 0;
+  let growRowRef = null;
+  const newRows = [];
+
+  rows.forEach(row => {
+    // Reine Struktur-Kanalzeile (genau eine Zone, kein Platzierungszweck)
+    if (row.zones.length === 1 && row.zones[0].id.startsWith('kanal_')) {
+      if (kanalNochNoetig(row.zones[0].id, zoneSet)) newRows.push(row);
+      else extraHeight += row.h_mm;
+      return;
+    }
+
+    // Klemmzeile: klemm_e/klemm_l/klemm_f/klemm_s – Breite entfallender
+    // Subzonen geht proportional an die verbleibenden (klemm_e wächst nie,
+    // hat einen festen physischen Platzbedarf, unabhängig vom Feldtyp).
+    if (row.zones.some(z => z.id.startsWith('klemm_'))) {
+      const dropIds = ['klemm_e','klemm_l','klemm_f','klemm_s'].filter(id => !zoneSet.includes(id));
+      const growIds = zoneSet.filter(id => id.startsWith('klemm_') && id !== 'klemm_e');
+      newRows.push({ ...row, zones: redistributeRowZones(row.zones, dropIds, growIds) });
+      return;
+    }
+
+    // Übrige Zeilen: evert/uss/leist/leist_ext/steuer (+ Struktur-Kanäle
+    // kanal_vl/vr, die als "unecht" nie gedroppt/gewachsen werden).
+    const realZones = row.zones.filter(z => !z.id.startsWith('kanal'));
+    const keptZones = realZones.filter(z => zoneSet.includes(norm(z.id)));
+    if (keptZones.length === 0) {
+      extraHeight += row.h_mm; // ganze Zeile entfällt → Höhe ans Wachstumsziel
+      return;
+    }
+    if (keptZones.length < realZones.length) {
+      const dropIds = realZones.filter(z => !zoneSet.includes(norm(z.id))).map(z => z.id);
+      let growIds = keptZones.map(z => z.id);
+      // ÜSS-Sonderregel: freier Platz geht ausschließlich an Leistung, nie an
+      // Steuerung, auch wenn beide (nebeneinander-Anordnung) dieselbe Zeile
+      // teilen und Steuerung selbst nicht entfällt (gilt für Typ B).
+      if (dropIds.includes('uss') && growIds.includes('leist')) growIds = growIds.filter(id => id === 'leist');
+      const newRow = { ...row, zones: redistributeRowZones(row.zones, dropIds, growIds) };
+      newRows.push(newRow);
+      if (growTarget && keptZones.length === 1 && norm(keptZones[0].id) === growTarget) growRowRef = newRow;
+      return;
+    }
+    // Alle echten Zonen dieser Zeile bleiben unverändert.
+    const newRow = { ...row };
+    newRows.push(newRow);
+    if (growTarget && realZones.length === 1 && norm(realZones[0].id) === growTarget) growRowRef = newRow;
+  });
+
+  if (extraHeight > 0 && growTarget) {
+    const target = growRowRef || newRows.find(r => r.zones.some(z => norm(z.id) === growTarget));
+    if (target) target.h_mm += extraHeight;
   }
 
-  // C/D/E folgen in Phase 2 – bis dahin Fallback auf Vollfeld-Layout.
-  return rows;
+  return newRows;
 }
 
 // ── zp aus Modul 3 (localStorage) rekonstruieren ──────────────────────
@@ -1764,8 +1843,11 @@ function placeInBands(devs, bands, klemmraum, startIdx = 0) {
 // kann ihre Geräte noch vollständig unterbringen und trotzdem unter dem
 // Reserve-Ziel liegen (weiche Warnung am Reserve-Eingabefeld statt am
 // Schrankbild, siehe updateReserveWarning()).
-function redistributeKlemmBands(bandsAll, queues, reservePct) {
-  const KEYS = ['klemm_l', 'klemm_f', 'klemm_s'];
+// keys (Session 48, Phase 2): welche Klemm-Subzonen dieser Feldtyp
+// überhaupt führt – Typ A/B alle drei, Typ C/D nur klemm_l, Typ E
+// klemm_f+klemm_s (2er-Pool). Default deckt den Alt-Aufrufer-Fall ab.
+function redistributeKlemmBands(bandsAll, queues, reservePct, keys) {
+  const KEYS = keys && keys.length ? keys : ['klemm_l', 'klemm_f', 'klemm_s'];
   const origBands = {};
   KEYS.forEach(k => { origBands[k] = bandsAll[k] || []; });
 
@@ -2255,8 +2337,9 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, idxCounters
   // aber nur, wenn dieser Feldtyp überhaupt eine der drei Zonen enthält.
   let reserveShortfall = false;
   let redistributedKlemm = {};
-  if (['klemm_l','klemm_f','klemm_s'].some(zn => zoneSet.includes(zn))) {
-    const r = redistributeKlemmBands(bandsAll, queues, reservePct);
+  const klemmKeysHier = ['klemm_l','klemm_f','klemm_s'].filter(zn => zoneSet.includes(zn));
+  if (klemmKeysHier.length) {
+    const r = redistributeKlemmBands(bandsAll, queues, reservePct, klemmKeysHier);
     redistributedKlemm = r.bands;
     reserveShortfall = r.shortfall;
   }
