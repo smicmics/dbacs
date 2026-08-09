@@ -393,6 +393,88 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Mehrfeld-Schaltschränke Phase 2+3: Fall 3+4 (Session 48 Nachtrag, gesperrt)
+Direkte Fortsetzung von Phase 1, gleicher Tag – Nutzer-Vorgabe „Setze sie
+direkt um" statt die ursprünglich vorgeschlagene Verschiebung auf eine
+Folgesession. Wichtiger Hinweis des Nutzers, der die Reihenfolge
+rechtfertigt: „Über die Platzierung der Einzelbauteile, bei denen Zonen
+ja zugeordnet sind, kann man das prima testen. Die Baugruppen sind davon
+unabhängig" – Fall 3/4 sind über Modul 3s Zonen-Zuordnung und Modul 4s
+Einzelbauteil-Platzierung vollständig testbar, ohne auf den noch
+ausstehenden Baugruppen-Neuaufbau zu warten.
+
+**`buildLayoutForFeldtyp()` von einer Typ-B-Speziallösung auf eine
+einzige generische Zeilen-Transformation umgebaut** (in Modul 3 UND
+Modul 4 identisch, wie gehabt dupliziert), die A (Pass-through) und B–E
+einheitlich abdeckt:
+- Reine Struktur-Kanalzeilen (`kanal_h`/`kanal_ls`/`kanal_ev`/`kanal_ev2`)
+  werden über `kanalNochNoetig(kanalId, zoneSet)` behalten oder gestrichen
+  – `kanal_h` immer (jeder Feldtyp hat mindestens eine Klemmzone),
+  `kanal_ls` nur wenn Leistung UND Steuerung im Feldtyp vorkommen (nie bei
+  C/D/E einzeln), `kanal_ev`/`kanal_ev2` nur wenn Energieverteilung
+  vorkommt.
+- Klemmzeile: Breite entfallender Subzonen geht proportional an die
+  verbleibenden (klemm_e wächst nie – fester physischer Platzbedarf,
+  unabhängig vom Feldtyp).
+- Übrige Zeilen (evert/uss/leist/leist_ext/steuer): entfällt eine Zeile
+  KOMPLETT (keine ihrer Zonen bleibt), geht ihre Höhe an
+  `FELDTYP_GROW_TARGET[feldtyp]` (`C→evert`, `D→leist`, `E→steuer`, `B`
+  braucht keins – dort entfällt nie eine ganze Zeile). Bleibt nur ein Teil
+  der Zeile (z. B. ÜSS-Zeile mit Leistung+Steuerung, nur Leistung
+  entfällt), wird innerhalb der Zeile umverteilt – mit der bestehenden
+  ÜSS-Sonderregel: freier Platz geht ausschließlich an Leistung, nie an
+  Steuerung, auch wenn beide dieselbe Zeile teilen und Steuerung selbst
+  nicht entfällt (galt bereits für Typ B, gilt jetzt konsistent für alle).
+- Regressionsgeprüft: Typ A bytegleich zu `buildLayout()`, Typ B liefert
+  exakt dieselben Zeilen wie die alte Speziallösung (verifiziert direkt im
+  Browser, Zonenbreiten/-höhen 1:1 verglichen).
+
+**Modul 3:** `zone_modus`-Dropdown um zwei Optionen erweitert:
+`getrennt_els` („Einspeisung/Leistung/Steuerung getrennt") und
+`einsp_misch` („Einspeisung getrennt, Leistung+Steuerung gemischt").
+`buildZoneSection()`-Labels generalisiert (zeigen jetzt die Feldtyp-Kette
+aus `FELDPLAN` statt nur „je_feld"-Sonderfall).
+
+**Modul 4:** `redistributeKlemmBands()` bekommt einen `keys`-Parameter
+(welche Klemm-Subzonen dieser Feldtyp führt – 1er-Pool `['klemm_l']` bei
+Typ C/D, 2er-Pool `['klemm_f','klemm_s']` bei Typ E, Default alle drei für
+Alt-Aufrufer/Typ A/B). `placeBauteileForField()` übergibt die zu diesem
+Feldtyp passenden Keys statt hart codierter drei Klemmzonen.
+
+**Bug beim ersten Test gefunden+gefixt:** `FELDPLAN['getrennt_els']`
+hatte Feldtyp C (Einspeisung) fälschlich `repeat:true`. Da `klemm_l`
+sowohl zu Typ C (Einspeisefeld behält Abgangsklemmen Leistung) als auch
+zu Typ D (Leistungsfeld) gehört, ließ ein Überlauf in `klemm_l` die
+Einspeisung selbst wiederholen (`calculateFelder()`s demand-getriebene
+Erweiterung prüft alle Zonen des Feldtyps, `klemm_l` zählte für C mit) –
+fachlich falsch, da es nur EINE Netzeinspeisung pro Anlage gibt. Fix: C
+ist jetzt `repeat:false` (wie in Fall 4 bereits korrekt), der `klemm_l`-
+Rest läuft automatisch an Typ D weiter (dessen `repeat:true` bleibt
+unverändert und übernimmt korrekt).
+
+Verifiziert direkt im Browser über Einzelbauteil-Platzierung (Modul 3:
+alle drei neuen Feldtypen strukturell geprüft – Typ C/D/E konservieren
+die Gesamthöhe exakt, enthalten genau die spezifizierten Zonen, Breiten-
+Wachstum an den richtigen Stellen; Sidebar-Vorschau zeigt korrekte
+Feldtyp-Labels „F1·Einspeisung/F2·Leistung/F3·Steuerung" bzw.
+„F1·Einspeisung/F2·Folgefeld/F3·Folgefeld". Modul 4: Fall 3 mit 100
+Klemmen in `klemm_l` + 3 in `klemm_f` erzeugt korrekt `[C,D,D,E]` –
+Leistungsfeld erweitert sich unabhängig vom hier nicht überlaufenden
+Steuerfeld, Positionsnummern innerhalb `klemm_l` über beide D-Felder
+hinweg eindeutig (1–100), Stückliste zeigt zwei getrennte Zeilen mit
+korrekten Positionsbereichen. Fall 4 mit 150 Klemmen erzeugt korrekt
+`[C,B,B,B,B]` – exakt wie Fall-2-Folgefelder ab Feld 2. Fall 1+2
+anschließend erneut gegengeprüft, unverändert. Keine Konsolenfehler in
+allen vier Fällen.
+
+**Bewusst nicht Teil dieser Session:** `buildFullLayoutSVG()`
+(Druckfunktion) kennt weiterhin nur Einzelfeld-Layout, Mehrfeld-Druck
+bleibt niedrige Priorität (Phase 4/Politur). Baugruppen-Platzierung über
+mehrere Felder hinweg ungetestet (Baugruppen sind seit Session 40 leer) –
+strukturell sollte sie funktionieren, da `placeBauteileForField()`
+Baugruppen- und Einzelbauteil-Queues identisch behandelt, aber explizit
+unverifiziert.
+
 ### Mehrfeld-Schaltschränke Phase 1: gleichartige Folgefelder (Session 48, gesperrt/teilweise offen)
 Nutzer-Auftrag direkt im Anschluss an Session 47 (Türansicht): Modul 3
 hatte bereits ein `zone_modus`-Dropdown „1 Feld"/„Mehrere Felder" +
