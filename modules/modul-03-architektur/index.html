@@ -1270,9 +1270,17 @@ function buildZoneSVG(zp) {
     const feldtypSeq = expandFeldplan(modus, n_felder);
     const N   = feldtypSeq.length;
     const GAP = 5;
-    const fw  = Math.min(75, Math.floor((530 - PL - GAP*(N-1)) / N));
-    const sc_h = Math.min(400 / h, ph / h);
-    const fph  = Math.round(h * sc_h);
+    // EIN gemeinsamer Maßstab für Breite UND Höhe (Bug-Fix: vorher wurde die
+    // Feldbreite unabhängig von der Höhe auf max. 75px gestaucht, was das
+    // Breite-zu-Höhe-Verhältnis verfälschte, je mehr Felder nebeneinander
+    // standen – Nutzer-Fund). scM berücksichtigt den Höhen-Platz (400px),
+    // den verfügbaren Gesamt-Breiten-Platz für alle N Felder UND begrenzt
+    // zusätzlich auf den 1-Feld-Referenzmaßstab `sc`, damit Mehrfeld-Felder
+    // nie größer als die 1-Feld-Ansicht erscheinen.
+    const availW = 530 - PL - GAP*(N-1);
+    const scM = Math.min(400 / h, availW / (N * b), sc);
+    const fw  = Math.round(b * scM);
+    const fph  = Math.round(h * scM);
     const VW   = PL + N*fw + (N-1)*GAP + PL + 4;
     const VH   = PT + fph + PB;
     const zpUeber = { ...zp, anordnung: 'uebereinander' };
@@ -1288,7 +1296,7 @@ function buildZoneSVG(zp) {
       s += `<rect x="${fx}" y="${PT}" width="${fw}" height="${fph}" fill="#FDFCF8" stroke="#888" stroke-width="0.7"/>`;
       let fy = PT;
       for (const row of rows) {
-        const rh = Math.round(row.h_mm * sc_h);
+        const rh = Math.round(row.h_mm * scM);
         for (const zone of row.zones) {
           const zx = fx + Math.round(zone.x * fw);
           const zw = Math.round(zone.w * fw);
