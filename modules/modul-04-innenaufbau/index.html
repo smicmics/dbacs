@@ -275,13 +275,22 @@ legend{
 .btn-add-sm:hover,.btn-sub-sm:hover{opacity:.85;}
 
 /* ── Belegungsliste ── */
+/* Nutzer-Fund (Session 49): bei langen Baugruppen-/Bauteilnamen (z.B.
+   "Binärausgang (BO) mit LVB auf Klemmleiste") kürzte .bel-name den Text
+   per Ellipsis, um die Spalte nicht zu verbreitern – der Nutzer möchte den
+   vollen Namen stattdessen per horizontalem Scrollen erreichen können statt
+   ihn abzuschneiden. Keine Ellipsis mehr, Zeile behält ihre natürliche
+   Breite (width:fit-content), die Liste bekommt dafür overflow-x:auto.
+   Der ×-Button bleibt am Zeilenende immer erreichbar (ans Scroll-Ende). */
+#belegung-liste{overflow-x:auto;}
 .bel-zeile{
   display:flex;align-items:center;gap:6px;
   padding:4px 6px;border-radius:3px;margin-bottom:3px;
   background:var(--bg4);border:1px solid var(--bord);
+  width:fit-content;min-width:100%;
 }
 .bel-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.bel-name{flex:1;font-size:11px;color:var(--tx);min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.bel-name{flex:0 0 auto;font-size:11px;color:var(--tx);white-space:nowrap;}
 .bel-rm{
   background:none;border:none;color:var(--tx3);cursor:pointer;
   font-size:14px;padding:0 2px;line-height:1;flex-shrink:0;
@@ -842,7 +851,7 @@ function init() {
   if(wm) try { ddcWatermark = JSON.parse(wm); } catch(e){}
 
   loadMontagebereich(gs('schrank_typ'));
-  setGewerk('lueftung');
+  setGewerk(localStorage.getItem('m04_gewerk') || 'lueftung');
   populateEinzelAuswahl();
   renderBelegung();
   calculate();
@@ -1048,9 +1057,16 @@ function loadMontagebereich(typ) {
 }
 
 // ── Gewerk-Tabs ──────────────────────────────────────────────────────
+// Persistiert (Session 49, Nutzer-Fund): ohne das sprang der Tab bei jedem
+// Neuladen fest auf "lueftung" zurück – die Belegung selbst blieb zwar
+// korrekt (localStorage), aber das bg_auswahl-Dropdown zeigte dann nur noch
+// Lüftungs-Baugruppen, wodurch sich bereits hinzugefügte Baugruppen anderer
+// Gewerke (z.B. Automation) nicht mehr im Dropdown auswählen und damit auch
+// nicht mehr über "−" entfernen ließen (nur noch über das "×" in der Liste).
 function setGewerk(gew) {
   document.querySelectorAll('.gewerk-tab').forEach(b => b.classList.toggle('active', b.dataset.gewerk === gew));
   filterBaugruppen(gew);
+  localStorage.setItem('m04_gewerk', gew);
 }
 
 function filterBaugruppen(gew) {
@@ -2295,7 +2311,18 @@ function computeDdcAutoModules(demand, supply, reservePct, needsLvb) {
     let entry = modules.find(m => m.eb.artikel_nr === chosen.artikel_nr);
     if (!entry) { entry = { eb: chosen, menge: 0 }; modules.push(entry); }
     entry.menge += menge;
-    PHYS_DP_TYPES.forEach(t => { if (chosen[t]) remaining[t] = Math.max(0, remaining[t] - chosen[t] * menge); });
+    // Nur den gerade bearbeiteten Typ verbrauchen (Session 49) – bei einem
+    // Modul mit GENAU einem dp_*-Feld (alle bisherigen Katalogmodule) ist das
+    // ohnehin identisch zum alten "alle Felder abziehen". Bei einem echten
+    // Mehrzweck-/Universalmodul (z.B. TXM1.8U: dp_ai UND dp_ao gleichzeitig,
+    // aber physisch nur 8 gemeinsame, flexible Kanäle) hätte ein Abzug ALLER
+    // Felder das Risiko, dieselben physischen Kanäle doppelt gutzuschreiben
+    // (1 Modul für AI-Bedarf gekauft würde dann fälschlich AUCH die volle
+    // AO-Kapazität "gratis" abdecken) – das könnte in Kombi-Bedarfsfällen zu
+    // einer zu gering berechneten Modulanzahl führen (unter-versorgt). Ohne
+    // Cross-Abzug wird im Zweifel eher ein Modul zu viel vorgeschlagen
+    // (sicher, nur suboptimal) statt zu wenig (unsicher).
+    remaining[type] = Math.max(0, remaining[type] - chosen[type] * menge);
   });
 
   return { modules, unmet: [...new Set(unmet)] };
@@ -2442,6 +2469,12 @@ function buildQueues(ddcReservePct) {
       bg.bauteile.forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
         if(!eb || eb.te_breite <= 0) return;
+        // CPU/E-A-Modul koennen jetzt auch ueber eine Baugruppe kommen (z.B.
+        // "Automationsstation (AE)", Session 49) statt nur direkt platziert –
+        // muss hier ebenso erfasst werden, sonst ergaenzt die Auto-Logik
+        // faelschlich eine zweite CPU obwohl schon eine ueber die Baugruppe da ist.
+        if (eb.bauteil_typ === 'ddc_cpu') cpuPresent = true;
+        else if (eb.bauteil_typ === 'ddc_io') ioPresent = true;
         const zone = bt.zone || eb.zone[0];
         if(!queues[zone]) return;
         // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden

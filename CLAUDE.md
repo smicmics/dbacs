@@ -481,6 +481,100 @@ den Strukturänderungen: `C:\Users\SMI\Backups\dbacs\excel\
 ga_komponenten_vor-betriebsmittel-feld_*.xlsx` (deckt auch die
 dp_ai/ao/bi/bo-Spalten ab, im selben Arbeitsschritt ergänzt).
 
+### Nachtrag 2: AI/AO-Baugruppen, Automationsstation (AE), zwei Bugfixes (Session 49, gesperrt)
+Direkte Fortsetzung, gleicher Tag.
+
+**1. BI-Zonenkorrektur (Nutzer-Fund):** „Bei BI: 2 Klemmen in Feldgeräteleiste,
+bei BO auch" – Nutzer stellt klar, dass BEIDE Binärtypen in `klemm_f`
+(Feldgeräte) gehören, nicht BI in `klemm_s` (Sensoren) wie zuvor
+angenommen. `klemm_s` ist damit ausschließlich für ANALOGE Messwerte
+reserviert (klassische „Sensoren" wie Temperatur/Druck), `klemm_f` deckt
+sowohl einfache Binärsignale als auch Aktor-Ansteuerung ab. `480_000001`
+korrigiert (beide Klemmen `klemm_s`→`klemm_f`).
+
+**2. Drei neue Baugruppen nach demselben Schema** (Nutzer-Vorgabe „Klemmleiste
+AO=Feldgeräte, Klemmleiste AI=Sensoren"): `480_000004` „Analogausgang (AO)
+auf Klemmleiste" (`klemm_f`), `480_000005` „Analogausgang (AO) mit LVB auf
+Klemmleiste" (`klemm_f`, `lvb_erforderlich`), `480_000006` „Analogeingang
+(AI) auf Klemmleiste" (`klemm_s`) – je 2 Klemmen wie bei BI/BO.
+
+**3. TXM1.8U-Kapazitätslücke geschlossen (Grundlage für 2., musste zuerst
+gelöst werden):** `dp_ai=8`/`dp_ao=8` auf `TXM1.8U`/`TXM1.8U-ML` gesetzt
+(8 flexible Punkte laut Desigo-Recherche, siehe Nachtrag 1). Dabei einen
+echten Unter-Versorgungs-Bug in `computeDdcAutoModules()` gefunden UND
+gefixt, BEVOR er in Erscheinung treten konnte: der bisherige Cross-Typ-Abzug
+(`PHYS_DP_TYPES.forEach(t=>{if(chosen[t]) remaining[t]-=chosen[t]*menge})`)
+war für Module mit GENAU EINEM `dp_*`-Feld harmlos (bisheriger
+Katalogbestand), hätte bei einem echten Mehrzweckmodul wie `TXM1.8U`
+(dp_ai UND dp_ao gleichzeitig, aber physisch nur 8 GEMEINSAME Kanäle) bei
+gleichzeitigem AI+AO-Bedarf, der die 8 Kanäle in Summe übersteigt, zu wenige
+Module vorschlagen können (der erste Kauf für einen Typ hätte fälschlich
+die VOLLE Kapazität für den anderen Typ "gratis" gutgeschrieben, wodurch ein
+zweiter nötiger Kauf unterblieben wäre). Fix: nur noch der gerade bearbeitete
+Typ wird abgezogen (`remaining[type] -= chosen[type]*menge`) – für alle
+bisherigen Katalogmodule (genau 1 Feld) bytegleich identisches Verhalten,
+für Mehrzweckmodule jetzt sicher (kauft im Zweifel ein Modul zu viel statt
+zu wenig). Getestet: AI=1+AO=1 (LVB) gemeinsam ergab korrekt `TXM1.8U`(AI)
++ `TXM1.8U-ML`(AO, wegen LVB) – zwei Module statt optimalerweise einem
+möglichen, aber NIE zu wenig.
+
+**4. Neue Baugruppe `480_000007` „Automationsstation (AE)"** – Nutzer-Vorgabe:
+„Wenn Du eine CPU setzt, dann benötigt sie auch ein Netzteil (Leistung) und
+eine Sicherung (Energievert.). Es macht Sinn, dies auch als Baugruppe OHNE
+Abgangsklemmleiste zu definieren." Bauteile: `PXC4.E16` (CPU, Standardzone
+`steuer`), `2866690` (QUINT-PS 24VDC/2,5A/60W, Zone-Override `leist` –
+Katalog-Standardzone ist `steuer`, hier bewusst abweichend gemäß
+Nutzer-Vorgabe), `5SL6106-7` (LSS 1-polig 6A, Standardzone bereits `evert`,
+passt ohne Override). Bewusste, dokumentierte Annahmen (nicht mit dem
+Nutzer einzeln abgestimmt, da unkritisch/üblich): kleinstes verfügbares
+Netzteil (60W, weit ausreichend für 1 CPU + einige TXM-Module), kleinste
+LSS-Stufe (6A, Standard-Absicherung eines so kleinen Netzteils).
+
+**Notwendiger Begleit-Fix:** `cpuPresent`/`ioPresent` (siehe Nachtrag 1)
+wurden bisher NUR im `typ:'einzel'`-Zweig von `buildQueues()` erfasst –
+mit der Automationsstation kann eine CPU jetzt auch über eine Baugruppe
+kommen. Ergänzt im Baugruppen-Zweig (vor der zone-Prüfung, damit sie auch
+bei ungültiger/fehlender Zone erfasst wird) – sonst hätte die Auto-Ergänzung
+fälschlich eine ZWEITE CPU addiert, obwohl die Automationsstation bereits
+eine mitbringt. Verifiziert: `steuer` zeigt bei gesetzter Automationsstation
+`PXC4.E16` exakt einmal, keine doppelte Ergänzung.
+
+**5. Bugfix (Nutzer-Fund): Gewerk-Tab sprang bei jedem Neuladen auf
+„Lüftung" zurück.** `setGewerk('lueftung')` war beim Seitenstart fest
+kodiert – die Belegung selbst blieb korrekt (localStorage), aber das
+`bg_auswahl`-Dropdown zeigte nach einem Reload nur noch Lüftungs-Baugruppen
+(aktuell keine), wodurch sich bereits hinzugefügte Baugruppen anderer
+Gewerke (z.B. Automation) nicht mehr auswählen und damit über den
+„−"-Button nicht mehr entfernen ließen – NICHT über das „×" in der
+Belegungsliste, das ist unabhängig vom Dropdown-Zustand und funktionierte
+immer schon zuverlässig (zweite, robustere Löschmethode). Fix: `setGewerk()`
+persistiert die Wahl jetzt in `localStorage['m04_gewerk']`, beim Start wird
+sie wiederhergestellt (`setGewerk(localStorage.getItem('m04_gewerk') ||
+'lueftung')`) – konsistent mit dem bereits bestehenden Muster bei
+`m04_schrank_typ`. Verifiziert: Tab UND Dropdown-Optionen bleiben nach
+Reload korrekt auf „Automation" stehen, „−"-Button funktioniert wieder.
+
+**6. UX-Fix (Nutzer-Fund): „×" in der Belegungsliste bei langen Namen nicht
+erreichbar.** Nutzer: „Ich möchte die Spalte aber nicht unnötig
+verbreitern. Hier macht ein Scrollbalken Sinn." `.bel-name` kürzte den
+Text bisher per Ellipsis (`overflow:hidden;text-overflow:ellipsis`) – bei
+sehr langen Baugruppennamen wie „Binärausgang (BO) mit LVB auf
+Klemmleiste" wirkte das in der Praxis nicht zuverlässig genug. Fix:
+Ellipsis entfernt, `.bel-zeile` bekommt `width:fit-content` (behält ihre
+natürliche, ungestauchte Breite), `#belegung-liste` bekommt
+`overflow-x:auto` – lange Zeilen erzeugen jetzt einen horizontalen
+Scrollbalken statt abgeschnitten zu werden, der „×"-Button bleibt am
+Zeilenende immer erreichbar (ans Scroll-Ende scrollen). Spaltenbreite
+selbst unverändert, wie vom Nutzer gefordert.
+
+Verifiziert direkt im Browser (echte Katalogdaten): alle 4 neuen
+Baugruppen (AO/AO+LVB/AI/AE) einzeln und gemeinsam mit BI/BO getestet –
+korrekte Zonen, korrekte Modulwahl (`TXM1.8U` für AI, `TXM1.8U-ML` für
+AO+LVB-Bedarf, CPU/Netzteil/Sicherung korrekt in `steuer`/`leist`/`evert`,
+keine doppelte CPU), kein Overflow, keine Konsolenfehler in allen
+Testläufen. Backup: `C:\Users\SMI\Backups\dbacs\excel\
+ga_komponenten_vor-ai-ao-automationsstation_*.xlsx`.
+
 ### Nachtrag: BI/BO umbenannt, 2-Klemmen-Korrektur, LVB-Variante + Desigo-AI/AO-Recherche (Session 49, gesperrt)
 Direkte Fortsetzung, gleicher Tag. Drei Aufträge in einem Schritt.
 

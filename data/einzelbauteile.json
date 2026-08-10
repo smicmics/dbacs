@@ -1163,6 +1163,8 @@
     ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
+    "dp_ai": 8,
+    "dp_ao": 8,
     "lvb_integriert": false,
     "preis_eur": 404.0,
     "geprueft": false
@@ -1180,6 +1182,8 @@
     ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
+    "dp_ai": 8,
+    "dp_ao": 8,
     "lvb_integriert": true,
     "geprueft": false
   },
