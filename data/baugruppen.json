@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "id": "480_000001",
+    "name": "Reserve · Binäreingang (BI)",
+    "gewerk": "480",
+    "beschreibung": "Vorbereiteter DDC-Anschlusspunkt (Binaereingang) fuer ein spaeter anzuschliessendes Feldgeraet, das zum Zeitpunkt der Schaltschrank-planung noch nicht bekannt ist - 1 Abgangsklemme (Sensoren) + Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": "automation",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "480_000002",
+    "name": "Reserve · Binärausgang (BO)",
+    "gewerk": "480",
+    "beschreibung": "Vorbereiteter DDC-Anschlusspunkt (Binaerausgang) fuer ein spaeter anzuschliessendes Feldgeraet, das zum Zeitpunkt der Schaltschrank-planung noch nicht bekannt ist - 1 Abgangsklemme (Feldgeraete) + Datenpunktbedarf 1x BO.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      }
+    ],
+    "funktionsbereich": "automation",
+    "automationsanbindung": true,
+    "geprueft": false
+  }
+]

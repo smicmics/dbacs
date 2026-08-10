@@ -422,6 +422,13 @@ def export_baugruppen(wb):
             bt['zone'] = str(rec['zone'])
         if rec.get('zeilenumbruch_davor'):
             bt['rowBreak'] = True
+        # dp_ai/ao/bi/bo (Session 49): DDC-Datenpunktbedarf je Verwendung
+        # dieses Bauteils in DIESER Baugruppe, analog zum zone-Override –
+        # z.B. eine Klemme traegt selbst keinen DDC-Bezug, stellt aber in
+        # einer "Reserve"-Baugruppe einen vorbereiteten Anschlusspunkt dar.
+        for dpf in ('dp_ai', 'dp_ao', 'dp_bi', 'dp_bo'):
+            if rec.get(dpf):
+                bt[dpf] = int(rec[dpf])
         bauteile_je_bg.setdefault(str(bg_id), []).append(bt)
 
     ws = wb[SHEET]

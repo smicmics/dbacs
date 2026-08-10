@@ -2347,6 +2347,12 @@ function buildQueues(ddcReservePct) {
 
   const dpDemand = {}, dpSupply = {};
   PHYS_DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
+  // CPU-Ergaenzung (Session 49): CPU/E-A-Modul sind kein Bestandteil einer
+  // Baugruppe (bg.bauteile) - sie werden separat benoetigt, um deren DDC-
+  // Datenpunktbedarf tatsaechlich anzuschliessen. cpuPresent/ioPresent
+  // erfassen, ob bereits manuell eine Automationsstation bzw. ein E/A-Modul
+  // in der Belegung steht (siehe Aufruf weiter unten, nach computeDdcAutoModules()).
+  let cpuPresent = false, ioPresent = false;
   const fbDemand = {}, fbSupply = {};
   FB_SUMMARY_GROUPS.forEach(g => {
     fbDemand[g.key] = {}; fbSupply[g.key] = {};
@@ -2384,6 +2390,8 @@ function buildQueues(ddcReservePct) {
     if(item.typ === 'einzel') {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
       if(!eb || eb.te_breite <= 0) return;
+      if (eb.bauteil_typ === 'ddc_cpu') cpuPresent = true;
+      else if (eb.bauteil_typ === 'ddc_io') ioPresent = true;
       const farbe = BG_COLORS[item.ci];
       accumulateDp(eb, item.menge, {physisch: item.ddcPhysisch !== false, kommunikativ: !!item.ddcKommunikativ, protokoll: item.ddcProtokoll});
       // keine_platzierung_mp (Session 41): Bauteil wird auf ein anderes
@@ -2425,7 +2433,20 @@ function buildQueues(ddcReservePct) {
         if(!eb || eb.te_breite <= 0) return;
         const zone = bt.zone || eb.zone[0];
         if(!queues[zone]) return;
-        accumulateDp(eb, bt.menge);
+        // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden
+        // bt.zone-Override – ein Bauteil wie eine Klemme traegt selbst keinen
+        // DDC-Datenpunktbedarf (wird ja auch ohne DDC-Bezug verwendet), kann
+        // aber INNERHALB einer bestimmten Baugruppe einen vorbereiteten
+        // Anschlusspunkt darstellen (z.B. "Reserve"-Baugruppen fuer noch
+        // unbekannte Feldgeraete). Override ersetzt nur die angegebenen Typen,
+        // eb-eigene dp_*-Werte bleiben fuer nicht ueberschriebene Typen gueltig.
+        const dpUeberschrieben = ['dp_ai','dp_ao','dp_bi','dp_bo'].some(k => bt[k] != null);
+        const dpQuelle = dpUeberschrieben
+          ? { ...eb, automationsanbindung: true,
+              dp_ai: bt.dp_ai ?? eb.dp_ai, dp_ao: bt.dp_ao ?? eb.dp_ao,
+              dp_bi: bt.dp_bi ?? eb.dp_bi, dp_bo: bt.dp_bo ?? eb.dp_bo }
+          : eb;
+        accumulateDp(dpQuelle, bt.menge);
         if(eb.keine_platzierung_mp) return;
         if(!zonen[zone]) zonen[zone] = [];
         for(let q = 0; q < bt.menge; q++) {
@@ -2437,6 +2458,22 @@ function buildQueues(ddcReservePct) {
   });
 
   const ddcAuto = computeDdcAutoModules(dpDemand, dpSupply, ddcReservePct);
+
+  // CPU-Ergaenzung (Session 49, Nutzer-Vorgabe): sobald ein E/A-Modul
+  // gebraucht wird (manuell platziert ODER hier automatisch ergaenzt),
+  // muss eine Automationsstation (ddc_cpu) vorhanden sein, sonst laesst
+  // sich das Modul gar nicht anschliessen. Fehlt sie, wird GENAU EINE
+  // automatisch ergaenzt (keine Vervielfachung, wie bei ddc_cpu ohnehin
+  // vorgesehen - siehe computeDdcAutoModules()-Kommentar). VOR
+  // applyDdcWatermark() eingehaengt, damit die CPU wie jedes andere
+  // Auto-Modul geratcht wird (einmal ergaenzt, faellt nicht wieder weg).
+  if (!cpuPresent && (ioPresent || ddcAuto.modules.length > 0)) {
+    const cpu = EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu');
+    if (cpu && !ddcAuto.modules.some(m => m.eb.artikel_nr === cpu.artikel_nr)) {
+      ddcAuto.modules.push({ eb: cpu, menge: 1 });
+    }
+  }
+
   applyDdcWatermark(ddcAuto);
   ddcAuto.modules.forEach(mod => {
     const eb = mod.eb;

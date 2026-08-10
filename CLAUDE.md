@@ -393,6 +393,94 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Erste Automations-Baugruppen: "Reserve"-Punkte + CPU-Vervollständigung (Session 49, gesperrt)
+Erste inhaltliche Baugruppen seit dem Neuaufbau (Gewerk Automation/480, wie
+vom Nutzer priorisiert). Zweck: den Schaltschrank mit vorbereiteten
+DDC-Anschlusspunkten ausstatten können, BEVOR das externe Feldgerät bekannt
+ist – Nutzer-Vorgabe: „Funktionen, die zur Ausstattung des Schaltschranks
+genutzt werden können, wenn die Feldgeräte noch nicht bekannt sind, aber
+die Ein- und Ausgänge der DDC schon einmal für einen externen Anschluss
+vorbereitet werden sollen."
+
+**Namens-/ID-Konvention (Nutzer bestätigt):** ID fortlaufend je Gewerke-
+Gruppe `480_000001`, `480_000002`, … Name-Schema `<Anlagenteil> ·
+<Ansteuerung/Ausführung>` – für die generischen Reserve-Punkte angepasst zu
+`Reserve · <Datenpunkttyp>` (kein "Anlagenteil" bekannt, das ist ja der
+Zweck dieser Baugruppen).
+
+**2 neue Baugruppen:** `480_000001` „Reserve · Binäreingang (BI)" (1×
+Klemme PT 2,5 grau `3209510` in `klemm_s`), `480_000002` „Reserve ·
+Binärausgang (BO)" (dieselbe Klemme in `klemm_f`) – Zuordnung Ein-/Ausgang
+→ Sensoren-/Feldgeräte-Klemmzone folgt der etablierten Konvention (Sensoren
+= Messwerte, die die DDC liest; Feldgeräte = Aktoren, die die DDC
+ansteuert). `betriebsmittel`-Feld bewusst LEER (Feldgerät ist ja per
+Definition noch nicht bekannt – nur "echte" Baugruppen mit bekanntem
+Feldgerät bekommen dort einen Wert).
+
+**Neuer Mechanismus: DDC-Datenpunktbedarf je BAUGRUPPEN-VERWENDUNG statt
+je Katalogartikel.** Eine Klemme trägt selbst keinen DDC-Bezug (wird ja
+auch ganz ohne DDC verwendet) – der Bedarf entsteht erst durch IHRE
+VERWENDUNG in genau dieser Baugruppe. Neue optionale Spalten `dp_ai`/
+`dp_ao`/`dp_bi`/`dp_bo` in `baugruppen_bauteile` (analog zum bestehenden
+`zone`-Override-Mechanismus, Session 22/44), ausgelesen in
+`xlsx_to_json.py`s `export_baugruppen()` in die `bt`-Objekte. In Modul 4s
+`buildQueues()` überschreibt ein gesetzter `bt.dp_*`-Wert den entsprechenden
+Typ am `eb`-Objekt VOR dem `accumulateDp()`-Aufruf (nicht überschriebene
+Typen bleiben `eb`-eigen, `automationsanbindung` wird bei jedem Override
+implizit auf `true` gesetzt) – bewusst NICHT auf dem Katalogartikel selbst
+gesetzt, sonst würde JEDE Verwendung dieser Klemme (auch außerhalb dieser
+Baugruppen) fälschlich DDC-Bedarf erzeugen.
+
+**Neuer Mechanismus: automatische CPU-Ergänzung.** Nutzer-Vorgabe: „Wenn
+Du ein E/A-Modul setzt, musst du vorher prüfen, ob schon eine CPU gesetzt
+wurde. Ist dies nicht der Fall, musst Du sie mit setzen. CPU und E/A-Modul
+sind nicht Bestandteile der Baugruppe, sie werden als eigene Bauteile für
+den Abschluss der Baugruppe benötigt." Weder CPU noch E/A-Modul stehen in
+`bg.bauteile` – beide entstehen ausschließlich über die bestehende
+Auto-Ergänzung (`computeDdcAutoModules()`, Session 28d) bzw. die neue
+CPU-Ergänzung. `buildQueues()` erfasst beim Durchlaufen der Belegung
+`cpuPresent`/`ioPresent` (ist bereits eine `ddc_cpu`- bzw. `ddc_io`-typisierte
+Komponente manuell platziert?). Direkt nach `computeDdcAutoModules()` (und
+VOR `applyDdcWatermark()`, damit die CPU wie jedes andere Auto-Modul geratcht
+wird – einmal ergänzt, fällt sie nicht wieder weg): fehlt eine CPU, obwohl
+ein E/A-Modul gebraucht wird (manuell ODER automatisch ergänzt), wird
+GENAU EINE `ddc_cpu`-Komponente (`PXC4.E16`, einzige aktuell im Katalog)
+automatisch ergänzt – keine Vervielfachung, wie bei `ddc_cpu` ohnehin schon
+für die manuelle Auswahl vorgesehen (Session 41).
+
+**Nutzer-Vorgabe zur Modulwahl:** „Verwende als E/A-Modul vorzugsweise das,
+welches nur einen Datenpunkttyp abbilden kann, bevor du auf weitere
+zugreifst." Bereits durch die bestehende Katalogstruktur sichergestellt,
+keine Code-Änderung nötig: nur `TXM1.8D`/`TXM1.16D` (reine BI-Module) und
+`TXM1.6R`/`TXM1.6R-M` (reine BO-Module) tragen `dp_bi`/`dp_bo`-Kapazität im
+Schema – die Universalmodule `TXM1.8U`/`TXM1.8U-ML` haben bewusst KEINE
+`dp_*`-Werte (Session 41: „Feldstruktur bildet flexible Kanäle nicht ab,
+offene Modul-4-Erweiterung"), `computeDdcAutoModules()` kann sie über die
+bestehende Kapazitätsprüfung gar nicht als Kandidaten sehen. Damit wählt
+der bestehende Mechanismus für BI/BO automatisch die Single-Type-Module.
+**Für AI/AO existiert aktuell KEIN Katalogartikel mit Kapazität** – ein
+"Reserve · Analogeingang/-ausgang" würde daher dauerhaft unerfüllten Bedarf
+zeigen. Bewusst noch NICHT angelegt ([[feedback_grundlage_vor_gruppen]]) –
+erst ein AI/AO-fähiges Modul recherchieren/ergänzen (oder die
+Universalmodul-Kapazitätslücke schließen), dann nachziehen.
+
+Verifiziert direkt im Browser (echte Katalogdaten, `EINZELBAUTEILE_DB`
+frisch geladen): beide Baugruppen im „Automation"-Dropdown korrekt
+sichtbar; Platzierung beider Klemmen in `klemm_s`/`klemm_f` korrekt;
+`buildQueues()` liefert exakt die erwarteten 3 Auto-Geräte
+(`TXM1.16D`+`TXM1.6R`+`PXC4.E16`), `ddcSummary` zeigt `dp_bi:{cap:16,used:1}`/
+`dp_bo:{cap:10,used:1}` (10 = 6 aus TXM1.6R + 4 aus der CPU eigenen
+Relaisausgängen) – korrekt in der Statistik mitgeführt; isolierter
+`placeInBands()`-Test bestätigt: alle 3 Auto-Geräte passen bei
+ausreichender Kapazität zusammen in ein Band, keine Regression der
+bestehenden Platzierungslogik. Bereits vorhandene CPU verhindert
+zuverlässig eine zweite automatische Ergänzung (Ratchet-Verhalten wie bei
+TXM-Modulen: einmal ergänzt, fällt nicht wieder weg – bestehende,
+gewünschte Semantik seit Session 28e). Keine Konsolenfehler. Backup vor
+den Strukturänderungen: `C:\Users\SMI\Backups\dbacs\excel\
+ga_komponenten_vor-betriebsmittel-feld_*.xlsx` (deckt auch die
+dp_ai/ao/bi/bo-Spalten ab, im selben Arbeitsschritt ergänzt).
+
 ### Modul 4 – Baugruppen-Zusammenhalt über Zonen hinweg (Session 49, gesperrt)
 Start des Baugruppen-Neuaufbaus (`baugruppen.json` seit Session 40 leer).
 Nutzer-Vorgabe vor jeder inhaltlichen Baugruppen-Arbeit: „In der Praxis
