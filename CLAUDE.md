@@ -428,29 +428,53 @@ jetzt zusätzlich zu `queues[zn]` auch offene `bgInstanceQueue`-Einträge
 mit, sonst würden Baugruppen-Bedarf/Reserve-Umverteilung unterschätzt
 bzw. ein nötiges Folgefeld ausbleiben.
 
-**Bewusst nicht gelöst:** eine Instanz mit Bauteilen in Zonen aus
-UNTERSCHIEDLICHEN Feldtypen (z. B. `leist` bei `getrennt_els` in Feldtyp D,
-`steuer` in Feldtyp E) wird nicht über Feldgrenzen hinweg zusammengehalten
-– das wären ohnehin zwei unterschiedliche physische Schränke. Bei
-typischen Automations-Baugruppen (Schütz+Klemme beide in Feldtyp D,
-Steuerungsmodul+Klemme beide in Feldtyp E) kommt das nicht vor.
+**Nachtrag, gleiche Sitzung – Korrektur „Zonen aus unterschiedlichen
+Feldtypen" ist kein Randfall, sondern der Normalfall bei Automation:**
+Nutzer-Einwand anhand eines konkreten Beispiels (DDC-angesteuerte Pumpe):
+Schütz + Abgangsklemme gehören ins Leistungsfeld (Feldtyp D), das
+zugehörige DDC-E/A-Modul (inkl. ggf. weiterer Rückmeldungen der Pumpe)
+gehört ins Steuerungsfeld (Feldtyp E) – bei `getrennt_els` sind das zwei
+verschiedene physische Felder, verbunden über normale Feld-zu-Feld-
+Querverdrahtung. Die ursprüngliche Regel „alle Zonen einer Instanz müssen
+im selben Feldtyp liegen, sonst wird die Instanz gar nicht erst
+betrachtet" hätte genau diesen (in der Automationstechnik alltäglichen)
+Fall NIE platziert – sie wäre in keinem Feldtyp je als „relevant"
+erkannt worden.
 
-Verifiziert direkt im Browser (synthetische Testbaugruppe, nicht
+**Korrigierte Regel: Zusammenhalt gilt pro (Instanz × Feldtyp), nicht für
+die ganze Instanz.** `platziereBaugruppenFuerFeld()` behandelt jetzt nur
+die Teilmenge der Zonen einer Instanz, die zum aktuellen Feldtyp gehören,
+als atomare Einheit; committete Zonen werden aus `inst.zonen` gelöscht
+(`delete`), die Instanz bleibt mit ihren restlichen Zonen in
+`bgInstanceQueue` stehen und wird erst entfernt, wenn wirklich alle ihre
+Zonen platziert sind. Dadurch landen Schütz+Klemme atomar zusammen in
+einem D-Feld, das DDC-Modul unabhängig davon (ggf. in einem anderen Feld)
+atomar für sich in einem E-Feld – beides korrekt, da eine Querverdrahtung
+zwischen zwei bereits als separate Felder geplanten Bereichen ohnehin
+normale Praxis ist. Bei `1feld`/`je_feld`/`einsp_misch` (Feldtyp A/B
+decken `leist` UND `steuer` gemeinsam ab) ändert sich nichts – dort sind
+ohnehin immer alle Zonen einer Instanz im selben Feldtyp, die neue Regel
+verhält sich dort identisch zur alten.
+
+Verifiziert direkt im Browser (synthetische Testbaugruppen, nicht
 committet): (1) isolierter Test von `platziereBaugruppenFuerFeld()` –
-5 Instanzen mit knapper Höhenkapazität, korrekt 2 bestätigt/3 zurückgestellt,
-Zusammenhalt exakt; zweiter Test beweist echten Cross-Zonen-Zusammenhalt
+5 Instanzen mit knapper Höhenkapazität, korrekt 2 bestätigt/3 zurückgestellt;
+zweiter Test beweist Cross-Zonen-Zusammenhalt INNERHALB eines Feldtyps
 (eine Instanz, deren `leist`-Zone allein gepasst hätte, wird trotzdem
 NICHT committed, weil ihre `klemm_l`-Zone keinen Platz mehr hatte – kein
-Partial-Commit). (2) Echte Mehrfeld-Pipeline (`je_feld`, Standschrank
+Partial-Commit); dritter Test (Nachtrag) beweist die Feldtyp-Domänen-
+Trennung direkt: nach einem D-Feld-Aufruf bleibt die Instanz mit nur noch
+`steuer` in der Queue, nach einem folgenden E-Feld-Aufruf ist sie
+vollständig entfernt. (2) Echte Mehrfeld-Pipeline (`je_feld`, Standschrank
 400×900mm synthetisch) mit 40 Baugruppen-Instanzen über 4 Felder: in
-JEDEM Feld exakt gleich viele `leist`- wie `klemm_l`-Blöcke (5/8/11/11/11/10
-Muster, nie eine Instanz gesplittet), 40/40 vollständig platziert. (3)
-Regression reine Einzelbauteile (60× Testklemme über 6 Felder): 60/60
-platziert, Verhalten unverändert zu vor dieser Änderung. (4) Mischbetrieb
-Baugruppen+Einzelbauteile in derselben Zone: Baugruppen-Geräte belegen
-korrekt die ersten Plätze in Feld 1, Einzelbauteile füllen den Rest der
-Feldkapazität, danach das nächste Feld – wie von Nutzer vorgegeben. Keine
-Konsolenfehler in allen vier Testläufen.
+JEDEM Feld exakt gleich viele `leist`- wie `klemm_l`-Blöcke, nie eine
+Instanz gesplittet, 40/40 platziert. (3) Regression reine Einzelbauteile
+(60× Testklemme über 6 Felder): 60/60 platziert, unverändert. (4)
+Mischbetrieb Baugruppen+Einzelbauteile: Baugruppen zuerst, Einzelbauteile
+füllen den Rest. (5) Nachtrag – echte DDC-Pumpen-Baugruppe (`getrennt_els`,
+15 Instanzen mit Schütz+Klemme+DDC-Modul): 2× Feldtyp D (11+4, `leist`=
+`klemm_l` in jedem Feld) + 1× Feldtyp E (alle 15 DDC-Module zusammen),
+15/15/15 vollständig platziert. Keine Konsolenfehler in allen Testläufen.
 
 ### Modul 4 – Link zurück zu Modul 3 unter der Belegung (Session 48 Nachtrag 7, gesperrt)
 Nutzer-Vorgabe direkt im Anschluss an Nachtrag 6: „Kannst Du unter dem Feld

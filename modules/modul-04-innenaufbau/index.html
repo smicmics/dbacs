@@ -2464,10 +2464,24 @@ function buildQueues(ddcReservePct) {
   return { queues, bgInstanceQueue, ddcAuto, ddcSummary };
 }
 
-// ── Baugruppen-Zusammenhalt über Zonen hinweg (Session 49) ────────────
-// Eine Baugruppen-Instanz besteht aus Bauteilen in ggf. mehreren Zonen
-// (z.B. Schütz in `leist` + Klemme in `klemm_l`) und darf nicht auf zwei
-// Felder aufgeteilt werden – die Bauteile werden untereinander verdrahtet.
+// ── Baugruppen-Zusammenhalt über Zonen hinweg (Session 49, Nachtrag:
+// Zusammenhalt gilt pro FELDTYP, nicht über die ganze Instanz) ─────────
+// Eine Baugruppen-Instanz besteht aus Bauteilen in ggf. mehreren Zonen.
+// Zonen, die im SELBEN Feldtyp liegen (z.B. Schütz in `leist` + Klemme in
+// `klemm_l`, beide Feldtyp D), müssen zwingend gemeinsam in einem Feld
+// landen – die Bauteile werden untereinander verdrahtet. Zonen aus
+// UNTERSCHIEDLICHEN Feldtypen (z.B. bei `getrennt_els`: `leist`/`klemm_l`
+// in Feldtyp D, aber `steuer` in Feldtyp E – Beispiel Nutzer: DDC-
+// angesteuerte Pumpe, Schütz+Abgangsklemme im Leistungsfeld, DDC-E/A-Modul
+// im Steuerungsfeld, dazwischen normale Feld-zu-Feld-Querverdrahtung)
+// dürfen und müssen dagegen unabhängig voneinander platziert werden – das
+// sind zwei physisch unterschiedliche Felder, ein Erzwingen in dasselbe
+// Feld wäre gar nicht möglich. Zusammenhalt gilt daher pro (Instanz ×
+// Feldtyp): eine Instanz wird über mehrere Aufrufe hinweg STÜCKWEISE
+// geleert (`delete inst.zonen[zn]` je committeter Zone), aus
+// `bgInstanceQueue` entfernt wird sie erst, wenn wirklich alle ihre Zonen
+// platziert sind.
+//
 // Trick, der einen Umbau von placeInBands()/placeInKlemmRow() erspart:
 // beide sind bereits reine Funktionen von (devs, bands, ...) und melden
 // über `leftoverDevs`, was nicht mehr passte. Ruft man sie mit [bereits
@@ -2475,42 +2489,42 @@ function buildQueues(ddcReservePct) {
 // nicht-leeres `leftoverDevs` zuverlässig, dass die NEUEN Geräte nicht
 // mehr passen (die alten passten ja schon beim vorherigen Aufruf) – die
 // Reihen-/Bandlogik selbst muss dafür nicht nachgebaut werden.
-// Pro Instanz wird so für JEDE ihrer Zonen geprüft, ob sie in dieses Feld
-// passt; nur "alles passt" wird committed, sonst bricht die Prüfung ab
-// (FIFO, kein Vorbeispringen an einer nicht passenden Instanz – analog zur
-// bereits akzeptierten Bin-Packing-Einschränkung bei Einzelbauteilen).
-// Nur Instanzen, deren Zonen VOLLSTÄNDIG im aktuellen Feldtyp liegen,
-// werden hier überhaupt betrachtet (Filter über `zoneSet`) – Instanzen für
-// andere Feldtypen (z.B. ein Steuerungsmodul bei einem Leistungsfeld)
-// bleiben unangetastet für ihr eigenes Feld stehen und blockieren nicht
-// die Prüfung der hier relevanten Instanzen.
+// Pro Instanz wird so für JEDE ihrer Zonen INNERHALB dieses Feldtyps
+// geprüft, ob sie in dieses Feld passt; nur "alles (davon) passt" wird
+// committed, sonst bricht die Prüfung ab (FIFO, kein Vorbeispringen an
+// einer nicht passenden Instanz – analog zur bereits akzeptierten
+// Bin-Packing-Einschränkung bei Einzelbauteilen).
 function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet) {
   const confirmed = {};
   zoneSet.forEach(zn => confirmed[zn] = []);
   const isBandZone = zn => zn === 'evert' ? !useEvKanal : REIHEN_ZONEN.includes(zn);
 
+  // Relevant: die Instanz hat MINDESTENS eine Zone in diesem Feldtyp.
   const relevantIdx = [];
   bgInstanceQueue.forEach((inst, i) => {
-    const zonen = Object.keys(inst.zonen);
-    if (zonen.length && zonen.every(z => zoneSet.includes(z))) relevantIdx.push(i);
+    if (Object.keys(inst.zonen).some(z => zoneSet.includes(z))) relevantIdx.push(i);
   });
 
-  const placedIdx = [];
+  const doneIdx = [];
   for (const i of relevantIdx) {
     const inst = bgInstanceQueue[i];
+    const zonenHier = Object.keys(inst.zonen).filter(z => zoneSet.includes(z));
     let fitsAll = true;
-    for (const zn of Object.keys(inst.zonen)) {
+    for (const zn of zonenHier) {
       const devsTry = confirmed[zn].concat(inst.zonen[zn]);
       const bands = bandsProZone[zn] || [];
       const result = isBandZone(zn) ? placeInBands(devsTry, bands, klemmraum, 0) : placeInKlemmRow(devsTry, bands, 0);
       if (result.leftoverDevs.length > 0) { fitsAll = false; break; }
     }
     if (!fitsAll) break;
-    Object.keys(inst.zonen).forEach(zn => { confirmed[zn] = confirmed[zn].concat(inst.zonen[zn]); });
-    placedIdx.push(i);
+    zonenHier.forEach(zn => {
+      confirmed[zn] = confirmed[zn].concat(inst.zonen[zn]);
+      delete inst.zonen[zn];
+    });
+    if (Object.keys(inst.zonen).length === 0) doneIdx.push(i);
   }
 
-  for (let k = placedIdx.length - 1; k >= 0; k--) bgInstanceQueue.splice(placedIdx[k], 1);
+  for (let k = doneIdx.length - 1; k >= 0; k--) bgInstanceQueue.splice(doneIdx[k], 1);
   return confirmed;
 }
 
