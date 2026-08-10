@@ -1924,7 +1924,11 @@ function placeInBands(devs, bands, klemmraum, startIdx = 0) {
 // keys (Session 48, Phase 2): welche Klemm-Subzonen dieser Feldtyp
 // überhaupt führt – Typ A/B alle drei, Typ C/D nur klemm_l, Typ E
 // klemm_f+klemm_s (2er-Pool). Default deckt den Alt-Aufrufer-Fall ab.
-function redistributeKlemmBands(bandsAll, queues, reservePct, keys) {
+// bgInstanceQueue (Session 49): Baugruppen-Bauteile stecken nicht mehr in
+// `queues[k]` (siehe buildQueues()) – ihr Bedarf muss hier separat
+// mitgezählt werden, sonst unterschätzt die Umverteilung den tatsächlichen
+// Platzbedarf der Klemmleisten-Zonen.
+function redistributeKlemmBands(bandsAll, queues, reservePct, keys, bgInstanceQueue) {
   const KEYS = keys && keys.length ? keys : ['klemm_l', 'klemm_f', 'klemm_s'];
   const origBands = {};
   KEYS.forEach(k => { origBands[k] = bandsAll[k] || []; });
@@ -1933,7 +1937,11 @@ function redistributeKlemmBands(bandsAll, queues, reservePct, keys) {
   KEYS.forEach(k => { origWidth[k] = origBands[k].reduce((a, bd) => a + bd.w_mm, 0); });
 
   const demandMM = {};
-  KEYS.forEach(k => { demandMM[k] = (queues[k] || []).reduce((s, d) => s + d.te, 0) * TE_MM; });
+  KEYS.forEach(k => {
+    let te = (queues[k] || []).reduce((s, d) => s + d.te, 0);
+    (bgInstanceQueue || []).forEach(inst => { if (inst.zonen[k]) te += inst.zonen[k].reduce((s, d) => s + d.te, 0); });
+    demandMM[k] = te * TE_MM;
+  });
 
   const keepFactor = 1 - reservePct;
   const requiredWidth = {};
@@ -2335,6 +2343,7 @@ function buildQueues(ddcReservePct) {
   // (siehe getSelectedEinzelZone()) vor eb.zone[0].
   const queues = {};
   ALLE_ZONEN.forEach(z => queues[z] = []);
+  const bgInstanceQueue = []; // siehe Kommentar am Baugruppen-Zweig unten
 
   const dpDemand = {}, dpSupply = {};
   PHYS_DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
@@ -2402,7 +2411,15 @@ function buildQueues(ddcReservePct) {
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
     const farbe = BG_COLORS[item.ci];
+    // Baugruppen-Bauteile landen NICHT mehr flach in queues[zone] (Session
+    // 49, "Baugruppen-Zusammenhalt") – eine Instanz muss zonenübergreifend
+    // gemeinsam in einem Feld platziert werden (Bauteile werden
+    // untereinander verdrahtet), das leistet die zonenweise unabhängige
+    // Warteschlange nicht. Stattdessen bleibt jede Instanz als
+    // zusammenhängende Einheit in bgInstanceQueue erhalten und wird erst in
+    // platziereBaugruppenFuerFeld() (siehe dort) auf ein Feld verteilt.
     for(let inst = 0; inst < item.menge; inst++) {
+      const zonen = {};
       bg.bauteile.forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
         if(!eb || eb.te_breite <= 0) return;
@@ -2410,10 +2427,12 @@ function buildQueues(ddcReservePct) {
         if(!queues[zone]) return;
         accumulateDp(eb, bt.menge);
         if(eb.keine_platzierung_mp) return;
+        if(!zonen[zone]) zonen[zone] = [];
         for(let q = 0; q < bt.menge; q++) {
-          queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak});
+          zonen[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak});
         }
       });
+      if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: item.bg_id, ci: item.ci, zonen});
     }
   });
 
@@ -2442,7 +2461,57 @@ function buildQueues(ddcReservePct) {
     });
   });
 
-  return { queues, ddcAuto, ddcSummary };
+  return { queues, bgInstanceQueue, ddcAuto, ddcSummary };
+}
+
+// ── Baugruppen-Zusammenhalt über Zonen hinweg (Session 49) ────────────
+// Eine Baugruppen-Instanz besteht aus Bauteilen in ggf. mehreren Zonen
+// (z.B. Schütz in `leist` + Klemme in `klemm_l`) und darf nicht auf zwei
+// Felder aufgeteilt werden – die Bauteile werden untereinander verdrahtet.
+// Trick, der einen Umbau von placeInBands()/placeInKlemmRow() erspart:
+// beide sind bereits reine Funktionen von (devs, bands, ...) und melden
+// über `leftoverDevs`, was nicht mehr passte. Ruft man sie mit [bereits
+// bestätigte Geräte dieser Zone] + [neue Instanz-Geräte] auf, zeigt ein
+// nicht-leeres `leftoverDevs` zuverlässig, dass die NEUEN Geräte nicht
+// mehr passen (die alten passten ja schon beim vorherigen Aufruf) – die
+// Reihen-/Bandlogik selbst muss dafür nicht nachgebaut werden.
+// Pro Instanz wird so für JEDE ihrer Zonen geprüft, ob sie in dieses Feld
+// passt; nur "alles passt" wird committed, sonst bricht die Prüfung ab
+// (FIFO, kein Vorbeispringen an einer nicht passenden Instanz – analog zur
+// bereits akzeptierten Bin-Packing-Einschränkung bei Einzelbauteilen).
+// Nur Instanzen, deren Zonen VOLLSTÄNDIG im aktuellen Feldtyp liegen,
+// werden hier überhaupt betrachtet (Filter über `zoneSet`) – Instanzen für
+// andere Feldtypen (z.B. ein Steuerungsmodul bei einem Leistungsfeld)
+// bleiben unangetastet für ihr eigenes Feld stehen und blockieren nicht
+// die Prüfung der hier relevanten Instanzen.
+function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet) {
+  const confirmed = {};
+  zoneSet.forEach(zn => confirmed[zn] = []);
+  const isBandZone = zn => zn === 'evert' ? !useEvKanal : REIHEN_ZONEN.includes(zn);
+
+  const relevantIdx = [];
+  bgInstanceQueue.forEach((inst, i) => {
+    const zonen = Object.keys(inst.zonen);
+    if (zonen.length && zonen.every(z => zoneSet.includes(z))) relevantIdx.push(i);
+  });
+
+  const placedIdx = [];
+  for (const i of relevantIdx) {
+    const inst = bgInstanceQueue[i];
+    let fitsAll = true;
+    for (const zn of Object.keys(inst.zonen)) {
+      const devsTry = confirmed[zn].concat(inst.zonen[zn]);
+      const bands = bandsProZone[zn] || [];
+      const result = isBandZone(zn) ? placeInBands(devsTry, bands, klemmraum, 0) : placeInKlemmRow(devsTry, bands, 0);
+      if (result.leftoverDevs.length > 0) { fitsAll = false; break; }
+    }
+    if (!fitsAll) break;
+    Object.keys(inst.zonen).forEach(zn => { confirmed[zn] = confirmed[zn].concat(inst.zonen[zn]); });
+    placedIdx.push(i);
+  }
+
+  for (let k = placedIdx.length - 1; k >= 0; k--) bgInstanceQueue.splice(placedIdx[k], 1);
+  return confirmed;
 }
 
 // ── Bauteile EINES Feldes platzieren (Session 48, aus placeBauteile()
@@ -2454,14 +2523,40 @@ function buildQueues(ddcReservePct) {
 // (wichtig für die Stückliste). Nur die Zonen dieses Feldtyps
 // (FELDTYP_ZONEN[feldtyp]) werden bearbeitet – alle anderen bleiben in
 // `queues` unverändert für ein späteres Feld stehen.
-function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, idxCounters, reservePct, useEvKanal) {
+// bgInstanceQueue (Session 49): Baugruppen-Instanzen werden VOR den
+// Einzelbauteilen platziert (Nutzer: in der Praxis werden fast
+// ausschließlich Baugruppen gesetzt) – siehe platziereBaugruppenFuerFeld().
+function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, bgInstanceQueue, idxCounters, reservePct, useEvKanal) {
   const zoneSet = FELDTYP_ZONEN[feldtyp] || FELDTYP_ZONEN.A;
   const zones = {};
 
+  // Klemmleisten-Umverteilung vorgezogen (wird auch für den
+  // Baugruppen-Dry-Run gebraucht, siehe bandsProZone unten).
+  let reserveShortfall = false;
+  let redistributedKlemm = {};
+  const klemmKeysHier = ['klemm_l','klemm_f','klemm_s'].filter(zn => zoneSet.includes(zn));
+  if (klemmKeysHier.length) {
+    const r = redistributeKlemmBands(bandsAll, queues, reservePct, klemmKeysHier, bgInstanceQueue);
+    redistributedKlemm = r.bands;
+    reserveShortfall = r.shortfall;
+  }
+
+  // Bänder je Zone dieses Feldtyps – identisch für den Baugruppen-Dry-Run
+  // UND die eigentliche Platzierung unten (sonst könnten beide zu
+  // unterschiedlichen "passt/passt nicht"-Ergebnissen kommen).
+  const bandsProZone = {};
+  zoneSet.forEach(zn => {
+    if (zn === 'evert') bandsProZone[zn] = bandsAll.evert || [];
+    else if (KLEMM_ZONEN.includes(zn)) bandsProZone[zn] = redistributedKlemm[zn] || bandsAll[zn] || [];
+    else bandsProZone[zn] = bandsAll[zn] || [];
+  });
+
+  const confirmedBg = platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet);
+
   REIHEN_ZONEN.forEach(zn => {
     if (!zoneSet.includes(zn)) return;
-    const devs  = queues[zn] || [];
-    const bands = bandsAll[zn] || [];
+    const devs  = (confirmedBg[zn] || []).concat(queues[zn] || []);
+    const bands = bandsProZone[zn];
     const placed = placeInBands(devs, bands, klemmraum, idxCounters[zn] || 0);
     idxCounters[zn] = placed.nextIdx;
     queues[zn] = placed.leftoverDevs;
@@ -2478,20 +2573,10 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, idxCounters
 
   // Klemmenzeilen (klemm_e/uss/klemm_l/klemm_f/klemm_s): je eine Hutschiene,
   // Kapazität als Breite (mm) statt Höhe, kein Kanal/Klemmraum.
-  // klemm_l/klemm_f/klemm_s: Breite wird bedarfsbasiert umverteilt (klemm_e/uss bleiben fix),
-  // aber nur, wenn dieser Feldtyp überhaupt eine der drei Zonen enthält.
-  let reserveShortfall = false;
-  let redistributedKlemm = {};
-  const klemmKeysHier = ['klemm_l','klemm_f','klemm_s'].filter(zn => zoneSet.includes(zn));
-  if (klemmKeysHier.length) {
-    const r = redistributeKlemmBands(bandsAll, queues, reservePct, klemmKeysHier);
-    redistributedKlemm = r.bands;
-    reserveShortfall = r.shortfall;
-  }
   KLEMM_ZONEN.forEach(zn => {
     if (!zoneSet.includes(zn)) return;
-    const devs  = queues[zn] || [];
-    const bands = redistributedKlemm[zn] || bandsAll[zn] || [];
+    const devs  = (confirmedBg[zn] || []).concat(queues[zn] || []);
+    const bands = bandsProZone[zn];
     const placed = placeInKlemmRow(devs, bands, idxCounters[zn] || 0);
     idxCounters[zn] = placed.nextIdx;
     queues[zn] = placed.leftoverDevs;
@@ -2510,8 +2595,8 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, idxCounters
   // (Kanal+Klemmraum), ohne Schienensystem exakt 1 Sicherungshalter-Reihe
   // (kein Zusatzraum – wie ÜSS/Klemmenzeile).
   if (zoneSet.includes('evert')) {
-    const evertDevs  = queues.evert || [];
-    const evertBands = bandsAll.evert || [];
+    const evertDevs  = (confirmedBg.evert || []).concat(queues.evert || []);
+    const evertBands = bandsProZone.evert;
     if (useEvKanal) {
       const placed = placeInKlemmRow(evertDevs, evertBands, idxCounters.evert || 0);
       idxCounters.evert = placed.nextIdx;
@@ -2550,12 +2635,18 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, idxCounters
 function calculateFelder(klemmraum, reservePct, ddcReservePct) {
   const modus = getEffektiveZoneModus();
   const plan = FELDPLAN[modus] || FELDPLAN['1feld'];
-  const { queues, ddcAuto, ddcSummary } = buildQueues(ddcReservePct);
+  const { queues, bgInstanceQueue, ddcAuto, ddcSummary } = buildQueues(ddcReservePct);
 
   // Gesamt-Bedarf je Zone EINMAL vor jeder Platzierung erfassen – für die
   // über alle Felder aggregierte Füllstand-Anzeige (siehe calculate()).
+  // Baugruppen-Bauteile stecken seit Session 49 in bgInstanceQueue statt
+  // flach in queues[zn] – müssen hier separat mitgezählt werden.
   const totalDemandTe = {};
-  ALLE_ZONEN.forEach(zn => { totalDemandTe[zn] = (queues[zn] || []).reduce((s,d) => s + d.te, 0); });
+  ALLE_ZONEN.forEach(zn => {
+    let sum = (queues[zn] || []).reduce((s,d) => s + d.te, 0);
+    bgInstanceQueue.forEach(inst => { if (inst.zonen[zn]) sum += inst.zonen[zn].reduce((s,d) => s + d.te, 0); });
+    totalDemandTe[zn] = sum;
+  });
 
   const idxCounters = {};
   ALLE_ZONEN.forEach(z => idxCounters[z] = 0);
@@ -2564,11 +2655,17 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
   const felder = [];
   let reserveShortfall = false;
 
-  const restOf = ft => FELDTYP_ZONEN[ft].reduce((s, zn) => s + (queues[zn] || []).length, 0);
+  // restOf() zählt zusätzlich zu den Einzelbauteil-Warteschlangen auch noch
+  // offene Baugruppen-Instanzen dieses Feldtyps mit – sonst bliebe ein
+  // nötiges Folgefeld aus, wenn nur noch unbestätigte Instanzen anstehen.
+  const restOf = ft => FELDTYP_ZONEN[ft].reduce((s, zn) => {
+    const bgTe = bgInstanceQueue.reduce((c, inst) => c + (inst.zonen[zn] ? inst.zonen[zn].length : 0), 0);
+    return s + (queues[zn] || []).length + bgTe;
+  }, 0);
   const buildFeld = ft => {
     const zp = buildZpForFeldtyp(ft);
     const layout = getZoneBands(zp, ft);
-    const feld = placeBauteileForField(layout.bands, klemmraum, ft, queues, idxCounters, reservePct, zp.useEvKanal);
+    const feld = placeBauteileForField(layout.bands, klemmraum, ft, queues, bgInstanceQueue, idxCounters, reservePct, zp.useEvKanal);
     if (feld.reserveShortfall) reserveShortfall = true;
     felder.push({ feldtyp: ft, zp, layout, zones: feld.zones });
   };
@@ -2615,7 +2712,8 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
   felder.forEach((f, i) => {
     Object.entries(f.zones).forEach(([zn, z]) => {
       if (!z.overflow) return;
-      z.overflow = lastFieldIdxForZone[zn] === i && (queues[zn] || []).length > 0;
+      const bgRestZn = bgInstanceQueue.some(inst => inst.zonen[zn]);
+      z.overflow = lastFieldIdxForZone[zn] === i && ((queues[zn] || []).length > 0 || bgRestZn);
     });
   });
 

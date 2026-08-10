@@ -393,6 +393,65 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Baugruppen-Zusammenhalt über Zonen hinweg (Session 49, gesperrt)
+Start des Baugruppen-Neuaufbaus (`baugruppen.json` seit Session 40 leer).
+Nutzer-Vorgabe vor jeder inhaltlichen Baugruppen-Arbeit: „In der Praxis
+werden zum größten Teil Baugruppen gesetzt, Einzelbauteile nur ergänzend."
+Eine Baugruppen-Instanz mit Bauteilen in mehreren Zonen (z. B. Schütz in
+`leist` + Abgangsklemme in `klemm_l`) muss deshalb **immer gemeinsam in
+einem Feld** landen – die Bauteile werden untereinander verdrahtet, ein
+Aufteilen auf zwei Schaltschrankfelder ergibt elektrisch keinen Sinn. Die
+bisherige Architektur (`queues[zone]` je Zone unabhängig, Session 48)
+konnte das nicht garantieren.
+
+**Lösung „Reservierung vor Commit" pro Instanz:** Baugruppen-Bauteile
+landen nicht mehr flach in `queues[zone]`, sondern bleiben in
+`bgInstanceQueue` (neu, aus `buildQueues()`) als zusammenhängende Einheit
+`{bg_id, ci, zonen:{zone:[device,...]}}` erhalten. Neue Funktion
+`platziereBaugruppenFuerFeld()` prüft pro Feld für jede Instanz (FIFO,
+kein Vorbeispringen – analog zur bereits akzeptierten Bin-Packing-
+Einschränkung bei Einzelbauteilen) per Dry-Run, ob ALLE ihre Zonen noch
+Platz haben: `placeInBands()`/`placeInKlemmRow()` sind bereits reine
+Funktionen von `(devs, bands, ...)` und melden über `leftoverDevs`, was
+nicht mehr passte – ruft man sie mit „bereits bestätigte Geräte + neue
+Instanz-Geräte" auf, zeigt ein nicht-leeres `leftoverDevs` zuverlässig,
+dass die neuen Geräte nicht passen. Kein Umbau der Reihen-/Bandlogik
+nötig. Schlägt IRGENDEINE Zone der Instanz fehl, wird NICHTS von ihr
+committed (kein Partial-Commit, auch nicht in Zonen, die für sich allein
+gepasst hätten) – die komplette Instanz wandert unverändert ins nächste
+Feld. `placeBauteileForField()` platziert bestätigte Baugruppen-Geräte
+VOR den Einzelbauteilen derselben Zone (`confirmedBg[zone].concat(queues[zone])`
+– Reihenfolge laut Nutzer unkritisch, da Baugruppen praktisch dominieren).
+`redistributeKlemmBands()` (Breiten-Umverteilung Klemmleisten) und
+`totalDemandTe`/`restOf()` (Füllstand-Anzeige, Folgefeld-Steuerung) zählen
+jetzt zusätzlich zu `queues[zn]` auch offene `bgInstanceQueue`-Einträge
+mit, sonst würden Baugruppen-Bedarf/Reserve-Umverteilung unterschätzt
+bzw. ein nötiges Folgefeld ausbleiben.
+
+**Bewusst nicht gelöst:** eine Instanz mit Bauteilen in Zonen aus
+UNTERSCHIEDLICHEN Feldtypen (z. B. `leist` bei `getrennt_els` in Feldtyp D,
+`steuer` in Feldtyp E) wird nicht über Feldgrenzen hinweg zusammengehalten
+– das wären ohnehin zwei unterschiedliche physische Schränke. Bei
+typischen Automations-Baugruppen (Schütz+Klemme beide in Feldtyp D,
+Steuerungsmodul+Klemme beide in Feldtyp E) kommt das nicht vor.
+
+Verifiziert direkt im Browser (synthetische Testbaugruppe, nicht
+committet): (1) isolierter Test von `platziereBaugruppenFuerFeld()` –
+5 Instanzen mit knapper Höhenkapazität, korrekt 2 bestätigt/3 zurückgestellt,
+Zusammenhalt exakt; zweiter Test beweist echten Cross-Zonen-Zusammenhalt
+(eine Instanz, deren `leist`-Zone allein gepasst hätte, wird trotzdem
+NICHT committed, weil ihre `klemm_l`-Zone keinen Platz mehr hatte – kein
+Partial-Commit). (2) Echte Mehrfeld-Pipeline (`je_feld`, Standschrank
+400×900mm synthetisch) mit 40 Baugruppen-Instanzen über 4 Felder: in
+JEDEM Feld exakt gleich viele `leist`- wie `klemm_l`-Blöcke (5/8/11/11/11/10
+Muster, nie eine Instanz gesplittet), 40/40 vollständig platziert. (3)
+Regression reine Einzelbauteile (60× Testklemme über 6 Felder): 60/60
+platziert, Verhalten unverändert zu vor dieser Änderung. (4) Mischbetrieb
+Baugruppen+Einzelbauteile in derselben Zone: Baugruppen-Geräte belegen
+korrekt die ersten Plätze in Feld 1, Einzelbauteile füllen den Rest der
+Feldkapazität, danach das nächste Feld – wie von Nutzer vorgegeben. Keine
+Konsolenfehler in allen vier Testläufen.
+
 ### Modul 4 – Link zurück zu Modul 3 unter der Belegung (Session 48 Nachtrag 7, gesperrt)
 Nutzer-Vorgabe direkt im Anschluss an Nachtrag 6: „Kannst Du unter dem Feld
 Belegung noch ein Zurück-zu-Modul-3-Link erstellen, wie du es bereits in
