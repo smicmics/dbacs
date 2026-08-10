@@ -481,6 +481,82 @@ den Strukturänderungen: `C:\Users\SMI\Backups\dbacs\excel\
 ga_komponenten_vor-betriebsmittel-feld_*.xlsx` (deckt auch die
 dp_ai/ao/bi/bo-Spalten ab, im selben Arbeitsschritt ergänzt).
 
+### Nachtrag: BI/BO umbenannt, 2-Klemmen-Korrektur, LVB-Variante + Desigo-AI/AO-Recherche (Session 49, gesperrt)
+Direkte Fortsetzung, gleicher Tag. Drei Aufträge in einem Schritt.
+
+**1. Desigo/TX-I/O-Recherche (Original-Datenblätter direkt als PDF-Text
+ausgelesen, `pypdf` in WSL nachinstalliert, da `WebFetch`s eigener
+Zusammenfasser an den binär-komprimierten Siemens-PDFs scheiterte):**
+Kein dediziertes reines AI- oder AO-Modul in der TX-I/O-Familie – nur
+Universalmodule. `TXM1.8U`/`TXM1.8U-ML` (bereits im Katalog) bestätigt:
+„8 universal I/O points, individually configurable as: Digital input...
+Analog input... Analog output" – Mischbetrieb (einige Kanäle AI, andere
+AO, gleichzeitig auf demselben Modul) ist laut Originaldatenblatt
+ausdrücklich vorgesehen, Anschlussbilder zeigen alle drei Signalarten als
+gültige Konfiguration derselben 8 Punkte. Eine in einem KI-Suchergebnis
+behauptete Einschränkung („aktive Ein-/Ausgänge auf unterschiedlichen
+Modulen") ließ sich in den zwei erfolgreich ausgelesenen Primärquellen
+(Datenblatt CM2N8173 + Funktionshandbuch CM110561) **nicht bestätigen** –
+bewusst nicht als Fakt übernommen. Neu gefunden: `TXM1.8X`/`TXM1.8X-ML`
+„Super universal module" (zusätzlich 4-20mA-fähig, AO nur an Punkten 5-8,
+Datenblatt von 2025 – neuer als unser bereits katalogisiertes `TXM1.8U`),
+noch nicht im Katalog – erstmal nicht nötig, da DBACS aktuell keine
+4-20mA-Sensorik braucht. Analogpunkte brauchen laut Datenblatt je Punkt
+eine EIGENE Referenzklemme (anders als Digitaleingänge, die eine
+gemeinsame Klemme teilen dürfen) – bestätigt das vom Nutzer vorgegebene
+2-Klemmen-Muster auch für die künftigen AI/AO-Baugruppen.
+
+**2. Umbenennung** (Nutzer-Vorgabe, ID unverändert): `480_000001`
+„Reserve · Binäreingang (BI)" → **„Binäreingang (BI) auf Klemmleiste"**,
+`480_000002` → **„Binärausgang (BO) auf Klemmleiste"**.
+
+**3. 2-Klemmen-Korrektur (Nutzer-Fund: „Nicht eine"):** jede der beiden
+Baugruppen hatte bisher nur 1 Klemme – korrigiert auf 2 (Signal PT 2,5
+grau `3209510`, trägt den `dp_bi`/`dp_bo`-Override + Referenz/Common PT
+2,5 BU blau `3209523`, ohne DDC-Bezug) – entspricht der realen
+Verdrahtung (Signal + Bezugspotential) und ist durch die Desigo-Recherche
+zusätzlich bestätigt.
+
+**4. Neue Baugruppe `480_000003` „Binärausgang (BO) mit LVB auf
+Klemmleiste"** – gleiche 2-Klemmen-Struktur wie die plain-BO-Baugruppe,
+zusätzlich `lvb_erforderlich=true` auf der Signal-Klemme.
+
+**Neuer Mechanismus: `lvb_erforderlich`-Override statt eigenem
+Datenpunkt-Pool.** Ein separater `dp_bo_lvb`-Pool hätte riskiert, dieselben
+physischen Kanäle eines Moduls doppelt zu zählen (ein `TXM1.6R-M` hat 6
+Kanäle INSGESAMT, nicht 6 „normale" + 6 „LVB"). Stattdessen: neue optionale
+Spalte `lvb_erforderlich` (Boolean) in `baugruppen_bauteile`, in Modul 4s
+`buildQueues()` als `needsLvb[type]` (je `PHYS_DP_TYPES`-Typ) erfasst.
+`computeDdcAutoModules(demand, supply, reservePct, needsLvb)` schränkt bei
+aktivem `needsLvb[type]` die Kandidatenliste auf Module mit
+`eb.lvb_integriert===true` ein (Feld existiert bereits seit Session 41) –
+die Mengen-Arithmetik bleibt unverändert EIN gemeinsamer `dp_bo`-Pool.
+Bewusste Vereinfachung/Kompromiss: sobald IRGENDEIN BO-Punkt im Projekt
+LVB braucht, wird der GESAMTE `dp_bo`-Bedarf nur noch über LVB-fähige
+Module gedeckt (auch die plain-BO-Anteile) – im Test genügte dafür ein
+einziges `TXM1.6R-M` für beide (1 plain + 1 LVB = 2 von 6 Kanälen genutzt),
+bei sehr vielen plain-BO-Punkten wäre das teurer als nötig (LVB-Modul
+319€ vs. 275€ für plain, aber i.d.R. vernachlässigbar) – bewusst in Kauf
+genommen statt eines fehleranfälligeren Doppel-Pool-Modells.
+
+Verifiziert direkt im Browser (echte Katalogdaten, watermark-frisch
+zurückgesetzt): alle 3 Baugruppen korrekt im „Automation"-Dropdown; je
+Baugruppe exakt 2 Klemmen in der richtigen Zone platziert
+(`klemm_s`×2/`klemm_f`×2/`klemm_f`×2); bei allen drei gleichzeitig gesetzt
+wählt die Automatik `TXM1.16D`(BI)+`TXM1.6R-M`(BO, wegen LVB-Bedarf
+projektweit)+`PXC4.E16`(CPU) – korrekt, `dp_bo used:2/cap:10`; bei NUR
+der plain-BO-Baugruppe (Watermark zurückgesetzt) wählt die Automatik
+korrekt das günstigere `TXM1.6R` statt der LVB-Variante – Regression
+bestätigt. Keine Konsolenfehler. Backup:
+`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-bi-bo-lvb-2klemmen_*.xlsx`.
+
+**Nächster Schritt (vom Nutzer angekündigt):** die analogen Pendants
+(Reserve AI/AO) folgen, sobald diese Recherche steht – jetzt erledigt,
+Umsetzung als Folgeschritt offen. Kapazitätsmodellierung für das
+Universalmodul `TXM1.8U` (flexible Kanäle, keine feste `dp_ai`/`dp_ao`-
+Aufteilung) bleibt die bereits in Session 41 dokumentierte offene Lücke –
+muss vor den AI/AO-Baugruppen geklärt werden ([[feedback_grundlage_vor_gruppen]]).
+
 ### Modul 4 – Baugruppen-Zusammenhalt über Zonen hinweg (Session 49, gesperrt)
 Start des Baugruppen-Neuaufbaus (`baugruppen.json` seit Session 40 leer).
 Nutzer-Vorgabe vor jeder inhaltlichen Baugruppen-Arbeit: „In der Praxis

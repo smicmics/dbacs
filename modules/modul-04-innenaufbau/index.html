@@ -2255,7 +2255,16 @@ function updateDdcSummary(ddcSummary) {
 // (Session 41 – jetzt je Protokoll getrennt in placeBauteile()/fbDemand/
 // fbSupply erfasst) – noch keine automatische Modul-Ergänzung dafür, siehe
 // PHYS_DP_TYPES-Kommentar weiter oben.
-function computeDdcAutoModules(demand, supply, reservePct) {
+// needsLvb (Session 49): je Typ, ob IRGENDEIN Beitrag zu diesem Datenpunkttyp
+// eine lokale Vorrangbedienung braucht (z.B. Baugruppe "Binärausgang (BO) mit
+// LVB auf Klemmleiste", ueber bt.lvb_erforderlich in buildQueues() gesetzt).
+// Bewusst KEIN eigener dp_bo_lvb-Bedarfs-/Kapazitaets-Pool (haette das Risiko,
+// dieselben physischen Kanaele eines Moduls doppelt zu zaehlen) - stattdessen
+// wird bei aktivem needsLvb[type] einfach die Kandidatenliste auf Module mit
+// eb.lvb_integriert=true eingeschraenkt, die Mengen-Arithmetik bleibt exakt
+// wie bisher in einem einzigen dp_bo-Pool (ein LVB-Modul deckt ganz normal
+// auch nicht-LVB-Bedarf desselben Typs mit ab, ist ja nur ein Zusatz-Feature).
+function computeDdcAutoModules(demand, supply, reservePct, needsLvb) {
   const keepFactor = 1 - reservePct;
   const remaining = {};
   PHYS_DP_TYPES.forEach(t => {
@@ -2269,7 +2278,8 @@ function computeDdcAutoModules(demand, supply, reservePct) {
 
   PHYS_DP_TYPES.forEach(type => {
     if (remaining[type] <= 0) return;
-    const candidates = ddcModule_DB.filter(m => (m[type] || 0) > 0);
+    let candidates = ddcModule_DB.filter(m => (m[type] || 0) > 0);
+    if (needsLvb && needsLvb[type]) candidates = candidates.filter(m => m.lvb_integriert);
     if (!candidates.length) { unmet.push(type); return; }
     candidates.sort((a, b) => {
       const scoreA = PHYS_DP_TYPES.filter(t => remaining[t] > 0 && (a[t] || 0) > 0).length;
@@ -2353,6 +2363,7 @@ function buildQueues(ddcReservePct) {
   // erfassen, ob bereits manuell eine Automationsstation bzw. ein E/A-Modul
   // in der Belegung steht (siehe Aufruf weiter unten, nach computeDdcAutoModules()).
   let cpuPresent = false, ioPresent = false;
+  const needsLvb = {}; // je PHYS_DP_TYPES-Typ: mind. ein Beitrag braucht LVB (siehe computeDdcAutoModules())
   const fbDemand = {}, fbSupply = {};
   FB_SUMMARY_GROUPS.forEach(g => {
     fbDemand[g.key] = {}; fbSupply[g.key] = {};
@@ -2447,6 +2458,13 @@ function buildQueues(ddcReservePct) {
               dp_bi: bt.dp_bi ?? eb.dp_bi, dp_bo: bt.dp_bo ?? eb.dp_bo }
           : eb;
         accumulateDp(dpQuelle, bt.menge);
+        // lvb_erforderlich (Session 49): dieser Datenpunkt-Bedarf darf nur
+        // durch ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt
+        // werden (z.B. "Binärausgang (BO) mit LVB auf Klemmleiste") – siehe
+        // computeDdcAutoModules().
+        if (bt.lvb_erforderlich) {
+          PHYS_DP_TYPES.forEach(t => { if (dpQuelle[t]) needsLvb[t] = true; });
+        }
         if(eb.keine_platzierung_mp) return;
         if(!zonen[zone]) zonen[zone] = [];
         for(let q = 0; q < bt.menge; q++) {
@@ -2457,7 +2475,7 @@ function buildQueues(ddcReservePct) {
     }
   });
 
-  const ddcAuto = computeDdcAutoModules(dpDemand, dpSupply, ddcReservePct);
+  const ddcAuto = computeDdcAutoModules(dpDemand, dpSupply, ddcReservePct, needsLvb);
 
   // CPU-Ergaenzung (Session 49, Nutzer-Vorgabe): sobald ein E/A-Modul
   // gebraucht wird (manuell platziert ODER hier automatisch ergaenzt),

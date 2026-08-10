@@ -429,6 +429,10 @@ def export_baugruppen(wb):
         for dpf in ('dp_ai', 'dp_ao', 'dp_bi', 'dp_bo'):
             if rec.get(dpf):
                 bt[dpf] = int(rec[dpf])
+        # lvb_erforderlich (Session 49): dieser Datenpunktbedarf darf nur durch
+        # ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt werden.
+        if rec.get('lvb_erforderlich'):
+            bt['lvb_erforderlich'] = True
         bauteile_je_bg.setdefault(str(bg_id), []).append(bt)
 
     ws = wb[SHEET]

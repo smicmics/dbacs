@@ -1,15 +1,20 @@
 [
   {
     "id": "480_000001",
-    "name": "Reserve · Binäreingang (BI)",
+    "name": "Binäreingang (BI) auf Klemmleiste",
     "gewerk": "480",
-    "beschreibung": "Vorbereiteter DDC-Anschlusspunkt (Binaereingang) fuer ein spaeter anzuschliessendes Feldgeraet, das zum Zeitpunkt der Schaltschrank-planung noch nicht bekannt ist - 1 Abgangsklemme (Sensoren) + Datenpunktbedarf 1x BI.",
+    "beschreibung": "Vorbereiteter DDC-Anschlusspunkt (Binaereingang) fuer ein spaeter anzuschliessendes Feldgeraet, das zum Zeitpunkt der Schaltschrank-planung noch nicht bekannt ist - 2 Abgangsklemmen (Signal + Referenz) in der Sensoren-Klemmleiste + Datenpunktbedarf 1x BI.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_s",
         "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209523",
+        "menge": 1,
+        "zone": "klemm_s"
       }
     ],
     "funktionsbereich": "automation",
@@ -18,15 +23,43 @@
   },
   {
     "id": "480_000002",
-    "name": "Reserve · Binärausgang (BO)",
+    "name": "Binärausgang (BO) auf Klemmleiste",
     "gewerk": "480",
-    "beschreibung": "Vorbereiteter DDC-Anschlusspunkt (Binaerausgang) fuer ein spaeter anzuschliessendes Feldgeraet, das zum Zeitpunkt der Schaltschrank-planung noch nicht bekannt ist - 1 Abgangsklemme (Feldgeraete) + Datenpunktbedarf 1x BO.",
+    "beschreibung": "Vorbereiteter DDC-Anschlusspunkt (Binaerausgang) fuer ein spaeter anzuschliessendes Feldgeraet, das zum Zeitpunkt der Schaltschrank-planung noch nicht bekannt ist - 2 Abgangsklemmen (Signal + Referenz) in der Feldgeraete-Klemmleiste + Datenpunktbedarf 1x BO.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
         "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209523",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": "automation",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "480_000003",
+    "name": "Binärausgang (BO) mit LVB auf Klemmleiste",
+    "gewerk": "480",
+    "beschreibung": "Vorbereiteter DDC-Anschlusspunkt (Binaerausgang) mit lokaler Vorrangbedienung (Hand/0/Automatik direkt am E/A-Modul, ISO 16484-2) fuer ein spaeter anzuschliessendes Feldgeraet, das noch nicht bekannt ist - 2 Abgangsklemmen (Signal + Referenz) in der Feldgeraete-Klemmleiste + Datenpunktbedarf 1x BO, zwingend ueber ein LVB-faehiges E/A-Modul (z.B. TXM1.6R-M) gedeckt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1,
+        "lvb_erforderlich": true
+      },
+      {
+        "artikel_nr": "3209523",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": "automation",
