@@ -381,6 +381,11 @@ def export_einzelbauteile(wb):
 
 
 def export_baugruppen(wb):
+    # betriebsmittel (Session 49, Freitext, optional): externes Feldgeraet/
+    # Betriebsmittel, das ueber die Abgangs-/Eingangsklemmen dieser Baugruppe
+    # angeschlossen wird (z.B. "Pumpe") -- kein Bestandteil des Schaltschranks
+    # selbst, dient spaeter als Grundlage fuer eine separate Betriebsmittel-
+    # Stueckliste. Bewusst Freitext, keine feste Kategorie-Liste.
     # Feld-Korrektur Session 37: 'funktionsbereiche' (Komma-Liste) -> 'funktionsbereich'
     # (einzelner Klartext-Wert, Companion zu 'gewerk'); 'automationsfunktionen'
     # (Komma-Liste) -> 'automationsanbindung' (Boolean, gleicher Name/gleiche
@@ -438,6 +443,8 @@ def export_baugruppen(wb):
         }
         if rec.get('funktionsbereich') is not None:
             entry['funktionsbereich'] = str(rec['funktionsbereich'])
+        if rec.get('betriebsmittel'):
+            entry['betriebsmittel'] = str(rec['betriebsmittel'])
         if rec.get('automationsanbindung'):
             entry['automationsanbindung'] = True
         entry['geprueft'] = bool(rec.get('geprueft'))
