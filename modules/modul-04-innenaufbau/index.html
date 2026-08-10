@@ -2493,6 +2493,12 @@ function buildQueues(ddcReservePct) {
   }
 
   applyDdcWatermark(ddcAuto);
+  // Reihenfolge (Nutzer-Vorgabe): die Automationsstation (CPU) wird zuerst
+  // gesetzt, die E/A-Module folgen danach – unabhängig davon, in welcher
+  // Reihenfolge computeDdcAutoModules()/applyDdcWatermark() sie intern
+  // erzeugt haben. sort() ist in modernen JS-Engines stabil, die relative
+  // Reihenfolge der E/A-Module untereinander bleibt also erhalten.
+  ddcAuto.modules.sort((a, b) => (b.eb.bauteil_typ === 'ddc_cpu' ? 1 : 0) - (a.eb.bauteil_typ === 'ddc_cpu' ? 1 : 0));
   ddcAuto.modules.forEach(mod => {
     const eb = mod.eb;
     for (let q = 0; q < mod.menge; q++) {

@@ -550,6 +550,20 @@ korrekt das günstigere `TXM1.6R` statt der LVB-Variante – Regression
 bestätigt. Keine Konsolenfehler. Backup:
 `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-bi-bo-lvb-2klemmen_*.xlsx`.
 
+**Nachtrag, gleicher Tag: Reihenfolge CPU vor E/A-Modulen.** Nutzer-Vorgabe:
+„Die CPU (Desigo Automationsstation) soll am Anfang gesetzt werden, die
+E/A-Module folgen danach." Vorher landete die automatisch ergänzte CPU
+IMMER am Ende von `ddcAuto.modules` (mein Ergänzungscode lief nach
+`computeDdcAutoModules()`, `push()` hängt hinten an) – dadurch erschien sie
+im `steuer`-Band nach den TXM-Modulen statt davor. Fix: direkt vor dem
+`ddcAuto.modules.forEach(...queues.steuer.push...)`-Aufruf ein stabiler
+`sort()`, der `ddc_cpu`-Einträge an den Anfang zieht (relative Reihenfolge
+der E/A-Module untereinander bleibt unverändert) – robust unabhängig davon,
+ob die CPU über meinen expliziten Check oder über `applyDdcWatermark()`s
+Ratchet-Mechanismus in die Liste gelangt. Verifiziert: `steuer`-Zone zeigt
+jetzt `PXC4.E16` zuerst, danach `TXM1.16D`/`TXM1.6R-M`. Keine
+Konsolenfehler.
+
 **Nächster Schritt (vom Nutzer angekündigt):** die analogen Pendants
 (Reserve AI/AO) folgen, sobald diese Recherche steht – jetzt erledigt,
 Umsetzung als Folgeschritt offen. Kapazitätsmodellierung für das
