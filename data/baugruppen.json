@@ -140,13 +140,16 @@
     "beschreibung": "Automationsstation mit ihrer notwendigen Grundausstattung: Desigo-PX-Automationsstation (PXC4.E16) + 24VDC-Netzteil (Leistungsbereich) + Vorsicherung (Energieverteilung). Ohne Abgangsklemmleiste - reine Versorgungs-/Recheneinheit, die restlichen E/A-Module ergaenzt DBACS automatisch anhand des tatsaechlichen Datenpunktbedarfs.",
     "bauteile": [
       {
-        "artikel_nr": "PXC4.E16",
-        "menge": 1
-      },
-      {
         "artikel_nr": "2866690",
         "menge": 1,
-        "zone": "leist"
+        "zone": "steuer",
+        "rowBreak": true,
+        "groupStart": true
+      },
+      {
+        "artikel_nr": "PXC4.E16",
+        "menge": 1,
+        "rowBreak": true
       },
       {
         "artikel_nr": "5SL6106-7",

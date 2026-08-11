@@ -1803,7 +1803,17 @@ function getZoneBands(zp, feldtyp) {
 // Einfügungen als ein zusammenhängender Block gruppiert, während
 // `normalCursor` unverändert bleibt und nachfolgende normale Geräte
 // weiterhin die ursprüngliche Reihe auffüllen ("Einfügeposition kehrt
-// zurück"). Bekannte Vereinfachung: für die TE-Passt-Prüfung wird die
+// zurück"). `groupStart:true` (Session 50, Automationsstations-Gruppen
+// Netzteil→CPU→E/A-Module) verschärft rowBreak zusätzlich: das Gerät hängt
+// sich NIE an eine bestehende forcedCursor-Reihe an (selbst wenn dort noch
+// Platz wäre), sondern erzwingt IMMER eine frische, leere Reihe direkt nach
+// der aktuellen forcedCursor-Position – so beginnt jede neue Automations-
+// Gruppe garantiert am Anfang einer eigenen Hutschienenreihe, auch wenn die
+// vorherige Gruppe (z. B. ihr letztes E/A-Modul) die vorherige Reihe nicht
+// vollständig gefüllt hat. Nachfolgende Geräte derselben Gruppe (CPU, E/A-
+// Module) nutzen normales rowBreak (ohne groupStart) und hängen sich wie
+// gehabt an diese Reihe an bzw. laufen bei Platzmangel nahtlos in der
+// nächsten weiter. Bekannte Vereinfachung: für die TE-Passt-Prüfung wird die
 // Breite des ERSTEN Bandes der Zone verwendet, da Durchlauf 1 die
 // tatsächliche Bandzuordnung noch nicht kennt – in der Praxis haben
 // leist/leist_ext bisher identische Breite, bei künftig abweichenden
@@ -1835,7 +1845,7 @@ function assignDevicesToRows(devs, te_per_row) {
 
   devs.forEach(d => {
     if (d.rowBreak) {
-      if (forcedCursor >= 0 && rowsAbs[forcedCursor].w_used + d.te <= te_per_row) {
+      if (!d.groupStart && forcedCursor >= 0 && rowsAbs[forcedCursor].w_used + d.te <= te_per_row) {
         addToRow(forcedCursor, d);
       } else {
         const insertAt = forcedCursor >= 0 ? forcedCursor + 1 : normalCursor + 1;
@@ -2399,12 +2409,17 @@ function buildQueues(ddcReservePct) {
 
   const dpDemand = {}, dpSupply = {};
   PHYS_DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
-  // CPU-Ergaenzung (Session 49): CPU/E-A-Modul sind kein Bestandteil einer
-  // Baugruppe (bg.bauteile) - sie werden separat benoetigt, um deren DDC-
-  // Datenpunktbedarf tatsaechlich anzuschliessen. cpuPresent/ioPresent
-  // erfassen, ob bereits manuell eine Automationsstation bzw. ein E/A-Modul
-  // in der Belegung steht (siehe Aufruf weiter unten, nach computeDdcAutoModules()).
-  let cpuPresent = false, ioPresent = false;
+  // CPU-Ergaenzung (Session 49, Kapazitaets-Gruppen seit Session 50): CPU/
+  // E-A-Modul sind kein fester Bestandteil einer Baugruppe (bg.bauteile) -
+  // sie werden separat benoetigt, um deren DDC-Datenpunktbedarf tatsaechlich
+  // anzuschliessen. cpuCount/ioUnitsManual zaehlen, wie viele Automations-
+  // stationen bzw. E/A-Module bereits MANUELL in der Belegung stehen (direkt
+  // ODER ueber eine Baugruppe wie "Automationsstation (AE)") - noetig, um zu
+  // wissen, wie viel freie E/A-Modul-Kapazitaet (eb.max_ea_module je CPU)
+  // schon vorhanden ist, bevor automatisch weitere komplette Gruppen
+  // (Netzteil+CPU+Sicherung) ergaenzt werden (siehe Aufruf weiter unten,
+  // nach computeDdcAutoModules()).
+  let cpuCount = 0, ioUnitsManual = 0;
   const needsLvb = {}; // je PHYS_DP_TYPES-Typ: mind. ein Beitrag braucht LVB (siehe computeDdcAutoModules())
   const fbDemand = {}, fbSupply = {};
   FB_SUMMARY_GROUPS.forEach(g => {
@@ -2443,8 +2458,8 @@ function buildQueues(ddcReservePct) {
     if(item.typ === 'einzel') {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
       if(!eb || eb.te_breite <= 0) return;
-      if (eb.bauteil_typ === 'ddc_cpu') cpuPresent = true;
-      else if (eb.bauteil_typ === 'ddc_io') ioPresent = true;
+      if (eb.bauteil_typ === 'ddc_cpu') cpuCount += item.menge;
+      else if (eb.bauteil_typ === 'ddc_io') ioUnitsManual += item.menge;
       const farbe = BG_COLORS[item.ci];
       accumulateDp(eb, item.menge, {physisch: item.ddcPhysisch !== false, kommunikativ: !!item.ddcKommunikativ, protokoll: item.ddcProtokoll});
       // keine_platzierung_mp (Session 41): Bauteil wird auf ein anderes
@@ -2487,9 +2502,9 @@ function buildQueues(ddcReservePct) {
         // CPU/E-A-Modul koennen jetzt auch ueber eine Baugruppe kommen (z.B.
         // "Automationsstation (AE)", Session 49) statt nur direkt platziert –
         // muss hier ebenso erfasst werden, sonst ergaenzt die Auto-Logik
-        // faelschlich eine zweite CPU obwohl schon eine ueber die Baugruppe da ist.
-        if (eb.bauteil_typ === 'ddc_cpu') cpuPresent = true;
-        else if (eb.bauteil_typ === 'ddc_io') ioPresent = true;
+        // faelschlich weitere CPUs, obwohl schon welche ueber Baugruppen da sind.
+        if (eb.bauteil_typ === 'ddc_cpu') cpuCount += bt.menge;
+        else if (eb.bauteil_typ === 'ddc_io') ioUnitsManual += bt.menge;
         const zone = bt.zone || eb.zone[0];
         if(!queues[zone]) return;
         // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden
@@ -2516,7 +2531,7 @@ function buildQueues(ddcReservePct) {
         if(eb.keine_platzierung_mp) return;
         if(!zonen[zone]) zonen[zone] = [];
         for(let q = 0; q < bt.menge; q++) {
-          zonen[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak});
+          zonen[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak, groupStart: !!bt.groupStart});
         }
       });
       if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: item.bg_id, ci: item.ci, zonen});
@@ -2525,33 +2540,100 @@ function buildQueues(ddcReservePct) {
 
   const ddcAuto = computeDdcAutoModules(dpDemand, dpSupply, ddcReservePct, needsLvb);
 
-  // CPU-Ergaenzung (Session 49, Nutzer-Vorgabe): sobald ein E/A-Modul
-  // gebraucht wird (manuell platziert ODER hier automatisch ergaenzt),
-  // muss eine Automationsstation (ddc_cpu) vorhanden sein, sonst laesst
-  // sich das Modul gar nicht anschliessen. Fehlt sie, wird GENAU EINE
-  // automatisch ergaenzt (keine Vervielfachung, wie bei ddc_cpu ohnehin
-  // vorgesehen - siehe computeDdcAutoModules()-Kommentar). VOR
-  // applyDdcWatermark() eingehaengt, damit die CPU wie jedes andere
-  // Auto-Modul geratcht wird (einmal ergaenzt, faellt nicht wieder weg).
-  if (!cpuPresent && (ioPresent || ddcAuto.modules.length > 0)) {
-    const cpu = EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu');
-    if (cpu && !ddcAuto.modules.some(m => m.eb.artikel_nr === cpu.artikel_nr)) {
-      ddcAuto.modules.push({ eb: cpu, menge: 1 });
-    }
+  // ── Automationsstations-Gruppen: Netzteil → CPU → E/A-Module (Session 50,
+  // Nutzer-Vorgabe) ──────────────────────────────────────────────────────
+  // Jede Automationsstation (CPU) hat ihr eigenes Netzteil (immer direkt vor
+  // der CPU auf derselben Hutschiene) und ihre eigene Vorsicherung
+  // (Energieverteilung) – KEIN Teilen einer gemeinsamen Versorgung zwischen
+  // mehreren CPUs. E/A-Module folgen der CPU lückenlos, ohne ein anderes
+  // Bauteil dazwischen (siehe rowBreak/groupStart in assignDevicesToRows()).
+  // Übersteigt der E/A-Modulbedarf die vom Hersteller angegebene Obergrenze
+  // je CPU (eb.max_ea_module), beginnt eine komplett neue Gruppe (eigenes
+  // Netzteil + eigene CPU + eigene Sicherung) statt die Module zweier CPUs
+  // zu vermischen. Manuell platzierte CPUs (z. B. über die Baugruppe
+  // "Automationsstation (AE)") liefern ebenfalls eigene Kapazität und werden
+  // zuerst aufgefüllt, bevor eine zusätzliche Gruppe automatisch ergänzt
+  // wird – DBACS rechnet dabei rein aggregiert (Gesamtbedarf vs.
+  // Gesamtkapazität), nicht mit fester Zuordnung "dieses Modul gehört zu
+  // jener CPU" (wie auch sonst bei der Datenpunkt-Bilanz).
+  const cpuEb       = EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu');
+  const netzteilEb  = cpuEb && cpuEb.ddc_netzteil_artikel_nr  ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_netzteil_artikel_nr)  : null;
+  const sicherungEb = cpuEb && cpuEb.ddc_sicherung_artikel_nr ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_sicherung_artikel_nr) : null;
+  const maxPerCpu   = (cpuEb && cpuEb.max_ea_module) || Infinity; // Feld nicht gepflegt → altes "mind. eine CPU"-Verhalten als Fallback
+
+  // Alle vom AKTUELLEN Datenpunktbedarf her automatisch benötigten E/A-Module
+  // als flache Liste einzelner physischer Einheiten – dient hier NUR dazu,
+  // den heutigen Bedarf an zusätzlichen CPU-Gruppen zu ermitteln (für den
+  // Watermark-Eintrag, siehe unten). Die tatsächliche Platzierung weiter
+  // unten verwendet bewusst die GERATCHTEN Mengen, nicht diese Rohwerte –
+  // sonst würden bereits platzierte Module beim Sinken des Tagesbedarfs aus
+  // der Zeichnung verschwinden, obwohl der Ratchet sie in der Stückliste/
+  // Statistik weiterhin zählt (Session 28e-Grundsatz: nie schrumpfen).
+  const autoIoUnitsRaw = [];
+  ddcAuto.modules.forEach(m => { for (let q = 0; q < m.menge; q++) autoIoUnitsRaw.push(m.eb); });
+  const totalIoUnitsRaw = ioUnitsManual + autoIoUnitsRaw.length;
+
+  let neededExtraCpus = 0;
+  if (cpuEb && totalIoUnitsRaw > 0) {
+    neededExtraCpus = maxPerCpu === Infinity
+      ? Math.max(0, 1 - cpuCount)
+      : Math.max(0, Math.ceil(totalIoUnitsRaw / maxPerCpu) - cpuCount);
+  }
+  if (neededExtraCpus > 0) {
+    const addOrMerge = (eb, delta) => {
+      if (!eb || delta <= 0) return;
+      let entry = ddcAuto.modules.find(m => m.eb.artikel_nr === eb.artikel_nr);
+      if (!entry) { entry = { eb, menge: 0 }; ddcAuto.modules.push(entry); }
+      entry.menge += delta;
+    };
+    addOrMerge(cpuEb, neededExtraCpus);
+    addOrMerge(netzteilEb, neededExtraCpus);
+    addOrMerge(sicherungEb, neededExtraCpus);
   }
 
+  // Ratchet EINMAL für alles zusammen (E/A-Modultypen UND die soeben
+  // ergänzten CPU/Netzteil/Sicherung-Mengen) – ddcAuto.modules trägt danach
+  // je Artikel die höchste bisher gesehene Menge, auch wenn der heutige
+  // Bedarf (s.o.) niedriger wäre.
   applyDdcWatermark(ddcAuto);
-  // Reihenfolge (Nutzer-Vorgabe): die Automationsstation (CPU) wird zuerst
-  // gesetzt, die E/A-Module folgen danach – unabhängig davon, in welcher
-  // Reihenfolge computeDdcAutoModules()/applyDdcWatermark() sie intern
-  // erzeugt haben. sort() ist in modernen JS-Engines stabil, die relative
-  // Reihenfolge der E/A-Module untereinander bleibt also erhalten.
-  ddcAuto.modules.sort((a, b) => (b.eb.bauteil_typ === 'ddc_cpu' ? 1 : 0) - (a.eb.bauteil_typ === 'ddc_cpu' ? 1 : 0));
-  ddcAuto.modules.forEach(mod => {
-    const eb = mod.eb;
-    for (let q = 0; q < mod.menge; q++) {
-      queues.steuer.push({te: eb.te_breite, h_mm: eb.h_mm, farbe: '#6B6862', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
-    }
+
+  // ── Platzierung in korrekter Reihenfolge ──
+  // Ab hier zählen nur noch die GERATCHTEN Mengen aus ddcAuto.modules
+  // (siehe Kommentar oben) – E/A-Module (bauteil_typ 'ddc_io') separat von
+  // der bereits geratchten Gruppenzahl (CPU-Menge = Anzahl automatisch
+  // ergänzter Gruppen).
+  const autoIoUnits = [];
+  ddcAuto.modules.forEach(m => { if (m.eb.bauteil_typ === 'ddc_io') for (let q = 0; q < m.menge; q++) autoIoUnits.push(m.eb); });
+  const cpuModRatchet = cpuEb ? ddcAuto.modules.find(m => m.eb.artikel_nr === cpuEb.artikel_nr) : null;
+  const gruppenAnzahl = cpuModRatchet ? cpuModRatchet.menge : 0;
+
+  // autoIoUnits verteilen: zuerst die freie Restkapazität bereits
+  // vorhandener (manueller) CPUs auffüllen (direktAnhaengend – kein neues
+  // Netzteil/CPU nötig, hängt sich einfach an die letzte erzwungene Reihe
+  // an), danach je Gruppe bis maxPerCpu Einheiten.
+  const existingFree = maxPerCpu === Infinity ? autoIoUnits.length : Math.max(0, cpuCount * maxPerCpu - ioUnitsManual);
+  let cursor = Math.min(existingFree, autoIoUnits.length);
+  const direktAnhaengend = autoIoUnits.slice(0, cursor);
+  const neuGruppen = [];
+  for (let g = 0; g < gruppenAnzahl; g++) {
+    const ende = maxPerCpu === Infinity ? autoIoUnits.length : Math.min(cursor + maxPerCpu, autoIoUnits.length);
+    neuGruppen.push(autoIoUnits.slice(cursor, ende));
+    cursor = ende;
+  }
+  // E/A-Module, die noch unter vorhandener (manueller) CPU-Kapazität
+  // passen, hängen sich direkt an die letzte erzwungene Reihe an (i. d. R.
+  // die manuell platzierte CPU der Automationsstation-Baugruppe).
+  const autoDev = eb => ({te: eb.te_breite, h_mm: eb.h_mm, farbe: '#6B6862', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
+  direktAnhaengend.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
+  // Danach je neu ergänzter Gruppe: Netzteil (erzwingt eine frische
+  // Hutschienenreihe) → CPU → deren E/A-Module, lücken- und
+  // unterbrechungslos. Die Sicherung hat keine Ordnungsvorgabe und geht
+  // unabhängig davon in die Energieverteilung.
+  neuGruppen.forEach(ioUnits => {
+    if (netzteilEb) queues.steuer.push({...autoDev(netzteilEb), rowBreak: true, groupStart: true});
+    if (cpuEb) queues.steuer.push({...autoDev(cpuEb), rowBreak: true});
+    ioUnits.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
+    if (sicherungEb) queues.evert.push(autoDev(sicherungEb));
   });
 
   // DDC-Zusammenfassung für die Eingabeleiste: physikalisch wie bisher

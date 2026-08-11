@@ -393,6 +393,117 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Manueller Reset der DDC-Watermark (Session 50, gesperrt)
+Nutzer-Fund: der Ratchet-Mechanismus (Session 28e – automatisch ergänzte
+DDC-Module sinken nie von selbst, siehe `applyDdcWatermark()`) ließ nach
+mehreren Testläufen graue „Automatisch ergänzt"-Reste in Belegung und
+Schranksicht zurück, die nicht mehr zum aktuellen Bedarf passten – es gab
+keine Möglichkeit, diesen Zustand aus der UI heraus zu löschen. Neuer Button
+„↺ Zurücksetzen" in der Kopfzeile von `#ddc-auto-liste`, ruft
+`resetDdcWatermark()` auf: löscht `ddcWatermark` (In-Memory +
+`localStorage['m04_ddc_watermark']`) und berechnet sofort neu. Der
+Ratchet-Grundsatz selbst bleibt unverändert (nur ein manueller Ausweg, kein
+automatisches Schrumpfen). Verifiziert direkt im Browser: künstlich erzeugter
+Watermark-Rest verschwindet nach Klick vollständig, echter (weiterhin
+bestehender) Bedarf erscheint unmittelbar danach wieder korrekt – Ratchet
+für aktive Bedarfe bleibt funktionsfähig.
+
+### Modul 4 – Automationsstations-Gruppen: Netzteil → CPU → E/A-Module, Kapazitätsgrenze je CPU (Session 50, gesperrt)
+Nutzer-Vorgabe (vor dem Commit der Session-49-Reserve-Baugruppen nachgezogen):
+„Wenn Du eine Automationsstation hinzufügst, benötigt sie eine Spannungsversorgung
+[...]. Das Netzteil für die Automationsstation gehört jedoch in den
+Steuerungsteil und immer direkt vor die Automationsstation." Reihenfolge auf
+einer Hutschienenreihe: **Netzteil → Automationsstation (CPU) → E/A-Module**,
+lückenlos ohne ein anderes Bauteil dazwischen; reicht eine Reihe nicht, läuft
+die Gruppe nahtlos in der nächsten weiter. Wird die Herstellerobergrenze an
+E/A-Modulen je CPU überschritten, beginnt eine komplett **neue** Gruppe
+(eigenes Netzteil + eigene CPU + eigene Sicherung) – „Jede CPU hat ihr
+eigenes Netzteil mit zugehöriger Sicherung."
+
+**Excel-Schema erweitert:**
+- `einzelbauteile.max_ea_module` (int, nur bei `ddc_cpu`) – Herstellerobergrenze
+  E/A-Module je Automationsstation. `PXC4.E16` = 4 (bereits in Session 41 als
+  Freitext dokumentiert, jetzt als echtes Datenfeld nachgezogen).
+- `einzelbauteile.ddc_netzteil_artikel_nr` / `ddc_sicherung_artikel_nr` (Text,
+  nur bei `ddc_cpu`) – welches Netzteil/welche Sicherung diese CPU beim
+  automatischen Ergänzen mitbringt. `PXC4.E16` → `2866690` / `5SL6106-7`
+  (dieselben Artikel wie in der Baugruppe „Automationsstation (AE)").
+- `baugruppen_bauteile.zeilenumbruch_davor` / `neue_gruppe` (Boolean) – die
+  JS-Seite (`bt.rowBreak`) existierte bereits seit Session 44/49, die
+  zugehörigen Excel-Spalten fehlten aber bisher komplett (totes Feature,
+  nie befüllbar). `neue_gruppe` ist neu: erzwingt IMMER eine frische
+  Hutschienenreihe (auch wenn die zuletzt erzwungene Reihe noch Platz hätte)
+  – nötig, damit eine neue Automationsgruppe nicht am Ende der vorherigen
+  weiterläuft, sondern sauber getrennt beginnt.
+- Baugruppe `480_000007` „Automationsstation (AE)": Netzteil `2866690`
+  Zone-Override `leist`→`steuer` entfernt (Katalog-Default ist bereits
+  `steuer`, siehe Session 49 – die damalige „bewusst abweichende"
+  Leistungsbereich-Zuordnung war die jetzt korrigierte Fehlannahme).
+  Bauteil-Reihenfolge in `baugruppen_bauteile` getauscht: Netzteil VOR CPU
+  (Zeile 14/15 der Excel-Verknüpfungstabelle), Netzteil trägt
+  `zeilenumbruch_davor=TRUE`+`neue_gruppe=TRUE`, CPU nur
+  `zeilenumbruch_davor=TRUE` (hängt sich an die vom Netzteil erzwungene
+  Reihe an, erzwingt selbst keine neue). **openpyxl-Falle beim Editieren:**
+  `ws.cell(row,col,value=None)` löscht eine Zelle NICHT (der Parameter wird
+  bei `None` schlicht ignoriert) – Löschen erfordert `ws.cell(row,col).value
+  = None` als separate Zuweisung. Beim ersten Versuch dadurch fälschlich
+  `neue_gruppe=True` auf der CPU-Zeile stehen geblieben, im zweiten Anlauf
+  korrigiert.
+
+**JS-Logik (`modul-04-innenaufbau/index.html`):**
+- `assignDevicesToRows()`: neues `groupStart`-Flag (zusätzlich zu `rowBreak`)
+  – verschärft den bestehenden Zwangs-Zeilenumbruch-Mechanismus (Session 28g)
+  so, dass sich das Gerät NIE an eine bestehende erzwungene Reihe anhängt
+  (selbst bei freiem Platz), sondern immer eine fabrikneue Reihe direkt
+  danach erzwingt. Ohne Aufwand für die übrige Zwei-Durchlauf-Logik
+  wiederverwendbar, da nur die bestehende `forcedCursor`-Bedingung um
+  `!d.groupStart &&` ergänzt wurde.
+- `buildQueues()`: `cpuPresent`/`ioPresent` (Booleans, Session 49) zu
+  `cpuCount`/`ioUnitsManual` (Mengen) verallgemeinert. Neue
+  Automationsgruppen-Bilanzierung: Gesamtbedarf an E/A-Modul-Einheiten
+  (`ioUnitsManual` + automatisch berechnete) gegen die verfügbare
+  CPU-Kapazität (`cpuCount × max_ea_module`) aufgerechnet – fehlende
+  Kapazität wird als `neededExtraCpus` ermittelt, jede davon bekommt ein
+  eigenes Netzteil+CPU+Sicherung-Tripel. **Ratchet-Reihenfolge beachten:**
+  die Gruppenzahl wird zuerst aus dem AKTUELLEN (ungeratchten) Bedarf
+  ermittelt, dann in `ddcAuto.modules` eingetragen und EINMAL gemeinsam mit
+  den E/A-Modultypen geratcht (`applyDdcWatermark()`) – die eigentliche
+  Platzierung (welche E/A-Einheiten an die bestehende CPU direkt
+  anhängen vs. welche in neue Gruppen wandern) wird ERST DANACH aus den
+  geratchten (nicht den rohen) Mengen abgeleitet. Fehler im ersten Anlauf:
+  Platzierung lief auf den ungeratchten Mengen, wodurch bereits einmal
+  benötigte, aber im aktuellen Lauf nicht mehr gebrauchte Zusatzgruppen in
+  der Zeichnung verschwanden, obwohl `ddcAuto.modules`/die Stückliste sie
+  (korrekt, Ratchet-Prinzip) weiterhin zeigten – im Test gefunden und
+  korrigiert, siehe Verifikation unten.
+  Push-Reihenfolge in `queues.steuer`: zuerst die E/A-Einheiten, die noch in
+  vorhandene (manuelle) CPU-Kapazität passen (`rowBreak`, kein
+  `groupStart`), danach je neuer Gruppe Netzteil (`rowBreak`+`groupStart`)
+  → CPU (`rowBreak`) → deren E/A-Module (`rowBreak`). Die Sicherung hat
+  keine Ordnungsvorgabe und geht unabhängig davon in `queues.evert`.
+- Baugruppen-Bauteile (`bt.groupStart`) analog zum bestehenden
+  `bt.rowBreak`-Override ausgelesen.
+
+Verifiziert direkt im Browser (Modul 4, echte Katalogdaten, jeweils mit
+frisch geleertem `m04_belegung`/`m04_ddc_watermark` vor jedem Testfall):
+(1) reiner Auto-Pfad ohne manuelle Automationsstation (5× Reserve-BI) →
+korrekt 1× Netzteil+CPU+Sicherung-Gruppe ergänzt, Reihenfolge
+NT→CPU→TXM. (2) manuelle Automationsstation-Baugruppe + kleiner Bedarf
+(3× BI, passt in die 4er-Kapazität) → keine Zusatzgruppe, E/A-Modul hängt
+sich direkt an die vorhandene CPU an. (3) manuelle Automationsstation +
+großer Bedarf (100× BI → 8 TXM-Module nötig) → 4 Module hängen sich an die
+vorhandene CPU an, danach exakt 1 neue Gruppe (Netzteil→CPU→4 weitere
+Module) – mit `calculateFelder()` (Standschrank, `je_feld`) real platziert:
+Gruppe 1 in Feld 1 (Typ A), Gruppe 2 startet korrekt ganz am Anfang von
+Feld 2 (Typ B), keine Vermischung. (4) Ratchet-Test: Bedarf nach
+Gruppe-2-Erzeugung wieder auf 3× BI reduziert → Gruppe 2 bleibt (Ratchet-
+Prinzip, Session 28e) bestehen, bis der in derselben Session ergänzte
+„↺ Zurücksetzen"-Button (siehe vorheriger Abschnitt) die Watermark gezielt
+leert – danach korrekt nur noch der tatsächlich aktuelle Bedarf. Keine
+Konsolenfehler in allen vier Testfällen. Backup vor den Excel-Änderungen:
+`C:\Users\SMI\Backups\dbacs\excel\
+ga_komponenten_vor-automationsgruppen-reihenfolge_*.xlsx`.
+
 ### Erste Automations-Baugruppen: "Reserve"-Punkte + CPU-Vervollständigung (Session 49, gesperrt)
 Erste inhaltliche Baugruppen seit dem Neuaufbau (Gewerk Automation/480, wie
 vom Nutzer priorisiert). Zweck: den Schaltschrank mit vorbereiteten

@@ -1202,6 +1202,9 @@
     "automationsanbindung": true,
     "dp_bo": 4,
     "feldbus_protokoll": "modbus_rtu,modbus_tcp",
+    "max_ea_module": 4,
+    "ddc_netzteil_artikel_nr": "2866690",
+    "ddc_sicherung_artikel_nr": "5SL6106-7",
     "preis_eur": 1159.26,
     "geprueft": false
   },

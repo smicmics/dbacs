@@ -361,6 +361,18 @@ def export_einzelbauteile(wb):
             entry['zubehoer_artikel_nr'] = str(rec['zubehoer_artikel_nr'])
         if rec.get('lvb_integriert') is not None:
             entry['lvb_integriert'] = bool(rec['lvb_integriert'])
+        # max_ea_module/ddc_netzteil_artikel_nr/ddc_sicherung_artikel_nr (Session 50):
+        # nur bei ddc_cpu-Bauteilen relevant. Herstellerseitige Obergrenze der
+        # E/A-Module je Automationsstation (max_ea_module) sowie die fest
+        # zugehoerige Versorgung (Netzteil+Vorsicherung) - jede CPU bringt beim
+        # automatischen Ergaenzen (buildQueues() in Modul 4) ihre eigene mit,
+        # statt sich eine gemeinsame mit anderen CPUs zu teilen.
+        if rec.get('max_ea_module') is not None:
+            entry['max_ea_module'] = int(rec['max_ea_module'])
+        if rec.get('ddc_netzteil_artikel_nr') is not None:
+            entry['ddc_netzteil_artikel_nr'] = str(rec['ddc_netzteil_artikel_nr'])
+        if rec.get('ddc_sicherung_artikel_nr') is not None:
+            entry['ddc_sicherung_artikel_nr'] = str(rec['ddc_sicherung_artikel_nr'])
         if rec.get('klemmen_zusatz') is not None:
             entry['klemmen_zusatz'] = int(rec['klemmen_zusatz'])
         if rec.get('preis_stueck_eur') is not None:
@@ -422,6 +434,14 @@ def export_baugruppen(wb):
             bt['zone'] = str(rec['zone'])
         if rec.get('zeilenumbruch_davor'):
             bt['rowBreak'] = True
+        # neue_gruppe (Session 50): markiert den Beginn einer Automations-
+        # Gruppe (Netzteil -> CPU -> E/A-Module) - erzwingt IMMER eine frische
+        # Hutschienenreihe, auch wenn die zuletzt per rowBreak erzwungene Reihe
+        # noch Platz haette (anders als rowBreak allein, das an eine
+        # bestehende erzwungene Reihe anhaengt, siehe assignDevicesToRows()
+        # in Modul 4).
+        if rec.get('neue_gruppe'):
+            bt['groupStart'] = True
         # dp_ai/ao/bi/bo (Session 49): DDC-Datenpunktbedarf je Verwendung
         # dieses Bauteils in DIESER Baugruppe, analog zum zone-Override –
         # z.B. eine Klemme traegt selbst keinen DDC-Bezug, stellt aber in
