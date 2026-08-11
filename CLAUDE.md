@@ -441,6 +441,12 @@ Overflow, Füllstand-Anzeige zeigt realistische 99% statt vorher weit zu
 früh „voll". Keine Konsolenfehler, keine Regression bei `leist`/`steuer`
 (weiterhin TE-basiert, unverändert getestet).
 
+**Nutzer-Gegenprüfung (eigene Recherche):** „Je nach Klemmenbreite passen bis
+zu 160 Klemmen in eine komplette Reihe. Bei Klemmen bis 4mm² etwas mehr als
+100" – deckt sich mit dem obigen Testergebnis (104 Klemmen bei 5,2mm-PT-2,5-
+Klemmen, Querschnitt bis 4mm²) und bestätigt damit unabhängig sowohl die
+korrigierte Platzierungslogik als auch den Katalog-Breitenwert (`b_mm=5,2`).
+
 ### Katalog-Korrektur: falsche CPU-Baureihe – PXC4.E16 (Kompakt) → PXC7.E400.A (Modular) (Session 50, gesperrt)
 Nutzer-Fund direkt nach dem Testen der Automationsgruppen-Logik: „Ich glaube in
 der Excel Tabelle ist die falsche CPU gesetzt... Die aktuell gesetzte ist eine
