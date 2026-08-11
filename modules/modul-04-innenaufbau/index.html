@@ -2556,7 +2556,16 @@ function buildQueues(ddcReservePct) {
   // wird – DBACS rechnet dabei rein aggregiert (Gesamtbedarf vs.
   // Gesamtkapazität), nicht mit fester Zuordnung "dieses Modul gehört zu
   // jener CPU" (wie auch sonst bei der Datenpunkt-Bilanz).
-  const cpuEb       = EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu');
+  // auto_ea_cpu (Session 50): seit es mehrere ddc_cpu-Typen im Katalog gibt
+  // (Kompaktstationen PXC4.E16.A/PXC5.E24.A MIT Onboard-E/A, sowie die
+  // modulare PXC7.E400.A OHNE jegliches Onboard-E/A) muss hier eindeutig die
+  // für die automatische Netzteil→CPU→E/A-Modul-Ergänzung vorgesehene CPU
+  // gewählt werden – ein reines `find(bauteil_typ==='ddc_cpu')` wäre von der
+  // zufälligen Katalog-Reihenfolge abhängig. Fallback (kein Katalogeintrag
+  // markiert) auf die erste ddc_cpu, damit die Auto-Ergänzung nicht komplett
+  // ausfällt, falls das Flag versehentlich fehlt.
+  const cpuEb       = EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu' && e.auto_ea_cpu)
+                    || EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu');
   const netzteilEb  = cpuEb && cpuEb.ddc_netzteil_artikel_nr  ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_netzteil_artikel_nr)  : null;
   const sicherungEb = cpuEb && cpuEb.ddc_sicherung_artikel_nr ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_sicherung_artikel_nr) : null;
   const maxPerCpu   = (cpuEb && cpuEb.max_ea_module) || Infinity; // Feld nicht gepflegt → altes "mind. eine CPU"-Verhalten als Fallback

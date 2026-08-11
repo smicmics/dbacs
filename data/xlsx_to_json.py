@@ -373,6 +373,15 @@ def export_einzelbauteile(wb):
             entry['ddc_netzteil_artikel_nr'] = str(rec['ddc_netzteil_artikel_nr'])
         if rec.get('ddc_sicherung_artikel_nr') is not None:
             entry['ddc_sicherung_artikel_nr'] = str(rec['ddc_sicherung_artikel_nr'])
+        # auto_ea_cpu (Session 50): seit der Ergaenzung mehrerer ddc_cpu-Typen
+        # (Kompakt PXC4.E16.A/PXC5.E24.A + Modular PXC7.E400.A) muss buildQueues()
+        # in Modul 4 eindeutig wissen, welche CPU sie fuer die automatische
+        # Netzteil->CPU->E/A-Modul-Ergaenzung verwendet - ohne dieses Flag waere
+        # die Wahl von der zufaelligen Katalog-Reihenfolge abhaengig. Nur bei
+        # PXC7.E400.A gesetzt (0 Onboard-E/A, passt zum DBACS-Prinzip "Verbrauch
+        # entsteht ausschliesslich an TXM-Modulen").
+        if rec.get('auto_ea_cpu'):
+            entry['auto_ea_cpu'] = True
         if rec.get('klemmen_zusatz') is not None:
             entry['klemmen_zusatz'] = int(rec['klemmen_zusatz'])
         if rec.get('preis_stueck_eur') is not None:

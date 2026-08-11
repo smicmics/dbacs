@@ -1188,24 +1188,23 @@
     "geprueft": false
   },
   {
-    "artikel_nr": "PXC4.E16",
-    "bezeichnung": "Desigo PX Automationsstation, 16 Ein-/Ausgaenge (12 universell + 4 Relais), BACnet/IP, Modbus",
+    "artikel_nr": "PXC7.E400.A",
+    "bezeichnung": "Desigo PX Modulare Automationsstation, bis 500 Datenpunkte ueber TX-I/O (kein Onboard-E/A), BACnet/IP+SC+MS/TP, Modbus RTU",
     "hersteller": "Siemens",
     "bauteil_typ": "ddc_cpu",
     "b_mm": 198.0,
     "te_breite": 11,
-    "h_mm": 124.0,
+    "h_mm": 90.0,
     "zone": [
       "steuer"
     ],
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
-    "dp_bo": 4,
-    "feldbus_protokoll": "modbus_rtu,modbus_tcp",
-    "max_ea_module": 4,
+    "feldbus_protokoll": "modbus_rtu",
+    "max_ea_module": 64,
     "ddc_netzteil_artikel_nr": "2866690",
     "ddc_sicherung_artikel_nr": "5SL6106-7",
-    "preis_eur": 1159.26,
+    "auto_ea_cpu": true,
     "geprueft": false
   },
   {
@@ -1899,6 +1898,47 @@
     ],
     "kategorie": "Messgerät/Energiezähler",
     "preis_eur": 209.28,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "PXC4.E16.A",
+    "bezeichnung": "Desigo PX Kompakt-Automationsstation, 16 Onboard-E/A (12 universell + 4 Relais), bis 2 TX-I/O-Module (32 weitere Punkte), BACnet/IP+SC+MS/TP, Modbus RTU",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ddc_cpu",
+    "b_mm": 198.0,
+    "te_breite": 11,
+    "h_mm": 90.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "DDC-Automationseinrichtung",
+    "automationsanbindung": true,
+    "dp_bo": 4,
+    "feldbus_protokoll": "modbus_rtu",
+    "max_ea_module": 2,
+    "ddc_netzteil_artikel_nr": "2866690",
+    "ddc_sicherung_artikel_nr": "5SL6106-7",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "PXC5.E24.A",
+    "bezeichnung": "Desigo PX Kompakt-Automationsstation, 24 Onboard-E/A (2 Digital-, 8 universelle, 8 super-universelle Ein-/Ausgaenge, 6 Relais), bis 6 TX-I/O-Module (96 weitere Punkte), BACnet/IP+SC+MS/TP, Modbus RTU",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ddc_cpu",
+    "b_mm": 270.0,
+    "te_breite": 15,
+    "h_mm": 90.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "DDC-Automationseinrichtung",
+    "automationsanbindung": true,
+    "dp_bi": 2,
+    "dp_bo": 6,
+    "feldbus_protokoll": "modbus_rtu",
+    "max_ea_module": 6,
+    "ddc_netzteil_artikel_nr": "2866690",
+    "ddc_sicherung_artikel_nr": "5SL6106-7",
     "geprueft": false
   }
 ]

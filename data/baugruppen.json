@@ -137,7 +137,7 @@
     "id": "480_000007",
     "name": "Automationsstation (AE)",
     "gewerk": "480",
-    "beschreibung": "Automationsstation mit ihrer notwendigen Grundausstattung: Desigo-PX-Automationsstation (PXC4.E16) + 24VDC-Netzteil (Leistungsbereich) + Vorsicherung (Energieverteilung). Ohne Abgangsklemmleiste - reine Versorgungs-/Recheneinheit, die restlichen E/A-Module ergaenzt DBACS automatisch anhand des tatsaechlichen Datenpunktbedarfs.",
+    "beschreibung": "Automationsstation mit ihrer notwendigen Grundausstattung: Desigo-PX-Modulare Automationsstation (PXC7.E400.A, kein Onboard-E/A, bis 500 Datenpunkte ueber TX-I/O) + 24VDC-Netzteil (Steuerungsbereich, direkt vor der CPU auf derselben Hutschienenreihe) + Vorsicherung (Energieverteilung). Ohne Abgangsklemmleiste - reine Versorgungs-/Recheneinheit, die restlichen E/A-Module ergaenzt DBACS automatisch anhand des tatsaechlichen Datenpunktbedarfs, bis zur Herstellerobergrenze von 64 TXM-Modulen je Automationsstation - danach eine komplett neue Gruppe (eigenes Netzteil + eigene CPU + eigene Sicherung).",
     "bauteile": [
       {
         "artikel_nr": "2866690",
@@ -147,7 +147,7 @@
         "groupStart": true
       },
       {
-        "artikel_nr": "PXC4.E16",
+        "artikel_nr": "PXC7.E400.A",
         "menge": 1,
         "rowBreak": true
       },

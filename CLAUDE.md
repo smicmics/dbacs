@@ -393,6 +393,115 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Katalog-Korrektur: falsche CPU-Baureihe – PXC4.E16 (Kompakt) → PXC7.E400.A (Modular) (Session 50, gesperrt)
+Nutzer-Fund direkt nach dem Testen der Automationsgruppen-Logik: „Ich glaube in
+der Excel Tabelle ist die falsche CPU gesetzt... Die aktuell gesetzte ist eine
+Kompakt CPU mit Datenpunktanschlüssen. Wenn wir aber unsere Konfiguration mit
+frei konfigurierbaren E/A Modulen nehmen, kann die CPU nur Datenpunkte
+verwalten, bis ihre Datenpunktgrenze erreicht wird. Der eigentliche Verbrauch
+entsteht an den E/A Modulen." Recherche bestätigt: Siemens führt Desigo PX in
+zwei parallelen, nicht austauschbaren Baureihen – **Kompakt** (`PXC4.E16`,
+`PXC5.E24`, ...: eigene Onboard-E/A fest am Gerät, zusätzlich per TXM
+erweiterbar) und **Modular** (`PXC7.E400.A`, Datenblatt A6V12957866, Stand
+2026-04-03, Order-Nr. S55375-C114, explizit „Modular Automation Station"
+geführt: **„Number of inputs/outputs (Onboard): 0"** – ausschließlich über
+Island-Bus mit TX-I/O-Modulen verbunden, bis zu 64 TXM-Module / 500
+Datenpunkte gesamt). Der bisher katalogisierte `PXC4.E16` war die falsche,
+weil onboard-behaftete Baureihe – widerspricht DBACS' durchgängigem Prinzip
+„Verbrauch entsteht ausschließlich an separat platzierten TXM-Modulen".
+**Ähnlich benannte `PXC5.A`-Baureihe geprüft und verworfen** (eigenes
+Datenblatt A6V14319960): trotz „.A"/"Modular"-Namensmuster tatsächlich
+weiterhin eine Kompaktstation mit 24 Onboard-Punkten (Typenbezeichnung im
+Datenblatt selbst: „PXC5.E24.A Compact 24pt") – nur `PXC7.A` ist in der
+aktuellen (3.) Siemens-Generation die echte Nullkomponenten-Variante.
+
+**Korrektur direkt im bestehenden Katalogeintrag** (nicht als neue Zeile
++ Deaktivierung – der alte Eintrag war ein reiner Auswahlfehler, keine
+gültige Alternative, siehe Session-41-Präzedenzfall PXA30-x):
+`artikel_nr` `PXC4.E16`→`PXC7.E400.A`, `h_mm` 124→90 (b_mm bleibt 198,
+korrekte Maße direkt aus der bemaßten Gehäusezeichnung des Datenblatts,
+über den dort ebenfalls bemaßten TXM-Modul-Abstand von 64mm/Modul gegen
+die bereits katalogisierten TXM-Maße plausibilisiert), `dp_bo` (4, von den
+4 Onboard-Relais des PXC4.E16) entfernt – die neue CPU liefert keinerlei
+physische Datenpunktkapazität mehr selbst, `max_ea_module` 4→**64**,
+`feldbus_protokoll` `modbus_rtu,modbus_tcp`→**`modbus_rtu`** (Modbus TCP im
+PXC7.E400.A-Datenblatt nicht erwähnt, nur Modbus RTU über die 4
+EIA-485-Schnittstellen – bewusst nicht unbestätigt übernommen), `preis_eur`
+entfernt (der bisherige Preis war zum falschen Gerät recherchiert; für
+PXC7.E400.A selbst kein Händlerpreis gefunden, nur für die ältere,
+nicht-modulare Schwestervariante PXC7.E400M/-S – nicht übertragen).
+Referenz in der Baugruppe „Automationsstation (AE)" (`480_000007`,
+`baugruppen_bauteile`) sowie deren Beschreibungstext nachgezogen.
+
+**Auswirkung auf die Session-50-Automationsgruppen-Logik:** rein
+datengetrieben, kein JS-Codewechsel nötig – `max_ea_module` wird bereits
+generisch aus dem Katalogeintrag gelesen (`buildQueues()`), die
+Kapazitätsgrenze für „wann beginnt eine neue Gruppe" springt dadurch
+automatisch von 4 auf 64 E/A-Module je Automationsstation. `dp_bo`-Wegfall
+bedeutet: `dpSupply` erhält keinen physischen Beitrag mehr direkt von der
+CPU – ausschließlich TXM-Module liefern jetzt Kapazität, exakt wie vom
+Nutzer gefordert. Verifiziert direkt gegen die exportierte
+`einzelbauteile.json`: `PXC4.E16` kommt im Katalog nicht mehr vor, neuer
+Eintrag trägt alle elf oben genannten Felder korrekt, kein verwaistes
+`preis_eur`/`dp_bo`. Backup vor der Korrektur:
+`C:\Users\SMI\Backups\dbacs\excel\
+ga_komponenten_vor-cpu-korrektur-pxc7_*.xlsx`.
+
+### Katalog: alle Desigo-PX-CPU-Typen aufgenommen, explizite CPU-Auswahl für Auto-Ergänzung (Session 50, gesperrt)
+Direkte Fortsetzung der PXC4.E16→PXC7.E400.A-Korrektur, Nutzer-Auftrag: „Nehme
+alle CPU-Typen in die Artikeldatenbank auf (mit Maßen für die Platzierung).
+Nutze für die Konfiguration mit E/A Modulen die richtige CPU." Zwei weitere
+CPU-Typen recherchiert und ergänzt (beide Siemens-Originaldatenblätter, aktuelle
+".A"-Generation):
+- **`PXC4.E16.A`** (Order-Nr. S55375-C126, Datenblatt A6V12957862): Kompakt,
+  16 Onboard-Punkte (12 universell + 4 Relais), bis zu **2** TX-I/O-Module
+  (32 weitere Punkte), max. 48 gesamt. Maße 198×90mm (B×H).
+- **`PXC5.E24.A`** (Order-Nr. S55375-C120, Datenblatt A6V14319960): Kompakt,
+  24 Onboard-Punkte (2 Digitaleingänge + 8 universelle + 8 super-universelle
+  Ein-/Ausgänge + 6 Relais), bis zu **6** TX-I/O-Module (96 weitere Punkte),
+  max. 120 gesamt. Maße 270×90mm (B×H). **Namens-Falle:** trägt zwar dasselbe
+  „.A"-Suffix wie das echte modulare `PXC7.E400.A`, ist aber laut eigenem
+  Datenblatt weiterhin explizit „PXC5.E24.A **Compact** 24pt" – keine
+  Nullkomponenten-Variante. Das „.A"-Suffix kennzeichnet bei Siemens offenbar
+  nur die aktuelle (3.) Hardware-/Firmware-Generation, nicht automatisch
+  „modular" – vor jeder künftigen CPU-Ergänzung den tatsächlichen
+  Onboard-E/A-Wert im Datenblatt prüfen, nicht vom Namensmuster ableiten.
+- Beide wie beim bestehenden `PXC4.E16`-Vorgänger-Muster: nur die FEST
+  zugeordneten (nicht-universellen) Punkte als `dp_bi`/`dp_bo` erfasst
+  (PXC4.E16.A: `dp_bo=4`; PXC5.E24.A: `dp_bi=2`, `dp_bo=6`) – die universellen
+  Kanäle bleiben bewusst unmodelliert (Feldstruktur bildet flexible Kanäle
+  nicht ab, siehe Session 41-Konvention bei `TXM1.8U`). Beide bekommen
+  ebenfalls `ddc_netzteil_artikel_nr`/`ddc_sicherung_artikel_nr` (dieselben
+  Artikel wie bei `PXC7.E400.A`) und ein `max_ea_module`-Limit, sind aber NUR
+  als eigenständige Katalogoptionen gedacht (falls ein Projekt bewusst eine
+  Kompaktstation statt der modularen Lösung einsetzen will) – sie nehmen NICHT
+  automatisch an der DDC-Auto-Ergänzung teil, siehe nächster Punkt.
+- Kein bestätigter aktueller Herstellerlistenpreis für beide gefunden (nur
+  Distributor-Preise zu den jeweiligen ÄLTEREN Vorgänger-Bestellnummern ohne
+  „.A"-Suffix, nicht übertragen, siehe Katalog-Freitext).
+
+**Neues Feld `einzelbauteile.auto_ea_cpu`** (Boolean, nur bei `PXC7.E400.A`
+gesetzt): seit es mehrere `ddc_cpu`-Einträge gibt, wäre ein einfaches
+`EINZELBAUTEILE_DB.find(bauteil_typ==='ddc_cpu')` von der zufälligen
+Katalog-Reihenfolge abhängig – hätte im schlechtesten Fall wieder eine
+Kompaktstation für die automatische Netzteil→CPU→E/A-Modul-Ergänzung
+ausgewählt (genau der Fehler, der gerade erst behoben wurde). `buildQueues()`
+sucht jetzt zuerst gezielt nach `auto_ea_cpu===true`, fällt nur mangels
+Treffer auf die erste `ddc_cpu` zurück (Schutz gegen versehentlich fehlendes
+Flag, kein Totalausfall der Auto-Ergänzung).
+
+Verifiziert direkt im Browser (echte Katalogdaten, 129 Bauteile, 3 CPU-Typen):
+`EINZELBAUTEILE_DB.filter(bauteil_typ==='ddc_cpu')` liefert alle drei
+korrekt (`PXC7.E400.A` mit `auto_ea_cpu:true`, die beiden Kompaktstationen
+ohne); manuelle Baugruppe „Automationsstation (AE)" + 100× Reserve-BI (8
+TXM-Module nötig) → alle 8 hängen sich korrekt direkt an die vorhandene
+`PXC7.E400.A` an (keine zweite Gruppe, da 8 ≪ 64 Kapazität – Regressionstest
+der Session-50-Automationsgruppen-Logik mit dem jetzt realistischen
+Kapazitätswert bestanden). Keine Konsolenfehler. Backup:
+`C:\Users\SMI\Backups\dbacs\excel\
+ga_komponenten_vor-cpu-korrektur-pxc7_*.xlsx` (deckt auch diese Ergänzung ab,
+im selben Arbeitsschritt).
+
 ### Modul 4 – Manueller Reset der DDC-Watermark (Session 50, gesperrt)
 Nutzer-Fund: der Ratchet-Mechanismus (Session 28e – automatisch ergänzte
 DDC-Module sinken nie von selbst, siehe `applyDdcWatermark()`) ließ nach
