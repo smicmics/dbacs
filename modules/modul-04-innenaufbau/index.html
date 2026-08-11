@@ -296,7 +296,9 @@ legend{
   font-size:14px;padding:0 2px;line-height:1;flex-shrink:0;
 }
 .bel-rm:hover{color:#E04444;}
-.ddc-auto-hdr{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px;}
+.ddc-auto-hdr{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.btn-ddc-reset{font-size:10px;text-transform:none;letter-spacing:0;background:none;border:1px solid var(--bg3);color:var(--tx3);border-radius:3px;padding:1px 5px;cursor:pointer;line-height:1.4;}
+.btn-ddc-reset:hover{border-color:var(--tx2);color:var(--tx1);}
 .bel-zeile-auto{border-style:dashed;font-style:italic;}
 .bel-zeile-auto .bel-name{color:var(--tx2);}
 
@@ -2213,7 +2215,7 @@ function updateDdcAutoDisplay(ddcAuto) {
   const warn = document.getElementById('ddc-warn');
   if (el) {
     el.innerHTML = (ddcAuto && ddcAuto.modules.length)
-      ? '<div class="ddc-auto-hdr">Automatisch ergänzt (DDC)</div>' + ddcAuto.modules.map(m =>
+      ? '<div class="ddc-auto-hdr"><span>Automatisch ergänzt (DDC)</span><button class="btn-ddc-reset" onclick="resetDdcWatermark()" title="Löscht die gemerkte Mindest-Stückzahl (Watermark, siehe CLAUDE.md Session 28e) und berechnet die Auto-Ergänzung neu aus dem aktuellen Bedarf – z. B. um Reste aus vorherigen Testläufen zu entfernen.">↺ Zurücksetzen</button></div>' + ddcAuto.modules.map(m =>
           `<div class="bel-zeile bel-zeile-auto" title="${m.eb.bezeichnung} – automatisch ergänzt, da vorhandene DDC-Module nicht ausreichen. Bleibt bestehen, auch wenn der Bedarf später sinkt (siehe CLAUDE.md, Session 28e).">
              <span class="bel-dot" style="background:#6B6862"></span>
              <span class="bel-name">${m.menge}× ${m.eb.bezeichnung}</span>
@@ -2364,6 +2366,19 @@ function applyDdcWatermark(ddcAuto) {
     if (entry.menge < wmMenge) entry.menge = wmMenge;
   });
   if (changed) localStorage.setItem('m04_ddc_watermark', JSON.stringify(ddcWatermark));
+}
+
+// Manueller Ausweg aus dem Ratchet (Nutzer-Fund: nach mehreren Testläufen
+// blieben grau dargestellte Auto-Module bestehen, obwohl der aktuelle
+// Bedarf sie nicht mehr rechtfertigte – es gab keine Möglichkeit, den
+// gespeicherten Mindeststand aus der UI heraus zu löschen). Setzt nur die
+// Watermark zurück, NICHT die eigentliche Belegung; die Auto-Ergänzung
+// entsteht direkt danach aus calculate() wieder frisch aus dem tatsächlich
+// aktuellen Bedarf – bereits benötigte Module erscheinen sofort erneut.
+function resetDdcWatermark() {
+  ddcWatermark = {};
+  localStorage.removeItem('m04_ddc_watermark');
+  calculate();
 }
 
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
