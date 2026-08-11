@@ -42,6 +42,16 @@
    fest verdrahtet) zum Einsatz kommt. Setzt vermutlich auf `auto_ea_cpu`
    auf, indem die Dropdown-Wahl es zur Laufzeit überschreibt statt es nur
    als Katalog-Flag zu lesen.
+4. **Klemmenfarbe DDC-Abgänge (Nutzer-Vorgabe):** für BI/AI/BO/AO-Abgänge
+   dürfen nur **graue** Klemmen verwendet werden – farbige Klemmen (z. B. die
+   aktuell verwendete `3209523` PT 2,5 **BU blau**, siehe Baugruppe
+   „Binäreingang (BI) auf Klemmleiste" `480_000001` und die analogen
+   BO/AI/AO-Baugruppen `480_000002`/`003`/`004`/`005`/`006`) sind
+   ausschließlich für **Leitung** (Klemmzone `klemm_l`, z. B. L1/L2/L3/N-
+   Farbcodierung) reserviert. Betrifft die zweite Klemme (Referenz/Common)
+   dieser DDC-Reserve-Baugruppen – morgen prüfen, ob dafür eine graue
+   PT-2,5-Variante im Katalog existiert (sonst recherchieren) und alle
+   betroffenen `baugruppen_bauteile`-Einträge umstellen.
 
 ---
 
