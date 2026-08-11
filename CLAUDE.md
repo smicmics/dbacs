@@ -393,6 +393,54 @@ hier nur dokumentiert – NICHT in dieser Session umgesetzt:**
   der zugehörigen `bg_id`-Referenzen in `baugruppen_bauteile`~~ ✅
   abgeschlossen Session 38, siehe unten.
 
+### Modul 4 – Klemmleisten: reale mm-Breite statt TE-Rundung (Session 51, gesperrt)
+Nutzer-Fund: „Das müsste bei einem Standschrank deutlich mehr sein" – in einem
+Test passten nur 17 Datenpunkte (34 Klemmen) in eine Klemmenreihe, obwohl die
+Zeile physisch deutlich mehr Platz hatte. Ursache: `eb.te_breite =
+ceil(b_mm/18)` (xlsx_to_json.py, seit Session 20 für ALLE Bauteile einheitlich
+berechnet) rundet eine reale 5,2mm breite Phoenix-Contact-PT-2,5-Klemme auf
+eine volle 18mm-TE-Einheit auf – korrekt für Hutschienengeräte in
+`leist`/`steuer` (Schütze, Relais, TXM-Module werden tatsächlich in
+TE-Vielfachen gefertigt, `placeInBands()` bleibt daher unverändert TE-basiert),
+aber falsch für Reihenklemmen, die lückenlos ohne TE-Raster aneinandergereiht
+werden. Eine 549mm breite Klemmenreihe bot dadurch nur Platz für
+`floor(549/18)=30` TE-Einheiten statt der real möglichen `549/5,2≈105`
+Klemmen – Faktor 3,5 Verlust, unabhängig von Zeilenanordnung/-position. Kein
+zusätzlicher Zwischenraum zwischen Klemmen war jemals vorgesehen oder
+eingerechnet (auf Nutzer-Rückfrage geprüft) – reines Rundungsproblem.
+
+**Fix, beschränkt auf `placeInKlemmRow()` + `redistributeKlemmBands()`**
+(also alle Zonen, die 1-Hutschienen-Klemmleisten modellieren: `klemm_e`,
+`uss`, `klemm_l`, `klemm_f`, `klemm_s`, sowie `evert` MIT Schienensystem) –
+`placeInBands()` (leist/steuer, echte modulare TE-Geräte) bewusst
+unverändert gelassen, kein pauschaler Umbau:
+- Geräte-Objekte tragen jetzt zusätzlich `b_mm` (reale Katalogbreite, siehe
+  `buildQueues()` alle drei Push-Stellen + `autoDev()`), `te` bleibt
+  weiterhin für die (unveränderten) Band-Zonen erhalten.
+- `placeInKlemmRow()`: Breitenprüfung/-fortschritt läuft jetzt direkt in mm
+  (`col + d.b_mm > band.w_mm`) statt in TE-Einheiten; `mm_used` ergibt sich
+  direkt aus der Summe der platzierten `b_mm`-Werte statt `te_used*TE_MM`.
+  Fällt auf `(d.te||1)*TE_MM` zurück, falls `b_mm` ausnahmsweise fehlt (keine
+  Datenlücke soll zum Absturz führen).
+- `redistributeKlemmBands()`: Bedarfsberechnung (`demandMM`) summiert jetzt
+  ebenfalls reale `b_mm`-Werte statt `te*TE_MM`.
+- SVG-Rendering (`row.blocks.forEach`): unterscheidet jetzt `row.mode==='klemm'`
+  (nutzt `blk.col`/`blk.b_mm` direkt in mm) von Band-Zeilen (weiterhin
+  `blk.col*TE_MM`/`blk.te*TE_MM`) – dieselbe Skalierungsvariable `sc` (aus
+  Modul 3s Montagebereich-Maßen, siehe `buildSVG()`) bleibt für beide Modi
+  identisch, keine separate/abweichende Skalierung.
+- `te_belegt`/`totalDemandTe` (reine Anzeige-Badges „N TE ·") bewusst NICHT
+  angefasst – für Klemmen war `te_breite` ohnehin immer genau 1, der Wert
+  entspricht dort weiterhin schlicht der Stückzahl, keine Fehlinformation.
+
+Verifiziert direkt im Browser (Standschrank 699×1499mm, `klemm_f`-Zone
+549mm breit, 100× Baugruppe „Binäreingang (BI) auf Klemmleiste" = 200
+Klemmen angefordert): korrekt 104 Klemmen platziert (`mm_used=540,8mm` =
+104×5,2mm exakt), Positionen bei 0/5,2/10,4/...mm lückenlos, kein
+Overflow, Füllstand-Anzeige zeigt realistische 99% statt vorher weit zu
+früh „voll". Keine Konsolenfehler, keine Regression bei `leist`/`steuer`
+(weiterhin TE-basiert, unverändert getestet).
+
 ### Katalog-Korrektur: falsche CPU-Baureihe – PXC4.E16 (Kompakt) → PXC7.E400.A (Modular) (Session 50, gesperrt)
 Nutzer-Fund direkt nach dem Testen der Automationsgruppen-Logik: „Ich glaube in
 der Excel Tabelle ist die falsche CPU gesetzt... Die aktuell gesetzte ist eine

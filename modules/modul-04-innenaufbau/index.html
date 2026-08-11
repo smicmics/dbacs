@@ -1964,11 +1964,15 @@ function redistributeKlemmBands(bandsAll, queues, reservePct, keys, bgInstanceQu
   const origWidth = {};
   KEYS.forEach(k => { origWidth[k] = origBands[k].reduce((a, bd) => a + bd.w_mm, 0); });
 
+  // Reale mm-Breite statt TE-Rundung (Session 51, siehe placeInKlemmRow()) –
+  // sonst würde die Reserve-Umverteilung selbst bei korrekt platzierten
+  // Klemmen weiterhin von einem stark überschätzten Platzbedarf ausgehen.
+  const devWidth = d => d.b_mm || (d.te || 1) * TE_MM;
   const demandMM = {};
   KEYS.forEach(k => {
-    let te = (queues[k] || []).reduce((s, d) => s + d.te, 0);
-    (bgInstanceQueue || []).forEach(inst => { if (inst.zonen[k]) te += inst.zonen[k].reduce((s, d) => s + d.te, 0); });
-    demandMM[k] = te * TE_MM;
+    let mm = (queues[k] || []).reduce((s, d) => s + devWidth(d), 0);
+    (bgInstanceQueue || []).forEach(inst => { if (inst.zonen[k]) mm += inst.zonen[k].reduce((s, d) => s + devWidth(d), 0); });
+    demandMM[k] = mm;
   });
 
   const keepFactor = 1 - reservePct;
@@ -2020,36 +2024,49 @@ function redistributeKlemmBands(bandsAll, queues, reservePct, keys, bgInstanceQu
 // und dafür zu hoch ist, wird sonst trotzdem "platziert" und im SVG verzerrt
 // dargestellt. Zu hohe Bauteile werden übersprungen (kein Platz, Overflow),
 // die Warteschlange läuft mit den übrigen Geräten weiter.
+//
+// Reale mm-Breite statt TE-Rundung (Session 51, Nutzer-Fund): Reihenklemmen
+// werden – anders als modulare Hutschienengeräte in leist/steuer (echte
+// TE-Produktbreiten, placeInBands bleibt TE-basiert) – direkt aneinander
+// gereiht, ohne TE-Raster. `eb.te_breite = ceil(b_mm/18)` rundet eine 5,2mm
+// breite Klemme auf ein volles 18mm-TE-Feld auf – bei einer Standschrank-
+// Klemmenreihe von z.B. ~620mm blieb dadurch nur Platz für 34 Klemmen
+// (620/18 ≈ 34), obwohl real 620/5,2 ≈ 119 Klemmen passen würden. Diese
+// Funktion nutzt daher `d.b_mm` (reale Breite) statt `d.te*TE_MM` – gilt für
+// alle Zonen, die placeInKlemmRow() nutzen (klemm_e/uss/klemm_l/klemm_f/
+// klemm_s sowie evert MIT Schienensystem), fällt auf `(d.te||1)*TE_MM` zurück
+// falls b_mm ausnahmsweise fehlt (Datenlücke, kein Absturz).
 function placeInKlemmRow(devs, bands, startIdx = 0) {
   const rows = [];
   let idx = 0;
-  let te_used = 0;
+  let mm_used = 0;
   let placedCount = startIdx;   // laufende Positionsnummer je Zone UND Feld
   let placedTotal = 0;   // tatsächlich platzierte Geräte (für Overflow-Berechnung)
 
   for (let bi = 0; bi < bands.length && idx < devs.length; bi++) {
     const band = bands[bi];
-    const te_per_row = band.w_mm > 0 ? Math.floor(band.w_mm / TE_MM) : 0;
-    if (te_per_row <= 0) continue;
+    const w_avail = band.w_mm > 0 ? band.w_mm : 0;
+    if (w_avail <= 0) continue;
 
     let col = 0;
     const blocks = [];
     while (idx < devs.length) {
       const d = devs[idx];
-      if (col + d.te > te_per_row) break;           // Breite dieser Reihe erschöpft
+      const w = d.b_mm || (d.te || 1) * TE_MM;
+      if (col + w > w_avail) break;                 // Breite dieser Reihe erschöpft
       if (d.h_mm > band.h_mm) { idx++; continue; }  // zu hoch für diese Hutschiene – überspringen
-      blocks.push({col, te: d.te, h_mm: d.h_mm, farbe: d.farbe, lbl: d.lbl, title: d.title, artikel_nr: d.artikel_nr, idx: ++placedCount});
-      col += d.te;
+      blocks.push({col, b_mm: w, h_mm: d.h_mm, farbe: d.farbe, lbl: d.lbl, title: d.title, artikel_nr: d.artikel_nr, idx: ++placedCount});
+      col += w;
       idx++;
       placedTotal++;
     }
     if (blocks.length) {
       rows.push({ mode:'klemm', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm, h_mm: band.h_mm, blocks });
-      te_used += col;
+      mm_used += col;
     }
   }
 
-  return { rows, overflow: placedTotal < devs.length, mm_used: te_used * TE_MM,
+  return { rows, overflow: placedTotal < devs.length, mm_used,
            leftoverDevs: devs.slice(idx), nextIdx: placedCount };
 }
 
@@ -2478,7 +2495,7 @@ function buildQueues(ddcReservePct) {
           const zone = (b.zone && eb.zone.includes(b.zone)) ? b.zone : eb.zone[0];
           if(!queues[zone]) return;
           for(let q = 0; q < b.n; q++) {
-            queues[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!b.forced});
+            queues[zone].push({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!b.forced});
           }
         });
       }
@@ -2531,7 +2548,7 @@ function buildQueues(ddcReservePct) {
         if(eb.keine_platzierung_mp) return;
         if(!zonen[zone]) zonen[zone] = [];
         for(let q = 0; q < bt.menge; q++) {
-          zonen[zone].push({te: eb.te_breite, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak, groupStart: !!bt.groupStart});
+          zonen[zone].push({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak, groupStart: !!bt.groupStart});
         }
       });
       if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: item.bg_id, ci: item.ci, zonen});
@@ -2632,7 +2649,7 @@ function buildQueues(ddcReservePct) {
   // E/A-Module, die noch unter vorhandener (manueller) CPU-Kapazität
   // passen, hängen sich direkt an die letzte erzwungene Reihe an (i. d. R.
   // die manuell platzierte CPU der Automationsstation-Baugruppe).
-  const autoDev = eb => ({te: eb.te_breite, h_mm: eb.h_mm, farbe: '#6B6862', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
+  const autoDev = eb => ({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#6B6862', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
   direktAnhaengend.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
   // Danach je neu ergänzter Gruppe: Netzteil (erzwingt eine frische
   // Hutschienenreihe) → CPU → deren E/A-Module, lücken- und
@@ -3295,8 +3312,11 @@ function buildSVG(zp, layout, zones, wrapEl, svgEl) {
       if (row.mode === 'klemm') markFirstLastOfRun(row.blocks);
 
       row.blocks.forEach(blk => {
-        const bx = (row.x_mm + blk.col*TE_MM) * sc;
-        const bw = Math.max(1, blk.te*TE_MM*sc - 1);
+        // Klemmen-Zeilen tragen bereits reale mm-Werte (col/b_mm, siehe
+        // placeInKlemmRow() Session 51), Band-Zeilen (leist/steuer) weiterhin
+        // TE-Vielfache (col/te, placeInBands – echte Hutschienengeräte).
+        const bx = (row.x_mm + (row.mode === 'klemm' ? blk.col : blk.col*TE_MM)) * sc;
+        const bw = row.mode === 'klemm' ? Math.max(1, blk.b_mm*sc - 1) : Math.max(1, blk.te*TE_MM*sc - 1);
         const bh = Math.max(2, blk.h_mm*sc);
         // Beide Modi zentrieren das Gerät vertikal in seinem verfügbaren Raum:
         // Klemmenzeile über die volle Zeilenhöhe, Leist./Steuer./Evert
