@@ -2882,7 +2882,12 @@ function buildQueues(ddcReservePct) {
   // deutlicher von den farbig codierten manuellen/Baugruppen-Bauteilen ab.
   // Der Farbpunkt in der Belegungsliste (updateDdcAutoDisplay()) bleibt
   // bewusst unverändert, dort ausdrücklich nicht angefasst.
-  const autoDev = eb => ({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#9A9890', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
+  // #9A9890 (--tx2) ist ein UI-Grauton für den dunklen Seitenhintergrund und
+  // wirkt auf dem hellen/cremefarbenen Zeichenpapier (#FDFCF8, siehe C.paper)
+  // weiterhin dunkel – #D8D5CE ist deutlich heller und dennoch klar von den
+  // gesättigten Zonenfarben unterscheidbar (Nutzer-Fund per Screenshot,
+  // Session 51 Nachtrag 3).
+  const autoDev = eb => ({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#D8D5CE', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
   direktAnhaengend.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
   // Danach je neu ergänzter Gruppe: Netzteil (erzwingt eine frische
   // Hutschienenreihe) → CPU → deren E/A-Module, lücken- und
