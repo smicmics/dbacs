@@ -95,12 +95,18 @@ header a:hover{color:var(--tx2);}
 }
 .eb-block-row{display:flex;align-items:flex-end;gap:12px 16px;flex-wrap:wrap;}
 .eb-block-eingabe .gewerk-tabs{margin-bottom:0;}
-/* CPU-Typ-Feld auf dieselbe Grundlinie wie "Spezifische Auswahl Einzelbauteile"
-   im Nachbarblock ziehen (Session 51, Design-Vorgabe, bei 1920px empirisch
-   im Browser justiert) - #ddc-summary-row wurde bereits kompakter gemacht
-   (gap/min-height reduziert), der verbleibende Rest wird hier über den
-   Zeilenabstand zum vorherigen Geschwister-Element entfernt. */
-#cpu_typ_row{margin-top:-8px;}
+/* CPU-Typ-Feld exakt auf die Grundlinie von "Spezifische Auswahl
+   Einzelbauteile" im Nachbarblock legen UND aus dem normalen Fluss von
+   eb-block-statistik herausnehmen (Session 51, Design-Nachtrag) – dadurch
+   bestimmt nicht mehr die Statistik-Zeile + CPU-Feld zusammen die Höhe des
+   gesamten Blocks (`align-items:stretch` in .eingabeleiste zieht sonst alle
+   drei Blöcke auf die Höhe des höchsten hoch), sondern nur noch die reine
+   4-Zeilen-Statistik – gewinnt Höhe zugunsten der Schranksicht. Schmaler
+   (200px statt voller Blockbreite) lässt zusätzlich Platz für künftige
+   Erweiterungen im Statistikfeld. top-Wert bei 1920px empirisch im Browser
+   gegen #einzel_auswahl justiert. */
+#ddc-summary-field{position:relative;}
+#cpu_typ_row{position:absolute;left:20px;bottom:14px;width:200px;}
 .eb-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
 .eb-field label{
   font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
@@ -146,6 +152,13 @@ header a:hover{color:var(--tx2);}
 .dp-bo{border-color:var(--dp-bo);color:var(--dp-bo);}
 .ddc-grp-lbl{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
 .eb-hint{width:100%;font-size:10px;color:var(--tx3);margin-top:4px;}
+/* Hinweistext hinter die Blocküberschrift statt als eigene Zeile am
+   Blockende (Session 51, Design-Vorgabe – gewinnt Höhe für die
+   Schranksicht). Variablennamen unter den Grund-/Reserve-Feldern werden
+   ausgeblendet statt entfernt, damit loadMontagebereich()s dynamisches
+   Befüllen von #var_b weiterhin funktioniert, ohne im DOM zu fehlen. */
+.eb-hint-inline{font-size:9px;color:var(--tx3);text-transform:none;letter-spacing:0;font-weight:normal;margin-left:6px;}
+.eb-block-grund .var{display:none;}
 
 /* ── Füllstand-Streifen (volle Breite, kompakt) ── */
 .fuellstand-strip{
@@ -491,7 +504,7 @@ legend{
 <!-- ── Eingabeleiste (volle Breite, 2-zeiliges Grid) ── -->
 <div class="eingabeleiste">
   <div class="eb-block eb-block-grund">
-    <div class="eb-block-title">Grund- &amp; Reserveangaben</div>
+    <div class="eb-block-title">Grund- &amp; Reserveangaben <span class="eb-hint-inline" id="hint_quelle">Bitte Schrank-Typ wählen</span></div>
     <div class="eb-block-row">
       <div class="eb-field">
         <label>Schranktyp<span class="var">schrank_typ</span></label>
@@ -549,7 +562,7 @@ legend{
     <div class="eb-field" id="cpu_typ_row" title="Welcher CPU-Typ für die automatische Netzteil→CPU→E/A-Modul-Ergänzung verwendet wird. Automatisch = die modulare Automationsstation (kein Onboard-E/A, katalogseitig markiert). Bei knappem Platz kann stattdessen bewusst eine Kompaktstation gewählt werden.">
       <label>CPU-Typ (Auto-Ergänzung)</label>
       <select id="cpu_typ_override" onchange="onCpuTypChange()">
-        <option value="">Automatisch (empfohlen)</option>
+        <option value="">Automatisch</option>
       </select>
     </div>
   </div>
@@ -614,8 +627,6 @@ legend{
       </div>
     </div>
   </div>
-
-  <p class="eb-hint" id="hint_quelle">Bitte Schrank-Typ wählen</p>
 </div>
 
 <!-- ── Füllstand-Streifen (volle Breite, kompakt) ──

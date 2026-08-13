@@ -34,6 +34,12 @@
    „WSL-localhost-Relay-Ausfall" weiter unten), behoben per `wsl --shutdown`.
    Danach vollständig im Browser getestet (alle 4 Klemmenvarianten,
    CPU-Dropdown, Grundlinie-Ausrichtung bei 1920px, keine Konsolenfehler).
+3. **Eingabeleiste-Höhe reduziert** (Nutzer-Fund direkt danach: die neue
+   Klemmenauswahl-Zeile hatte `eb-block-grund` zum höhentreibenden Block
+   gemacht, wodurch die Schranksicht kleiner wurde als vorher) – siehe
+   „Modul 4 – Eingabeleiste kompakter" weiter unten. `.eingabeleiste`-Höhe
+   von 241,25px auf 196,5px reduziert (−45px zugunsten der Schranksicht),
+   im Browser verifiziert.
 
 ---
 
@@ -441,6 +447,65 @@ doppelstock_trenn: 1×3210400); Radiogruppe exklusiv (`checkedRadios:1` nach
 Variantenwechsel); CPU-Dropdown zeigt „Automatisch" + alle drei Katalogtypen
 korrekt; Grundlinie-Ausrichtung ohne Überlappung bestätigt; keine
 Konsolenfehler.
+
+### Modul 4 – Eingabeleiste kompakter (Session 51 Nachtrag, gesperrt)
+Nutzer-Fund per Screenshot direkt im Anschluss an die Klemmenauswahl-Varianten
+(vorheriger Abschnitt): die neue 3. Zeile in `eb-block-grund`
+(„Klemmenauswahl Feldgeräte und Sensoren") machte diesen Block zum
+höhentreibenden Element der Eingabeleiste (`align-items:stretch` zieht alle
+drei Blöcke auf die Höhe des höchsten hoch) – die Schranksicht darunter
+wurde dadurch kleiner als vorher. Drei gezielte Maßnahmen, alle bei 1920px
+im Browser gemessen und verifiziert (`.eingabeleiste`-Höhe 241,25px →
+196,5px, −45px):
+
+1. **Hinweistext hinter die Überschrift statt eigene Zeile:** `#hint_quelle`
+   („Automatisch aus Modul 2 übernommen") war als eigenständiges
+   `<p class="eb-hint">` die LETZTE Zeile der gesamten Eingabeleiste (nach
+   allen drei Blöcken) – jetzt inline direkt hinter „Grund- &
+   Reserveangaben" im `.eb-block-title` (neue Klasse `.eb-hint-inline`).
+   `loadMontagebereich()` befüllt dasselbe Element (`id="hint_quelle"`)
+   weiterhin unverändert per `textContent`.
+2. **Variablennamen unter Grund-/Reserve-Feldern ausgeblendet, nicht
+   entfernt:** `.eb-block-grund .var{display:none}` – betrifft `schrank_typ`,
+   `b/h_mplatte_mbereich_mm` (`#var_b`), `reserve_pct`, `ddc_reserve_pct`.
+   Bewusst per CSS ausgeblendet statt aus dem HTML entfernt, da
+   `loadMontagebereich()` `#var_b`s `textContent` weiterhin dynamisch setzt –
+   ein fehlendes Element hätte dort einen Laufzeitfehler ausgelöst. Da
+   `.eb-field label{flex-direction:column}` den Variablennamen auf eine
+   eigene Zeile UNTER dem Label setzt, spart das Ausblenden pro betroffenem
+   Feld echte Zeilenhöhe (nicht nur Breite).
+3. **CPU-Typ-Feld aus dem normalen Fluss von `eb-block-statistik`
+   herausgenommen:** `#cpu_typ_row{position:absolute}` (statt normaler
+   Block-Nachfolger von `#ddc-summary-row`) – dadurch bestimmt nur noch die
+   reine 4-Zeilen-DDC-Statistik die natürliche Höhe des Statistik-Blocks,
+   nicht mehr Statistik+CPU-Feld zusammen. Zusätzlich auf 200px verschmälert
+   (Nutzer-Vorgabe „Platz für zukünftige Erweiterungen im Statistikfeld").
+   Position empirisch im Browser gegen `#einzel_auswahl` (Nachbarblock
+   `eb-block-eingabe`) justiert: `left:20px` (erster Versuch mit `left:0`
+   überlappte das Block-Padding links, sofort korrigiert). Für die
+   Vertikalposition zunächst `top` verwendet (erster Versuch überlappte die
+   letzte Statistik-Zeile um ~4px) – **Nutzer-Fund nach dem ersten
+   Browser-Test:** `top`-Ausrichtung an der Blockoberkante wirkte trotz
+   korrekter Werte optisch zu nah an der Statistik-Zeile dran. Auf
+   `bottom:14px` umgestellt (Unterkante von `#cpu_typ_row` an der Unterkante
+   von `#einzel_auswahl` ausgerichtet, nicht die Oberkante) – „sieht auch
+   besser aus" (Nutzer). Ergebnis bei 1920px: 0,25px Abweichung der
+   Unterkanten, 2px Abstand zur Statistik-Zeile, keine Überlappung.
+
+Nebenbei: die im vorherigen Abschnitt (Design-Nachtrag) bereits kompaktere
+`#ddc-summary-row` (`gap:0 8px;min-height:18px`, dort ursprünglich für die
+alte margin-basierte Ausrichtung gedacht) bleibt unverändert bestehen – auch
+mit der jetzigen `position:absolute`-Lösung weiterhin sinnvoll, da sie sich
+in den Gesamt-Höhengewinn addiert.
+
+Verifiziert direkt im Browser (1920px UND 1280px, Standschrank 699×1499mm):
+alle drei Blöcke jetzt 175,5px hoch (vorher 201,25px); `#cpu_typ_row`
+überlappt bei keiner der beiden Breiten `#ddc-summary-row` (Statistik-Block
+ist breitenunabhängig fix `flex:0 0 600px`); CPU-Dropdown-Funktion
+gegengeprüft (manuelle Wahl `PXC4.E16.A` wirkt weiterhin korrekt in
+`buildQueues()`); alle 4 `.var`-Spans in `eb-block-grund` per
+`getComputedStyle` bestätigt ausgeblendet; `#hint_quelle` aktualisiert sich
+weiterhin korrekt bei Schranktyp-Wechsel; keine Konsolenfehler.
 
 ### WSL-localhost-Relay-Ausfall (Session 51, Infrastruktur-Notiz, kein Projekt-Bug)
 Der Browser-Preview (und `curl`/`Test-NetConnection` von der Windows-Seite)
