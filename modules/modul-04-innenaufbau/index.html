@@ -748,6 +748,20 @@ legend{
 // ── Konstanten ───────────────────────────────────────────────────────
 const TE_MM = 18;
 const BG_COLORS = ['#E07B39','#4BBECA','#9A94E8','#2DBD8E','#C84E2E','#D4A84B','#7A74CC','#5BAD6B','#C86090','#A8C4E8'];
+// Anzeigereihenfolge im Baugruppen-Dropdown (Session 51 Nachtrag 3,
+// Nutzer-Vorgabe): AI → AO → AO mit LVB → BI → BO → BO mit LVB → sonstige
+// (z.B. Automationsstation). Die DIN-276-`id` selbst bleibt eine reine
+// fortlaufende Nummer ohne Ordnungsbedeutung (Session 37/38) – die
+// Anzeigereihenfolge ist deshalb bewusst eine eigene, von der `id`
+// unabhängige Zuordnung statt einer Umsortierung der Katalogdaten.
+const BG_SORT_PRIORITY = {
+  '480_000006': 0, // Analogeingang (AI) auf Klemmleiste
+  '480_000004': 1, // Analogausgang (AO) auf Klemmleiste
+  '480_000005': 2, // Analogausgang (AO) mit LVB auf Klemmleiste
+  '480_000001': 3, // Binäreingang (BI) auf Klemmleiste
+  '480_000002': 4, // Binärausgang (BO) auf Klemmleiste
+  '480_000003': 5, // Binärausgang (BO) mit LVB auf Klemmleiste
+};
 const ZONE_LABELS = {
   klemm_e:'Einspeiseklemmen', uss:'Überspannungsschutz & Vorsicherung', evert:'Energieverteilung',
   leist:'Leistungsbaugruppe', steuer:'Steuerbaugruppe',
@@ -1133,7 +1147,10 @@ function filterBaugruppen(gew) {
   const sel = document.getElementById('bg_auswahl');
   const cur = sel.value;
   sel.innerHTML = '<option value="">— Baugruppe wählen —</option>';
-  BAUGRUPPEN_DB.filter(b => b.funktionsbereich === gew).forEach(b => {
+  BAUGRUPPEN_DB.filter(b => b.funktionsbereich === gew)
+    .slice()
+    .sort((a, b) => (BG_SORT_PRIORITY[a.id] ?? 999) - (BG_SORT_PRIORITY[b.id] ?? 999))
+    .forEach(b => {
     const opt = document.createElement('option');
     opt.value = b.id;
     opt.textContent = b.name;
