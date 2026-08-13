@@ -368,6 +368,13 @@ def export_einzelbauteile(wb):
         # Doppelstockklemme im selben mm-Platzbedarf.
         if rec.get('doppelstock_variante_artikel_nr') is not None:
             entry['doppelstock_variante_artikel_nr'] = str(rec['doppelstock_variante_artikel_nr'])
+        # trennklemme_variante_artikel_nr (Session 51 Nachtrag): verweist von
+        # der Standardklemme auf ihre Trennklemmen-Variante (analog zu
+        # doppelstock_variante_artikel_nr) - zusammen ergeben beide Felder die
+        # 4 waehlbaren Klemmentypen (Standard/Doppelstock/Trennklemme/
+        # Doppelstock-Trennklemme) in resolveKlemmeArtikel() (Modul 4).
+        if rec.get('trennklemme_variante_artikel_nr') is not None:
+            entry['trennklemme_variante_artikel_nr'] = str(rec['trennklemme_variante_artikel_nr'])
         # max_ea_module/ddc_netzteil_artikel_nr/ddc_sicherung_artikel_nr (Session 50):
         # nur bei ddc_cpu-Bauteilen relevant. Herstellerseitige Obergrenze der
         # E/A-Module je Automationsstation (max_ea_module) sowie die fest

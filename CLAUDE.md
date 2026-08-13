@@ -24,18 +24,16 @@
    technische Details, bereits ausgeschlossene Ursachen und der nächste
    Debugging-Schritt siehe Abschnitt „Modul 4 – OFFEN: Klemmen-Gruppen-Split"
    unten (steht bewusst ausnahmsweise VOR den gesperrten Entscheidungen).
-2. **Punkte 2–4 aus der letzten Sitzung (Doppelstockklemmen, CPU-Typ-
-   Dropdown, Klemmenfarbe DDC-Abgänge) sind implementiert**, siehe
-   „Modul 4 – Doppelstockklemmen, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge
-   (Session 51)" weiter unten. **WICHTIG: Browser-Live-Test steht noch aus**
-   – die Preview-Umgebung war in der Implementierungs-Sitzung durchgehend
-   nicht erreichbar (Infrastrukturproblem, keine einzige Navigation zu
-   `localhost:8099` erfolgreich, >20 Versuche über mehrere Tabs/Server-
-   Neustarts). Verifiziert wurde nur per Code-Review + JSON-Strukturprüfung
-   (keine doppelten `artikel_nr`, Felder korrekt exportiert). Vor produktivem
-   Vertrauen in diese Änderungen: einmal im Browser durchklicken (Doppelstock-
-   Checkbox + CPU-Dropdown + neue Klemmen 3210156/3210400/3210567 in der
-   Direktbauteil-Auswahl prüfen).
+2. **Punkte 2–4 aus der letzten Sitzung (Klemmenauswahl Feldgeräte/Sensoren
+   mit 4 Varianten, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge) sind
+   implementiert UND im Browser verifiziert** (siehe „Modul 4 –
+   Klemmenauswahl-Varianten, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge
+   (Session 51)" weiter unten). Die Preview-Umgebung war während der
+   Implementierung zunächst durchgehend nicht erreichbar – Ursache war ein
+   hängengebliebener WSL2-localhost-Relay (nicht projektbezogen, siehe
+   „WSL-localhost-Relay-Ausfall" weiter unten), behoben per `wsl --shutdown`.
+   Danach vollständig im Browser getestet (alle 4 Klemmenvarianten,
+   CPU-Dropdown, Grundlinie-Ausrichtung bei 1920px, keine Konsolenfehler).
 
 ---
 
@@ -322,31 +320,53 @@ Session abgreifen lassen, damit eine bit-genaue Reproduktion (statt
 Parameter-Sweep) möglich ist – vermutlich schneller zielführend als weiteres
 Raten an Eingabewerten.
 
-### Modul 4 – Doppelstockklemmen, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge (Session 51, UMGESETZT ABER NICHT IM BROWSER VERIFIZIERT)
+### Modul 4 – Klemmenauswahl-Varianten, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge (Session 51, gesperrt, im Browser verifiziert)
 Nutzer-Auftrag „Setze Punkt 2 bis 4 in einem Zug um" (aus der Offene-Punkte-
-Liste der letzten Sitzung). **Browser-Preview war während der gesamten
-Umsetzung nicht erreichbar** (>20 Navigationsversuche zu `localhost:8099`
-über mehrere frische Tabs und Server-Neustarts, `navOk:false`) – nur per
-Code-Review und JSON-Struktur-/Duplikatsprüfung kontrolliert. Vor
-produktivem Vertrauen einmal im Browser durchklicken.
+Liste der letzten Sitzung), danach per Design-Feedback zu einer 4-Varianten-
+Auswahl statt einer einzelnen Checkbox weiterentwickelt.
 
 **Punkt 4 – Klemmenfarbe DDC-Abgänge:** Die Referenzklemme (zweites Bauteil)
-aller 6 DDC-Reserve-Baugruppen (`480_000001`–`480_000006`) war `3209523`
+aller 6 DDC-Baugruppen (`480_000001`–`480_000006`) war `3209523`
 (PT 2,5 **BU blau**) – umgestellt auf `3209510` (PT 2,5 **grau**, dieselbe
 Klemme wie die Signalklemme). Betrifft `baugruppen_bauteile` – jede
 Baugruppe hat jetzt zweimal `3209510` in derselben Zone statt `3209510` +
 `3209523`.
 
-**Punkt 2 – Doppelstockklemmen:** Neue Checkbox „Doppelstockklemmen
-(DDC-Reserve)" im Block „Grund- & Reserveangaben" (`#doppelstock_aktiv`,
-persistiert `localStorage['m04_doppelstock']`, Default AUS – Nutzer muss
-aktiv setzen). Neue Funktion `resolveBaugruppenBauteile(bg, doppelstockAktiv)`:
-ersetzt bei aktiver Checkbox zwei aufeinanderfolgende Bauteil-Einträge einer
-Baugruppe mit identischem `artikel_nr`+Zone (= das jetzt einheitliche
-Signal+Referenz-Klemmenpaar aus Punkt 4) durch EINE Doppelstockklemme im
-selben mm-Platzbedarf (Auflösung über neues Katalogfeld
-`eb.doppelstock_variante_artikel_nr`) – das erste Vorkommen wird ersetzt
-(behält seinen `dp_*`/`lvb_erforderlich`-Override), das zweite entfällt.
+**Punkt 2 – Klemmenauswahl Feldgeräte und Sensoren (4 Varianten statt einer
+Doppelstock-Checkbox, Design-Nachtrag):** Neue Radio-Gruppe (4 sich
+gegenseitig ausschließende, als Checkbox gestylte Optionen nebeneinander,
+`name="klemmen_variante"`) unter der Überschrift „Klemmenauswahl Feldgeräte
+und Sensoren" im Block „Grund- & Reserveangaben": **Standard** (Default) /
+**Doppelstock** / **Trennklemme** / **DS-Trennklemme** (bewusst abgekürzt,
+„Doppelstock-Trennklemme" wäre zu breit gewesen). Persistiert
+`localStorage['m04_klemmen_variante']`.
+
+Katalog-Auflösung über zwei verkettbare Verweisfelder auf der Standardklemme
+`3209510`: `trennklemme_variante_artikel_nr` (→ `3210156`) und
+`doppelstock_variante_artikel_nr` (→ `3210567`) – `3210156` trägt zusätzlich
+selbst ein `doppelstock_variante_artikel_nr` (→ `3210400`), wodurch sich die
+vierte Kombination (Doppelstock+Trennklemme) rein aus den beiden Feldern
+herleiten lässt, ohne einen dritten Verweis zu brauchen:
+```
+3209510 (Standard) ──trennklemme──> 3210156 (Trennklemme)
+   │                                    │
+   doppelstock                        doppelstock
+   ↓                                    ↓
+3210567 (Doppelstock)              3210400 (Doppelstock-Trennklemme)
+```
+`resolveKlemmeArtikel(eb, variante)` läuft diese Verkettung ab (erst
+Trennklemme, dann Doppelstock – Reihenfolge ergibt bei nur einem der beiden
+Schritte keinen Unterschied). `resolveBaugruppenBauteile(bg, variante)`
+wendet das auf die zwei Bauteil-Einträge einer Baugruppen-Instanz an:
+- **Standard:** unverändert, zwei getrennte Klemmen.
+- **Trennklemme** (nicht doppelstock): beide Einträge bleiben bestehen, nur
+  `artikel_nr` wechselt – Signal und Referenz brauchen weiterhin je eine
+  eigene physische Klemme.
+- **Doppelstock / DS-Trennklemme:** die zwei aufeinanderfolgenden
+  Bauteil-Einträge mit identischem `artikel_nr`+Zone werden zu EINEM
+  physischen Gerät im selben mm-Platzbedarf zusammengefasst (das erste
+  Vorkommen wird ersetzt und behält seinen `dp_*`/`lvb_erforderlich`-
+  Override, das zweite entfällt).
 Aufgerufen sowohl in `buildQueues()` (physische Platzierung) als auch in
 `aggregateStueckliste()` (Stückliste) – beide müssen dieselbe Funktion
 nutzen, sonst laufen Zeichnung und Stückliste auseinander (unterschiedliche
@@ -355,20 +375,34 @@ nutzen, sonst laufen Zeichnung und Stückliste auseinander (unterschiedliche
 **Punkt 3 – CPU-Typ-Dropdown:** Neues `<select id="cpu_typ_override">` im
 Statistikfeld unten (Block „Statistik · DDC-Automationseinrichtung"),
 Optionen aus `EINZELBAUTEILE_DB.filter(bauteil_typ==='ddc_cpu')` befüllt
-(„Automatisch (empfohlen)" als Default plus alle drei CPU-Katalogtypen aus
-Session 50, mit „· modular"/„· kompakt"-Suffix aus `auto_ea_cpu`).
-Persistiert `localStorage['m04_cpu_typ_override']`. In `buildQueues()` hat
-die manuelle Wahl (`gs('cpu_typ_override')`) Vorrang vor `auto_ea_cpu` bei
-der `cpuEb`-Ermittlung – alles Nachgelagerte (Netzteil/Sicherung-Auflösung
-über `cpuEb.ddc_netzteil_artikel_nr`/`ddc_sicherung_artikel_nr`,
+(„Automatisch" als Default – „(empfohlen)"-Zusatz auf Nutzer-Vorgabe
+entfernt – plus alle drei CPU-Katalogtypen aus Session 50, mit
+„· modular"/„· kompakt"-Suffix aus `auto_ea_cpu`). Persistiert
+`localStorage['m04_cpu_typ_override']`. In `buildQueues()` hat die manuelle
+Wahl (`gs('cpu_typ_override')`) Vorrang vor `auto_ea_cpu` bei der
+`cpuEb`-Ermittlung – alles Nachgelagerte (Netzteil/Sicherung-Auflösung über
+`cpuEb.ddc_netzteil_artikel_nr`/`ddc_sicherung_artikel_nr`,
 `max_ea_module`-Kapazitätsgrenze) bleibt unverändert generisch und
-funktioniert automatisch auch für die beiden Kompaktstationen, da diese
-bereits in Session 50 dieselben Zusatzfelder bekommen haben.
+funktioniert automatisch auch für die beiden Kompaktstationen.
+
+**Design-Nachtrag: CPU-Typ-Feld auf gleiche Grundlinie wie „Spezifische
+Auswahl Einzelbauteile" im Nachbarblock.** Bei 1920px lag `#cpu_typ_row`
+23,75px tiefer als das Einzelbauteile-Feld, obwohl beide Blöcke bei
+ausreichender Fensterbreite nebeneinander in derselben Zeile stehen (bei zu
+schmalem Fenster bricht `.eb-block-eingabe` per Flex-Wrap in eine neue Zeile
+um – das ist kein Fehler, sondern das bestehende, absichtliche
+Responsive-Verhalten). Perfekte Deckung war ohne die 4-Zeilen-DDC-Statistik
+(`#ddc-summary-row`) sichtbar zu stauchen nicht erreichbar (Zielabstand
+> verfügbarer Zeilenabstand); stattdessen `#ddc-summary-row` maßvoll
+kompakter gemacht (`gap:4px 8px;min-height:28px` → `gap:0 8px;min-height:18px`)
+und der verbleibende Rest über `#cpu_typ_row{margin-top:-8px}` entfernt –
+Ergebnis 3,75px Restabweichung (optisch nicht wahrnehmbar), keine
+Überlappung mit der Statistik-Zeile.
 
 **Katalog-Recherche (Phoenix Contact, PT-2,5-Push-in-Reihe, alle grau,
 5,2mm Pitch-Breite – identisch zur Standardklemme `3209510`):**
 - `3210567` PTTB 2,5 (Doppelstockklemme, 2 Ebenen, 45,8mm hoch, 1,95€) –
-  neu angelegt, `doppelstock_variante_artikel_nr` von `3209510` darauf gesetzt.
+  neu angelegt.
 - `3210156` PT 2,5-MT (Messertrennklemme) – **existierte bereits seit
   Session 27b/44** im Katalog (mit dem Hinweis „Höhe unsicher, zu
   verifizieren"); Höhe jetzt gegen watt24.com-Datenblatt bestätigt (61,93mm,
@@ -382,23 +416,51 @@ bereits in Session 50 dieselben Zusatzfelder bekommen haben.
   gefunden und korrigiert** (Duplikat-Zeile geleert, Original-Zeile
   aktualisiert statt einer zweiten Zeile).
 - `3210400` PTTBS 2,5-2MTB (Doppelstock-Trennklemme, 2 Ebenen JE MIT
-  Trennmesser, 127,5mm hoch, 10,64€ netto) – neu angelegt,
-  `doppelstock_variante_artikel_nr` von `3210156` darauf gesetzt. **Erster
-  Versuch war `3210405` (PTTBS 2,5-MTB/TGB)** – vom Nutzer korrigiert
-  („Nimm besser die PTTBS 2,5-2MTB"), da MTB/TGB nur EINE Ebene mit
-  Trennmesser und die andere nur mit reiner Trenn-/Prüfsteckstelle
-  kombiniert, während 2MTB auf BEIDEN Ebenen ein Trennmesser hat – die
-  fehlerhafte Zeile wurde auf `3210400` umgeschrieben (keine zusätzliche
-  Karteileiche stehen gelassen). Vorsicht: erste gefundene Maßangabe für
-  `3210400` (271×72×172mm, shortec.com) war die VERPACKUNGSGRÖSSE einer
-  50er-Gebindeeinheit, nicht die Einzelklemme – zweite Quelle
-  (wsu-industrials.com) lieferte die korrekten Einzelmaße (5,2×127,5mm).
+  Trennmesser, 127,5mm hoch, 10,64€ netto) – neu angelegt. **Erster Versuch
+  war `3210405` (PTTBS 2,5-MTB/TGB)** – vom Nutzer korrigiert („Nimm besser
+  die PTTBS 2,5-2MTB"), da MTB/TGB nur EINE Ebene mit Trennmesser und die
+  andere nur mit reiner Trenn-/Prüfsteckstelle kombiniert, während 2MTB auf
+  BEIDEN Ebenen ein Trennmesser hat – die fehlerhafte Zeile wurde auf
+  `3210400` umgeschrieben (keine zusätzliche Karteileiche stehen gelassen).
+  Vorsicht: erste gefundene Maßangabe für `3210400` (271×72×172mm,
+  shortec.com) war die VERPACKUNGSGRÖSSE einer 50er-Gebindeeinheit, nicht
+  die Einzelklemme – zweite Quelle (wsu-industrials.com) lieferte die
+  korrekten Einzelmaße (5,2×127,5mm).
 
 Backup vor allen Excel-Änderungen dieser Sitzung:
 `C:\Users\SMI\Backups\dbacs\excel\
 ga_komponenten_vor-doppelstock-cpudropdown-klemmenfarbe_*.xlsx`.
 Katalog danach 131 Bauteile, keine doppelten `artikel_nr` (per Skript
 geprüft).
+
+Verifiziert direkt im Browser (1920px, Standschrank 699×1499mm, Baugruppe
+„Binäreingang (BI)"): alle 4 Klemmenvarianten liefern die erwartete
+`artikel_nr`-Kombination in `buildQueues()` UND `aggregateStueckliste()`
+identisch (standard: 2×3209510, doppelstock: 1×3210567, trenn: 2×3210156,
+doppelstock_trenn: 1×3210400); Radiogruppe exklusiv (`checkedRadios:1` nach
+Variantenwechsel); CPU-Dropdown zeigt „Automatisch" + alle drei Katalogtypen
+korrekt; Grundlinie-Ausrichtung ohne Überlappung bestätigt; keine
+Konsolenfehler.
+
+### WSL-localhost-Relay-Ausfall (Session 51, Infrastruktur-Notiz, kein Projekt-Bug)
+Der Browser-Preview (und `curl`/`Test-NetConnection` von der Windows-Seite)
+konnten zeitweise `localhost:8099` nicht erreichen, obwohl der Server
+(`wsl.exe python3 -m http.server 8099`, siehe `.claude/launch.json`)
+nachweislich lief (`ps`/`ss` in WSL bestätigten den lauschenden Prozess;
+direkte Verbindung zur WSL-VM-IP funktionierte). Ursache: der WSL2-
+„localhost-Relay"-Hintergrundprozess (leitet `localhost:PORT` von Windows in
+die WSL-VM weiter) hing fest – betraf ausnahmslos JEDEN Port, nicht nur
+8099 (Test mit einem zweiten, unabhängigen Port 8123 schlug identisch fehl).
+**Fix: `wsl --shutdown`** (PowerShell, beendet nur die WSL-VM, kein
+Windows-Neustart nötig) – danach war `localhost:8099` sofort wieder
+erreichbar. Bei künftigem Auftreten (Symptom: Browser-Tool bekommt
+durchgehend `navOk:false`/leere `chrome-error://`-Seiten trotz laufendem
+Server) zuerst mit `Test-NetConnection -ComputerName localhost -Port 8099`
+UND `Test-NetConnection -ComputerName <wsl-hostname -I> -Port 8099`
+gegenprüfen (WSL-IP erreichbar + localhost nicht erreichbar bestätigt genau
+dieses Relay-Problem), dann `wsl --shutdown` – **vorher beim Nutzer
+nachfragen**, da alle laufenden WSL-Prozesse (auch außerhalb der aktuellen
+Sitzung) beendet werden.
 
 ## Gesperrte Entscheidungen
 

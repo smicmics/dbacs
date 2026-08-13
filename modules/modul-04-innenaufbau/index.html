@@ -95,6 +95,12 @@ header a:hover{color:var(--tx2);}
 }
 .eb-block-row{display:flex;align-items:flex-end;gap:12px 16px;flex-wrap:wrap;}
 .eb-block-eingabe .gewerk-tabs{margin-bottom:0;}
+/* CPU-Typ-Feld auf dieselbe Grundlinie wie "Spezifische Auswahl Einzelbauteile"
+   im Nachbarblock ziehen (Session 51, Design-Vorgabe, bei 1920px empirisch
+   im Browser justiert) - #ddc-summary-row wurde bereits kompakter gemacht
+   (gap/min-height reduziert), der verbleibende Rest wird hier über den
+   Zeilenabstand zum vorherigen Geschwister-Element entfernt. */
+#cpu_typ_row{margin-top:-8px;}
 .eb-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
 .eb-field label{
   font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
@@ -118,7 +124,7 @@ header a:hover{color:var(--tx2);}
    wie zuvor als lose Flex-Wrap-Häppchen zu "verschachteln" (Nutzer-Vorgabe). */
 .ddc-summary-row{
   display:grid;grid-template-columns:auto repeat(4,minmax(108px,1fr));
-  gap:4px 8px;align-items:center;min-height:28px;
+  gap:0 8px;align-items:center;min-height:18px;
 }
 .ddc-summary-grp{display:contents;}
 .ddc-chip{
@@ -264,9 +270,10 @@ legend{
   display:flex;align-items:center;gap:3px;font-size:10px;color:var(--tx2);
   white-space:nowrap;flex-shrink:0;cursor:pointer;
 }
-.rowbreak-lbl input[type=checkbox]{width:12px;height:12px;flex-shrink:0;cursor:pointer;}
+.rowbreak-lbl input[type=checkbox],.rowbreak-lbl input[type=radio]{width:12px;height:12px;flex-shrink:0;cursor:pointer;}
 .rowbreak-lbl-disabled{color:var(--tx3);cursor:not-allowed;}
 .rowbreak-lbl-disabled input[type=checkbox]{cursor:not-allowed;}
+.klemmen-variante-row{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:2px;}
 .ddc-auf-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px;}
 .ddc-auf-row .rowbreak-lbl{gap:4px;}
 #ddc_protokoll{font-size:10px;padding:1px 4px;background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;}
@@ -524,10 +531,14 @@ legend{
       </div>
     </div>
     <div class="eb-block-row">
-      <div class="eb-field" title="Signal- und Referenzklemme einer DDC-Reserve-Baugruppe (BI/AI/BO/AO auf Klemmleiste) werden als eine Doppelstockklemme (2 Anschlussebenen, gleicher mm-Platzbedarf wie eine einzelne Standardklemme) statt als zwei getrennte Klemmen platziert. Standard bleibt die normale (einstöckige) Klemme.">
-        <label class="rowbreak-lbl" id="doppelstock_lbl">
-          <input type="checkbox" id="doppelstock_aktiv" onchange="onDoppelstockChange()">Doppelstockklemmen (DDC-Reserve)
-        </label>
+      <div class="eb-field" title="Welcher Klemmentyp für Signal- und Referenzklemme der Baugruppen BI/AI/BO/AO auf Klemmleiste (Zonen Kl. Feld/Kl. Sens.) verwendet wird. Doppelstock = 2 Anschlussebenen im selben mm-Platzbedarf wie eine Standardklemme (Signal+Referenz auf einer Klemme). Trennklemme = mit Trennmesser für stromlose Messung/Prüfung. Standard bleibt die normale Klemme.">
+        <label>Klemmenauswahl Feldgeräte und Sensoren</label>
+        <div class="klemmen-variante-row" id="klemmen_variante_row">
+          <label class="rowbreak-lbl"><input type="radio" name="klemmen_variante" value="standard" checked onchange="onKlemmenVarianteChange()">Standard</label>
+          <label class="rowbreak-lbl"><input type="radio" name="klemmen_variante" value="doppelstock" onchange="onKlemmenVarianteChange()">Doppelstock</label>
+          <label class="rowbreak-lbl"><input type="radio" name="klemmen_variante" value="trenn" onchange="onKlemmenVarianteChange()">Trennklemme</label>
+          <label class="rowbreak-lbl"><input type="radio" name="klemmen_variante" value="doppelstock_trenn" onchange="onKlemmenVarianteChange()">DS-Trennklemme</label>
+        </div>
       </div>
     </div>
   </div>
@@ -854,8 +865,10 @@ function init() {
   const ddcrp = localStorage.getItem('m04_ddc_reserve_pct');
   if(ddcrp) _v('ddc_reserve_pct', ddcrp);
 
-  // Doppelstockklemmen (Session 51)
-  document.getElementById('doppelstock_aktiv').checked = localStorage.getItem('m04_doppelstock') === '1';
+  // Klemmenauswahl Feldgeräte/Sensoren (Session 51)
+  const kv = localStorage.getItem('m04_klemmen_variante') || 'standard';
+  const kvEl = document.querySelector(`input[name="klemmen_variante"][value="${kv}"]`);
+  if (kvEl) kvEl.checked = true;
 
   // CPU-Typ-Auswahl (Session 51): Dropdown erst befuellbar, sobald
   // EINZELBAUTEILE_DB geladen ist (hier in init() der Fall).
@@ -1410,11 +1423,12 @@ function onDdcReserveChange() {
   calculate();
 }
 
-// ── Doppelstockklemmen (Session 51) ───────────────────────────────────
-// Global (nicht je Baugruppe) – der Nutzer muss sie aktiv setzen, Standard
-// bleibt die normale (einstöckige) Klemme. Wirkt auf resolveBaugruppenBauteile().
-function onDoppelstockChange() {
-  localStorage.setItem('m04_doppelstock', document.getElementById('doppelstock_aktiv').checked ? '1' : '0');
+// ── Klemmenauswahl Feldgeräte/Sensoren (Session 51) ───────────────────
+// Global (nicht je Baugruppe) – Radio-Gruppe (4 sich gegenseitig
+// ausschließende Optionen, Standard bleibt Default). Wirkt auf
+// resolveBaugruppenBauteile()/resolveKlemmeArtikel().
+function onKlemmenVarianteChange() {
+  localStorage.setItem('m04_klemmen_variante', klemmenVariante());
   calculate();
 }
 
@@ -1425,7 +1439,7 @@ function onDoppelstockChange() {
 function populateCpuTypAuswahl() {
   const sel = document.getElementById('cpu_typ_override');
   const prev = sel.value;
-  sel.innerHTML = '<option value="">Automatisch (empfohlen)</option>';
+  sel.innerHTML = '<option value="">Automatisch</option>';
   EINZELBAUTEILE_DB.filter(e => e.bauteil_typ === 'ddc_cpu').forEach(eb => {
     const opt = document.createElement('option');
     opt.value = eb.artikel_nr;
@@ -2459,37 +2473,68 @@ function resetDdcWatermark() {
   calculate();
 }
 
-// ── Doppelstockklemmen: Baugruppen-Bauteilliste auflösen (Session 51) ──
-// Die DDC-Reserve-Baugruppen (Binäreingang/-ausgang, Analogeingang/-ausgang
-// auf Klemmleiste) bestehen aus genau zwei Klemmen desselben Katalogartikels
-// in derselben Zone (Signal + Referenz, seit der Klemmenfarb-Korrektur beide
-// grau). Ist die Doppelstock-Option aktiv, werden zwei aufeinanderfolgende
-// Bauteil-Einträge mit IDENTISCHEM artikel_nr+Zone zu EINER Doppelstockklemme
-// zusammengefasst (2 Anschlussebenen im selben mm-Platzbedarf einer
-// Standardklemme, siehe eb.doppelstock_variante_artikel_nr) – das erste
-// Vorkommen wird zur Doppelstockklemme (behält seinen dp_*/lvb_erforderlich-
-// Override), das zweite entfällt (bereits mitabgedeckt). Gilt sowohl für die
-// physische Platzierung (buildQueues()) als auch die Stückliste
-// (aggregateStueckliste()) – beide rufen dieselbe Funktion, sonst würden
-// Zeichnung und Stückliste auseinanderlaufen.
-function resolveBaugruppenBauteile(bg, doppelstockAktiv) {
-  if (!doppelstockAktiv) return bg.bauteile;
+// ── Klemmenauswahl Feldgeräte/Sensoren: Baugruppen-Bauteilliste auflösen ──
+// (Session 51, Nachtrag: von einer einzelnen Doppelstock-Checkbox auf 4
+// wählbare Klemmentypen erweitert – Standard/Doppelstock/Trennklemme/
+// Doppelstock-Trennklemme, siehe #klemmen_variante_row.)
+// Die DDC-Baugruppen (Binäreingang/-ausgang, Analogeingang/-ausgang auf
+// Klemmleiste) bestehen aus genau zwei Klemmen desselben Katalogartikels in
+// derselben Zone (Signal + Referenz, seit der Klemmenfarb-Korrektur beide
+// grau, Basisartikel 3209510). resolveKlemmeArtikel() löst davon ausgehend
+// die gewünschte Variante auf (trennklemme_variante_artikel_nr /
+// doppelstock_variante_artikel_nr, kombinierbar). Bei einer Doppelstock-
+// Variante (2 Anschlussebenen im selben mm-Platzbedarf) werden zusätzlich
+// zwei aufeinanderfolgende Bauteil-Einträge mit identischem artikel_nr+Zone
+// zu EINEM physischen Gerät zusammengefasst (das erste Vorkommen behält
+// seinen dp_*/lvb_erforderlich-Override, das zweite entfällt). Bei einer
+// reinen Trennklemme (nicht doppelstock) bleiben beide Einträge bestehen,
+// nur der artikel_nr wechselt. Gilt sowohl für die physische Platzierung
+// (buildQueues()) als auch die Stückliste (aggregateStueckliste()) – beide
+// rufen dieselbe Funktion, sonst würden Zeichnung und Stückliste
+// auseinanderlaufen (unterschiedliche artikel_nr als buildIdxMap()-Schlüssel).
+function resolveKlemmeArtikel(eb, variante) {
+  let ziel = eb;
+  if (variante === 'trenn' || variante === 'doppelstock_trenn') {
+    ziel = EINZELBAUTEILE_DB.find(e => e.artikel_nr === ziel.trennklemme_variante_artikel_nr) || ziel;
+  }
+  if (variante === 'doppelstock' || variante === 'doppelstock_trenn') {
+    ziel = EINZELBAUTEILE_DB.find(e => e.artikel_nr === ziel.doppelstock_variante_artikel_nr) || ziel;
+  }
+  return ziel;
+}
+function resolveBaugruppenBauteile(bg, variante) {
+  if (!variante || variante === 'standard') return bg.bauteile;
+  const istDoppelstock = variante === 'doppelstock' || variante === 'doppelstock_trenn';
+  if (!istDoppelstock) {
+    // Trennklemme ohne Doppelstock: jede Klemme einzeln ersetzen, keine
+    // Zusammenlegung – Signal und Referenz brauchen weiterhin je eine eigene
+    // physische Klemme.
+    return bg.bauteile.map(bt => {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+      if (!eb) return bt;
+      const ziel = resolveKlemmeArtikel(eb, variante);
+      return ziel === eb ? bt : {...bt, artikel_nr: ziel.artikel_nr};
+    });
+  }
   const out = [];
   const seen = {};
   bg.bauteile.forEach(bt => {
     const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
-    const dsArt = eb && eb.doppelstock_variante_artikel_nr;
-    if (!dsArt) { out.push(bt); return; }
-    const key = (bt.zone || (eb.zone && eb.zone[0])) + '|' + bt.artikel_nr;
-    if (seen[key]) { return; } // zweites Vorkommen: entfällt, bereits durch die Doppelstockklemme des ersten abgedeckt
+    if (!eb) { out.push(bt); return; }
+    const ziel = resolveKlemmeArtikel(eb, variante);
+    if (ziel === eb) { out.push(bt); return; } // keine passende Variante bekannt – unverändert lassen
+    const key = (bt.zone || eb.zone[0]) + '|' + bt.artikel_nr;
+    if (seen[key]) return; // zweites Vorkommen: entfällt, bereits durch die Doppelstockklemme des ersten abgedeckt
     seen[key] = true;
-    out.push({...bt, artikel_nr: dsArt});
+    out.push({...bt, artikel_nr: ziel.artikel_nr});
   });
   return out;
 }
-function doppelstockAktiv() {
-  const el = document.getElementById('doppelstock_aktiv');
-  return !!(el && el.checked);
+// Aktuell gewählte Klemmenvariante aus der Radio-Gruppe lesen (Default
+// 'standard', falls aus irgendeinem Grund keine Option aktiv ist).
+function klemmenVariante() {
+  const checked = document.querySelector('input[name="klemmen_variante"]:checked');
+  return checked ? checked.value : 'standard';
 }
 
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
@@ -2597,7 +2642,7 @@ function buildQueues(ddcReservePct) {
     // platziereBaugruppenFuerFeld() (siehe dort) auf ein Feld verteilt.
     for(let inst = 0; inst < item.menge; inst++) {
       const zonen = {};
-      resolveBaugruppenBauteile(bg, doppelstockAktiv()).forEach(bt => {
+      resolveBaugruppenBauteile(bg, klemmenVariante()).forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
         if(!eb || eb.te_breite <= 0) return;
         // CPU/E-A-Modul koennen jetzt auch ueber eine Baugruppe kommen (z.B.
@@ -3494,7 +3539,7 @@ function aggregateStueckliste() {
     }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
-    resolveBaugruppenBauteile(bg, doppelstockAktiv()).forEach(bt => {
+    resolveBaugruppenBauteile(bg, klemmenVariante()).forEach(bt => {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
       if(!eb) return;
       add(bt.artikel_nr, bt.zone || eb.zone[0], bt.menge * item.menge);
