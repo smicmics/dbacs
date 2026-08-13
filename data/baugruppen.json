@@ -12,7 +12,7 @@
         "dp_bi": 1
       },
       {
-        "artikel_nr": "3209523",
+        "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
       }
@@ -34,7 +34,7 @@
         "dp_bo": 1
       },
       {
-        "artikel_nr": "3209523",
+        "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
       }
@@ -57,7 +57,7 @@
         "lvb_erforderlich": true
       },
       {
-        "artikel_nr": "3209523",
+        "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
       }
@@ -79,7 +79,7 @@
         "dp_ao": 1
       },
       {
-        "artikel_nr": "3209523",
+        "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
       }
@@ -102,7 +102,7 @@
         "lvb_erforderlich": true
       },
       {
-        "artikel_nr": "3209523",
+        "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
       }
@@ -124,7 +124,7 @@
         "dp_ai": 1
       },
       {
-        "artikel_nr": "3209523",
+        "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_s"
       }

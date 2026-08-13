@@ -361,6 +361,13 @@ def export_einzelbauteile(wb):
             entry['zubehoer_artikel_nr'] = str(rec['zubehoer_artikel_nr'])
         if rec.get('lvb_integriert') is not None:
             entry['lvb_integriert'] = bool(rec['lvb_integriert'])
+        # doppelstock_variante_artikel_nr (Session 51): nur bei Standard-
+        # Klemmen mit Doppelstock-Gegenstueck gesetzt - resolveBaugruppenBauteile()
+        # in Modul 4 ersetzt bei aktiver Doppelstock-Option ein Klemmenpaar
+        # (Signal+Referenz derselben DDC-Reserve-Baugruppe) durch EINE
+        # Doppelstockklemme im selben mm-Platzbedarf.
+        if rec.get('doppelstock_variante_artikel_nr') is not None:
+            entry['doppelstock_variante_artikel_nr'] = str(rec['doppelstock_variante_artikel_nr'])
         # max_ea_module/ddc_netzteil_artikel_nr/ddc_sicherung_artikel_nr (Session 50):
         # nur bei ddc_cpu-Bauteilen relevant. Herstellerseitige Obergrenze der
         # E/A-Module je Automationsstation (max_ea_module) sowie die fest

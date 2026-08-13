@@ -523,11 +523,24 @@ legend{
         </div>
       </div>
     </div>
+    <div class="eb-block-row">
+      <div class="eb-field" title="Signal- und Referenzklemme einer DDC-Reserve-Baugruppe (BI/AI/BO/AO auf Klemmleiste) werden als eine Doppelstockklemme (2 Anschlussebenen, gleicher mm-Platzbedarf wie eine einzelne Standardklemme) statt als zwei getrennte Klemmen platziert. Standard bleibt die normale (einstöckige) Klemme.">
+        <label class="rowbreak-lbl" id="doppelstock_lbl">
+          <input type="checkbox" id="doppelstock_aktiv" onchange="onDoppelstockChange()">Doppelstockklemmen (DDC-Reserve)
+        </label>
+      </div>
+    </div>
   </div>
 
   <div class="eb-block eb-block-statistik" id="ddc-summary-field" title="Kapazität/belegt je Datenpunkttyp – physikalisch (manuell + automatisch platzierte DDC-Module) sowie kommunikativ je Feldbus-Protokoll (nur manuell platzierte Module/CPU)">
     <div class="eb-block-title">Statistik · DDC-Automationseinrichtung</div>
     <div class="ddc-summary-row" id="ddc-summary-row"><span class="ddc-chip-empty">–</span></div>
+    <div class="eb-field" id="cpu_typ_row" title="Welcher CPU-Typ für die automatische Netzteil→CPU→E/A-Modul-Ergänzung verwendet wird. Automatisch = die modulare Automationsstation (kein Onboard-E/A, katalogseitig markiert). Bei knappem Platz kann stattdessen bewusst eine Kompaktstation gewählt werden.">
+      <label>CPU-Typ (Auto-Ergänzung)</label>
+      <select id="cpu_typ_override" onchange="onCpuTypChange()">
+        <option value="">Automatisch (empfohlen)</option>
+      </select>
+    </div>
   </div>
 
   <div class="eb-block eb-block-eingabe">
@@ -840,6 +853,15 @@ function init() {
   // Reserve (DDC-Datenpunkte)
   const ddcrp = localStorage.getItem('m04_ddc_reserve_pct');
   if(ddcrp) _v('ddc_reserve_pct', ddcrp);
+
+  // Doppelstockklemmen (Session 51)
+  document.getElementById('doppelstock_aktiv').checked = localStorage.getItem('m04_doppelstock') === '1';
+
+  // CPU-Typ-Auswahl (Session 51): Dropdown erst befuellbar, sobald
+  // EINZELBAUTEILE_DB geladen ist (hier in init() der Fall).
+  populateCpuTypAuswahl();
+  const cpuOv = localStorage.getItem('m04_cpu_typ_override');
+  if(cpuOv) _v('cpu_typ_override', cpuOv);
 
   // Belegung wiederherstellen (ältere Einträge ohne "typ" = Baugruppe)
   const bels = localStorage.getItem('m04_belegung');
@@ -1385,6 +1407,35 @@ function onReserveChange() {
 // ── Reserve (DDC-Datenpunkte, unabhängig von der Schaltschrank-Reserve) ──
 function onDdcReserveChange() {
   localStorage.setItem('m04_ddc_reserve_pct', gs('ddc_reserve_pct'));
+  calculate();
+}
+
+// ── Doppelstockklemmen (Session 51) ───────────────────────────────────
+// Global (nicht je Baugruppe) – der Nutzer muss sie aktiv setzen, Standard
+// bleibt die normale (einstöckige) Klemme. Wirkt auf resolveBaugruppenBauteile().
+function onDoppelstockChange() {
+  localStorage.setItem('m04_doppelstock', document.getElementById('doppelstock_aktiv').checked ? '1' : '0');
+  calculate();
+}
+
+// ── CPU-Typ-Auswahl für die Automatik (Session 51) ────────────────────
+// Dropdown zeigt alle ddc_cpu-Katalogtypen; "Automatisch" (leerer Wert)
+// nutzt weiterhin auto_ea_cpu (die modulare Station). Manuell gewählt kann
+// z.B. bewusst eine Kompaktstation verwendet werden (siehe buildQueues()).
+function populateCpuTypAuswahl() {
+  const sel = document.getElementById('cpu_typ_override');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">Automatisch (empfohlen)</option>';
+  EINZELBAUTEILE_DB.filter(e => e.bauteil_typ === 'ddc_cpu').forEach(eb => {
+    const opt = document.createElement('option');
+    opt.value = eb.artikel_nr;
+    opt.textContent = eb.artikel_nr + (eb.auto_ea_cpu ? ' · modular' : ' · kompakt');
+    sel.appendChild(opt);
+  });
+  sel.value = prev;
+}
+function onCpuTypChange() {
+  localStorage.setItem('m04_cpu_typ_override', gs('cpu_typ_override'));
   calculate();
 }
 
@@ -2408,6 +2459,39 @@ function resetDdcWatermark() {
   calculate();
 }
 
+// ── Doppelstockklemmen: Baugruppen-Bauteilliste auflösen (Session 51) ──
+// Die DDC-Reserve-Baugruppen (Binäreingang/-ausgang, Analogeingang/-ausgang
+// auf Klemmleiste) bestehen aus genau zwei Klemmen desselben Katalogartikels
+// in derselben Zone (Signal + Referenz, seit der Klemmenfarb-Korrektur beide
+// grau). Ist die Doppelstock-Option aktiv, werden zwei aufeinanderfolgende
+// Bauteil-Einträge mit IDENTISCHEM artikel_nr+Zone zu EINER Doppelstockklemme
+// zusammengefasst (2 Anschlussebenen im selben mm-Platzbedarf einer
+// Standardklemme, siehe eb.doppelstock_variante_artikel_nr) – das erste
+// Vorkommen wird zur Doppelstockklemme (behält seinen dp_*/lvb_erforderlich-
+// Override), das zweite entfällt (bereits mitabgedeckt). Gilt sowohl für die
+// physische Platzierung (buildQueues()) als auch die Stückliste
+// (aggregateStueckliste()) – beide rufen dieselbe Funktion, sonst würden
+// Zeichnung und Stückliste auseinanderlaufen.
+function resolveBaugruppenBauteile(bg, doppelstockAktiv) {
+  if (!doppelstockAktiv) return bg.bauteile;
+  const out = [];
+  const seen = {};
+  bg.bauteile.forEach(bt => {
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+    const dsArt = eb && eb.doppelstock_variante_artikel_nr;
+    if (!dsArt) { out.push(bt); return; }
+    const key = (bt.zone || (eb.zone && eb.zone[0])) + '|' + bt.artikel_nr;
+    if (seen[key]) { return; } // zweites Vorkommen: entfällt, bereits durch die Doppelstockklemme des ersten abgedeckt
+    seen[key] = true;
+    out.push({...bt, artikel_nr: dsArt});
+  });
+  return out;
+}
+function doppelstockAktiv() {
+  const el = document.getElementById('doppelstock_aktiv');
+  return !!(el && el.checked);
+}
+
 // ── Bauteil-Platzierung (physikalisch, in Modul-3-Bändern) ────────────
 // ── Gerätewarteschlange je Zone aufbauen (Session 48: aus placeBauteile()
 // extrahiert) – projektglobal, EINMAL pro calculate()-Lauf, unabhängig von
@@ -2513,7 +2597,7 @@ function buildQueues(ddcReservePct) {
     // platziereBaugruppenFuerFeld() (siehe dort) auf ein Feld verteilt.
     for(let inst = 0; inst < item.menge; inst++) {
       const zonen = {};
-      bg.bauteile.forEach(bt => {
+      resolveBaugruppenBauteile(bg, doppelstockAktiv()).forEach(bt => {
         const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
         if(!eb || eb.te_breite <= 0) return;
         // CPU/E-A-Modul koennen jetzt auch ueber eine Baugruppe kommen (z.B.
@@ -2581,7 +2665,12 @@ function buildQueues(ddcReservePct) {
   // zufälligen Katalog-Reihenfolge abhängig. Fallback (kein Katalogeintrag
   // markiert) auf die erste ddc_cpu, damit die Auto-Ergänzung nicht komplett
   // ausfällt, falls das Flag versehentlich fehlt.
-  const cpuEb       = EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu' && e.auto_ea_cpu)
+  // cpu_typ_override (Session 51): manuelle Nutzerwahl (Statistikfeld-
+  // Dropdown) hat Vorrang vor auto_ea_cpu – z.B. bewusst eine Kompaktstation
+  // statt der modularen, wenn der Platz das nahelegt.
+  const cpuOverrideArt = gs('cpu_typ_override');
+  const cpuEb       = (cpuOverrideArt && EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuOverrideArt))
+                    || EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu' && e.auto_ea_cpu)
                     || EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu');
   const netzteilEb  = cpuEb && cpuEb.ddc_netzteil_artikel_nr  ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_netzteil_artikel_nr)  : null;
   const sicherungEb = cpuEb && cpuEb.ddc_sicherung_artikel_nr ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_sicherung_artikel_nr) : null;
@@ -3405,7 +3494,7 @@ function aggregateStueckliste() {
     }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
-    bg.bauteile.forEach(bt => {
+    resolveBaugruppenBauteile(bg, doppelstockAktiv()).forEach(bt => {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
       if(!eb) return;
       add(bt.artikel_nr, bt.zone || eb.zone[0], bt.menge * item.menge);

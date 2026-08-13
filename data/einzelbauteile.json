@@ -826,6 +826,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "doppelstock_variante_artikel_nr": "3210567",
     "geprueft": false
   },
   {
@@ -1059,13 +1060,14 @@
     "bauteil_typ": "klemme",
     "b_mm": 5.2,
     "te_breite": 1,
-    "h_mm": 62.2,
+    "h_mm": 61.93,
     "zone": [
-      "klemm_l",
       "klemm_f",
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "doppelstock_variante_artikel_nr": "3210400",
+    "preis_eur": 1.55,
     "geprueft": false
   },
   {
@@ -1939,6 +1941,39 @@
     "max_ea_module": 6,
     "ddc_netzteil_artikel_nr": "2866690",
     "ddc_sicherung_artikel_nr": "5SL6106-7",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3210567",
+    "bezeichnung": "PTTB 2,5 Doppelstockklemme, Push-in, 0,14-4 mm², 2 Ebenen, grau",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "b_mm": 5.2,
+    "te_breite": 1,
+    "h_mm": 45.8,
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 1.95,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3210400",
+    "bezeichnung": "PTTBS 2,5-2MTB Doppelstock-Trennklemme, Push-in, 0,14-4 mm², 2 Ebenen, je Ebene Trennmesser, grau",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "b_mm": 5.2,
+    "te_breite": 1,
+    "h_mm": 127.5,
+    "zone": [
+      "klemm_f",
+      "klemm_s"
+    ],
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 10.64,
     "geprueft": false
   }
 ]
