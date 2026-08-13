@@ -107,6 +107,10 @@ header a:hover{color:var(--tx2);}
    gegen #einzel_auswahl justiert. */
 #ddc-summary-field{position:relative;}
 #cpu_typ_row{position:absolute;left:20px;bottom:14px;width:200px;}
+/* Summenanzeige rechtsbündig neben dem CPU-Feld (Session 51 Nachtrag,
+   Nutzer-Vorgabe) – gleiche bottom-Ausrichtung wie #cpu_typ_row. */
+#ddc_summary_totals{position:absolute;right:20px;bottom:14px;text-align:right;font-size:10px;color:var(--tx2);line-height:1.6;}
+#ddc_summary_totals b{color:var(--tx1);font-weight:600;}
 .eb-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
 .eb-field label{
   font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
@@ -565,6 +569,7 @@ legend{
         <option value="">Automatisch</option>
       </select>
     </div>
+    <div id="ddc_summary_totals" title="Summe aller aktuell verbrauchten Datenpunkte über alle vier Typen (AI/AO/BI/BO) hinweg – physikalisch (feste Verdrahtung) und kommunikativ (Feldbus, alle drei Protokolle zusammen)"></div>
   </div>
 
   <div class="eb-block eb-block-eingabe">
@@ -809,6 +814,13 @@ let letzteFelder = [];
 // DDC-Auto-Modul-Ratchet (Session 28e): { artikel_nr: hoechste bisher berechnete
 // Menge }. Sinkt nie von selbst, siehe applyDdcWatermark() weiter unten.
 let ddcWatermark       = {};
+// Ergebnis des letzten calculateFelder()-Laufs (Session 51 Nachtrag) – die
+// automatisch ergänzten DDC-Module (CPU/Netzteil/Sicherung/E-A-Module)
+// werden von buildQueues() direkt in queues.steuer/evert geschrieben
+// (erscheinen dadurch bereits korrekt in der Zeichnung), aggregateStueckliste()
+// kennt sie aber nur, wenn sie hier zwischengespeichert werden – gebraucht
+// von aggregateStueckliste()/exportCSV() außerhalb des calculate()-Aufrufs.
+let letzteDdcAuto      = null;
 
 // ── DOM-Helfer ───────────────────────────────────────────────────────
 const g  = id => +document.getElementById(id).value;
@@ -2201,6 +2213,7 @@ function calculate() {
     felderRow.innerHTML = '<div class="no-data-msg" id="svg-msg">Bitte Schrank-Typ wählen und Daten aus Modul 1–3 laden</div>';
     tuerenRow.innerHTML = '';
     letzteFelder = [];
+    letzteDdcAuto = null;
     buildFuellstand(null, null);
     buildStueckliste(null);
     updateReserveWarning(false);
@@ -2212,6 +2225,7 @@ function calculate() {
   const ddcReservePct = Math.min(0.5, Math.max(0, (g('ddc_reserve_pct') || 20) / 100));
   const { felder, reserveShortfall, ddcAuto, ddcSummary, totalDemandTe } = calculateFelder(klemmraum, reservePct, ddcReservePct);
   letzteFelder = felder;
+  letzteDdcAuto = ddcAuto;
 
   // Links: ein Schranksicht-Block je Feld, in Reihenfolge – nur tatsächlich
   // benötigte Felder (calculateFelder() erzeugt Folgefelder ausschließlich
@@ -2349,8 +2363,13 @@ function ddcChip(lbl, s) {
 }
 function updateDdcSummary(ddcSummary) {
   const el = document.getElementById('ddc-summary-row');
+  const totalsEl = document.getElementById('ddc_summary_totals');
   if (!el) return;
-  if (!ddcSummary) { el.innerHTML = '<span class="ddc-chip-empty">–</span>'; return; }
+  if (!ddcSummary) {
+    el.innerHTML = '<span class="ddc-chip-empty">–</span>';
+    if (totalsEl) totalsEl.innerHTML = '';
+    return;
+  }
   let html = '<div class="ddc-summary-grp"><span class="ddc-grp-lbl">Physikalisch</span>' +
     Object.entries(DP_SUMMARY_LABELS).map(([t, lbl]) => ddcChip(lbl, ddcSummary[t])).join('') + '</div>';
   FB_SUMMARY_GROUPS.forEach(g => {
@@ -2358,6 +2377,15 @@ function updateDdcSummary(ddcSummary) {
       FB_DP_TYPES.map(t => ddcChip(FB_TYPE_LABEL[t], ddcSummary[g.key + '__' + t])).join('') + '</div>';
   });
   el.innerHTML = html;
+  // Summe über alle vier Typen (AI/AO/BI/BO) hinweg – physikalisch je Typ
+  // aus ddcSummary[dp_ai/ao/bi/bo], kommunikativ über alle drei Protokoll-
+  // Gruppen zusammengefasst (Session 51 Nachtrag, Nutzer-Vorgabe).
+  if (totalsEl) {
+    const physSum = Object.keys(DP_SUMMARY_LABELS).reduce((s, t) => s + ddcSummary[t].used, 0);
+    const kommSum = FB_SUMMARY_GROUPS.reduce((s, g) =>
+      s + FB_DP_TYPES.reduce((s2, t) => s2 + ddcSummary[g.key + '__' + t].used, 0), 0);
+    totalsEl.innerHTML = `<div>Physikalisch gesamt: <b>${physSum}</b></div><div>Kommunikativ gesamt: <b>${kommSum}</b></div>`;
+  }
 }
 
 // ── DDC-Datenpunkte: Unterdeckung ermitteln, passende Module ergänzen ──
@@ -2469,6 +2497,19 @@ function applyDdcWatermark(ddcAuto) {
     if (entry.menge < wmMenge) entry.menge = wmMenge;
   });
   if (changed) localStorage.setItem('m04_ddc_watermark', JSON.stringify(ddcWatermark));
+}
+
+// Welche Zone ein automatisch ergänztes DDC-Modul in buildQueues() bekommt
+// (dort hart als queues.steuer/queues.evert verdrahtet, siehe autoDev()-
+// Aufrufe) – gebraucht von aggregateStueckliste(), die NICHT über die
+// eigentliche Platzierung läuft. bauteil_typ allein reicht nicht: die
+// Sicherung trägt katalogseitig bauteil_typ 'lss' (Leitungsschutzschalter),
+// nicht 'sicherung' – deshalb über die stabile Katalog-Verknüpfung
+// ddc_sicherung_artikel_nr erkannt statt über bauteil_typ geraten.
+function ddcAutoZone(eb) {
+  if (eb.bauteil_typ === 'ddc_cpu' || eb.bauteil_typ === 'ddc_io') return 'steuer';
+  const istSicherung = EINZELBAUTEILE_DB.some(e => e.bauteil_typ === 'ddc_cpu' && e.ddc_sicherung_artikel_nr === eb.artikel_nr);
+  return istSicherung ? 'evert' : 'steuer';
 }
 
 // Manueller Ausweg aus dem Ratchet (Nutzer-Fund: nach mehreren Testläufen
@@ -2651,46 +2692,71 @@ function buildQueues(ddcReservePct) {
     // Warteschlange nicht. Stattdessen bleibt jede Instanz als
     // zusammenhängende Einheit in bgInstanceQueue erhalten und wird erst in
     // platziereBaugruppenFuerFeld() (siehe dort) auf ein Feld verteilt.
-    for(let inst = 0; inst < item.menge; inst++) {
+    // Doppelstockklemmen (Session 51 Nachtrag, Nutzer-Präzisierung): eine
+    // Standardklemme trägt 1 Anschluss – 1 Baugruppen-Instanz (z.B. „BI")
+    // braucht 2 Klemmen (Signal+Referenz). Eine Doppelstockklemme hat 2
+    // Ebenen zu je 2 Anschlüssen = 4 Anschlüsse gesamt = Platz für 2
+    // Instanzen (2 Sensoren) auf EINER physischen Klemme, nicht nur für
+    // eine. `resolveBaugruppenBauteile()` fasst pro Instanz bereits deren
+    // eigene 2 Klemmen zu 1 Doppelstockklemme zusammen (nutzt davon aber
+    // erst die Hälfte, 2 von 4 Anschlüssen) – hier werden deshalb bei
+    // aktiver Doppelstock-Variante zusätzlich je 2 aufeinanderfolgende
+    // Instanzen gemeinsam verarbeitet: nur die erste legt das physische
+    // Gerät an, die zweite trägt nur noch ihren Datenpunktbedarf bei (kein
+    // weiteres Gerät). Bei ungerader Instanzenzahl bekommt die letzte,
+    // unpaarige Instanz trotzdem eine eigene Doppelstockklemme (nur zur
+    // Hälfte genutzt) – kein Sonderfall auf eine Standardklemme nötig.
+    const variante = klemmenVariante();
+    const istDoppelstock = variante === 'doppelstock' || variante === 'doppelstock_trenn';
+    const schrittweite = istDoppelstock ? 2 : 1;
+    for(let inst = 0; inst < item.menge; inst += schrittweite) {
+      const subInstanzen = Math.min(schrittweite, item.menge - inst);
       const zonen = {};
-      resolveBaugruppenBauteile(bg, klemmenVariante()).forEach(bt => {
-        const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
-        if(!eb || eb.te_breite <= 0) return;
-        // CPU/E-A-Modul koennen jetzt auch ueber eine Baugruppe kommen (z.B.
-        // "Automationsstation (AE)", Session 49) statt nur direkt platziert –
-        // muss hier ebenso erfasst werden, sonst ergaenzt die Auto-Logik
-        // faelschlich weitere CPUs, obwohl schon welche ueber Baugruppen da sind.
-        if (eb.bauteil_typ === 'ddc_cpu') cpuCount += bt.menge;
-        else if (eb.bauteil_typ === 'ddc_io') ioUnitsManual += bt.menge;
-        const zone = bt.zone || eb.zone[0];
-        if(!queues[zone]) return;
-        // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden
-        // bt.zone-Override – ein Bauteil wie eine Klemme traegt selbst keinen
-        // DDC-Datenpunktbedarf (wird ja auch ohne DDC-Bezug verwendet), kann
-        // aber INNERHALB einer bestimmten Baugruppe einen vorbereiteten
-        // Anschlusspunkt darstellen (z.B. "Reserve"-Baugruppen fuer noch
-        // unbekannte Feldgeraete). Override ersetzt nur die angegebenen Typen,
-        // eb-eigene dp_*-Werte bleiben fuer nicht ueberschriebene Typen gueltig.
-        const dpUeberschrieben = ['dp_ai','dp_ao','dp_bi','dp_bo'].some(k => bt[k] != null);
-        const dpQuelle = dpUeberschrieben
-          ? { ...eb, automationsanbindung: true,
-              dp_ai: bt.dp_ai ?? eb.dp_ai, dp_ao: bt.dp_ao ?? eb.dp_ao,
-              dp_bi: bt.dp_bi ?? eb.dp_bi, dp_bo: bt.dp_bo ?? eb.dp_bo }
-          : eb;
-        accumulateDp(dpQuelle, bt.menge);
-        // lvb_erforderlich (Session 49): dieser Datenpunkt-Bedarf darf nur
-        // durch ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt
-        // werden (z.B. "Binärausgang (BO) mit LVB auf Klemmleiste") – siehe
-        // computeDdcAutoModules().
-        if (bt.lvb_erforderlich) {
-          PHYS_DP_TYPES.forEach(t => { if (dpQuelle[t]) needsLvb[t] = true; });
-        }
-        if(eb.keine_platzierung_mp) return;
-        if(!zonen[zone]) zonen[zone] = [];
-        for(let q = 0; q < bt.menge; q++) {
-          zonen[zone].push({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak, groupStart: !!bt.groupStart});
-        }
-      });
+      for (let sub = 0; sub < subInstanzen; sub++) {
+        const geraetPlatzieren = sub === 0; // nur die erste Sub-Instanz legt das physische Gerät an
+        resolveBaugruppenBauteile(bg, variante).forEach(bt => {
+          const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+          if(!eb || eb.te_breite <= 0) return;
+          // CPU/E-A-Modul koennen jetzt auch ueber eine Baugruppe kommen (z.B.
+          // "Automationsstation (AE)", Session 49) statt nur direkt platziert –
+          // muss hier ebenso erfasst werden, sonst ergaenzt die Auto-Logik
+          // faelschlich weitere CPUs, obwohl schon welche ueber Baugruppen da sind.
+          if (eb.bauteil_typ === 'ddc_cpu') cpuCount += bt.menge;
+          else if (eb.bauteil_typ === 'ddc_io') ioUnitsManual += bt.menge;
+          const zone = bt.zone || eb.zone[0];
+          if(!queues[zone]) return;
+          // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden
+          // bt.zone-Override – ein Bauteil wie eine Klemme traegt selbst keinen
+          // DDC-Datenpunktbedarf (wird ja auch ohne DDC-Bezug verwendet), kann
+          // aber INNERHALB einer bestimmten Baugruppe einen vorbereiteten
+          // Anschlusspunkt darstellen (z.B. "Reserve"-Baugruppen fuer noch
+          // unbekannte Feldgeraete). Override ersetzt nur die angegebenen Typen,
+          // eb-eigene dp_*-Werte bleiben fuer nicht ueberschriebene Typen gueltig.
+          const dpUeberschrieben = ['dp_ai','dp_ao','dp_bi','dp_bo'].some(k => bt[k] != null);
+          const dpQuelle = dpUeberschrieben
+            ? { ...eb, automationsanbindung: true,
+                dp_ai: bt.dp_ai ?? eb.dp_ai, dp_ao: bt.dp_ao ?? eb.dp_ao,
+                dp_bi: bt.dp_bi ?? eb.dp_bi, dp_bo: bt.dp_bo ?? eb.dp_bo }
+            : eb;
+          // Datenpunktbedarf gilt für JEDE Sub-Instanz einzeln (unabhängig
+          // davon, ob sie ein eigenes physisches Gerät bekommt) – 2
+          // zusammengefasste Sensoren brauchen weiterhin 2x den Datenpunkt.
+          accumulateDp(dpQuelle, bt.menge);
+          // lvb_erforderlich (Session 49): dieser Datenpunkt-Bedarf darf nur
+          // durch ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt
+          // werden (z.B. "Binärausgang (BO) mit LVB auf Klemmleiste") – siehe
+          // computeDdcAutoModules().
+          if (bt.lvb_erforderlich) {
+            PHYS_DP_TYPES.forEach(t => { if (dpQuelle[t]) needsLvb[t] = true; });
+          }
+          if(eb.keine_platzierung_mp) return;
+          if (!geraetPlatzieren) return; // zweite Sub-Instanz teilt sich das oben bereits angelegte Gerät
+          if(!zonen[zone]) zonen[zone] = [];
+          for(let q = 0; q < bt.menge; q++) {
+            zonen[zone].push({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe, lbl: kurzLabel(eb), title: eb.bezeichnung, artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak, groupStart: !!bt.groupStart});
+          }
+        });
+      }
       if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: item.bg_id, ci: item.ci, zonen});
     }
   });
@@ -2794,7 +2860,12 @@ function buildQueues(ddcReservePct) {
   // E/A-Module, die noch unter vorhandener (manueller) CPU-Kapazität
   // passen, hängen sich direkt an die letzte erzwungene Reihe an (i. d. R.
   // die manuell platzierte CPU der Automationsstation-Baugruppe).
-  const autoDev = eb => ({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#6B6862', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
+  // Hellgrau (--tx2, Nutzer-Vorgabe Session 51 Nachtrag) statt des zuvor
+  // dunkleren #6B6862 – hebt automatisch ergänzte Geräte in der Zeichnung
+  // deutlicher von den farbig codierten manuellen/Baugruppen-Bauteilen ab.
+  // Der Farbpunkt in der Belegungsliste (updateDdcAutoDisplay()) bleibt
+  // bewusst unverändert, dort ausdrücklich nicht angefasst.
+  const autoDev = eb => ({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#9A9890', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
   direktAnhaengend.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
   // Danach je neu ergänzter Gruppe: Netzteil (erzwingt eine frische
   // Hutschienenreihe) → CPU → deren E/A-Module, lücken- und
@@ -3550,12 +3621,36 @@ function aggregateStueckliste() {
     }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
-    resolveBaugruppenBauteile(bg, klemmenVariante()).forEach(bt => {
+    // Doppelstockklemmen fassen 2 Baugruppen-Instanzen auf einer physischen
+    // Klemme zusammen (siehe buildQueues()) - die Stueckzahl muss das
+    // widerspiegeln, sonst zeigt die Stueckliste doppelt so viele Klemmen
+    // wie tatsaechlich platziert werden. Vereinfachung (bewusst, aktuell
+    // unkritisch): gilt fuer die GESAMTE Baugruppe - passt fuer alle 6
+    // DDC-Reserve-Baugruppen (ausschliesslich 2 Klemmen je Instanz, sonst
+    // nichts); eine kuenftige Baugruppe mit zusaetzlichen NICHT-Klemmen-
+    // Bauteilen bräuchte hier eine bauteilweise statt baugruppenweite
+    // Unterscheidung.
+    const variante = klemmenVariante();
+    const istDoppelstock = variante === 'doppelstock' || variante === 'doppelstock_trenn';
+    const geraeteAnzahl = istDoppelstock ? Math.ceil(item.menge / 2) : item.menge;
+    resolveBaugruppenBauteile(bg, variante).forEach(bt => {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
       if(!eb) return;
-      add(bt.artikel_nr, bt.zone || eb.zone[0], bt.menge * item.menge);
+      add(bt.artikel_nr, bt.zone || eb.zone[0], bt.menge * geraeteAnzahl);
     });
   });
+  // Automatisch ergänzte DDC-Module (CPU/Netzteil/Sicherung/E-A-Module,
+  // computeDdcAutoModules()/buildQueues()) stecken NICHT in `belegung` –
+  // ohne diesen Block würden sie zwar in der Zeichnung erscheinen (dort
+  // direkt in queues.steuer/evert geschrieben), aber nie in der Stückliste
+  // auftauchen (Nutzer-Fund, Session 51 Nachtrag). Zone folgt exakt der
+  // Platzierungsregel aus buildQueues(): Sicherung → evert, alles andere
+  // (CPU/Netzteil/E-A-Module) → steuer.
+  if (letzteDdcAuto) {
+    letzteDdcAuto.modules.forEach(m => {
+      add(m.eb.artikel_nr, ddcAutoZone(m.eb), m.menge);
+    });
+  }
   const order = {klemm_e:0, uss:1, evert:2, leist:3, steuer:4, klemm_l:5, klemm_f:6, klemm_s:7};
   return Object.values(agg).sort((a,b) => (order[a.zone]??9) - (order[b.zone]??9));
 }

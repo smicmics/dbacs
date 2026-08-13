@@ -40,6 +40,17 @@
    „Modul 4 – Eingabeleiste kompakter" weiter unten. `.eingabeleiste`-Höhe
    von 241,25px auf 196,5px reduziert (−45px zugunsten der Schranksicht),
    im Browser verifiziert.
+4. **Doppelstockklemmen-Kapazität korrigiert + drei Folgefixe implementiert
+   UND im Browser verifiziert** (siehe „Modul 4 – Doppelstockklemmen-
+   Kapazität korrigiert, Stückliste zeigt DDC-Auto-Geräte, Hellgrau,
+   Summenanzeige (Session 51 Nachtrag 2)" weiter unten): eine
+   Doppelstockklemme (4 Anschlüsse) teilt sich jetzt korrekt 2 Baugruppen-
+   Instanzen (statt bisher nur die Hälfte ihrer Kapazität zu nutzen);
+   automatisch ergänzte DDC-Module (CPU/Netzteil/Sicherung/E-A-Module)
+   fehlten bisher komplett in der Stückliste, jetzt korrekt enthalten;
+   Farbe automatisch ergänzter Geräte in der Zeichnung auf Hellgrau
+   `#9A9890` geändert; neue Summenanzeige „Physikalisch gesamt"/
+   „Kommunikativ gesamt" rechts neben dem CPU-Feld.
 
 ---
 
@@ -526,6 +537,85 @@ gegenprüfen (WSL-IP erreichbar + localhost nicht erreichbar bestätigt genau
 dieses Relay-Problem), dann `wsl --shutdown` – **vorher beim Nutzer
 nachfragen**, da alle laufenden WSL-Prozesse (auch außerhalb der aktuellen
 Sitzung) beendet werden.
+
+### Modul 4 – Doppelstockklemmen-Kapazität korrigiert, Stückliste zeigt DDC-Auto-Geräte, Hellgrau, Summenanzeige (Session 51 Nachtrag 2, gesperrt)
+Nutzer-Fund direkt im Anschluss an die Klemmenauswahl-Varianten: „Hast Du für
+die Klemmen Einzel und Doppelstock berücksichtigt, dass bei deren Auswahl
+mehr Anschlüsse zugeordnet werden können?" Präzisierung auf Nachfrage:
+„Eine Standardklemme kann einen Anschluss übernehmen. Für einen Sensor
+benötigen wie 2 also 2 Klemmen. Eine Doppelstockklemme kann 2 Sensoren
+aufnehmen, da sie 4 Anschlüsse hat." Der bisherige Code
+(`resolveBaugruppenBauteile()`) fasste zwar bereits die 2 Klemmen EINER
+Baugruppen-Instanz (Signal+Referenz) zu 1 Doppelstockklemme zusammen, nutzte
+davon aber nur 2 der 4 Anschlüsse – pro Instanz wurde weiterhin eine eigene
+Doppelstockklemme angelegt, statt sich 2 Instanzen (2 Sensoren) EINE Klemme
+teilen zu lassen. Kapazität war dadurch effektiv nur halb genutzt.
+
+**Fix `buildQueues()`:** die Instanz-Schleife (`for(inst=0; inst<item.menge;
+inst++)`) läuft bei aktiver Doppelstock-Variante (`doppelstock`/
+`doppelstock_trenn`) jetzt in Zweierschritten – von jedem Paar legt nur die
+ERSTE Sub-Instanz das physische Klemmen-Gerät an (`bgInstanceQueue`-Eintrag),
+die ZWEITE trägt ausschließlich ihren Datenpunktbedarf bei
+(`accumulateDp()` läuft für BEIDE Sub-Instanzen unverändert, unabhängig vom
+physischen Gerät). Bei ungerader Instanzenzahl bekommt die letzte,
+unpaarige Instanz trotzdem eine eigene Doppelstockklemme (nur zur Hälfte
+genutzt). Bei `standard`/`trenn` bleibt die Schrittweite 1 – bytegleiches
+Verhalten wie zuvor (Regressionsschutz).
+
+**Fix `aggregateStueckliste()`:** zählte bisher `bt.menge * item.menge`
+(z. B. 6 Instanzen → 6 Doppelstockklemmen in der Stückliste) – jetzt
+`bt.menge * Math.ceil(item.menge / 2)` bei aktiver Doppelstock-Variante,
+sonst unverändert `item.menge`. Bewusste Vereinfachung (aktuell unkritisch):
+gilt baugruppenweit, nicht bauteilweise – passt für alle 6 DDC-Reserve-
+Baugruppen (ausschließlich 2 Klemmen je Instanz, sonst nichts); eine
+künftige Baugruppe mit zusätzlichen Nicht-Klemmen-Bauteilen bräuchte hier
+eine bauteilweise Unterscheidung.
+
+**Nebenfund beim Testen: automatisch ergänzte DDC-Module (CPU/Netzteil/
+Sicherung/E-A-Module, `computeDdcAutoModules()`/`buildQueues()`) fehlten
+komplett in der Stückliste.** Sie werden in `buildQueues()` direkt in
+`queues.steuer`/`queues.evert` geschrieben (erscheinen dadurch korrekt in
+der Zeichnung), `aggregateStueckliste()` kannte aber nur `belegung` – nie
+`ddcAuto.modules`. Fix: neue globale `letzteDdcAuto` (analog zu
+`letzteFelder`), von `calculate()` nach jedem `calculateFelder()`-Lauf
+gesetzt (bzw. auf `null` beim Early-Return ohne Montagebereich);
+`aggregateStueckliste()` faltet `letzteDdcAuto.modules` mit ein. Zone dabei
+NICHT über `bauteil_typ` geraten (die Sicherung trägt katalogseitig
+`bauteil_typ:'lss'`, nicht `'sicherung'` – ein erster Versuch mit dieser
+Heuristik landete die Sicherung fälschlich in `steuer` statt `evert`),
+sondern über neue Helper-Funktion `ddcAutoZone(eb)`: `ddc_cpu`/`ddc_io` →
+`steuer`, alles was als `ddc_sicherung_artikel_nr` einer `ddc_cpu` im
+Katalog verlinkt ist → `evert`, sonst `steuer` (deckt Netzteil ab) – folgt
+exakt der Platzierungsregel aus `buildQueues()`.
+
+**Farbe automatisch ergänzter Geräte in der Zeichnung** (Nutzer-Vorgabe,
+gleicher Zug): `autoDev()`s `farbe` von `#6B6862` auf Hellgrau `#9A9890`
+(`--tx2`, bereits an anderer Stelle als „Grau (inaktiv)" etabliert) – hebt
+Auto-Geräte deutlicher von den farbig codierten manuellen/Baugruppen-
+Bauteilen ab. Der Farbpunkt in der Belegungsliste
+(`updateDdcAutoDisplay()`) bleibt bewusst unverändert („In der
+Belegungsliste ist alles ok so wie es ist").
+
+**Neue Summenanzeige rechts neben dem CPU-Feld** (Nutzer-Vorgabe): zwei
+rechtsbündige Zeilen „Physikalisch gesamt" / „Kommunikativ gesamt" – Summe
+aller aktuell verbrauchten Datenpunkte (AI+AO+BI+BO) über die physikalische
+Gruppe bzw. über alle drei Feldbus-Gruppen (M-Bus/Modbus RTU/Modbus TCP-IP)
+zusammen. Neues Element `#ddc_summary_totals` (`position:absolute;
+right:20px;bottom:14px`, gleiche `bottom`-Ausrichtung wie `#cpu_typ_row`),
+befüllt in `updateDdcSummary()`.
+
+Verifiziert direkt im Browser (Standschrank, echte Katalogdaten): isolierter
+`buildQueues()`-Test mit 6× `480_000001` + Doppelstock-Variante → genau 3
+`bgInstanceQueue`-Einträge mit je 1× `3210567`, `dp_bi.used=6` (Datenpunkt-
+bedarf unverändert bei 6, nur die physische Geräteanzahl halbiert); 5
+Instanzen → ebenfalls 3 Geräte (2 Paare + 1 unpaarig); `standard`-Variante
+mit 5 Instanzen weiterhin 5× 2 Klemmen (Regression bestanden). Vollständiger
+UI-Durchlauf (6× BI, Doppelstock, echte `calculate()`-Pipeline): Statistik
+zeigt korrekt `BI 6/16`, „Physikalisch gesamt: 6"/„Kommunikativ gesamt: 0";
+Stückliste zeigt 5 Zeilen – 3× Doppelstockklemme (`klemm_f`, Menge 3) UND
+alle 4 Auto-DDC-Geräte mit korrekter Zone (LSS → `evert`, TXM/CPU/Netzteil →
+`steuer`); `queues.steuer`/`queues.evert`-Einträge der Auto-Geräte tragen
+`farbe:'#9A9890'`. Keine Konsolenfehler.
 
 ## Gesperrte Entscheidungen
 
