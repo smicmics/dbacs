@@ -338,7 +338,7 @@
   },
   {
     "id": "430_000006",
-    "name": "Tauchtemperatursensor 100mm",
+    "name": "Tauchtemperatursensor 100mm mit Tauchhülse G1/2\"",
     "gewerk": "430",
     "beschreibung": "Tauchtemperatursensor 100mm - Tauchtemperaturfühler passiv, 100mm, inkl. Tauchhülse (Siemens QAE2120.010), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -365,7 +365,7 @@
   },
   {
     "id": "430_000007",
-    "name": "Tauchtemperatursensor 150mm",
+    "name": "Tauchtemperatursensor 150mm mit Tauchhülse G1/2\"",
     "gewerk": "430",
     "beschreibung": "Tauchtemperatursensor 150mm - Tauchtemperaturfühler passiv, 150mm, inkl. Tauchhülse (Siemens QAE2120.015), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
