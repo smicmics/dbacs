@@ -16,6 +16,20 @@
 
 ## Offene Punkte (Stand Session 51 – vor Beginn der nächsten Sitzung lesen)
 
+0. **NICHT im Browser verifiziert, Sitzung wegen Nutzungslimit abgebrochen:**
+   Nutzer-Fund per Screenshot „warum nicht alle Module trotz gleicher Größe
+   beschriftet sind" – Ursache gefunden und Fix geschrieben (siehe
+   `idxLabelSVG()`, Kommentar „Session 51 Nachtrag 4"): die Positionsnummer
+   (`#idx`) wird bei vielen automatisch ergänzten Geräten länger (`#9` →
+   `#107`), die bisherige Funktion probierte nur je eine feste Schriftgröße
+   horizontal/vertikal durch und gab bei Nichtpassen `''` zurück – das Label
+   verschwand komplett statt kleiner zu werden, obwohl die Box selbst gleich
+   groß blieb. Fix berechnet die Schriftgröße jetzt direkt aus Box- und
+   Textlänge, mit einer garantierten letzten Rückfallebene (kein leeres
+   Ergebnis mehr). **Nächste Sitzung zuerst: im Browser mit einem Fall mit
+   vielen automatisch platzierten Geräten (z. B. großer Reserve-Bedarf wie
+   130× Analogeingang) verifizieren, dass jetzt jeder Block eine sichtbare
+   Nummer trägt, dann erst als „gesperrt" dokumentieren.**
 1. **Bug, NICHT gesperrt/gelöst:** Baugruppen-Zusammenhalt über Feldgrenzen
    hinweg wird bei Klemmleisten-Zonen manchmal verletzt – zwei Klemmen
    derselben Baugruppen-Instanz landen in unterschiedlichen Feldern. Mit dem

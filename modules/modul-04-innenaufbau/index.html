@@ -3439,16 +3439,36 @@ function wrapSVGText(lbl, x, cy, zw, fs, extra='') {
 // entlang der Blockhöhe gezeichnet (schmale, hohe Blöcke haben oft mehr
 // Platz in der Höhe als in der Breite). Passt gar nichts, kein Text – der
 // Mouseover-Tooltip bleibt in jedem Fall der Fallback.
+// Nutzer-Fund (Session 51 Nachtrag 4): "warum nicht alle Module trotz
+// gleicher Größe beschriftet sind" – Ursache war NICHT unterschiedliche
+// Blockgröße, sondern eine unterschiedlich LANGE Positionsnummer (#9 passt,
+// #107 bei exakt derselben Boxgröße nicht mehr). Die Funktion probierte
+// bisher nur je EINE feste Schriftgröße horizontal/vertikal durch und gab
+// bei Nichtpassen kommentarlos '' zurück – die Nummer verschwand komplett,
+// statt kleiner zu werden. Jetzt wird die Schriftgröße direkt aus Box- UND
+// Textlänge berechnet (horizontal zuerst, dann rotiert), mit einer
+// garantierten letzten Rückfallebene (kleinstmögliche lesbare Schrift,
+// notfalls minimal über die Boxbreite hinausragend) statt eines leeren
+// Ergebnisses – jeder platzierte Block bekommt dadurch immer eine
+// sichtbare Nummer.
 function idxLabelSVG(cx, cy, bw, bh, idxStr) {
-  const fsH = Math.min(7, bh*0.4);
-  if (idxStr.length * fsH*0.63 <= bw - 4) {
-    return `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="${fsH.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${idxStr}</text>`;
+  const MIN_FS = 3.5; // kleinste noch lesbare Schriftgröße
+  const textOpen = `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" dominant-baseline="middle"`;
+  const textClose = ` font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${idxStr}</text>`;
+
+  const fsH = Math.min(7, bh*0.4, (bw - 4) / (idxStr.length*0.63));
+  if (fsH >= MIN_FS) {
+    return `${textOpen} font-size="${fsH.toFixed(1)}"${textClose}`;
   }
-  const fsV = Math.min(7, bw - 2);
-  if (fsV >= 4 && idxStr.length * fsV*0.63 <= bh - 4) {
-    return `<text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 ${cx.toFixed(1)} ${cy.toFixed(1)})" font-size="${fsV.toFixed(1)}" font-family="system-ui,sans-serif" fill="#000" opacity="0.8" pointer-events="none">${idxStr}</text>`;
+  const fsV = Math.min(7, bw - 2, (bh - 4) / (idxStr.length*0.63));
+  if (fsV >= MIN_FS) {
+    return `${textOpen} transform="rotate(-90 ${cx.toFixed(1)} ${cy.toFixed(1)})" font-size="${fsV.toFixed(1)}"${textClose}`;
   }
-  return '';
+  // Letzte Rückfallebene: größtmögliche Schrift, die noch in die Boxhöhe
+  // passt (auch wenn sie dafür minimal über die Boxbreite hinausragt) –
+  // ein leicht überstehendes Label ist immer noch besser als gar keins.
+  const fsFallback = Math.max(2.5, Math.min(7, bh*0.4));
+  return `${textOpen} font-size="${fsFallback.toFixed(1)}"${textClose}`;
 }
 
 // ── Klemmen-Zeilen: nur erster/letzter Block je zusammenhängendem
