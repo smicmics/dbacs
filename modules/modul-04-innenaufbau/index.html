@@ -2778,8 +2778,6 @@ function buildQueues(ddcReservePct) {
     }
   });
 
-  const ddcAuto = computeDdcAutoModules(dpDemand, dpSupply, ddcReservePct, needsLvb);
-
   // ── Automationsstations-Gruppen: Netzteil → CPU → E/A-Module (Session 50,
   // Nutzer-Vorgabe) ──────────────────────────────────────────────────────
   // Jede Automationsstation (CPU) hat ihr eigenes Netzteil (immer direkt vor
@@ -2807,6 +2805,12 @@ function buildQueues(ddcReservePct) {
   // cpu_typ_override (Session 51): manuelle Nutzerwahl (Statistikfeld-
   // Dropdown) hat Vorrang vor auto_ea_cpu – z.B. bewusst eine Kompaktstation
   // statt der modularen, wenn der Platz das nahelegt.
+  // Reihenfolge (Session 51 Nachtrag 5, Nutzer-Fund): die CPU-Auflösung
+  // MUSS vor computeDdcAutoModules() stehen, sonst kann eine Kompaktstation
+  // (Onboard-E/A, z.B. PXC4.E16.A mit dp_ai/dp_ao/dp_bi=12) ihre eigene
+  // Kapazität nie in die Modul-Bedarfsrechnung einbringen – es wurde
+  // bislang IMMER ein externes TX-I/O-Modul ergänzt, obwohl die gewählte
+  // Kompaktstation den Bedarf onboard hätte decken können.
   const cpuOverrideArt = gs('cpu_typ_override');
   const cpuEb       = (cpuOverrideArt && EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuOverrideArt))
                     || EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu' && e.auto_ea_cpu)
@@ -2814,6 +2818,20 @@ function buildQueues(ddcReservePct) {
   const netzteilEb  = cpuEb && cpuEb.ddc_netzteil_artikel_nr  ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_netzteil_artikel_nr)  : null;
   const sicherungEb = cpuEb && cpuEb.ddc_sicherung_artikel_nr ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_sicherung_artikel_nr) : null;
   const maxPerCpu   = (cpuEb && cpuEb.max_ea_module) || Infinity; // Feld nicht gepflegt → altes "mind. eine CPU"-Verhalten als Fallback
+
+  // Onboard-Kapazität der ERSTEN (noch zu ergänzenden) CPU vorab in die
+  // Bedarfsrechnung einbringen – NUR wenn noch keine CPU manuell platziert
+  // ist (cpuCount===0; eine manuell platzierte CPU zählt bereits über
+  // accumulateDp() in dpSupply, s.o.) UND die Kompaktstation für mindestens
+  // einen aktuell offenen Datenpunkttyp überhaupt Onboard-Kapazität mitbringt
+  // (bei der modularen PXC7.E400.A ohne jegliches Onboard-E/A bleibt
+  // cpuBenoetigt dadurch false – bytegleiches Verhalten wie zuvor).
+  const cpuBenoetigt = cpuCount === 0 && !!cpuEb
+    && PHYS_DP_TYPES.some(t => (cpuEb[t]||0) > 0 && dpDemand[t] > dpSupply[t]);
+  const dpSupplyEffective = {...dpSupply};
+  if (cpuBenoetigt) PHYS_DP_TYPES.forEach(t => { if (cpuEb[t]) dpSupplyEffective[t] += cpuEb[t]; });
+
+  const ddcAuto = computeDdcAutoModules(dpDemand, dpSupplyEffective, ddcReservePct, needsLvb);
 
   // Alle vom AKTUELLEN Datenpunktbedarf her automatisch benötigten E/A-Module
   // als flache Liste einzelner physischer Einheiten – dient hier NUR dazu,
@@ -2827,11 +2845,17 @@ function buildQueues(ddcReservePct) {
   ddcAuto.modules.forEach(m => { for (let q = 0; q < m.menge; q++) autoIoUnitsRaw.push(m.eb); });
   const totalIoUnitsRaw = ioUnitsManual + autoIoUnitsRaw.length;
 
+  // ceilDiv(x, Infinity) = 1 sobald x>0 (Feld nicht gepflegt → altes
+  // "mind. eine CPU"-Verhalten, siehe maxPerCpu-Fallback oben).
+  const ceilDiv = (a, b) => b === Infinity ? (a > 0 ? 1 : 0) : Math.ceil(a / b);
   let neededExtraCpus = 0;
-  if (cpuEb && totalIoUnitsRaw > 0) {
-    neededExtraCpus = maxPerCpu === Infinity
-      ? Math.max(0, 1 - cpuCount)
-      : Math.max(0, Math.ceil(totalIoUnitsRaw / maxPerCpu) - cpuCount);
+  if (cpuEb) {
+    // gruppenBedarf: so viele Gruppen wie für die externen Module nötig
+    // sind, MINDESTENS aber 1, wenn die erste CPU rein über ihre eigene
+    // Onboard-Kapazität gebraucht wird (auch ohne ein einziges externes
+    // Modul – reiner Onboard-Fall, vorher fehlte hier jede CPU-Ergänzung).
+    const gruppenBedarf = Math.max(ceilDiv(totalIoUnitsRaw, maxPerCpu), cpuBenoetigt ? 1 : 0);
+    neededExtraCpus = Math.max(0, gruppenBedarf - cpuCount);
   }
   if (neededExtraCpus > 0) {
     const addOrMerge = (eb, delta) => {

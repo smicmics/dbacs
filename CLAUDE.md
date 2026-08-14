@@ -17,7 +17,9 @@
 ## Offene Punkte (Stand Session 51 – vor Beginn der nächsten Sitzung lesen)
 
 Keine offenen Punkte – alle Session-51-Themen implementiert UND im Browser
-verifiziert (siehe „Gesperrte Entscheidungen" unten für Details).
+verifiziert (siehe „Gesperrte Entscheidungen" unten für Details, zuletzt
+„Modul 4 – Onboard-Kapazität der Kompaktstationen PXC4.E16.A/PXC5.E24.A
+berücksichtigt (Session 51 Nachtrag 6)").
 
 1. **Punkte 2–4 aus der letzten Sitzung (Klemmenauswahl Feldgeräte/Sensoren
    mit 4 Varianten, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge) sind
@@ -348,6 +350,98 @@ Verifiziert direkt im Browser: `bg_auswahl`-Dropdown zeigt die 7 Automation-
 Baugruppen exakt in der vorgegebenen Reihenfolge; `buildQueues()` liefert
 `farbe:'#D8D5CE'` für alle automatisch ergänzten Geräte (CPU/Netzteil/TXM/
 Sicherung). Keine Konsolenfehler.
+
+### Modul 4 – Onboard-Kapazität der Kompaktstationen PXC4.E16.A/PXC5.E24.A berücksichtigt (Session 51 Nachtrag 6, gesperrt, im Browser verifiziert)
+Nutzer-Fund per Screenshot: bei manueller Auswahl der Kompaktstation
+`PXC4.E16.A` (16 Onboard-E/A) im CPU-Typ-Dropdown wurde trotzdem IMMER ein
+externes TX-I/O-Modul ergänzt, obwohl die Kompaktstation den Bedarf (1× AI)
+onboard hätte decken können – „Das ist erst erforderlich, wenn der
+vorhandene Belegungsplatz überschritten wird." Nutzer-Nachtrag: „Beachte bei
+allen Automationsstationen anhand der Herstellerdaten, dass ihre
+Aufnahmefähigkeit für externe E/A-Module begrenzt ist. Es muss ein Überlauf
+erzeugt werden, der dadurch aufgelöst werden kann, wenn noch eine CPU
+gewählt wird... Beachte, dass jede CPU ihren eigenen Sicherungsabgang und
+Netzteil benötigt" (bereits bestehende Session-50-Logik, siehe unten –
+musste bei der Korrektur intakt bleiben) und explizit „PXC5 ist auch eine
+Kompakt-CPU mit Ein- und Ausgängen" (also gleiches Muster nachziehen).
+
+**Root Cause:** `computeDdcAutoModules()` (entscheidet über externe Module)
+lief bisher VOR der CPU-Auflösung (`cpuEb`/`cpu_typ_override`) – die
+gewählte CPU konnte ihre eigene Onboard-Kapazität dadurch strukturell nie in
+die Bedarfsrechnung einbringen, unabhängig davon, ob der Katalogeintrag
+selbst Kapazität trug. Zusätzlich hatten `PXC4.E16.A`/`PXC5.E24.A` bisher
+nur ihre FESTEN, nicht-universellen Kanäle modelliert (`dp_bo`/`dp_bi` der
+dedizierten Relais/Digitaleingänge, wie bei `TXM1.8U` seit Session 41
+Konvention „universelle Kanäle bleiben unmodelliert, wenn nicht gebraucht"),
+die eigentliche onboard-Flexibilität (12 bzw. 8+8 „universelle" Kanäle) war
+nie erfasst.
+
+**Datenfix (`einzelbauteile`, per Skript in `ga_komponenten.xlsx`
+geschrieben):** `PXC4.E16.A` bekommt `dp_ai=12`/`dp_ao=12` (die 12
+universellen Onboard-Kanäle, volle Kapazität je Typ gutgeschrieben – analog
+zur bereits etablierten `TXM1.8U`-Konvention, Session 49: „TX-I/O
+Universalmodul... je Kanal AI/AO/DI/DO" bekam trotz DI/DO-Fähigkeit laut
+eigener Bezeichnung bewusst auch nur `dp_ai`/`dp_ao`, kein `dp_bi`/`dp_bo` –
+BI/BO werden im Katalog bereits von reichlich günstigeren dedizierten
+Modulen abgedeckt). `dp_bo=4` (feste Relais) bleibt unverändert und
+getrennt – KEIN Zuschlag der universellen Kanäle auf `dp_bo`, um kein neues
+Overcrediting-Risiko einzuführen. `PXC5.E24.A` analog: `dp_ai=16`/`dp_ao=16`
+(die 8 „universellen" + 8 „super-universellen" Onboard-Kanäle als EIN
+gemeinsamer flexibler Pool zusammengefasst), `dp_bi=2`/`dp_bo=6` (2 feste
+Digitaleingänge/6 feste Relais) unverändert. Ein erster Versuch hatte bei
+`PXC4.E16.A` zusätzlich `dp_bi=12` gesetzt – auf Konsistenz mit dem
+`TXM1.8U`-Präzedenzfall wieder entfernt, bevor committet wurde.
+
+**Code-Fix `buildQueues()`:** CPU-Auflösung (`cpuOverrideArt`/`cpuEb`/
+`netzteilEb`/`sicherungEb`/`maxPerCpu`) vor `computeDdcAutoModules()`
+verschoben. Neue Prüfung `cpuBenoetigt` (nur wenn `cpuCount===0` – eine
+bereits MANUELL platzierte CPU zählt schon über `accumulateDp()` in
+`dpSupply`, unverändert – UND die gewählte CPU für mindestens einen aktuell
+offenen Datenpunkttyp überhaupt Onboard-Kapazität mitbringt): trifft das zu,
+wird GENAU EIN CPU-Anteil (`dpSupplyEffective`) vor dem Aufruf von
+`computeDdcAutoModules()` als Kapazität angerechnet – repräsentiert „die
+erste, ohnehin zwingend zu ergänzende CPU wird da sein". Bei der modularen
+`PXC7.E400.A` (kein Onboard-E/A, keine `dp_*`-Felder) bleibt `cpuBenoetigt`
+dadurch `false` – bytegleiches Verhalten wie zuvor, keine Regression für den
+Standardfall. `neededExtraCpus`-Formel generalisiert zu `gruppenBedarf =
+max(ceilDiv(totalIoUnitsRaw, maxPerCpu), cpuBenoetigt?1:0)`, damit auch der
+REINE Onboard-Fall (Bedarf onboard voll gedeckt, 0 externe Module nötig)
+trotzdem die erste CPU-Gruppe (Netzteil+CPU+Sicherung) auslöst – vorher
+hätte in diesem Fall gar keine Automationsstation ergänzt werden können, da
+die alte Bedingung `totalIoUnitsRaw > 0` voraussetzte. Bewusste
+Vereinfachung: nur die ERSTE Gruppe bekommt einen Onboard-Kapazitätszuschlag
+– bei Überlauf auf eine 2./3. Gruppe wird deren eigene Onboard-Kapazität
+NICHT zusätzlich angerechnet (konservativ, führt im Zweifel zu einem
+externen Modul zu viel statt zu wenig – der bereits etablierten
+Vorsichtsregel aus Session 49 folgend, siehe `computeDdcAutoModules()`-
+Kommentar „im Zweifel eher ein Modul zu viel... statt zu wenig"). Die
+bereits bestehende, unveränderte Überlauf-/Gruppen-Logik (Session 50:
+`max_ea_module`-Obergrenze je CPU, jede zusätzliche Gruppe bekommt ihr
+eigenes Netzteil+eigene Sicherung, `groupStart` erzwingt eine frische
+Hutschienenreihe) greift danach unverändert auf den (durch den Onboard-
+Zuschlag ggf. bereits reduzierten) externen Modulbedarf.
+
+Verifiziert direkt im Browser (Standschrank, echte Katalogdaten, je Test mit
+frisch zurückgesetzter Watermark): (1) `PXC4.E16.A` + 1× AI-Bedarf → NUR
+CPU+Netzteil+Sicherung, kein externes Modul (`AI 1/12` onboard gedeckt) –
+der gemeldete Fehlerfall korrekt behoben. (2) `PXC4.E16.A` + 15× AI-Bedarf
+(> 12 Onboard) → korrekt 1× zusätzliches `TXM1.8U` + weiterhin nur 1 Gruppe
+(Modul passt noch unter `max_ea_module=2`). (3) `PXC4.E16.A` + 35× AI-Bedarf
+(> Kapazität einer kompletten Gruppe: 12 Onboard + 2×8 extern = 28) → 4×
+`TXM1.8U` + 2× komplette Gruppen (`PXC4.E16.A`/Netzteil/Sicherung je 2×),
+Platzierungsreihenfolge in `queues.steuer` bestätigt sauber getrennt
+(Netzteil[groupStart]→CPU→2×TXM, dann erneut Netzteil[groupStart]→CPU→2×TXM)
+– Überlauf-Mechanismus und Netzteil/Sicherung-Vervielfachung (Session 50)
+funktionieren mit dem Onboard-Zuschlag unverändert korrekt zusammen. (4)
+`PXC5.E24.A` + 1× AI-Bedarf → analog zu (1) nur CPU+Netzteil+Sicherung,
+kein externes Modul. (5) Regression „Automatisch" (`PXC7.E400.A`, kein
+Onboard-E/A) + 1× AI-Bedarf → weiterhin korrekt 1× `TXM1.8U` ergänzt,
+identisch zum Verhalten vor diesem Fix. CPU-Maße gegengeprüft (Nutzer-Bitte
+„prüfe auch die Maße der CPU"): `PXC4.E16.A` 198×90mm, `PXC5.E24.A`
+270×90mm – unverändert, nur `dp_ai`/`dp_ao`-Felder wurden ergänzt. Keine
+Konsolenfehler in allen fünf Testfällen. Backup vor der Excel-Änderung:
+`C:\Users\SMI\Backups\dbacs\excel\
+ga_komponenten_vor-cpu-onboard-kapazitaet_*.xlsx`.
 
 ### Modul 4 – Klemmenauswahl-Varianten, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge (Session 51, gesperrt, im Browser verifiziert)
 Nutzer-Auftrag „Setze Punkt 2 bis 4 in einem Zug um" (aus der Offene-Punkte-
