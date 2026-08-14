@@ -484,6 +484,34 @@ Formatter nötig, `String()`-Fallback reicht, wie bereits beim analogen
 Instanzen) bestätigt Platzierung/Stückliste/Feldgeräte-Summe weiterhin
 korrekt. Keine Konsolenfehler.
 
+### Raumsensoren-Nachtrag: CO2/VOC nur Lüftung, Kombifühler T+rH ergänzt (Session 51 Nachtrag 10, gesperrt)
+Zwei Nutzer-Korrekturen direkt im Anschluss: **CO2- und VOC-Sensor
+(`430_000002`/`003`) gehören weder zu Kälte noch zu Heizung** – anders als
+Temperatur/Feuchte sind Luftqualitätssensoren nur in RLT-Anlagen sinnvoll.
+`funktionsbereich` beider Baugruppen auf `['lueftung']` (einwertig)
+korrigiert. Raumtemperatursensor passiv (`430_000001`) und
+Raumfeuchtesensor (`430_000004`) bleiben unverändert bei
+Heizung/Lüftung/Kälte.
+
+**Neue Baugruppe `430_000005` „Raumtemperatur- und Feuchtesensor"**
+(Lüftung/Heizung/Kälte) – Siemens `QFA2060` (Symaro, Standardgenauigkeit).
+Bewusst NICHT `QFA3160` (bereits verworfen, Messstab-Bauform/industrielle
+Optik) – `QFA2060` hat stattdessen dasselbe flache Wandaufbaugehäuse wie
+`QAA24`/`QPA2000` (90×100×36mm, IP30), architektonisch unauffällig. 4
+Klemmen (G/G0 Versorgung, U1 Feuchte-Signal, U2 Temperatur-Signal – aus
+dem Schwestermodell `QFA3160` abgeleitet, gleiches Familienschema),
+Datenpunktbedarf 2× AI (je Instanz). Kein Preis eingetragen – nur
+Gebrauchtmarkt-/US-Distributor-Preise gefunden, nach Session-45-Konvention
+nicht übernommen.
+
+Verifiziert direkt im Browser: Heizung/Kälte zeigen nach der Korrektur
+korrekt nur noch 3 Sensoren (T-passiv, Feuchte, Kombi), Lüftung zeigt alle
+5; Testbelegung (2× Kombifühler) liefert `dp_ai used:4` (2 pro Instanz),
+8 Klemmen in der Stückliste, Modul 5 zeigt den Kombifühler korrekt
+unbepreist („–", nicht in der Summe). Keine Konsolenfehler. Damit sind die
+Raumsensoren fürs Erste abgeschlossen (Nutzer-Aussage „dann haben wir
+erst einmal die Raumsensoren").
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.

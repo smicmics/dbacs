@@ -226,9 +226,7 @@
       }
     ],
     "funktionsbereich": [
-      "heizung",
-      "lueftung",
-      "kaelte"
+      "lueftung"
     ],
     "betriebsmittel": "Raum-CO2-Fühler (Siemens QPA2000)",
     "feldgeraet_artikel_nr": "QPA2000",
@@ -259,9 +257,7 @@
       }
     ],
     "funktionsbereich": [
-      "heizung",
-      "lueftung",
-      "kaelte"
+      "lueftung"
     ],
     "betriebsmittel": "Raum-VOC-Fühler (Siemens QPA1000)",
     "feldgeraet_artikel_nr": "QPA1000",
@@ -298,6 +294,45 @@
     ],
     "betriebsmittel": "Raumfeuchtefühler (Siemens QFA2000)",
     "feldgeraet_artikel_nr": "QFA2000",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000005",
+    "name": "Raumtemperatur- und Feuchtesensor",
+    "gewerk": "430",
+    "beschreibung": "Raumtemperatur- und Feuchtesensor - Raumfühler für relative Feuchte und Temperatur, aktiv (Siemens QFA2060), 4 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 2x AI (Feuchte + Temperatur).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung",
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Raumfühler Feuchte+Temperatur, aktiv (Siemens QFA2060)",
+    "feldgeraet_artikel_nr": "QFA2060",
     "automationsanbindung": true,
     "geprueft": false
   }
