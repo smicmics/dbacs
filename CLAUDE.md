@@ -16,29 +16,10 @@
 
 ## Offene Punkte (Stand Session 51 – vor Beginn der nächsten Sitzung lesen)
 
-0. **NICHT im Browser verifiziert, Sitzung wegen Nutzungslimit abgebrochen:**
-   Nutzer-Fund per Screenshot „warum nicht alle Module trotz gleicher Größe
-   beschriftet sind" – Ursache gefunden und Fix geschrieben (siehe
-   `idxLabelSVG()`, Kommentar „Session 51 Nachtrag 4"): die Positionsnummer
-   (`#idx`) wird bei vielen automatisch ergänzten Geräten länger (`#9` →
-   `#107`), die bisherige Funktion probierte nur je eine feste Schriftgröße
-   horizontal/vertikal durch und gab bei Nichtpassen `''` zurück – das Label
-   verschwand komplett statt kleiner zu werden, obwohl die Box selbst gleich
-   groß blieb. Fix berechnet die Schriftgröße jetzt direkt aus Box- und
-   Textlänge, mit einer garantierten letzten Rückfallebene (kein leeres
-   Ergebnis mehr). **Nächste Sitzung zuerst: im Browser mit einem Fall mit
-   vielen automatisch platzierten Geräten (z. B. großer Reserve-Bedarf wie
-   130× Analogeingang) verifizieren, dass jetzt jeder Block eine sichtbare
-   Nummer trägt, dann erst als „gesperrt" dokumentieren.**
-1. **Bug, NICHT gesperrt/gelöst:** Baugruppen-Zusammenhalt über Feldgrenzen
-   hinweg wird bei Klemmleisten-Zonen manchmal verletzt – zwei Klemmen
-   derselben Baugruppen-Instanz landen in unterschiedlichen Feldern. Mit dem
-   aktuellen (mm-basierten) Code reproduziert bei 63× Baugruppe
-   „Binäreingang (BI) auf Klemmleiste" (Wandschrank, 2 Felder). Ausführliche
-   technische Details, bereits ausgeschlossene Ursachen und der nächste
-   Debugging-Schritt siehe Abschnitt „Modul 4 – OFFEN: Klemmen-Gruppen-Split"
-   unten (steht bewusst ausnahmsweise VOR den gesperrten Entscheidungen).
-2. **Punkte 2–4 aus der letzten Sitzung (Klemmenauswahl Feldgeräte/Sensoren
+Keine offenen Punkte – alle Session-51-Themen implementiert UND im Browser
+verifiziert (siehe „Gesperrte Entscheidungen" unten für Details).
+
+1. **Punkte 2–4 aus der letzten Sitzung (Klemmenauswahl Feldgeräte/Sensoren
    mit 4 Varianten, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge) sind
    implementiert UND im Browser verifiziert** (siehe „Modul 4 –
    Klemmenauswahl-Varianten, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge
@@ -48,13 +29,13 @@
    „WSL-localhost-Relay-Ausfall" weiter unten), behoben per `wsl --shutdown`.
    Danach vollständig im Browser getestet (alle 4 Klemmenvarianten,
    CPU-Dropdown, Grundlinie-Ausrichtung bei 1920px, keine Konsolenfehler).
-3. **Eingabeleiste-Höhe reduziert** (Nutzer-Fund direkt danach: die neue
+2. **Eingabeleiste-Höhe reduziert** (Nutzer-Fund direkt danach: die neue
    Klemmenauswahl-Zeile hatte `eb-block-grund` zum höhentreibenden Block
    gemacht, wodurch die Schranksicht kleiner wurde als vorher) – siehe
    „Modul 4 – Eingabeleiste kompakter" weiter unten. `.eingabeleiste`-Höhe
    von 241,25px auf 196,5px reduziert (−45px zugunsten der Schranksicht),
    im Browser verifiziert.
-4. **Doppelstockklemmen-Kapazität korrigiert + drei Folgefixe implementiert
+3. **Doppelstockklemmen-Kapazität korrigiert + drei Folgefixe implementiert
    UND im Browser verifiziert** (siehe „Modul 4 – Doppelstockklemmen-
    Kapazität korrigiert, Stückliste zeigt DDC-Auto-Geräte, Hellgrau,
    Summenanzeige (Session 51 Nachtrag 2)" weiter unten): eine
@@ -304,52 +285,69 @@ Beschreibt den nach Abzug der Kabeleinführungszone verbleibenden Höhenbereich 
 
 ---
 
-### Modul 4 – OFFEN: Klemmen-Gruppen-Split bei mehreren Feldern (Session 51, NICHT gelöst – Fortsetzung nächste Sitzung)
-Nutzer-Fund im Anschluss an den Klemmenbreiten-Fix (siehe unten „Modul 4 –
-Klemmleisten: reale mm-Breite"): bei einer Baugruppen-Instanz, deren beide
-Klemmen (Signal + Referenz, z. B. „Binäreingang (BI) auf Klemmleiste",
-`480_000001`) eigentlich atomar zusammen platziert werden müssten
-(Session-49-Prinzip, `platziereBaugruppenFuerFeld()`), landen manche Male
-beide Klemmen der LETZTEN Instanz in unterschiedlichen Feldern statt
-gemeinsam im selben. Nutzer-Einschätzung: „Kann fast nie vorkommen, kam hier
-nur wegen der falschen Klemmenbreite" – ist aber nach dem Breiten-Fix
-weiterhin reproduzierbar (Screenshot mit 63× `480_000001`, Wandschrank,
-2 Felder, `reserve_pct=20%` mit Warndreieck).
+### Modul 4 – Klemmen-Gruppen-Split-Verdacht verworfen (Session 51, kein echter Bug)
+Der zwischenzeitlich als offen geführte Verdacht „zwei Klemmen einer
+Baugruppen-Instanz landen manchmal in unterschiedlichen Feldern" (reproduziert
+mit 63× `480_000001`, Wandschrank, 2 Felder) beruhte auf einer in der Praxis
+nicht erreichbaren Konfiguration: ein Wandschrank hat als Einzelgerät nie 2
+Felder – `calculateZones()` erzwingt bei `schrank_typ==='wandschrank'` bereits
+den effektiven `zone_modus='1feld'`, unabhängig von der Dropdown-Wahl (siehe
+„Mehrfeld-Schaltschränke Phase 1", Wandschrank-Sperre). Der Reproduktionsfall
+kam nur zustande, weil `m03_zone_modus`/`m03_n_felder` direkt per Test-Setup
+gesetzt wurden, ohne diese Sperre zu durchlaufen – über die echte UI ist die
+gemeldete Kombination nicht erreichbar. Nutzer-Entscheidung: nicht weiter
+verfolgen.
 
-**Bereits ausgeschlossen (Session 51, ausführlich getestet, siehe unten):**
-- Code-Nachverfolgung von `platziereBaugruppenFuerFeld()`: die
-  Instanz-Prüfung testet `confirmed[zn].concat(inst.zonen[zn])` als Ganzes
-  je Zone – schlägt eine Klemme fehl (`leftoverDevs.length>0`), wird
-  `fitsAll=false` und die GESAMTE Instanz verworfen (`if (!fitsAll) break`,
-  VOR dem Commit-Block) – theoretisch kein Partial-Commit möglich.
-- Systematischer Breiten-Sweep 60–900mm (5mm-Schritte, 169 Werte) mit
-  **17×** `480_000001` allein, Wandschrank, `zone_modus=je_feld`: 0 Treffer.
-- Zweiter Sweep (85 Werte, 10mm-Schritte) mit **17×** `480_000001` +
-  Automationsstation-Baugruppe (`480_000007`, belegt steuer/leist/evert,
-  nicht klemm_f) + zusätzlicher konkurrierender Direktbedarf in `klemm_l`
-  (23 Stk.) und `klemm_s` (11 Stk.), um die Breiten-Redistribution
-  (`redistributeKlemmBands()`) realistisch mitzubelasten: ebenfalls 0
-  Treffer.
-- Dritter Sweep (169 Werte) mit **63×** `480_000001` allein (exakte
-  Nutzer-Menge aus dem Screenshot): ebenfalls 0 Treffer.
+### Modul 4 – Positionsnummer verschwand bei mehrstelligem Index trotz gleicher Blockgröße (Session 51 Nachtrag 4, gesperrt, im Browser verifiziert)
+Nutzer-Fund per Screenshot: gleich große Bauteil-Blöcke waren teils
+unbeschriftet, obwohl ihre Boxgröße identisch war. Ursache in
+`idxLabelSVG()`: die Funktion probierte nur je eine feste Schriftgröße
+horizontal (`bh*0.4`) bzw. vertikal-rotiert (`bw-2`) durch und gab bei
+Nichtpassen `''` zurück – bei WACHSENDER Ziffernzahl der Positionsnummer
+(`#9` passt in eine Box, `#107` bei exakt derselben Boxgröße nicht mehr)
+verschwand das Label komplett statt kleiner zu werden. Betrifft sowohl
+Klemmenzeilen (`markFirstLastOfRun()`, nur Anfang/Ende eines Laufs) als auch
+Band-Zeilen (`leist`/`steuer`, schmale Geräte ohne Platz für die
+Kurzbezeichnung).
 
-**Noch nicht ausgeschlossen / nächster Schritt:** alle drei Sweeps nutzten
-SYNTHETISCHE `m03_*`-Werte (`b_uss=150`, `b_leist=b_steuer=b`, `h_klemm=95`
-fest, testweise variiertes `b`) statt eines echten, in sich konsistenten
-Modul-1→2→3-Rechenlaufs. Der Nutzer-Screenshot zeigt reale, bisher nicht
-bekannte Modul-1/2/3-Werte (Wandschrank-Breite/Höhe, evtl. abweichende
-`b_uss`/Kanalbreiten aus einer echten M3-Berechnung) – möglich, dass genau
-diese Kombination (nicht die reine Feldbreite `b`) die Bedingung auslöst,
-z. B. über eine Wechselwirkung mit `redistributeKlemmBands()`s
-`reserveShortfall`-Warnung (im Screenshot sichtbar: `reserve_pct 20 ⚠`) oder
-mit der Kanal-Platzierung (`kanalPending`/`H_KANAL`) einer NICHT rein
-klemm_f-exklusiven Feldzusammensetzung. **Vorgehen nächste Sitzung:** vom
-Nutzer die exakten Modul-1/2/3-Ausgangswerte (Schrankmodell/-maße,
-`zone_modus`, `reserve_pct`) erfragen ODER direkt `JSON.stringify(belegung)`
-+ alle `m01_*`/`m02_*`/`m03_*`-localStorage-Werte aus seiner laufenden
-Session abgreifen lassen, damit eine bit-genaue Reproduktion (statt
-Parameter-Sweep) möglich ist – vermutlich schneller zielführend als weiteres
-Raten an Eingabewerten.
+**Fix:** die Schriftgröße wird jetzt direkt aus Box- UND Textlänge berechnet
+(`fsH = min(7, bh*0.4, (bw-4)/(len*0.63))`, analog vertikal-rotiert als
+Fallback), mit einer garantierten letzten Rückfallebene (kleinstmögliche
+Schrift, notfalls minimal über die Boxbreite hinausragend) statt eines
+leeren Ergebnisses – jeder platzierte Block bekommt dadurch immer eine
+sichtbare Nummer.
+
+Verifiziert in zwei Schritten: (1) isolierter Funktionstest von
+`idxLabelSVG()` über 8 Box-/Textlängen-Kombinationen (u. a. 4×4px-Box mit
+`#1234`) – alle liefern jetzt eine nicht-leere Beschriftung; direkter
+Vergleich mit der alten Implementierung bestätigt, dass genau diese Fälle
+vorher `''` zurückgegeben hätten. (2) Echter End-to-End-Test über die
+produktive Platzierungs-Pipeline (Standschrank 599×1499mm, 150×
+Durchgangsklemme PT 2,5 in `klemm_l`, real per `calculate()` platziert,
+97 passten, `#1`/`#97` als Lauf-Grenzen mit `_showIdx=true`): reale
+Klemmen-Blöcke sind nur 1×5,2px groß – unter dem alten Code hätten dort
+WEDER `#1` NOCH `#97` eine Beschriftung gezeigt (per Vergleichsaufruf
+bestätigt), mit dem Fix zeigen beide korrekt ihre Nummer im tatsächlich
+gerenderten SVG. Keine Konsolenfehler.
+
+### Modul 4 – Sortierreihenfolge Baugruppen-Dropdown, Hellgrau nachjustiert (Session 51 Nachtrag 3, gesperrt, im Browser verifiziert)
+Zwei kleine Nutzer-Korrekturen im Anschluss an Nachtrag 2:
+- **Dropdown-Reihenfolge:** neue Konstante `BG_SORT_PRIORITY` (Zuordnung
+  `id → Sortierindex`, unabhängig von der DIN-276-`id` selbst, die laut
+  Session 37/38 keine Ordnungsbedeutung trägt) – `filterBaugruppen()` sortiert
+  die gefilterte Liste jetzt danach: AI → AO → AO mit LVB → BI → BO → BO mit
+  LVB → alles andere (z. B. Automationsstation) unverändert am Ende. Reine
+  Anzeigesortierung, keine Änderung an `baugruppen.json`/Excel.
+- **Farbe automatisch ergänzter Geräte nachjustiert:** `#9A9890` (`--tx2`,
+  Nachtrag 2) ist ein UI-Grauton für den dunklen Seitenhintergrund und wirkte
+  auf dem hellen Zeichenpapier (`#FDFCF8`) weiterhin dunkel (Nutzer-Fund per
+  Screenshot) – auf `#D8D5CE` erhöht, ein echtes Hellgrau mit klarem Kontrast
+  zum Papier, aber weiterhin unterscheidbar von den gesättigten Zonenfarben.
+
+Verifiziert direkt im Browser: `bg_auswahl`-Dropdown zeigt die 7 Automation-
+Baugruppen exakt in der vorgegebenen Reihenfolge; `buildQueues()` liefert
+`farbe:'#D8D5CE'` für alle automatisch ergänzten Geräte (CPU/Netzteil/TXM/
+Sicherung). Keine Konsolenfehler.
 
 ### Modul 4 – Klemmenauswahl-Varianten, CPU-Typ-Dropdown, Klemmenfarbe DDC-Abgänge (Session 51, gesperrt, im Browser verifiziert)
 Nutzer-Auftrag „Setze Punkt 2 bis 4 in einem Zug um" (aus der Offene-Punkte-
