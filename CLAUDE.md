@@ -398,6 +398,54 @@ dafür leicht reduziert). Keine Konsolenfehler in Modul 4, 5 oder auf der
 Startseite. Backup vor der Excel-Strukturänderung:
 `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-feldgeraete-schema_*.xlsx`.
 
+### Erste Feldgeräte-Baugruppen: 4 Raumsensoren, Siemens Symaro (Session 51 Nachtrag 8, gesperrt)
+Erste Nutzung des neuen Feldgeräte-Katalogs (siehe vorheriger Abschnitt).
+**Planungsfabrikat Sensoren/Feldgeräte: Siemens** (Nutzer-Vorgabe). Workflow
+bestätigt sich als praktikabel: Claude recherchiert (Originaldatenblätter,
+bei binär-komprimierten Siemens-PDFs per `pypdf` in WSL ausgelesen – siehe
+Session 41-Präzedenzfall, funktioniert weiterhin zuverlässig), präsentiert
+Fund + Link, Nutzer entscheidet vor dem Eintragen.
+
+**4 Baugruppen angelegt** (`480_000008`–`480_000011`, Zone `klemm_s`,
+`funktionsbereich:'automation'`, je 1× `dp_ai` auf der Signalklemme):
+- `480_000008` „Raumtemperatursensor passiv" – Siemens `QAA24` (LG-Ni1000),
+  2 Klemmen (B/M, passiv, keine Versorgung).
+- `480_000009` „Raum-CO2-Sensor" – Siemens `QPA2000` (NDIR, 0…2000ppm),
+  3 Klemmen (G/G0 Versorgung + X1 Signal).
+- `480_000010` „Raum-VOC-Sensor" – Siemens `QPA1000` (Metalloxid-Halbleiter),
+  3 Klemmen, gleiche Baureihe/Datenblatt wie QPA2000.
+- `480_000011` „Raumfeuchtesensor" – Siemens `QFA2000` (kapazitiv), 3 Klemmen.
+  Klemmenbezeichnung nicht aus dem QFA2000-eigenen Datenblatt bestätigt
+  (Abruf scheiterte am Timeout), sondern aus dem 20 Jahre durchgängig
+  gleichen Siemens-Klemmenschema (G/G0+Signal) der QFA/QPA-Familie
+  abgeleitet – vor Verdrahtung idealerweise gegenprüfen.
+
+Alle 4 Klemmen sind `3209510` (PT 2,5 grau, Standardklemme) – auch bei den
+aktiven Sensoren, da 24V-SELV-Versorgungsleitungen (anders als
+230V-Leistungsanschlüsse) keine Farbcodierung nach der Session-51-Regel
+„Farben sind für Leistungsanschlüsse ab 230V AC" brauchen.
+
+**Bewusst NICHT angelegt (Nutzer-Entscheidung nach Rückfrage):**
+- Raumtemperatursensor aktiv – einziger Siemens-Kandidat (`QAA2071`,
+  4-20mA) ist laut HIT-Portal „In phase-out", kein Nachfolger für „nur
+  Temperatur, aktiv" als Einzelprodukt in der aktuellen Symaro-Reihe
+  gefunden (nur noch innerhalb der QFA/QPA-Kombisensoren abgedeckt).
+- Raumtemperatur- und Feuchtesensor (Temperatur passiv, Feuchte aktiv) –
+  kein einzelnes Siemens-Katalogprodukt mit dieser gemischten Kombination
+  gefunden (QFA-Kombisensoren bieten Temperatur immer nur aktiv).
+- Raumtemperatur- und Feuchtesensor aktiv (`QFA3160`) – Nutzer-Einschätzung:
+  Gehäuse/Optik nur für industrielle Umgebungen geeignet, nicht für
+  Bereiche mit architektonischen Anforderungen.
+
+Verifiziert direkt im Browser (Standschrank, echte Katalogdaten): alle 4
+Baugruppen korrekt im „Automation"-Dropdown; Testbelegung (2×`480_000008`
++ je 1× `480_000009/010/011`) liefert `dp_ai used:5` (korrekt, 1 pro
+Instanz), `bgInstanceQueue` mit korrekter Klemmenzahl je Instanz (2/2/3/3/3),
+Stückliste aggregiert korrekt `3209510` Menge 13 in `klemm_s`; Modul 5
+zeigt alle 4 Feldgeräte mit korrektem Hersteller/Preis/Menge/Summe
+(1207,66 €). Keine Konsolenfehler. Backup:
+`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-raumsensoren_*.xlsx`.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.

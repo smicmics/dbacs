@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "artikel_nr": "QAA24",
+    "bezeichnung": "Raumtemperaturfühler passiv, LG-Ni1000, 0...50°C",
+    "hersteller": "Siemens",
+    "kategorie": "Raumsensor",
+    "preis_eur": 55.68,
+    "quelle_hinweis": "Session 51 Nachtrag 8. Siemens QAA24 (Planungsfabrikat Siemens, Nutzer-Vorgabe fuer Sensoren/Feldgeraete). Messelement LG-Ni1000, Anschlussklemmen B (Messsignal)/M (Messnull) - passiv, KEINE Versorgungsspannung noetig. Terminologie/Klemmenbezeichnung B/M bestaetigt ueber das aktuelle Symaro-Nachfolgemodell QAA9020 (Siemens-Originaldatenblatt A6V12090675_de, 2020-09-25, per pypdf aus dem binaeren PDF extrahiert - identisches Messelement/gleiche Geraetegeneration), da QAA9020 selbst nur im 42er-Multipack gelistet ist und fuer Einzelbestellung ungeeignet erscheint. IP30, Schraubklemmen fuer 1x2,5mm2 oder 2x1,5mm2, Gehaeuse 90x100x32mm (BxHxT). Preis 55,68 EUR netto (hvac.de, Bestellnummer BPZ:QAA24, kein bestaetigter Siemens-Herstellerlistenpreis). Quelle: https://hvac.de/en/qaa2/5135-qaa24.html , https://sid.siemens.com/api/khub/documents/xiIGsiFNgutA1onJbuRvmw/content",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QPA2000",
+    "bezeichnung": "Raum-CO2-Fühler, NDIR, 0...2000ppm, aktiv",
+    "hersteller": "Siemens",
+    "kategorie": "Raumsensor",
+    "preis_eur": 529.22,
+    "quelle_hinweis": "Session 51 Nachtrag 8. Siemens QPA2000 (Symaro-Reihe, Planungsfabrikat Siemens). Reiner CO2-Fuehler (NDIR-Messprinzip, kein VOC/Temperatur/Feuchte-Zusatz - das ist die Kombivariante QPA2002/QPA2062). Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC15-35V, G0 dient gleichzeitig als Messnull) und X1 (Signalausgang, wahlweise DC 0-10V/DC 0-5V/4-20mA per Steckbruecke). IP30, Schraubklemmen 1x2,5mm2 oder 2x1,5mm2. Preis 529,22 EUR netto (Odilon Plus, franz. Distributor, kein bestaetigter Siemens-Herstellerlistenpreis). Quelle: Siemens-Originaldatenblatt CE1N1961de (2024-03-05), per pypdf aus dem binaeren PDF extrahiert: https://sid.siemens.com/api/khub/documents/92GFfoVaFyMO2HZsCQt_Qw/content",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QPA1000",
+    "bezeichnung": "Raum-VOC-Fühler, Metalloxid-Halbleiter, aktiv",
+    "hersteller": "Siemens",
+    "kategorie": "Raumsensor",
+    "preis_eur": 283.18,
+    "quelle_hinweis": "Session 51 Nachtrag 8. Siemens QPA1000 (Symaro-Reihe, gleiche Baureihe/Datenblatt wie QPA2000). Reiner VOC-Fuehler (Metalloxid-Halbleiter-Messelement, misst Mischgaskonzentration als Indikator fuer Gerueche/Tabakrauch). Anschlussklemmen G/G0 (Versorgung) und X1 (Signalausgang DC 0-10V/0-5V/4-20mA waehlbar). IP30. Preis 283,18 EUR netto (Odilon Plus, kein bestaetigter Siemens-Herstellerlistenpreis). Quelle: Siemens-Originaldatenblatt CE1N1961de (2024-03-05): https://sid.siemens.com/api/khub/documents/92GFfoVaFyMO2HZsCQt_Qw/content",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QFA2000",
+    "bezeichnung": "Raumfeuchtefühler, kapazitiv, 0...100% r.F., aktiv",
+    "hersteller": "Siemens",
+    "kategorie": "Raumsensor",
+    "preis_eur": 283.9,
+    "quelle_hinweis": "Session 51 Nachtrag 8. Siemens QFA2000 (Symaro-Reihe, Planungsfabrikat Siemens). Reiner Feuchtefuehler (kapazitives Messelement), KEINE Temperaturmessung (Distributor-Bestaetigung: \"does not include active or passive temperature measurement\" - die QFA20xx-Familie hat separate Typen wie QFA2040/QFA2060 fuer Feuchte+Temperatur-Kombinationen). Anschlussklemmen G/G0 (Versorgung AC24V/DC13,5-35V) und ein Signalausgang (DC 0-10V, 0-100% r.F.) - Klemmenbezeichnung (vermutlich U1) NICHT aus dem vollstaendigen QFA2000-Originaldatenblatt selbst bestaetigt (Abruf per WebFetch scheiterte am Timeout), sondern aus dem durchgaengigen Klemmenschema der gesamten Siemens-QFA-Familie abgeleitet (identisch dokumentiert bei QFA3160, Originaldatenblatt CE1N1858de 2004 UND bei der QPA-Familie, Originaldatenblatt CE1N1961de 2024 - 20 Jahre durchgaengig gleiches Schema G/G0+Xn/Un). Vor Bestellung/Verdrahtung idealerweise gegen das QFA2000-eigene Datenblatt gegenpruefen. Preis 283,90 EUR netto (Distributor, kein bestaetigter Siemens-Herstellerlistenpreis). Quelle: https://www.elektro4000.de/Anlagen-Systemtechnik/Klima-und-Raumluftgeraete/Temperaturfuehler/Siemens-Dig-Industr-Raumfuehler-BPZ-QFA2000::506268.html",
+    "geprueft": false
+  }
+]

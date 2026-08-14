@@ -159,5 +159,116 @@
     "funktionsbereich": "automation",
     "automationsanbindung": true,
     "geprueft": false
+  },
+  {
+    "id": "480_000008",
+    "name": "Raumtemperatursensor passiv",
+    "gewerk": "480",
+    "beschreibung": "Raumtemperatursensor passiv - Raumtemperaturfühler passiv (Siemens QAA24), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": "automation",
+    "betriebsmittel": "Raumtemperaturfühler passiv (Siemens QAA24)",
+    "feldgeraet_artikel_nr": "QAA24",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "480_000009",
+    "name": "Raum-CO2-Sensor",
+    "gewerk": "480",
+    "beschreibung": "Raum-CO2-Sensor - Raum-CO2-Fühler (Siemens QPA2000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": "automation",
+    "betriebsmittel": "Raum-CO2-Fühler (Siemens QPA2000)",
+    "feldgeraet_artikel_nr": "QPA2000",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "480_000010",
+    "name": "Raum-VOC-Sensor",
+    "gewerk": "480",
+    "beschreibung": "Raum-VOC-Sensor - Raum-VOC-Fühler (Siemens QPA1000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": "automation",
+    "betriebsmittel": "Raum-VOC-Fühler (Siemens QPA1000)",
+    "feldgeraet_artikel_nr": "QPA1000",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "480_000011",
+    "name": "Raumfeuchtesensor",
+    "gewerk": "480",
+    "beschreibung": "Raumfeuchtesensor - Raumfeuchtefühler (Siemens QFA2000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": "automation",
+    "betriebsmittel": "Raumfeuchtefühler (Siemens QFA2000)",
+    "feldgeraet_artikel_nr": "QFA2000",
+    "automationsanbindung": true,
+    "geprueft": false
   }
 ]
