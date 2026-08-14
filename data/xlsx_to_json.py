@@ -14,6 +14,12 @@ Exportiert folgende Sheets aus ga_komponenten.xlsx:
                                                           bauteile[] aus der
                                                           Verknüpfungstabelle
                                                           zusammengebaut)
+  - feldgeraete           → feldgeraete.json             (nur aktive Einträge;
+                                                          externe Betriebsmittel
+                                                          außerhalb des Schalt-
+                                                          schranks, von Modul 5
+                                                          genutzt, Session 51
+                                                          Nachtrag 7)
 
 Reine Referenz-Sheets (kein Export, keine eigene JSON-Datei):
   - funktionsbereiche     Klartext-Nachschlagewerk zu 'gewerk'/'funktionsbereich'
@@ -499,6 +505,8 @@ def export_baugruppen(wb):
             entry['funktionsbereich'] = str(rec['funktionsbereich'])
         if rec.get('betriebsmittel'):
             entry['betriebsmittel'] = str(rec['betriebsmittel'])
+        if rec.get('feldgeraet_artikel_nr'):
+            entry['feldgeraet_artikel_nr'] = str(rec['feldgeraet_artikel_nr'])
         if rec.get('automationsanbindung'):
             entry['automationsanbindung'] = True
         entry['geprueft'] = bool(rec.get('geprueft'))
@@ -508,6 +516,49 @@ def export_baugruppen(wb):
         json.dump(rows, f, ensure_ascii=False, indent=2)
 
     print(f'{len(rows)} Baugruppen exportiert → {JSON_FILE.name}')
+
+
+def export_feldgeraete(wb):
+    # Feldgeraete-Katalog (Session 51 Nachtrag 7): externe Betriebsmittel
+    # (Pumpen, Feldsensoren/-aktoren) AUSSERHALB des Schaltschranks - analog
+    # 'einzelbauteile', aber bewusst OHNE b_mm/h_mm/te_breite/zone (werden
+    # nicht in der Schaltschrank-SVG platziert). Von 'baugruppen.
+    # feldgeraet_artikel_nr' referenziert, gespeist in Modul 5 zu einer
+    # eigenen, bepreisten Feldgeraete-Stueckliste.
+    SHEET = 'feldgeraete'
+    JSON_FILE = Path(__file__).parent / 'feldgeraete.json'
+
+    if SHEET not in wb.sheetnames:
+        print(f'HINWEIS: Sheet "{SHEET}" nicht gefunden – uebersprungen.')
+        return
+
+    ws = wb[SHEET]
+    headers = [cell.value for cell in next(ws.iter_rows(min_row=1, max_row=1))]
+
+    rows = []
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        if not any(row):
+            continue
+        rec = dict(zip(headers, row))
+        if not rec.get('aktiv'):
+            continue
+        entry = {
+            'artikel_nr':  str(rec['artikel_nr']),
+            'bezeichnung': str(rec['bezeichnung']),
+            'hersteller':  str(rec['hersteller']),
+            'kategorie':   str(rec['kategorie']),
+        }
+        if rec.get('preis_stueck_eur') is not None:
+            entry['preis_eur'] = float(rec['preis_stueck_eur'])
+        if rec.get('quelle_hinweis'):
+            entry['quelle_hinweis'] = str(rec['quelle_hinweis'])
+        entry['geprueft'] = bool(rec.get('geprueft'))
+        rows.append(entry)
+
+    with open(JSON_FILE, 'w', encoding='utf-8') as f:
+        json.dump(rows, f, ensure_ascii=False, indent=2)
+
+    print(f'{len(rows)} Feldgeraete exportiert → {JSON_FILE.name}')
 
 
 def main():
@@ -524,6 +575,7 @@ def main():
     export_bodenbleche(wb)
     export_einzelbauteile(wb)
     export_baugruppen(wb)
+    export_feldgeraete(wb)
 
 
 if __name__ == '__main__':

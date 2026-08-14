@@ -52,6 +52,7 @@ dbacs/
 │   ├── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
 │   ├── modul-03-architektur/index.html          TE-Berechnung & Reihenkapazität ✅
 │   ├── modul-04-innenaufbau/index.html          Baugruppen · Innenaufbau ✅
+│   ├── modul-05-feldgeraete/index.html          Feldgeräte-Stückliste (rein lesend, gespeist aus Modul 4) ✅
 │   └── modul-07-stammdatenpflege/index.html     Artikeldaten-Katalog-Browser (rein lesend) ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html            Referenzzeichnung Wandschrank (nicht bearbeiten)
@@ -66,6 +67,7 @@ dbacs/
 │   ├── bodenbleche.json                         Bodenblech-DB Rittal VX (committed)
 │   ├── einzelbauteile.json                      Modul-4-Bauteilkatalog (committed, seit Session 27 über Excel gepflegt)
 │   ├── baugruppen.json                          Modul-4-Baugruppen-DB (committed, seit Session 27 über Excel gepflegt)
+│   ├── feldgeraete.json                         Feldgeräte-Katalog außerhalb des Schaltschranks (committed, Modul 5)
 │   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (9 Datensheets + 2 reine Referenz-Sheets `funktionsbereiche`/`zonen`, `einzelbauteile`/`baugruppen`+`baugruppen_bauteile`-Verknüpfungstabelle seit Session 27)
 └── docs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
@@ -85,6 +87,7 @@ dbacs/
 | Modul 2 | https://smicmics.github.io/dbacs/modules/modul-02-standschrank/ |
 | Modul 3 | https://smicmics.github.io/dbacs/modules/modul-03-architektur/ |
 | Modul 4 | https://smicmics.github.io/dbacs/modules/modul-04-innenaufbau/ |
+| Modul 5 | https://smicmics.github.io/dbacs/modules/modul-05-feldgeraete/ |
 | Modul 7 | https://smicmics.github.io/dbacs/modules/modul-07-stammdatenpflege/ |
 | Deploy-Trigger | `git push origin main` → GitHub Pages baut automatisch |
 
@@ -326,6 +329,74 @@ Verifizierungsdetails) archiviert in
   läuft (WSL-VM-IP direkt erreichbar) → WSL2-„localhost-Relay" hängt,
   betrifft jeden Port. **Fix: `wsl --shutdown`** (vorher beim Nutzer
   nachfragen, beendet alle WSL-Prozesse).
+
+### Modul 5 – Feldgeräte-Stückliste angelegt, Baugruppen-Modularisierung diskutiert (Session 51 Nachtrag 7, gesperrt)
+Strategiediskussion vor dem Anlegen weiterer Baugruppen: mit wachsender
+Katalogzahl wird die Auswahl unübersichtlich (Beispiel Umwälzpumpe: 8+
+genannte Varianten sind eigentlich ~5 orthogonale Achsen – Ansteuerung
+Direkt/Sanftanlauf/FU, Handschalter-Bedienebene an der Tür vs. LVB im
+Schrank selbst zugangsbeschränkt, DDC-Schaltbefehl, Rückmeldequelle
+Hilfskontakte vs. Pumpenelektronik/Bus, physikalisch als Standard/
+kommunikativ als Kundenoption – kombinatorisch 70+ statt 8 Fälle). Als
+Zielbild vorgeschlagen und vom Nutzer bestätigt („können wir probieren"):
+Baugruppen in `grundschaltung`/`zusatzbaustein`/`standalone` kategorisieren
+(neue Felder `baustein_typ`/`baustein_kategorie`, NOCH NICHT angelegt) statt
+flacher Varianten-Benennung – der bestehende Platzierungs-/Stückliste-/
+DDC-Mechanismus unterstützt das schon heute ohne Codeänderung, da rein
+mengenbasiert aggregiert wird (keine Instanz-Verknüpfung zwischen
+Grundschaltung und Zusatzbaustein nötig). **Vorerst zurückgestellt** –
+Nutzer-Entscheidung: erst einfache, nicht modularisierte Baugruppen anlegen
+(Sensoren/Feldgeräte), die Modularisierung später bei Bedarf einführen.
+
+**Stattdessen umgesetzt: Feldgeräte-Katalog + Modul 5.** Zweite,
+eigenständige Stückliste für externe Betriebsmittel (Pumpen, Feldsensoren/
+-aktoren) außerhalb des Schaltschranks, getrennt von der bestehenden
+Schaltschrank-Stückliste. Neues Excel-Sheet `feldgeraete` (analog
+`einzelbauteile`, aber ohne `b_mm`/`h_mm`/`te_breite`/`zone` – wird nicht in
+der Schaltschrank-SVG platziert): `aktiv, artikel_nr, bezeichnung,
+hersteller, kategorie, preis_stueck_eur, quelle_hinweis, geprueft`. Neues
+Feld `baugruppen.feldgeraet_artikel_nr` (optionale FK) ergänzt das
+bestehende Freitextfeld `betriebsmittel` (Session 49) – `betriebsmittel`
+bleibt die Kurzbezeichnung, `feldgeraet_artikel_nr` verknüpft zusätzlich mit
+einem echten bepreisten Katalogeintrag, sobald einer existiert; ohne
+Verknüpfung zeigt Modul 5 nur eine unbepreiste Mengenzeile.
+**Planungsfabrikat Pumpen: Wilo** (Nutzer-Vorgabe). Bei größerer
+Herstellerauswahl in anderen Kategorien: nachfragen statt selbst
+entscheiden, gemeinsam festlegen.
+
+**Datenblätter bewusst NICHT lokal gespeichert:** Repository ist öffentlich
+(GitHub Pages) – Herstellerdatenblätter als PDF ablegen würde geschütztes
+Material weiterverbreiten. Stattdessen wie bisher: extrahierte Fakten +
+Quelle-URL + Rechercheddatum in `quelle_hinweis`, bei Feldgeräten bewusst
+ausführlicher als bisher üblich (welche Signale potentialfrei vs. Bus,
+ob ein optionales Modul nötig ist), da diese Entscheidung direkt in die
+Schaltschrank-Planung durchschlägt.
+
+**Modul 5** (`modules/modul-05-feldgeraete/index.html`, rein lesend, Struktur
+identisch zu Modul 7): liest `localStorage['m04_belegung']` (kein direkter
+Modulaufruf, gleicher Kontrakt wie Modul 3↔1/2) + `baugruppen.json` +
+`feldgeraete.json` unabhängig neu ein, aggregiert nach
+`feldgeraet_artikel_nr` (bepreist) bzw. `betriebsmittel`-Freitext
+(unbepreist, wie bei `aggregateStueckliste()` zeigt „–" statt 0,00€ und
+fließt nicht in die Summe ein). Grund für ein eigenes Modul statt eines
+Panels in Modul 4: dort ist der Platz schon knapp (siehe Eingabeleiste-
+Kompaktierung weiter oben) – Modul 5 bekommt mehr Raum, analog zum
+Modul-7-Präzedenzfall. **Modul 4 bekam nur zwei kleine Ergänzungen:** Zeile
+„Feldgeräte gesamt" (`sumFeldgeraete()`) neben Physikalisch/Kommunikativ
+gesamt, Button „→ Modul 5 · Feldgeräte" neben „← Zurück zu Modul 3". Modul
+05 auf der Startseite von Platzhalter („Datenpunkt-Management") auf aktiv
+umgestellt, `hero-stats` „5"→„6".
+
+Verifiziert direkt im Browser: `feldgeraete.json` korrekt leer exportiert
+(`[]`, Sheet angelegt aber noch keine Einträge); synthetischer Testfall
+(1 Baugruppe mit `feldgeraet_artikel_nr`-Verknüpfung, 1 nur mit
+`betriebsmittel`-Freitext) zeigt in Modul 5 korrekt eine bepreiste und eine
+unbepreiste Zeile, Summe berücksichtigt nur die bepreiste; „Feldgeräte
+gesamt"-Zeile in Modul 4 zeigt korrekte Mengensumme, keine Überlappung mit
+der DDC-Statistik-Zeile (Zeilenhöhe/Schriftgröße von `#ddc_summary_totals`
+dafür leicht reduziert). Keine Konsolenfehler in Modul 4, 5 oder auf der
+Startseite. Backup vor der Excel-Strukturänderung:
+`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-feldgeraete-schema_*.xlsx`.
 
 ## Gesperrte Entscheidungen
 

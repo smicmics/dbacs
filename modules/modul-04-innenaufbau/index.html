@@ -109,7 +109,7 @@ header a:hover{color:var(--tx2);}
 #cpu_typ_row{position:absolute;left:20px;bottom:14px;width:200px;}
 /* Summenanzeige rechtsbündig neben dem CPU-Feld (Session 51 Nachtrag,
    Nutzer-Vorgabe) – gleiche bottom-Ausrichtung wie #cpu_typ_row. */
-#ddc_summary_totals{position:absolute;right:20px;bottom:14px;text-align:right;font-size:10px;color:var(--tx2);line-height:1.6;}
+#ddc_summary_totals{position:absolute;right:20px;bottom:14px;text-align:right;font-size:9.5px;color:var(--tx2);line-height:1.35;}
 #ddc_summary_totals b{color:var(--tx1);font-weight:600;}
 .eb-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
 .eb-field label{
@@ -427,8 +427,10 @@ legend{
   background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
 }
 .btn-print:hover{border-color:var(--tx2);color:var(--tx);}
-.btn-nav{background:var(--bg3);color:var(--green);border-color:var(--green);margin-top:8px;}
+.btn-nav{background:var(--bg3);color:var(--green);border-color:var(--green);margin-top:8px;text-decoration:none;display:inline-block;}
 .btn-nav:hover{background:var(--green);color:#fff;}
+.panel-nav-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.panel-nav-row .btn-nav{margin-top:0;}
 .btn-csv{
   padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;
   background:var(--bg3);border:1px solid var(--green);color:var(--green);
@@ -569,7 +571,7 @@ legend{
         <option value="">Automatisch</option>
       </select>
     </div>
-    <div id="ddc_summary_totals" title="Summe aller aktuell verbrauchten Datenpunkte über alle vier Typen (AI/AO/BI/BO) hinweg – physikalisch (feste Verdrahtung) und kommunikativ (Feldbus, alle drei Protokolle zusammen)"></div>
+    <div id="ddc_summary_totals" title="Summe aller aktuell verbrauchten Datenpunkte über alle vier Typen (AI/AO/BI/BO) hinweg – physikalisch (feste Verdrahtung) und kommunikativ (Feldbus, alle drei Protokolle zusammen) – sowie Anzahl Baugruppen-Instanzen mit hinterlegtem Betriebsmittel (volle Liste in Modul 5)"></div>
   </div>
 
   <div class="eb-block eb-block-eingabe">
@@ -691,7 +693,10 @@ legend{
       <p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>
     </div>
     <div id="ddc-auto-liste"></div>
-    <button class="btn-print btn-nav" onclick="gotoModul3()">← Zurück zu Modul 3 · Architektur</button>
+    <div class="panel-nav-row">
+      <button class="btn-print btn-nav" onclick="gotoModul3()">← Zurück zu Modul 3 · Architektur</button>
+      <a class="btn-print btn-nav" href="../modul-05-feldgeraete/">→ Modul 5 · Feldgeräte</a>
+    </div>
   </div>
 
   <!-- ── Mittleres Panel ── -->
@@ -2401,8 +2406,20 @@ function updateDdcSummary(ddcSummary) {
     const physSum = Object.keys(DP_SUMMARY_LABELS).reduce((s, t) => s + ddcSummary[t].used, 0);
     const kommSum = FB_SUMMARY_GROUPS.reduce((s, g) =>
       s + FB_DP_TYPES.reduce((s2, t) => s2 + ddcSummary[g.key + '__' + t].used, 0), 0);
-    totalsEl.innerHTML = `<div>Physikalisch gesamt: <b>${physSum}</b></div><div>Kommunikativ gesamt: <b>${kommSum}</b></div>`;
+    totalsEl.innerHTML = `<div>Physikalisch gesamt: <b>${physSum}</b></div><div>Kommunikativ gesamt: <b>${kommSum}</b></div><div>Feldgeräte gesamt: <b>${sumFeldgeraete()}</b></div>`;
   }
+}
+
+// Reine Mengensumme (keine Bepreisung hier – die volle, bepreiste Liste
+// zeigt Modul 5) aller Baugruppen-Instanzen mit hinterlegtem `betriebsmittel`
+// (Session 51 Nachtrag 7) – gleiche Grundlage wie Modul 5s Aggregation,
+// hier nur auf eine Zahl verdichtet.
+function sumFeldgeraete() {
+  return belegung.reduce((s, item) => {
+    if (item.typ !== 'baugruppe') return s;
+    const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
+    return (bg && bg.betriebsmittel) ? s + item.menge : s;
+  }, 0);
 }
 
 // ── DDC-Datenpunkte: Unterdeckung ermitteln, passende Module ergänzen ──

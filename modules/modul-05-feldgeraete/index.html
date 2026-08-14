@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBACS · Modul 5 · Feldgeräte · Betriebsmittelliste</title>
+<style>
+:root{
+  --bg:    #1A1A18;
+  --bg2:   #222220;
+  --bg3:   #2A2A28;
+  --bg4:   #303030;
+  --bord:  #3A3835;
+  --bords: #5A5855;
+  --tx:    #E0DED8;
+  --tx2:   #9A9890;
+  --tx3:   #666460;
+  --green: #2DBD8E;
+  --orange:#C8720E;
+  --font:  system-ui,-apple-system,sans-serif;
+  --mono:  'Courier New',Courier,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:14px;line-height:1.5;}
+
+/* ── Header ── */
+header{
+  background:#111110;color:#E0DED8;
+  padding:10px 22px 12px;display:flex;align-items:flex-start;gap:18px;
+  border-bottom:1px solid var(--bord);flex-wrap:wrap;
+}
+header h1{font-size:15px;font-weight:700;letter-spacing:-.01em;}
+header p{font-size:11px;color:var(--tx3);margin-top:1px;}
+header .title{flex:1;min-width:200px;}
+header a{color:var(--tx3);text-decoration:none;font-size:12px;white-space:nowrap;margin-top:3px;}
+header a:hover{color:var(--tx2);}
+.header-logo{height:48px;width:48px;object-fit:contain;flex-shrink:0;}
+@media print{.copyright-line{display:none !important;}}
+
+.proj-fields{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:flex-end;width:100%;}
+.proj-field{display:flex;flex-direction:column;gap:3px;}
+.proj-field label{font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;}
+.proj-field input{
+  background:var(--bg3);border:1px solid var(--bords);border-radius:3px;
+  color:var(--tx);font-size:12px;padding:3px 8px;
+}
+.proj-field input:focus{outline:none;border-color:var(--green);}
+#proj-name   {width:220px;}
+#proj-nummer {width:130px;}
+#proj-asp    {width:185px;}
+#proj-docnr  {width:200px;color:var(--tx2);}
+
+/* ── Hinweiszeile ── */
+.hint-bar{background:var(--bg2);border-bottom:1px solid var(--bord);padding:10px 18px;font-size:12px;color:var(--tx2);}
+.hint-bar a{color:var(--green);text-decoration:none;}
+.hint-bar a:hover{text-decoration:underline;}
+
+/* ── Stückliste ── */
+.panel{padding:18px;}
+.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--tx3);margin-bottom:10px;}
+table.stk{width:100%;border-collapse:collapse;font-size:13px;}
+table.stk th{background:var(--bg3);color:var(--tx2);font-weight:600;padding:7px 9px;text-align:left;border-bottom:1.5px solid var(--bords);}
+table.stk td{padding:6px 9px;border-bottom:.5px solid var(--bord);vertical-align:top;}
+table.stk .num{text-align:right;font-family:var(--mono);}
+table.stk .src{color:var(--tx3);font-size:11px;}
+.stk-total{text-align:right;font-size:14px;font-weight:700;margin-top:10px;color:var(--tx);}
+.stk-empty{color:var(--tx3);font-size:12px;padding:24px 0;}
+
+/* ── Print-Button ── */
+.btn-row{padding:14px 18px;display:flex;gap:10px;}
+.btn-print{
+  padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;
+  background:var(--bg4);border:1px solid var(--bords);color:var(--tx2);
+}
+.btn-print:hover{border-color:var(--tx2);color:var(--tx);}
+.btn-nav{
+  padding:6px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;
+  background:var(--bg4);border:1px solid var(--green);color:var(--green);text-decoration:none;display:inline-flex;align-items:center;
+}
+.btn-nav:hover{background:var(--green);color:#000;}
+
+/* ── Footer ── */
+.site-footer{
+  background:#111110;border-top:1px solid var(--bord);
+  padding:10px 22px;font-size:11px;color:var(--tx3);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.site-footer a{color:var(--tx3);text-decoration:none;}
+.site-footer a:hover{color:var(--tx2);}
+
+/* ── Druck ── */
+@media print{
+  body{background:#fff;color:#000;}
+  .hint-bar, .btn-row, .site-footer{display:none !important;}
+  header{
+    background:#EFEFEC !important;border-bottom:1.5px solid #BBBBBB;
+    padding:8px 10px;min-height:54px;margin-bottom:10px;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .proj-fields{
+    display:flex !important;gap:0;flex:1;align-items:center;
+    border-left:1px solid #CCC;padding-left:14px;margin-left:14px;margin-top:0;
+  }
+  .proj-field input{
+    font-size:8.5px;color:#111 !important;font-weight:500;
+    border:none;border-bottom:0.5px solid #BBB;background:transparent;
+    padding:0 0 2px;width:100%;
+  }
+  table.stk{font-size:10px;}
+  table.stk th{background:#eee;color:#222;}
+  table.stk td{color:#000;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
+  <div class="title">
+    <h1>Modul 5 · Feldgeräte · Betriebsmittelliste</h1>
+    <p>Externe Betriebsmittel außerhalb des Schaltschranks · gespeist aus Modul 4</p>
+    <p class="copyright-line" style="font-size:10px;color:var(--tx3);margin-top:2px;">© 2026 Stephan Michler</p>
+  </div>
+  <a href="../../index.html">← Startseite</a>
+  <div class="proj-fields">
+    <div class="proj-field">
+      <label for="proj-name">Projekt</label>
+      <input id="proj-name" type="text" placeholder="Projektbezeichnung" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-nummer">Projektnummer</label>
+      <input id="proj-nummer" type="text" placeholder="z. B. 2024-001" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-asp">ASP</label>
+      <input id="proj-asp" type="text" placeholder="Automationsschwerpunkt" oninput="saveProjFields()">
+    </div>
+    <div class="proj-field">
+      <label for="proj-docnr">Dokument-Nr.</label>
+      <input id="proj-docnr" type="text" readonly>
+    </div>
+  </div>
+</header>
+
+<div class="hint-bar">
+  Diese Liste wird automatisch aus der Belegung in <a href="../modul-04-innenaufbau/">Modul 4 · Baugruppen · Innenaufbau</a>
+  ermittelt – jede dort platzierte Baugruppe mit hinterlegtem Betriebsmittel (z. B. eine Pumpe) erscheint hier zusätzlich zur
+  Schaltschrank-Stückliste. Getrennte Liste, da Feldgeräte außerhalb des Schaltschranks installiert werden und eigene
+  Bestellnummern/Preise haben.
+</div>
+
+<div class="panel">
+  <h2>Feldgeräte-Stückliste</h2>
+  <div id="stk-wrap"><p class="stk-empty">Lädt…</p></div>
+</div>
+
+<div class="btn-row">
+  <a href="../modul-04-innenaufbau/" class="btn-nav">← Zurück zu Modul 4 · Baugruppen</a>
+  <button class="btn-print" onclick="printErgebnis()">⎙ Drucken</button>
+</div>
+
+<footer class="site-footer">
+  <span class="copyright-line">© 2026 Stephan Michler · DBACS · Modul 5</span>
+  <span>DBACS · GA-Planung · Feldgeräte</span>
+</footer>
+
+<script>
+// ── Daten laden ──────────────────────────────────────────────────────
+let BAUGRUPPEN_DB  = [];
+let FELDGERAETE_DB = [];
+
+async function loadData() {
+  try {
+    const [bg, fg] = await Promise.all([
+      fetch('../../data/baugruppen.json').then(r => r.json()),
+      fetch('../../data/feldgeraete.json').then(r => r.json())
+    ]);
+    BAUGRUPPEN_DB  = bg;
+    FELDGERAETE_DB = fg;
+  } catch (e) {
+    document.getElementById('stk-wrap').innerHTML = '<p class="stk-empty">Fehler beim Laden der Kataloge.</p>';
+    return;
+  }
+  render();
+}
+
+// ── Belegung aus Modul 4 aggregieren ────────────────────────────────
+// Liest m04_belegung direkt aus localStorage (wie Modul 3 die Modul-1/2-
+// Werte, Modul 7 die Kataloge – kein direkter Modulaufruf, rein über den
+// bereits bestehenden localStorage-Kontrakt). Nur Baugruppen-Einträge mit
+// gesetztem `betriebsmittel` sind relevant; Aggregationsschlüssel ist
+// `feldgeraet_artikel_nr` (echter Katalogeintrag, bepreist) falls vorhanden,
+// sonst der Freitext `betriebsmittel` selbst (Mengenübersicht ohne Preis).
+function aggregateFeldgeraete() {
+  let belegung = [];
+  try { belegung = JSON.parse(localStorage.getItem('m04_belegung') || '[]'); } catch(e) {}
+
+  const agg = {};
+  belegung.forEach(item => {
+    if (item.typ !== 'baugruppe') return;
+    const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
+    if (!bg || !bg.betriebsmittel) return;
+    const fg = bg.feldgeraet_artikel_nr ? FELDGERAETE_DB.find(f => f.artikel_nr === bg.feldgeraet_artikel_nr) : null;
+    const key = fg ? fg.artikel_nr : ('text::' + bg.betriebsmittel);
+    if (!agg[key]) {
+      agg[key] = {
+        bezeichnung: fg ? fg.bezeichnung : bg.betriebsmittel,
+        hersteller:  fg ? fg.hersteller  : '–',
+        preis_eur:   fg && typeof fg.preis_eur === 'number' ? fg.preis_eur : null,
+        quellen:     new Set(),
+        menge:       0
+      };
+    }
+    agg[key].menge += item.menge;
+    agg[key].quellen.add(bg.name);
+  });
+  return Object.values(agg);
+}
+
+function render() {
+  const wrap = document.getElementById('stk-wrap');
+  const liste = aggregateFeldgeraete();
+  if (!liste.length) {
+    wrap.innerHTML = '<p class="stk-empty">Keine Feldgeräte – entweder noch keine Baugruppen in Modul 4 platziert, oder keine der platzierten Baugruppen hat ein Betriebsmittel hinterlegt.</p>';
+    return;
+  }
+  let total = 0;
+  const rows = liste.map(e => {
+    const hasPreis = typeof e.preis_eur === 'number';
+    const summe = hasPreis ? e.menge * e.preis_eur : null;
+    if (hasPreis) total += summe;
+    return `<tr>
+      <td>${e.bezeichnung}<div class="src">aus: ${[...e.quellen].join(', ')}</div></td>
+      <td>${e.hersteller}</td>
+      <td class="num">${e.menge}</td>
+      <td class="num">${hasPreis ? e.preis_eur.toFixed(2) : '–'}</td>
+      <td class="num">${hasPreis ? summe.toFixed(2) : '–'}</td>
+    </tr>`;
+  }).join('');
+  wrap.innerHTML = `<table class="stk">
+    <thead><tr>
+      <th>Bezeichnung</th><th>Hersteller</th>
+      <th style="text-align:right">Menge</th>
+      <th style="text-align:right">€/Stk</th>
+      <th style="text-align:right">Gesamt</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="stk-total">Gesamt: ${total.toFixed(2)} €</div>`;
+}
+
+// ── Projektfelder (identisch zu Modul 1–4/7) ───────────────────────────
+function updateDocNr() {
+  const nr  = document.getElementById('proj-nummer').value.trim();
+  const asp = document.getElementById('proj-asp').value.trim();
+  const doc = [nr, asp, 'M05'].filter(Boolean).join('-');
+  document.getElementById('proj-docnr').value = doc || '–';
+}
+function saveProjFields() {
+  ['proj-name','proj-nummer','proj-asp'].forEach(id =>
+    localStorage.setItem(id, document.getElementById(id).value));
+  updateDocNr();
+  localStorage.setItem('proj-docnr', document.getElementById('proj-docnr').value);
+}
+function loadProjFields() {
+  ['proj-name','proj-nummer','proj-asp'].forEach(id => {
+    const v = localStorage.getItem(id);
+    if (v !== null) document.getElementById(id).value = v;
+  });
+  updateDocNr();
+}
+
+// ── Ergebnis drucken (identisch zu Modul 1–4/7) ────────────────────────
+function printErgebnis() {
+  const s = document.createElement('style');
+  s.textContent = '@page{size:A4 landscape;margin:10mm 12mm}';
+  document.head.appendChild(s);
+  window.print();
+  document.head.removeChild(s);
+}
+
+// ── Start ────────────────────────────────────────────────────────────
+loadProjFields();
+loadData();
+</script>
+</body>
+</html>
