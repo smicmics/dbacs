@@ -501,8 +501,13 @@ def export_baugruppen(wb):
             'beschreibung': str(rec['beschreibung']),
             'bauteile':    bauteile_je_bg.get(str(rec['id']), []),
         }
+        # funktionsbereich ist seit Session 51 Nachtrag 9 immer ein Array
+        # (Komma-Liste in Excel), auch bei nur einem Wert - analog zu
+        # einzelbauteile.zone (Session 44): eine Baugruppe kann in mehreren
+        # Gewerke-Tabs gleichzeitig auswaehlbar sein (z.B. ein Raumsensor in
+        # Heizung/Lueftung/Kaelte), ohne die Katalogzeile zu vervielfachen.
         if rec.get('funktionsbereich') is not None:
-            entry['funktionsbereich'] = str(rec['funktionsbereich'])
+            entry['funktionsbereich'] = [f.strip() for f in str(rec['funktionsbereich']).split(',')]
         if rec.get('betriebsmittel'):
             entry['betriebsmittel'] = str(rec['betriebsmittel'])
         if rec.get('feldgeraet_artikel_nr'):

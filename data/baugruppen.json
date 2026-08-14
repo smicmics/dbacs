@@ -17,7 +17,9 @@
         "zone": "klemm_f"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "automation"
+    ],
     "automationsanbindung": true,
     "geprueft": false
   },
@@ -39,7 +41,9 @@
         "zone": "klemm_f"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "automation"
+    ],
     "automationsanbindung": true,
     "geprueft": false
   },
@@ -62,7 +66,9 @@
         "zone": "klemm_f"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "automation"
+    ],
     "automationsanbindung": true,
     "geprueft": false
   },
@@ -84,7 +90,9 @@
         "zone": "klemm_f"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "automation"
+    ],
     "automationsanbindung": true,
     "geprueft": false
   },
@@ -107,7 +115,9 @@
         "zone": "klemm_f"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "automation"
+    ],
     "automationsanbindung": true,
     "geprueft": false
   },
@@ -129,7 +139,9 @@
         "zone": "klemm_s"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "automation"
+    ],
     "automationsanbindung": true,
     "geprueft": false
   },
@@ -156,14 +168,16 @@
         "menge": 1
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "automation"
+    ],
     "automationsanbindung": true,
     "geprueft": false
   },
   {
-    "id": "480_000008",
+    "id": "430_000001",
     "name": "Raumtemperatursensor passiv",
-    "gewerk": "480",
+    "gewerk": "430",
     "beschreibung": "Raumtemperatursensor passiv - Raumtemperaturfühler passiv (Siemens QAA24), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
       {
@@ -178,16 +192,20 @@
         "zone": "klemm_s"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "heizung",
+      "lueftung",
+      "kaelte"
+    ],
     "betriebsmittel": "Raumtemperaturfühler passiv (Siemens QAA24)",
     "feldgeraet_artikel_nr": "QAA24",
     "automationsanbindung": true,
     "geprueft": false
   },
   {
-    "id": "480_000009",
+    "id": "430_000002",
     "name": "Raum-CO2-Sensor",
-    "gewerk": "480",
+    "gewerk": "430",
     "beschreibung": "Raum-CO2-Sensor - Raum-CO2-Fühler (Siemens QPA2000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
       {
@@ -207,16 +225,20 @@
         "zone": "klemm_s"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "heizung",
+      "lueftung",
+      "kaelte"
+    ],
     "betriebsmittel": "Raum-CO2-Fühler (Siemens QPA2000)",
     "feldgeraet_artikel_nr": "QPA2000",
     "automationsanbindung": true,
     "geprueft": false
   },
   {
-    "id": "480_000010",
+    "id": "430_000003",
     "name": "Raum-VOC-Sensor",
-    "gewerk": "480",
+    "gewerk": "430",
     "beschreibung": "Raum-VOC-Sensor - Raum-VOC-Fühler (Siemens QPA1000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
       {
@@ -236,16 +258,20 @@
         "zone": "klemm_s"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "heizung",
+      "lueftung",
+      "kaelte"
+    ],
     "betriebsmittel": "Raum-VOC-Fühler (Siemens QPA1000)",
     "feldgeraet_artikel_nr": "QPA1000",
     "automationsanbindung": true,
     "geprueft": false
   },
   {
-    "id": "480_000011",
+    "id": "430_000004",
     "name": "Raumfeuchtesensor",
-    "gewerk": "480",
+    "gewerk": "430",
     "beschreibung": "Raumfeuchtesensor - Raumfeuchtefühler (Siemens QFA2000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
       {
@@ -265,7 +291,11 @@
         "zone": "klemm_s"
       }
     ],
-    "funktionsbereich": "automation",
+    "funktionsbereich": [
+      "heizung",
+      "lueftung",
+      "kaelte"
+    ],
     "betriebsmittel": "Raumfeuchtefühler (Siemens QFA2000)",
     "feldgeraet_artikel_nr": "QFA2000",
     "automationsanbindung": true,

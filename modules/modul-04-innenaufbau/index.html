@@ -1152,7 +1152,11 @@ function filterBaugruppen(gew) {
   const sel = document.getElementById('bg_auswahl');
   const cur = sel.value;
   sel.innerHTML = '<option value="">— Baugruppe wählen —</option>';
-  BAUGRUPPEN_DB.filter(b => b.funktionsbereich === gew)
+  // funktionsbereich ist seit Session 51 Nachtrag 9 immer ein Array (analog
+  // einzelbauteile.zone, Session 44) - eine Baugruppe kann dadurch in
+  // mehreren Gewerke-Tabs gleichzeitig erscheinen (z.B. ein Raumsensor in
+  // Heizung/Lueftung/Kaelte statt nur Automation).
+  BAUGRUPPEN_DB.filter(b => b.funktionsbereich && b.funktionsbereich.includes(gew))
     .slice()
     .sort((a, b) => (BG_SORT_PRIORITY[a.id] ?? 999) - (BG_SORT_PRIORITY[b.id] ?? 999))
     .forEach(b => {

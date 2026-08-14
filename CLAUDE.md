@@ -406,15 +406,18 @@ bei binär-komprimierten Siemens-PDFs per `pypdf` in WSL ausgelesen – siehe
 Session 41-Präzedenzfall, funktioniert weiterhin zuverlässig), präsentiert
 Fund + Link, Nutzer entscheidet vor dem Eintragen.
 
-**4 Baugruppen angelegt** (`480_000008`–`480_000011`, Zone `klemm_s`,
-`funktionsbereich:'automation'`, je 1× `dp_ai` auf der Signalklemme):
-- `480_000008` „Raumtemperatursensor passiv" – Siemens `QAA24` (LG-Ni1000),
+**4 Baugruppen angelegt** (`430_000001`–`430_000004` – ursprünglich unter
+`480_00000{8-11}`/Gewerk Automation angelegt, per Nutzer-Korrektur direkt
+im Anschluss auf Gewerk 430/Lüftung umbenannt, siehe „Baugruppen mehreren
+Gewerken zuordenbar" weiter unten; Zone `klemm_s`, `funktionsbereich:
+['heizung','lueftung','kaelte']`, je 1× `dp_ai` auf der Signalklemme):
+- `430_000001` „Raumtemperatursensor passiv" – Siemens `QAA24` (LG-Ni1000),
   2 Klemmen (B/M, passiv, keine Versorgung).
-- `480_000009` „Raum-CO2-Sensor" – Siemens `QPA2000` (NDIR, 0…2000ppm),
+- `430_000002` „Raum-CO2-Sensor" – Siemens `QPA2000` (NDIR, 0…2000ppm),
   3 Klemmen (G/G0 Versorgung + X1 Signal).
-- `480_000010` „Raum-VOC-Sensor" – Siemens `QPA1000` (Metalloxid-Halbleiter),
+- `430_000003` „Raum-VOC-Sensor" – Siemens `QPA1000` (Metalloxid-Halbleiter),
   3 Klemmen, gleiche Baureihe/Datenblatt wie QPA2000.
-- `480_000011` „Raumfeuchtesensor" – Siemens `QFA2000` (kapazitiv), 3 Klemmen.
+- `430_000004` „Raumfeuchtesensor" – Siemens `QFA2000` (kapazitiv), 3 Klemmen.
   Klemmenbezeichnung nicht aus dem QFA2000-eigenen Datenblatt bestätigt
   (Abruf scheiterte am Timeout), sondern aus dem 20 Jahre durchgängig
   gleichen Siemens-Klemmenschema (G/G0+Signal) der QFA/QPA-Familie
@@ -437,14 +440,49 @@ aktiven Sensoren, da 24V-SELV-Versorgungsleitungen (anders als
   Gehäuse/Optik nur für industrielle Umgebungen geeignet, nicht für
   Bereiche mit architektonischen Anforderungen.
 
-Verifiziert direkt im Browser (Standschrank, echte Katalogdaten): alle 4
-Baugruppen korrekt im „Automation"-Dropdown; Testbelegung (2×`480_000008`
-+ je 1× `480_000009/010/011`) liefert `dp_ai used:5` (korrekt, 1 pro
-Instanz), `bgInstanceQueue` mit korrekter Klemmenzahl je Instanz (2/2/3/3/3),
-Stückliste aggregiert korrekt `3209510` Menge 13 in `klemm_s`; Modul 5
-zeigt alle 4 Feldgeräte mit korrektem Hersteller/Preis/Menge/Summe
-(1207,66 €). Keine Konsolenfehler. Backup:
-`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-raumsensoren_*.xlsx`.
+Verifiziert direkt im Browser (Standschrank, echte Katalogdaten):
+Testbelegung (2× Raumtemperatursensor + je 1× CO2/VOC/Feuchte) liefert
+`dp_ai used:5` (korrekt, 1 pro Instanz), `bgInstanceQueue` mit korrekter
+Klemmenzahl je Instanz (2/2/3/3/3), Stückliste aggregiert korrekt
+`3209510` Menge 13 in `klemm_s`; Modul 5 zeigt alle 4 Feldgeräte mit
+korrektem Hersteller/Preis/Menge/Summe (1207,66 €). Keine Konsolenfehler.
+Backup: `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-raumsensoren_*.xlsx`.
+**Korrektur (Session 51 Nachtrag 9, direkt im Anschluss):** siehe nächster
+Abschnitt – die IDs `480_000008`–`011` wurden zu `430_000001`–`004`
+umbenannt.
+
+### Baugruppen mehreren Gewerken zuordenbar: funktionsbereich als Array (Session 51 Nachtrag 9, gesperrt)
+Nutzer-Fund: die 4 neuen Raumsensor-Baugruppen waren unter „Automation"
+einsortiert – falsch, „es handelt sich nicht um Automationsgeräte". Sie
+müssen stattdessen in Heizung, Lüftung UND Kälte gleichzeitig auswählbar
+sein (ein Raumsensor wird je nach Projekt für unterschiedliche
+Anlagentypen eingesetzt).
+
+**Datenmodell:** `baugruppen.funktionsbereich` ist jetzt immer ein Array
+(Komma-Liste in Excel), auch bei nur einem Wert – exakt analog zu
+`einzelbauteile.zone` (Session 44). `filterBaugruppen()` in Modul 4 prüft
+entsprechend `b.funktionsbereich.includes(gew)` statt `===`.
+`baugruppen.gewerk` (DIN-276-Code) bleibt bewusst EINWERTIG – wird in
+Modul 7 exakt gefiltert/anzeigt, ein Komma-Wert würde dort die
+Filterlogik brechen. Bei mehreren gleichzeitig zutreffenden Gewerken
+führt der Nutzer eines als „führend" (hier auf Nachfrage: **430 ·
+Lüftung**).
+
+**ID-Konsequenz:** die ID kodiert laut Schema (Session 37/38) den
+führenden DIN-276-Code – mit `gewerk` 480→430 mussten auch die IDs
+umbenannt werden, sonst widerspricht die ID dem eigenen Schema. Kein
+Konflikt mit alten `430_xxxxxx`-Einträgen (Baugruppen wurden in Session 40
+komplett neu aufgebaut, keine Altlasten): `480_000008`–`011` →
+**`430_000001`–`004`**, `baugruppen_bauteile.bg_id` (11 Zeilen) nachgezogen.
+
+Verifiziert direkt im Browser: Tabs Heizung/Lüftung/Kälte zeigen jeweils
+alle 4 Sensor-Baugruppen korrekt; Tab Automation zeigt sie korrekt NICHT
+mehr (nur noch die 7 DDC-Reserve-Baugruppen); Modul 7 rendert
+`funktionsbereich` als lesbaren Komma-Text ohne Fehler (kein eigener
+Formatter nötig, `String()`-Fallback reicht, wie bereits beim analogen
+`zone`-Array). Regressionstest mit umbenannter ID (`430_000002`, 2×
+Instanzen) bestätigt Platzierung/Stückliste/Feldgeräte-Summe weiterhin
+korrekt. Keine Konsolenfehler.
 
 ## Gesperrte Entscheidungen
 
