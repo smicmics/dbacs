@@ -42,5 +42,23 @@
     "kategorie": "Raumsensor",
     "quelle_hinweis": "Session 51 Nachtrag 10. Siemens QFA2060 (Symaro-Standardgenauigkeit, Planungsfabrikat Siemens) - Nutzer-Vorgabe \"Kombifuehler Raumtemperatur und Feuchte\" fuer Lueftung/Heizung/Kaelte. Bewusst NICHT der QFA3160 (bereits verworfen, industrielle Optik/Messstab-Bauform) - QFA2060 hat stattdessen dasselbe flache Wandaufbaugehaeuse wie QAA24/QPA-Familie (90x100x36mm, IP30, Schraubklemmen), architektonisch unauffaellig. Anschlussklemmen (abgeleitet aus dem identischen QFA-Familienschema, bestaetigt am Schwestermodell QFA3160/CE1N1858de): G/G0 Versorgung (AC24V oder DC13,5-35V), U1 Signalausgang Feuchte 0-10V (0-100% r.F.), U2 Signalausgang Temperatur 0-10V (Messbereich waehlbar 0-50/-35...35/-40...70 Grad C). Kein bestaetigter Netto-Preis gefunden (nur Gebrauchtmarkt-/US-Distributor-Preise, nicht uebernommen). Quelle: https://docs.rs-online.com/4018/A700000012966442.pdf , https://hvac.de/en/qfa20/5397-qfa2060.html",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "QAE2120.010",
+    "bezeichnung": "Tauchtemperaturfühler passiv, LG-Ni1000, 100mm, inkl. Tauchhülse",
+    "hersteller": "Siemens",
+    "kategorie": "Raumsensor",
+    "preis_eur": 85.08,
+    "quelle_hinweis": "Session 51 Nachtrag 11. Siemens QAE2120.010 (Symaro-Reihe, Planungsfabrikat Siemens), Tauchtemperaturfuehler passiv fuer Heizung/Kaelte (Wasser-/Medientemperatur in Rohren/Behaeltern). Messelement LG-Ni1000 - bewusst diese Elementvariante statt Pt100/Pt1000/NTC gewaehlt, da nur \"QAE2120.xxx\" die Tauchhuelse (Schutztasche mit Gewindenippel G½A) BEREITS im Lieferumfang enthaelt (\"Including protection pocket with threaded nipple\"); alle anderen Elementtypen brauchen die Tauchhuelse als separates Zubehoer. Konsistent zum bereits katalogisierten Raumtemperaturfuehler QAA24 (ebenfalls LG-Ni1000). Baulaenge 100mm - laut Original-Typenuebersicht (Siemens-Datenblatt CE1N1781en, 2017-07-19) sind 100mm und 150mm die EINZIGEN in dieser Baureihe verfuegbaren Laengen, keine 65mm- oder 200-250mm-Variante existiert (vom Nutzer zunaechst vorgeschlagen, per Recherche korrigiert). Mindest-Eintauchtiefe bei Montage 60mm (Installationsvorgabe). Anschlussklemmen B/M (passiv, Schraubklemmen, austauschbar/polaritaetsunabhaengig). Preis 85,08 EUR (Siemens HIT-Portal-Preis laut Distributor-Suche, kein direkt bestaetigter Herstellerlistenpreis). Quelle: https://www.intellisys.it/media/wysiwyg/Siemens_documentation/QAE/QAE21%20Datasheet%20Eng.pdf , https://hvac.de/en/qae21/5172-qae2120010.html",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QAE2120.015",
+    "bezeichnung": "Tauchtemperaturfühler passiv, LG-Ni1000, 150mm, inkl. Tauchhülse",
+    "hersteller": "Siemens",
+    "kategorie": "Raumsensor",
+    "preis_eur": 89.63,
+    "quelle_hinweis": "Session 51 Nachtrag 11. Siemens QAE2120.015 (Symaro-Reihe, Planungsfabrikat Siemens), Tauchtemperaturfuehler passiv fuer Heizung/Kaelte (Wasser-/Medientemperatur in Rohren/Behaeltern). Messelement LG-Ni1000 - bewusst diese Elementvariante statt Pt100/Pt1000/NTC gewaehlt, da nur \"QAE2120.xxx\" die Tauchhuelse (Schutztasche mit Gewindenippel G½A) BEREITS im Lieferumfang enthaelt (\"Including protection pocket with threaded nipple\"); alle anderen Elementtypen brauchen die Tauchhuelse als separates Zubehoer. Konsistent zum bereits katalogisierten Raumtemperaturfuehler QAA24 (ebenfalls LG-Ni1000). Baulaenge 150mm - laut Original-Typenuebersicht (Siemens-Datenblatt CE1N1781en, 2017-07-19) sind 100mm und 150mm die EINZIGEN in dieser Baureihe verfuegbaren Laengen, keine 65mm- oder 200-250mm-Variante existiert (vom Nutzer zunaechst vorgeschlagen, per Recherche korrigiert). Mindest-Eintauchtiefe bei Montage 60mm (Installationsvorgabe). Anschlussklemmen B/M (passiv, Schraubklemmen, austauschbar/polaritaetsunabhaengig). Preis 89,63 EUR (Siemens HIT-Portal-Preis laut Distributor-Suche, kein direkt bestaetigter Herstellerlistenpreis). Quelle: https://www.intellisys.it/media/wysiwyg/Siemens_documentation/QAE/QAE21%20Datasheet%20Eng.pdf , https://hvac.de/en/qae21/5172-qae2120010.html",
+    "geprueft": false
   }
 ]

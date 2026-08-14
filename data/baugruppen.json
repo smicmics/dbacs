@@ -335,5 +335,59 @@
     "feldgeraet_artikel_nr": "QFA2060",
     "automationsanbindung": true,
     "geprueft": false
+  },
+  {
+    "id": "430_000006",
+    "name": "Tauchtemperatursensor 100mm",
+    "gewerk": "430",
+    "beschreibung": "Tauchtemperatursensor 100mm - Tauchtemperaturfühler passiv, 100mm, inkl. Tauchhülse (Siemens QAE2120.010), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Tauchtemperaturfühler passiv, 100mm, inkl. Tauchhülse (Siemens QAE2120.010)",
+    "feldgeraet_artikel_nr": "QAE2120.010",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000007",
+    "name": "Tauchtemperatursensor 150mm",
+    "gewerk": "430",
+    "beschreibung": "Tauchtemperatursensor 150mm - Tauchtemperaturfühler passiv, 150mm, inkl. Tauchhülse (Siemens QAE2120.015), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Tauchtemperaturfühler passiv, 150mm, inkl. Tauchhülse (Siemens QAE2120.015)",
+    "feldgeraet_artikel_nr": "QAE2120.015",
+    "automationsanbindung": true,
+    "geprueft": false
   }
 ]

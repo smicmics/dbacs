@@ -508,9 +508,33 @@ Verifiziert direkt im Browser: Heizung/Kälte zeigen nach der Korrektur
 korrekt nur noch 3 Sensoren (T-passiv, Feuchte, Kombi), Lüftung zeigt alle
 5; Testbelegung (2× Kombifühler) liefert `dp_ai used:4` (2 pro Instanz),
 8 Klemmen in der Stückliste, Modul 5 zeigt den Kombifühler korrekt
-unbepreist („–", nicht in der Summe). Keine Konsolenfehler. Damit sind die
-Raumsensoren fürs Erste abgeschlossen (Nutzer-Aussage „dann haben wir
-erst einmal die Raumsensoren").
+unbepreist („–", nicht in der Summe). Keine Konsolenfehler.
+
+### Tauchtemperaturfühler 100/150mm für Heizung/Kälte (Session 51 Nachtrag 11, gesperrt)
+Nutzer-Wunsch: passive Tauchtemperaturfühler bis 200mm Baulänge mit
+passender Tauchhülse, vorgeschlagen 3 Größen (~65/~135/~200-250mm).
+**Recherche-Ergebnis (Siemens-Originaldatenblatt CE1N1781en, 2017-07-19,
+Symaro `QAE21..`): die Baureihe bietet ausschließlich 100mm und 150mm als
+Baulänge – weder 65mm noch 200-250mm existieren als Katalogvariante.**
+Dem Nutzer mit Tabelle vorgelegt, auf Rückmeldung beide reale Größen
+übernommen (keine 3. Größe).
+
+**2 neue Baugruppen** `430_000006`/`430_000007` „Tauchtemperatursensor
+100mm"/„150mm" (Heizung/Kälte, NICHT Lüftung – reine Medientemperatur in
+Rohren/Behältern). Siemens **`QAE2120.010`**/**`QAE2120.015`** – bewusst
+die LG-Ni1000-Elementvariante (konsistent zu `QAA24`) UND die einzige
+Ausführung dieser Baureihe, bei der die Tauchhülse (Schutztasche mit
+Gewindenippel G½A) bereits im Lieferumfang enthalten ist (alle anderen
+Elementtypen Pt100/Pt1000/NTC verlangen die Tauchhülse als separates
+Zubehör). 2 Klemmen (B/M, passiv, polaritätsunabhängig vertauschbar),
+1× `dp_ai`. Preise 85,08€/89,63€ (Siemens HIT-Portal-Preis).
+
+Verifiziert direkt im Browser: Heizung UND Kälte zeigen beide Größen
+korrekt, Lüftung korrekt nicht; Testbelegung (je 1×) liefert `dp_ai
+used:2`, 4 Klemmen, Modul 5 zeigt beide korrekt bepreist (Summe 174,71€).
+Keine Konsolenfehler. Backup:
+`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-tauchfuehler_*.xlsx`.
+Damit sind die Raumsensoren fürs Erste abgeschlossen.
 
 ## Gesperrte Entscheidungen
 
