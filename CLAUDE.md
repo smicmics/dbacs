@@ -719,9 +719,10 @@ Spannung+Zulassung; Differenzdruckwächter: Messbereich). Nachgezogen:
 „Drucksensor Kanaldruck 0...1000 Pa, 24V AC/DC" (QBM3020 fehlte die
 Spannung), „Kanalhygrostat 15...95% r.F." (Messbereich ergänzt). **Offen:**
 die älteren Raumsensor-Baugruppen (Session 51: Raum-CO2/-VOC/-Feuchte-/
-Kombisensor, alle aktiv mit 24V-Versorgung) tragen noch keine
-Spannungsangabe im Namen – rückwirkende Anpassung mit dem Nutzer
-abzustimmen, bevor sie umgesetzt wird.
+Kombisensor) haben die Spannungsangabe nachträglich erhalten: „Raum-CO2-Sensor
+24V AC/DC", „Raum-VOC-Sensor 24V AC/DC", „Raumfeuchtesensor 24V AC/DC",
+„Raumtemperatur- und Feuchtesensor 24V AC/DC" (alle QPA/QFA-Familie,
+Versorgung AC24V SELV oder DC13,5-35V).
 
 ### Klemmzonen-Grundsatzregel: Sensor vs. Feldgerät (Session 52 Nachtrag 4, gesperrt)
 Nutzer-Klarstellung, ab sofort verbindlich für alle künftigen Baugruppen:

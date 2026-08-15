@@ -204,7 +204,7 @@
   },
   {
     "id": "430_000002",
-    "name": "Raum-CO2-Sensor",
+    "name": "Raum-CO2-Sensor 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Raum-CO2-Sensor - Raum-CO2-Fühler (Siemens QPA2000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -235,7 +235,7 @@
   },
   {
     "id": "430_000003",
-    "name": "Raum-VOC-Sensor",
+    "name": "Raum-VOC-Sensor 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Raum-VOC-Sensor - Raum-VOC-Fühler (Siemens QPA1000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -266,7 +266,7 @@
   },
   {
     "id": "430_000004",
-    "name": "Raumfeuchtesensor",
+    "name": "Raumfeuchtesensor 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Raumfeuchtesensor - Raumfeuchtefühler (Siemens QFA2000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -299,7 +299,7 @@
   },
   {
     "id": "430_000005",
-    "name": "Raumtemperatur- und Feuchtesensor",
+    "name": "Raumtemperatur- und Feuchtesensor 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Raumtemperatur- und Feuchtesensor - Raumfühler für relative Feuchte und Temperatur, aktiv (Siemens QFA2060), 4 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 2x AI (Feuchte + Temperatur).",
     "bauteile": [
