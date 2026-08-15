@@ -725,10 +725,13 @@ abzustimmen, bevor sie umgesetzt wird.
 
 ### Klemmzonen-Grundsatzregel: Sensor vs. Feldgerät (Session 52 Nachtrag 4, gesperrt)
 Nutzer-Klarstellung, ab sofort verbindlich für alle künftigen Baugruppen:
-**`klemm_s` (Sensoren-Klemmleiste) ist ausschließlich für Sensoren mit
-analogem Ausgang reserviert** (meist < 50V SELV – Raumsensoren, Kanalfühler,
-Drucksensor mit Analogausgang). **Jedes Schaltgerät (binärer Kontakt/Relais-
-ausgang, kein Analogsignal) ist ein Feldgerät und gehört auf `klemm_f`**,
+**`klemm_s` (Sensoren-Klemmleiste) ist für echte Messsensoren reserviert**
+(meist < 50V SELV) – **sowohl passiv** (Widerstandsmessung ohne
+Hilfsenergie, z. B. QAA24/QAM2120/QAE2120 – Korrektur, ursprünglich fälschlich
+auf "Sensoren mit analogem Ausgang" verengt) **als auch aktiv mit
+Analogausgang** (Raumsensoren, Kanalfühler, Drucksensor mit Analogausgang).
+**Jedes Schaltgerät (binärer Kontakt/Relaisausgang, kein Analogsignal) ist
+ein Feldgerät und gehört auf `klemm_f`**,
 auch wenn sein Signal am Ende als BI an die DDC geht – die Zone richtet
 sich nach der Signalart am Gerät, nicht nach dem Ziel. Nur echte
 Leistungs-/Netzanschlüsse (230V-Versorgung, Leistungssteuerungs-Ausgang zu
