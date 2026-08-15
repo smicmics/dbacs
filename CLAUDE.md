@@ -373,6 +373,34 @@ gesamt: 4`). Modul 5 zeigt alle 4 Geräte mit korrektem Hersteller
 (3x Siemens, 1x KRIWAN) und Preisen (239,90€/657,00€ bepreist, 2x
 unbepreist „–", Summe 896,90€). Keine Konsolenfehler.
 
+### Modul 4 – Baugruppen-Dropdown nach Kategorie gruppiert (Session 53 Nachtrag, gesperrt)
+Nutzer-Wunsch: bei wachsender Baugruppenzahl wird die flache Dropdown-Liste
+unübersichtlich – Gruppierung analog zur bereits bestehenden
+Einzelbauteile-Kategorisierung (`populateEinzelAuswahl()`, Session 27/40).
+Neues Feld `baugruppen.kategorie` (rein optische Gruppierung, unabhängig von
+`zone`/`gewerk`/`funktionsbereich` – exakt wie bei `einzelbauteile.kategorie`),
+alle 30 Bestands-Baugruppen zugeordnet: **Raumsensoren**, **Luftkanalsensoren**,
+**Luftkanalwächter**, **Tauchfühler**, **Datenpunkt-Reserve**,
+**Automationsstation**, **Steuerspannung** (die vom Nutzer vorgeschlagene
+Kategorie „Raumwächter" bleibt bis zur ersten passenden Baugruppe ungenutzt –
+Kategorien entstehen rein aus den Daten, keine leeren Platzhalter nötig).
+`filterBaugruppen()` baut jetzt `<optgroup>`-Elemente (alphabetisch sortiert,
+wie bei den Einzelbauteilen), `BG_SORT_PRIORITY` bleibt als Sortierung
+*innerhalb* einer Kategorie erhalten (wirkt aktuell nur auf die 6
+Datenpunkt-Reserve-Baugruppen: AI→AO→AO+LVB→BI→BO→BO+LVB). **Gleiche strikte
+Regel wie bei den Einzelbauteilen (Session 40): eine Baugruppe OHNE
+`kategorie` fehlt komplett im Dropdown** – jede künftige neue Baugruppe
+braucht also zwingend eine Kategorie.
+
+Verifiziert direkt im Browser (Hard-Reload zur Vermeidung von Skript-Caching):
+Lüftung-Tab zeigt korrekt 3 Gruppen (Luftkanalsensoren/-wächter,
+Raumsensoren), Automation-Tab 3 Gruppen (Automationsstation,
+Datenpunkt-Reserve in der richtigen Priorität, Steuerspannung),
+Heizung-Tab 2 Gruppen (Raumsensoren, Tauchfühler). Hinzufügen einer
+Baugruppe aus dem gruppierten Dropdown funktioniert unverändert
+(`addBaugruppe()`/Mengen-Merge betroffen von der Umstellung nicht). Keine
+Konsolenfehler.
+
 ### Modul 4 – Session 51 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,
 Verifizierungsdetails) archiviert in

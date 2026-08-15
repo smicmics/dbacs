@@ -21,6 +21,7 @@
       "automation"
     ],
     "automationsanbindung": true,
+    "kategorie": "Datenpunkt-Reserve",
     "geprueft": false
   },
   {
@@ -45,6 +46,7 @@
       "automation"
     ],
     "automationsanbindung": true,
+    "kategorie": "Datenpunkt-Reserve",
     "geprueft": false
   },
   {
@@ -70,6 +72,7 @@
       "automation"
     ],
     "automationsanbindung": true,
+    "kategorie": "Datenpunkt-Reserve",
     "geprueft": false
   },
   {
@@ -94,6 +97,7 @@
       "automation"
     ],
     "automationsanbindung": true,
+    "kategorie": "Datenpunkt-Reserve",
     "geprueft": false
   },
   {
@@ -119,6 +123,7 @@
       "automation"
     ],
     "automationsanbindung": true,
+    "kategorie": "Datenpunkt-Reserve",
     "geprueft": false
   },
   {
@@ -143,6 +148,7 @@
       "automation"
     ],
     "automationsanbindung": true,
+    "kategorie": "Datenpunkt-Reserve",
     "geprueft": false
   },
   {
@@ -161,6 +167,7 @@
       "automation"
     ],
     "automationsanbindung": true,
+    "kategorie": "Automationsstation",
     "geprueft": false
   },
   {
@@ -189,6 +196,7 @@
     "betriebsmittel": "Raumtemperaturfühler passiv (Siemens QAA24)",
     "feldgeraet_artikel_nr": "QAA24",
     "automationsanbindung": true,
+    "kategorie": "Raumsensoren",
     "geprueft": false
   },
   {
@@ -221,6 +229,7 @@
     "feldgeraet_artikel_nr": "QPA2000",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Raumsensoren",
     "geprueft": false
   },
   {
@@ -253,6 +262,7 @@
     "feldgeraet_artikel_nr": "QPA1000",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Raumsensoren",
     "geprueft": false
   },
   {
@@ -287,6 +297,7 @@
     "feldgeraet_artikel_nr": "QFA2000",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Raumsensoren",
     "geprueft": false
   },
   {
@@ -327,6 +338,7 @@
     "feldgeraet_artikel_nr": "QFA2060",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Raumsensoren",
     "geprueft": false
   },
   {
@@ -354,6 +366,7 @@
     "betriebsmittel": "Tauchtemperaturfühler passiv, 100mm, inkl. Tauchhülse (Siemens QAE2120.010)",
     "feldgeraet_artikel_nr": "QAE2120.010",
     "automationsanbindung": true,
+    "kategorie": "Tauchfühler",
     "geprueft": false
   },
   {
@@ -381,6 +394,7 @@
     "betriebsmittel": "Tauchtemperaturfühler passiv, 150mm, inkl. Tauchhülse (Siemens QAE2120.015)",
     "feldgeraet_artikel_nr": "QAE2120.015",
     "automationsanbindung": true,
+    "kategorie": "Tauchfühler",
     "geprueft": false
   },
   {
@@ -407,6 +421,7 @@
     "betriebsmittel": "Kanaltemperaturfühler passiv, 0,4m, Symaro (Siemens QAM2120.040)",
     "feldgeraet_artikel_nr": "QAM2120.040",
     "automationsanbindung": true,
+    "kategorie": "Luftkanalsensoren",
     "geprueft": false
   },
   {
@@ -433,6 +448,7 @@
     "betriebsmittel": "Kanaltemperaturfühler passiv, 2,0m, Kapillar-Mittelwertfühler, Symaro (Siemens QAM2120.200)",
     "feldgeraet_artikel_nr": "QAM2120.200",
     "automationsanbindung": true,
+    "kategorie": "Luftkanalsensoren",
     "geprueft": false
   },
   {
@@ -465,6 +481,7 @@
     "feldgeraet_artikel_nr": "QFM2100",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalsensoren",
     "geprueft": false
   },
   {
@@ -491,6 +508,7 @@
     "betriebsmittel": "Differenzdruckwächter Filterüberwachung, 20-300Pa (Siemens QBM81-3)",
     "feldgeraet_artikel_nr": "QBM81-3",
     "automationsanbindung": true,
+    "kategorie": "Luftkanalwächter",
     "geprueft": false
   },
   {
@@ -522,6 +540,7 @@
     "betriebsmittel": "Differenzdruckwächter Ventilatorüberwachung, 100-1000Pa, über Koppelrelais in Sicherheitskette (Siemens QBM81-10)",
     "feldgeraet_artikel_nr": "QBM81-10",
     "automationsanbindung": true,
+    "kategorie": "Luftkanalwächter",
     "geprueft": false
   },
   {
@@ -554,6 +573,7 @@
     "feldgeraet_artikel_nr": "QBM3020-10",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalsensoren",
     "geprueft": false
   },
   {
@@ -585,6 +605,7 @@
     "betriebsmittel": "Kanalhygrostat, Schaltkontakt, Schutz vor Überfeuchtung bei Luftbefeuchtung, über Koppelrelais in Sicherheitskette (Siemens QFM81.21)",
     "feldgeraet_artikel_nr": "QFM81.21",
     "automationsanbindung": true,
+    "kategorie": "Luftkanalwächter",
     "geprueft": false
   },
   {
@@ -664,6 +685,7 @@
     "betriebsmittel": "Kanalrauchmelder 24V AC/DC, VdS/DIBt-Zulassung (Oppermann KRM-2-DZ)",
     "feldgeraet_artikel_nr": "KRM-2-DZ",
     "automationsanbindung": true,
+    "kategorie": "Luftkanalwächter",
     "geprueft": false
   },
   {
@@ -749,6 +771,7 @@
     "feldgeraet_artikel_nr": "KRM-1-DZ",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "230vac",
+    "kategorie": "Luftkanalwächter",
     "geprueft": false
   },
   {
@@ -776,6 +799,7 @@
     "funktionsbereich": [
       "automation"
     ],
+    "kategorie": "Steuerspannung",
     "geprueft": false
   },
   {
@@ -798,6 +822,7 @@
     "funktionsbereich": [
       "automation"
     ],
+    "kategorie": "Steuerspannung",
     "geprueft": false
   },
   {
@@ -825,6 +850,7 @@
     "funktionsbereich": [
       "automation"
     ],
+    "kategorie": "Steuerspannung",
     "geprueft": false
   },
   {
@@ -857,6 +883,7 @@
     "feldgeraet_artikel_nr": "QPM2100",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalsensoren",
     "geprueft": false
   },
   {
@@ -889,6 +916,7 @@
     "feldgeraet_artikel_nr": "QPM1100",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalsensoren",
     "geprueft": false
   },
   {
@@ -927,6 +955,7 @@
     "feldgeraet_artikel_nr": "QPM2102",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalsensoren",
     "geprueft": false
   },
   {
@@ -964,6 +993,7 @@
     "feldgeraet_artikel_nr": "20N842S021",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalwächter",
     "geprueft": false
   }
 ]

@@ -1161,6 +1161,14 @@ function setGewerk(gew) {
   localStorage.setItem('m04_gewerk', gew);
 }
 
+// Session 53 (Nutzer-Wunsch): Dropdown nach kategorie gruppiert (<optgroup>),
+// analog zu populateEinzelAuswahl() bei den Einzelbauteilen. Baugruppen OHNE
+// kategorie fehlen komplett im Dropdown (nicht nur ungruppiert) - exakt die
+// gleiche, bereits fuer einzelbauteile.kategorie geltende Regel (Session 40) -
+// jede neue Baugruppe MUSS also eine kategorie tragen. Innerhalb einer
+// Kategorie bleibt BG_SORT_PRIORITY die Sortiergrundlage (bisher fuer die
+// gesamte Liste genutzt, wirkt jetzt nur noch je Gruppe - betrifft aktuell
+// ausschliesslich die 6 Datenpunkt-Reserve-Baugruppen).
 function filterBaugruppen(gew) {
   const sel = document.getElementById('bg_auswahl');
   const cur = sel.value;
@@ -1169,15 +1177,24 @@ function filterBaugruppen(gew) {
   // einzelbauteile.zone, Session 44) - eine Baugruppe kann dadurch in
   // mehreren Gewerke-Tabs gleichzeitig erscheinen (z.B. ein Raumsensor in
   // Heizung/Lueftung/Kaelte statt nur Automation).
-  BAUGRUPPEN_DB.filter(b => b.funktionsbereich && b.funktionsbereich.includes(gew))
-    .slice()
-    .sort((a, b) => (BG_SORT_PRIORITY[a.id] ?? 999) - (BG_SORT_PRIORITY[b.id] ?? 999))
-    .forEach(b => {
-    const opt = document.createElement('option');
-    opt.value = b.id;
-    opt.textContent = b.name;
-    if(b.id === cur) opt.selected = true;
-    sel.appendChild(opt);
+  const kategorien = {};
+  BAUGRUPPEN_DB
+    .filter(b => b.kategorie && b.funktionsbereich && b.funktionsbereich.includes(gew))
+    .forEach(b => { (kategorien[b.kategorie] = kategorien[b.kategorie] || []).push(b); });
+  Object.keys(kategorien).sort().forEach(kat => {
+    const og = document.createElement('optgroup');
+    og.label = kat;
+    kategorien[kat]
+      .slice()
+      .sort((a, b) => (BG_SORT_PRIORITY[a.id] ?? 999) - (BG_SORT_PRIORITY[b.id] ?? 999))
+      .forEach(b => {
+        const opt = document.createElement('option');
+        opt.value = b.id;
+        opt.textContent = b.name;
+        if(b.id === cur) opt.selected = true;
+        og.appendChild(opt);
+      });
+    sel.appendChild(og);
   });
 }
 

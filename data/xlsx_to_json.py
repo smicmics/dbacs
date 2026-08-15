@@ -543,6 +543,11 @@ def export_baugruppen(wb):
         # Klemmen). Ausgewertet in Modul 4 buildQueues().
         if rec.get('benoetigt_steuerspannung') is not None:
             entry['benoetigt_steuerspannung'] = str(rec['benoetigt_steuerspannung'])
+        # kategorie (Session 53): rein optische Dropdown-Gruppierung im
+        # Baugruppen-Auswahlfeld (Modul 4, populateBgAuswahl()) - analog zu
+        # einzelbauteile.kategorie, unabhaengig von zone/gewerk/funktionsbereich.
+        if rec.get('kategorie') is not None:
+            entry['kategorie'] = str(rec['kategorie'])
         entry['geprueft'] = bool(rec.get('geprueft'))
         rows.append(entry)
 
