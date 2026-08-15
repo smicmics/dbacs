@@ -674,6 +674,55 @@ manuellen Eingriff. Koppelrelais-Zonenkorrektur ebenfalls bestätigt
 (Stückliste zeigt `L PLC-RSC-230UC/21-21...` statt vorher `S`). Keine
 Konsolenfehler.
 
+### Steuerspannungs-Auto-Ergänzung + Zonenkorrektur Hygrostat + Namensregel (Session 52 Nachtrag 3, gesperrt)
+**Bug (Nutzer-Fund im Browser-Test):** ein 230VAC-Koppelrelais wurde platziert
+(z. B. über „Kanalhygrostat"), aber die dafür nötige „Steuerspannung 230V
+AC"-Baugruppe fehlte im Schrank, wenn der Nutzer sie nicht zusätzlich manuell
+auswählte. Nutzer-Prinzip: „Alles nach Erfordernis" – ist die passende
+Steuerspannung schon vorhanden (manuell gesetzt), nichts tun; sonst
+automatisch ergänzen. **Neuer Mechanismus in Modul 4**, strukturell parallel
+zur DDC-Auto-Modul-Ergänzung (Session 28e/50), aber präsenz- statt
+kapazitätsbasiert: neues Feld `einzelbauteile.benoetigt_steuerspannung`
+(`'24vac'`/`'24vdc'`/`'230vac'`, aktuell nur auf `2967099` gesetzt) +
+`STEUERSPANNUNG_BG_VON_TYP`/`STEUERSPANNUNG_TYP_VON_BG`-Konstanten +
+`steuerspannungWatermark` (eigener Ratchet, persistiert als
+`m04_steuerspannung_watermark`, teilt sich den „↺ Zurücksetzen"-Button mit
+dem DDC-Watermark). Läuft in `buildQueues()` über `bgInstanceQueue` (wie eine
+normale Baugruppen-Instanz, inkl. `applyNetztypResolution()` für die
+Trafo-Wahl) statt über den DDC-Weg (raw `queues[zone].push()`), da die
+Steuerspannungs-Baugruppen selbst ganz normale Baugruppen sind. Panel
+„AUTOMATISCH ERGÄNZT (DDC)" zeigt jetzt beide Kategorien gemeinsam (Header
+ohne „(DDC)"-Zusatz). Verifiziert: nur Kanalhygrostat platziert → Trafo+2
+Sicherungen erscheinen automatisch; zusätzlich manuell „Steuerspannung 230V
+AC" hinzugefügt → keine Dopplung (Auto-Ergänzung verschwindet aus der
+Anzeige, Stückliste bleibt bei 1× Trafo).
+
+**Zonenkorrektur Kanalhygrostat (Nutzer-Fund):** die 2 Klemmen des
+Hygrostat-Feldkabels (Sensorschleife zur Relaisspule) lagen in `klemm_s`
+(Sensoren) – falsch, der Hygrostat ist als Schaltgerät ein **Feldgerät**,
+keine Sensor im engeren Sinn → jetzt `klemm_f`. Grundsatz (Nutzer-Vorgabe,
+gilt für künftige Baugruppen): **1 Kabel = zusammenhängende Klemmen in
+EINER Zone, mehrere Kabel = Aufteilung auf mehrere Zonen zulässig.** Der
+Hygrostat hat 3 separate Leitungen (Feldkabel zum Sensor → jetzt `klemm_f`;
+Relais→DDC-Meldung → `klemm_s`; Relais→Leistungssteuerung → `klemm_l`) –
+das bleibt zulässig aufgeteilt, nur die Feldkabel-Klemmen selbst waren
+falsch zugeordnet. **Offen:** dieselbe Schaltgerät-vs-Sensor-Frage betrifft
+vermutlich auch die beiden Differenzdruckwächter-Baugruppen (`430_000011`/
+`012`, QBM81 ist ebenfalls ein Schaltgerät) und die Kanalrauchmelder
+(`430_000015`/`016`) – noch nicht angepasst, mit dem Nutzer abzustimmen.
+
+**Namensregel (Nutzer-Vorgabe):** Auswahltext-Suffix-Reihenfolge, jeweils
+nur falls zutreffend: `Text Bauteil → Messbereich → Versorgungsspannung →
+Zulassungen/Zertifizierungen`. Bereits vorher korrekt (Kanalrauchmelder:
+Spannung+Zulassung; Differenzdruckwächter: Messbereich). Nachgezogen:
+„Kanalfeuchtefühler 24V AC/DC" (QFM2100 war ohne Spannungsangabe),
+„Drucksensor Kanaldruck 0...1000 Pa, 24V AC/DC" (QBM3020 fehlte die
+Spannung), „Kanalhygrostat 15...95% r.F." (Messbereich ergänzt). **Offen:**
+die älteren Raumsensor-Baugruppen (Session 51: Raum-CO2/-VOC/-Feuchte-/
+Kombisensor, alle aktiv mit 24V-Versorgung) tragen noch keine
+Spannungsangabe im Namen – rückwirkende Anpassung mit dem Nutzer
+abzustimmen, bevor sie umgesetzt wird.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.

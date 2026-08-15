@@ -389,6 +389,12 @@ def export_einzelbauteile(wb):
         # siehe resolveNetztypArtikel() in Modul 4.
         if rec.get('drehstrom_variante_artikel_nr') is not None:
             entry['drehstrom_variante_artikel_nr'] = str(rec['drehstrom_variante_artikel_nr'])
+        # benoetigt_steuerspannung (Session 52 Nachtrag 2): '24vac'/'24vdc'/
+        # '230vac' - dieses Bauteil (z.B. ein 230VAC-Koppelrelais) braucht eine
+        # passende "Steuerspannung X"-Baugruppe irgendwo im Schrank, siehe
+        # STEUERSPANNUNG_BG_VON_TYP/buildQueues() in Modul 4.
+        if rec.get('benoetigt_steuerspannung') is not None:
+            entry['benoetigt_steuerspannung'] = str(rec['benoetigt_steuerspannung'])
         # max_ea_module/ddc_netzteil_artikel_nr/ddc_sicherung_artikel_nr (Session 50):
         # nur bei ddc_cpu-Bauteilen relevant. Herstellerseitige Obergrenze der
         # E/A-Module je Automationsstation (max_ea_module) sowie die fest

@@ -840,6 +840,17 @@ let ddcWatermark       = {};
 // kennt sie aber nur, wenn sie hier zwischengespeichert werden – gebraucht
 // von aggregateStueckliste()/exportCSV() außerhalb des calculate()-Aufrufs.
 let letzteDdcAuto      = null;
+// Steuerspannungs-Auto-Ratchet (Session 52 Nachtrag 2, Nutzer-Fund): analog
+// zu ddcWatermark, aber praesenz- statt kapazitaetsbasiert – { '24vac'|
+// '24vdc'|'230vac': true } fuer jeden Spannungstyp, der schon einmal
+// automatisch ergaenzt wurde. Sinkt nie von selbst (gleiches Ratchet-Prinzip
+// wie DDC), siehe buildQueues()/resetDdcWatermark().
+let steuerspannungWatermark = {};
+// Ergebnis des letzten buildQueues()-Laufs, analog letzteDdcAuto – die
+// automatisch ergaenzten Steuerspannungs-Bauteile (Trafo/Netzteil+Sicherung)
+// werden dort bereits in bgInstanceQueue geschrieben (Zeichnung), fehlen
+// aggregateStueckliste() aber ohne diesen Zwischenspeicher.
+let letzteSteuerspannungAuto = null;
 
 // ── DOM-Helfer ───────────────────────────────────────────────────────
 const g  = id => +document.getElementById(id).value;
@@ -928,6 +939,8 @@ function init() {
   // DDC-Auto-Modul-Ratchet wiederherstellen
   const wm = localStorage.getItem('m04_ddc_watermark');
   if(wm) try { ddcWatermark = JSON.parse(wm); } catch(e){}
+  const swm = localStorage.getItem('m04_steuerspannung_watermark');
+  if(swm) try { steuerspannungWatermark = JSON.parse(swm); } catch(e){}
 
   loadMontagebereich(gs('schrank_typ'));
   setGewerk(localStorage.getItem('m04_gewerk') || 'lueftung');
@@ -2240,17 +2253,19 @@ function calculate() {
     tuerenRow.innerHTML = '';
     letzteFelder = [];
     letzteDdcAuto = null;
+    letzteSteuerspannungAuto = null;
     buildFuellstand(null, null);
     buildStueckliste(null);
     updateReserveWarning(false);
-    updateDdcAutoDisplay(null);
+    updateDdcAutoDisplay(null, null);
     updateDdcSummary(null);
     return;
   }
 
   const ddcReservePct = Math.min(0.5, Math.max(0, (g('ddc_reserve_pct') || 20) / 100));
-  const { felder, reserveShortfall, ddcAuto, ddcSummary, totalDemandTe } = calculateFelder(klemmraum, reservePct, ddcReservePct);
+  const { felder, reserveShortfall, ddcAuto, ddcSummary, totalDemandTe, steuerspannungAuto } = calculateFelder(klemmraum, reservePct, ddcReservePct);
   letzteFelder = felder;
+  letzteSteuerspannungAuto = steuerspannungAuto;
   letzteDdcAuto = ddcAuto;
 
   // Links: ein Schranksicht-Block je Feld, in Reihenfolge – nur tatsächlich
@@ -2328,7 +2343,7 @@ function calculate() {
   buildStueckliste(aggZones);
   updateDdcSummary(ddcSummary);
   updateReserveWarning(reserveShortfall);
-  updateDdcAutoDisplay(ddcAuto);
+  updateDdcAutoDisplay(ddcAuto, steuerspannungAuto);
 }
 
 // ── Weiche Reserve-Warnung (getrennt vom harten Overflow-"!" im Schrankbild) ──
@@ -2353,16 +2368,30 @@ function updateReserveWarning(shortfall) {
 // selbst. Das DDC-Warndreieck (separat vom Reserve-Warndreieck) meldet,
 // wenn für mindestens einen Datenpunkttyp kein passendes Modul im
 // Katalog existiert (aktuell z. B. alle Feldbus-Typen).
-function updateDdcAutoDisplay(ddcAuto) {
+function updateDdcAutoDisplay(ddcAuto, steuerspannungAuto) {
   const el = document.getElementById('ddc-auto-liste');
   const warn = document.getElementById('ddc-warn');
   if (el) {
-    el.innerHTML = (ddcAuto && ddcAuto.modules.length)
-      ? '<div class="ddc-auto-hdr"><span>Automatisch ergänzt (DDC)</span><button class="btn-ddc-reset" onclick="resetDdcWatermark()" title="Löscht die gemerkte Mindest-Stückzahl (Watermark, siehe CLAUDE.md Session 28e) und berechnet die Auto-Ergänzung neu aus dem aktuellen Bedarf – z. B. um Reste aus vorherigen Testläufen zu entfernen.">↺ Zurücksetzen</button></div>' + ddcAuto.modules.map(m =>
+    const ddcItems = (ddcAuto && ddcAuto.modules.length) ? ddcAuto.modules.map(m =>
           `<div class="bel-zeile bel-zeile-auto" title="${m.eb.bezeichnung} – automatisch ergänzt, da vorhandene DDC-Module nicht ausreichen. Bleibt bestehen, auch wenn der Bedarf später sinkt (siehe CLAUDE.md, Session 28e).">
              <span class="bel-dot" style="background:#6B6862"></span>
              <span class="bel-name">${m.menge}× ${m.eb.bezeichnung}</span>
-           </div>`).join('')
+           </div>`).join('') : '';
+    // Steuerspannungs-Auto-Ergänzung (Session 52 Nachtrag 2): eigene Zeilen im
+    // selben Abschnitt, nach Artikel zusammengefasst (ein Trafo kann in
+    // mehreren zonen-Eintraegen stecken, z.B. falls spaeter mehrzonig).
+    const ssByArtikel = {};
+    (steuerspannungAuto || []).forEach(m => {
+      if (!ssByArtikel[m.eb.artikel_nr]) ssByArtikel[m.eb.artikel_nr] = {eb: m.eb, menge: 0};
+      ssByArtikel[m.eb.artikel_nr].menge += m.menge;
+    });
+    const ssItems = Object.values(ssByArtikel).map(m =>
+          `<div class="bel-zeile bel-zeile-auto" title="${m.eb.bezeichnung} – automatisch ergänzt, da ein platziertes Bauteil diese Steuerspannung benötigt und sie noch nicht manuell angelegt ist. Bleibt bestehen, auch wenn der Bedarf später sinkt.">
+             <span class="bel-dot" style="background:#6B6862"></span>
+             <span class="bel-name">${m.menge}× ${m.eb.bezeichnung}</span>
+           </div>`).join('');
+    el.innerHTML = (ddcItems || ssItems)
+      ? '<div class="ddc-auto-hdr"><span>Automatisch ergänzt</span><button class="btn-ddc-reset" onclick="resetDdcWatermark()" title="Löscht die gemerkte Mindest-Stückzahl (Watermark, siehe CLAUDE.md Session 28e) und berechnet die Auto-Ergänzung neu aus dem aktuellen Bedarf – z. B. um Reste aus vorherigen Testläufen zu entfernen.">↺ Zurücksetzen</button></div>' + ddcItems + ssItems
       : '';
   }
   if (warn) {
@@ -2560,6 +2589,11 @@ function ddcAutoZone(eb) {
 function resetDdcWatermark() {
   ddcWatermark = {};
   localStorage.removeItem('m04_ddc_watermark');
+  // Steuerspannungs-Watermark (Session 52 Nachtrag 2) teilt sich denselben
+  // Reset-Button – konzeptionell dieselbe Aktion ("automatisch ergänzte
+  // Infrastruktur zurücksetzen"), kein zweiter Button nötig.
+  steuerspannungWatermark = {};
+  localStorage.removeItem('m04_steuerspannung_watermark');
   calculate();
 }
 
@@ -2660,6 +2694,12 @@ function klemmenVariante() {
 // Artikel-Bestandsliste); der Feld-Bezug entsteht erst beim Platzieren in
 // placeBauteileForField(), die queues[zone] über mehrere Feld-Aufrufe
 // hinweg destruktiv verbraucht (siehe calculateFelder()).
+// Steuerspannungs-Baugruppen (Session 52 Nachtrag 2): Zuordnung Spannungstyp
+// <-> Baugruppen-ID, in beide Richtungen gebraucht (Bedarf erkennen /
+// passende Baugruppe zum Ergaenzen finden).
+const STEUERSPANNUNG_BG_VON_TYP = {'24vac':'480_000008', '24vdc':'480_000009', '230vac':'480_000010'};
+const STEUERSPANNUNG_TYP_VON_BG = {'480_000008':'24vac', '480_000009':'24vdc', '480_000010':'230vac'};
+
 function buildQueues(ddcReservePct) {
   // Zone je Bauteil: eb.zone ist ein Array erlaubter Zonen (Session 44),
   // erster Eintrag = Default. Baugruppen-Bauteile: expliziter Override
@@ -2668,6 +2708,12 @@ function buildQueues(ddcReservePct) {
   const queues = {};
   ALLE_ZONEN.forEach(z => queues[z] = []);
   const bgInstanceQueue = []; // siehe Kommentar am Baugruppen-Zweig unten
+  // Steuerspannungs-Bedarf (Session 52 Nachtrag 2, Nutzer-Fund): jedes
+  // platzierte Bauteil mit eb.benoetigt_steuerspannung meldet hier seinen
+  // Spannungstyp an - z.B. das 230VAC-Koppelrelais der Sicherheitsketten-
+  // Baugruppen (Ventilatorueberwachung, Kanalhygrostat). Ausgewertet weiter
+  // unten, NACHDEM alle belegung-Eintraege durchlaufen sind.
+  const neededSteuerspannung = new Set();
 
   const dpDemand = {}, dpSupply = {};
   PHYS_DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
@@ -2720,6 +2766,7 @@ function buildQueues(ddcReservePct) {
     if(item.typ === 'einzel') {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === item.artikel_nr);
       if(!eb || eb.te_breite <= 0) return;
+      if (eb.benoetigt_steuerspannung) neededSteuerspannung.add(eb.benoetigt_steuerspannung);
       if (eb.bauteil_typ === 'ddc_cpu') cpuCount += item.menge;
       else if (eb.bauteil_typ === 'ddc_io') ioUnitsManual += item.menge;
       const farbe = BG_COLORS[item.ci];
@@ -2781,6 +2828,7 @@ function buildQueues(ddcReservePct) {
         resolveBaugruppenBauteile(bg, variante).forEach(bt => {
           const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
           if(!eb || eb.te_breite <= 0) return;
+          if (eb.benoetigt_steuerspannung) neededSteuerspannung.add(eb.benoetigt_steuerspannung);
           // CPU/E-A-Modul koennen jetzt auch ueber eine Baugruppe kommen (z.B.
           // "Automationsstation (AE)", Session 49) statt nur direkt platziert –
           // muss hier ebenso erfasst werden, sonst ergaenzt die Auto-Logik
@@ -2824,6 +2872,54 @@ function buildQueues(ddcReservePct) {
       if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: item.bg_id, ci: item.ci, zonen});
     }
   });
+
+  // ── Steuerspannungs-Baugruppen automatisch ergänzen (Session 52 Nachtrag
+  // 2, Nutzer-Fund) ──────────────────────────────────────────────────────
+  // Wurde z. B. ein 230VAC-Koppelrelais platziert (Sicherheitsketten-
+  // Baugruppen Ventilatorüberwachung/Kanalhygrostat), braucht der Schrank
+  // irgendwo eine passende "Steuerspannung X"-Baugruppe (Trafo/Netzteil +
+  // Sicherung(en)). Ist sie vom Nutzer bereits MANUELL platziert, wird
+  // nichts ergänzt ("alles nach Erfordernis", Nutzer-Vorgabe) – sonst wird
+  // sie automatisch eingefügt, mit demselben Ratchet-Prinzip wie die DDC-
+  // Auto-Module (Session 28e: einmal ergänzt, sinkt nie von selbst wieder,
+  // gemeinsamer "Zurücksetzen"-Button mit dem DDC-Watermark). Anders als
+  // die DDC-Module (raw einzelbauteile, direkt in queues.steuer/evert)
+  // läuft die Platzierung hier über bgInstanceQueue wie eine normale
+  // Baugruppen-Instanz – strukturell identisch zu einer manuell
+  // hinzugefügten "Steuerspannung X"-Baugruppe (inkl. Netztyp-Auflösung
+  // über applyNetztypResolution()), nur grau eingefärbt.
+  const manuellVorhandeneSteuerspannung = new Set();
+  belegung.forEach(item => {
+    if (item.typ === 'baugruppe' && item.menge > 0 && STEUERSPANNUNG_TYP_VON_BG[item.bg_id]) {
+      manuellVorhandeneSteuerspannung.add(STEUERSPANNUNG_TYP_VON_BG[item.bg_id]);
+    }
+  });
+  let steuerspannungWatermarkChanged = false;
+  neededSteuerspannung.forEach(typ => {
+    if (!steuerspannungWatermark[typ]) { steuerspannungWatermark[typ] = true; steuerspannungWatermarkChanged = true; }
+  });
+  const steuerspannungAuto = []; // [{eb, zone, menge}]
+  Object.keys(steuerspannungWatermark).forEach(typ => {
+    if (!steuerspannungWatermark[typ]) return;
+    if (manuellVorhandeneSteuerspannung.has(typ)) return; // Nutzer hat die Versorgung selbst gesetzt
+    const bg = BAUGRUPPEN_DB.find(b => b.id === STEUERSPANNUNG_BG_VON_TYP[typ]);
+    if (!bg) return;
+    const zonen = {};
+    applyNetztypResolution(bg.bauteile).forEach(bt => {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+      if (!eb || eb.te_breite <= 0) return;
+      const zone = bt.zone || eb.zone[0];
+      if (!zonen[zone]) zonen[zone] = [];
+      for (let q = 0; q < bt.menge; q++) {
+        zonen[zone].push({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#D8D5CE', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt – Steuerspannung)', artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak, groupStart: !!bt.groupStart});
+      }
+      let entry = steuerspannungAuto.find(m => m.eb.artikel_nr === eb.artikel_nr && m.zone === zone);
+      if (!entry) { entry = {eb, zone, menge: 0}; steuerspannungAuto.push(entry); }
+      entry.menge += bt.menge;
+    });
+    if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: bg.id, ci: 0, zonen, auto: true});
+  });
+  if (steuerspannungWatermarkChanged) localStorage.setItem('m04_steuerspannung_watermark', JSON.stringify(steuerspannungWatermark));
 
   // ── Automationsstations-Gruppen: Netzteil → CPU → E/A-Module (Session 50,
   // Nutzer-Vorgabe) ──────────────────────────────────────────────────────
@@ -2987,7 +3083,7 @@ function buildQueues(ddcReservePct) {
     });
   });
 
-  return { queues, bgInstanceQueue, ddcAuto, ddcSummary };
+  return { queues, bgInstanceQueue, ddcAuto, ddcSummary, steuerspannungAuto };
 }
 
 // ── Baugruppen-Zusammenhalt über Zonen hinweg (Session 49, Nachtrag:
@@ -3175,7 +3271,7 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, bgInstanceQ
 function calculateFelder(klemmraum, reservePct, ddcReservePct) {
   const modus = getEffektiveZoneModus();
   const plan = FELDPLAN[modus] || FELDPLAN['1feld'];
-  const { queues, bgInstanceQueue, ddcAuto, ddcSummary } = buildQueues(ddcReservePct);
+  const { queues, bgInstanceQueue, ddcAuto, ddcSummary, steuerspannungAuto } = buildQueues(ddcReservePct);
 
   // Gesamt-Bedarf je Zone EINMAL vor jeder Platzierung erfassen – für die
   // über alle Felder aggregierte Füllstand-Anzeige (siehe calculate()).
@@ -3257,7 +3353,7 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
     });
   });
 
-  return { felder, ddcAuto, ddcSummary, reserveShortfall, totalDemandTe };
+  return { felder, ddcAuto, ddcSummary, reserveShortfall, totalDemandTe, steuerspannungAuto };
 }
 
 function kurzLabel(eb) {
@@ -3762,6 +3858,14 @@ function aggregateStueckliste() {
   if (letzteDdcAuto) {
     letzteDdcAuto.modules.forEach(m => {
       add(m.eb.artikel_nr, ddcAutoZone(m.eb), m.menge);
+    });
+  }
+  // Automatisch ergänzte Steuerspannungs-Bauteile (Session 52 Nachtrag 2,
+  // Nutzer-Fund) – analog zu letzteDdcAuto, Zone steckt direkt am Eintrag
+  // (steuerspannungAuto trägt sie schon je Bauteil, siehe buildQueues()).
+  if (letzteSteuerspannungAuto) {
+    letzteSteuerspannungAuto.forEach(m => {
+      add(m.eb.artikel_nr, m.zone, m.menge);
     });
   }
   const order = {klemm_e:0, uss:1, evert:2, leist:3, steuer:4, klemm_l:5, klemm_f:6, klemm_s:7};

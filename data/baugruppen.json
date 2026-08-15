@@ -444,7 +444,7 @@
   },
   {
     "id": "430_000010",
-    "name": "Kanalfeuchtefühler",
+    "name": "Kanalfeuchtefühler 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Kanalfeuchtefühler - Kanalfeuchtefühler aktiv, 3-Leiter (Siemens QFM2100), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -552,7 +552,7 @@
   },
   {
     "id": "430_000013",
-    "name": "Drucksensor Kanaldruck 0...1000 Pa",
+    "name": "Drucksensor Kanaldruck 0...1000 Pa, 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Drucksensor Kanaldruck - Drucksensor mit Analogausgang zur Ventilatorregelung, 0-1000 Pa, 0-10V, 3-Leiter (Siemens QBM3020-10), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -583,19 +583,19 @@
   },
   {
     "id": "430_000014",
-    "name": "Kanalhygrostat",
+    "name": "Kanalhygrostat 15...95% r.F.",
     "gewerk": "430",
     "beschreibung": "Kanalhygrostat - Kanalhygrostat mit Schaltkontakt, IP55, Schutz vor Überfeuchtung bei Luftbefeuchtern (Siemens QFM81.21), Sicherheitsfunktion über Koppelrelais (Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler): 1 Kontakt Leistungssteuerung (Befeuchter-Abschaltung), 1 Kontakt DDC-Meldung. Datenpunktbedarf 1x BI.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "2967099",
