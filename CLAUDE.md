@@ -933,6 +933,37 @@ Keys): Rauchmelder allein platziert → `Sicherheits-/Trenntransformator
 230V/24V` (ausgelöst von der automatisch ergänzten CPU wegen 4× BI-Bedarf)
 erscheinen beide korrekt getrennt. Keine Konsolenfehler.
 
+### Zwei Nachzügler-Bugs bei der Trafo-Umstellung (Session 52 Nachtrag 7, gesperrt)
+Zwei vom Nutzer gefundene Bugs, beide Folgefehler der Nachtrag-6-Umstellung
+(geteilter Steuerspannungs-Trafo):
+
+1. **Baugruppe „Automationsstation (AE)" (`480_000007`)** hatte weiterhin
+   das alte 24V-DC-Netzteil (`2866690`) + dessen Sicherung (`5SL6106-7`)
+   fest in ihrer eigenen `bauteile`-Liste eingebaut – ein Überbleibsel aus
+   Session 49/50, das beim Nachtrag-6-Umbau nicht mitgezogen wurde. Die
+   CPU (`PXC7.E400.A`) trägt bereits `benoetigt_steuerspannung:'24vac'`
+   und löst die neue geteilte Automatik selbst korrekt aus – das alte
+   Netzteil lief dadurch DOPPELT (alt fest verbaut + neu automatisch
+   ergänzt). Fix: die beiden alten Bauteil-Zeilen aus `480_000007`
+   entfernt, nur noch die CPU bleibt übrig.
+2. **Baugruppe „Steuerspannung 24V DC" (`480_000009`)**: die
+   `baugruppen_bauteile`-Zeile für das Netzteil referenzierte fälschlich
+   die **Typbezeichnung** `QUINT-PS/1AC/24DC/2.5` statt der echten
+   Katalog-Artikelnummer `2866690` (die Typbezeichnung steht nur in
+   `bezeichnung`, nicht in `artikel_nr`). Der `EINZELBAUTEILE_DB.find()`-
+   Lookup lief dadurch ins Leere; da `buildQueues()`/`aggregateStueckliste()`
+   bei `!eb` einfach `return` machen, wurde das Netzteil OHNE Fehlermeldung
+   komplett übersprungen – nur die Sicherung erschien. Vollständiger Katalog-
+   Scan (`baugruppen[].bauteile[].artikel_nr` gegen alle
+   `einzelbauteile[].artikel_nr`) bestätigt: einzige kaputte Referenz im
+   gesamten Katalog, jetzt auf `2866690` korrigiert.
+
+Verifiziert im Browser (beide Fälle einzeln, `localStorage` vorher
+geleert): „Automationsstation (AE)" zeigt nur noch 1× CPU + 1× geteilter
+Trafo + 2 Sicherungen (kein doppeltes Netzteil mehr); „Steuerspannung 24V
+DC" zeigt jetzt korrekt Netzteil (`L`) + Sicherung (`EV`) zusammen. Keine
+Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.

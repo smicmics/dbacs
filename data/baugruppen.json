@@ -149,23 +149,12 @@
     "id": "480_000007",
     "name": "Automationsstation (AE)",
     "gewerk": "480",
-    "beschreibung": "Automationsstation mit ihrer notwendigen Grundausstattung: Desigo-PX-Modulare Automationsstation (PXC7.E400.A, kein Onboard-E/A, bis 500 Datenpunkte ueber TX-I/O) + 24VDC-Netzteil (Steuerungsbereich, direkt vor der CPU auf derselben Hutschienenreihe) + Vorsicherung (Energieverteilung). Ohne Abgangsklemmleiste - reine Versorgungs-/Recheneinheit, die restlichen E/A-Module ergaenzt DBACS automatisch anhand des tatsaechlichen Datenpunktbedarfs, bis zur Herstellerobergrenze von 64 TXM-Modulen je Automationsstation - danach eine komplett neue Gruppe (eigenes Netzteil + eigene CPU + eigene Sicherung).",
+    "beschreibung": "Automationsstation mit ihrer notwendigen Grundausstattung: Desigo-PX-Modulare Automationsstation (PXC7.E400.A, kein Onboard-E/A, bis 500 Datenpunkte ueber TX-I/O). Steuerspannung 24V AC wird geteilt aus dem allgemeinen Steuerspannungs-Trafo im Leistungsfeld bezogen (automatisch ergaenzt, falls noch nicht vorhanden) - kein eigenes Netzteil mehr direkt vor der CPU. Ohne Abgangsklemmleiste - reine Versorgungs-/Recheneinheit, die restlichen E/A-Module ergaenzt DBACS automatisch anhand des tatsaechlichen Datenpunktbedarfs, bis zur Herstellerobergrenze von 64 TXM-Modulen je Automationsstation - danach eine komplett neue Gruppe (eigene CPU, teilt sich weiterhin denselben Steuerspannungs-Trafo).",
     "bauteile": [
-      {
-        "artikel_nr": "2866690",
-        "menge": 1,
-        "zone": "steuer",
-        "rowBreak": true,
-        "groupStart": true
-      },
       {
         "artikel_nr": "PXC7.E400.A",
         "menge": 1,
         "rowBreak": true
-      },
-      {
-        "artikel_nr": "5SL6106-7",
-        "menge": 1
       }
     ],
     "funktionsbereich": [
@@ -796,7 +785,7 @@
     "beschreibung": "Steuerspannung 24V DC - Netzteil QUINT-PS/1AC/24DC/2,5, 24VDC/2,5A/60W (Phoenix Contact), primaerseitig abgesichert (LSS 5SL6 B6A, 1-polig). Einspeisungsunabhaengig (230V-Eingang, unabhaengig von Modul-3-Netztyp).",
     "bauteile": [
       {
-        "artikel_nr": "QUINT-PS/1AC/24DC/2.5",
+        "artikel_nr": "2866690",
         "menge": 1,
         "zone": "leist"
       },
