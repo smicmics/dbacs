@@ -717,7 +717,11 @@ Zulassungen/Zertifizierungen`. Bereits vorher korrekt (Kanalrauchmelder:
 Spannung+Zulassung; Differenzdruckwächter: Messbereich). Nachgezogen:
 „Kanalfeuchtefühler 24V AC/DC" (QFM2100 war ohne Spannungsangabe),
 „Drucksensor Kanaldruck 0...1000 Pa, 24V AC/DC" (QBM3020 fehlte die
-Spannung), „Kanalhygrostat 15...95% r.F." (Messbereich ergänzt). **Offen:**
+Spannung), „Kanalhygrostat 15...95% r.F." (Messbereich ergänzt),
+„Kanaltemperaturfühler 0,4m (Kapillar, Punktmessung) -50...+80°C",
+„Kanaltemperaturfühler 2,0m (Kapillar-Mittelwert) -50...+80°C",
+„Kanalfeuchtefühler 0...100% r.F., 24V AC/DC" (Nutzer-Fund: Messbereich
+fehlte bei allen 3 Kanalsensoren). **Offen:**
 die älteren Raumsensor-Baugruppen (Session 51: Raum-CO2/-VOC/-Feuchte-/
 Kombisensor) haben die Spannungsangabe nachträglich erhalten: „Raum-CO2-Sensor
 24V AC/DC", „Raum-VOC-Sensor 24V AC/DC", „Raumfeuchtesensor 24V AC/DC",

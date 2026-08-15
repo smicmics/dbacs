@@ -392,7 +392,7 @@
   },
   {
     "id": "430_000008",
-    "name": "Kanaltemperaturfühler 0,4m (Kapillar, Punktmessung)",
+    "name": "Kanaltemperaturfühler 0,4m (Kapillar, Punktmessung) -50...+80°C",
     "gewerk": "430",
     "beschreibung": "Kanaltemperaturfühler 0,4m - Kanaltemperaturfühler passiv, 0,4m, Symaro (Siemens QAM2120.040), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -418,7 +418,7 @@
   },
   {
     "id": "430_000009",
-    "name": "Kanaltemperaturfühler 2,0m (Kapillar-Mittelwert)",
+    "name": "Kanaltemperaturfühler 2,0m (Kapillar-Mittelwert) -50...+80°C",
     "gewerk": "430",
     "beschreibung": "Kanaltemperaturfühler 2,0m - Kapillar-Mittelwertfühler, misst gemittelte Temperatur über den Kanalquerschnitt (Siemens QAM2120.200), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -444,7 +444,7 @@
   },
   {
     "id": "430_000010",
-    "name": "Kanalfeuchtefühler 24V AC/DC",
+    "name": "Kanalfeuchtefühler 0...100% r.F., 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Kanalfeuchtefühler - Kanalfeuchtefühler aktiv, 3-Leiter (Siemens QFM2100), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
