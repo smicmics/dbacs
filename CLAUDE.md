@@ -723,6 +723,33 @@ Kombisensor, alle aktiv mit 24V-Versorgung) tragen noch keine
 Spannungsangabe im Namen – rückwirkende Anpassung mit dem Nutzer
 abzustimmen, bevor sie umgesetzt wird.
 
+### Klemmzonen-Grundsatzregel: Sensor vs. Feldgerät (Session 52 Nachtrag 4, gesperrt)
+Nutzer-Klarstellung, ab sofort verbindlich für alle künftigen Baugruppen:
+**`klemm_s` (Sensoren-Klemmleiste) ist ausschließlich für Sensoren mit
+analogem Ausgang reserviert** (meist < 50V SELV – Raumsensoren, Kanalfühler,
+Drucksensor mit Analogausgang). **Jedes Schaltgerät (binärer Kontakt/Relais-
+ausgang, kein Analogsignal) ist ein Feldgerät und gehört auf `klemm_f`**,
+auch wenn sein Signal am Ende als BI an die DDC geht – die Zone richtet
+sich nach der Signalart am Gerät, nicht nach dem Ziel. Nur echte
+Leistungs-/Netzanschlüsse (230V-Versorgung, Leistungssteuerungs-Ausgang zu
+einem Aktor) bleiben `klemm_l`. Umgesetzt (26 Klemmen-Zeilen über 5
+Baugruppen von `klemm_s` auf `klemm_f`):
+- `430_000011`/`012` (Differenzdruckwächter): alle Klemmen jetzt `klemm_f`
+  (Filterüberwachung komplett; Ventilatorüberwachung: Sensorschleife +
+  DDC-Meldung-Ausgang – nur der Leistungssteuerungs-Ausgang bleibt `klemm_l`).
+- `430_000014` (Kanalhygrostat): zusätzlich zur bereits korrigierten
+  Sensorschleife jetzt auch der DDC-Meldung-Ausgang auf `klemm_f`.
+- `430_000015`/`016` (Kanalrauchmelder): Versorgung (nur 24V-Variante, die
+  230V-L/N/PE-Versorgung bleibt bewusst `klemm_l`, siehe Session-52-Regel
+  „Farben für Leistungsanschlüsse ab 230V AC"), Alarm-Umschalter,
+  Verschmutzung/Systemstörung/Luftströmung – alle auf `klemm_f`. Nur der
+  Alarm-Öffner (Klappenansteuerung/Leistungssteuerung) bleibt `klemm_l`.
+
+Verifiziert direkt im Browser (Ventilatorüberwachung + Kanalrauchmelder
+230V zusammen platziert): Stückliste zeigt korrekt keine `klemm_s`-Zeile
+mehr für diese Baugruppen, `klemm_f` grau ×12, `klemm_l` grau/blau/
+grün-gelb ×5/1/1 – exakt die erwartete Verteilung. Keine Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.

@@ -477,18 +477,18 @@
     "id": "430_000011",
     "name": "Differenzdruckwächter Filterüberwachung 20...300 Pa",
     "gewerk": "430",
-    "beschreibung": "Differenzdruckwächter Filterüberwachung - Differenzdruckwächter mit Schaltkontakt, 20-300 Pa, Anschlussdüse+Schlauch zur Druckmessdose, direkt auf DDC (Siemens QBM81-3), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x BI.",
+    "beschreibung": "Differenzdruckwächter Filterüberwachung - Differenzdruckwächter mit Schaltkontakt, 20-300 Pa, Anschlussdüse+Schlauch zur Druckmessdose, direkt auf DDC (Siemens QBM81-3), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste, Datenpunktbedarf 1x BI.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -508,12 +508,12 @@
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "2967099",
@@ -523,13 +523,13 @@
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -605,13 +605,13 @@
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -641,23 +641,23 @@
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -672,35 +672,35 @@
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -735,13 +735,13 @@
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -756,35 +756,35 @@
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s",
+        "zone": "klemm_f",
         "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
         "menge": 1,
-        "zone": "klemm_s"
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
