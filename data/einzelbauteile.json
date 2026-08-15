@@ -1990,7 +1990,7 @@
     "te_breite": 1,
     "h_mm": 75.0,
     "zone": [
-      "steuer"
+      "leist"
     ],
     "kategorie": "Koppelrelais",
     "geprueft": false
