@@ -864,6 +864,23 @@ genau EIN gemeinsamer „Steuertransformator 1-ph. 230V/24V, 250VA" +
 2 Sicherungen erscheinen, Zone `leist` (nicht mehr `steuer`), sowohl für
 die automatisch ergänzte CPU als auch den Sensor. Keine Konsolenfehler.
 
+**Nachkorrektur (2 Nutzer-Funde beim Testen, direkt im Anschluss):**
+1. Die 2 Sicherungen der 3 Steuerspannungs-Baugruppen (`480_000008`–`010`)
+   lagen fälschlich in `leist` – Sicherungen gehören wie überall sonst im
+   Projekt nach `evert` (Energieverteilung), nur der Trafo/das Netzteil
+   selbst bleibt in `leist`.
+2. Die Sekundärsicherung von `480_000008` (Steuerspannung 24V AC) war noch
+   `5SL6116-7` (B16A) aus der ursprünglichen Sensor-Berechnung
+   (250VA/24V≈10,4A) – seit der Trafo die CPU mitversorgt, gilt aber die
+   Siemens-Vorgabe „max. 10A träge" für die 24V-AC-Versorgungsleitung der
+   CPU. Korrigiert auf `5SL6110-7` (B10A). Primärsicherung (B6A) sowie die
+   Sicherungen von `480_000009`/`010` (nicht CPU-relevant) unverändert.
+
+Erneut verifiziert (frischer Tab, Raumtemperatursensor passiv – bewusst ein
+Fall ohne eigenen Steuerspannungsbedarf, nur die automatisch ergänzte CPU
+löst die Auto-Ergänzung aus): Stückliste zeigt `EV LSS B6A` + `EV LSS B10A`
++ `L Steuertransformator`, exakt wie erwartet. Keine Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.
