@@ -381,7 +381,12 @@ Neues Feld `baugruppen.kategorie` (rein optische Gruppierung, unabhängig von
 `zone`/`gewerk`/`funktionsbereich` – exakt wie bei `einzelbauteile.kategorie`),
 alle 30 Bestands-Baugruppen zugeordnet: **Raumsensoren**, **Luftkanalsensoren**,
 **Luftkanalwächter**, **Tauchfühler**, **Datenpunkt-Reserve**,
-**Automationsstation**, **Steuerspannung** (die vom Nutzer vorgeschlagene
+**Automationsstation**, **Energieversorgung** (Kategorie + die 3 Baugruppen
+`480_000008`–`010` direkt im Anschluss auf Nutzer-Wunsch von „Steuerspannung"
+auf „Energieversorgung" umbenannt – betrifft nur Anzeigename/Kategorie/
+Namens-Präfix in `beschreibung`, NICHT das interne Feld
+`benoetigt_steuerspannung`/die JS-Bezeichner `STEUERSPANNUNG_*` – die bleiben
+als technische Schema-/Codenamen unverändert). Die vom Nutzer vorgeschlagene
 Kategorie „Raumwächter" bleibt bis zur ersten passenden Baugruppe ungenutzt –
 Kategorien entstehen rein aus den Daten, keine leeren Platzhalter nötig).
 `filterBaugruppen()` baut jetzt `<optgroup>`-Elemente (alphabetisch sortiert,
