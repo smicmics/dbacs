@@ -824,6 +824,46 @@ automatisch ergänzte Desigo-PX-CPU) UND 1× Steuertrafo+2 Sicherungen in
 `leist` (für den Sensor, aus der Baugruppe „Steuerspannung 24V AC"). Keine
 Konsolenfehler.
 
+### Geteilter Sicherheitstrafo für DDC-CPU + 24V-AC-Sensoren im Leistungsfeld (Session 52 Nachtrag 6, gesperrt)
+**Nutzer-Vorgabe (Siemens-Vorschrift):** Sensoren mit 24V AC an der DDC
+sollen denselben Sicherheitstrafo nutzen wie die DDC-CPU selbst – eine
+einmal gesetzte CPU hat die 24V-AC-Steuerspannung damit implizit „an
+Board", ein zusätzlicher Sensor löst KEINEN zweiten Trafo mehr aus. Der
+Trafo selbst wandert vom Steuerungsfeld (direkt vor der CPU) ins
+Leistungsfeld.
+
+**Architektur-Umbau:** die CPU hat kein eigenes dediziertes Netzteil mehr
+(`ddc_netzteil_artikel_nr`/`ddc_sicherung_artikel_nr`/
+`ddc_sicherung2_artikel_nr` auf den 3 Desigo-PX-Katalogeinträgen geleert,
+Modul-4-Code dafür entfernt) – stattdessen tragen die CPUs jetzt
+`benoetigt_steuerspannung: '24vac'` (dasselbe Feld wie beim
+230VAC-Koppelrelais) und laufen durch **denselben** Steuerspannungs-Auto-
+Mechanismus wie die Feldgeräte-Sensoren (Session 52 Nachtrag 2/5). Dafür
+musste die Reihenfolge in `buildQueues()` getauscht werden: der
+Steuerspannungs-Block läuft jetzt NACH der CPU-Gruppen-Auflösung
+(`neededExtraCpus`), nicht mehr davor – sonst hätte eine automatisch
+ergänzte CPU ihren eigenen Bedarf nie anmelden können. Die
+Netzteil→CPU-„lückenlos auf derselben Hutschiene"-Regel (Session 50)
+ist damit für das Netzteil **aufgehoben** (bewusster Bruch, Nutzer-
+Vorgabe) – die reine E/A-Modul-Reihenfolge (CPU→ihre TXM-Module
+lückenlos) bleibt unverändert bestehen, nur ohne vorangestelltes
+Netzteil.
+
+**Bewusst KEINE Kapazitäts-/VA-Bilanzierung** (Nutzer-Vorgabe): der Trafo
+wird nie ein zweites Mal automatisch ergänzt, nur weil viele Verbraucher
+an einem hängen – 250VA gilt pauschal als ausreichend für CPU+Feldgeräte
+eines Schranks (DBACS ermittelt Platzbedarf, plant nicht bis ins Detail
+durch). Bestätigt: der verwendete Trafo (`4AM4042-4TN00-0EA0`, 24V
+sekundär) ist nach Siemens' eigener Definition immer ein
+Sicherheitstransformator nach EN 61558-2-6 („Netztransformatoren mit
+≤50V auf der Ausgangsseite sind bei SIRIUS-Transformatoren immer als
+Sicherheitstransformatoren ausgeführt").
+
+Verifiziert im Browser (frischer Tab): CO2-Sensor allein platziert →
+genau EIN gemeinsamer „Steuertransformator 1-ph. 230V/24V, 250VA" +
+2 Sicherungen erscheinen, Zone `leist` (nicht mehr `steuer`), sowohl für
+die automatisch ergänzte CPU als auch den Sensor. Keine Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.

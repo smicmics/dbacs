@@ -2574,10 +2574,11 @@ function applyDdcWatermark(ddcAuto) {
 // nicht 'sicherung' – deshalb über die stabile Katalog-Verknüpfung
 // ddc_sicherung_artikel_nr erkannt statt über bauteil_typ geraten.
 function ddcAutoZone(eb) {
-  if (eb.bauteil_typ === 'ddc_cpu' || eb.bauteil_typ === 'ddc_io') return 'steuer';
-  const istSicherung = EINZELBAUTEILE_DB.some(e => e.bauteil_typ === 'ddc_cpu' &&
-    (e.ddc_sicherung_artikel_nr === eb.artikel_nr || e.ddc_sicherung2_artikel_nr === eb.artikel_nr));
-  return istSicherung ? 'evert' : 'steuer';
+  // Seit Session 52 Nachtrag 6 enthaelt ddcAuto.modules nur noch CPU/E-A-
+  // Module (kein Netzteil/Sicherung mehr, siehe buildQueues()) - beide immer
+  // Zone 'steuer'. Keine Sicherung mehr ueber ddc_sicherung_artikel_nr zu
+  // erkennen noetig.
+  return 'steuer';
 }
 
 // Manueller Ausweg aus dem Ratchet (Nutzer-Fund: nach mehreren Testläufen
@@ -2881,54 +2882,6 @@ function buildQueues(ddcReservePct) {
     }
   });
 
-  // ── Steuerspannungs-Baugruppen automatisch ergänzen (Session 52 Nachtrag
-  // 2, Nutzer-Fund) ──────────────────────────────────────────────────────
-  // Wurde z. B. ein 230VAC-Koppelrelais platziert (Sicherheitsketten-
-  // Baugruppen Ventilatorüberwachung/Kanalhygrostat), braucht der Schrank
-  // irgendwo eine passende "Steuerspannung X"-Baugruppe (Trafo/Netzteil +
-  // Sicherung(en)). Ist sie vom Nutzer bereits MANUELL platziert, wird
-  // nichts ergänzt ("alles nach Erfordernis", Nutzer-Vorgabe) – sonst wird
-  // sie automatisch eingefügt, mit demselben Ratchet-Prinzip wie die DDC-
-  // Auto-Module (Session 28e: einmal ergänzt, sinkt nie von selbst wieder,
-  // gemeinsamer "Zurücksetzen"-Button mit dem DDC-Watermark). Anders als
-  // die DDC-Module (raw einzelbauteile, direkt in queues.steuer/evert)
-  // läuft die Platzierung hier über bgInstanceQueue wie eine normale
-  // Baugruppen-Instanz – strukturell identisch zu einer manuell
-  // hinzugefügten "Steuerspannung X"-Baugruppe (inkl. Netztyp-Auflösung
-  // über applyNetztypResolution()), nur grau eingefärbt.
-  const manuellVorhandeneSteuerspannung = new Set();
-  belegung.forEach(item => {
-    if (item.typ === 'baugruppe' && item.menge > 0 && STEUERSPANNUNG_TYP_VON_BG[item.bg_id]) {
-      manuellVorhandeneSteuerspannung.add(STEUERSPANNUNG_TYP_VON_BG[item.bg_id]);
-    }
-  });
-  let steuerspannungWatermarkChanged = false;
-  neededSteuerspannung.forEach(typ => {
-    if (!steuerspannungWatermark[typ]) { steuerspannungWatermark[typ] = true; steuerspannungWatermarkChanged = true; }
-  });
-  const steuerspannungAuto = []; // [{eb, zone, menge}]
-  Object.keys(steuerspannungWatermark).forEach(typ => {
-    if (!steuerspannungWatermark[typ]) return;
-    if (manuellVorhandeneSteuerspannung.has(typ)) return; // Nutzer hat die Versorgung selbst gesetzt
-    const bg = BAUGRUPPEN_DB.find(b => b.id === STEUERSPANNUNG_BG_VON_TYP[typ]);
-    if (!bg) return;
-    const zonen = {};
-    applyNetztypResolution(bg.bauteile).forEach(bt => {
-      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
-      if (!eb || eb.te_breite <= 0) return;
-      const zone = bt.zone || eb.zone[0];
-      if (!zonen[zone]) zonen[zone] = [];
-      for (let q = 0; q < bt.menge; q++) {
-        zonen[zone].push({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#D8D5CE', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt – Steuerspannung)', artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak, groupStart: !!bt.groupStart});
-      }
-      let entry = steuerspannungAuto.find(m => m.eb.artikel_nr === eb.artikel_nr && m.zone === zone);
-      if (!entry) { entry = {eb, zone, menge: 0}; steuerspannungAuto.push(entry); }
-      entry.menge += bt.menge;
-    });
-    if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: bg.id, ci: 0, zonen, auto: true});
-  });
-  if (steuerspannungWatermarkChanged) localStorage.setItem('m04_steuerspannung_watermark', JSON.stringify(steuerspannungWatermark));
-
   // ── Automationsstations-Gruppen: Netzteil → CPU → E/A-Module (Session 50,
   // Nutzer-Vorgabe) ──────────────────────────────────────────────────────
   // Jede Automationsstation (CPU) hat ihr eigenes Netzteil (immer direkt vor
@@ -2966,15 +2919,16 @@ function buildQueues(ddcReservePct) {
   const cpuEb       = (cpuOverrideArt && EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuOverrideArt))
                     || EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu' && e.auto_ea_cpu)
                     || EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu');
-  const netzteilEb  = cpuEb && cpuEb.ddc_netzteil_artikel_nr  ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_netzteil_artikel_nr)  : null;
-  const sicherungEb = cpuEb && cpuEb.ddc_sicherung_artikel_nr ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_sicherung_artikel_nr) : null;
-  // ddc_sicherung2_artikel_nr (Session 52 Nachtrag 5): die Desigo-PX-CPUs
-  // werden jetzt ueber einen 230V/24V-Steuertrafo versorgt (Nutzer-Vorgabe:
-  // 24V AC ist gaengige Praxis fuer Desigo PX, ermoeglicht den vollen
-  // AC-Feldgeraete-Ausgang V~ der TX-I/O-Module UND das Triac-Modul TXM1.8T,
-  // siehe CLAUDE.md) statt eines einfachen 24VDC-Netzteils - ein Trafo
-  // braucht immer 2 Sicherungen (primaer+sekundaer), ein reines Netzteil nur 1.
-  const sicherungEb2 = cpuEb && cpuEb.ddc_sicherung2_artikel_nr ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_sicherung2_artikel_nr) : null;
+  // Kein eigenes CPU-Netzteil/-Sicherung mehr (Session 52 Nachtrag 6,
+  // Nutzer-Vorgabe): Siemens schreibt vor, dass Sensoren mit 24V AC an der
+  // DDC denselben Sicherheitstrafo nutzen sollen wie die DDC selbst - die
+  // CPU deklariert ihren Bedarf jetzt ganz normal ueber
+  // eb.benoetigt_steuerspannung ('24vac') und laeuft durch dieselbe
+  // Steuerspannungs-Auto-Ergaenzung wie die Feldgeraete-Sensoren (siehe
+  // weiter unten, nach der CPU-Gruppen-Aufloesung) - EIN gemeinsamer Trafo
+  // im Leistungsfeld statt eines dedizierten Netzteils direkt vor der CPU.
+  // Die Reihenfolge-Regel "E/A-Module luecken- und unterbrechungslos an der
+  // CPU" bleibt unveraendert, nur das Netzteil faellt aus dieser Reihe heraus.
   const maxPerCpu   = (cpuEb && cpuEb.max_ea_module) || Infinity; // Feld nicht gepflegt → altes "mind. eine CPU"-Verhalten als Fallback
 
   // Onboard-Kapazität der ERSTEN (noch zu ergänzenden) CPU vorab in die
@@ -3023,16 +2977,73 @@ function buildQueues(ddcReservePct) {
       entry.menge += delta;
     };
     addOrMerge(cpuEb, neededExtraCpus);
-    addOrMerge(netzteilEb, neededExtraCpus);
-    addOrMerge(sicherungEb, neededExtraCpus);
-    addOrMerge(sicherungEb2, neededExtraCpus);
   }
 
   // Ratchet EINMAL für alles zusammen (E/A-Modultypen UND die soeben
-  // ergänzten CPU/Netzteil/Sicherung-Mengen) – ddcAuto.modules trägt danach
-  // je Artikel die höchste bisher gesehene Menge, auch wenn der heutige
-  // Bedarf (s.o.) niedriger wäre.
+  // ergänzten CPU-Mengen) – ddcAuto.modules trägt danach je Artikel die
+  // höchste bisher gesehene Menge, auch wenn der heutige Bedarf (s.o.)
+  // niedriger wäre.
   applyDdcWatermark(ddcAuto);
+
+  // ── Steuerspannungs-Baugruppen automatisch ergänzen (Session 52 Nachtrag
+  // 2+6, Nutzer-Fund/-Vorgabe) ────────────────────────────────────────────
+  // Jedes platzierte ODER gerade automatisch ergänzte Bauteil mit
+  // eb.benoetigt_steuerspannung bzw. jede Baugruppe mit
+  // bg.benoetigt_steuerspannung braucht irgendwo im Schrank eine passende
+  // "Steuerspannung X"-Baugruppe (Trafo + Sicherungen). Seit Session 52
+  // Nachtrag 6 zaehlt dazu auch die DDC-CPU selbst (Siemens-Vorgabe: Sensoren
+  // mit 24V AC an der DDC nutzen denselben Sicherheitstrafo wie die DDC) -
+  // deshalb laeuft dieser Block erst HIER, NACH der CPU-Gruppen-Aufloesung
+  // oben (vorher war die Reihenfolge vertauscht: Steuerspannung wurde schon
+  // vor der CPU-Ermittlung geprueft, eine automatisch ergaenzte CPU konnte
+  // ihren eigenen Bedarf dadurch nie anmelden). Ist eine passende
+  // "Steuerspannung X"-Baugruppe vom Nutzer bereits MANUELL platziert, wird
+  // nichts ergaenzt ("alles nach Erfordernis") - sonst automatisch, mit
+  // demselben Ratchet-Prinzip wie die DDC-Auto-Module (Session 28e:
+  // einmal ergaenzt, sinkt nie von selbst wieder, gemeinsamer
+  // "Zuruecksetzen"-Button mit dem DDC-Watermark). Bewusst KEINE
+  // Kapazitaets-/VA-Bilanzierung (Nutzer-Vorgabe: 250VA reicht erfahrungsgemaess
+  // fuer CPU+Feldgeraete, DBACS ermittelt Platzbedarf statt den Schrank bis
+  // ins Detail durchzuplanen) - ein zweiter Trafo desselben Typs wird also
+  // NIE automatisch ergaenzt, nur weil viele Verbraucher an einem haengen.
+  // Platzierung ueber bgInstanceQueue wie eine normale Baugruppen-Instanz
+  // (inkl. Netztyp-Aufloesung ueber applyNetztypResolution()), nur grau
+  // eingefaerbt.
+  if (cpuEb && cpuEb.benoetigt_steuerspannung && (cpuCount > 0 || neededExtraCpus > 0)) {
+    neededSteuerspannung.add(cpuEb.benoetigt_steuerspannung);
+  }
+  const manuellVorhandeneSteuerspannung = new Set();
+  belegung.forEach(item => {
+    if (item.typ === 'baugruppe' && item.menge > 0 && STEUERSPANNUNG_TYP_VON_BG[item.bg_id]) {
+      manuellVorhandeneSteuerspannung.add(STEUERSPANNUNG_TYP_VON_BG[item.bg_id]);
+    }
+  });
+  let steuerspannungWatermarkChanged = false;
+  neededSteuerspannung.forEach(typ => {
+    if (!steuerspannungWatermark[typ]) { steuerspannungWatermark[typ] = true; steuerspannungWatermarkChanged = true; }
+  });
+  const steuerspannungAuto = []; // [{eb, zone, menge}]
+  Object.keys(steuerspannungWatermark).forEach(typ => {
+    if (!steuerspannungWatermark[typ]) return;
+    if (manuellVorhandeneSteuerspannung.has(typ)) return; // Nutzer hat die Versorgung selbst gesetzt
+    const bg = BAUGRUPPEN_DB.find(b => b.id === STEUERSPANNUNG_BG_VON_TYP[typ]);
+    if (!bg) return;
+    const zonen = {};
+    applyNetztypResolution(bg.bauteile).forEach(bt => {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+      if (!eb || eb.te_breite <= 0) return;
+      const zone = bt.zone || eb.zone[0];
+      if (!zonen[zone]) zonen[zone] = [];
+      for (let q = 0; q < bt.menge; q++) {
+        zonen[zone].push({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#D8D5CE', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt – Steuerspannung)', artikel_nr: eb.artikel_nr, rowBreak: !!bt.rowBreak, groupStart: !!bt.groupStart});
+      }
+      let entry = steuerspannungAuto.find(m => m.eb.artikel_nr === eb.artikel_nr && m.zone === zone);
+      if (!entry) { entry = {eb, zone, menge: 0}; steuerspannungAuto.push(entry); }
+      entry.menge += bt.menge;
+    });
+    if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: bg.id, ci: 0, zonen, auto: true});
+  });
+  if (steuerspannungWatermarkChanged) localStorage.setItem('m04_steuerspannung_watermark', JSON.stringify(steuerspannungWatermark));
 
   // ── Platzierung in korrekter Reihenfolge ──
   // Ab hier zählen nur noch die GERATCHTEN Mengen aus ddcAuto.modules
@@ -3072,16 +3083,15 @@ function buildQueues(ddcReservePct) {
   // Session 51 Nachtrag 3).
   const autoDev = eb => ({te: eb.te_breite, b_mm: eb.b_mm, h_mm: eb.h_mm, farbe: '#D8D5CE', lbl: kurzLabel(eb), title: eb.bezeichnung + ' (automatisch ergänzt)', artikel_nr: eb.artikel_nr, auto: true});
   direktAnhaengend.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
-  // Danach je neu ergänzter Gruppe: Netzteil (erzwingt eine frische
-  // Hutschienenreihe) → CPU → deren E/A-Module, lücken- und
-  // unterbrechungslos. Die Sicherung hat keine Ordnungsvorgabe und geht
-  // unabhängig davon in die Energieverteilung.
+  // Danach je neu ergänzter Gruppe: CPU (erzwingt eine frische
+  // Hutschienenreihe) → deren E/A-Module, lücken- und unterbrechungslos.
+  // KEIN Netzteil mehr in dieser Reihe (Session 52 Nachtrag 6, Nutzer-
+  // Vorgabe) – die CPU-Steuerspannung kommt jetzt als gemeinsamer Trafo aus
+  // dem Leistungsfeld (siehe Steuerspannungs-Block weiter unten), NICHT mehr
+  // unmittelbar vor der CPU auf derselben Hutschiene.
   neuGruppen.forEach(ioUnits => {
-    if (netzteilEb) queues.steuer.push({...autoDev(netzteilEb), rowBreak: true, groupStart: true});
-    if (cpuEb) queues.steuer.push({...autoDev(cpuEb), rowBreak: true});
+    if (cpuEb) queues.steuer.push({...autoDev(cpuEb), rowBreak: true, groupStart: true});
     ioUnits.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
-    if (sicherungEb) queues.evert.push(autoDev(sicherungEb));
-    if (sicherungEb2) queues.evert.push(autoDev(sicherungEb2));
   });
 
   // DDC-Zusammenfassung für die Eingabeleiste: physikalisch wie bisher
