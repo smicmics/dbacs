@@ -392,7 +392,7 @@
   },
   {
     "id": "430_000008",
-    "name": "Kanaltemperaturfühler 0,4m",
+    "name": "Kanaltemperaturfühler 0,4m (Kapillar, Punktmessung)",
     "gewerk": "430",
     "beschreibung": "Kanaltemperaturfühler 0,4m - Kanaltemperaturfühler passiv, 0,4m, Symaro (Siemens QAM2120.040), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -475,7 +475,7 @@
   },
   {
     "id": "430_000011",
-    "name": "Differenzdruckwächter Filterüberwachung",
+    "name": "Differenzdruckwächter Filterüberwachung 20...300 Pa",
     "gewerk": "430",
     "beschreibung": "Differenzdruckwächter Filterüberwachung - Differenzdruckwächter mit Schaltkontakt, 20-300 Pa, Anschlussdüse+Schlauch zur Druckmessdose, direkt auf DDC (Siemens QBM81-3), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x BI.",
     "bauteile": [
@@ -501,7 +501,7 @@
   },
   {
     "id": "430_000012",
-    "name": "Differenzdruckwächter Ventilatorüberwachung",
+    "name": "Differenzdruckwächter Ventilatorüberwachung 100...1000 Pa",
     "gewerk": "430",
     "beschreibung": "Differenzdruckwächter Ventilatorüberwachung - Differenzdruckwächter mit Schaltkontakt, 100-1000 Pa (Siemens QBM81-10), sicherheitsrelevante Ventilatorabschaltung über Koppelrelais (Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler): 1 Kontakt Leistungssteuerung (Abschaltung), 1 Kontakt DDC-Meldung. Datenpunktbedarf 1x BI.",
     "bauteile": [
@@ -552,7 +552,7 @@
   },
   {
     "id": "430_000013",
-    "name": "Drucksensor Kanaldruck",
+    "name": "Drucksensor Kanaldruck 0...1000 Pa",
     "gewerk": "430",
     "beschreibung": "Drucksensor Kanaldruck - Drucksensor mit Analogausgang zur Ventilatorregelung, 0-1000 Pa, 0-10V, 3-Leiter (Siemens QBM3020-10), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -634,7 +634,7 @@
   },
   {
     "id": "430_000015",
-    "name": "Kanalrauchmelder 24V",
+    "name": "Kanalrauchmelder 24V AC/DC, VdS/DIBt",
     "gewerk": "430",
     "beschreibung": "Kanalrauchmelder 24V - Kanalrauchmelder mit DIBt-Zulassung zur direkten Ansteuerung von Brand-/Rauchschutzklappen, 24V AC/DC (Oppermann KRM-2-DZ), Alarm-Umschalter auf DDC-Sammelalarm, Alarm-Öffner auf Klappenansteuerung/Leistungssteuerung, Störmeldekontakte Verschmutzung/Systemstörung/Luftströmung je auf DDC. Datenpunktbedarf 4x BI. Erfordert Montagekonsole (automatisch in Feldgerätestückliste ergänzt).",
     "bauteile": [
@@ -706,14 +706,14 @@
     "funktionsbereich": [
       "lueftung"
     ],
-    "betriebsmittel": "Kanalrauchmelder 24V, DIBt-Zulassung (Oppermann KRM-2-DZ)",
+    "betriebsmittel": "Kanalrauchmelder 24V AC/DC, VdS/DIBt-Zulassung (Oppermann KRM-2-DZ)",
     "feldgeraet_artikel_nr": "KRM-2-DZ",
     "automationsanbindung": true,
     "geprueft": false
   },
   {
     "id": "430_000016",
-    "name": "Kanalrauchmelder 230V",
+    "name": "Kanalrauchmelder 230V AC, VdS/DIBt",
     "gewerk": "430",
     "beschreibung": "Kanalrauchmelder 230V - Kanalrauchmelder mit DIBt-Zulassung zur direkten Ansteuerung von Brand-/Rauchschutzklappen, 230V AC (Oppermann KRM-1-DZ), Alarm-Umschalter auf DDC-Sammelalarm, Alarm-Öffner auf Klappenansteuerung/Leistungssteuerung, Störmeldekontakte Verschmutzung/Systemstörung/Luftströmung je auf DDC. Datenpunktbedarf 4x BI. Erfordert Montagekonsole (automatisch in Feldgerätestückliste ergänzt).",
     "bauteile": [
@@ -790,7 +790,7 @@
     "funktionsbereich": [
       "lueftung"
     ],
-    "betriebsmittel": "Kanalrauchmelder 230V, DIBt-Zulassung (Oppermann KRM-1-DZ)",
+    "betriebsmittel": "Kanalrauchmelder 230V AC, VdS/DIBt-Zulassung (Oppermann KRM-1-DZ)",
     "feldgeraet_artikel_nr": "KRM-1-DZ",
     "automationsanbindung": true,
     "geprueft": false
