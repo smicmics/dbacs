@@ -14,7 +14,7 @@
 
 ---
 
-## Offene Punkte (Stand Session 52, nach Konsolidierung – vor Beginn der nächsten Sitzung lesen)
+## Offene Punkte (Stand Session 53 – vor Beginn der nächsten Sitzung lesen)
 
 - Starrer Stabtemperaturfühler mit Flansch für den Lüftungskanal: existiert in
   der europäischen Symaro-Reihe nicht (nur biegsame Kapillare, auch bei
@@ -31,6 +31,10 @@
   belastbarer EU/EUR-Preis gefunden) und Luftstromwächter KRIWAN INT511
   20N842S021 (gefundene Distributor-Preise nicht eindeutig dieser
   24V-AC/DC-Variante zuordenbar) – siehe `quelle_hinweis` je Eintrag.
+- **Geplant (Nutzer-Ankündigung Session 53):** Baugruppe „Schaltschrank-USV"
+  kommt später dazu, gehört dann ebenfalls in die Kategorie
+  `Energieversorgung` (Gewerk 480/Automation) – gleiche Kategorie wie die
+  bestehenden Trafo-/Netzteil-Baugruppen `480_000008`–`010`.
 
 Sonst keine offenen Punkte – Session 51/52 vollständig implementiert UND im
 Browser verifiziert; die daraus erarbeiteten Modellierungsregeln sind jetzt
