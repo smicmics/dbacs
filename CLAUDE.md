@@ -767,6 +767,63 @@ Verifiziert direkt im Browser (Ventilatorüberwachung + Kanalrauchmelder
 mehr für diese Baugruppen, `klemm_f` grau ×12, `klemm_l` grau/blau/
 grün-gelb ×5/1/1 – exakt die erwartete Verteilung. Keine Konsolenfehler.
 
+### Desigo PX auf 24V-AC-Versorgung umgestellt + Steuerspannungs-Auto-Ergänzung auf Baugruppen-Ebene (Session 52 Nachtrag 5, gesperrt)
+**Bug (Nutzer-Fund):** Raum-CO2-Sensor (und die anderen aktiven Raumsensoren)
+lösten die Steuerspannungs-Auto-Ergänzung nicht aus, obwohl sie 24V-Versorgung
+brauchen. Ursache: `benoetigt_steuerspannung` saß bisher nur am Katalogartikel
+(einzig sinnvoll für einen eindeutigen Artikel wie das 230VAC-Koppelrelais) –
+die Sensoren hängen aber an ganz gewöhnlichen grauen Klemmen (`3209510`), die
+überall verwendet werden und daher kein artikel-eigenes Merkmal tragen
+können. **Fix:** neues Feld `baugruppen.benoetigt_steuerspannung` (gleicher
+Wertebereich `'24vac'`/`'24vdc'`/`'230vac'`), in Modul 4 zusätzlich zum
+bestehenden Artikel-Check ausgewertet (`buildQueues()`, direkt bei
+`BAUGRUPPEN_DB.find(...)` im Baugruppen-Zweig). Gesetzt auf die 6 aktiven
+Sensoren mit AC/DC-Doppelspannung: CO2/VOC/Feuchte-/Kombisensor,
+Kanalfeuchtefühler, Drucksensor Kanaldruck.
+
+**Spannungswahl 24V AC (nicht DC) – Nutzer-Vorgabe nach Recherche-Auftrag:**
+recherchiert, wie Desigo-PX-Automationsstationen typischerweise versorgt
+werden (Siemens-Originaldatenblatt PXC5.E24, A6V13187283en). Ergebnis:
+PXC-Stationen akzeptieren beides (AC oder DC 24V), aber **nur bei AC-Speisung
+liefert die Station selbst bis zu 2A AC 24V an die TX-I/O-Feldgeräteklemme
+V~** (bei DC-Speisung ist auch V~ nur DC) – zusätzlich funktioniert das
+**Triac-Modul TXM1.8T nur bei AC-Versorgung der Station**. 24V AC ist damit
+die flexiblere/funktional überlegene Wahl, nicht nur Konvention. **Deshalb
+wurden auch die 3 Desigo-PX-CPU-Katalogeinträge umgestellt**
+(`ddc_netzteil_artikel_nr` von `2866690`/QUINT-PS-Netzteil-DC auf
+`4AM4042-4TN00-0EA0`/Siemens-4AM40-Steuertrafo-AC, 250VA – dieselbe Baugröße
+wie bei den Steuerspannungs-Baugruppen, siehe oben). Ein Trafo braucht
+IMMER 2 Sicherungen (primär+sekundär, Session-52-Grundsatz) – neues Feld
+`einzelbauteile.ddc_sicherung2_artikel_nr` (analog zu
+`ddc_sicherung_artikel_nr`), Modul 4 (`buildQueues()`/`ddcAutoZone()`/
+`aggregateStueckliste()`) entsprechend um eine zweite Sicherung erweitert.
+Primär `5SL6106-7` (B6A, unverändert), sekundär neu `5SL6110-7` (B10A – nach
+Siemens-Datenblattvorgabe „External supply line fusing: max 10A slow-blow
+oder 13A Leitungsschutzschalter" für die 24V-Seite, passt besser als die bei
+den Sensor-Baugruppen verwendete B16A).
+
+Jeder Verbraucher bekommt weiterhin seine **eigene** Spannungsversorgung
+(Nutzer-Grundsatz, nicht geteilt): die DDC-CPU-Versorgung (Zone `steuer`,
+Teil der bestehenden Automationsstations-Gruppen-Logik) und die
+Feldgeräte-Steuerspannung (Zone `leist`, Baugruppe „Steuerspannung 24V AC")
+sind zwei separate Transformatoren, auch wenn beide zufällig denselben
+Katalogartikel nutzen.
+
+**Offen, nicht entschieden:** der bereits länger im Katalog stehende große
+„Steuertrafo 1-ph., 230V/24V, 2,5kVA" (`4AM5742-4TT10-0FA0`, `bauteil_typ:
+'sonstige'`) ist NICHT der hier verwendete – deutlich überdimensioniert für
+den tatsächlichen Bedarf (Desigo-PX-Volllast lt. Datenblatt 88VA, der neu
+verwendete 250VA-Trafo hat bereits reichlich Reserve). Bleibt vorerst
+unangetastet im Katalog, falls für einen anderen (größeren) Zweck gedacht –
+mit dem Nutzer zu klären.
+
+Verifiziert direkt im Browser: CO2-Sensor allein platziert (kein manueller
+Zusatzschritt) → zwei automatisch ergänzte Trafo-Gruppen erscheinen
+korrekt getrennt: 1× Steuertrafo+2 Sicherungen in `steuer`/`evert` (für die
+automatisch ergänzte Desigo-PX-CPU) UND 1× Steuertrafo+2 Sicherungen in
+`leist` (für den Sensor, aus der Baugruppe „Steuerspannung 24V AC"). Keine
+Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.

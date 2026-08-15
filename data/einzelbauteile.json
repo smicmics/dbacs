@@ -1205,8 +1205,9 @@
     "automationsanbindung": true,
     "feldbus_protokoll": "modbus_rtu",
     "max_ea_module": 64,
-    "ddc_netzteil_artikel_nr": "2866690",
+    "ddc_netzteil_artikel_nr": "4AM4042-4TN00-0EA0",
     "ddc_sicherung_artikel_nr": "5SL6106-7",
+    "ddc_sicherung2_artikel_nr": "5SL6110-7",
     "auto_ea_cpu": true,
     "geprueft": false
   },
@@ -1921,8 +1922,9 @@
     "dp_bo": 4,
     "feldbus_protokoll": "modbus_rtu",
     "max_ea_module": 2,
-    "ddc_netzteil_artikel_nr": "2866690",
+    "ddc_netzteil_artikel_nr": "4AM4042-4TN00-0EA0",
     "ddc_sicherung_artikel_nr": "5SL6106-7",
+    "ddc_sicherung2_artikel_nr": "5SL6110-7",
     "geprueft": false
   },
   {
@@ -1944,8 +1946,9 @@
     "dp_bo": 6,
     "feldbus_protokoll": "modbus_rtu",
     "max_ea_module": 6,
-    "ddc_netzteil_artikel_nr": "2866690",
+    "ddc_netzteil_artikel_nr": "4AM4042-4TN00-0EA0",
     "ddc_sicherung_artikel_nr": "5SL6106-7",
+    "ddc_sicherung2_artikel_nr": "5SL6110-7",
     "geprueft": false
   },
   {

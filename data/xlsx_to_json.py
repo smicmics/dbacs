@@ -407,6 +407,13 @@ def export_einzelbauteile(wb):
             entry['ddc_netzteil_artikel_nr'] = str(rec['ddc_netzteil_artikel_nr'])
         if rec.get('ddc_sicherung_artikel_nr') is not None:
             entry['ddc_sicherung_artikel_nr'] = str(rec['ddc_sicherung_artikel_nr'])
+        # ddc_sicherung2_artikel_nr (Session 52 Nachtrag 5): zweite Sicherung
+        # fuer CPUs, die ueber einen Steuertrafo statt eines einfachen
+        # Netzteils versorgt werden (Trafo braucht immer primaer+sekundaer
+        # Sicherung, siehe resolveNetztypArtikel/STEUERSPANNUNG_BG_VON_TYP
+        # in Modul 4).
+        if rec.get('ddc_sicherung2_artikel_nr') is not None:
+            entry['ddc_sicherung2_artikel_nr'] = str(rec['ddc_sicherung2_artikel_nr'])
         # auto_ea_cpu (Session 50): seit der Ergaenzung mehrerer ddc_cpu-Typen
         # (Kompakt PXC4.E16.A/PXC5.E24.A + Modular PXC7.E400.A) muss buildQueues()
         # in Modul 4 eindeutig wissen, welche CPU sie fuer die automatische
@@ -528,6 +535,14 @@ def export_baugruppen(wb):
             entry['feldgeraet_artikel_nr'] = str(rec['feldgeraet_artikel_nr'])
         if rec.get('automationsanbindung'):
             entry['automationsanbindung'] = True
+        # benoetigt_steuerspannung (Session 52 Nachtrag 5): analog zum
+        # gleichnamigen Feld auf einzelbauteile (dort fuer Artikel wie das
+        # 230VAC-Koppelrelais), hier auf Baugruppen-Ebene fuer aktive Sensoren
+        # mit generischen Klemmen ohne artikel-eigenes Unterscheidungsmerkmal
+        # (z.B. QPA2000 - AC24V/DC-faehig, haengt an ganz normalen grauen
+        # Klemmen). Ausgewertet in Modul 4 buildQueues().
+        if rec.get('benoetigt_steuerspannung') is not None:
+            entry['benoetigt_steuerspannung'] = str(rec['benoetigt_steuerspannung'])
         entry['geprueft'] = bool(rec.get('geprueft'))
         rows.append(entry)
 

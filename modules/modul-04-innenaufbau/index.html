@@ -2575,7 +2575,8 @@ function applyDdcWatermark(ddcAuto) {
 // ddc_sicherung_artikel_nr erkannt statt über bauteil_typ geraten.
 function ddcAutoZone(eb) {
   if (eb.bauteil_typ === 'ddc_cpu' || eb.bauteil_typ === 'ddc_io') return 'steuer';
-  const istSicherung = EINZELBAUTEILE_DB.some(e => e.bauteil_typ === 'ddc_cpu' && e.ddc_sicherung_artikel_nr === eb.artikel_nr);
+  const istSicherung = EINZELBAUTEILE_DB.some(e => e.bauteil_typ === 'ddc_cpu' &&
+    (e.ddc_sicherung_artikel_nr === eb.artikel_nr || e.ddc_sicherung2_artikel_nr === eb.artikel_nr));
   return istSicherung ? 'evert' : 'steuer';
 }
 
@@ -2795,6 +2796,13 @@ function buildQueues(ddcReservePct) {
     }
     const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
     if(!bg) return;
+    // Steuerspannungs-Bedarf auf Baugruppen-Ebene (Session 52 Nachtrag 5,
+    // Nutzer-Fund): aktive Sensoren mit AC/DC-Doppelspannung (z.B. QPA2000)
+    // haengen an ganz normalen grauen Klemmen ohne Artikel-spezifisches Merkmal
+    // - das Flag kann daher nicht wie beim Koppelrelais am Katalogartikel
+    // haengen (jede Klemme wird ueberall verwendet), sondern nur an der
+    // Baugruppe selbst.
+    if (bg.benoetigt_steuerspannung) neededSteuerspannung.add(bg.benoetigt_steuerspannung);
     const farbe = BG_COLORS[item.ci];
     // Baugruppen-Bauteile landen NICHT mehr flach in queues[zone] (Session
     // 49, "Baugruppen-Zusammenhalt") – eine Instanz muss zonenübergreifend
@@ -2960,6 +2968,13 @@ function buildQueues(ddcReservePct) {
                     || EINZELBAUTEILE_DB.find(e => e.bauteil_typ === 'ddc_cpu');
   const netzteilEb  = cpuEb && cpuEb.ddc_netzteil_artikel_nr  ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_netzteil_artikel_nr)  : null;
   const sicherungEb = cpuEb && cpuEb.ddc_sicherung_artikel_nr ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_sicherung_artikel_nr) : null;
+  // ddc_sicherung2_artikel_nr (Session 52 Nachtrag 5): die Desigo-PX-CPUs
+  // werden jetzt ueber einen 230V/24V-Steuertrafo versorgt (Nutzer-Vorgabe:
+  // 24V AC ist gaengige Praxis fuer Desigo PX, ermoeglicht den vollen
+  // AC-Feldgeraete-Ausgang V~ der TX-I/O-Module UND das Triac-Modul TXM1.8T,
+  // siehe CLAUDE.md) statt eines einfachen 24VDC-Netzteils - ein Trafo
+  // braucht immer 2 Sicherungen (primaer+sekundaer), ein reines Netzteil nur 1.
+  const sicherungEb2 = cpuEb && cpuEb.ddc_sicherung2_artikel_nr ? EINZELBAUTEILE_DB.find(e => e.artikel_nr === cpuEb.ddc_sicherung2_artikel_nr) : null;
   const maxPerCpu   = (cpuEb && cpuEb.max_ea_module) || Infinity; // Feld nicht gepflegt → altes "mind. eine CPU"-Verhalten als Fallback
 
   // Onboard-Kapazität der ERSTEN (noch zu ergänzenden) CPU vorab in die
@@ -3010,6 +3025,7 @@ function buildQueues(ddcReservePct) {
     addOrMerge(cpuEb, neededExtraCpus);
     addOrMerge(netzteilEb, neededExtraCpus);
     addOrMerge(sicherungEb, neededExtraCpus);
+    addOrMerge(sicherungEb2, neededExtraCpus);
   }
 
   // Ratchet EINMAL für alles zusammen (E/A-Modultypen UND die soeben
@@ -3065,6 +3081,7 @@ function buildQueues(ddcReservePct) {
     if (cpuEb) queues.steuer.push({...autoDev(cpuEb), rowBreak: true});
     ioUnits.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
     if (sicherungEb) queues.evert.push(autoDev(sicherungEb));
+    if (sicherungEb2) queues.evert.push(autoDev(sicherungEb2));
   });
 
   // DDC-Zusammenfassung für die Eingabeleiste: physikalisch wie bisher
