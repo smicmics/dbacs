@@ -1994,5 +1994,63 @@
     ],
     "kategorie": "Koppelrelais",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "4AM4042-4TN00-0EA0",
+    "bezeichnung": "Steuertransformator 1-ph. 230V/24V, 250VA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "transformator",
+    "b_mm": 106.0,
+    "te_breite": 6,
+    "h_mm": 98.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Steuerspannung",
+    "drehstrom_variante_artikel_nr": "4AM4042-5AN00-0EA0",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "4AM4042-5AN00-0EA0",
+    "bezeichnung": "Steuertransformator 1-ph. 400V/24V, 250VA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "transformator",
+    "b_mm": 106.0,
+    "te_breite": 6,
+    "h_mm": 98.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Steuerspannung",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "4AM4042-4TT10-0FA0",
+    "bezeichnung": "Sicherheits-/Trenntransformator 1-ph. 230V/230V, 250VA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "transformator",
+    "b_mm": 106.0,
+    "te_breite": 6,
+    "h_mm": 98.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Steuerspannung",
+    "drehstrom_variante_artikel_nr": "4AM4042-5AT10-0FA0",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "4AM4042-5AT10-0FA0",
+    "bezeichnung": "Sicherheits-/Trenntransformator 1-ph. 400V/230V, 250VA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "transformator",
+    "b_mm": 106.0,
+    "te_breite": 6,
+    "h_mm": 98.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Steuerspannung",
+    "geprueft": false
   }
 ]

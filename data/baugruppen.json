@@ -794,5 +794,81 @@
     "feldgeraet_artikel_nr": "KRM-1-DZ",
     "automationsanbindung": true,
     "geprueft": false
+  },
+  {
+    "id": "480_000008",
+    "name": "Steuerspannung 24V AC",
+    "gewerk": "480",
+    "beschreibung": "Steuerspannung 24V AC - Steuertransformator 1-ph. 230V/24V, 250VA (Siemens 4AM4042-4TN00-0EA0), bei Drehstrom-Einspeisung (Modul 3) automatisch 400V-Primaervariante (4AM4042-5AN00-0EA0). Primaer- und sekundaerseitig abgesichert (LSS 5SL6 B6A/B16A, 1-polig).",
+    "bauteile": [
+      {
+        "artikel_nr": "4AM4042-4TN00-0EA0",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5SL6116-7",
+        "menge": 1,
+        "zone": "leist"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "geprueft": false
+  },
+  {
+    "id": "480_000009",
+    "name": "Steuerspannung 24V DC",
+    "gewerk": "480",
+    "beschreibung": "Steuerspannung 24V DC - Netzteil QUINT-PS/1AC/24DC/2,5, 24VDC/2,5A/60W (Phoenix Contact), primaerseitig abgesichert (LSS 5SL6 B6A, 1-polig). Einspeisungsunabhaengig (230V-Eingang, unabhaengig von Modul-3-Netztyp).",
+    "bauteile": [
+      {
+        "artikel_nr": "QUINT-PS/1AC/24DC/2.5",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "leist"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "geprueft": false
+  },
+  {
+    "id": "480_000010",
+    "name": "Steuerspannung 230V AC",
+    "gewerk": "480",
+    "beschreibung": "Steuerspannung 230V AC - Sicherheits-/Trenntransformator 1-ph. 230V/230V, 250VA (Siemens 4AM4042-4TT10-0FA0), bei Drehstrom-Einspeisung (Modul 3) automatisch 400V-Primaervariante (4AM4042-5AT10-0FA0). Primaer- und sekundaerseitig abgesichert (LSS 5SL6 B6A, 1-polig, beidseitig da Sekundaerstrom ca. 1,1A). Nach DIN EN 60204-1: auch 230V-Steuerspannung wird ueber Trenntransformator gefuehrt, nicht direkt von der Einspeisung abgegriffen (Nutzer-Korrektur).",
+    "bauteile": [
+      {
+        "artikel_nr": "4AM4042-4TT10-0FA0",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "leist"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "geprueft": false
   }
 ]

@@ -381,6 +381,14 @@ def export_einzelbauteile(wb):
         # Doppelstock-Trennklemme) in resolveKlemmeArtikel() (Modul 4).
         if rec.get('trennklemme_variante_artikel_nr') is not None:
             entry['trennklemme_variante_artikel_nr'] = str(rec['trennklemme_variante_artikel_nr'])
+        # drehstrom_variante_artikel_nr (Lueftungssensoren-Session, Steuerspannungs-
+        # Baugruppen): verweist von der Wechselstrom-Ausfuehrung (230V-Primaerseite)
+        # auf die Drehstrom-Ausfuehrung (400V-Primaerseite) desselben Steuer-/
+        # Trenntrafos - analog zu doppelstock_variante_artikel_nr, aber aufgeloest
+        # nach m03_zone_netztyp (Modul 3) statt einer Modul-4-eigenen Auswahl,
+        # siehe resolveNetztypArtikel() in Modul 4.
+        if rec.get('drehstrom_variante_artikel_nr') is not None:
+            entry['drehstrom_variante_artikel_nr'] = str(rec['drehstrom_variante_artikel_nr'])
         # max_ea_module/ddc_netzteil_artikel_nr/ddc_sicherung_artikel_nr (Session 50):
         # nur bei ddc_cpu-Bauteilen relevant. Herstellerseitige Obergrenze der
         # E/A-Module je Automationsstation (max_ea_module) sowie die fest

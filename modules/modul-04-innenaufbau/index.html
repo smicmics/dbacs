@@ -2592,19 +2592,45 @@ function resolveKlemmeArtikel(eb, variante) {
   }
   return ziel;
 }
+// Steuerspannungs-Baugruppen (Trafo-Baugruppen, Lueftungssensoren-Session):
+// drehstrom_variante_artikel_nr verweist von der Wechselstrom-Ausfuehrung
+// (230V-Primaerseite) auf die Drehstrom-Ausfuehrung (400V-Primaerseite)
+// desselben Steuer-/Trenntrafos. Automatische Aufloesung anhand der in
+// Modul 3 gewaehlten Einspeisung (m03_zone_netztyp) - KEIN Modul-4-eigenes
+// UI-Element noetig (Nutzer-Vorgabe: alle bereits bekannten Informationen
+// nutzen statt einer manuellen Doppelauswahl). Default 'drehstrom' analog
+// zu buildZp() (Session 19), falls Modul 3 noch nicht durchlaufen wurde.
+function resolveNetztypArtikel(eb) {
+  if (!eb || !eb.drehstrom_variante_artikel_nr) return eb;
+  const netztyp = localStorage.getItem('m03_zone_netztyp') || 'drehstrom';
+  if (netztyp !== 'drehstrom') return eb;
+  return EINZELBAUTEILE_DB.find(e => e.artikel_nr === eb.drehstrom_variante_artikel_nr) || eb;
+}
+// Wendet resolveNetztypArtikel() auf eine bereits klemmenvarianten-aufgeloeste
+// Bauteilliste an - MUSS nach jeder Rueckgabe von resolveBaugruppenBauteile()
+// durchlaufen werden (auch im 'standard'-Fall), sonst laufen Zeichnung und
+// Stueckliste bei aktiver Drehstrom-Einspeisung auseinander (gleiche Regel
+// wie bei resolveKlemmeArtikel(), siehe Kommentar oben).
+function applyNetztypResolution(bauteile) {
+  return bauteile.map(bt => {
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+    const ziel = resolveNetztypArtikel(eb);
+    return (!ziel || ziel === eb) ? bt : {...bt, artikel_nr: ziel.artikel_nr};
+  });
+}
 function resolveBaugruppenBauteile(bg, variante) {
-  if (!variante || variante === 'standard') return bg.bauteile;
+  if (!variante || variante === 'standard') return applyNetztypResolution(bg.bauteile);
   const istDoppelstock = variante === 'doppelstock' || variante === 'doppelstock_trenn';
   if (!istDoppelstock) {
     // Trennklemme ohne Doppelstock: jede Klemme einzeln ersetzen, keine
     // Zusammenlegung – Signal und Referenz brauchen weiterhin je eine eigene
     // physische Klemme.
-    return bg.bauteile.map(bt => {
+    return applyNetztypResolution(bg.bauteile.map(bt => {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
       if (!eb) return bt;
       const ziel = resolveKlemmeArtikel(eb, variante);
       return ziel === eb ? bt : {...bt, artikel_nr: ziel.artikel_nr};
-    });
+    }));
   }
   const out = [];
   const seen = {};
@@ -2618,7 +2644,7 @@ function resolveBaugruppenBauteile(bg, variante) {
     seen[key] = true;
     out.push({...bt, artikel_nr: ziel.artikel_nr});
   });
-  return out;
+  return applyNetztypResolution(out);
 }
 // Aktuell gewählte Klemmenvariante aus der Radio-Gruppe lesen (Default
 // 'standard', falls aus irgendeinem Grund keine Option aktiv ist).

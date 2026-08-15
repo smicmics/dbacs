@@ -625,6 +625,55 @@ als dritte Zeile („aus: Zubehör zu: Kanalrauchmelder 24V") – Modul 4s
 Konsolenfehler. Backup vor der Excel-Änderung:
 `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-lueftungssensoren_*.xlsx`.
 
+### Koppelrelais-Zonenkorrektur + Steuerspannungs-Baugruppen mit Netztyp-Automatik (Session 52 Nachtrag, gesperrt)
+Nutzer-Korrektur direkt im Anschluss an die Lüftungssensoren-Session: das
+230VAC-Koppelrelais (`2967099`) schaltet in den Sicherheitsketten-Baugruppen
+(Ventilatorüberwachung, Kanalhygrostat) einen Starkstromkreis zur
+Befeuchter-/Ventilatorabschaltung und wird auch aus dem Leistungskreis
+versorgt – gehört daher in Zone `leist`, nicht `steuer` (Katalog-Default von
+`2967099` entsprechend geändert, Baugruppen-Bauteile-Zeilen korrigiert).
+
+**Neue Erkenntnis: jedes Feldgerät mit eigener Versorgungsspannung braucht
+eine passende, abgesicherte Steuerspannungsquelle** (230V AC → Sicherung
++ **immer über einen Trenntransformator** nach DIN EN 60204-1, auch wenn
+Quelle und Zielspannung identisch sind, nicht direkt von der Einspeisung
+abgegriffen; 24V AC → Steuertrafo + Sicherung; 24V DC → Netzteil +
+Sicherung – jeweils nur anlegen, falls in dem Projekt noch nicht
+vorhanden). 3 neue Baugruppen `480_000008`–`010` (Gewerk 480, Automation):
+„Steuerspannung 24V AC"/„24V DC"/„230V AC", alle Zone `leist`. Trafos:
+Siemens 4AM40-Baureihe, 250VA (Standardgröße oberhalb des Zielwerts
+~200VA) – `4AM4042-4TN00-0EA0` (230V/24V) und `4AM4042-4TT10-0FA0`
+(230V/230V, Sicherheits-/Trenntrafo). Netzteil/Sicherungen wiederverwendet
+aus dem Bestandskatalog (`QUINT-PS/1AC/24DC/2.5`, `5SL6106-7` B6A primär,
+`5SL6116-7` B16A sekundär bei 24V-Ausgang ~10,4A). Bei Trafos IMMER 2
+Sicherungen (primär+sekundär), beim Netzteil nur 1 (primärseitig, analog
+zum bestehenden `ddc_netzteil_artikel_nr`/`ddc_sicherung_artikel_nr`-Muster
+der DDC-CPUs).
+
+**Neuer Mechanismus: `drehstrom_variante_artikel_nr`** (Feld auf
+`einzelbauteile`, analog zu `doppelstock_variante_artikel_nr`/
+`trennklemme_variante_artikel_nr`) – verweist von der Wechselstrom-Ausführung
+(230V-Primärseite) auf die Drehstrom-Ausführung (400V-Primärseite)
+desselben Trafos. **Automatische Auflösung** in Modul 4 über
+`resolveNetztypArtikel()`, angewendet als letzter Schritt in JEDEM
+Rückgabepfad von `resolveBaugruppenBauteile()` (Pflicht: identisch in
+`buildQueues()` UND `aggregateStueckliste()`, sonst laufen Zeichnung und
+Stückliste auseinander – exakt dieselbe Disziplin wie beim
+Klemmenvarianten-Mechanismus). Liest `m03_zone_netztyp` direkt aus dem
+localStorage-Kontrakt von Modul 3 (Feld existiert dort bereits seit Session
+19) – **kein neues UI-Element in Modul 4 nötig**, keine manuelle
+Doppelauswahl. Nutzer-Vorgabe/Prinzip: „Die gesamte Applikation basiert auf
+einem schrittweisen Aufbau der Automationsanlage – wir sollten alle
+bekannten Informationen nutzen." Damit sind es bewusst nur 3 Baugruppen
+(nicht 6) trotz zweier Primärspannungsvarianten je Trafo-Baugruppe.
+
+Verifiziert direkt im Browser: `m03_zone_netztyp='wechselstrom'` →
+Stückliste zeigt `4AM4042-4TN00-0EA0` (230V/24V); nach Umschalten auf
+`'drehstrom'` (Reload) automatisch `4AM4042-5AN00-0EA0` (400V/24V), ohne
+manuellen Eingriff. Koppelrelais-Zonenkorrektur ebenfalls bestätigt
+(Stückliste zeigt `L PLC-RSC-230UC/21-21...` statt vorher `S`). Keine
+Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.
