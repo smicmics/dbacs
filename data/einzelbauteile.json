@@ -1980,5 +1980,19 @@
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "preis_eur": 10.64,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "2967099",
+    "bezeichnung": "PLC-RSC-230UC/21-21 Koppelrelais 230VAC/220VDC, 2 Wechsler, 6A",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "koppelrelais",
+    "b_mm": 18.0,
+    "te_breite": 1,
+    "h_mm": 75.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "Koppelrelais",
+    "geprueft": false
   }
 ]

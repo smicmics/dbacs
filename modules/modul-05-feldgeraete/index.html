@@ -208,11 +208,34 @@ function aggregateFeldgeraete() {
         hersteller:  fg ? fg.hersteller  : '–',
         preis_eur:   fg && typeof fg.preis_eur === 'number' ? fg.preis_eur : null,
         quellen:     new Set(),
-        menge:       0
+        menge:       0,
+        zubehoerNr:    fg ? fg.zubehoer_feldgeraet_artikel_nr : null,
+        zubehoerMenge: fg ? (fg.zubehoer_menge || 1) : 1
       };
     }
     agg[key].menge += item.menge;
     agg[key].quellen.add(bg.name);
+  });
+
+  // Pflichtzubehoer (z.B. Montagekonsole eines Kanalrauchmelders): kein eigener
+  // Baugruppen-Eintrag, wird ueber fg.zubehoer_feldgeraet_artikel_nr am Hauptgeraet
+  // automatisch mit ergaenzt (Menge = Hauptgeraet-Menge x zubehoer_menge). Erscheint
+  // in der Stueckliste, aber NICHT in sumFeldgeraete() (Modul 4) - das zaehlt nur
+  // Baugruppen-Instanzen aus m04_belegung, die Zubehoer-Zeile entsteht erst hier.
+  Object.entries(agg).forEach(([key, e]) => {
+    if (!e.zubehoerNr) return;
+    const zfg = FELDGERAETE_DB.find(f => f.artikel_nr === e.zubehoerNr);
+    const zKey = 'zubehoer::' + e.zubehoerNr;
+    if (!agg[zKey]) {
+      agg[zKey] = {
+        bezeichnung: zfg ? zfg.bezeichnung : e.zubehoerNr,
+        hersteller:  zfg ? zfg.hersteller  : '–',
+        preis_eur:   zfg && typeof zfg.preis_eur === 'number' ? zfg.preis_eur : null,
+        quellen:     new Set(['Zubehör zu: ' + [...e.quellen].join(', ')]),
+        menge:       0
+      };
+    }
+    agg[zKey].menge += e.menge * e.zubehoerMenge;
   });
   return Object.values(agg);
 }

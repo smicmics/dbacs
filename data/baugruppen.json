@@ -389,5 +389,410 @@
     "feldgeraet_artikel_nr": "QAE2120.015",
     "automationsanbindung": true,
     "geprueft": false
+  },
+  {
+    "id": "430_000008",
+    "name": "Kanaltemperaturfühler 0,4m",
+    "gewerk": "430",
+    "beschreibung": "Kanaltemperaturfühler 0,4m - Kanaltemperaturfühler passiv, 0,4m, Symaro (Siemens QAM2120.040), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanaltemperaturfühler passiv, 0,4m, Symaro (Siemens QAM2120.040)",
+    "feldgeraet_artikel_nr": "QAM2120.040",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000009",
+    "name": "Kanaltemperaturfühler 2,0m (Kapillar-Mittelwert)",
+    "gewerk": "430",
+    "beschreibung": "Kanaltemperaturfühler 2,0m - Kapillar-Mittelwertfühler, misst gemittelte Temperatur über den Kanalquerschnitt (Siemens QAM2120.200), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanaltemperaturfühler passiv, 2,0m, Kapillar-Mittelwertfühler, Symaro (Siemens QAM2120.200)",
+    "feldgeraet_artikel_nr": "QAM2120.200",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000010",
+    "name": "Kanalfeuchtefühler",
+    "gewerk": "430",
+    "beschreibung": "Kanalfeuchtefühler - Kanalfeuchtefühler aktiv, 3-Leiter (Siemens QFM2100), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanalfeuchtefühler, aktiv, 3-Leiter (Siemens QFM2100)",
+    "feldgeraet_artikel_nr": "QFM2100",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000011",
+    "name": "Differenzdruckwächter Filterüberwachung",
+    "gewerk": "430",
+    "beschreibung": "Differenzdruckwächter Filterüberwachung - Differenzdruckwächter mit Schaltkontakt, 20-300 Pa, Anschlussdüse+Schlauch zur Druckmessdose, direkt auf DDC (Siemens QBM81-3), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Differenzdruckwächter Filterüberwachung, 20-300Pa (Siemens QBM81-3)",
+    "feldgeraet_artikel_nr": "QBM81-3",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000012",
+    "name": "Differenzdruckwächter Ventilatorüberwachung",
+    "gewerk": "430",
+    "beschreibung": "Differenzdruckwächter Ventilatorüberwachung - Differenzdruckwächter mit Schaltkontakt, 100-1000 Pa (Siemens QBM81-10), sicherheitsrelevante Ventilatorabschaltung über Koppelrelais (Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler): 1 Kontakt Leistungssteuerung (Abschaltung), 1 Kontakt DDC-Meldung. Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Differenzdruckwächter Ventilatorüberwachung, 100-1000Pa, über Koppelrelais in Sicherheitskette (Siemens QBM81-10)",
+    "feldgeraet_artikel_nr": "QBM81-10",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000013",
+    "name": "Drucksensor Kanaldruck",
+    "gewerk": "430",
+    "beschreibung": "Drucksensor Kanaldruck - Drucksensor mit Analogausgang zur Ventilatorregelung, 0-1000 Pa, 0-10V, 3-Leiter (Siemens QBM3020-10), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Drucksensor Kanaldruck, 0-1000Pa, 0-10V, 3-Leiter (Siemens QBM3020-10)",
+    "feldgeraet_artikel_nr": "QBM3020-10",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000014",
+    "name": "Kanalhygrostat",
+    "gewerk": "430",
+    "beschreibung": "Kanalhygrostat - Kanalhygrostat mit Schaltkontakt, IP55, Schutz vor Überfeuchtung bei Luftbefeuchtern (Siemens QFM81.21), Sicherheitsfunktion über Koppelrelais (Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler): 1 Kontakt Leistungssteuerung (Befeuchter-Abschaltung), 1 Kontakt DDC-Meldung. Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanalhygrostat, Schaltkontakt, Schutz vor Überfeuchtung bei Luftbefeuchtung, über Koppelrelais in Sicherheitskette (Siemens QFM81.21)",
+    "feldgeraet_artikel_nr": "QFM81.21",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000015",
+    "name": "Kanalrauchmelder 24V",
+    "gewerk": "430",
+    "beschreibung": "Kanalrauchmelder 24V - Kanalrauchmelder mit DIBt-Zulassung zur direkten Ansteuerung von Brand-/Rauchschutzklappen, 24V AC/DC (Oppermann KRM-2-DZ), Alarm-Umschalter auf DDC-Sammelalarm, Alarm-Öffner auf Klappenansteuerung/Leistungssteuerung, Störmeldekontakte Verschmutzung/Systemstörung/Luftströmung je auf DDC. Datenpunktbedarf 4x BI. Erfordert Montagekonsole (automatisch in Feldgerätestückliste ergänzt).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanalrauchmelder 24V, DIBt-Zulassung (Oppermann KRM-2-DZ)",
+    "feldgeraet_artikel_nr": "KRM-2-DZ",
+    "automationsanbindung": true,
+    "geprueft": false
+  },
+  {
+    "id": "430_000016",
+    "name": "Kanalrauchmelder 230V",
+    "gewerk": "430",
+    "beschreibung": "Kanalrauchmelder 230V - Kanalrauchmelder mit DIBt-Zulassung zur direkten Ansteuerung von Brand-/Rauchschutzklappen, 230V AC (Oppermann KRM-1-DZ), Alarm-Umschalter auf DDC-Sammelalarm, Alarm-Öffner auf Klappenansteuerung/Leistungssteuerung, Störmeldekontakte Verschmutzung/Systemstörung/Luftströmung je auf DDC. Datenpunktbedarf 4x BI. Erfordert Montagekonsole (automatisch in Feldgerätestückliste ergänzt).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209523",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanalrauchmelder 230V, DIBt-Zulassung (Oppermann KRM-1-DZ)",
+    "feldgeraet_artikel_nr": "KRM-1-DZ",
+    "automationsanbindung": true,
+    "geprueft": false
   }
 ]

@@ -14,9 +14,21 @@
 
 ---
 
-## Offene Punkte (Stand Session 51 – vor Beginn der nächsten Sitzung lesen)
+## Offene Punkte (Stand Session 52 – vor Beginn der nächsten Sitzung lesen)
 
-Keine offenen Punkte – alle Session-51-Themen implementiert UND im Browser
+- Starrer Stabtemperaturfühler mit Flansch für den Lüftungskanal: existiert in
+  der europäischen Symaro-Reihe nicht (nur biegsame Kapillare, auch bei
+  QAM2120.040). Alternativen anderer Hersteller sind noch zu recherchieren
+  (Nutzer-Vorgabe: „Wir werden noch Alternativen suchen").
+- Preise mehrerer Session-52-Feldgeräte unbestätigt/fehlend (QBM81-10,
+  QBM3020-10, KRM-1-DZ/KRM-2-DZ, Montagekonsole KS) – siehe
+  `quelle_hinweis` je Eintrag.
+- Grundsatzfrage farbige L1/L2/L3-Klemmen (UT-Reihe Einspeisung) vs. Praxis
+  (Nutzer-Hinweis Session 52: „in der Praxis werden die farbigen Klemmen für
+  L1 L2 und L3 meist gar nicht eingesetzt") – ggf. später auf grau+PE
+  umstellen, noch nicht entschieden.
+
+Sonst keine offenen Punkte – alle Session-51-Themen implementiert UND im Browser
 verifiziert. Details siehe „Modul 4 – Session 51 (komprimiert)" unter
 „Formel-Referenz" weiter unten bzw. `docs/archiv/claude-md-modul4-sessions-35-51.md`
 für den vollen Sitzungsverlauf.
@@ -535,6 +547,83 @@ used:2`, 4 Klemmen, Modul 5 zeigt beide korrekt bepreist (Summe 174,71€).
 Keine Konsolenfehler. Backup:
 `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-tauchfuehler_*.xlsx`.
 Damit sind die Raumsensoren fürs Erste abgeschlossen.
+
+### Lüftungssensoren + Pflichtzubehör-Mechanismus + Sicherheitsketten-Koppelrelais (Session 52, gesperrt)
+9 neue Baugruppen `430_000008`–`430_000016` (alle `funktionsbereich: ['lueftung']`),
+Siemens-Leitfabrikat, Rauchmelder bewusst **Oppermann** (analog zur bereits
+bestehenden Metz-Connect-Ausnahme bei LVB-Relais): Kanaltemperaturfühler
+0,4m/2,0m (Siemens QAM2120.040/.200, LG-Ni1000 – **Kennlinie bewusst Ni1000,
+weil nativ vom Siemens-Automationssystem unterstützt**; QAM2120.200 ist
+bereits der Kapillar-Mittelwertfühler, keine eigene "QAM2129"-Typkennung
+bei Siemens, ganze QAM21-Baureihe biegsame Kupferkapillare, kein starrer
+Stab), Kanalfeuchtefühler (QFM2100, 3-Leiter), 2× Differenzdruckwächter
+(QBM81-3 Filterüberwachung direkt auf DDC, QBM81-10 Ventilatorüberwachung
+sicherheitsrelevant), Drucksensor Kanaldruck (QBM3020-10, 0-10V/3-Leiter),
+Kanalhygrostat (QFM81.21, IP55, Sicherheitsfunktion), 2× Kanalrauchmelder
+(Oppermann KRM-2-DZ 24V / KRM-1-DZ 230V, DIBt-Zulassung zur direkten
+Klappenansteuerung – DIBt-Nummer selbst bewusst nicht im Auswahltext).
+
+**Neuer Mechanismus: Pflichtzubehör bei Feldgeräten (`feldgeraete.json`).**
+Analog zu `einzelbauteile.zubehoer_artikel_nr`/`syncZubehoer()` (Modul 4,
+Session 41 – dort für Schaltschrank-Bauteile wie Schütz→Hilfsschalterblock),
+aber auf Feldgeräte-Ebene: neues Feld `zubehoer_feldgeraet_artikel_nr`
+(+ `zubehoer_menge`, Default 1) referenziert ein zweites `feldgeraete.json`-
+Entry, das NICHT selbst als Baugruppe wählbar ist (taucht in Modul 4 also
+nicht in der Baugruppen-Dropdown auf), aber automatisch mit in Modul 5s
+Feldgeräte-Stückliste einfließt, sobald das Hauptgerät gewählt wird
+(`aggregateFeldgeraete()` in Modul 5, zweiter Aggregationsdurchlauf über
+`zubehoerNr`/`zubehoerMenge`). Zählt bewusst NICHT in
+`sumFeldgeraete()`/„Feldgeräte gesamt" (Modul 4) – diese Zählung basiert
+weiterhin rein auf Baugruppen-Instanzen aus `m04_belegung`, die
+Zubehör-Zeile entsteht erst nachgelagert in Modul 5. Erster Anwendungsfall:
+Montagekonsole `KS` (Oppermann, kein Preis gefunden) an beiden
+Kanalrauchmelder-Baugruppen. **Vom Nutzer explizit als wiederkehrendes
+Muster angekündigt** – weitere Feldgeräte mit funktionsfremdem Pflichtzubehör
+sind zu erwarten, derselbe Mechanismus ist wiederverwendbar.
+
+**Sicherheitsketten-Pattern (Koppelrelais):** QBM81 und QFM81.2x haben nur
+**1 Wechsler** (ein gemeinsamer COM-Kontakt) – reicht nicht, um gleichzeitig
+eine Leistungssteuerung (Abschaltung) UND eine getrennte DDC-Meldung zu
+speisen. Baugruppen mit Sicherheitsfunktion (Ventilatorüberwachung,
+Kanalhygrostat) schalten daher über ein zwischengeschaltetes Koppelrelais:
+Sensor-Wechsler (klemm_s, 2 Klemmen) → Relaisspule (Zone `steuer`) → 2
+galvanisch getrennte Ausgänge: Kontakt 1 → klemm_s mit `dp_bi` (DDC-Meldung,
+nur mit der DDC-Referenzspannung beaufschlagt), Kontakt 2 → klemm_l
+(Leistungssteuerung/Abschaltung, kein DDC-Bezug). **Spulenspannung bewusst
+230V AC, nicht 24V DC** (Nutzer-Entscheidung, Grundsatz): eine 24V-DC-Spule
+bräuchte ein zusätzliches Netzteil/einen Trafo als weiteren Ausfallpunkt in
+der Sicherheitskette – bei 230V AC schaltet der Feldgerätekontakt direkt,
+ohne zusätzliche Spannungswandlung. Neues Bauteil `2967099` (Phoenix Contact
+PLC-RSC-230UC/21-21, 230VAC/220VDC-Spule, 2 Wechsler, sonst baugleich zum
+bereits vorhandenen 24VDC-Pendant `2967060`) – **Koppelrelais-Bezeichnung
+trägt immer die Spulenspannung im Klartext** (Konvention, kein eigenes
+Schema-Feld). Ein Relais mit mehreren Wechslerkontakten kann pro Kontakt
+unterschiedliche Spannungsebenen führen (galvanisch getrennt) – das war die
+Kernfrage, die die Machbarkeit des Patterns bestätigt hat. Der
+Kanalrauchmelder (KRM-DZ) braucht dieses Pattern NICHT: sein Alarmrelais hat
+bereits 2 native, getrennte Kontakte (Umschalter Kl.11/12/13 + Öffner
+Kl.14/15) – Umschalter direkt auf klemm_s/dp_bi (Sammelalarm), Öffner direkt
+auf klemm_l (Klappenansteuerung). Verschmutzung/Systemstörung/Luftströmung
+(3 weitere Störmeldekontakte der DZ-Version) je eigener `dp_bi` auf klemm_s.
+
+**230V-Versorgung farbig, Meldekontakte bleiben grau:** beim 230V-Rauchmelder
+(KRM-1-DZ) sind nur die 3 echten Versorgungsklemmen (L/N/PE) farbig (`3209510`
+grau=L, `3209523` blau=N, `3209536` grün-gelb=PE, klemm_l) – alle
+Relais-/Meldekontakt-Klemmen bleiben Standard-grau (`3209510`), auch wenn sie
+zone `klemm_l` liegen (Nutzer-Klarstellung Session 52: Farbe kennzeichnet nur
+echte Bus-/Versorgungsanschlüsse, nicht jede Klemme in der Leistungszone).
+
+Verifiziert direkt im Browser (Wandschrank, 600×800mm, ohne Modul 1/3 direkt
+über Modul 4s eigene Schranktyp/Montagebereich-Felder): Testbelegung
+(1× Differenzdruckwächter Ventilatorüberwachung + 1× Kanalrauchmelder 24V)
+liefert korrekt `BI 5/16` (1+4), Koppelrelais `2967099` korrekt in Zone
+Steuerung platziert, Klemmenzonen korrekt verteilt (klemm_s 14×, klemm_l 4×),
+automatische DDC-Ergänzung (TXM1.16D + PXC7.E400.A + Netzteil + LSS) greift
+korrekt. Modul 5 zeigt beide Feldgeräte unbepreist plus die Montagekonsole
+als dritte Zeile („aus: Zubehör zu: Kanalrauchmelder 24V") – Modul 4s
+„Feldgeräte gesamt" bleibt korrekt bei 2 (Konsole nicht mitgezählt). Keine
+Konsolenfehler. Backup vor der Excel-Änderung:
+`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-lueftungssensoren_*.xlsx`.
 
 ## Gesperrte Entscheidungen
 

@@ -60,5 +60,94 @@
     "preis_eur": 89.63,
     "quelle_hinweis": "Session 51 Nachtrag 11. Siemens QAE2120.015 (Symaro-Reihe, Planungsfabrikat Siemens), Tauchtemperaturfuehler passiv fuer Heizung/Kaelte (Wasser-/Medientemperatur in Rohren/Behaeltern). Messelement LG-Ni1000 - bewusst diese Elementvariante statt Pt100/Pt1000/NTC gewaehlt, da nur \"QAE2120.xxx\" die Tauchhuelse (Schutztasche mit Gewindenippel G½A) BEREITS im Lieferumfang enthaelt (\"Including protection pocket with threaded nipple\"); alle anderen Elementtypen brauchen die Tauchhuelse als separates Zubehoer. Konsistent zum bereits katalogisierten Raumtemperaturfuehler QAA24 (ebenfalls LG-Ni1000). Baulaenge 150mm - laut Original-Typenuebersicht (Siemens-Datenblatt CE1N1781en, 2017-07-19) sind 100mm und 150mm die EINZIGEN in dieser Baureihe verfuegbaren Laengen, keine 65mm- oder 200-250mm-Variante existiert (vom Nutzer zunaechst vorgeschlagen, per Recherche korrigiert). Mindest-Eintauchtiefe bei Montage 60mm (Installationsvorgabe). Anschlussklemmen B/M (passiv, Schraubklemmen, austauschbar/polaritaetsunabhaengig). Preis 89,63 EUR (Siemens HIT-Portal-Preis laut Distributor-Suche, kein direkt bestaetigter Herstellerlistenpreis). Quelle: https://www.intellisys.it/media/wysiwyg/Siemens_documentation/QAE/QAE21%20Datasheet%20Eng.pdf , https://hvac.de/en/qae21/5172-qae2120010.html",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "QAM2120.040",
+    "bezeichnung": "Kanaltemperaturfühler passiv, 0,4m, LG-Ni1000",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "preis_eur": 90.0,
+    "quelle_hinweis": "Siemens QAM2120.040 (Symaro), Kanaltemperaturfuehler passiv fuer Lueftungskanal, Montageflansch AQM63.0 im Lieferumfang. Anschlussklemmen B/M (identisch QAA24), Messbereich -50...+80C. Fuehlerbauform: biegsame Kupferkapillare (kein starrer Stab) - min. Biegeradius 10mm, gilt laut Originaldatenblatt CE1N1761en fuer die gesamte QAM21-Baureihe einschliesslich der 0,4m-Kurzversion. QAM2120.200/.600 SIND bereits der Kapillar-Mittelwertfuehler (keine separate Averaging-Typkennung bei Siemens). Ein starrer Stabfuehler mit Flansch existiert in der europaeischen Symaro-Reihe nicht (nur aeltere, separate US-Produktlinie 149-915) - bei Bedarf spaeter Alternativen anderer Hersteller recherchieren. Messelement LG-Ni1000 gewaehlt (nicht Pt1000/Pt100/NTC), da die Ni1000-Kennlinie nativ vom eingesetzten Siemens-Automationssystem (Desigo PX/TX-I/O) unterstuetzt wird, konsistent zu allen bisherigen Symaro-Katalogeintraegen (QAA24, QFA-Familie, QAE2120). Preis 90,00 EUR (Siemens HIT-Portal, nur als Google-Suchtreffer bestaetigt, nicht direkt von der JS-Seite verifiziert - vor Uebernahme idealerweise gegenpruefen). Quelle: Siemens-Originaldatenblatt CE1N1761en (2024-06-14): https://sid.siemens.com/api/khub/documents/i0~Z65~B5zWwLpjvUJmGRw/content",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QAM2120.200",
+    "bezeichnung": "Kanaltemperaturfühler passiv, 2,0m, Kapillar-Mittelwertfühler, LG-Ni1000",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "preis_eur": 158.0,
+    "quelle_hinweis": "Siemens QAM2120.200 (Symaro), Kapillar-Mittelwertfuehler (misst gemittelte Temperatur ueber den Kanalquerschnitt, Kapillarrohr diagonal verlegt, 4 Montageklemmen AQM63.3 im Lieferumfang). Anschlussklemmen B/M (identisch zu QAM2120.040/QAA24), Messbereich -50...+80C. Fuehlerbauform: biegsame Kupferkapillare (kein starrer Stab) - min. Biegeradius 10mm, gilt laut Originaldatenblatt CE1N1761en fuer die gesamte QAM21-Baureihe einschliesslich der 0,4m-Kurzversion. QAM2120.200/.600 SIND bereits der Kapillar-Mittelwertfuehler (keine separate Averaging-Typkennung bei Siemens). Ein starrer Stabfuehler mit Flansch existiert in der europaeischen Symaro-Reihe nicht (nur aeltere, separate US-Produktlinie 149-915) - bei Bedarf spaeter Alternativen anderer Hersteller recherchieren. Messelement LG-Ni1000 gewaehlt (nicht Pt1000/Pt100/NTC), da die Ni1000-Kennlinie nativ vom eingesetzten Siemens-Automationssystem (Desigo PX/TX-I/O) unterstuetzt wird, konsistent zu allen bisherigen Symaro-Katalogeintraegen (QAA24, QFA-Familie, QAE2120). Preis 158,00 EUR (gleiche Quellenlage wie QAM2120.040, nur Suchtreffer-bestaetigt). Quelle: Siemens-Originaldatenblatt CE1N1761en (2024-06-14): https://sid.siemens.com/api/khub/documents/i0~Z65~B5zWwLpjvUJmGRw/content",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QFM2100",
+    "bezeichnung": "Kanalfeuchtefühler, aktiv, 0...100% r.F., 3-Leiter",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "preis_eur": 170.0,
+    "quelle_hinweis": "Siemens QFM2100 (Symaro), Kanalfeuchtefuehler aktiv (kapazitives Messelement, 0...100% r.F.), 3-Leiter mit waehlbarem Ausgang DC0-5V/0-10V/4-20mA. Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC13,5-35V) + X1 (Signal) - konsistent zum G/G0-Klemmenschema von QPA2000/QFA2000. Montageflansch + Kabelverschraubung M16 im Lieferumfang, Eintauchlaenge 90-154mm einstellbar, IP54. Preis 170,00 EUR (KelvinTech.de, MwSt.-Ausweis 23% unplausibel fuer DE - vor Uebernahme idealerweise gegenpruefen). Quelle: Siemens-Originaldatenblatt CE1N1864en: https://sid.siemens.com/api/khub/documents/ZjTecRUaa9BmOJqWOwvL2g/content",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QBM81-3",
+    "bezeichnung": "Differenzdruckwächter, Schaltkontakt, 20-300 Pa",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "preis_eur": 49.62,
+    "quelle_hinweis": "Siemens QBM81-3, rein mechanischer Differenzdruckwaechter (Membran, 1-poliger potentialfreier Wechsler), fuer Filterueberwachung. Anschlussklemmen 1(COM)/2(schaltet bei Druckabfall)/3(schaltet bei Druckanstieg). 2 Anschlussduesen P1/P2, Set FK-PZ3 (2 Kanalanschlussstutzen + 4 Schrauben + 2m PVC-Schlauch) im Lieferumfang. Kontaktbelastung AC250V/5A. Preis 49,62 EUR inkl. 19% MwSt. (ams-elektro.com). Quelle: Siemens-Originaldatenblatt CA1N1552E (2014-07-30, EU-Ausgabe): https://www.siemensbolt.hu/doc/siemens/pdf/QBM81.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QBM81-10",
+    "bezeichnung": "Differenzdruckwächter, Schaltkontakt, 100-1000 Pa",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "quelle_hinweis": "Siemens QBM81-10, baugleich QBM81-3, groesserer Schaltbereich fuer Ventilator-/Riemenueberwachung. Anschlussklemmen 1(COM)/2/3 wie QBM81-3. Kein belastbarer EUR-Preis gefunden. Sicherheitsrelevant (Ventilatorabschaltung) - da nur 1 Wechsler vorhanden, wird in der Baugruppe ein Koppelrelais (Phoenix Contact 2967099) zwischengeschaltet, das die Sicherheitsfunktion (Leistungssteuerung) und die DDC-Meldung auf 2 getrennte Kontakte aufteilt. Quelle: Siemens-Originaldatenblatt CA1N1552E: https://www.siemensbolt.hu/doc/siemens/pdf/QBM81.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QBM3020-10",
+    "bezeichnung": "Drucksensor Kanaldruck, analog 0-10V, 3-Leiter, 0-1000 Pa",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "quelle_hinweis": "Siemens QBM3020-10 (Symaro), elektronischer Differenzdrucktransmitter, 3-Leiter, DC0-10V, Messbereich 0-1000 Pa (Endwert 500-1000Pa einstellbar). Anschlussklemmen G(+)/M(GND)/U(Signal). 2 Anschlussduesen P1(+)/P2(-), 2m PVC-Schlauch im Lieferumfang. Fuer Kanaldruck-/Ventilatorregelung wird P2 ueblicherweise offen an Atmosphaere gelassen (Ingenieurpraxis, nicht explizit im Datenblatt). Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CA1N1916en01 (2016-12-23): https://www.ciz-regulace.cz/fotky930/fotov/_ps_2158QBM3020_3120_ENG.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QFM81.21",
+    "bezeichnung": "Kanalhygrostat, Schaltkontakt, 15-95% r.F., IP55",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "preis_eur": 228.0,
+    "quelle_hinweis": "Siemens QFM81.21, mechanischer Mikroschalter-Hygrostat (1-poliger potentialfreier Wechsler), Sollwerteinsteller verdeckt (IP55, gegenueber QFM81.2 mit aussenliegendem Einsteller/IP30 fuer Sicherheitsfunktion gewaehlt). Einstellbereich 15-95% r.F., Schaltdifferenz ca. 4% r.F. fest. Anschlussklemmen 1(COM)/2(Befeuchtung, schliesst bei steigender Feuchte)/3(Entfeuchtung, schliesst bei fallender Feuchte) - fuer Ueberfeuchtungsschutz wird Kl. 1+2 verdrahtet. Montageflansch, Tauchlaenge 130-156mm einstellbar. Nur 1 Wechsler vorhanden - Baugruppe schaltet daher ueber Koppelrelais (Phoenix Contact 2967099), das Sicherheitsfunktion (Befeuchter-Abschaltung) und DDC-Meldung auf 2 getrennte Kontakte aufteilt. Preis 228,00 EUR netto (KelvinTech.de, Distributor-Preis, kein Siemens-HIT-Preis verfuegbar). Quelle: Siemens Installationsanleitung Document No. 129-606: https://manuals.plus/siemens/qfm81-2-duct-hygrostat-manual.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KRM-1-DZ",
+    "bezeichnung": "Kanalrauchmelder 230V AC, DIBt-Zulassung, mit Relaisausgängen",
+    "hersteller": "Oppermann",
+    "kategorie": "Kanalrauchmelder",
+    "quelle_hinweis": "Oppermann KRM-1-DZ (230V AC-Linie der KRM-DZ-Baureihe), integrierter optischer Rauchmelder mit Einrohr-Luftmesssystem (Standard-Messrohr 600mm, kuerzbar ab 160mm). DIBt-Zulassung zur direkten Ansteuerung von Brand-/Rauchschutzklappen (die DIBt-Nummer selbst bewusst nicht in den Auswahltext uebernommen). Relaisausgaenge, alle potentialfrei: Alarmrelais verriegelt = 1 Umschalter (Kl.11/12/13) + 1 Oeffner (Kl.14/15, fuer Klappenansteuerung/Leistungssteuerung), Verschmutzungsrelais 1 Oeffner (Kl.16/17), Systemstoerungsrelais 1 Oeffner (Kl.18/19), Luftstroemungsrelais 1 Oeffner (Kl.20/21, faellt bei Stroemung <1m/s ab). Fern-Reset/-Test Kl.9/10. Benoetigt zwingend Montagekonsole KS als Zubehoer (Blechschrauben zur Kanalmontage nicht im Lieferumfang) - wird beim Waehlen dieser Baugruppe automatisch in die Feldgeraetestueckliste ergaenzt (Modul 5), zaehlt dort NICHT als eigenes Feldgeraet in der Statistik. Kein belastbarer Preis gefunden. Quelle: Oppermann-Originaldatenblatt KRM-DZ (Nr. 41302, 08-2015): https://www.digicontrol.info/fileadmin/media/Produkte/R-KRM-x-DZ/171009_Geraetedatenblatt_R-KRM-2-DZ_81289_10-2017_DE-EN.pdf",
+    "zubehoer_feldgeraet_artikel_nr": "KS",
+    "zubehoer_menge": 1,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KRM-2-DZ",
+    "bezeichnung": "Kanalrauchmelder 24V AC/DC, DIBt-Zulassung, mit Relaisausgängen",
+    "hersteller": "Oppermann",
+    "kategorie": "Kanalrauchmelder",
+    "quelle_hinweis": "Oppermann KRM-2-DZ (24V AC/DC-Linie der KRM-DZ-Baureihe), technisch identisch zu KRM-1-DZ (siehe dort), nur Versorgungsspannung 24V AC/DC statt 230V AC - konsistent zu den uebrigen SELV-Feldgeraeten im Katalog. Benoetigt ebenfalls die Montagekonsole KS (automatischer Zubehoer-Eintrag in Modul 5, siehe KRM-1-DZ). Kein belastbarer Preis gefunden. Quelle: Oppermann-Originaldatenblatt KRM-DZ (Nr. 41302, 08-2015): https://www.digicontrol.info/fileadmin/media/Produkte/R-KRM-x-DZ/171009_Geraetedatenblatt_R-KRM-2-DZ_81289_10-2017_DE-EN.pdf",
+    "zubehoer_feldgeraet_artikel_nr": "KS",
+    "zubehoer_menge": 1,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KS",
+    "bezeichnung": "Montagekonsole für Kanalrauchmelder KRM-DZ (isolierte/runde Kanäle)",
+    "hersteller": "Oppermann",
+    "kategorie": "Zubehör Kanalrauchmelder",
+    "quelle_hinweis": "Oppermann Montagekonsole KS, Zubehoer fuer KRM-DZ-Baureihe (isolierte/runde Kanaele), lt. Originaldatenblatt NICHT im Lieferumfang des Kanalrauchmelders enthalten (ebenso die 4 Befestigungsschrauben zur Blechkanalmontage). Wird ueber 'zubehoer_feldgeraet_artikel_nr' automatisch mit dem Rauchmelder in der Feldgeraetestueckliste (Modul 5) ergaenzt, erscheint aber NICHT als eigene Baugruppe in Modul 4 und wird nicht als eigenes Feldgeraet gezaehlt (reines Zubehoer). Kein Preis/keine Bestellnummer ueber die genannte Konsolentype hinaus gefunden. Quelle: Oppermann-Originaldatenblatt KRM-DZ (Nr. 41302): https://www.digicontrol.info/fileadmin/media/Produkte/R-KRM-x-DZ/171009_Geraetedatenblatt_R-KRM-2-DZ_81289_10-2017_DE-EN.pdf",
+    "geprueft": false
   }
 ]

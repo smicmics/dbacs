@@ -557,6 +557,16 @@ def export_feldgeraete(wb):
             entry['preis_eur'] = float(rec['preis_stueck_eur'])
         if rec.get('quelle_hinweis'):
             entry['quelle_hinweis'] = str(rec['quelle_hinweis'])
+        # zubehoer_feldgeraet_artikel_nr (Lueftungssensoren-Session): Pflichtzubehoer,
+        # das NICHT als eigene Baugruppe waehlbar ist (z.B. Montagekonsole eines
+        # Kanalrauchmelders), aber automatisch mit der Menge des Hauptgeraets in die
+        # Feldgeraete-Stueckliste (Modul 5) einfliesst - analog zu einzelbauteile.
+        # zubehoer_artikel_nr/syncZubehoer() in Modul 4, nur auf Feldgeraete-Ebene
+        # statt Schaltschrank-Ebene. zubehoer_menge = Multiplikator je Hauptgeraet
+        # (Default 1, falls nicht gesetzt).
+        if rec.get('zubehoer_feldgeraet_artikel_nr'):
+            entry['zubehoer_feldgeraet_artikel_nr'] = str(rec['zubehoer_feldgeraet_artikel_nr'])
+            entry['zubehoer_menge'] = int(rec['zubehoer_menge']) if rec.get('zubehoer_menge') is not None else 1
         entry['geprueft'] = bool(rec.get('geprueft'))
         rows.append(entry)
 
