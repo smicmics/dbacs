@@ -508,7 +508,7 @@
     "id": "430_000012",
     "name": "Differenzdruckwächter Ventilatorüberwachung 100...1000 Pa",
     "gewerk": "430",
-    "beschreibung": "Differenzdruckwächter Ventilatorüberwachung - Differenzdruckwächter mit Schaltkontakt, 100-1000 Pa (Siemens QBM81-10), sicherheitsrelevante Ventilatorabschaltung über Koppelrelais (Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler): 1 Kontakt Leistungssteuerung (Abschaltung), 1 Kontakt DDC-Meldung. Datenpunktbedarf 1x BI.",
+    "beschreibung": "Differenzdruckwächter Ventilatorüberwachung - Differenzdruckwächter mit Schaltkontakt, 100-1000 Pa (Siemens QBM81-10), 2 Feldklemmen (Sensorschleife steuert über den Schaltkontakt die Spule eines Koppelrelais an, Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler). Die beiden Kontaktstrecken (Leistungssteuerung/Ventilatorabschaltung + DDC-Meldung) liegen direkt an den eigenen Schraubklemmen des Koppelrelais, keine weiteren Landeklemmen nötig. Datenpunktbedarf 1x BI.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -523,28 +523,8 @@
       {
         "artikel_nr": "2967099",
         "menge": 1,
-        "zone": "leist"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f",
+        "zone": "leist",
         "dp_bi": 1
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_l"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_l"
       }
     ],
     "funktionsbereich": [
@@ -591,7 +571,7 @@
     "id": "430_000014",
     "name": "Kanalhygrostat 15...95% r.F.",
     "gewerk": "430",
-    "beschreibung": "Kanalhygrostat - Kanalhygrostat mit Schaltkontakt, IP55, Schutz vor Überfeuchtung bei Luftbefeuchtern (Siemens QFM81.21), Sicherheitsfunktion über Koppelrelais (Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler): 1 Kontakt Leistungssteuerung (Befeuchter-Abschaltung), 1 Kontakt DDC-Meldung. Datenpunktbedarf 1x BI.",
+    "beschreibung": "Kanalhygrostat - Kanalhygrostat mit Schaltkontakt, IP55, Schutz vor Überfeuchtung bei Luftbefeuchtern (Siemens QFM81.21), 2 Feldklemmen (Sensorschleife steuert über den Schaltkontakt die Spule eines Koppelrelais an, Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler). Die beiden Kontaktstrecken (Leistungssteuerung/Befeuchter-Abschaltung + DDC-Meldung) liegen direkt an den eigenen Schraubklemmen des Koppelrelais, keine weiteren Landeklemmen nötig. Datenpunktbedarf 1x BI.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -606,28 +586,8 @@
       {
         "artikel_nr": "2967099",
         "menge": 1,
-        "zone": "leist"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f",
+        "zone": "leist",
         "dp_bi": 1
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_l"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_l"
       }
     ],
     "funktionsbereich": [

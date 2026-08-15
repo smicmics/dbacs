@@ -881,6 +881,21 @@ Fall ohne eigenen Steuerspannungsbedarf, nur die automatisch ergänzte CPU
 löst die Auto-Ergänzung aus): Stückliste zeigt `EV LSS B6A` + `EV LSS B10A`
 + `L Steuertransformator`, exakt wie erwartet. Keine Konsolenfehler.
 
+**Weitere Korrektur (Nutzer-Fund, Schaltungsverständnis Koppelrelais):**
+`430_000012`/`014` hatten fälschlich je 4 zusätzliche „Landeklemmen" für
+die beiden Kontaktstrecken des Koppelrelais (DDC-Meldung + Leistungs-
+steuerung) – überflüssig, das Koppelrelais hat für beide Kontaktstrecken
+bereits eigene Schraubklemmen, keine separaten Klemmenblöcke nötig. Nur
+die 2 Klemmen für das eingehende Feldkabel (Sensor-Schaltkontakt steuert
+über diese 2 Adern die Relaisspule an) bleiben. `dp_bi` sitzt jetzt direkt
+auf der Koppelrelais-Zeile statt auf einer eigenen Klemmenzeile. Beide
+Baugruppen dadurch von 7 auf 3 Bauteile reduziert (2 Klemmen + 1
+Koppelrelais). Verifiziert im Browser: Stückliste zeigt korrekt nur noch
+`KF Durchgangsklemme ×2` (kein `klemm_l` mehr) für die QBM81-10-Baugruppe,
+plus getrennt und korrekt beide ausgelösten Steuerspannungs-Trafos (24V AC
+für die CPU, 230V AC für das Koppelrelais – zwei unterschiedliche
+Bedarfsträger, beide zu Recht separat). Keine Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.
