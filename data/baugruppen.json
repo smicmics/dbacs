@@ -176,7 +176,7 @@
   },
   {
     "id": "430_000001",
-    "name": "Raumtemperatursensor passiv",
+    "name": "Raumtemperatursensor passiv 0...50°C",
     "gewerk": "430",
     "beschreibung": "Raumtemperatursensor passiv - Raumtemperaturfühler passiv (Siemens QAA24), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -204,7 +204,7 @@
   },
   {
     "id": "430_000002",
-    "name": "Raum-CO2-Sensor 24V AC/DC",
+    "name": "Raum-CO2-Sensor 0...2000ppm, 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Raum-CO2-Sensor - Raum-CO2-Fühler (Siemens QPA2000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -235,7 +235,7 @@
   },
   {
     "id": "430_000003",
-    "name": "Raum-VOC-Sensor 24V AC/DC",
+    "name": "Raum-VOC-Sensor 0...100% VOC, 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Raum-VOC-Sensor - Raum-VOC-Fühler (Siemens QPA1000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -266,7 +266,7 @@
   },
   {
     "id": "430_000004",
-    "name": "Raumfeuchtesensor 24V AC/DC",
+    "name": "Raumfeuchtesensor 0...100% r.F., 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Raumfeuchtesensor - Raumfeuchtefühler (Siemens QFA2000), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -299,7 +299,7 @@
   },
   {
     "id": "430_000005",
-    "name": "Raumtemperatur- und Feuchtesensor 24V AC/DC",
+    "name": "Raumtemperatur- und Feuchtesensor 0...50°C/0...100% r.F., 24V AC/DC",
     "gewerk": "430",
     "beschreibung": "Raumtemperatur- und Feuchtesensor - Raumfühler für relative Feuchte und Temperatur, aktiv (Siemens QFA2060), 4 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 2x AI (Feuchte + Temperatur).",
     "bauteile": [
@@ -338,7 +338,7 @@
   },
   {
     "id": "430_000006",
-    "name": "Tauchtemperatursensor 100mm mit Tauchhülse G1/2\"",
+    "name": "Tauchtemperatursensor 100mm mit Tauchhülse G1/2\" -30...+130°C",
     "gewerk": "430",
     "beschreibung": "Tauchtemperatursensor 100mm - Tauchtemperaturfühler passiv, 100mm, inkl. Tauchhülse (Siemens QAE2120.010), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [
@@ -365,7 +365,7 @@
   },
   {
     "id": "430_000007",
-    "name": "Tauchtemperatursensor 150mm mit Tauchhülse G1/2\"",
+    "name": "Tauchtemperatursensor 150mm mit Tauchhülse G1/2\" -30...+130°C",
     "gewerk": "430",
     "beschreibung": "Tauchtemperatursensor 150mm - Tauchtemperaturfühler passiv, 150mm, inkl. Tauchhülse (Siemens QAE2120.015), 2 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
     "bauteile": [

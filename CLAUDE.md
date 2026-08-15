@@ -723,10 +723,19 @@ Spannung), „Kanalhygrostat 15...95% r.F." (Messbereich ergänzt),
 „Kanalfeuchtefühler 0...100% r.F., 24V AC/DC" (Nutzer-Fund: Messbereich
 fehlte bei allen 3 Kanalsensoren). **Offen:**
 die älteren Raumsensor-Baugruppen (Session 51: Raum-CO2/-VOC/-Feuchte-/
-Kombisensor) haben die Spannungsangabe nachträglich erhalten: „Raum-CO2-Sensor
-24V AC/DC", „Raum-VOC-Sensor 24V AC/DC", „Raumfeuchtesensor 24V AC/DC",
-„Raumtemperatur- und Feuchtesensor 24V AC/DC" (alle QPA/QFA-Familie,
-Versorgung AC24V SELV oder DC13,5-35V).
+Kombisensor) haben Spannung UND Messbereich nachträglich erhalten (Nutzer-Fund
+„Messbereich fehlt auch bei Raumsensoren", per Originaldatenblatt
+gegengeprüft statt geschätzt): „Raumtemperatursensor passiv 0...50°C",
+„Raum-CO2-Sensor 0...2000ppm, 24V AC/DC", „Raum-VOC-Sensor 0...100% VOC, 24V
+AC/DC" (Messbereich laut CE1N1961de tatsächlich 0...100% VOC, kein
+ppm-Wert), „Raumfeuchtesensor 0...100% r.F., 24V AC/DC",
+„Raumtemperatur- und Feuchtesensor 0...50°C/0...100% r.F., 24V AC/DC"
+(Temperaturbereich = Werkeinstellung R2 der QPA/QFA-Familie, 3 Bereiche
+per Steckbrücke wählbar – nicht QFA2060-spezifisch gegengeprüft, sondern
+aus dem baugleichen Schaltungsprinzip der QPA-Family übernommen),
+„Tauchtemperatursensor 100mm/150mm mit Tauchhülse G1/2" -30...+130°C"
+(Messbereich laut Siemens-Originaldatenblatt CE1N1781en: „-30...+130°C
+other types" – gilt für LG-Ni1000, nicht NTC).
 
 ### Klemmzonen-Grundsatzregel: Sensor vs. Feldgerät (Session 52 Nachtrag 4, gesperrt)
 Nutzer-Klarstellung, ab sofort verbindlich für alle künftigen Baugruppen:
