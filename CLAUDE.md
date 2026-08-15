@@ -908,6 +908,17 @@ derselben Zone liegen – die 1-Kabel-Regel betrifft nur Zonen-Grenzen).
 Verifiziert im Browser: Stückliste zeigt `KL` nur noch für L/N/PE (3),
 `KF` für alle übrigen 10 Klemmen. Keine Konsolenfehler.
 
+**Nachtrag (Nutzer-Korrektur):** auch die 230V-L/N/PE-Netzversorgung von
+`430_000016` kann aus der Feldgeräte-Klemmleiste versorgt werden – Farbe
+(grau/blau/grün-gelb) bleibt erhalten, nur die Zone wechselt final von
+`klemm_l` auf `klemm_f`. Damit liegt `430_000016` jetzt komplett (alle 13
+Klemmen) in `klemm_f` – `klemm_l` wird für diese Baugruppe nicht mehr
+verwendet. Zeigt: 230V-Versorgung ist nicht per se ein Ausschlusskriterium
+für `klemm_f` – die frühere Session-52-Regel „Farben für Leistungs-
+anschlüsse ab 230V AC" bezieht sich nur auf die Klemmenfarbe, nicht auf
+die Zonenwahl. Verifiziert im Browser: alle 13 Klemmen zeigen `KF`
+(11× grau, 1× blau, 1× grün-gelb). Keine Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.
