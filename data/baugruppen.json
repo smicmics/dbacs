@@ -826,5 +826,144 @@
       "automation"
     ],
     "geprueft": false
+  },
+  {
+    "id": "430_000017",
+    "name": "Kanal-CO2-Fühler 0...2000ppm, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Kanal-CO2-Fühler - Kanal-Luftqualitätsfühler CO2, Symaro (Siemens QPM2100), 3 Abgangsklemmen in der Sensoren-Klemmleiste (G/G0 Versorgung + X1 Signal), Datenpunktbedarf 1x AI. Montageflansch für Kanalmontage im Lieferumfang.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanal-CO2-Fühler, Symaro (Siemens QPM2100)",
+    "feldgeraet_artikel_nr": "QPM2100",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
+  },
+  {
+    "id": "430_000018",
+    "name": "Kanal-VOC-Fühler 0...100% VOC, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Kanal-VOC-Fühler - Kanal-Luftqualitätsfühler VOC, Symaro (Siemens QPM1100), 3 Abgangsklemmen in der Sensoren-Klemmleiste (G/G0 Versorgung + X1 Signal), Datenpunktbedarf 1x AI. Montageflansch für Kanalmontage im Lieferumfang.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanal-VOC-Fühler, Symaro (Siemens QPM1100)",
+    "feldgeraet_artikel_nr": "QPM1100",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
+  },
+  {
+    "id": "430_000019",
+    "name": "Kanal-CO2/VOC-Kombifühler 0...2000ppm/0...100% VOC, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Kanal-CO2/VOC-Kombifühler - Kanal-Luftqualitätsfühler CO2+VOC, Symaro (Siemens QPM2102), 4 Abgangsklemmen in der Sensoren-Klemmleiste (G/G0 Versorgung + X1 CO2-Signal + X2 Lüftungsbedarfssignal), Datenpunktbedarf 2x AI. Montageflansch für Kanalmontage im Lieferumfang.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanal-CO2/VOC-Kombifühler, Symaro (Siemens QPM2102)",
+    "feldgeraet_artikel_nr": "QPM2102",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
+  },
+  {
+    "id": "430_000020",
+    "name": "Luftstromwächter 0,2...10 m/s, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Luftstromwächter - kalorimetrischer Luftstromwächter für Rechteck- und Rundkanal, Herstellerabweichung KRIWAN (Siemens-eigenes INT511 im HIT-Portal abgekündigt, KRIWAN führt das Originalgerät als aktuelles Produkt weiter), 4 Abgangsklemmen in der Feldgeräte-Klemmleiste (2x Versorgung 24V AC/DC + 2x Relais-Wechsler-Kontakt Strömung-OK), Datenpunktbedarf 1x BI. Befestigungsflansch für Kanalmontage im Lieferumfang.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftstromwächter INT511, 24V AC/DC (KRIWAN)",
+    "feldgeraet_artikel_nr": "20N842S021",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
   }
 ]

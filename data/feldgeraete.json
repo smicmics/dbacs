@@ -149,5 +149,39 @@
     "kategorie": "Zubehör Kanalrauchmelder",
     "quelle_hinweis": "Oppermann Montagekonsole KS, Zubehoer fuer KRM-DZ-Baureihe (isolierte/runde Kanaele), lt. Originaldatenblatt NICHT im Lieferumfang des Kanalrauchmelders enthalten (ebenso die 4 Befestigungsschrauben zur Blechkanalmontage). Wird ueber 'zubehoer_feldgeraet_artikel_nr' automatisch mit dem Rauchmelder in der Feldgeraetestueckliste (Modul 5) ergaenzt, erscheint aber NICHT als eigene Baugruppe in Modul 4 und wird nicht als eigenes Feldgeraet gezaehlt (reines Zubehoer). Kein Preis/keine Bestellnummer ueber die genannte Konsolentype hinaus gefunden. Quelle: Oppermann-Originaldatenblatt KRM-DZ (Nr. 41302): https://www.digicontrol.info/fileadmin/media/Produkte/R-KRM-x-DZ/171009_Geraetedatenblatt_R-KRM-2-DZ_81289_10-2017_DE-EN.pdf",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "QPM2100",
+    "bezeichnung": "Kanal-CO2-Fühler, 0-10V/0-5V/4-20mA wählbar",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "quelle_hinweis": "Siemens QPM2100 (Symaro), reiner Kanal-CO2-Fuehler (NDIR, wartungsfrei, rekalibrationsfrei 8 Jahre), Messbereich 0-2000ppm. Anschlussklemmen G/G0 (Versorgung AC24V/DC15-35V SELV) + X1 (Signal). Montageflansch + M16-Kabelverschraubung im Lieferumfang (Bestellangabe: \"Im Lieferumfang sind Montageflansch und M16-Kabelverschraubung enthalten\") - kein separates Kanalmontage-Zubehoer noetig. Einziges Zubehoer: Ersatz-Filterkappe AQF3101 (nur bei Verschleiss). Externe Absicherung Zuleitung: Schmelzsicherung traege max. 10A oder LSS max. 13A. Kein belastbarer EUR-Preis gefunden (nur US-HIT-Listenpreis ~1126 USD und diverse US-Distributor-Preise $340-630, keine seriöse EU/EUR-Quelle). Quelle: Siemens-Originaldatenblatt CE1N1962de (2025-03-26, aktuell, nicht veraltet): https://cache.industry.siemens.com/dl/files/295/109791295/att_1048058/v4/A6V11527225.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QPM1100",
+    "bezeichnung": "Kanal-VOC-Fühler, 0-10V/0-5V/4-20mA wählbar",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "preis_eur": 239.9,
+    "quelle_hinweis": "Siemens QPM1100 (Symaro), reiner Kanal-VOC-Fuehler (beheizter Zinndioxid-Halbleiter, wartungs-/rekalibrierungsfrei), Messbereich 0-100% VOC, Zeitkonstante R1(langsam)/R2(normal, Werkseinst.)/R3(schnell) per Jumper. Anschlussklemmen G/G0 (Versorgung AC24V/DC15-35V SELV) + X1 (Signal). Montageflansch + M16-Kabelverschraubung im Lieferumfang, kein separates Kanalmontage-Zubehoer noetig. Preis 239,90 EUR netto (Hörburger/Sigstu eShop, Distributor-Preis, kein Siemens-HIT-Listenpreis verfuegbar). Quelle: Siemens-Originaldatenblatt CE1N1962de (2025-03-26): https://cache.industry.siemens.com/dl/files/295/109791295/att_1048058/v4/A6V11527225.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QPM2102",
+    "bezeichnung": "Kanal-CO2/VOC-Kombifühler, 0-10V/0-5V/4-20mA wählbar",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "preis_eur": 657.0,
+    "quelle_hinweis": "Siemens QPM2102 (Symaro), Kombifuehler CO2+VOC. Anschlussklemmen G/G0 (Versorgung) + X1 (CO2-Rohsignal 0-2000ppm) + X2 (Lueftungsbedarfssignal = Maximalauswahl aus CO2- und gefiltertem VOC-Messsignal, 0-100%). Montageflansch + M16-Kabelverschraubung im Lieferumfang. Preis 657,00 EUR (Siemens-Listenpreis laut offiziellem Katalog). Quelle: Siemens-Originaldatenblatt CE1N1962de (2025-03-26): https://cache.industry.siemens.com/dl/files/295/109791295/att_1048058/v4/A6V11527225.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "20N842S021",
+    "bezeichnung": "Luftstromwächter INT511, 24V AC/DC, kalorimetrisch",
+    "hersteller": "KRIWAN",
+    "kategorie": "Kanalsensor",
+    "quelle_hinweis": "KRIWAN INT511 Luftstromwaechter (Herstellerabweichung: Siemens fuehrte dieses Geraet unter eigenem Typenschluessel INT511/Art.Nr. INT51120N842 im HIT-Portal, ist dort inzwischen abgekuendigt/\"nicht mehr lieferbar\" - Originalhersteller KRIWAN Industrie-Elektronik fuehrt es unveraendert als aktuelles Serienprodukt, \"neue Generation, konsequente Weiterentwicklung des Vorgaengers\". Analog zum bestehenden Oppermann/Metz-Connect-Praezedenzfall.) Kalorimetrisches Messprinzip, Messbereich 0,2-10m/s, Grenzwert per Potentiometer einstellbar (Werkseinst. ca. 2,5m/s), einstellbare Anlaufueberbrueckung 1-3min (Werkseinst. 2min) gegen Fehlausloesung beim Anlagenstart. Versorgung AC/DC 24V ±10%, 2VA. Relais-Wechsler (Kontakt 11-14/12), AC240V/2,5A, ca. 1 Mio. Schaltspiele. IP65. Richtungsunabhaengig montierbar, geeignet fuer Rechteck- UND Rundkanal (Bohrung Ø13mm + Befestigungsflansch, Einbau im mittleren Drittel des Kanalquerschnitts). Befestigungsflansch fuer Kanalmontage im Lieferumfang enthalten (Komponentenliste: \"Sondenrohr mit Anschlussdose, Kabelverschraubung, Befestigungsflansch fuer Kanalmontage, Gewebeschlauchabschnitte, Datenblatt\") - kein separates Kanalmontage-Zubehoer noetig. Zubehoer nur als Ersatzteil: Kabeldurchfuehrung M16 (02Z842) oder M20 (02Z843). Kein belastbarer EUR-Preis fuer genau diese 24V-AC/DC-Variante (20N842S021) gefunden - gefundene Distributor-Preise (~215-245EUR) liessen sich nicht eindeutig dieser Variante zuordnen, koennten andere KRIWAN-Typvarianten betreffen. Quelle: KRIWAN-Originaldatenblatt 700.00622.1: https://www.kriwan.com/fileadmin/Downloadcenter/Data_Sheets/German/20N842S021_INT511_Luftstromwaechter_70000622.1.pdf sowie KRIWAN-Zubehoer-/Anwendungshinweise 800.00114.0: https://www.kriwan.com/fileadmin/02_Produkte/07_Luftstromsensoren/Betriebsanleitung_Luftstromtechnik_Anwendungshinweise_Zubehoer_80000114.0_01.pdf",
+    "geprueft": false
   }
 ]

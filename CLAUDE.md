@@ -27,6 +27,10 @@
   (Nutzer-Hinweis Session 52: „in der Praxis werden die farbigen Klemmen für
   L1 L2 und L3 meist gar nicht eingesetzt") – ggf. später auf grau+PE
   umstellen, noch nicht entschieden.
+- Preise Session-53-Feldgeräte unbestätigt: Kanal-CO2-Fühler QPM2100 (kein
+  belastbarer EU/EUR-Preis gefunden) und Luftstromwächter KRIWAN INT511
+  20N842S021 (gefundene Distributor-Preise nicht eindeutig dieser
+  24V-AC/DC-Variante zuordenbar) – siehe `quelle_hinweis` je Eintrag.
 
 Sonst keine offenen Punkte – Session 51/52 vollständig implementiert UND im
 Browser verifiziert; die daraus erarbeiteten Modellierungsregeln sind jetzt
@@ -335,6 +339,39 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
    `einzelbauteile[].artikel_nr` prüfen).
 
 ---
+
+### Modul 4/5 – Kanal-CO2/VOC-Fühler + Luftstromwächter (Session 53, gesperrt)
+Erste Baugruppen nach der Session-52-Konsolidierung – Testfall für die neuen
+Modellierungsregeln, keine Korrekturen nötig (Regeln direkt beim ersten
+Versuch korrekt angewendet). 4 neue Baugruppen `430_000017`–`430_000020`
+(alle Lüftung), Siemens Symaro-Baureihe QPM11../QPM21.. (Datenblatt
+CE1N1962de, 2025-03-26, aktuell):
+- `430_000017` „Kanal-CO2-Fühler" (QPM2100, 3 Klemmen G/G0/X1, 1x AI)
+- `430_000018` „Kanal-VOC-Fühler" (QPM1100, 3 Klemmen, 1x AI)
+- `430_000019` „Kanal-CO2/VOC-Kombifühler" (QPM2102, 4 Klemmen G/G0/X1/X2,
+  2x AI – X1 CO2-Rohsignal, X2 Maximalauswahl-Lüftungsbedarfssignal)
+- `430_000020` „Luftstromwächter" – **Herstellerabweichung KRIWAN**: Siemens'
+  eigenes `INT511` ist im HIT-Portal abgekündigt, der Originalhersteller
+  KRIWAN Industrie-Elektronik führt das Gerät unverändert als aktuelles
+  Produkt weiter (analog Oppermann/Metz-Connect-Präzedenzfall). 24V-AC/DC-
+  Variante `20N842S021`, kalorimetrisch 0,2-10m/s, Relais-Wechsler. Nach
+  Regel 1 (Schaltgerät, kein Analogsignal) komplett `klemm_f` (4 Klemmen:
+  2x Versorgung + 2x Relaiskontakt COM/NO), 1x BI.
+
+**Alle 4 Geräte bringen ihren Kanalmontage-Flansch bereits im
+Lieferumfang mit** (Originaldatenblätter explizit geprüft) – kein
+separater Zubehör-Mechanismus nötig, anders als zunächst vom Nutzer
+erwartet. Alle 4 Baugruppen `benoetigt_steuerspannung:'24vac'` (Regel 5).
+
+Verifiziert direkt im Browser (frischer Tab, Standschrank über Modul
+2+3-Pipeline, Drehstrom-Netztyp): Stückliste zeigt korrekt `KS`
+Durchgangsklemme ×10 (3+3+4) und `KF` ×4, Steuerspannungs-Automatik
+ergänzt korrekt 1x `Steuertransformator 400V/24V 250VA` (Drehstrom-
+Variante via `resolveNetztypArtikel()`) + 2x LSS + automatisch ergänzte
+CPU/E-A-Module (`Physikalisch gesamt: 5` = 4 AI + 1 BI, `Feldgeräte
+gesamt: 4`). Modul 5 zeigt alle 4 Geräte mit korrektem Hersteller
+(3x Siemens, 1x KRIWAN) und Preisen (239,90€/657,00€ bepreist, 2x
+unbepreist „–", Summe 896,90€). Keine Konsolenfehler.
 
 ### Modul 4 – Session 51 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,
