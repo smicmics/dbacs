@@ -759,6 +759,7 @@
     "betriebsmittel": "Kanalrauchmelder 230V AC, VdS/DIBt-Zulassung (Oppermann KRM-1-DZ)",
     "feldgeraet_artikel_nr": "KRM-1-DZ",
     "automationsanbindung": true,
+    "benoetigt_steuerspannung": "230vac",
     "geprueft": false
   },
   {

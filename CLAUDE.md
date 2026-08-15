@@ -919,6 +919,20 @@ anschlüsse ab 230V AC" bezieht sich nur auf die Klemmenfarbe, nicht auf
 die Zonenwahl. Verifiziert im Browser: alle 13 Klemmen zeigen `KF`
 (11× grau, 1× blau, 1× grün-gelb). Keine Konsolenfehler.
 
+**Nachtrag (Nutzer-Fund, echter Bug):** `430_000016` selbst hatte kein
+`benoetigt_steuerspannung` gesetzt – die L/N/PE-Klemmen hingen dadurch
+„in der Luft", ohne dass die Baugruppe selbst je die 230V-Trenntrafo-
+Auto-Ergänzung auslöste (ein vorheriger Test zeigte den Trafo nur zufällig
+durch einen noch nicht zurückgesetzten Watermark-Rest aus einem anderen
+Testlauf – Verwechslungsgefahr beim manuellen Testen mit `localStorage`,
+das sich mehrere Browser-Tabs derselben Origin teilen). Jetzt
+`benoetigt_steuerspannung: '230vac'` auf `430_000016` gesetzt. Verifiziert
+mit vollständig geleertem `localStorage` (nicht nur den beiden Watermark-
+Keys): Rauchmelder allein platziert → `Sicherheits-/Trenntransformator
+230V/230V` (ausgelöst vom Rauchmelder selbst) UND `Steuertransformator
+230V/24V` (ausgelöst von der automatisch ergänzten CPU wegen 4× BI-Bedarf)
+erscheinen beide korrekt getrennt. Keine Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.
