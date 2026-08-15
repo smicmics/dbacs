@@ -896,6 +896,18 @@ plus getrennt und korrekt beide ausgelösten Steuerspannungs-Trafos (24V AC
 für die CPU, 230V AC für das Koppelrelais – zwei unterschiedliche
 Bedarfsträger, beide zu Recht separat). Keine Konsolenfehler.
 
+**Kanalrauchmelder (Nutzer-Fund, direkt im Anschluss):** der Alarm-Öffner
+(Klappenansteuerung/Leistungssteuerung) lag noch in `klemm_l` – falsch,
+der Rauchmelder ist als Ganzes ein Feldgerät, nicht „teils Leistung".
+Jetzt auf `klemm_f` umgestellt (`430_000015`: alle 12 Klemmen `klemm_f`;
+`430_000016`: nur noch die echte 230V-L/N/PE-Netzversorgung bleibt
+`klemm_l`, die restlichen 10 Klemmen `klemm_f`). Nutzer-Hinweis: in der
+Praxis werden die 6 Adernpaare vermutlich als max. 2 reale Kabel geführt
+(kein weiterer Modellierungsschritt nötig, da alle Klemmen bereits in
+derselben Zone liegen – die 1-Kabel-Regel betrifft nur Zonen-Grenzen).
+Verifiziert im Browser: Stückliste zeigt `KL` nur noch für L/N/PE (3),
+`KF` für alle übrigen 10 Klemmen. Keine Konsolenfehler.
+
 ## Gesperrte Entscheidungen
 
 Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (14.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md` und `docs/archiv/claude-md-modul4-sessions-35-51.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv.
