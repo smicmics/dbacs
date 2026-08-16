@@ -1579,5 +1579,63 @@
     "automationsanbindung": true,
     "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
+  },
+  {
+    "id": "480_000011",
+    "name": "Schaltschrank-USV 24V DC mit Meldekontakten",
+    "gewerk": "480",
+    "beschreibung": "Schaltschrank-USV - unterbrechungsfreie Stromversorgung fuer die Steuerungsebene (DDC-Automationsstation/TX-I/O), Energieaufrechterhaltung bei Netzausfall. Besteht aus USV-Umschalteinheit (Phoenix Contact QUINT-UPS/24DC/24DC/10, dem vorhandenen 24V-DC-Netzteil nachgeschaltet) + Batteriemodul (Phoenix Contact UPS-BAT/VRLA/24DC/1,3AH, ca. 20min Pufferzeit bei 2A Last), beide auf Tragschiene im Leistungsfeld montiert. 3 potentialfreie Meldekontakte auf die Feldgeraete-Klemmleiste gefuehrt (je 2 Klemmen: Alarm/Pufferbereitschaft, Batteriebetrieb, Batterieladung), Datenpunktbedarf 3x BI. Braucht eine vorhandene oder automatisch ergaenzte 24V-DC-Quelle (Steuerspannungs-Automatik).",
+    "bauteile": [
+      {
+        "artikel_nr": "2320225",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "2320296",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energieversorgung",
+    "geprueft": false
   }
 ]

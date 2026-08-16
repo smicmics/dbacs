@@ -2059,5 +2059,33 @@
     ],
     "kategorie": "Steuerspannung",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "2320225",
+    "bezeichnung": "QUINT-UPS/24DC/24DC/10 USV-Umschalteinheit, 24VDC/10A, 3 Meldekontakte",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "netzteil",
+    "b_mm": 35.0,
+    "te_breite": 2,
+    "h_mm": 130.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Netzversorgung/Transformatoren",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2320296",
+    "bezeichnung": "UPS-BAT/VRLA/24DC/1.3AH Batteriemodul, 24VDC/1,3Ah",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "batterie",
+    "b_mm": 54.0,
+    "te_breite": 3,
+    "h_mm": 157.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Netzversorgung/Transformatoren",
+    "geprueft": false
   }
 ]

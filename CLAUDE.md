@@ -75,10 +75,10 @@
   dokumentiert SDBAM ausdrücklich nur für Maximaldrucküberwachung (eigene
   DWR-Baureihe für Minimaldruckbegrenzung vorgesehen) – auf ausdrücklichen
   Nutzer-Wunsch dennoch für beide Rollen eingesetzt, siehe `quelle_hinweis`.
-- **Geplant (Nutzer-Ankündigung Session 53):** Baugruppe „Schaltschrank-USV"
-  kommt später dazu, gehört dann ebenfalls in die Kategorie
-  `Energieversorgung` (Gewerk 480/Automation) – gleiche Kategorie wie die
-  bestehenden Trafo-/Netzteil-Baugruppen `480_000008`–`010`.
+- Preise der 2 USV-Feldgeräte (`2320225` QUINT-UPS-Umschalteinheit,
+  `2320296` UPS-BAT-Batteriemodul, beide Phoenix Contact, `480_000011`)
+  unbestätigt/fehlend – kein belastbarer EUR-Preis gefunden, siehe
+  `quelle_hinweis` je Eintrag.
 
 Sonst keine offenen Punkte – Session 51/52 vollständig implementiert UND im
 Browser verifiziert; die daraus erarbeiteten Modellierungsregeln sind jetzt
@@ -654,6 +654,41 @@ Baugruppe eine kurze Herleitungs-Tabelle bereitstellen (Baugruppe → Klemmen
 lt. Datenblatt → daraus abgeleitete DBACS-Klemmen/Zone → Datenpunkte) –
 spart dem Nutzer eigene Testarbeit beim Durchklicken in Modul 4. Siehe auch
 Memory `feedback_baugruppen_herleitung.md`.
+
+### Modul 4/5 – Schaltschrank-USV (Session 54, gesperrt)
+Erste Baugruppe für Gewerk 480/Automation seit Session 50, `480_000011`
+„Schaltschrank-USV 24V DC mit Meldekontakten" – bereits in Session 53 als
+künftiger Punkt angekündigt, jetzt umgesetzt. Zweite Planungsfabrikat-Ebene
+diesmal bewusst NICHT über „Siemens hat nichts, also Alternative" gewählt:
+Siemens hat mit SITOP UPS500S/UPS1600 durchaus passende USV-Produkte mit
+Meldekontakten gefunden (siehe Recherche), aber Nutzer-Entscheidung fiel
+bewusst auf **Phoenix Contact QUINT-UPS**, um dieselbe Marke wie das
+bereits bestehende 24V-DC-Netzteil (`480_000009`, Planungsfabrikat-
+Konsistenz) zu nutzen. Aufbau folgt dem Phoenix-Systemkonzept „Netzteil +
+elektronische Umschalteinheit + Energiespeicher" (3 getrennte Bausteine):
+- Vorhandenes 24V-DC-Netzteil (Ratchet-Mechanismus, automatisch ergänzt
+  falls noch nicht vorhanden) → **QUINT-UPS/24DC/24DC/10** Umschalteinheit
+  (`2320225`, IQ-Technologie, Kondensator-/Akku-Pufferung bis 3h bei
+  38Ah) → **UPS-BAT/VRLA/24DC/1,3AH** Batteriemodul (`2320296`, kleinste
+  Standardgröße, ~20min bei 2A/~5min bei 5A, werkzeugloser Wechsel,
+  eigene interne 15A-Sicherung) – beide als eigenständige Hutschienen-
+  Bausteine im Leistungsfeld (`leist`), analog zu den bestehenden
+  Trafo-/Netzteil-Baugruppen.
+- 3 potentialfreie Meldekontakte (Schließer, DIN-Kontaktnummerierung
+  13/14 Alarm, 23/24 Batteriebetrieb, 33/34 Batterieladung) auf je 2
+  Landeklemmen in `klemm_f`, Datenpunktbedarf 3x BI.
+- `benoetigt_steuerspannung:'24vdc'` auf Baugruppenebene, damit die
+  Steuerspannungs-Automatik bei Bedarf das 24V-DC-Netzteil eigenständig
+  ergänzt (getestet: isolierte Belegung nur mit dieser einen Baugruppe
+  ergänzte korrekt 1x QUINT-PS/1AC/24DC/2,5).
+
+Verifiziert direkt im Browser (Standschrank, `m04_belegung` zuvor
+geleert): Baugruppe erscheint korrekt unter „Energieversorgung" im
+Automation-Tab, `Physikalisch gesamt: 3` (3x BI), `Feldgeräte gesamt: 0`
+(kein `feldgeraet_artikel_nr` – interne Schaltschrank-Komponente, kein
+externes Betriebsmittel), Stückliste zeigt Umschalteinheit + Batteriemodul
++ `KF Durchgangsklemme` ×6 sowie automatisch ergänztes QUINT-PS. Keine
+Konsolenfehler.
 
 ### Modul 4 – Session 51 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,
