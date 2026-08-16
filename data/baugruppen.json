@@ -545,9 +545,9 @@
   },
   {
     "id": "430_000013",
-    "name": "Drucksensor Kanaldruck 0...1000 Pa, 24V AC/DC",
+    "name": "Differenzdrucksensor Kanaldruck 0...1000 Pa, 24V AC/DC",
     "gewerk": "430",
-    "beschreibung": "Drucksensor Kanaldruck - Drucksensor mit Analogausgang zur Ventilatorregelung, 0-1000 Pa, 0-10V, 3-Leiter (Siemens QBM3020-10), 3 Abgangsklemmen in der Sensoren-Klemmleiste, Datenpunktbedarf 1x AI.",
+    "beschreibung": "Differenzdrucksensor Kanaldruck - Differenzdrucksensor mit Analogausgang zur Ventilatorregelung, 0-1000 Pa, 0-10V, 3-Leiter, Symaro (Siemens QBM3020-10), 3 Abgangsklemmen in der Sensoren-Klemmleiste (G Versorgung + M Messnull + U Signal), Datenpunktbedarf 1x AI.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -569,8 +569,41 @@
     "funktionsbereich": [
       "lueftung"
     ],
-    "betriebsmittel": "Drucksensor Kanaldruck, 0-1000Pa, 0-10V, 3-Leiter (Siemens QBM3020-10)",
+    "betriebsmittel": "Differenzdrucksensor Kanaldruck, 0-1000Pa, 0-10V, 3-Leiter, Symaro (Siemens QBM3020-10)",
     "feldgeraet_artikel_nr": "QBM3020-10",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalsensoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000022",
+    "name": "Differenzdrucksensor Kanaldruck 0...300 Pa, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Differenzdrucksensor Kanaldruck - Differenzdrucksensor mit Analogausgang, 0-300 Pa, 0-10V, 3-Leiter, Symaro (Siemens QBM3020-3), 3 Abgangsklemmen in der Sensoren-Klemmleiste (G Versorgung + M Messnull + U Signal), Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Differenzdrucksensor Kanaldruck, 0-300Pa, 0-10V, 3-Leiter, Symaro (Siemens QBM3020-3)",
+    "feldgeraet_artikel_nr": "QBM3020-3",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
     "kategorie": "Luftkanalsensoren",
@@ -1037,39 +1070,6 @@
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
     "kategorie": "Luftkanalwächter",
-    "geprueft": false
-  },
-  {
-    "id": "430_000022",
-    "name": "Differenzdrucksensor Kanal 0...300 Pa, 24V AC/DC",
-    "gewerk": "430",
-    "beschreibung": "Differenzdrucksensor Kanal - Differenzdrucksensor mit Analogausgang, 0-300 Pa, 0-10V, 3-Leiter, Symaro (Siemens QBM3020-3), 3 Abgangsklemmen in der Sensoren-Klemmleiste (G/G0 Versorgung + U Signal), Datenpunktbedarf 1x AI.",
-    "bauteile": [
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_s",
-        "dp_ai": 1
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_s"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_s"
-      }
-    ],
-    "funktionsbereich": [
-      "lueftung"
-    ],
-    "betriebsmittel": "Differenzdrucksensor Kanal, 0-300Pa, 0-10V, 3-Leiter, Symaro (Siemens QBM3020-3)",
-    "feldgeraet_artikel_nr": "QBM3020-3",
-    "automationsanbindung": true,
-    "benoetigt_steuerspannung": "24vac",
-    "kategorie": "Luftkanalsensoren",
     "geprueft": false
   },
   {

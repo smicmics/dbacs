@@ -479,6 +479,24 @@ brauchen 24V AC) als auch 1x Sicherheits-/Trenntransformator 400V/230V
 automatisch ergänzt (2x TXM1.8U für 8x AI, 1x TXM1.16D für 1x BI, 1x
 PXC7.E400.A). Keine Konsolenfehler.
 
+**Nachtrag (Session 54, gesperrt):** Nutzer-Wunsch nach dem ersten Durchlauf
+– Auswahltext des bereits bestehenden `430_000013` („Drucksensor
+Kanaldruck") und des neuen `430_000022` angleichen und im Dropdown
+hintereinander anzeigen. Beide jetzt einheitlich „Differenzdrucksensor
+Kanaldruck 0...XXXX Pa, 24V AC/DC" (Namensregel: Text Bauteil →
+Messbereich → Versorgungsspannung, siehe Regel 4). Dabei fiel auf, dass die
+neu formulierte Klemmenbezeichnung in der Beschreibung fälschlich „G/G0"
+statt der laut Originaldatenblatt CA1N1916en01 tatsächlichen Klemmen „G
+(Versorgung) / M (Messnull) / U (Signal)" nannte – korrigiert in beiden
+Baugruppen sowie in den zugehörigen `feldgeraete.json`-Einträgen
+(QBM3020-10/-3). Reihenfolge im Dropdown folgt bei Baugruppen ohne
+`BG_SORT_PRIORITY`-Eintrag der Zeilenreihenfolge im Excel-Sheet
+(`filterBaugruppen()`, stabiler Sort) – `430_000022` daher direkt hinter
+`430_000013` in die Excel-Zeilenreihenfolge einsortiert (IDs selbst bleiben
+unverändert, nur die Zeilenposition wurde getauscht). Verifiziert im
+Browser: beide Einträge erscheinen jetzt konsistent benannt und
+unmittelbar hintereinander im Lüftung-Tab, keine Konsolenfehler.
+
 ### Modul 4 – Session 51 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,
 Verifizierungsdetails) archiviert in
