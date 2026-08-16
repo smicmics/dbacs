@@ -62,6 +62,14 @@
   einer Katalog-Kurzübersicht (Zubehör-Kabeldosen ST12-5) abgeleitet, kein
   vollständiges Datenblatt mit Anschlussschema gefunden. Vor Verdrahtung im
   Projekt das vollständige Smart-Press-Datenblatt gegenprüfen.
+- **Wassermangelsicherung SYR-933.1 (`420_000009`) – Zweck der 4. Ader
+  ungeklärt:** Anschlusskabel H05VV-F 4x1mm², obwohl der Wechsler
+  (1-polig) nur 3 Signaladern (gemeinsam/Schließer/Öffner) braucht. Weder
+  eine separate PE-Klemme noch eine andere Erklärung im Datenblatt/in der
+  Bedienungsanleitung gefunden (Schaltbild dort nur als Grafik hinterlegt,
+  nicht textuell auslesbar) – aktuell wie bisher mit 2 Klemmen modelliert
+  (nur der genutzte Kontakt + gemeinsam). Bei Bedarf SYR direkt kontaktieren
+  oder Schaltbild-Grafik visuell prüfen.
 - **Sicherheitsdruckbegrenzer SDBAM6 für p-Min-Rolle (`420_000008`)
   entgegen Herstellerkatalog verwendet:** der Honeywell/FEMA-Katalog
   dokumentiert SDBAM ausdrücklich nur für Maximaldrucküberwachung (eigene
@@ -377,6 +385,21 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
    größeren Umbauten hilft ein vollständiger Katalog-Scan (alle
    `baugruppen[].bauteile[].artikel_nr` gegen alle
    `einzelbauteile[].artikel_nr` prüfen).
+8. **PE-/Schutzleiterklemme (Session 54 Nachtrag, verbindlich):** hat ein
+   Feldgerät laut Originaldatenblatt im Klemmen-/Anschlussplan einen
+   **eigenen, separat aufgeführten** Erdungs-/Schutzleiteranschluss
+   (zusätzlich zu den Signal-/Kontaktklemmen), bekommt die Baugruppe eine
+   zusätzliche Schutzleiterklemme (grün-gelb, z. B. `3209536` in
+   klemm_l/f/s, analog `304xxxx`-PE-Typen in klemm_e) in derselben Zone.
+   **Nicht** allein anhand der Schutzklasse (I/II/III) entscheiden – mehrere
+   Schutzklasse-I-Geräte in Session 54 hatten laut Anschlussplan trotzdem
+   KEINE separate PE-Klemme (Erdung läuft dort über die ins bereits
+   geerdete Rohrsystem eingeschraubte Metall-Tauchhülse/-verschraubung,
+   nicht über eine gesonderte Ader). Maßgeblich ist ausschließlich, ob der
+   Klemmenplan im Datenblatt eine eigene Erdungsklemme explizit ausweist.
+   Bei Neuanlage künftiger Baugruppen den Klemmenplan gezielt darauf prüfen
+   (Suche nach „ground"/„Erdung"/„Schutzleiter" im Originaldatenblatt, nicht
+   nur die Katalog-Kurzübersicht).
 
 ---
 
@@ -601,6 +624,36 @@ Automatik ergänzt korrekt alle drei benötigten Quellen gleichzeitig: 24V-AC-
 Trafo (Drehstrom-Variante), 230V-AC-Trenntrafo (Koppelrelais aus den
 Lüftungssensoren) UND erstmals ein 24V-DC-Netzteil (QUINT-PS/1AC/24DC/2,5)
 für die Smart-Press-Kombi-Baugruppe. Keine Konsolenfehler.
+
+**Nachtrag PE-Klemme (Session 54, gesperrt):** Nutzer-Nachfrage „haben
+Druckwächter/Strömungswächter wirklich keine Versorgungsspannung, da steht
+ja nichts dazu" führte zur systematischen Nachprüfung aller Original-
+Installationsanleitungen (nicht nur Katalogseiten) auf Erdungs-/PE-Klemmen.
+Ergebnis: **`420_000001`/`002` (Druckwächter Max/Min, Siemens QBE1900-P7,
+Schutzklasse I) hatten eine fehlende PE-Klemme** – Datenblatt weist explizit
+„1x for grounding connection" als 4. Klemme zusätzlich zu den 3
+Signalklemmen aus. Beide Baugruppen um 1x Schutzleiterklemme `3209536`
+(grün-gelb, `klemm_f`) ergänzt (jetzt 3 statt 2 Klemmen je Baugruppe).
+Alle übrigen Session-54-Wächter/-Sensoren gezielt gegengeprüft (QVE1901
+Schutzklasse II, QBE2003-P Schutzklasse III, SDBAM6 laut Anleitung nur
+„Klemme 1 und 3", STB1F/TWP1F/STB+TWF laut baugleicher Schwesterserie
+STW/STB trotz Schutzklasse I nur 3 Klemmen ohne separate PE) – **keine
+Änderung nötig**, siehe Regel 8 unter „Baugruppen-Modellierungsregeln
+(verbindlich)" für die daraus abgeleitete, undogmatische Prüfregel
+(Datenblatt-Klemmenplan entscheidet, nicht pauschal die Schutzklasse).
+`SYR-933.1` (Wassermangelsicherung) bleibt als einziger Fall ungeklärt
+(4-adriges Anschlusskabel bei nur 3 benötigten Signaladern, Schaltbild im
+Datenblatt nur als Grafik hinterlegt, nicht textuell auslesbar) – siehe
+„Offene Punkte". Verifiziert im Browser (isolierter Test nur mit den 2
+Druckwächter-Baugruppen, `m04_belegung` zuvor geleert): Stückliste zeigt
+korrekt `KF Durchgangsklemme` ×4 (Positionen #1–#2, #4–#5) und `KF
+Schutzleiterklemme PE` ×2 (Positionen #3, #6), keine Konsolenfehler.
+
+**Nutzer-Feedback (Session 54, gesperrt):** ab sofort nach Neuanlage jeder
+Baugruppe eine kurze Herleitungs-Tabelle bereitstellen (Baugruppe → Klemmen
+lt. Datenblatt → daraus abgeleitete DBACS-Klemmen/Zone → Datenpunkte) –
+spart dem Nutzer eigene Testarbeit beim Durchklicken in Modul 4. Siehe auch
+Memory `feedback_baugruppen_herleitung.md`.
 
 ### Modul 4 – Session 51 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,

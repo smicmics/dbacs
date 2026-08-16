@@ -1195,7 +1195,7 @@
     "id": "420_000001",
     "name": "Druckwächter Max G1/2\", -0,3...7 bar",
     "gewerk": "420",
-    "beschreibung": "Druckwächter Max - Druckschalter mit Wechselkontakt, selbstrückstellend, Einstellbereich -0,3...7 bar, Schaltdifferenz 1,5-5 bar (Siemens QBE1900-P7), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig), Datenpunktbedarf 1x BI. (p-Max)",
+    "beschreibung": "Druckwächter Max - Druckschalter mit Wechselkontakt, selbstrückstellend, Einstellbereich -0,3...7 bar, Schaltdifferenz 1,5-5 bar (Siemens QBE1900-P7), 3 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang potentialfrei, keine Versorgungsspannung nötig, + 1x Schutzleiterklemme PE - Gehäuse Schutzklasse I, Datenblatt weist einen eigenen Erdungsanschluss aus), Datenpunktbedarf 1x BI. (p-Max)",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1207,6 +1207,11 @@
         "menge": 1,
         "zone": "klemm_f",
         "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -1224,7 +1229,7 @@
     "id": "420_000002",
     "name": "Druckwächter Min G1/2\", -0,3...7 bar",
     "gewerk": "420",
-    "beschreibung": "Druckwächter Min - Druckschalter mit Wechselkontakt, selbstrückstellend, Einstellbereich -0,3...7 bar, Schaltdifferenz 1,5-5 bar (Siemens QBE1900-P7), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig, Gegenkontakt zu p-Max verwendet), Datenpunktbedarf 1x BI. (p-Min)",
+    "beschreibung": "Druckwächter Min - Druckschalter mit Wechselkontakt, selbstrückstellend, Einstellbereich -0,3...7 bar, Schaltdifferenz 1,5-5 bar (Siemens QBE1900-P7), 3 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang potentialfrei, keine Versorgungsspannung nötig, Gegenkontakt zu p-Max verwendet, + 1x Schutzleiterklemme PE - Gehäuse Schutzklasse I, Datenblatt weist einen eigenen Erdungsanschluss aus), Datenpunktbedarf 1x BI. (p-Min)",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1236,6 +1241,11 @@
         "menge": 1,
         "zone": "klemm_f",
         "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
