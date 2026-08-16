@@ -14,7 +14,7 @@
 
 ---
 
-## Offene Punkte (Stand Session 53 – vor Beginn der nächsten Sitzung lesen)
+## Offene Punkte (Stand Session 54 – vor Beginn der nächsten Sitzung lesen)
 
 - Starrer Stabtemperaturfühler mit Flansch für den Lüftungskanal: existiert in
   der europäischen Symaro-Reihe nicht (nur biegsame Kapillare, auch bei
@@ -31,6 +31,20 @@
   belastbarer EU/EUR-Preis gefunden) und Luftstromwächter KRIWAN INT511
   20N842S021 (gefundene Distributor-Preise nicht eindeutig dieser
   24V-AC/DC-Variante zuordenbar) – siehe `quelle_hinweis` je Eintrag.
+- Preise aller 5 Session-54-Feldgeräte unbestätigt/fehlend (QAF64.2-J,
+  QBM3020-3, QFM2160, QAA27, QPA2062) – kein belastbarer EUR-Preis gefunden,
+  siehe `quelle_hinweis` je Eintrag.
+- **Zurückgestellt (Session 54):** Raumtemperatur- und Feuchtesensor mit
+  Sollwertversteller sowie Raumtemperatur-/Feuchte-/CO2-Sensor mit
+  Sollwertversteller – in der aktuellen Siemens-Symaro-Reihe existiert keine
+  Kombination aus (aktivem) Feuchtesignal + Sollwertversteller-Drehknopf
+  (Sollwertversteller nur in der älteren rein-passiven QAA25/26/27-Familie,
+  nur Temperatur ohne Feuchte). Ein Sollwertversteller zusammen mit CO2
+  existiert bei Siemens nur in digitalen Bus-Raumbediengeräten (QAW70/QMX3,
+  PPS/KNX) – Protokoll aktuell nicht von DBACS unterstützt (nur mbus/
+  modbus_rtu/modbus_tcp). Alternativen anderer Hersteller noch zu
+  recherchieren, falls der Nutzer diese beiden Kombinationen weiterhin
+  benötigt.
 - **Geplant (Nutzer-Ankündigung Session 53):** Baugruppe „Schaltschrank-USV"
   kommt später dazu, gehört dann ebenfalls in die Kategorie
   `Energieversorgung` (Gewerk 480/Automation) – gleiche Kategorie wie die
@@ -409,6 +423,61 @@ Heizung-Tab 2 Gruppen (Raumsensoren, Tauchfühler). Hinzufügen einer
 Baugruppe aus dem gruppierten Dropdown funktioniert unverändert
 (`addBaugruppe()`/Mengen-Merge betroffen von der Umstellung nicht). Keine
 Konsolenfehler.
+
+### Modul 4/5 – Weitere Lüftungswächter/-sensoren + Raumsensoren (Session 54, gesperrt)
+5 neue Baugruppen `430_000021`–`430_000025` (alle Lüftung, Siemens-Leitfabrikat,
+Originaldatenblätter recherchiert – teils binär-komprimierte Siemens-PDFs
+per `pypdf` in WSL ausgelesen, Session-41-Präzedenzfall):
+- `430_000021` „Frostschutzwächter, Kapillare 2m" (Symaro QAF64.2-J) –
+  Kombigerät mit kontinuierlichem 0-10V-Temperatursignal UND potentialfreiem
+  Relais-Wechslerkontakt; hier bewusst nur der Schaltkontakt verdrahtet
+  (Nutzer-Entscheidung, schlanker/konsistent zu den übrigen
+  Luftkanalwächter-Baugruppen). Braucht selbst 24V-AC-Versorgung (2
+  zusätzliche Feldklemmen G/G0) UND folgt dem Sicherheitsketten-
+  Koppelrelais-Pattern (Regel 6, 1 Wechsler reicht nicht für Ventilator-
+  Abschaltung + getrennte DDC-Meldung) – 4 Feldklemmen + 1 Koppelrelais
+  (230VAC-Spule) im Leistungsfeld, 1x BI.
+- `430_000022` „Differenzdrucksensor Kanal 0...300 Pa" (Symaro QBM3020-3) –
+  Analogsensor (0-10V, 3 Klemmen G/M/U), 1x AI. Baugleiche Baureihe wie das
+  bereits katalogisierte QBM3020-10 (`430_000013`), nur anderer Messbereich.
+- `430_000023` „Kanalfühler für Feuchte und Temperatur" (Symaro QFM2160,
+  Nachfolgebezeichnung des im Handel als „QFM21.." abgekündigten
+  Vorgängers) – 4 Klemmen G/G0/X1(Feuchte)/X2(Temp), 2x AI.
+- `430_000024` „Raumtemperatursensor passiv mit Sollwertversteller ±3K"
+  (Siemens QAA27, gleiche Gerätefamilie wie das bereits katalogisierte
+  QAA24) – passiv, 3 Klemmen B/M/R (Temperatur- und Sollwertsignal getrennt,
+  je eigener passiver Messkanal), 2x AI.
+- `430_000025` „Raum-CO2-, Feuchte- und Temperatursensor" (Symaro QPA2062,
+  gleiche Familie wie QPA2000/QPA1000) – 5 Klemmen G/G0/X1(CO2)/X2(Feuchte)/
+  X3(Temp), 3x AI.
+
+**Nutzer-Fund/-Entscheidung:** die vom Nutzer ebenfalls angefragte
+„Differenzdruckmessung ca. 100-1000 Pa" hätte exakt denselben Siemens-
+Artikel (QBM3020-10) ergeben, der bereits als `430_000013` „Drucksensor
+Kanaldruck" existiert – auf Nutzer-Hinweis („Wenn der Drucksensor schon da
+ist, dann keine neue Baugruppe anlegen dafür") keine zweite Baugruppe mit
+identischem Artikel angelegt. Die beiden Kombinationen „Feuchtesensor mit
+Sollwertversteller" und „CO2/Feuchte-Sensor mit Sollwertversteller" wurden
+zurückgestellt, da kein passendes Siemens-Symaro-Produkt existiert (siehe
+„Offene Punkte" oben).
+
+Alle 5 neuen Feldgeräte-Artikel zusätzlich in `feldgeraete.json` angelegt
+(Kategorie „Kanalsensor"/„Raumsensor", analog zu allen bisherigen
+Lüftungssensor-Baugruppen – 100%ige Verknüpfungsdichte
+`feldgeraet_artikel_nr` ↔ `feldgeraete.json` vor dieser Session geprüft und
+bewusst fortgeführt), noch ohne bestätigten Preis.
+
+Verifiziert direkt im Browser (Standschrank über Modul 2+3-Pipeline,
+Drehstrom-Netztyp): alle 5 Baugruppen im Lüftung-Tab korrekt in ihren
+Kategorien einsortiert und hinzufügbar, Stückliste aggregiert korrekt `KF`
+×4 (Frostwächter-Feldklemmen) und `KS` ×15 (3+4+3+5, restliche 4 Baugruppen),
+DDC-Statistik zeigt korrekt `Physikalisch gesamt: 9` (8 AI + 1 BI) und
+`Feldgeräte gesamt: 5`. Steuerspannungs-Automatik ergänzt korrekt sowohl
+1x Steuertransformator 400V/24V (Drehstrom-Variante, 4 der 5 Baugruppen
+brauchen 24V AC) als auch 1x Sicherheits-/Trenntransformator 400V/230V
+(für die Koppelrelais-Spule) mit je zugehörigen Sicherungen; DDC-Module
+automatisch ergänzt (2x TXM1.8U für 8x AI, 1x TXM1.16D für 1x BI, 1x
+PXC7.E400.A). Keine Konsolenfehler.
 
 ### Modul 4 – Session 51 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,

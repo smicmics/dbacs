@@ -183,5 +183,45 @@
     "kategorie": "Kanalsensor",
     "quelle_hinweis": "KRIWAN INT511 Luftstromwaechter (Herstellerabweichung: Siemens fuehrte dieses Geraet unter eigenem Typenschluessel INT511/Art.Nr. INT51120N842 im HIT-Portal, ist dort inzwischen abgekuendigt/\"nicht mehr lieferbar\" - Originalhersteller KRIWAN Industrie-Elektronik fuehrt es unveraendert als aktuelles Serienprodukt, \"neue Generation, konsequente Weiterentwicklung des Vorgaengers\". Analog zum bestehenden Oppermann/Metz-Connect-Praezedenzfall.) Kalorimetrisches Messprinzip, Messbereich 0,2-10m/s, Grenzwert per Potentiometer einstellbar (Werkseinst. ca. 2,5m/s), einstellbare Anlaufueberbrueckung 1-3min (Werkseinst. 2min) gegen Fehlausloesung beim Anlagenstart. Versorgung AC/DC 24V ±10%, 2VA. Relais-Wechsler (Kontakt 11-14/12), AC240V/2,5A, ca. 1 Mio. Schaltspiele. IP65. Richtungsunabhaengig montierbar, geeignet fuer Rechteck- UND Rundkanal (Bohrung Ø13mm + Befestigungsflansch, Einbau im mittleren Drittel des Kanalquerschnitts). Befestigungsflansch fuer Kanalmontage im Lieferumfang enthalten (Komponentenliste: \"Sondenrohr mit Anschlussdose, Kabelverschraubung, Befestigungsflansch fuer Kanalmontage, Gewebeschlauchabschnitte, Datenblatt\") - kein separates Kanalmontage-Zubehoer noetig. Zubehoer nur als Ersatzteil: Kabeldurchfuehrung M16 (02Z842) oder M20 (02Z843). Kein belastbarer EUR-Preis fuer genau diese 24V-AC/DC-Variante (20N842S021) gefunden - gefundene Distributor-Preise (~215-245EUR) liessen sich nicht eindeutig dieser Variante zuordnen, koennten andere KRIWAN-Typvarianten betreffen. Quelle: KRIWAN-Originaldatenblatt 700.00622.1: https://www.kriwan.com/fileadmin/Downloadcenter/Data_Sheets/German/20N842S021_INT511_Luftstromwaechter_70000622.1.pdf sowie KRIWAN-Zubehoer-/Anwendungshinweise 800.00114.0: https://www.kriwan.com/fileadmin/02_Produkte/07_Luftstromsensoren/Betriebsanleitung_Luftstromtechnik_Anwendungshinweise_Zubehoer_80000114.0_01.pdf",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "QAF64.2-J",
+    "bezeichnung": "Frostwächter, aktiver Kapillarrohrfühler, Kapillare 2m",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "quelle_hinweis": "Siemens QAF64.2-J (Symaro-Linie), Frostwaechter mit auf gesamter Laenge aktivem Kapillarrohr (Mindestansprechlaenge 250mm), erfasst die tiefste Temperatur entlang des Rohrs. Anschlussklemmen G/G0 (Versorgung AC24V SELV) + B (Messsignal DC0-11,5V entspr. 0-15 Grad C, kontinuierlich) + Y/Y10 (optionale Ventilsteuersignal-Durchschleife, hier nicht genutzt) + Q11/Q12/Q14 (Relais-Wechslerkontakt, potentialfrei AC/DC 5-250V, schliesst Q11-Q12 bei Frostgefahr). Werkseinstellung Frostschaltpunkt 5 Grad C (Bereich 1-10 Grad C einstellbar), Schaltdifferenz ca. 2K. IP42, Kunststoffgehaeuse. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt A6V10432022_de--_c (2016-02-08): https://hvac.de/en/index.php?controller=attachment&id_attachment=4371",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QBM3020-3",
+    "bezeichnung": "Differenzdrucksensor Kanal, analog 0-10V, 3-Leiter, 0-300 Pa",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "quelle_hinweis": "Siemens QBM3020-3 (Symaro), elektronischer Differenzdrucktransmitter, 3-Leiter, DC0-10V, Messbereich 0-300 Pa (Endwert 100-300Pa einstellbar), Kennlinie druck-linear oder wurzelziehend umschaltbar. Anschlussklemmen G(+)/M(GND)/U(Signal), baugleich zum bereits katalogisierten QBM3020-10 (nur anderer Messbereich). 2 Anschlussduesen P1/P2, 2m PVC-Schlauch im Lieferumfang, IP54. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CA1N1916en01 (2013-07-02): https://www.siemens-ru.com/doc/Siemens-QBM3020.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QFM2160",
+    "bezeichnung": "Kanalfühler für Feuchte und Temperatur, aktiv, 0...100% r.F./0...50°C",
+    "hersteller": "Siemens",
+    "kategorie": "Kanalsensor",
+    "quelle_hinweis": "Siemens QFM2160 (Symaro, Nachfolgebezeichnung des im Handel als \"QFM21..\" abgekuendigten Vorgaengers - identische Baureihe/Datenblatt, nur Typenbezeichnung), Kanal-Kombifuehler Feuchte (kapazitiv) + Temperatur (aktiv), je DC0-5V/0-10V/4-20mA waehlbar (3-Leiter). Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC13,5-35V) + X1 (Feuchtesignal 0-100% r.F.) + X2 (Temperatursignal, Messbereich 0-50/-35...35/-40...70 Grad C waehlbar). Montageflansch + M16-Kabelverschraubung im Lieferumfang, IP54. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CE1N1864en (2023-04-20): https://sid.siemens.com/api/khub/documents/ZjTecRUaa9BmOJqWOwvL2g/content",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QAA27",
+    "bezeichnung": "Raumtemperaturfühler passiv mit Sollwertversteller ±3K",
+    "hersteller": "Siemens",
+    "kategorie": "Raumsensor",
+    "quelle_hinweis": "Siemens QAA27, passiver Raumtemperaturfuehler (Messelement LG-Ni1000, wie QAA24) mit zusaetzlichem Sollwertversteller-Drehknopf (Einstellbereich +/-3K relativ zum Sollwert), mechanisch begrenzbar ueber 2 Steckreiter. Anschlussklemmen B/M (Temperatursignal, wie QAA24) + R (Sollwertsignal, eigener passiver Widerstandskreis 1000-1175 Ohm). IP30, Schraubklemmen, gleiches Gehaeuse wie QAA24/25/26 (Familie). Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CM1N1721D (2017-12-01, Typenuebersicht QAA24...27): https://docs.rs-online.com/69de/A700000011235238.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QPA2062",
+    "bezeichnung": "Raum-Luftqualitätsfühler CO2/Feuchte/Temperatur, aktiv",
+    "hersteller": "Siemens",
+    "kategorie": "Raumsensor",
+    "quelle_hinweis": "Siemens QPA2062 (Symaro-Familie, wie QPA2000/QPA1000 bereits katalogisiert), Kombifuehler CO2 (NDIR, 0-2000ppm) + relative Feuchte (kapazitiv, 0-100%) + Temperatur (aktiv, 0-50/-35...35 Grad C waehlbar), je DC0-5V/0-10V/4-20mA waehlbar. Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC15-35V) + X1 (CO2-Signal) + X2 (Feuchtesignal) + X3 (Temperatursignal). Keine Sollwertversteller-Variante in der aktuellen QPA10../QPA20..-Baureihe verfuegbar (Nutzer-Anfrage nach \"CO2+Feuchte+Temp+Sollwertversteller\" zurueckgestellt, siehe CLAUDE.md). IP30. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CE1N1961de (2024-03-05): https://cache.industry.siemens.com/dl/files/291/109791291/att_1048054/v3/A6V11526865.pdf",
+    "geprueft": false
   }
 ]

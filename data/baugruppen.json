@@ -995,5 +995,200 @@
     "benoetigt_steuerspannung": "24vac",
     "kategorie": "Luftkanalwächter",
     "geprueft": false
+  },
+  {
+    "id": "430_000021",
+    "name": "Frostschutzwächter, Kapillare 2m",
+    "gewerk": "430",
+    "beschreibung": "Frostschutzwächter - Frostwächter mit aktivem Kapillarrohrfühler, Kapillare 2m, Symaro (Siemens QAF64.2-J), benötigt eigene 24V-AC-Versorgung (2 Feldklemmen G/G0). Sensorseitiger Relais-Wechslerkontakt (schließt bei Frostgefahr) steuert über ein Koppelrelais (Phoenix Contact PLC-RSC-230UC/21-21, 2 Wechsler) 2 galvanisch getrennte Ausgänge (Leistungssteuerung/Ventilatorabschaltung + DDC-Meldung), keine weiteren Landeklemmen am Koppelrelais nötig. Datenpunktbedarf 1x BI. Das Gerät bietet zusätzlich ein kontinuierliches 0-10V-Temperatursignal (Klemme B), das hier bewusst nicht mit angeschlossen wird (schlankere Ausführung analog zu den übrigen Luftkanalwächter-Baugruppen) - bei Bedarf später um 1x AI erweiterbar.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Frostschutzwächter, Kapillare 2m, Symaro (Siemens QAF64.2-J)",
+    "feldgeraet_artikel_nr": "QAF64.2-J",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalwächter",
+    "geprueft": false
+  },
+  {
+    "id": "430_000022",
+    "name": "Differenzdrucksensor Kanal 0...300 Pa, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Differenzdrucksensor Kanal - Differenzdrucksensor mit Analogausgang, 0-300 Pa, 0-10V, 3-Leiter, Symaro (Siemens QBM3020-3), 3 Abgangsklemmen in der Sensoren-Klemmleiste (G/G0 Versorgung + U Signal), Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Differenzdrucksensor Kanal, 0-300Pa, 0-10V, 3-Leiter, Symaro (Siemens QBM3020-3)",
+    "feldgeraet_artikel_nr": "QBM3020-3",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalsensoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000023",
+    "name": "Kanalfühler für Feuchte und Temperatur, 0...100% r.F./0...50°C, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Kanaltemperatur-/Feuchte-Kombifühler - Kanalfühler für relative Feuchte und Temperatur, aktiv, Symaro (Siemens QFM2160, Nachfolgebezeichnung des abgekündigten QFM21..), 4 Abgangsklemmen in der Sensoren-Klemmleiste (G/G0 Versorgung + X1 Feuchtesignal + X2 Temperatursignal), Datenpunktbedarf 2x AI (Feuchte + Temperatur).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Kanalfühler für Feuchte und Temperatur, aktiv, Symaro (Siemens QFM2160)",
+    "feldgeraet_artikel_nr": "QFM2160",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftkanalsensoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000024",
+    "name": "Raumtemperatursensor passiv mit Sollwertversteller ±3K",
+    "gewerk": "430",
+    "beschreibung": "Raumtemperatursensor passiv mit Sollwertversteller - Raumtemperaturfühler passiv mit Sollwertversteller-Drehknopf ±3K (Siemens QAA27), 3 Abgangsklemmen in der Sensoren-Klemmleiste (B/M Temperatursignal + R Sollwertsignal), Datenpunktbedarf 2x AI (Temperatur B-M + Sollwert-Offset R-M, je eigener passiver Messkanal).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "lueftung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Raumtemperaturfühler passiv mit Sollwertversteller ±3K (Siemens QAA27)",
+    "feldgeraet_artikel_nr": "QAA27",
+    "automationsanbindung": true,
+    "kategorie": "Raumsensoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000025",
+    "name": "Raum-CO2-, Feuchte- und Temperatursensor 0...2000ppm/0...100%/0...50°C, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Raumtemperatur- und Feuchtesensor mit CO2 - Raum-Luftqualitätsfühler CO2 + relative Feuchte + Temperatur aktiv, Symaro (Siemens QPA2062), 5 Abgangsklemmen in der Sensoren-Klemmleiste (G/G0 Versorgung + X1 CO2-Signal + X2 Feuchtesignal + X3 Temperatursignal), Datenpunktbedarf 3x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Raum-Luftqualitätsfühler CO2/Feuchte/Temperatur, Symaro (Siemens QPA2062)",
+    "feldgeraet_artikel_nr": "QPA2062",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Raumsensoren",
+    "geprueft": false
   }
 ]
