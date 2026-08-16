@@ -2380,3 +2380,210 @@ erhöht den DQ-Zähler korrekt auf 1, färbt die betroffene Zeile/den
 Detail-Eintrag rot, nach Entfernen wieder 0; Startseite zeigt die neue
 Modul-07-Karte korrekt zwischen 04 und dem Platzhalter, Link löst auf
 `modules/modul-07-stammdatenpflege/` auf, `hero-stats` zeigt „5".
+
+### Modul 5 – Feldgeräte-Stückliste angelegt, Baugruppen-Modularisierung diskutiert (Session 51 Nachtrag 7, gesperrt)
+Strategiediskussion vor dem Anlegen weiterer Baugruppen: mit wachsender
+Katalogzahl wird die Auswahl unübersichtlich (Beispiel Umwälzpumpe: 8+
+genannte Varianten sind eigentlich ~5 orthogonale Achsen – Ansteuerung
+Direkt/Sanftanlauf/FU, Handschalter-Bedienebene an der Tür vs. LVB im
+Schrank selbst zugangsbeschränkt, DDC-Schaltbefehl, Rückmeldequelle
+Hilfskontakte vs. Pumpenelektronik/Bus, physikalisch als Standard/
+kommunikativ als Kundenoption – kombinatorisch 70+ statt 8 Fälle). Als
+Zielbild vorgeschlagen und vom Nutzer bestätigt („können wir probieren"):
+Baugruppen in `grundschaltung`/`zusatzbaustein`/`standalone` kategorisieren
+(neue Felder `baustein_typ`/`baustein_kategorie`, NOCH NICHT angelegt) statt
+flacher Varianten-Benennung – der bestehende Platzierungs-/Stückliste-/
+DDC-Mechanismus unterstützt das schon heute ohne Codeänderung, da rein
+mengenbasiert aggregiert wird (keine Instanz-Verknüpfung zwischen
+Grundschaltung und Zusatzbaustein nötig). **Vorerst zurückgestellt** –
+Nutzer-Entscheidung: erst einfache, nicht modularisierte Baugruppen anlegen
+(Sensoren/Feldgeräte), die Modularisierung später bei Bedarf einführen.
+
+**Stattdessen umgesetzt: Feldgeräte-Katalog + Modul 5.** Zweite,
+eigenständige Stückliste für externe Betriebsmittel (Pumpen, Feldsensoren/
+-aktoren) außerhalb des Schaltschranks, getrennt von der bestehenden
+Schaltschrank-Stückliste. Neues Excel-Sheet `feldgeraete` (analog
+`einzelbauteile`, aber ohne `b_mm`/`h_mm`/`te_breite`/`zone` – wird nicht in
+der Schaltschrank-SVG platziert): `aktiv, artikel_nr, bezeichnung,
+hersteller, kategorie, preis_stueck_eur, quelle_hinweis, geprueft`. Neues
+Feld `baugruppen.feldgeraet_artikel_nr` (optionale FK) ergänzt das
+bestehende Freitextfeld `betriebsmittel` (Session 49) – `betriebsmittel`
+bleibt die Kurzbezeichnung, `feldgeraet_artikel_nr` verknüpft zusätzlich mit
+einem echten bepreisten Katalogeintrag, sobald einer existiert; ohne
+Verknüpfung zeigt Modul 5 nur eine unbepreiste Mengenzeile.
+**Planungsfabrikat Pumpen: Wilo** (Nutzer-Vorgabe). Bei größerer
+Herstellerauswahl in anderen Kategorien: nachfragen statt selbst
+entscheiden, gemeinsam festlegen.
+
+**Datenblätter bewusst NICHT lokal gespeichert:** Repository ist öffentlich
+(GitHub Pages) – Herstellerdatenblätter als PDF ablegen würde geschütztes
+Material weiterverbreiten. Stattdessen wie bisher: extrahierte Fakten +
+Quelle-URL + Rechercheddatum in `quelle_hinweis`, bei Feldgeräten bewusst
+ausführlicher als bisher üblich (welche Signale potentialfrei vs. Bus,
+ob ein optionales Modul nötig ist), da diese Entscheidung direkt in die
+Schaltschrank-Planung durchschlägt.
+
+**Modul 5** (`modules/modul-05-feldgeraete/index.html`, rein lesend, Struktur
+identisch zu Modul 7): liest `localStorage['m04_belegung']` (kein direkter
+Modulaufruf, gleicher Kontrakt wie Modul 3↔1/2) + `baugruppen.json` +
+`feldgeraete.json` unabhängig neu ein, aggregiert nach
+`feldgeraet_artikel_nr` (bepreist) bzw. `betriebsmittel`-Freitext
+(unbepreist, wie bei `aggregateStueckliste()` zeigt „–" statt 0,00€ und
+fließt nicht in die Summe ein). Grund für ein eigenes Modul statt eines
+Panels in Modul 4: dort ist der Platz schon knapp (siehe Eingabeleiste-
+Kompaktierung weiter oben) – Modul 5 bekommt mehr Raum, analog zum
+Modul-7-Präzedenzfall. **Modul 4 bekam nur zwei kleine Ergänzungen:** Zeile
+„Feldgeräte gesamt" (`sumFeldgeraete()`) neben Physikalisch/Kommunikativ
+gesamt, Button „→ Modul 5 · Feldgeräte" neben „← Zurück zu Modul 3". Modul
+05 auf der Startseite von Platzhalter („Datenpunkt-Management") auf aktiv
+umgestellt, `hero-stats` „5"→„6".
+
+Verifiziert direkt im Browser: `feldgeraete.json` korrekt leer exportiert
+(`[]`, Sheet angelegt aber noch keine Einträge); synthetischer Testfall
+(1 Baugruppe mit `feldgeraet_artikel_nr`-Verknüpfung, 1 nur mit
+`betriebsmittel`-Freitext) zeigt in Modul 5 korrekt eine bepreiste und eine
+unbepreiste Zeile, Summe berücksichtigt nur die bepreiste; „Feldgeräte
+gesamt"-Zeile in Modul 4 zeigt korrekte Mengensumme, keine Überlappung mit
+der DDC-Statistik-Zeile (Zeilenhöhe/Schriftgröße von `#ddc_summary_totals`
+dafür leicht reduziert). Keine Konsolenfehler in Modul 4, 5 oder auf der
+Startseite. Backup vor der Excel-Strukturänderung:
+`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-feldgeraete-schema_*.xlsx`.
+
+### Erste Feldgeräte-Baugruppen: 4 Raumsensoren, Siemens Symaro (Session 51 Nachtrag 8, gesperrt)
+Erste Nutzung des neuen Feldgeräte-Katalogs (siehe vorheriger Abschnitt).
+**Planungsfabrikat Sensoren/Feldgeräte: Siemens** (Nutzer-Vorgabe). Workflow
+bestätigt sich als praktikabel: Claude recherchiert (Originaldatenblätter,
+bei binär-komprimierten Siemens-PDFs per `pypdf` in WSL ausgelesen – siehe
+Session 41-Präzedenzfall, funktioniert weiterhin zuverlässig), präsentiert
+Fund + Link, Nutzer entscheidet vor dem Eintragen.
+
+**4 Baugruppen angelegt** (`430_000001`–`430_000004` – ursprünglich unter
+`480_00000{8-11}`/Gewerk Automation angelegt, per Nutzer-Korrektur direkt
+im Anschluss auf Gewerk 430/Lüftung umbenannt, siehe „Baugruppen mehreren
+Gewerken zuordenbar" weiter unten; Zone `klemm_s`, `funktionsbereich:
+['heizung','lueftung','kaelte']`, je 1× `dp_ai` auf der Signalklemme):
+- `430_000001` „Raumtemperatursensor passiv" – Siemens `QAA24` (LG-Ni1000),
+  2 Klemmen (B/M, passiv, keine Versorgung).
+- `430_000002` „Raum-CO2-Sensor" – Siemens `QPA2000` (NDIR, 0…2000ppm),
+  3 Klemmen (G/G0 Versorgung + X1 Signal).
+- `430_000003` „Raum-VOC-Sensor" – Siemens `QPA1000` (Metalloxid-Halbleiter),
+  3 Klemmen, gleiche Baureihe/Datenblatt wie QPA2000.
+- `430_000004` „Raumfeuchtesensor" – Siemens `QFA2000` (kapazitiv), 3 Klemmen.
+  Klemmenbezeichnung nicht aus dem QFA2000-eigenen Datenblatt bestätigt
+  (Abruf scheiterte am Timeout), sondern aus dem 20 Jahre durchgängig
+  gleichen Siemens-Klemmenschema (G/G0+Signal) der QFA/QPA-Familie
+  abgeleitet – vor Verdrahtung idealerweise gegenprüfen.
+
+Alle 4 Klemmen sind `3209510` (PT 2,5 grau, Standardklemme) – auch bei den
+aktiven Sensoren, da 24V-SELV-Versorgungsleitungen (anders als
+230V-Leistungsanschlüsse) keine Farbcodierung nach der Session-51-Regel
+„Farben sind für Leistungsanschlüsse ab 230V AC" brauchen.
+
+**Bewusst NICHT angelegt (Nutzer-Entscheidung nach Rückfrage):**
+- Raumtemperatursensor aktiv – einziger Siemens-Kandidat (`QAA2071`,
+  4-20mA) ist laut HIT-Portal „In phase-out", kein Nachfolger für „nur
+  Temperatur, aktiv" als Einzelprodukt in der aktuellen Symaro-Reihe
+  gefunden (nur noch innerhalb der QFA/QPA-Kombisensoren abgedeckt).
+- Raumtemperatur- und Feuchtesensor (Temperatur passiv, Feuchte aktiv) –
+  kein einzelnes Siemens-Katalogprodukt mit dieser gemischten Kombination
+  gefunden (QFA-Kombisensoren bieten Temperatur immer nur aktiv).
+- Raumtemperatur- und Feuchtesensor aktiv (`QFA3160`) – Nutzer-Einschätzung:
+  Gehäuse/Optik nur für industrielle Umgebungen geeignet, nicht für
+  Bereiche mit architektonischen Anforderungen.
+
+Verifiziert direkt im Browser (Standschrank, echte Katalogdaten):
+Testbelegung (2× Raumtemperatursensor + je 1× CO2/VOC/Feuchte) liefert
+`dp_ai used:5` (korrekt, 1 pro Instanz), `bgInstanceQueue` mit korrekter
+Klemmenzahl je Instanz (2/2/3/3/3), Stückliste aggregiert korrekt
+`3209510` Menge 13 in `klemm_s`; Modul 5 zeigt alle 4 Feldgeräte mit
+korrektem Hersteller/Preis/Menge/Summe (1207,66 €). Keine Konsolenfehler.
+Backup: `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-raumsensoren_*.xlsx`.
+**Korrektur (Session 51 Nachtrag 9, direkt im Anschluss):** siehe nächster
+Abschnitt – die IDs `480_000008`–`011` wurden zu `430_000001`–`004`
+umbenannt.
+
+### Baugruppen mehreren Gewerken zuordenbar: funktionsbereich als Array (Session 51 Nachtrag 9, gesperrt)
+Nutzer-Fund: die 4 neuen Raumsensor-Baugruppen waren unter „Automation"
+einsortiert – falsch, „es handelt sich nicht um Automationsgeräte". Sie
+müssen stattdessen in Heizung, Lüftung UND Kälte gleichzeitig auswählbar
+sein (ein Raumsensor wird je nach Projekt für unterschiedliche
+Anlagentypen eingesetzt).
+
+**Datenmodell:** `baugruppen.funktionsbereich` ist jetzt immer ein Array
+(Komma-Liste in Excel), auch bei nur einem Wert – exakt analog zu
+`einzelbauteile.zone` (Session 44). `filterBaugruppen()` in Modul 4 prüft
+entsprechend `b.funktionsbereich.includes(gew)` statt `===`.
+`baugruppen.gewerk` (DIN-276-Code) bleibt bewusst EINWERTIG – wird in
+Modul 7 exakt gefiltert/anzeigt, ein Komma-Wert würde dort die
+Filterlogik brechen. Bei mehreren gleichzeitig zutreffenden Gewerken
+führt der Nutzer eines als „führend" (hier auf Nachfrage: **430 ·
+Lüftung**).
+
+**ID-Konsequenz:** die ID kodiert laut Schema (Session 37/38) den
+führenden DIN-276-Code – mit `gewerk` 480→430 mussten auch die IDs
+umbenannt werden, sonst widerspricht die ID dem eigenen Schema. Kein
+Konflikt mit alten `430_xxxxxx`-Einträgen (Baugruppen wurden in Session 40
+komplett neu aufgebaut, keine Altlasten): `480_000008`–`011` →
+**`430_000001`–`004`**, `baugruppen_bauteile.bg_id` (11 Zeilen) nachgezogen.
+
+Verifiziert direkt im Browser: Tabs Heizung/Lüftung/Kälte zeigen jeweils
+alle 4 Sensor-Baugruppen korrekt; Tab Automation zeigt sie korrekt NICHT
+mehr (nur noch die 7 DDC-Reserve-Baugruppen); Modul 7 rendert
+`funktionsbereich` als lesbaren Komma-Text ohne Fehler (kein eigener
+Formatter nötig, `String()`-Fallback reicht, wie bereits beim analogen
+`zone`-Array). Regressionstest mit umbenannter ID (`430_000002`, 2×
+Instanzen) bestätigt Platzierung/Stückliste/Feldgeräte-Summe weiterhin
+korrekt. Keine Konsolenfehler.
+
+### Raumsensoren-Nachtrag: CO2/VOC nur Lüftung, Kombifühler T+rH ergänzt (Session 51 Nachtrag 10, gesperrt)
+Zwei Nutzer-Korrekturen direkt im Anschluss: **CO2- und VOC-Sensor
+(`430_000002`/`003`) gehören weder zu Kälte noch zu Heizung** – anders als
+Temperatur/Feuchte sind Luftqualitätssensoren nur in RLT-Anlagen sinnvoll.
+`funktionsbereich` beider Baugruppen auf `['lueftung']` (einwertig)
+korrigiert. Raumtemperatursensor passiv (`430_000001`) und
+Raumfeuchtesensor (`430_000004`) bleiben unverändert bei
+Heizung/Lüftung/Kälte.
+
+**Neue Baugruppe `430_000005` „Raumtemperatur- und Feuchtesensor"**
+(Lüftung/Heizung/Kälte) – Siemens `QFA2060` (Symaro, Standardgenauigkeit).
+Bewusst NICHT `QFA3160` (bereits verworfen, Messstab-Bauform/industrielle
+Optik) – `QFA2060` hat stattdessen dasselbe flache Wandaufbaugehäuse wie
+`QAA24`/`QPA2000` (90×100×36mm, IP30), architektonisch unauffällig. 4
+Klemmen (G/G0 Versorgung, U1 Feuchte-Signal, U2 Temperatur-Signal – aus
+dem Schwestermodell `QFA3160` abgeleitet, gleiches Familienschema),
+Datenpunktbedarf 2× AI (je Instanz). Kein Preis eingetragen – nur
+Gebrauchtmarkt-/US-Distributor-Preise gefunden, nach Session-45-Konvention
+nicht übernommen.
+
+Verifiziert direkt im Browser: Heizung/Kälte zeigen nach der Korrektur
+korrekt nur noch 3 Sensoren (T-passiv, Feuchte, Kombi), Lüftung zeigt alle
+5; Testbelegung (2× Kombifühler) liefert `dp_ai used:4` (2 pro Instanz),
+8 Klemmen in der Stückliste, Modul 5 zeigt den Kombifühler korrekt
+unbepreist („–", nicht in der Summe). Keine Konsolenfehler.
+
+### Tauchtemperaturfühler 100/150mm für Heizung/Kälte (Session 51 Nachtrag 11, gesperrt)
+Nutzer-Wunsch: passive Tauchtemperaturfühler bis 200mm Baulänge mit
+passender Tauchhülse, vorgeschlagen 3 Größen (~65/~135/~200-250mm).
+**Recherche-Ergebnis (Siemens-Originaldatenblatt CE1N1781en, 2017-07-19,
+Symaro `QAE21..`): die Baureihe bietet ausschließlich 100mm und 150mm als
+Baulänge – weder 65mm noch 200-250mm existieren als Katalogvariante.**
+Dem Nutzer mit Tabelle vorgelegt, auf Rückmeldung beide reale Größen
+übernommen (keine 3. Größe).
+
+**2 neue Baugruppen** `430_000006`/`430_000007` „Tauchtemperatursensor
+100mm"/„150mm" (Heizung/Kälte, NICHT Lüftung – reine Medientemperatur in
+Rohren/Behältern). Siemens **`QAE2120.010`**/**`QAE2120.015`** – bewusst
+die LG-Ni1000-Elementvariante (konsistent zu `QAA24`) UND die einzige
+Ausführung dieser Baureihe, bei der die Tauchhülse (Schutztasche mit
+Gewindenippel G½A) bereits im Lieferumfang enthalten ist (alle anderen
+Elementtypen Pt100/Pt1000/NTC verlangen die Tauchhülse als separates
+Zubehör). 2 Klemmen (B/M, passiv, polaritätsunabhängig vertauschbar),
+1× `dp_ai`. Preise 85,08€/89,63€ (Siemens HIT-Portal-Preis).
+
+Verifiziert direkt im Browser: Heizung UND Kälte zeigen beide Größen
+korrekt, Lüftung korrekt nicht; Testbelegung (je 1×) liefert `dp_ai
+used:2`, 4 Klemmen, Modul 5 zeigt beide korrekt bepreist (Summe 174,71€).
+Keine Konsolenfehler. Backup:
+`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-tauchfuehler_*.xlsx`.
+Damit sind die Raumsensoren fürs Erste abgeschlossen.
+

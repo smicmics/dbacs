@@ -403,292 +403,69 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
 
 ---
 
-### Modul 4/5 – Kanal-CO2/VOC-Fühler + Luftstromwächter (Session 53, gesperrt)
-Erste Baugruppen nach der Session-52-Konsolidierung – Testfall für die neuen
-Modellierungsregeln, keine Korrekturen nötig (Regeln direkt beim ersten
-Versuch korrekt angewendet). 4 neue Baugruppen `430_000017`–`430_000020`
-(alle Lüftung), Siemens Symaro-Baureihe QPM11../QPM21.. (Datenblatt
-CE1N1962de, 2025-03-26, aktuell):
-- `430_000017` „Kanal-CO2-Fühler" (QPM2100, 3 Klemmen G/G0/X1, 1x AI)
-- `430_000018` „Kanal-VOC-Fühler" (QPM1100, 3 Klemmen, 1x AI)
-- `430_000019` „Kanal-CO2/VOC-Kombifühler" (QPM2102, 4 Klemmen G/G0/X1/X2,
-  2x AI – X1 CO2-Rohsignal, X2 Maximalauswahl-Lüftungsbedarfssignal)
-- `430_000020` „Luftstromwächter" – **Herstellerabweichung KRIWAN**: Siemens'
-  eigenes `INT511` ist im HIT-Portal abgekündigt, der Originalhersteller
-  KRIWAN Industrie-Elektronik führt das Gerät unverändert als aktuelles
-  Produkt weiter (analog Oppermann/Metz-Connect-Präzedenzfall). 24V-AC/DC-
-  Variante `20N842S021`, kalorimetrisch 0,2-10m/s, Relais-Wechsler. Nach
-  Regel 1 (Schaltgerät, kein Analogsignal) komplett `klemm_f` (4 Klemmen:
-  2x Versorgung + 2x Relaiskontakt COM/NO), 1x BI.
+### Modul 4/5 – Sessions 53–54 (komprimiert)
+Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,
+Verifizierungsdetails) archiviert in
+`docs/archiv/claude-md-modul4-sessions-53-54.md`. Ergebnisse:
 
-**Alle 4 Geräte bringen ihren Kanalmontage-Flansch bereits im
-Lieferumfang mit** (Originaldatenblätter explizit geprüft) – kein
-separater Zubehör-Mechanismus nötig, anders als zunächst vom Nutzer
-erwartet. Alle 4 Baugruppen `benoetigt_steuerspannung:'24vac'` (Regel 5).
+- **Session 53:** 4 neue Lüftungsbaugruppen `430_000017`–`430_000020`
+  (Siemens Symaro QPM11../QPM21.. Kanal-CO2/-VOC-Fühler + Kombifühler;
+  Luftstromwächter als Herstellerabweichung **KRIWAN** `20N842S021`, da
+  Siemens-Original INT511 abgekündigt) – erster Test der Session-51/52-
+  Modellierungsregeln, keine Korrekturen nötig. Baugruppen-Dropdown nach
+  Kategorie gruppiert: neues Feld `baugruppen.kategorie` (rein optisch,
+  analog Einzelbauteile Session 27/40), `<optgroup>` alphabetisch
+  sortiert, `BG_SORT_PRIORITY` bleibt Sortierung *innerhalb* einer
+  Kategorie. Baugruppe ohne `kategorie` fehlt komplett im Dropdown
+  (gleiche strikte Regel wie bei Einzelbauteilen).
+- **Session 54, Lüftung:** 5 weitere Baugruppen `430_000021`–`430_000025`
+  (Siemens Symaro): Frostschutzwächter QAF64.2-J (nur Schaltkontakt
+  verdrahtet, Koppelrelais-Pattern Regel 6), Differenzdrucksensor 0-300Pa
+  QBM3020-3, Kanalfühler Feuchte+Temp QFM2160, Raumtemperatursensor mit
+  Sollwertversteller QAA27 (±3K, B/M/R-Klemmen), Raum-CO2/Feuchte/Temp
+  QPA2062. Bestehendes `430_000013` und neues `430_000022` auf
+  einheitlichen Namen „Differenzdrucksensor Kanaldruck..." angeglichen und
+  im Dropdown hintereinander einsortiert (Dropdown-Reihenfolge ohne
+  `BG_SORT_PRIORITY`-Eintrag = Zeilenreihenfolge im Excel-Sheet).
+- **Session 54, Heizung/Kälte/Sanitär:** 12 neue Baugruppen
+  `420_000001`–`420_000012` für die bis dahin leeren Gewerke 410/420/434,
+  Kategorien „Sensoren flüssiges Medium" (Analogsignal) / „Wächter
+  flüssiges Medium" (Schaltkontakt) – Tauchfühler `430_000006`/`007` in
+  „Sensoren flüssiges Medium" aufgelöst. Zweite Planungsfabrikat-Ebene
+  **Honeywell/FEMA** für mechanische Druck-/Temperaturschalter und
+  Sicherheitsbegrenzer (Siemens führt diese Gerätekategorie nicht) –
+  Siemens QBE1900-P7/QBE2003-P/QVE1901 für reine Druck-/Strömungssensorik,
+  Honeywell/FEMA SDBAM6/TWP1F/STB1F/STB+TWF für Sicherheitstechnik,
+  **SYR/Hans Sasserath 933.1** als dritte Herstellerabweichung für
+  Wassermangelsicherung. „Druckwächter Max/Min" als EIN Gerätetyp für
+  beide Rollen via Kontaktwahl – Namenskonvention „(p-Max)"/„(p-Min)" am
+  Beschreibungsende gilt als Vorlage für künftige Wächter-Paare. Alle
+  mechanischen Schalter potentialfrei, keine eigene Steuerspannung nötig;
+  nur elektronische Sensoren/Transmitter brauchen
+  `benoetigt_steuerspannung`.
+- **PE-Klemmen-Regel** eingeführt nach Nutzer-Nachfrage „haben
+  Druckwächter/Strömungswächter wirklich keine Versorgungsspannung" (siehe
+  Regel 8) – `420_000001`/`002` (Schutzklasse I, Datenblatt weist eigene
+  Erdungsklemme aus) nachträglich um Schutzleiterklemme `3209536` ergänzt;
+  alle anderen Session-54-Geräte gezielt gegengeprüft, keine Änderung
+  nötig (Datenblatt-Klemmenplan entscheidet, nicht die Schutzklasse
+  allein).
+- **`480_000011` „Schaltschrank-USV"** (Phoenix Contact
+  QUINT-UPS/24DC/24DC/10 `2320225` + UPS-BAT/VRLA/24DC/1,3AH `2320296`, 3
+  potentialfreie Meldekontakte 13/14 Alarm, 23/24 Batteriebetrieb, 33/34
+  Batterieladung) – gleiches Planungsfabrikat wie bestehendes
+  24V-DC-Netzteil `480_000009`, obwohl Siemens SITOP UPS500S/1600
+  ebenfalls passende Alternativen mit Meldekontakten bietet (Nutzer-
+  Entscheidung für Marken-Konsistenz). `benoetigt_steuerspannung:'24vdc'`
+  ergänzt bei Bedarf automatisch das 24V-DC-Netzteil.
+- **Nutzer-Feedback:** nach jeder Baugruppen-Neuanlage eine
+  Herleitungstabelle (Klemmen lt. Datenblatt → DBACS-Klemmen/Zone →
+  Datenpunkte) mitliefern, siehe Memory `feedback_baugruppen_herleitung.md`.
 
-Verifiziert direkt im Browser (frischer Tab, Standschrank über Modul
-2+3-Pipeline, Drehstrom-Netztyp): Stückliste zeigt korrekt `KS`
-Durchgangsklemme ×10 (3+3+4) und `KF` ×4, Steuerspannungs-Automatik
-ergänzt korrekt 1x `Steuertransformator 400V/24V 250VA` (Drehstrom-
-Variante via `resolveNetztypArtikel()`) + 2x LSS + automatisch ergänzte
-CPU/E-A-Module (`Physikalisch gesamt: 5` = 4 AI + 1 BI, `Feldgeräte
-gesamt: 4`). Modul 5 zeigt alle 4 Geräte mit korrektem Hersteller
-(3x Siemens, 1x KRIWAN) und Preisen (239,90€/657,00€ bepreist, 2x
-unbepreist „–", Summe 896,90€). Keine Konsolenfehler.
-
-### Modul 4 – Baugruppen-Dropdown nach Kategorie gruppiert (Session 53 Nachtrag, gesperrt)
-Nutzer-Wunsch: bei wachsender Baugruppenzahl wird die flache Dropdown-Liste
-unübersichtlich – Gruppierung analog zur bereits bestehenden
-Einzelbauteile-Kategorisierung (`populateEinzelAuswahl()`, Session 27/40).
-Neues Feld `baugruppen.kategorie` (rein optische Gruppierung, unabhängig von
-`zone`/`gewerk`/`funktionsbereich` – exakt wie bei `einzelbauteile.kategorie`),
-alle 30 Bestands-Baugruppen zugeordnet: **Raumsensoren**, **Luftkanalsensoren**,
-**Luftkanalwächter**, **Tauchfühler**, **Datenpunkt-Reserve**,
-**Automationsstation**, **Energieversorgung** (Kategorie + die 3 Baugruppen
-`480_000008`–`010` direkt im Anschluss auf Nutzer-Wunsch von „Steuerspannung"
-auf „Energieversorgung" umbenannt – betrifft nur Anzeigename/Kategorie/
-Namens-Präfix in `beschreibung`, NICHT das interne Feld
-`benoetigt_steuerspannung`/die JS-Bezeichner `STEUERSPANNUNG_*` – die bleiben
-als technische Schema-/Codenamen unverändert). Die vom Nutzer vorgeschlagene
-Kategorie „Raumwächter" bleibt bis zur ersten passenden Baugruppe ungenutzt –
-Kategorien entstehen rein aus den Daten, keine leeren Platzhalter nötig).
-`filterBaugruppen()` baut jetzt `<optgroup>`-Elemente (alphabetisch sortiert,
-wie bei den Einzelbauteilen), `BG_SORT_PRIORITY` bleibt als Sortierung
-*innerhalb* einer Kategorie erhalten (wirkt aktuell nur auf die 6
-Datenpunkt-Reserve-Baugruppen: AI→AO→AO+LVB→BI→BO→BO+LVB). **Gleiche strikte
-Regel wie bei den Einzelbauteilen (Session 40): eine Baugruppe OHNE
-`kategorie` fehlt komplett im Dropdown** – jede künftige neue Baugruppe
-braucht also zwingend eine Kategorie.
-
-Verifiziert direkt im Browser (Hard-Reload zur Vermeidung von Skript-Caching):
-Lüftung-Tab zeigt korrekt 3 Gruppen (Luftkanalsensoren/-wächter,
-Raumsensoren), Automation-Tab 3 Gruppen (Automationsstation,
-Datenpunkt-Reserve in der richtigen Priorität, Steuerspannung),
-Heizung-Tab 2 Gruppen (Raumsensoren, Tauchfühler). Hinzufügen einer
-Baugruppe aus dem gruppierten Dropdown funktioniert unverändert
-(`addBaugruppe()`/Mengen-Merge betroffen von der Umstellung nicht). Keine
-Konsolenfehler.
-
-### Modul 4/5 – Weitere Lüftungswächter/-sensoren + Raumsensoren (Session 54, gesperrt)
-5 neue Baugruppen `430_000021`–`430_000025` (alle Lüftung, Siemens-Leitfabrikat,
-Originaldatenblätter recherchiert – teils binär-komprimierte Siemens-PDFs
-per `pypdf` in WSL ausgelesen, Session-41-Präzedenzfall):
-- `430_000021` „Frostschutzwächter, Kapillare 2m" (Symaro QAF64.2-J) –
-  Kombigerät mit kontinuierlichem 0-10V-Temperatursignal UND potentialfreiem
-  Relais-Wechslerkontakt; hier bewusst nur der Schaltkontakt verdrahtet
-  (Nutzer-Entscheidung, schlanker/konsistent zu den übrigen
-  Luftkanalwächter-Baugruppen). Braucht selbst 24V-AC-Versorgung (2
-  zusätzliche Feldklemmen G/G0) UND folgt dem Sicherheitsketten-
-  Koppelrelais-Pattern (Regel 6, 1 Wechsler reicht nicht für Ventilator-
-  Abschaltung + getrennte DDC-Meldung) – 4 Feldklemmen + 1 Koppelrelais
-  (230VAC-Spule) im Leistungsfeld, 1x BI.
-- `430_000022` „Differenzdrucksensor Kanal 0...300 Pa" (Symaro QBM3020-3) –
-  Analogsensor (0-10V, 3 Klemmen G/M/U), 1x AI. Baugleiche Baureihe wie das
-  bereits katalogisierte QBM3020-10 (`430_000013`), nur anderer Messbereich.
-- `430_000023` „Kanalfühler für Feuchte und Temperatur" (Symaro QFM2160,
-  Nachfolgebezeichnung des im Handel als „QFM21.." abgekündigten
-  Vorgängers) – 4 Klemmen G/G0/X1(Feuchte)/X2(Temp), 2x AI.
-- `430_000024` „Raumtemperatursensor passiv mit Sollwertversteller ±3K"
-  (Siemens QAA27, gleiche Gerätefamilie wie das bereits katalogisierte
-  QAA24) – passiv, 3 Klemmen B/M/R (Temperatur- und Sollwertsignal getrennt,
-  je eigener passiver Messkanal), 2x AI.
-- `430_000025` „Raum-CO2-, Feuchte- und Temperatursensor" (Symaro QPA2062,
-  gleiche Familie wie QPA2000/QPA1000) – 5 Klemmen G/G0/X1(CO2)/X2(Feuchte)/
-  X3(Temp), 3x AI.
-
-**Nutzer-Fund/-Entscheidung:** die vom Nutzer ebenfalls angefragte
-„Differenzdruckmessung ca. 100-1000 Pa" hätte exakt denselben Siemens-
-Artikel (QBM3020-10) ergeben, der bereits als `430_000013` „Drucksensor
-Kanaldruck" existiert – auf Nutzer-Hinweis („Wenn der Drucksensor schon da
-ist, dann keine neue Baugruppe anlegen dafür") keine zweite Baugruppe mit
-identischem Artikel angelegt. Die beiden Kombinationen „Feuchtesensor mit
-Sollwertversteller" und „CO2/Feuchte-Sensor mit Sollwertversteller" wurden
-zurückgestellt, da kein passendes Siemens-Symaro-Produkt existiert (siehe
-„Offene Punkte" oben).
-
-Alle 5 neuen Feldgeräte-Artikel zusätzlich in `feldgeraete.json` angelegt
-(Kategorie „Kanalsensor"/„Raumsensor", analog zu allen bisherigen
-Lüftungssensor-Baugruppen – 100%ige Verknüpfungsdichte
-`feldgeraet_artikel_nr` ↔ `feldgeraete.json` vor dieser Session geprüft und
-bewusst fortgeführt), noch ohne bestätigten Preis.
-
-Verifiziert direkt im Browser (Standschrank über Modul 2+3-Pipeline,
-Drehstrom-Netztyp): alle 5 Baugruppen im Lüftung-Tab korrekt in ihren
-Kategorien einsortiert und hinzufügbar, Stückliste aggregiert korrekt `KF`
-×4 (Frostwächter-Feldklemmen) und `KS` ×15 (3+4+3+5, restliche 4 Baugruppen),
-DDC-Statistik zeigt korrekt `Physikalisch gesamt: 9` (8 AI + 1 BI) und
-`Feldgeräte gesamt: 5`. Steuerspannungs-Automatik ergänzt korrekt sowohl
-1x Steuertransformator 400V/24V (Drehstrom-Variante, 4 der 5 Baugruppen
-brauchen 24V AC) als auch 1x Sicherheits-/Trenntransformator 400V/230V
-(für die Koppelrelais-Spule) mit je zugehörigen Sicherungen; DDC-Module
-automatisch ergänzt (2x TXM1.8U für 8x AI, 1x TXM1.16D für 1x BI, 1x
-PXC7.E400.A). Keine Konsolenfehler.
-
-**Nachtrag (Session 54, gesperrt):** Nutzer-Wunsch nach dem ersten Durchlauf
-– Auswahltext des bereits bestehenden `430_000013` („Drucksensor
-Kanaldruck") und des neuen `430_000022` angleichen und im Dropdown
-hintereinander anzeigen. Beide jetzt einheitlich „Differenzdrucksensor
-Kanaldruck 0...XXXX Pa, 24V AC/DC" (Namensregel: Text Bauteil →
-Messbereich → Versorgungsspannung, siehe Regel 4). Dabei fiel auf, dass die
-neu formulierte Klemmenbezeichnung in der Beschreibung fälschlich „G/G0"
-statt der laut Originaldatenblatt CA1N1916en01 tatsächlichen Klemmen „G
-(Versorgung) / M (Messnull) / U (Signal)" nannte – korrigiert in beiden
-Baugruppen sowie in den zugehörigen `feldgeraete.json`-Einträgen
-(QBM3020-10/-3). Reihenfolge im Dropdown folgt bei Baugruppen ohne
-`BG_SORT_PRIORITY`-Eintrag der Zeilenreihenfolge im Excel-Sheet
-(`filterBaugruppen()`, stabiler Sort) – `430_000022` daher direkt hinter
-`430_000013` in die Excel-Zeilenreihenfolge einsortiert (IDs selbst bleiben
-unverändert, nur die Zeilenposition wurde getauscht). Verifiziert im
-Browser: beide Einträge erscheinen jetzt konsistent benannt und
-unmittelbar hintereinander im Lüftung-Tab, keine Konsolenfehler.
-
-### Modul 4/5 – Heizung/Kälte/Sanitär: Druck-, Strömungs- und Temperaturwächter (Session 54, gesperrt)
-Erste Baugruppen für die wasserführenden Gewerke (410 Sanitär/420 Heizung/
-434 Kälte) – bisher waren nur Lüftung (430) und Automation (480) befüllt.
-Neue Kategorie „Sensoren und Wächter" (analog „Luftkanalsensoren" in
-Lüftung) eingeführt, 12 neue Baugruppen `420_000001`–`420_000012`
-(führendes Gewerk 420/Heizung, da alle Baugruppen heizungsrelevant sind;
-`funktionsbereich`-Array steuert die Sichtbarkeit in den einzelnen Tabs).
-Planungsfabrikat für diese Gerätegruppe **Siemens QBE-/QVE-Baureihe**
-(Druck-/Strömungssensorik) bzw. **Honeywell/FEMA** (mechanische mediengefüllte
-Druck-/Temperaturschalter, Sicherheitsbegrenzer – Siemens führt diese
-Gerätekategorien nicht) – neues Muster für „wo Siemens nicht fündig wird":
-Honeywell/FEMA als zweite Planungsfabrikat-Ebene für Heizung/Kälte/Sanitär-
-Sicherheitstechnik (analog KRIWAN-Ausnahme bei Lüftung, Session 53):
-- `420_000001`/`002` „Druckwächter Max/Min" (Siemens QBE1900-P7, -0,3...7 bar,
-  Wechselkontakt, selbstrückstellend) – **ein Gerätetyp für beide Rollen**
-  (Nutzer-Entscheidung: Kontaktwahl Schließer/Öffner vor Ort entscheidet
-  Max/Min, keine zwei Artikel nötig). Namenskonvention auf Nutzer-Wunsch:
-  Messbereich immer im Namen, Funktionskennung „(p-Max)"/„(p-Min)" am Ende
-  der Beschreibung – **gilt als Vorlage für alle künftigen Wächter-Paare**.
-- `420_000003`/`004` „Drucksensor 0-4bar/0-10bar" (Siemens QBE2003-P4/-P10,
-  0-10V, G/U/M-Klemmenschema wie QBM3020).
-- `420_000005` „Drucksensor und -wächter Kombi" (Honeywell/FEMA Smart Press
-  PST010RG12S) – einziges gefundenes Gerät mit gleichzeitig 2 Schaltausgängen
-  UND Analogausgang 0-10V in einem Gehäuse; Versorgung DC14-36V (erste
-  Baugruppe mit `benoetigt_steuerspannung:'24vdc'` außerhalb der reinen
-  DDC-Netzteile) – Pin-Belegung der 2 M12-Steckverbinder nur näherungsweise
-  bekannt, siehe „Offene Punkte".
-- `420_000006` „Strömungswächter" (Siemens QVE1901) – schraubt direkt in ein
-  T-Stück mit G½"-Innengewinde, Paddel kürzbar für DN20-200.
-- `420_000007`/`008` „Sicherheitsdruckbegrenzer Max/Min" (Honeywell/FEMA
-  SDBAM6, 1,2-6 bar, TÜV/DGRL 2014/68/EU, plombierbar/manueller Reset) –
-  Herstellerkatalog dokumentiert dieses Gerät nur für Maximaldrucküber-
-  wachung, auf Nutzer-Wunsch dennoch für beide Rollen verwendet (siehe
-  „Offene Punkte"). Die vom Nutzer angefragte „2-stufige" Variante (2
-  unabhängige Schaltpunkte in einem Gehäuse) wurde nicht gefunden und
-  zurückgestellt.
-- `420_000009` „Wassermangelsicherung" (**SYR/Hans Sasserath 933.1**,
-  DN20, mit Verriegelung) – weder Siemens noch Honeywell/FEMA noch IFM
-  führen Wassermangelsicherungen im Programm, SYR als weitere
-  Herstellerabweichung recherchiert und mit Nutzer abgestimmt (Hinweis kam
-  leicht verunklart als „Sasserat nbach" – korrekt aufgelöst zu SYR/Sasserath).
-- `420_000010`/`011`/`012` „Temperaturwächter"/„Sicherheitstemperatur-
-  begrenzer"/„Kombi Temperaturwächter+STB" (Honeywell/FEMA TWP1F/STB1F/
-  STB+TWF, alle G½"-Tauchhülse Messing, TÜV-geprüft nach DIN EN14597/DGRL
-  2014/68/EU) – STB+TWF hat 2 unabhängige native Schaltelemente (Öffner für
-  STB + Wechsler für TW) in einem Gehäuse, braucht daher **kein**
-  Koppelrelais (Regel-6-Ausnahme wie beim Kanalrauchmelder).
-
-**Modellierungsmuster bestätigt:** alle mechanischen Schalter (Druck-,
-Strömungs-, Temperaturwächter/-begrenzer) sind potentialfrei und brauchen
-keine eigene Steuerspannung (2 Klemmen je Kontakt, `klemm_f`, 1x BI) – nur
-die elektronischen Sensoren/Transmitter (Drucksensor, Kombi-Drucksensor)
-brauchen eine Versorgungsspannung (`benoetigt_steuerspannung`).
-
-**Nachtrag (Session 54, gesperrt):** Nutzer-Wunsch nach dem ersten
-Durchlauf – Kategorie „Sensoren und Wächter" in zwei getrennte Kategorien
-aufgeteilt: **„Sensoren flüssiges Medium"** (kontinuierliches Analogsignal:
-`420_000003`–`005` Drucksensoren + Kombi) und **„Wächter flüssiges
-Medium"** (reiner Schaltkontakt: `420_000001`/`002`/`006`–`012`). Die
-Kombi-Baugruppe `420_000005` (Analogausgang UND 2 Schaltausgänge) bewusst
-bei Sensoren einsortiert (Namensreihenfolge „Drucksensor und -wächter"
-sowie thematische Nähe zu den beiden reinen Drucksensor-Baugruppen).
-Zusätzlich die bisher eigenständige Kategorie „Tauchfühler" (Heizung/Kälte,
-`430_000006`/`007`) aufgelöst und in „Sensoren flüssiges Medium"
-überführt – damit gibt es keine Einzel-Kategorie mit nur 2 Einträgen mehr,
-und Drucksensoren/Tauchfühler stehen thematisch zusammenhängend im
-Dropdown, analog zum Luftkanalsensoren/-wächter-Muster aus Lüftung.
-Verifiziert im Browser (Sanitär/Heizung/Kälte-Tabs): korrekte 2-Gruppen-
-Aufteilung je Tab, keine Konsolenfehler.
-
-Verifiziert direkt im Browser (Standschrank über Modul 2+3-Pipeline,
-Drehstrom-Netztyp, zusätzlich zu den 5 Lüftungssensor-Baugruppen aus
-demselben Sitzungslauf): alle 12 Baugruppen korrekt in „Sensoren und
-Wächter" gruppiert, Sanitär-Tab zeigt korrekt nur die 6 gewerkübergreifenden
-Geräte, Kälte-Tab zusätzlich die 2 Sicherheitsdruckbegrenzer, Heizung alle
-12. Stückliste aggregiert korrekt `KF` 28 und `KS` 22 (kumulativ mit den 4
-KF/15 KS aus den Lüftungssensoren). DDC-Statistik `Physikalisch gesamt: 24`
-(11 AI + 13 BI, kumulativ), `Feldgeräte gesamt: 17`. Steuerspannungs-
-Automatik ergänzt korrekt alle drei benötigten Quellen gleichzeitig: 24V-AC-
-Trafo (Drehstrom-Variante), 230V-AC-Trenntrafo (Koppelrelais aus den
-Lüftungssensoren) UND erstmals ein 24V-DC-Netzteil (QUINT-PS/1AC/24DC/2,5)
-für die Smart-Press-Kombi-Baugruppe. Keine Konsolenfehler.
-
-**Nachtrag PE-Klemme (Session 54, gesperrt):** Nutzer-Nachfrage „haben
-Druckwächter/Strömungswächter wirklich keine Versorgungsspannung, da steht
-ja nichts dazu" führte zur systematischen Nachprüfung aller Original-
-Installationsanleitungen (nicht nur Katalogseiten) auf Erdungs-/PE-Klemmen.
-Ergebnis: **`420_000001`/`002` (Druckwächter Max/Min, Siemens QBE1900-P7,
-Schutzklasse I) hatten eine fehlende PE-Klemme** – Datenblatt weist explizit
-„1x for grounding connection" als 4. Klemme zusätzlich zu den 3
-Signalklemmen aus. Beide Baugruppen um 1x Schutzleiterklemme `3209536`
-(grün-gelb, `klemm_f`) ergänzt (jetzt 3 statt 2 Klemmen je Baugruppe).
-Alle übrigen Session-54-Wächter/-Sensoren gezielt gegengeprüft (QVE1901
-Schutzklasse II, QBE2003-P Schutzklasse III, SDBAM6 laut Anleitung nur
-„Klemme 1 und 3", STB1F/TWP1F/STB+TWF laut baugleicher Schwesterserie
-STW/STB trotz Schutzklasse I nur 3 Klemmen ohne separate PE) – **keine
-Änderung nötig**, siehe Regel 8 unter „Baugruppen-Modellierungsregeln
-(verbindlich)" für die daraus abgeleitete, undogmatische Prüfregel
-(Datenblatt-Klemmenplan entscheidet, nicht pauschal die Schutzklasse).
-`SYR-933.1` (Wassermangelsicherung) bleibt als einziger Fall ungeklärt
-(4-adriges Anschlusskabel bei nur 3 benötigten Signaladern, Schaltbild im
-Datenblatt nur als Grafik hinterlegt, nicht textuell auslesbar) – siehe
-„Offene Punkte". Verifiziert im Browser (isolierter Test nur mit den 2
-Druckwächter-Baugruppen, `m04_belegung` zuvor geleert): Stückliste zeigt
-korrekt `KF Durchgangsklemme` ×4 (Positionen #1–#2, #4–#5) und `KF
-Schutzleiterklemme PE` ×2 (Positionen #3, #6), keine Konsolenfehler.
-
-**Nutzer-Feedback (Session 54, gesperrt):** ab sofort nach Neuanlage jeder
-Baugruppe eine kurze Herleitungs-Tabelle bereitstellen (Baugruppe → Klemmen
-lt. Datenblatt → daraus abgeleitete DBACS-Klemmen/Zone → Datenpunkte) –
-spart dem Nutzer eigene Testarbeit beim Durchklicken in Modul 4. Siehe auch
-Memory `feedback_baugruppen_herleitung.md`.
-
-### Modul 4/5 – Schaltschrank-USV (Session 54, gesperrt)
-Erste Baugruppe für Gewerk 480/Automation seit Session 50, `480_000011`
-„Schaltschrank-USV 24V DC mit Meldekontakten" – bereits in Session 53 als
-künftiger Punkt angekündigt, jetzt umgesetzt. Zweite Planungsfabrikat-Ebene
-diesmal bewusst NICHT über „Siemens hat nichts, also Alternative" gewählt:
-Siemens hat mit SITOP UPS500S/UPS1600 durchaus passende USV-Produkte mit
-Meldekontakten gefunden (siehe Recherche), aber Nutzer-Entscheidung fiel
-bewusst auf **Phoenix Contact QUINT-UPS**, um dieselbe Marke wie das
-bereits bestehende 24V-DC-Netzteil (`480_000009`, Planungsfabrikat-
-Konsistenz) zu nutzen. Aufbau folgt dem Phoenix-Systemkonzept „Netzteil +
-elektronische Umschalteinheit + Energiespeicher" (3 getrennte Bausteine):
-- Vorhandenes 24V-DC-Netzteil (Ratchet-Mechanismus, automatisch ergänzt
-  falls noch nicht vorhanden) → **QUINT-UPS/24DC/24DC/10** Umschalteinheit
-  (`2320225`, IQ-Technologie, Kondensator-/Akku-Pufferung bis 3h bei
-  38Ah) → **UPS-BAT/VRLA/24DC/1,3AH** Batteriemodul (`2320296`, kleinste
-  Standardgröße, ~20min bei 2A/~5min bei 5A, werkzeugloser Wechsel,
-  eigene interne 15A-Sicherung) – beide als eigenständige Hutschienen-
-  Bausteine im Leistungsfeld (`leist`), analog zu den bestehenden
-  Trafo-/Netzteil-Baugruppen.
-- 3 potentialfreie Meldekontakte (Schließer, DIN-Kontaktnummerierung
-  13/14 Alarm, 23/24 Batteriebetrieb, 33/34 Batterieladung) auf je 2
-  Landeklemmen in `klemm_f`, Datenpunktbedarf 3x BI.
-- `benoetigt_steuerspannung:'24vdc'` auf Baugruppenebene, damit die
-  Steuerspannungs-Automatik bei Bedarf das 24V-DC-Netzteil eigenständig
-  ergänzt (getestet: isolierte Belegung nur mit dieser einen Baugruppe
-  ergänzte korrekt 1x QUINT-PS/1AC/24DC/2,5).
-
-Verifiziert direkt im Browser (Standschrank, `m04_belegung` zuvor
-geleert): Baugruppe erscheint korrekt unter „Energieversorgung" im
-Automation-Tab, `Physikalisch gesamt: 3` (3x BI), `Feldgeräte gesamt: 0`
-(kein `feldgeraet_artikel_nr` – interne Schaltschrank-Komponente, kein
-externes Betriebsmittel), Stückliste zeigt Umschalteinheit + Batteriemodul
-+ `KF Durchgangsklemme` ×6 sowie automatisch ergänztes QUINT-PS. Keine
-Konsolenfehler.
+Alle Baugruppen jeweils direkt im Browser verifiziert (korrekte
+Dropdown-Gruppierung/-Sichtbarkeit je Gewerke-Tab, Stückliste/DDC-
+Statistik/Steuerspannungs-Automatik stimmen exakt), keine Konsolenfehler –
+Details siehe Archiv.
 
 ### Modul 4 – Session 51 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,
@@ -758,211 +535,40 @@ Verifizierungsdetails) archiviert in
   betrifft jeden Port. **Fix: `wsl --shutdown`** (vorher beim Nutzer
   nachfragen, beendet alle WSL-Prozesse).
 
-### Modul 5 – Feldgeräte-Stückliste angelegt, Baugruppen-Modularisierung diskutiert (Session 51 Nachtrag 7, gesperrt)
-Strategiediskussion vor dem Anlegen weiterer Baugruppen: mit wachsender
-Katalogzahl wird die Auswahl unübersichtlich (Beispiel Umwälzpumpe: 8+
-genannte Varianten sind eigentlich ~5 orthogonale Achsen – Ansteuerung
-Direkt/Sanftanlauf/FU, Handschalter-Bedienebene an der Tür vs. LVB im
-Schrank selbst zugangsbeschränkt, DDC-Schaltbefehl, Rückmeldequelle
-Hilfskontakte vs. Pumpenelektronik/Bus, physikalisch als Standard/
-kommunikativ als Kundenoption – kombinatorisch 70+ statt 8 Fälle). Als
-Zielbild vorgeschlagen und vom Nutzer bestätigt („können wir probieren"):
-Baugruppen in `grundschaltung`/`zusatzbaustein`/`standalone` kategorisieren
-(neue Felder `baustein_typ`/`baustein_kategorie`, NOCH NICHT angelegt) statt
-flacher Varianten-Benennung – der bestehende Platzierungs-/Stückliste-/
-DDC-Mechanismus unterstützt das schon heute ohne Codeänderung, da rein
-mengenbasiert aggregiert wird (keine Instanz-Verknüpfung zwischen
-Grundschaltung und Zusatzbaustein nötig). **Vorerst zurückgestellt** –
-Nutzer-Entscheidung: erst einfache, nicht modularisierte Baugruppen anlegen
-(Sensoren/Feldgeräte), die Modularisierung später bei Bedarf einführen.
+### Modul 4/5 – Session 51 Nachtrag 7–11 (komprimiert)
+Vollständiger Sitzungsverlauf archiviert in
+`docs/archiv/claude-md-modul4-sessions-35-51.md`. Ergebnisse:
 
-**Stattdessen umgesetzt: Feldgeräte-Katalog + Modul 5.** Zweite,
-eigenständige Stückliste für externe Betriebsmittel (Pumpen, Feldsensoren/
--aktoren) außerhalb des Schaltschranks, getrennt von der bestehenden
-Schaltschrank-Stückliste. Neues Excel-Sheet `feldgeraete` (analog
-`einzelbauteile`, aber ohne `b_mm`/`h_mm`/`te_breite`/`zone` – wird nicht in
-der Schaltschrank-SVG platziert): `aktiv, artikel_nr, bezeichnung,
-hersteller, kategorie, preis_stueck_eur, quelle_hinweis, geprueft`. Neues
-Feld `baugruppen.feldgeraet_artikel_nr` (optionale FK) ergänzt das
-bestehende Freitextfeld `betriebsmittel` (Session 49) – `betriebsmittel`
-bleibt die Kurzbezeichnung, `feldgeraet_artikel_nr` verknüpft zusätzlich mit
-einem echten bepreisten Katalogeintrag, sobald einer existiert; ohne
-Verknüpfung zeigt Modul 5 nur eine unbepreiste Mengenzeile.
-**Planungsfabrikat Pumpen: Wilo** (Nutzer-Vorgabe). Bei größerer
-Herstellerauswahl in anderen Kategorien: nachfragen statt selbst
-entscheiden, gemeinsam festlegen.
+- **Nachtrag 7 – Feldgeräte-Katalog + Modul 5:** Baugruppen-Modularisierung
+  (`grundschaltung`/`zusatzbaustein`/`standalone`) diskutiert, aber
+  zurückgestellt. Stattdessen neues Excel-Sheet `feldgeraete` (externe
+  Betriebsmittel außerhalb des Schaltschranks) + eigenständiges,
+  rein lesendes Modul 5 (Struktur wie Modul 7, liest `m04_belegung` +
+  beide Kataloge neu ein, aggregiert nach `feldgeraet_artikel_nr`/
+  `betriebsmittel`-Freitext). Planungsfabrikat Pumpen: **Wilo**.
+  Datenblätter bewusst nicht lokal gespeichert (öffentliches Repo,
+  Urheberrecht) – nur Fakten + Quelle-URL in `quelle_hinweis`.
+- **Nachtrag 8 – erste 4 Feldgeräte-Baugruppen** (Planungsfabrikat
+  Sensoren: **Siemens**): `430_000001`–`004` Raumtemperatursensor passiv
+  (QAA24), Raum-CO2 (QPA2000), Raum-VOC (QPA1000), Raumfeuchte (QFA2000) –
+  alle `klemm_s`, Klemme `3209510` auch bei aktiven Sensoren (SELV-
+  Leitungen brauchen keine Farbcodierung). QAA2071 (aktiv, phase-out) und
+  QFA3160 (zu industrielle Optik) bewusst nicht angelegt.
+- **Nachtrag 9 – `funktionsbereich` als Array:** Baugruppen können
+  mehreren Gewerken gleichzeitig zugeordnet sein (analog
+  `einzelbauteile.zone`, Session 44) – `gewerk` selbst bleibt einwertig
+  (führendes Gewerk). IDs `480_000008`–`011` → `430_000001`–`004`
+  umbenannt (ID kodiert das führende Gewerk).
+- **Nachtrag 10 – CO2/VOC-Korrektur + Kombifühler:** CO2/VOC-Sensoren nur
+  `lueftung` (nicht heizung/kaelte). Neu `430_000005` Raumtemperatur- und
+  Feuchtesensor QFA2060.
+- **Nachtrag 11 – Tauchtemperaturfühler:** `430_000006`/`007`, Siemens
+  QAE2120.010/.015 (100mm/150mm – einzige real existierenden Baulängen
+  dieser Baureihe, vom Nutzer vorgeschlagene 3. Größe existiert nicht).
 
-**Datenblätter bewusst NICHT lokal gespeichert:** Repository ist öffentlich
-(GitHub Pages) – Herstellerdatenblätter als PDF ablegen würde geschütztes
-Material weiterverbreiten. Stattdessen wie bisher: extrahierte Fakten +
-Quelle-URL + Rechercheddatum in `quelle_hinweis`, bei Feldgeräten bewusst
-ausführlicher als bisher üblich (welche Signale potentialfrei vs. Bus,
-ob ein optionales Modul nötig ist), da diese Entscheidung direkt in die
-Schaltschrank-Planung durchschlägt.
-
-**Modul 5** (`modules/modul-05-feldgeraete/index.html`, rein lesend, Struktur
-identisch zu Modul 7): liest `localStorage['m04_belegung']` (kein direkter
-Modulaufruf, gleicher Kontrakt wie Modul 3↔1/2) + `baugruppen.json` +
-`feldgeraete.json` unabhängig neu ein, aggregiert nach
-`feldgeraet_artikel_nr` (bepreist) bzw. `betriebsmittel`-Freitext
-(unbepreist, wie bei `aggregateStueckliste()` zeigt „–" statt 0,00€ und
-fließt nicht in die Summe ein). Grund für ein eigenes Modul statt eines
-Panels in Modul 4: dort ist der Platz schon knapp (siehe Eingabeleiste-
-Kompaktierung weiter oben) – Modul 5 bekommt mehr Raum, analog zum
-Modul-7-Präzedenzfall. **Modul 4 bekam nur zwei kleine Ergänzungen:** Zeile
-„Feldgeräte gesamt" (`sumFeldgeraete()`) neben Physikalisch/Kommunikativ
-gesamt, Button „→ Modul 5 · Feldgeräte" neben „← Zurück zu Modul 3". Modul
-05 auf der Startseite von Platzhalter („Datenpunkt-Management") auf aktiv
-umgestellt, `hero-stats` „5"→„6".
-
-Verifiziert direkt im Browser: `feldgeraete.json` korrekt leer exportiert
-(`[]`, Sheet angelegt aber noch keine Einträge); synthetischer Testfall
-(1 Baugruppe mit `feldgeraet_artikel_nr`-Verknüpfung, 1 nur mit
-`betriebsmittel`-Freitext) zeigt in Modul 5 korrekt eine bepreiste und eine
-unbepreiste Zeile, Summe berücksichtigt nur die bepreiste; „Feldgeräte
-gesamt"-Zeile in Modul 4 zeigt korrekte Mengensumme, keine Überlappung mit
-der DDC-Statistik-Zeile (Zeilenhöhe/Schriftgröße von `#ddc_summary_totals`
-dafür leicht reduziert). Keine Konsolenfehler in Modul 4, 5 oder auf der
-Startseite. Backup vor der Excel-Strukturänderung:
-`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-feldgeraete-schema_*.xlsx`.
-
-### Erste Feldgeräte-Baugruppen: 4 Raumsensoren, Siemens Symaro (Session 51 Nachtrag 8, gesperrt)
-Erste Nutzung des neuen Feldgeräte-Katalogs (siehe vorheriger Abschnitt).
-**Planungsfabrikat Sensoren/Feldgeräte: Siemens** (Nutzer-Vorgabe). Workflow
-bestätigt sich als praktikabel: Claude recherchiert (Originaldatenblätter,
-bei binär-komprimierten Siemens-PDFs per `pypdf` in WSL ausgelesen – siehe
-Session 41-Präzedenzfall, funktioniert weiterhin zuverlässig), präsentiert
-Fund + Link, Nutzer entscheidet vor dem Eintragen.
-
-**4 Baugruppen angelegt** (`430_000001`–`430_000004` – ursprünglich unter
-`480_00000{8-11}`/Gewerk Automation angelegt, per Nutzer-Korrektur direkt
-im Anschluss auf Gewerk 430/Lüftung umbenannt, siehe „Baugruppen mehreren
-Gewerken zuordenbar" weiter unten; Zone `klemm_s`, `funktionsbereich:
-['heizung','lueftung','kaelte']`, je 1× `dp_ai` auf der Signalklemme):
-- `430_000001` „Raumtemperatursensor passiv" – Siemens `QAA24` (LG-Ni1000),
-  2 Klemmen (B/M, passiv, keine Versorgung).
-- `430_000002` „Raum-CO2-Sensor" – Siemens `QPA2000` (NDIR, 0…2000ppm),
-  3 Klemmen (G/G0 Versorgung + X1 Signal).
-- `430_000003` „Raum-VOC-Sensor" – Siemens `QPA1000` (Metalloxid-Halbleiter),
-  3 Klemmen, gleiche Baureihe/Datenblatt wie QPA2000.
-- `430_000004` „Raumfeuchtesensor" – Siemens `QFA2000` (kapazitiv), 3 Klemmen.
-  Klemmenbezeichnung nicht aus dem QFA2000-eigenen Datenblatt bestätigt
-  (Abruf scheiterte am Timeout), sondern aus dem 20 Jahre durchgängig
-  gleichen Siemens-Klemmenschema (G/G0+Signal) der QFA/QPA-Familie
-  abgeleitet – vor Verdrahtung idealerweise gegenprüfen.
-
-Alle 4 Klemmen sind `3209510` (PT 2,5 grau, Standardklemme) – auch bei den
-aktiven Sensoren, da 24V-SELV-Versorgungsleitungen (anders als
-230V-Leistungsanschlüsse) keine Farbcodierung nach der Session-51-Regel
-„Farben sind für Leistungsanschlüsse ab 230V AC" brauchen.
-
-**Bewusst NICHT angelegt (Nutzer-Entscheidung nach Rückfrage):**
-- Raumtemperatursensor aktiv – einziger Siemens-Kandidat (`QAA2071`,
-  4-20mA) ist laut HIT-Portal „In phase-out", kein Nachfolger für „nur
-  Temperatur, aktiv" als Einzelprodukt in der aktuellen Symaro-Reihe
-  gefunden (nur noch innerhalb der QFA/QPA-Kombisensoren abgedeckt).
-- Raumtemperatur- und Feuchtesensor (Temperatur passiv, Feuchte aktiv) –
-  kein einzelnes Siemens-Katalogprodukt mit dieser gemischten Kombination
-  gefunden (QFA-Kombisensoren bieten Temperatur immer nur aktiv).
-- Raumtemperatur- und Feuchtesensor aktiv (`QFA3160`) – Nutzer-Einschätzung:
-  Gehäuse/Optik nur für industrielle Umgebungen geeignet, nicht für
-  Bereiche mit architektonischen Anforderungen.
-
-Verifiziert direkt im Browser (Standschrank, echte Katalogdaten):
-Testbelegung (2× Raumtemperatursensor + je 1× CO2/VOC/Feuchte) liefert
-`dp_ai used:5` (korrekt, 1 pro Instanz), `bgInstanceQueue` mit korrekter
-Klemmenzahl je Instanz (2/2/3/3/3), Stückliste aggregiert korrekt
-`3209510` Menge 13 in `klemm_s`; Modul 5 zeigt alle 4 Feldgeräte mit
-korrektem Hersteller/Preis/Menge/Summe (1207,66 €). Keine Konsolenfehler.
-Backup: `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-raumsensoren_*.xlsx`.
-**Korrektur (Session 51 Nachtrag 9, direkt im Anschluss):** siehe nächster
-Abschnitt – die IDs `480_000008`–`011` wurden zu `430_000001`–`004`
-umbenannt.
-
-### Baugruppen mehreren Gewerken zuordenbar: funktionsbereich als Array (Session 51 Nachtrag 9, gesperrt)
-Nutzer-Fund: die 4 neuen Raumsensor-Baugruppen waren unter „Automation"
-einsortiert – falsch, „es handelt sich nicht um Automationsgeräte". Sie
-müssen stattdessen in Heizung, Lüftung UND Kälte gleichzeitig auswählbar
-sein (ein Raumsensor wird je nach Projekt für unterschiedliche
-Anlagentypen eingesetzt).
-
-**Datenmodell:** `baugruppen.funktionsbereich` ist jetzt immer ein Array
-(Komma-Liste in Excel), auch bei nur einem Wert – exakt analog zu
-`einzelbauteile.zone` (Session 44). `filterBaugruppen()` in Modul 4 prüft
-entsprechend `b.funktionsbereich.includes(gew)` statt `===`.
-`baugruppen.gewerk` (DIN-276-Code) bleibt bewusst EINWERTIG – wird in
-Modul 7 exakt gefiltert/anzeigt, ein Komma-Wert würde dort die
-Filterlogik brechen. Bei mehreren gleichzeitig zutreffenden Gewerken
-führt der Nutzer eines als „führend" (hier auf Nachfrage: **430 ·
-Lüftung**).
-
-**ID-Konsequenz:** die ID kodiert laut Schema (Session 37/38) den
-führenden DIN-276-Code – mit `gewerk` 480→430 mussten auch die IDs
-umbenannt werden, sonst widerspricht die ID dem eigenen Schema. Kein
-Konflikt mit alten `430_xxxxxx`-Einträgen (Baugruppen wurden in Session 40
-komplett neu aufgebaut, keine Altlasten): `480_000008`–`011` →
-**`430_000001`–`004`**, `baugruppen_bauteile.bg_id` (11 Zeilen) nachgezogen.
-
-Verifiziert direkt im Browser: Tabs Heizung/Lüftung/Kälte zeigen jeweils
-alle 4 Sensor-Baugruppen korrekt; Tab Automation zeigt sie korrekt NICHT
-mehr (nur noch die 7 DDC-Reserve-Baugruppen); Modul 7 rendert
-`funktionsbereich` als lesbaren Komma-Text ohne Fehler (kein eigener
-Formatter nötig, `String()`-Fallback reicht, wie bereits beim analogen
-`zone`-Array). Regressionstest mit umbenannter ID (`430_000002`, 2×
-Instanzen) bestätigt Platzierung/Stückliste/Feldgeräte-Summe weiterhin
-korrekt. Keine Konsolenfehler.
-
-### Raumsensoren-Nachtrag: CO2/VOC nur Lüftung, Kombifühler T+rH ergänzt (Session 51 Nachtrag 10, gesperrt)
-Zwei Nutzer-Korrekturen direkt im Anschluss: **CO2- und VOC-Sensor
-(`430_000002`/`003`) gehören weder zu Kälte noch zu Heizung** – anders als
-Temperatur/Feuchte sind Luftqualitätssensoren nur in RLT-Anlagen sinnvoll.
-`funktionsbereich` beider Baugruppen auf `['lueftung']` (einwertig)
-korrigiert. Raumtemperatursensor passiv (`430_000001`) und
-Raumfeuchtesensor (`430_000004`) bleiben unverändert bei
-Heizung/Lüftung/Kälte.
-
-**Neue Baugruppe `430_000005` „Raumtemperatur- und Feuchtesensor"**
-(Lüftung/Heizung/Kälte) – Siemens `QFA2060` (Symaro, Standardgenauigkeit).
-Bewusst NICHT `QFA3160` (bereits verworfen, Messstab-Bauform/industrielle
-Optik) – `QFA2060` hat stattdessen dasselbe flache Wandaufbaugehäuse wie
-`QAA24`/`QPA2000` (90×100×36mm, IP30), architektonisch unauffällig. 4
-Klemmen (G/G0 Versorgung, U1 Feuchte-Signal, U2 Temperatur-Signal – aus
-dem Schwestermodell `QFA3160` abgeleitet, gleiches Familienschema),
-Datenpunktbedarf 2× AI (je Instanz). Kein Preis eingetragen – nur
-Gebrauchtmarkt-/US-Distributor-Preise gefunden, nach Session-45-Konvention
-nicht übernommen.
-
-Verifiziert direkt im Browser: Heizung/Kälte zeigen nach der Korrektur
-korrekt nur noch 3 Sensoren (T-passiv, Feuchte, Kombi), Lüftung zeigt alle
-5; Testbelegung (2× Kombifühler) liefert `dp_ai used:4` (2 pro Instanz),
-8 Klemmen in der Stückliste, Modul 5 zeigt den Kombifühler korrekt
-unbepreist („–", nicht in der Summe). Keine Konsolenfehler.
-
-### Tauchtemperaturfühler 100/150mm für Heizung/Kälte (Session 51 Nachtrag 11, gesperrt)
-Nutzer-Wunsch: passive Tauchtemperaturfühler bis 200mm Baulänge mit
-passender Tauchhülse, vorgeschlagen 3 Größen (~65/~135/~200-250mm).
-**Recherche-Ergebnis (Siemens-Originaldatenblatt CE1N1781en, 2017-07-19,
-Symaro `QAE21..`): die Baureihe bietet ausschließlich 100mm und 150mm als
-Baulänge – weder 65mm noch 200-250mm existieren als Katalogvariante.**
-Dem Nutzer mit Tabelle vorgelegt, auf Rückmeldung beide reale Größen
-übernommen (keine 3. Größe).
-
-**2 neue Baugruppen** `430_000006`/`430_000007` „Tauchtemperatursensor
-100mm"/„150mm" (Heizung/Kälte, NICHT Lüftung – reine Medientemperatur in
-Rohren/Behältern). Siemens **`QAE2120.010`**/**`QAE2120.015`** – bewusst
-die LG-Ni1000-Elementvariante (konsistent zu `QAA24`) UND die einzige
-Ausführung dieser Baureihe, bei der die Tauchhülse (Schutztasche mit
-Gewindenippel G½A) bereits im Lieferumfang enthalten ist (alle anderen
-Elementtypen Pt100/Pt1000/NTC verlangen die Tauchhülse als separates
-Zubehör). 2 Klemmen (B/M, passiv, polaritätsunabhängig vertauschbar),
-1× `dp_ai`. Preise 85,08€/89,63€ (Siemens HIT-Portal-Preis).
-
-Verifiziert direkt im Browser: Heizung UND Kälte zeigen beide Größen
-korrekt, Lüftung korrekt nicht; Testbelegung (je 1×) liefert `dp_ai
-used:2`, 4 Klemmen, Modul 5 zeigt beide korrekt bepreist (Summe 174,71€).
-Keine Konsolenfehler. Backup:
-`C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-tauchfuehler_*.xlsx`.
-Damit sind die Raumsensoren fürs Erste abgeschlossen.
+Alle Schritte direkt im Browser verifiziert (Testbelegungen mit korrekter
+Klemmenzahl/DP/Stückliste/Modul-5-Summe je Schritt), keine Konsolenfehler
+– Details siehe Archiv.
 
 ### Modul 4/5 – Lüftungssensoren, Steuerspannungs-Automatik, Sicherheitsketten (Session 52, komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,
@@ -1018,7 +624,7 @@ Alles direkt im Browser verifiziert (frische Tabs, vollständig geleertes
 
 ## Gesperrte Entscheidungen
 
-Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (15.08.2026):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md`, `docs/archiv/claude-md-modul4-sessions-35-51.md` und `docs/archiv/claude-md-modul4-session-52.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte ins Archiv. Die aus Session 51/52 destillierten Baugruppen-Modellierungsregeln stehen dauerhaft unter „## Baugruppen-Modellierungsregeln (verbindlich)" weiter oben.
+Diese Punkte wurden bereits ausführlich diskutiert und entschieden – nicht neu aufgreifen. **Archiv-Hinweis (16.08.2026, 2. Durchlauf):** ausführliche Session-Protokolle werden zu kompakten Ergebnis-Zusammenfassungen eingedampft (Volltext inkl. Nutzer-Funden/verworfenen Zwischenständen/Verifizierungsdetails liegt in `docs/archiv/claude-md-modul4-sessions-20-29.md`, `docs/archiv/claude-md-modul4-sessions-30-34.md`, `docs/archiv/claude-md-modul4-sessions-35-51.md` (inkl. Nachtrag 7–11), `docs/archiv/claude-md-modul4-session-52.md` und `docs/archiv/claude-md-modul4-sessions-53-54.md`) – Grund: `CLAUDE.md` wird bei jeder Sitzung vollständig geladen, unabhängig vom Umfang der Aufgabe. 1296→902 Zeilen bei diesem Durchlauf (Sessions 53/54 + Session-51-Nachtrag 7–11 ausgelagert, per `sed`-Zeilenbereiche statt Abtippen). Bei künftigen sehr langen Session-Nachträgen ebenso verfahren: verbindliche Regel kompakt in `CLAUDE.md`, ausführliche Vorgeschichte sofort ins Archiv statt erst bei der nächsten Aufräumrunde. Die aus Session 51/52 destillierten Baugruppen-Modellierungsregeln stehen dauerhaft unter „## Baugruppen-Modellierungsregeln (verbindlich)" weiter oben.
 
 - `h_handling_ke` startet an der **Schaltschrankinnenwand** (nicht an MP-Oberkante)
 - Zonenreihenfolge ab Gehäusewand: **handling → bieg → zug → handling_zug → kanal** (fest, nicht ändern)
