@@ -223,5 +223,85 @@
     "kategorie": "Raumsensor",
     "quelle_hinweis": "Siemens QPA2062 (Symaro-Familie, wie QPA2000/QPA1000 bereits katalogisiert), Kombifuehler CO2 (NDIR, 0-2000ppm) + relative Feuchte (kapazitiv, 0-100%) + Temperatur (aktiv, 0-50/-35...35 Grad C waehlbar), je DC0-5V/0-10V/4-20mA waehlbar. Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC15-35V) + X1 (CO2-Signal) + X2 (Feuchtesignal) + X3 (Temperatursignal). Keine Sollwertversteller-Variante in der aktuellen QPA10../QPA20..-Baureihe verfuegbar (Nutzer-Anfrage nach \"CO2+Feuchte+Temp+Sollwertversteller\" zurueckgestellt, siehe CLAUDE.md). IP30. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CE1N1961de (2024-03-05): https://cache.industry.siemens.com/dl/files/291/109791291/att_1048054/v3/A6V11526865.pdf",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "QBE1900-P7",
+    "bezeichnung": "Druckschalter, Flüssigkeiten/Gase, -0,3...7 bar, Wechselkontakt",
+    "hersteller": "Siemens",
+    "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
+    "quelle_hinweis": "Siemens QBE1900-P7, mechanischer Druckschalter (Messsystem, kein Sensor mit Hilfsenergie), Wechselkontakt, Einstellbereich -0,3...7 bar, Schaltdifferenz 1,5-5 bar, automatischer Reset (im Gegensatz zur -M-Variante mit manuellem Reset/Wiedereinschaltsperre = Sicherheitsbegrenzer). Anschluss G1/2\" außen, 3 Schraubklemmen (1,5-4mm²) + 1 Erdungsklemme. Laut Anschlussschema im Datenblatt fuer \"Single low pressure switch response\" (P7-Familie) vs. \"Single high pressure switch response\" (P32-Familie) vorgesehen - hier auf Nutzer-Entscheidung als EIN Gerät fuer beide Rollen (Max und Min, je nach Kontaktwahl vor Ort) verwendet, in DBACS als 2 getrennte Baugruppen (420_000001/002) mit p-Max/p-Min-Kennzeichnung. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt A6V12204470_en (2023-06-19): https://www.siemensbolt.hu/doc/siemens/pdf/A6V12976650_Pressure%20switch%20QBE1900-Px_en.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QBE2003-P4",
+    "bezeichnung": "Drucksensor, Flüssigkeiten/Gase, 0-4 bar, 0-10V",
+    "hersteller": "Siemens",
+    "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
+    "quelle_hinweis": "Siemens QBE2003-P4, piezoresistiver Drucksensor fuer neutrale und leicht aggressive Fluessigkeiten/Gase, Anschluss G1/2\" aussen + M5 innen, Stecker DIN EN175301-803-A, Klemmen G(Versorgung 24VAC/DC12-33V)/U(Signal 0-10V)/M(Messnull GND), 3-Leiter. Nutzer-Vorgabe \"ca. 0-3 bar\" - naechste Normgroesse oberhalb gewaehlt (Alternative waere QBE2003-P2.5, naeher am Wert aber ohne Reserve). Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt A6V10432494_en--_a (2014-08-29).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QBE2003-P10",
+    "bezeichnung": "Drucksensor, Flüssigkeiten/Gase, 0-10 bar, 0-10V",
+    "hersteller": "Siemens",
+    "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
+    "quelle_hinweis": "Siemens QBE2003-P10, piezoresistiver Drucksensor fuer neutrale und leicht aggressive Fluessigkeiten/Gase, Anschluss G1/2\" aussen + M5 innen, Stecker DIN EN175301-803-A, Klemmen G(Versorgung 24VAC/DC12-33V)/U(Signal 0-10V)/M(Messnull GND), 3-Leiter. Exakter Treffer fuer Nutzer-Vorgabe \"ca. 0-10 bar\". Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt A6V10432494_en--_a (2014-08-29).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "PST010RG12S",
+    "bezeichnung": "Elektronischer Druckschalter/-transmitter Smart Press, 0-10 bar, 2 Schaltausgänge + Analogausgang",
+    "hersteller": "Honeywell (FEMA)",
+    "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
+    "quelle_hinweis": "Honeywell/FEMA Smart Press PST010RG12S, mikroprozessorgestuetzter Druckschalter/-transmitter mit 2 konfigurierbaren Open-Collector-Schaltausgaengen (je als Minimal-/Maximaldruckwaechter/Fensterueberwachung, Oeffner/Schliesser waehlbar) UND Analogausgang 0-10V oder 4-20mA, Messbereich 0-10 bar, G1/2\" Aussengewinde (Standard-Manometeranschluss), Versorgung DC14-36V. Elektrischer Anschluss ueber 2x 5-polige M12-Steckverbinder (1x fuer Transmitter-/Analogfunktion, 1x fuer Schaltausgaenge) - exakte Pin-Belegung nicht aus der Herstellerkatalog-Uebersicht ablesbar (nur Zubehoerliste fuer Kabeldosen ST12-5 gefunden), vor Verdrahtung idealerweise anhand des vollstaendigen Smart-Press-Datenblatts gegenpruefen. Nutzer-Hinweis: \"Schau Dir mal bei Honeywell FEMA den Smart DCM an\" fuehrte zur verwandten Baureihe Smart Press PST (Smart DCM selbst hat nur Schaltausgaenge, kein Analogsignal - PST ist die Variante mit beidem). Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Elektronische Druckschalter\": http://www.fema-armaturen.ch/pdf/web_02.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QVE1901",
+    "bezeichnung": "Strömungswächter für Flüssigkeiten, DN20...200, Reedkontakt",
+    "hersteller": "Siemens",
+    "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
+    "quelle_hinweis": "Siemens QVE1901, Stroemungswaechter fuer Fluessigkeiten in Rohrleitungen DN20-200, Paddelsystem mit Dauermagnet + Reedkontakt (Arbeits-/Ruhekontakt manuell umstellbar), Einbau in T-Stueck nach EN10241/EN10242 mit G1/2\" Innengewinde, Paddellaenge fuer die jeweilige Nennweite kuerzbar, Kontaktbelastung AC230V 1A/DC48V 1A, Nenndruck PN25. Steckverbinder DIN EN175301-803-A. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CM1N1594de (2021-08-16).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "SDBAM6",
+    "bezeichnung": "Sicherheitsdruckbegrenzer, 1,2-6 bar, TÜV/DGRL 2014/68/EU",
+    "hersteller": "Honeywell (FEMA)",
+    "kategorie": "Feldgerät Heizung/Kälte",
+    "quelle_hinweis": "Honeywell/FEMA SDBAM6, Druckbegrenzer \"besonderer Bauart\" mit selbstueberwachendem Sensor (Sicherheitsmembrane), interner Verriegelung (Plombiereinrichtung P2 im Lieferumfang), gebaut nach Druckgeraeterichtlinie 2014/68/EU, einsetzbar als Druckbegrenzer fuer Maximaldruckueberwachung (Anlagen nach TRBS/DIN EN12828), Einstellbereich 1,2-6 bar, Druckaenderung zum Entriegeln 0,42 bar, max. zulaessiger Druck 10 bar, Anschluss G1/2\" aussen (Manometeranschluss nach DIN16288). Herstellerkatalog dokumentiert SDBAM ausdruecklich NUR fuer Maximaldrucküberwachung (separate DWR-Baureihe fuer Minimaldruckbegrenzung vorgesehen) - auf ausdruecklichen Nutzer-Wunsch dennoch fuer beide Rollen (p-Max UND p-Min, Baugruppen 420_000007/008) verwendet. Eine dedizierte \"2-stufige\" Variante (2 unabhaengige Schaltpunkte in einem Geraet) wurde nicht gefunden, siehe CLAUDE.md offene Punkte. Kein belastbarer EUR-Preis gefunden. Quelle: Honeywell-Katalog \"Mechanische Druckschalter\": https://prod-edam.honeywell.com/content/dam/honeywell-edam/hbt/en-us/documents/literature-and-specs/engineering-specifications/bms-from-hco-030923/hbt-bms-gedsda-ge51r0519.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "SYR-933.1",
+    "bezeichnung": "Wasserstandbegrenzer/Wassermangelsicherung, DN20, mit Verriegelung",
+    "hersteller": "SYR (Hans Sasserath)",
+    "kategorie": "Feldgerät Heizung",
+    "quelle_hinweis": "SYR (Hans Sasserath GmbH & Co. KG) Wasserstandbegrenzer 933.1, magnetische Uebertragung der Schwimmerbewegung auf einen Mikroschalter (Wechsler, 1-polig), Pruefung ohne Absenken des Wasserstandes moeglich, Verriegelung nach Abschalten (manueller Reset ueber Entriegelungstaster) - Typ 933.2 (ohne Verriegelung) ebenfalls verfuegbar. Absicherung von Heizkesseln in Warmwasser-Heizungsanlagen gegen Wassermangel nach DIN EN12828, Pflicht ab 300kW Heizleistung. Einbau DN20 in die Kessel-Vorlaufleitung, Betriebsdruck max. 10 bar, Betriebstemperatur max. 120°C, TÜV-Bauteilkennzeichen TÜV-HWB-12-190, VDE-Ausweis-Nr. 139223. Elektrischer Anschluss fest verdrahtet (Kabel H05VV-F 4x1,00mm², Laenge 2,5m). Weder Siemens noch Honeywell/FEMA noch IFM fuehren Wassermangelsicherungen im Programm - SYR auf Nutzer-Hinweis als Herstellerabweichung eingesetzt (analog KRIWAN-Praezedenzfall Session 53). Kein belastbarer EUR-Preis gefunden. Quelle: SYR-Originaldatenblatt: https://www.syr.de/daten_produkte/PDF/Datenblatt/Deutsch/0933.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "TWP1F",
+    "bezeichnung": "Temperaturwächter, Stabthermostat, 20-150°C, Wechselkontakt",
+    "hersteller": "Honeywell (FEMA)",
+    "kategorie": "Feldgerät Heizung",
+    "quelle_hinweis": "Honeywell/FEMA TWP1F, Stabthermostat mit Wechselkontakt (Umschalter), TÜV-Pruefzeichen TW 89 207, Einstellbereich 20-150°C, max. zulaessige Temperatur am Fuehler 175°C, Tauchhuelse Messing G1/2\" (im Lieferumfang), Eintauchtiefe 100mm, Schaltleistung 10(2)A/250V, IP54. Kein Sicherheitsbauteil (nicht selbstueberwachend, keine Wiedereinschaltsperre) - reiner Temperaturwaechter, Gegenstueck zum Sicherheitstemperaturbegrenzer STB1F. Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Mechanische Thermostate\": http://www.fema-armaturen.ch/pdf/web_04.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "STB1F",
+    "bezeichnung": "Sicherheitstemperaturbegrenzer, Stabthermostat, 60-130°C, Öffnerkontakt",
+    "hersteller": "Honeywell (FEMA)",
+    "kategorie": "Feldgerät Heizung",
+    "quelle_hinweis": "Honeywell/FEMA STB1F, Stabthermostat mit Oeffnerkontakt, selbstueberwachend (bei Bruch/Undichtigkeit im Messsystem oeffnet der Stromkreis, Anlage schaltet zur sicheren Seite ab), mit Wiedereinschaltsperre (manueller Reset nach Entfernen der Hutmutter), gepruft nach Druckgeraeterichtlinie 2014/68/EU und DIN EN14597 fuer Heizungsanlagen nach DIN EN12828, Dampf-/Heisswasseranlagen und Fernheizungen, TÜV-Pruefzeichen STB 89 507, Einstellbereich 60-130°C, max. zulaessige Temperatur am Fuehler 150°C, Tauchhuelse Messing G1/2\" (im Lieferumfang), Eintauchtiefe 150mm, Schaltleistung 10(2)A/250V, IP54, plombierbar. Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Mechanische Thermostate\": http://www.fema-armaturen.ch/pdf/web_04.pdf",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "STB+TWF",
+    "bezeichnung": "Doppelthermostat STB+TW, 30-110°C, Öffner (STB) + Wechselkontakt (TW)",
+    "hersteller": "Honeywell (FEMA)",
+    "kategorie": "Feldgerät Heizung",
+    "quelle_hinweis": "Honeywell/FEMA STB+TWF, Doppelthermostat mit 2 unabhaengigen Schaltelementen in einem Gehaeuse: STB (Oeffnerkontakt, selbstueberwachend, Wiedereinschaltsperre mit manuellem Reset) + TW (Wechselkontakt, ohne Sicherheitsfunktion), gepruft nach Druckgeraeterichtlinie 2014/68/EU und DIN EN14597, TÜV-Pruefzeichen TW/STB 90 407, gemeinsamer Einstellbereich 30-110°C, max. zulaessige Temperatur am Fuehler 130°C, Tauchhuelse Messing G1/2\" (im Lieferumfang), Eintauchtiefe 150mm, Schaltleistung 10(2)A/250V, IP54, plombierbar. Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Mechanische Thermostate\": http://www.fema-armaturen.ch/pdf/web_04.pdf",
+    "geprueft": false
   }
 ]

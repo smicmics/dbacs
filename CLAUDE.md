@@ -45,6 +45,28 @@
   modbus_rtu/modbus_tcp). Alternativen anderer Hersteller noch zu
   recherchieren, falls der Nutzer diese beiden Kombinationen weiterhin
   benötigt.
+- Preise aller 10 Session-54-Feldgeräte Heizung/Kälte/Sanitär unbestätigt/
+  fehlend (QBE1900-P7, QBE2003-P4, QBE2003-P10, PST010RG12S, QVE1901,
+  SDBAM6, SYR-933.1, TWP1F, STB1F, STB+TWF) – kein belastbarer EUR-Preis
+  gefunden, siehe `quelle_hinweis` je Eintrag.
+- **Sicherheitsdruckbegrenzer „2-stufig" (Nutzer-Anfrage Session 54) nicht
+  gefunden:** weder im Honeywell/FEMA-SDBAM-Katalog noch sonst ein
+  Einzelgerät mit 2 unabhängigen Schaltpunkten in einem Gehäuse gefunden.
+  Auf Nutzer-Anweisung zurückgestellt („Stelle die Doppellösung zurück,
+  wenn Du kein passendes Gerät bei Honeywell findest") – aktuell nur
+  1-stufige SDBAM6-Baugruppen angelegt (`420_000007`/`008`). Bei Bedarf
+  später klären, ob 2 in Serie geschaltete SDBAM-Einheiten oder ein anderer
+  Hersteller die Anforderung abdecken.
+- **Smart Press PST010RG12S (Honeywell/FEMA, `420_000005`) – Pin-Belegung
+  der 2 M12-Steckverbinder nicht bis auf Pin-Ebene verifiziert:** nur aus
+  einer Katalog-Kurzübersicht (Zubehör-Kabeldosen ST12-5) abgeleitet, kein
+  vollständiges Datenblatt mit Anschlussschema gefunden. Vor Verdrahtung im
+  Projekt das vollständige Smart-Press-Datenblatt gegenprüfen.
+- **Sicherheitsdruckbegrenzer SDBAM6 für p-Min-Rolle (`420_000008`)
+  entgegen Herstellerkatalog verwendet:** der Honeywell/FEMA-Katalog
+  dokumentiert SDBAM ausdrücklich nur für Maximaldrucküberwachung (eigene
+  DWR-Baureihe für Minimaldruckbegrenzung vorgesehen) – auf ausdrücklichen
+  Nutzer-Wunsch dennoch für beide Rollen eingesetzt, siehe `quelle_hinweis`.
 - **Geplant (Nutzer-Ankündigung Session 53):** Baugruppe „Schaltschrank-USV"
   kommt später dazu, gehört dann ebenfalls in die Kategorie
   `Energieversorgung` (Gewerk 480/Automation) – gleiche Kategorie wie die
@@ -496,6 +518,73 @@ Baugruppen sowie in den zugehörigen `feldgeraete.json`-Einträgen
 unverändert, nur die Zeilenposition wurde getauscht). Verifiziert im
 Browser: beide Einträge erscheinen jetzt konsistent benannt und
 unmittelbar hintereinander im Lüftung-Tab, keine Konsolenfehler.
+
+### Modul 4/5 – Heizung/Kälte/Sanitär: Druck-, Strömungs- und Temperaturwächter (Session 54, gesperrt)
+Erste Baugruppen für die wasserführenden Gewerke (410 Sanitär/420 Heizung/
+434 Kälte) – bisher waren nur Lüftung (430) und Automation (480) befüllt.
+Neue Kategorie „Sensoren und Wächter" (analog „Luftkanalsensoren" in
+Lüftung) eingeführt, 12 neue Baugruppen `420_000001`–`420_000012`
+(führendes Gewerk 420/Heizung, da alle Baugruppen heizungsrelevant sind;
+`funktionsbereich`-Array steuert die Sichtbarkeit in den einzelnen Tabs).
+Planungsfabrikat für diese Gerätegruppe **Siemens QBE-/QVE-Baureihe**
+(Druck-/Strömungssensorik) bzw. **Honeywell/FEMA** (mechanische mediengefüllte
+Druck-/Temperaturschalter, Sicherheitsbegrenzer – Siemens führt diese
+Gerätekategorien nicht) – neues Muster für „wo Siemens nicht fündig wird":
+Honeywell/FEMA als zweite Planungsfabrikat-Ebene für Heizung/Kälte/Sanitär-
+Sicherheitstechnik (analog KRIWAN-Ausnahme bei Lüftung, Session 53):
+- `420_000001`/`002` „Druckwächter Max/Min" (Siemens QBE1900-P7, -0,3...7 bar,
+  Wechselkontakt, selbstrückstellend) – **ein Gerätetyp für beide Rollen**
+  (Nutzer-Entscheidung: Kontaktwahl Schließer/Öffner vor Ort entscheidet
+  Max/Min, keine zwei Artikel nötig). Namenskonvention auf Nutzer-Wunsch:
+  Messbereich immer im Namen, Funktionskennung „(p-Max)"/„(p-Min)" am Ende
+  der Beschreibung – **gilt als Vorlage für alle künftigen Wächter-Paare**.
+- `420_000003`/`004` „Drucksensor 0-4bar/0-10bar" (Siemens QBE2003-P4/-P10,
+  0-10V, G/U/M-Klemmenschema wie QBM3020).
+- `420_000005` „Drucksensor und -wächter Kombi" (Honeywell/FEMA Smart Press
+  PST010RG12S) – einziges gefundenes Gerät mit gleichzeitig 2 Schaltausgängen
+  UND Analogausgang 0-10V in einem Gehäuse; Versorgung DC14-36V (erste
+  Baugruppe mit `benoetigt_steuerspannung:'24vdc'` außerhalb der reinen
+  DDC-Netzteile) – Pin-Belegung der 2 M12-Steckverbinder nur näherungsweise
+  bekannt, siehe „Offene Punkte".
+- `420_000006` „Strömungswächter" (Siemens QVE1901) – schraubt direkt in ein
+  T-Stück mit G½"-Innengewinde, Paddel kürzbar für DN20-200.
+- `420_000007`/`008` „Sicherheitsdruckbegrenzer Max/Min" (Honeywell/FEMA
+  SDBAM6, 1,2-6 bar, TÜV/DGRL 2014/68/EU, plombierbar/manueller Reset) –
+  Herstellerkatalog dokumentiert dieses Gerät nur für Maximaldrucküber-
+  wachung, auf Nutzer-Wunsch dennoch für beide Rollen verwendet (siehe
+  „Offene Punkte"). Die vom Nutzer angefragte „2-stufige" Variante (2
+  unabhängige Schaltpunkte in einem Gehäuse) wurde nicht gefunden und
+  zurückgestellt.
+- `420_000009` „Wassermangelsicherung" (**SYR/Hans Sasserath 933.1**,
+  DN20, mit Verriegelung) – weder Siemens noch Honeywell/FEMA noch IFM
+  führen Wassermangelsicherungen im Programm, SYR als weitere
+  Herstellerabweichung recherchiert und mit Nutzer abgestimmt (Hinweis kam
+  leicht verunklart als „Sasserat nbach" – korrekt aufgelöst zu SYR/Sasserath).
+- `420_000010`/`011`/`012` „Temperaturwächter"/„Sicherheitstemperatur-
+  begrenzer"/„Kombi Temperaturwächter+STB" (Honeywell/FEMA TWP1F/STB1F/
+  STB+TWF, alle G½"-Tauchhülse Messing, TÜV-geprüft nach DIN EN14597/DGRL
+  2014/68/EU) – STB+TWF hat 2 unabhängige native Schaltelemente (Öffner für
+  STB + Wechsler für TW) in einem Gehäuse, braucht daher **kein**
+  Koppelrelais (Regel-6-Ausnahme wie beim Kanalrauchmelder).
+
+**Modellierungsmuster bestätigt:** alle mechanischen Schalter (Druck-,
+Strömungs-, Temperaturwächter/-begrenzer) sind potentialfrei und brauchen
+keine eigene Steuerspannung (2 Klemmen je Kontakt, `klemm_f`, 1x BI) – nur
+die elektronischen Sensoren/Transmitter (Drucksensor, Kombi-Drucksensor)
+brauchen eine Versorgungsspannung (`benoetigt_steuerspannung`).
+
+Verifiziert direkt im Browser (Standschrank über Modul 2+3-Pipeline,
+Drehstrom-Netztyp, zusätzlich zu den 5 Lüftungssensor-Baugruppen aus
+demselben Sitzungslauf): alle 12 Baugruppen korrekt in „Sensoren und
+Wächter" gruppiert, Sanitär-Tab zeigt korrekt nur die 6 gewerkübergreifenden
+Geräte, Kälte-Tab zusätzlich die 2 Sicherheitsdruckbegrenzer, Heizung alle
+12. Stückliste aggregiert korrekt `KF` 28 und `KS` 22 (kumulativ mit den 4
+KF/15 KS aus den Lüftungssensoren). DDC-Statistik `Physikalisch gesamt: 24`
+(11 AI + 13 BI, kumulativ), `Feldgeräte gesamt: 17`. Steuerspannungs-
+Automatik ergänzt korrekt alle drei benötigten Quellen gleichzeitig: 24V-AC-
+Trafo (Drehstrom-Variante), 230V-AC-Trenntrafo (Koppelrelais aus den
+Lüftungssensoren) UND erstmals ein 24V-DC-Netzteil (QUINT-PS/1AC/24DC/2,5)
+für die Smart-Press-Kombi-Baugruppe. Keine Konsolenfehler.
 
 ### Modul 4 – Session 51 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,

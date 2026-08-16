@@ -1190,5 +1190,384 @@
     "benoetigt_steuerspannung": "24vac",
     "kategorie": "Raumsensoren",
     "geprueft": false
+  },
+  {
+    "id": "420_000001",
+    "name": "Druckwächter Max G1/2\", -0,3...7 bar",
+    "gewerk": "420",
+    "beschreibung": "Druckwächter Max - Druckschalter mit Wechselkontakt, selbstrückstellend, Einstellbereich -0,3...7 bar, Schaltdifferenz 1,5-5 bar (Siemens QBE1900-P7), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig), Datenpunktbedarf 1x BI. (p-Max)",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "sanitaer"
+    ],
+    "betriebsmittel": "Druckwächter, -0,3...7 bar, selbstrückstellend (Siemens QBE1900-P7)",
+    "feldgeraet_artikel_nr": "QBE1900-P7",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000002",
+    "name": "Druckwächter Min G1/2\", -0,3...7 bar",
+    "gewerk": "420",
+    "beschreibung": "Druckwächter Min - Druckschalter mit Wechselkontakt, selbstrückstellend, Einstellbereich -0,3...7 bar, Schaltdifferenz 1,5-5 bar (Siemens QBE1900-P7), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig, Gegenkontakt zu p-Max verwendet), Datenpunktbedarf 1x BI. (p-Min)",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "sanitaer"
+    ],
+    "betriebsmittel": "Druckwächter, -0,3...7 bar, selbstrückstellend (Siemens QBE1900-P7)",
+    "feldgeraet_artikel_nr": "QBE1900-P7",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000003",
+    "name": "Drucksensor G1/2\", 0...4 bar, 0-10V, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Drucksensor - Drucksensor mit Analogausgang, 0-4 bar, 0-10V, 3-Leiter (Siemens QBE2003-P4), 3 Abgangsklemmen in der Sensoren-Klemmleiste (G Versorgung + U Signal + M Messnull), Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "sanitaer"
+    ],
+    "betriebsmittel": "Drucksensor, 0-4 bar, 0-10V, 3-Leiter (Siemens QBE2003-P4)",
+    "feldgeraet_artikel_nr": "QBE2003-P4",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000004",
+    "name": "Drucksensor G1/2\", 0...10 bar, 0-10V, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Drucksensor - Drucksensor mit Analogausgang, 0-10 bar, 0-10V, 3-Leiter (Siemens QBE2003-P10), 3 Abgangsklemmen in der Sensoren-Klemmleiste (G Versorgung + U Signal + M Messnull), Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "sanitaer"
+    ],
+    "betriebsmittel": "Drucksensor, 0-10 bar, 0-10V, 3-Leiter (Siemens QBE2003-P10)",
+    "feldgeraet_artikel_nr": "QBE2003-P10",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000005",
+    "name": "Drucksensor und -wächter Kombi G1/2\", 0...10 bar, 0-10V, 24V DC",
+    "gewerk": "420",
+    "beschreibung": "Drucksensor und Druckwächter Kombi - elektronischer Druckschalter/-transmitter mit 2 konfigurierbaren Schaltausgängen (Max und Min) UND kontinuierlichem Analogausgang 0-10V, 0-10 bar (Honeywell/FEMA Smart Press PST010RG12S), Versorgung DC14-36V (2 Steckverbinder M12 5-polig - Anschlusszuordnung Versorgung/Ausgänge laut Herstellerkatalog nicht bis auf Pin-Ebene verifiziert, siehe quelle_hinweis), 4 Abgangsklemmen Feldgeräte-Klemmleiste (Versorgung + 2x Schaltausgang) + 1 Abgangsklemme Sensoren-Klemmleiste (Analogsignal), Datenpunktbedarf 2x BI + 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "sanitaer"
+    ],
+    "betriebsmittel": "Drucksensor/-wächter Kombi, 0-10 bar, 0-10V + 2x Schaltausgang (Honeywell/FEMA Smart Press PST010RG12S)",
+    "feldgeraet_artikel_nr": "PST010RG12S",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000006",
+    "name": "Strömungswächter G1/2\"",
+    "gewerk": "420",
+    "beschreibung": "Strömungswächter - Strömungswächter für Flüssigkeiten, Paddelsystem mit Reedkontakt, Arbeits-/Ruhekontakt manuell umstellbar, Einbau in T-Stück mit G1/2\"-Innengewinde, kürzbares Paddel für DN20...200 (Siemens QVE1901), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig), Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "sanitaer"
+    ],
+    "betriebsmittel": "Strömungswächter, Reedkontakt, DN20...200 (Siemens QVE1901)",
+    "feldgeraet_artikel_nr": "QVE1901",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000007",
+    "name": "Sicherheitsdruckbegrenzer Max G1/2\", 1,2...6 bar",
+    "gewerk": "420",
+    "beschreibung": "Sicherheitsdruckbegrenzer Max - Druckbegrenzer besonderer Bauart mit selbstüberwachendem Sensor, interner Verriegelung (manueller Reset, plombierbar), geprüft nach Druckgeräterichtlinie 2014/68/EU für Anlagen nach DIN EN12828, Einstellbereich 1,2-6 bar (Honeywell/FEMA SDBAM6), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig), Datenpunktbedarf 1x BI. Herstellerseitig laut Katalog nur für Maximaldrucküberwachung dokumentiert, hier auf Nutzer-Entscheidung auch für p-Min eingesetzt (siehe 420_000008). (p-Max) 2-stufige Ausführung (2 unabhängige Schaltpunkte in einem Gerät) noch nicht gefunden, siehe CLAUDE.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Sicherheitsdruckbegrenzer, 1,2-6 bar, TÜV/DGRL 2014/68/EU (Honeywell/FEMA SDBAM6)",
+    "feldgeraet_artikel_nr": "SDBAM6",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000008",
+    "name": "Sicherheitsdruckbegrenzer Min G1/2\", 1,2...6 bar",
+    "gewerk": "420",
+    "beschreibung": "Sicherheitsdruckbegrenzer Min - Druckbegrenzer besonderer Bauart mit selbstüberwachendem Sensor, interner Verriegelung (manueller Reset, plombierbar), geprüft nach Druckgeräterichtlinie 2014/68/EU für Anlagen nach DIN EN12828, Einstellbereich 1,2-6 bar (Honeywell/FEMA SDBAM6), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig, Gegenkontakt zu p-Max verwendet), Datenpunktbedarf 1x BI. Nutzer-Entscheidung: gleicher Artikel wie p-Max (420_000007), obwohl Hersteller-Katalog dieses Gerät nur für Maximaldrucküberwachung dokumentiert. (p-Min)",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Sicherheitsdruckbegrenzer, 1,2-6 bar, TÜV/DGRL 2014/68/EU (Honeywell/FEMA SDBAM6)",
+    "feldgeraet_artikel_nr": "SDBAM6",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000009",
+    "name": "Wassermangelsicherung DN20, mit Verriegelung",
+    "gewerk": "420",
+    "beschreibung": "Wassermangelsicherung - Wasserstandbegrenzer mit magnetischer Übertragung der Schwimmerbewegung auf einen Mikroschalter (Wechsler), Prüfung ohne Absenken des Wasserstandes möglich, mit Wiedereinschaltsperre (manueller Reset), Einbau DN20 in die Kessel-Vorlaufleitung, TÜV-Bauteilkennzeichen TÜV-HWB-12-190 nach DIN EN12828 (SYR/Hans Sasserath 933.1), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig; fest angeschlagenes 4-adriges Anschlusskabel 2,5m), Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Wassermangelsicherung, DN20, mit Verriegelung (SYR/Hans Sasserath 933.1)",
+    "feldgeraet_artikel_nr": "SYR-933.1",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000010",
+    "name": "Temperaturwächter G1/2\", 20...150°C",
+    "gewerk": "420",
+    "beschreibung": "Temperaturwächter - Stabthermostat mit Wechselkontakt, plombierbar, TÜV-geprüft (TÜV-Prüfzeichen TW 89 207), Einstellbereich 20-150°C, Tauchhülse Messing G1/2\", Eintauchtiefe 100mm (Honeywell/FEMA TWP1F), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig), Datenpunktbedarf 1x BI. Kein Sicherheitsbegrenzer (nicht selbstüberwachend, kein Wiedereinschaltsperre) - Gegenstück siehe Sicherheitstemperaturbegrenzer 420_000011.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Temperaturwächter, 20-150°C, G1/2\" (Honeywell/FEMA TWP1F)",
+    "feldgeraet_artikel_nr": "TWP1F",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000011",
+    "name": "Sicherheitstemperaturbegrenzer G1/2\", 60...130°C",
+    "gewerk": "420",
+    "beschreibung": "Sicherheitstemperaturbegrenzer - Stabthermostat mit Öffnerkontakt, selbstüberwachend (Bruch/Undichtigkeit im Messsystem schaltet zur sicheren Seite ab), mit Wiedereinschaltsperre (manueller Reset), geprüft nach Druckgeräterichtlinie 2014/68/EU und DIN EN14597 für Heizungsanlagen nach DIN EN12828 (TÜV-Prüfzeichen STB 89 507), Einstellbereich 60-130°C, Tauchhülse Messing G1/2\", Eintauchtiefe 150mm (Honeywell/FEMA STB1F), 2 Abgangsklemmen in der Feldgeräte-Klemmleiste (Kontaktausgang, potentialfrei, keine Versorgungsspannung nötig), Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Sicherheitstemperaturbegrenzer, 60-130°C, G1/2\", TÜV/DGRL 2014/68/EU (Honeywell/FEMA STB1F)",
+    "feldgeraet_artikel_nr": "STB1F",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
+  },
+  {
+    "id": "420_000012",
+    "name": "Temperaturwächter mit Sicherheitstemperaturbegrenzer G1/2\", 30...110°C",
+    "gewerk": "420",
+    "beschreibung": "Kombi Temperaturwächter und Sicherheitstemperaturbegrenzer - Doppelthermostat mit 2 unabhängigen Schaltelementen in einem Gehäuse: STB (Öffnerkontakt, selbstüberwachend, Wiedereinschaltsperre, TÜV-geprüft nach DIN EN14597/DGRL 2014/68/EU) + TW (Wechselkontakt, ohne Sicherheitsfunktion), gemeinsame Einstellbereich 30-110°C, Tauchhülse Messing G1/2\", Eintauchtiefe 150mm (TÜV-Prüfzeichen TW/STB 90 407, Honeywell/FEMA STB+TWF), 4 Abgangsklemmen in der Feldgeräte-Klemmleiste (je 2 Klemmen pro Schaltelement, beide potentialfrei, keine Versorgungsspannung nötig, keine Koppelrelais-Verschaltung nötig da bereits 2 getrennte native Kontakte vorhanden), Datenpunktbedarf 2x BI (STB-Alarm + TW-Meldung getrennt).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Doppelthermostat STB+TW, 30-110°C, G1/2\", TÜV/DGRL 2014/68/EU (Honeywell/FEMA STB+TWF)",
+    "feldgeraet_artikel_nr": "STB+TWF",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren und Wächter",
+    "geprueft": false
   }
 ]
