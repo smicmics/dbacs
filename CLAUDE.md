@@ -573,6 +573,22 @@ keine eigene Steuerspannung (2 Klemmen je Kontakt, `klemm_f`, 1x BI) – nur
 die elektronischen Sensoren/Transmitter (Drucksensor, Kombi-Drucksensor)
 brauchen eine Versorgungsspannung (`benoetigt_steuerspannung`).
 
+**Nachtrag (Session 54, gesperrt):** Nutzer-Wunsch nach dem ersten
+Durchlauf – Kategorie „Sensoren und Wächter" in zwei getrennte Kategorien
+aufgeteilt: **„Sensoren flüssiges Medium"** (kontinuierliches Analogsignal:
+`420_000003`–`005` Drucksensoren + Kombi) und **„Wächter flüssiges
+Medium"** (reiner Schaltkontakt: `420_000001`/`002`/`006`–`012`). Die
+Kombi-Baugruppe `420_000005` (Analogausgang UND 2 Schaltausgänge) bewusst
+bei Sensoren einsortiert (Namensreihenfolge „Drucksensor und -wächter"
+sowie thematische Nähe zu den beiden reinen Drucksensor-Baugruppen).
+Zusätzlich die bisher eigenständige Kategorie „Tauchfühler" (Heizung/Kälte,
+`430_000006`/`007`) aufgelöst und in „Sensoren flüssiges Medium"
+überführt – damit gibt es keine Einzel-Kategorie mit nur 2 Einträgen mehr,
+und Drucksensoren/Tauchfühler stehen thematisch zusammenhängend im
+Dropdown, analog zum Luftkanalsensoren/-wächter-Muster aus Lüftung.
+Verifiziert im Browser (Sanitär/Heizung/Kälte-Tabs): korrekte 2-Gruppen-
+Aufteilung je Tab, keine Konsolenfehler.
+
 Verifiziert direkt im Browser (Standschrank über Modul 2+3-Pipeline,
 Drehstrom-Netztyp, zusätzlich zu den 5 Lüftungssensor-Baugruppen aus
 demselben Sitzungslauf): alle 12 Baugruppen korrekt in „Sensoren und

@@ -366,7 +366,7 @@
     "betriebsmittel": "Tauchtemperaturfühler passiv, 100mm, inkl. Tauchhülse (Siemens QAE2120.010)",
     "feldgeraet_artikel_nr": "QAE2120.010",
     "automationsanbindung": true,
-    "kategorie": "Tauchfühler",
+    "kategorie": "Sensoren flüssiges Medium",
     "geprueft": false
   },
   {
@@ -394,7 +394,7 @@
     "betriebsmittel": "Tauchtemperaturfühler passiv, 150mm, inkl. Tauchhülse (Siemens QAE2120.015)",
     "feldgeraet_artikel_nr": "QAE2120.015",
     "automationsanbindung": true,
-    "kategorie": "Tauchfühler",
+    "kategorie": "Sensoren flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1217,7 +1217,7 @@
     "betriebsmittel": "Druckwächter, -0,3...7 bar, selbstrückstellend (Siemens QBE1900-P7)",
     "feldgeraet_artikel_nr": "QBE1900-P7",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1246,7 +1246,7 @@
     "betriebsmittel": "Druckwächter, -0,3...7 bar, selbstrückstellend (Siemens QBE1900-P7)",
     "feldgeraet_artikel_nr": "QBE1900-P7",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1281,7 +1281,7 @@
     "feldgeraet_artikel_nr": "QBE2003-P4",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Sensoren flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1316,7 +1316,7 @@
     "feldgeraet_artikel_nr": "QBE2003-P10",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Sensoren flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1363,7 +1363,7 @@
     "feldgeraet_artikel_nr": "PST010RG12S",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vdc",
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Sensoren flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1392,7 +1392,7 @@
     "betriebsmittel": "Strömungswächter, Reedkontakt, DN20...200 (Siemens QVE1901)",
     "feldgeraet_artikel_nr": "QVE1901",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1420,7 +1420,7 @@
     "betriebsmittel": "Sicherheitsdruckbegrenzer, 1,2-6 bar, TÜV/DGRL 2014/68/EU (Honeywell/FEMA SDBAM6)",
     "feldgeraet_artikel_nr": "SDBAM6",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1448,7 +1448,7 @@
     "betriebsmittel": "Sicherheitsdruckbegrenzer, 1,2-6 bar, TÜV/DGRL 2014/68/EU (Honeywell/FEMA SDBAM6)",
     "feldgeraet_artikel_nr": "SDBAM6",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1475,7 +1475,7 @@
     "betriebsmittel": "Wassermangelsicherung, DN20, mit Verriegelung (SYR/Hans Sasserath 933.1)",
     "feldgeraet_artikel_nr": "SYR-933.1",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1502,7 +1502,7 @@
     "betriebsmittel": "Temperaturwächter, 20-150°C, G1/2\" (Honeywell/FEMA TWP1F)",
     "feldgeraet_artikel_nr": "TWP1F",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1529,7 +1529,7 @@
     "betriebsmittel": "Sicherheitstemperaturbegrenzer, 60-130°C, G1/2\", TÜV/DGRL 2014/68/EU (Honeywell/FEMA STB1F)",
     "feldgeraet_artikel_nr": "STB1F",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   },
   {
@@ -1567,7 +1567,7 @@
     "betriebsmittel": "Doppelthermostat STB+TW, 30-110°C, G1/2\", TÜV/DGRL 2014/68/EU (Honeywell/FEMA STB+TWF)",
     "feldgeraet_artikel_nr": "STB+TWF",
     "automationsanbindung": true,
-    "kategorie": "Sensoren und Wächter",
+    "kategorie": "Wächter flüssiges Medium",
     "geprueft": false
   }
 ]
