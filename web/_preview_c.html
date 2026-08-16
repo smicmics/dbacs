@@ -1,0 +1,545 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GA-Planung · Gebäudeautomation</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+<style id="preview-variant">
+/* ══ Variante C – Tiefenglas ══ modern, ruhig, keine Animation. Grundfarben unverändert */
+
+/* -- Startseite -- */
+.site-header{
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 100%);
+  box-shadow: 0 1px 0 rgba(56,139,253,0.08);
+}
+.hero{
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(56,139,253,0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 85% 10%, rgba(63,185,80,0.06) 0%, transparent 70%);
+}
+.module-card, .arch-block, .workflow-step, .status-list, .tech-stack{
+  background-image: linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 35%, rgba(0,0,0,0.08) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 12px 28px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.25);
+  border-color: rgba(255,255,255,0.08);
+}
+.module-card--active{
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px rgba(56,139,253,0.18), 0 16px 32px rgba(56,139,253,0.08), 0 4px 10px rgba(0,0,0,0.3);
+}
+.hero-stats{
+  background-image: linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 40%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 24px rgba(0,0,0,0.3);
+}
+.btn--primary{
+  background-image: linear-gradient(160deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 60%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 6px 16px rgba(56,139,253,0.28);
+}
+.btn--ghost{ background-image: linear-gradient(160deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 60%); }
+.step-number{ box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 4px 10px rgba(56,139,253,0.35); }
+
+/* -- Modul 1/2 -- */
+header{
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0) 100%);
+  box-shadow: 0 1px 0 rgba(122,116,204,0.1);
+}
+fieldset{
+  background-image: linear-gradient(160deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.1) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 20px rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.07);
+}
+.panel-in{ box-shadow: 4px 0 20px rgba(0,0,0,0.25); }
+#svg-wrap{ box-shadow: 0 10px 28px rgba(0,0,0,0.35); border-radius:4px; }
+.btn-nav{ box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(45,189,142,0.25); }
+.field input, .field select, .proj-field input{ box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); }
+</style>
+
+</head>
+<body>
+
+  <!-- ═══════════════════════════════ HEADER ══════════════════════════════ -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <img src="assets/img/dbacs-logo.png" alt="DBACS Logo" style="height:42px;width:42px;object-fit:contain;">
+        <div style="display:flex;flex-direction:column;gap:1px;">
+          <span class="logo-text">GA<span class="logo-accent">·</span>Planung</span>
+          <span class="copyright-line" style="font-size:10px;color:var(--text-secondary);">© 2026 Stephan Michler</span>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="#module" class="nav-link">Module</a>
+        <a href="#architektur" class="nav-link">Architektur</a>
+        <a href="#workflow" class="nav-link">Workflow</a>
+        <a href="#status" class="nav-link">Status</a>
+      </nav>
+      <div class="header-badge">
+        <span class="badge badge--dev">In Entwicklung</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════════════════════════════ HERO ═══════════════════════════════ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-tag">Gewerk · Gebäudeautomation (GA)</div>
+      <h1 class="hero-title">
+        Webbasiertes Planungswerkzeug<br />
+        <span class="hero-title-accent">für Gebäudeautomation</span>
+      </h1>
+      <p class="hero-sub">
+        Unterstützung in den Leistungsphasen nach HOAI · Schaltschrank-Dimensionierung ·
+        Datenpunkt-Management · Kostenschätzung
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">6</span>
+          <span class="stat-label">Module aktiv</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">5+</span>
+          <span class="stat-label">Module geplant</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">HOAI</span>
+          <span class="stat-label">Leistungsphasen</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ MODULE ═══════════════════════════════ -->
+  <section class="section" id="module">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Module</h2>
+        <p class="section-sub">Jedes Modul deckt einen spezifischen Planungsbereich der Gebäudeautomation ab.</p>
+      </div>
+
+      <div class="module-grid">
+
+        <!-- Modul 01 -->
+        <div class="module-card module-card--active">
+          <div class="module-card-header">
+            <div class="module-number">01</div>
+            <span class="badge badge--active">Verfügbar</span>
+          </div>
+          <h3 class="module-title">Schaltschrank-Dimensionierung</h3>
+          <p class="module-subtitle">Wandschrank</p>
+          <p class="module-scope">Kabeleinführung · Nutzfläche</p>
+          <p class="module-desc">
+            Berechnung der Kabeleinführung und des verfügbaren Montagebereichs für Schaltschrank.
+            Berücksichtigung typischer Ausführungskriterien wie Kabeleinführung, Zugentlastung,
+            Leitungsdimensionen.
+          </p>
+          <ul class="module-features">
+            <li>Rittal AX Wandschränke</li>
+            <li>Kabeleinführungszone nach VDE 0298-4</li>
+            <li>Zugentlastung wählbar</li>
+            <li>Kabelkanal wählbar</li>
+          </ul>
+          <div class="module-footer">
+            <a href="../modules/modul-01-schaltschrank/" class="btn btn--primary btn--sm">
+              Modul öffnen →
+            </a>
+            <a href="../drawings/wandschrank_frontansicht.html" class="btn btn--ghost btn--sm" target="_blank">
+              Zeichnung ansehen
+            </a>
+          </div>
+        </div>
+
+        <!-- Modul 02 -->
+        <div class="module-card module-card--active">
+          <div class="module-card-header">
+            <div class="module-number">02</div>
+            <span class="badge badge--active">Verfügbar</span>
+          </div>
+          <h3 class="module-title">Schaltschrank-Dimensionierung</h3>
+          <p class="module-subtitle">Standschrank</p>
+          <p class="module-scope">Kabeleinführung · Nutzfläche</p>
+          <p class="module-desc">
+            Berechnung der Kabeleinführung und des verfügbaren Montagebereichs für Schaltschrank.
+            Berücksichtigung typischer Ausführungskriterien wie Kabeleinführung, Zugentlastung,
+            Leitungsdimensionen, Sockelauswahl.
+          </p>
+          <ul class="module-features">
+            <li>Rittal VX25 Standschränke</li>
+            <li>Kabeleinführungszone nach VDE 0298-4</li>
+            <li>Zugentlastung wählbar</li>
+            <li>Kabelkanal wählbar</li>
+            <li>Sockel wählbar</li>
+          </ul>
+          <div class="module-footer">
+            <a href="../modules/modul-02-standschrank/" class="btn btn--primary btn--sm">
+              Modul öffnen →
+            </a>
+            <a href="../drawings/standschrank_frontansicht.html" class="btn btn--ghost btn--sm" target="_blank">
+              Zeichnung ansehen
+            </a>
+          </div>
+        </div>
+
+        <!-- Modul 03 -->
+        <div class="module-card module-card--active">
+          <div class="module-card-header">
+            <div class="module-number">03</div>
+            <span class="badge badge--active">Verfügbar</span>
+          </div>
+          <h3 class="module-title">Schaltschrank Dimensionierung</h3>
+          <p class="module-subtitle">TE-Berechnung · Architektur · Innenaufbau</p>
+          <p class="module-scope">Montagefläche · TE-Berechnung · Zonenaufteilung</p>
+          <p class="module-desc">
+            Berechnung der verfügbaren Teileinheiten auf der Montageplatte.
+            Vorläufige Architektur des Innenaufbaus mit Zonen für Einspeisung,
+            Leistung, Steuerung und Klemmen.
+          </p>
+          <ul class="module-features">
+            <li>Fläche in cm² und m²</li>
+            <li>Verfügbare TE</li>
+            <li>Zonenaufteilung Innenaufbau</li>
+            <li>Wandschrank / Standschrank wählbar</li>
+          </ul>
+          <div class="module-footer">
+            <a href="../modules/modul-03-architektur/" class="btn btn--primary btn--sm">
+              Modul öffnen →
+            </a>
+          </div>
+        </div>
+
+        <!-- Modul 04 -->
+        <div class="module-card module-card--active">
+          <div class="module-card-header">
+            <div class="module-number">04</div>
+            <span class="badge badge--active">Verfügbar</span>
+          </div>
+          <h3 class="module-title">Schaltschrank-Dimensionierung</h3>
+          <p class="module-subtitle">Baugruppen · Sensorik · Aktorik · Innenaufbau</p>
+          <p class="module-scope">Geräteauswahl · Platzbedarf · Schaltschrankansicht</p>
+          <p class="module-desc">
+            Auswahl von Funktionsbaugruppen aus der Gerätedatenbank. Automatische
+            Ermittlung des Platzbedarfs je Zone und grafischer Abgleich mit der
+            verfügbaren Montagefläche im Schaltschrank.
+          </p>
+          <ul class="module-features">
+            <li>Baugruppen aus Datenbank wählen</li>
+            <li>Zonenbasierte Platzbedarf-Berechnung</li>
+            <li>Grafische Schaltschrankansicht</li>
+            <li>Flächen- und TE-Abgleich</li>
+          </ul>
+          <div class="module-footer">
+            <a href="../modules/modul-04-innenaufbau/" class="btn btn--primary btn--sm">
+              Modul öffnen →
+            </a>
+          </div>
+        </div>
+
+        <!-- Modul 07 -->
+        <div class="module-card module-card--active">
+          <div class="module-card-header">
+            <div class="module-number">07</div>
+            <span class="badge badge--active">Verfügbar</span>
+          </div>
+          <h3 class="module-title">Stammdatenpflege</h3>
+          <p class="module-subtitle">Artikeldaten · Katalog-Browser</p>
+          <p class="module-scope">Katalog · Datenqualität · Verwendungsnachweis</p>
+          <p class="module-desc">
+            Durchsuchbarer Katalog aller Einzelbauteile und Baugruppen mit
+            Datenqualitäts-Prüfung und Verwendungsnachweis. Rein lesend – die
+            Pflege der Daten erfolgt weiterhin in <code>ga_komponenten.xlsx</code>.
+          </p>
+          <ul class="module-features">
+            <li>Suche &amp; Filter nach Artikel-Nr., Zone, Hersteller</li>
+            <li>Prüfung: fehlende Preise, ungeprüfte Einträge, verwaiste Referenzen</li>
+            <li>Verwendungsnachweis je Bauteil (welche Baugruppen)</li>
+          </ul>
+          <div class="module-footer">
+            <a href="../modules/modul-07-stammdatenpflege/" class="btn btn--primary btn--sm">
+              Modul öffnen →
+            </a>
+          </div>
+        </div>
+
+        <!-- Modul 05 -->
+        <div class="module-card module-card--active">
+          <div class="module-card-header">
+            <div class="module-number">05</div>
+            <span class="badge badge--active">Verfügbar</span>
+          </div>
+          <h3 class="module-title">Feldgeräte</h3>
+          <p class="module-subtitle">Betriebsmittelliste · außerhalb des Schaltschranks</p>
+          <p class="module-scope">Stückliste · Bepreisung Feldgeräte</p>
+          <p class="module-desc">
+            Eigenständige, bepreiste Stückliste für externe Betriebsmittel (Pumpen,
+            Feldsensoren/-aktoren), die über Baugruppen in Modul 4 hinterlegt wurden –
+            getrennt von der Schaltschrank-Stückliste, da Feldgeräte außerhalb des
+            Schranks installiert werden.
+          </p>
+          <ul class="module-features">
+            <li>Automatisch aus Modul 4 ermittelt</li>
+            <li>Eigener Feldgeräte-Katalog mit Preisen</li>
+            <li>Getrennte Stückliste für die Kalkulation</li>
+          </ul>
+          <div class="module-footer">
+            <a href="../modules/modul-05-feldgeraete/" class="btn btn--primary btn--sm">
+              Modul öffnen →
+            </a>
+          </div>
+        </div>
+
+        <!-- Modul 06 -->
+        <div class="module-card module-card--planned">
+          <div class="module-card-header">
+            <div class="module-number">06</div>
+            <span class="badge badge--planned">Geplant</span>
+          </div>
+          <h3 class="module-title">HOAI-Leistungsphasen-Assistent</h3>
+          <p class="module-desc">
+            Aufgabenliste und Prüfpunkte je Leistungsphase (LP 1–9) mit
+            GA-spezifischen Checklisten und Hinweisen zur Dokumentation.
+          </p>
+          <ul class="module-features">
+            <li>LP 1–9 Übersicht</li>
+            <li>GA-spezifische Prüfpunkte</li>
+            <li>Dokumentationsvorlagen</li>
+          </ul>
+          <div class="module-footer">
+            <span class="coming-soon">In Planung</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ ARCHITEKTUR ══════════════════════════ -->
+  <section class="section section--alt" id="architektur">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Softwarearchitektur</h2>
+        <p class="section-sub">Clientseitige Anwendung ohne Server – kompatibel mit GitHub Pages.</p>
+      </div>
+
+      <div class="arch-grid">
+
+        <div class="arch-block">
+          <div class="arch-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <h3>Datenbankstrategie</h3>
+          <p>Excel (.xlsx) als Pflegewerkzeug · SQLite (.db) als Produktivdatenbank · Konvertierung via Python · Zugriff im Browser über sql.js (WebAssembly, kein Server).</p>
+          <div class="code-block">
+            <code>python convert.py</code>
+            <span class="code-comment"># xlsx → SQLite</span>
+          </div>
+        </div>
+
+        <div class="arch-block">
+          <div class="arch-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            </svg>
+          </div>
+          <h3>Verzeichnisstruktur</h3>
+          <div class="file-tree">
+            <div class="tree-item tree-item--root">/ (Projekt-Root)</div>
+            <div class="tree-item tree-item--l1">├ index.html <span class="tree-note">Startseite</span></div>
+            <div class="tree-item tree-item--l1">├ data/</div>
+            <div class="tree-item tree-item--l2">├ ga_komponenten.xlsx</div>
+            <div class="tree-item tree-item--l2">└ ga_komponenten.db</div>
+            <div class="tree-item tree-item--l1">├ modules/</div>
+            <div class="tree-item tree-item--l2">└ modul-01-schaltschrank/</div>
+            <div class="tree-item tree-item--l1">└ drawings/</div>
+            <div class="tree-item tree-item--l2">└ wandschrank_frontansicht_v7.html</div>
+          </div>
+        </div>
+
+        <div class="arch-block">
+          <div class="arch-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/>
+            </svg>
+          </div>
+          <h3>Datenbankschema (Auswahl)</h3>
+          <p>Tabelle <code>schraenke_wand</code> mit geometrischen Feldern, Preisfeldern und DL-Feldern. Jeder Datensatz hat Aktiv-Flag und Preisdatum für revisionssichere Pflege.</p>
+          <div class="field-list">
+            <span class="field-tag">id</span>
+            <span class="field-tag">aussen_breite_mm</span>
+            <span class="field-tag">h_ke_mm</span>
+            <span class="field-tag">preis_gesamt_schrank_eur</span>
+            <span class="field-tag">aktiv</span>
+            <span class="field-tag">preis_datum</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ WORKFLOW ═════════════════════════════ -->
+  <section class="section" id="workflow">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Pflegeworkflow</h2>
+        <p class="section-sub">Datenaktualisierung in vier Schritten – ohne Backend-Zugriff.</p>
+      </div>
+
+      <div class="workflow">
+        <div class="workflow-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Excel bearbeiten</h4>
+            <p>Werte ändern, Zeilen ergänzen oder Preise aktualisieren in <code>ga_komponenten.xlsx</code>.</p>
+          </div>
+        </div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Konvertieren</h4>
+            <p>Python-Skript liest alle Tabellenblätter und schreibt die SQLite-Datenbank.</p>
+            <div class="code-block code-block--inline"><code>python convert.py</code></div>
+          </div>
+        </div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Committen</h4>
+            <p>Geänderte Datendateien dem Repository hinzufügen und committen.</p>
+            <div class="code-block code-block--inline"><code>git add data/ &amp;&amp; git commit</code></div>
+          </div>
+        </div>
+        <div class="workflow-arrow">→</div>
+        <div class="workflow-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Pushen</h4>
+            <p>GitHub Pages aktualisiert sich automatisch. Neue Daten sofort sichtbar.</p>
+            <div class="code-block code-block--inline"><code>git push</code></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════ STATUS ═══════════════════════════════ -->
+  <section class="section section--alt" id="status">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Projektstatus</h2>
+        <p class="section-sub">Aktueller Entwicklungsstand und nächste Schritte.</p>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-list">
+          <h3>Abgeschlossen</h3>
+          <ul>
+            <li class="status-item status-item--done">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+              Projektarchitektur definiert
+            </li>
+            <li class="status-item status-item--done">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+              Kabeleinführungszone h_ke erarbeitet (VDE 0298-4)
+            </li>
+            <li class="status-item status-item--done">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+              SVG-Zeichnung Wandschrank Frontansicht (v7)
+            </li>
+            <li class="status-item status-item--done">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+              Excel-Datenbankschema (schraenke_wand) entworfen
+            </li>
+            <li class="status-item status-item--done">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+              Datenbankstrategie (Excel → SQLite → sql.js) festgelegt
+            </li>
+          </ul>
+        </div>
+
+        <div class="status-list">
+          <h3>Nächste Schritte</h3>
+          <ul>
+            <li class="status-item status-item--todo">
+              <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+              Excel-Datei mit 3–5 Mustergeräten anlegen
+            </li>
+            <li class="status-item status-item--todo">
+              <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+              Einspeisezone h_einsp erarbeiten
+            </li>
+            <li class="status-item status-item--todo">
+              <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+              Klemmenzone h_klemm erarbeiten
+            </li>
+            <li class="status-item status-item--todo">
+              <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+              TE-Berechnung pro Reihe
+            </li>
+            <li class="status-item status-item--todo">
+              <svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>
+              Modul 1 UI &amp; Berechnungslogik (logic.js)
+            </li>
+          </ul>
+        </div>
+
+        <div class="tech-stack">
+          <h3>Technologie-Stack</h3>
+          <div class="tech-items">
+            <div class="tech-item">
+              <span class="tech-icon">🌐</span>
+              <span class="tech-name">HTML · CSS · JS</span>
+              <span class="tech-note">kein Framework</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-icon">🗄️</span>
+              <span class="tech-name">sql.js</span>
+              <span class="tech-note">SQLite in WebAssembly</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-icon">🐍</span>
+              <span class="tech-name">Python + pandas</span>
+              <span class="tech-note">Konvertierungsskript</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-icon">📊</span>
+              <span class="tech-name">Excel (.xlsx)</span>
+              <span class="tech-note">Daten-Pflegewerkzeug</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-icon">📄</span>
+              <span class="tech-name">SQLite (.db)</span>
+              <span class="tech-note">Produktivdatenbank</span>
+            </div>
+            <div class="tech-item">
+              <span class="tech-icon">🚀</span>
+              <span class="tech-name">GitHub Pages</span>
+              <span class="tech-note">Hosting (serverlos)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ FOOTER ═════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="logo-text">GA<span class="logo-accent">·</span>Planung</span>
+        <p>Webbasiertes Planungswerkzeug für Gebäudeautomation · HOAI-konform</p>
+      </div>
+      <div class="footer-right">
+        <span class="footer-note">Erstellt von: Stephan Michler · DBACS Planung · 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
