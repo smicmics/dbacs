@@ -636,8 +636,23 @@ function calculate() {
 }
 
 // ── SVG-Generator ─────────────────────────────────────────────
+// Passt die Zeichenhöhe an den tatsächlich verfügbaren Platz an, damit der
+// ganze Schrank ohne Scrollen sichtbar ist – der Maßstab (sc) bleibt davon
+// unberührt, er wird weiterhin einheitlich auf alle Maße angewendet.
+function computeSH() {
+  const panelOut = document.querySelector('.panel-out');
+  if (!panelOut) return 390;
+  const avail = panelOut.clientHeight - 40 /* panel-out padding */ - 24 /* svg-wrap padding */ - 16 /* Puffer */;
+  return Math.max(260, Math.min(520, avail || 390));
+}
 function buildSVG(p) {
-  const SH = 390, sc = SH / p.H, SW = Math.round(p.B * sc);
+  const SH = computeSH(), sc = SH / p.H, SW = Math.round(p.B * sc);
+  // Schriftgrößen proportional zur tatsächlichen Zeichenhöhe mitskalieren,
+  // sonst überschneiden sich Maßlinien-Beschriftungen bei kleinem SH.
+  const fsScale = SH / 390;
+  p.fs_dim  = p.fs_dim  * fsScale;
+  p.fs_var  = p.fs_var  * fsScale;
+  p.fs_zone = p.fs_zone * fsScale;
   const PL = 56, PT = 52, PR = 195, PB = 55;
   const lw_s  = +Math.max(0.8, sc * 8).toFixed(1);
   const lw_mp = +Math.max(0.4, sc * 4).toFixed(1);
@@ -710,7 +725,7 @@ function buildSVG(p) {
   }
 
   // ── Aufbau SVG-String ──
-  let s = `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg">
+  let s = `<svg viewBox="0 0 ${VW} ${VH}" width="${VW}" height="${VH}" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <marker id="da" viewBox="0 0 8 8" refX="7" refY="4"
           markerWidth="5" markerHeight="5" orient="auto-start-reverse">
@@ -1081,6 +1096,13 @@ function gotoModul3() {
 
 // ── Init ─────────────────────────────────────────────────────
 calculate();
+
+// ── Zeichnung an Fenstergröße anpassen ──────────────────────────
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(calculate, 150);
+});
 </script>
 
 <footer class="site-footer">
