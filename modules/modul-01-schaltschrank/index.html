@@ -903,7 +903,7 @@ function buildTable(p) {
      col:  '#4BBECA'},
     {var:'h_kanal_ke_mm', lbl:'Horizontaler Kabelkanal', val:p.h_kanal, unit:'mm',
      src:  p.kanal_aktiv  ? 'Eingabe · Standard 60 mm' : '0 · (kein Kabelkanal)',
-     col:  p.kanal_aktiv  ? '#9A94E8' : '#9A9890'},
+     col:  p.kanal_aktiv  ? '#9A94E8' : 'var(--tx2)'},
     {sep:true},
     {var:'h_ke_mm', lbl:'Kabeleinführungszone gesamt', val:p.h_ke, unit:'mm',
      src:`${p.h_hand} + ${p.h_bieg} + ${p.h_zug} + ${p.h_handling_zug} + ${p.h_kanal}`, col:'#E0DED8', hi:true},
@@ -923,7 +923,7 @@ function buildTable(p) {
   <span style="color:#4BBECA">h_handling_zug_ke_mm</span> &nbsp;+&nbsp;
   <span style="color:#9A94E8">h_kanal_ke_mm</span>
   &nbsp;&nbsp;=&nbsp;&nbsp;<strong>${p.h_ke} mm</strong>
-  &nbsp;&nbsp;<span style="font-size:10px;color:#666460">(KE ${p.ke_pos})</span>
+  &nbsp;&nbsp;<span style="font-size:10px;color:var(--tx3)">(KE ${p.ke_pos})</span>
 </div>
 <div class="formula-box" style="margin-top:10px">
   <span style="color:#A8C4E8">h_mplatte_mbereich_wandschrank_mm</span> &nbsp;=&nbsp;
@@ -945,18 +945,18 @@ function buildTable(p) {
 
   for (const row of rows) {
     if (row.sep) {
-      t += `<tr><td colspan="4" style="background:#252523;padding:2px 10px;
-                 font-size:9px;color:#4A4846;border-bottom:1px solid #333">───────</td></tr>`;
+      t += `<tr><td colspan="4" style="background:var(--bg2);padding:2px 10px;
+                 font-size:9px;color:var(--tx3);border-bottom:1px solid var(--bord)">───────</td></tr>`;
       continue;
     }
     const bg = row.hi ? 'background:#212B3A;' : '';
     const vs = row.hi ? 'font-size:14px;' : '';
     t += `<tr style="${bg}">
-      <td><span class="vname" style="color:${row.col||'#9A9890'}">${row.var}</span></td>
-      <td>${row.lbl}${row.note?`<br><span style="font-size:10px;color:#666460">${row.note}</span>`:''}</td>
+      <td><span class="vname" style="color:${row.col||'var(--tx2)'}">${row.var}</span></td>
+      <td>${row.lbl}${row.note?`<br><span style="font-size:10px;color:var(--tx3)">${row.note}</span>`:''}</td>
       <td class="formula-cell">${row.src}</td>
-      <td class="val" style="${vs}color:${row.col||'#E0DED8'}">${row.val}
-          <span style="font-weight:400;font-size:10px;color:#666460">${row.unit}</span></td>
+      <td class="val" style="${vs}color:${row.col||'var(--tx)'}">${row.val}
+          <span style="font-weight:400;font-size:10px;color:var(--tx3)">${row.unit}</span></td>
     </tr>`;
   }
 
