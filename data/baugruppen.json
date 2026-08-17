@@ -1637,5 +1637,353 @@
     "benoetigt_steuerspannung": "24vdc",
     "kategorie": "Energieversorgung",
     "geprueft": false
+  },
+  {
+    "id": "420_000013",
+    "name": "Ventilantrieb 0...10V mit Positionsrückmeldung, 800N, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Ventilantrieb - linearer Stellantrieb für Sitzventile (VVF/VXF/VXG), Stellkraft 800N, Hub 20mm, Stellsignal DC 0...10V mit Positionsrückmeldung, Siemens Acvatix SAX61.03, 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (G/G0 Versorgung 24V AC/DC + Y Stellsignal-Eingang 0...10V + U Rueckmeldesignal-Ausgang 0...10V), Datenpunktbedarf 1x AO + 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "lueftung"
+    ],
+    "betriebsmittel": "Ventilantrieb, linear, 0...10V mit Positionsrückmeldung, 800N (Siemens SAX61.03)",
+    "feldgeraet_artikel_nr": "SAX61.03",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000014",
+    "name": "Ventilantrieb Zonenregelung 0...10V mit Positionsrückmeldung, 200N, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Ventilantrieb Zonenregelung - kompakter Stellantrieb für kleine Sitzventile (Heizkörper/Kühldecke/Fan-Coil), Stellkraft 200N, Hub 1,2-6,5mm, Stellsignal DC 0...10V mit Positionsrückmeldung, Siemens Acvatix SSB161.05HF, 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (G/G0 Versorgung 24V AC/DC + Y Stellsignal-Eingang 0...10V + U Rueckmeldesignal-Ausgang 0...10V), Datenpunktbedarf 1x AO + 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Ventilantrieb Zonenregelung, 0...10V mit Positionsrückmeldung, 200N (Siemens SSB161.05HF)",
+    "feldgeraet_artikel_nr": "SSB161.05HF",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000015",
+    "name": "Ventilantrieb mit Notstellfunktion (Fail Open) 0...10V mit Rückmeldung, 1100N, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Ventilantrieb mit Notstellfunktion - Stellantrieb mit Federruecklauf für Siemens-Combi-Ventile VPF43../VPF53.. (PICV), fährt bei Spannungsausfall selbsttätig auf (Fail Open, z.B. Frostschutz-Anwendung), Stellkraft 1100N, Hub 20/40mm, Stellsignal 3-Punkt/DC 0...10V/4...20mA mit Positionsrückmeldung, Siemens Acvatix SQV91P30, 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (G/G0 Versorgung 24V AC/DC + Y Stellsignal-Eingang + U Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Fail-Safe-Funktion rein mechanisch/intern (Feder bzw. SuperCap), kein zusätzliches DDC-Signal nötig.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "lueftung"
+    ],
+    "betriebsmittel": "Ventilantrieb mit Notstellfunktion, Fail Open, 0...10V mit Rückmeldung, 1100N, 24V AC/DC (Siemens SQV91P30)",
+    "feldgeraet_artikel_nr": "SQV91P30",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000016",
+    "name": "Ventilantrieb mit Notstellfunktion (Fail Open) 0...10V mit Rückmeldung, 1100N, 230V AC",
+    "gewerk": "420",
+    "beschreibung": "Ventilantrieb mit Notstellfunktion - wie 24V-Variante (Siemens Acvatix SQV91P30), jedoch mit optionalem 230V-Zusatzmodul ASP1.1 für Direktanschluss an 230V AC statt 24V AC/DC. Stellkraft 1100N, Hub 20/40mm, Stellsignal DC 0...10V mit Positionsrückmeldung, für Siemens-Combi-Ventile VPF43../VPF53.. (PICV), fährt bei Spannungsausfall selbsttätig auf (Fail Open). 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (Versorgung 230V AC + Stellsignal-Eingang + Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Klemmenbezeichnung des ASP1.1-Moduls nicht im Detail verifiziert - Anschlussschema vor Verdrahtung im Projekt gegenprüfen.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "lueftung"
+    ],
+    "betriebsmittel": "Ventilantrieb mit Notstellfunktion, Fail Open, 0...10V mit Rückmeldung, 1100N, 230V AC via Zusatzmodul ASP1.1 (Siemens SQV91P30)",
+    "feldgeraet_artikel_nr": "SQV91P30+ASP1.1",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "230vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000017",
+    "name": "Fußbodenheizungs-Antrieb 0...10V mit Stellungsrückmeldung, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Fußbodenheizungs-Antrieb - motorischer Stellantrieb für Heizkreisverteiler-Ventile, Anschluss M30x1,5, Stellsignal DC 0...10V mit Stellungsrückmeldung, Oventrop Aktor M ST L (1012726), 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (Versorgung 24V AC/DC + Stellsignal-Eingang 0...10V + Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Klemmenbelegung als plausible Annahme analog zu vergleichbaren 0...10V-Stellantrieben mit Rückmeldung modelliert (kein vollstaendiges Anschlussschema mit Pin-Ebene geprueft - vor Verdrahtung im Projekt Oventrop-Datenblatt gegenprüfen).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Fußbodenheizungs-Antrieb, motorisch, 0...10V mit Stellungsrückmeldung, 24V AC/DC (Oventrop Aktor M ST L, 1012726)",
+    "feldgeraet_artikel_nr": "1012726",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000018",
+    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos zu, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos geschlossen (NC), Stellkraft 110N, Anschluss M30x1,5, Siemens STA121, 2 Abgangsklemmen in der Feldgeraete-Klemmleiste (L geschaltet + N Rückleiter), Datenpunktbedarf 1x BO.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos zu, 24V AC/DC (Siemens STA121)",
+    "feldgeraet_artikel_nr": "STA121",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000019",
+    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos auf, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos offen (NO), Stellkraft 110N, Anschluss M30x1,5, Siemens STP121 (NO-Pendant zu STA121, Bezeichnung analog zum verifizierten Paar STA321/STP321 abgeleitet, Artikel nicht separat ueber Distributor-Listung bestaetigt), 2 Abgangsklemmen in der Feldgeraete-Klemmleiste (L geschaltet + N Rückleiter), Datenpunktbedarf 1x BO.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos auf, 24V AC/DC (Siemens STP121)",
+    "feldgeraet_artikel_nr": "STP121",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000020",
+    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos zu, 230V AC (mit Koppelrelais)",
+    "gewerk": "420",
+    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos geschlossen (NC), Stellkraft 110N, Anschluss M30x1,5, Siemens STA321. Ansteuerung über Koppelrelais (24V-AC-Spule, Phoenix Contact PLC-RSC-24UC/21-21, Wechslerkontakt schaltet 230V AC), da DDC-Binärausgänge (TXM1.8T) nur 24V AC direkt schalten. 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für den DDC-Ausgang zur Relaisspule (BO-Landeklemme + G0-Rückleiter) + Koppelrelais in der Leistungsbaugruppe + 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für die geschaltete 230V-AC-Versorgung zum Antrieb (L + N), Datenpunktbedarf 1x BO.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos zu, 230V AC ueber Koppelrelais (Siemens STA321)",
+    "feldgeraet_artikel_nr": "STA321",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "230vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000021",
+    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos auf, 230V AC (mit Koppelrelais)",
+    "gewerk": "420",
+    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos offen (NO), Stellkraft 110N, Anschluss M30x1,5, Siemens STP321.L20. Ansteuerung über Koppelrelais (24V-AC-Spule, Phoenix Contact PLC-RSC-24UC/21-21, Wechslerkontakt schaltet 230V AC), da DDC-Binärausgänge (TXM1.8T) nur 24V AC direkt schalten. 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für den DDC-Ausgang zur Relaisspule (BO-Landeklemme + G0-Rückleiter) + Koppelrelais in der Leistungsbaugruppe + 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für die geschaltete 230V-AC-Versorgung zum Antrieb (L + N), Datenpunktbedarf 1x BO.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos auf, 230V AC ueber Koppelrelais (Siemens STP321.L20)",
+    "feldgeraet_artikel_nr": "STP321.L20",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "230vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
   }
 ]

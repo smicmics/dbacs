@@ -14,8 +14,32 @@
 
 ---
 
-## Offene Punkte (Stand Session 54 – vor Beginn der nächsten Sitzung lesen)
+## Offene Punkte (Stand Session 55 – vor Beginn der nächsten Sitzung lesen)
 
+- Preise aller 9 Session-55-Ventilantrieb-Baugruppen (`420_000013`–
+  `420_000021`) und des neuen Koppelrelais-Bauteils `2967073` unbestätigt/
+  fehlend – kein belastbarer EUR-Preis eingetragen (Recherche fand nur 3
+  Referenzpreise, nicht übernommen da Quelle/Variante nicht sicher
+  deckungsgleich mit dem HIT-Portal-Datenblatt: SAX61.03 ≈362,60 €,
+  SSB161.05HF ≈198,00 €, SQV91P30-Combi-Ventil-Antrieb 791,00 € netto
+  SIPATEC).
+- **STP121** (`420_000019`, 24V thermischer Ventilantrieb, stromlos auf) –
+  Artikelnummer nicht über eine eigene Distributor-Listung verifiziert,
+  nur per Namenskonvention vom bestätigten Paar STA321/STP321 auf die
+  24V-Baureihe übertragen – vor Verwendung im Projekt am HIT-Portal
+  gegenprüfen.
+- **Oventrop 1012726** (`420_000017`, Fußbodenheizungs-Antrieb) –
+  Klemmenbelegung (G/G0/Y/U-Analogie zu den Siemens-Antrieben) ist eine
+  plausible Annahme, kein vollständiges Anschlussschema geprüft (vom
+  Nutzer in Session 55 ausdrücklich als ausreichend akzeptiert) – bei
+  Bedarf später anhand des Original-Datenblatts nachprüfen.
+- **SQV91P30 + Zusatzmodul ASP1.1** (230V-Variante, `420_000016`) – genaue
+  Klemmenbezeichnung des Zusatzmoduls nicht verifiziert, nur als
+  24V-Analogie modelliert.
+- **Koppelrelais 24V-Spule `2967073`** – Abmessungen (b_mm/h_mm) vom
+  230V-Schwesterartikel `2967099` übernommen statt eigenständig
+  verifiziert (eine abweichende Distributor-Angabe 14×80mm gefunden,
+  nicht eindeutig derselben Baureihe zuordenbar).
 - Starrer Stabtemperaturfühler mit Flansch für den Lüftungskanal: existiert in
   der europäischen Symaro-Reihe nicht (nur biegsame Kapillare, auch bei
   QAM2120.040). Alternativen anderer Hersteller sind noch zu recherchieren
@@ -400,8 +424,64 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
    Bei Neuanlage künftiger Baugruppen den Klemmenplan gezielt darauf prüfen
    (Suche nach „ground"/„Erdung"/„Schutzleiter" im Originaldatenblatt, nicht
    nur die Katalog-Kurzübersicht).
+9. **Aktoren mit Stellsignal + Rückmeldung (Session 55, verbindlich):**
+   ein Ventil-/Klappenantrieb mit analogem Rückmeldesignal (z. B. 0…10V
+   Ist-Hub) ist trotz Analogsignal **kein** Messsensor im Sinne von Regel 1
+   – `klemm_s` bleibt echten Messsensoren vorbehalten. Stellsignal-Eingang
+   UND Rückmeldesignal-Ausgang eines Aktors gehören zusammen auf
+   `klemm_f`. Datenpunktbedarf: 1× AO (Stellsignal von der DDC) + 1× AI
+   (Rückmeldung zur DDC) je Antrieb.
+10. **Koppelrelais auch für Ausgangsrichtung (Session 55, verbindlich):**
+    Regel 6 beschreibt das Koppelrelais für Sicherheitsketten
+    (Sensor-Wechsler → Relais → 2 getrennte Ausgänge). Das gleiche
+    Bauteilprinzip gilt auch andersherum: schaltet ein DDC-Binärausgang
+    (BO) eine Last, die die TXM-Module nicht direkt schalten können (z. B.
+    230V-Verbraucher, TXM1.8T ist nur für 24V AC vorgesehen), wird ein
+    Koppelrelais mit **24V-AC-Spule** (kompatibel zum TXM1.8T-BO-Ausgang)
+    zwischengeschaltet; der Kontakt schaltet die höhere Spannung zum
+    Verbraucher. Neues Bauteil `2967073` (Phoenix Contact
+    PLC-RSC-24UC/21-21, baugleiche Baureihe wie die 230V-Spulen-Variante
+    `2967099` aus Regel 6, nur andere Spulenspannung).
 
 ---
+
+### Modul 4/5 – Ventilantriebe Heizung/Kälte/Lüftung (Session 55, komprimiert)
+
+Erste **Aktoren** im Baugruppenkatalog (bisher ausschließlich Sensoren/
+Schaltgeräte) – 9 neue Baugruppen `420_000013`–`420_000021` + neues
+Einzelbauteil `2967073`, neue Kategorie „Ventilantriebe":
+
+- **Stellantriebe mit Stellsignal 0…10V + Positionsrückmeldung:**
+  Siemens Acvatix SAX61.03 (800N, `420_000013`) und SSB161.05HF
+  (200N, kompakt, vom Nutzer „Ventilantrieb Zonenregelung" genannt,
+  `420_000014`) – beide nur als 24V-AC/DC-Variante, da 230V+0…10V bei
+  keinem geprüften Hersteller (Siemens/Belimo) existiert (durchgängiges
+  Baureihen-Prinzip, kein Einzelfall).
+- **Notstellantrieb (Federrücklauf/SuperCap) Fail Open:** Siemens Acvatix
+  SQV91P30 für Combi-Ventile VPF43../VPF53.. (PICV), 1100N, mit
+  Rückmeldung – 2× angelegt lt. Nutzer-Wunsch: 24V-Standard
+  (`420_000015`) und mit optionalem 230V-Zusatzmodul ASP1.1
+  (`420_000016`, Klemmenbezeichnung des Moduls nicht verifiziert).
+- **Fußbodenheizungs-Antrieb:** Oventrop Aktor M ST L (1012726, mit
+  Stellungsrückmeldung) – Siemens führt keine M30×1,5-Verteilerantriebe,
+  bewusste Herstellerabweichung (`420_000017`).
+- **Thermische Ein/Aus-Antriebe** (2-Punkt, kein Analogsignal): Siemens
+  STA121/STP121 (24V, NC/NO, `420_000018`/`019`) und STA321/STP321.L20
+  (230V, NC/NO, `420_000020`/`021`) – 230V-Varianten schalten auf
+  Nutzer-Vorgabe über ein **24V-Spulen-Koppelrelais** (neues Bauteil
+  `2967073`, siehe Regel 10), da DDC-BO-Ausgänge (TXM1.8T) nur 24V AC
+  direkt schalten.
+- **2 neue Modellierungsregeln** aus dieser Session destilliert (siehe
+  Regel 9/10 oben): Aktor-Rückmeldesignale bleiben auf `klemm_f` (nicht
+  `klemm_s`, Regel 9); Koppelrelais-Pattern gilt auch für die
+  Ausgangsrichtung mit 24V-Spule (Regel 10).
+- Recherche per Fork-Subagent (Web), Herleitungstabelle vor Excel-Eintrag
+  mit dem Nutzer abgestimmt. Alle 10 neuen Katalogeinträge ohne
+  bestätigten Preis, `STP121` ohne eigene Distributor-Verifizierung,
+  Oventrop-Klemmenbelegung als vom Nutzer akzeptierte plausible Annahme
+  – siehe „Offene Punkte" oben. Browser-Verifizierung diese Session nicht
+  möglich (Chrome-Tools nicht aktiviert) – vor Produktivnutzung in Modul 4
+  nachholen.
 
 ### Modul 4/5 – Sessions 53–54 (komprimiert)
 Vollständiger Sitzungsverlauf (Nutzer-Funde, Root-Cause-Analysen,

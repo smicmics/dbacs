@@ -2087,5 +2087,20 @@
     ],
     "kategorie": "Netzversorgung/Transformatoren",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "2967073",
+    "bezeichnung": "PLC-RSC-24UC/21-21 Koppelrelais 24VAC/24VDC, 2 Wechsler, 6A",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "koppelrelais",
+    "b_mm": 18.0,
+    "te_breite": 1,
+    "h_mm": 75.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Koppelrelais",
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
   }
 ]
