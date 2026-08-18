@@ -482,6 +482,40 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
     eine eigene `3209510`-Klemme braucht – nur der tatsächliche
     Leistungsabgang zur Pumpe (L/N/PE, siehe Regel 11) bekommt Klemmen.
 
+### Referenz: Motorleistungsreihe & Schaltgerätekonzept Drehstrommotoren (Session 56)
+
+Recherchiert als Entscheidungsgrundlage für künftige Baugruppen mit
+Drehstrommotoren (nicht nur Pumpen). Vollständige IEC-60072-Normreihe
+(kW): `0,75 · 1,1 · 1,5 · 2,2 · 3,0 · 4,0 · 5,5 · 7,5 · 11 · 15 · 18,5 ·
+22 · 30 · 37 · 45 · 55 · 75 · 90 · 110 · 132 ...`
+
+| Leistung | I_N ca. (400V 3~) | Anlaufart | MSS-Bereich | Schützgröße (SIRIUS) |
+|---|---|---|---|---|
+| 1,5 kW | ≈3,4 A | Direktanlauf | 2,5–4,0 A | S00 |
+| 2,2–4 kW | ≈4,9–8,6 A | Direktanlauf | 4,0–10 A | S00 |
+| 5,5–7,5 kW | ≈11,5–15 A | Direktanlauf/erste Stern-Dreieck-Fälle | 10–16 A | S0 |
+| 11 kW | ≈22,5 A | Stern-Dreieck/Sanftstarter/FU üblich | 20–25 A | S2 |
+| 15 kW | ≈30 A | Stern-Dreieck/Sanftstarter/FU | 25–32 A | S3 |
+| 18,5 kW | ≈37 A | Stern-Dreieck/Sanftstarter/FU | 32–40 A | S3 |
+| 22 kW | ≈43 A | Stern-Dreieck/Sanftstarter/FU | 40–50 A | S3/S6 |
+
+**Wichtig – MSS statt LSS bei echten Motorabgängen:** ein klassischer
+Drehstrommotor-Abgang (Direktanlauf über Schütz, KEINE eigene
+Antriebselektronik) braucht einen **Motorschutzschalter** (IEC
+60947-4-1, z. B. Siemens 3RV) statt eines einfachen Leitungsschutz-
+schalters (IEC 60898) – der Motor-Anlaufstrom (6–8× I_N) erfordert eine
+speziell abgestimmte Auslösecharakteristik, die ein LSS nicht bietet.
+Ein reiner LSS reicht nur bei sehr kleinen Hilfsantrieben.
+**Ausnahme:** Motoren mit **integriertem Frequenzumrichter/Sanftanlauf**
+(z. B. Wilo Stratos GIGA2.0/CronoLine-E, `420_000025`/`026`) haben
+keinen klassischen Direktanlauf-Einschaltstrom – hier reicht ein LSS,
+analog zum bestehenden Frequenzumrichter-Baugruppen-Muster (Session 45,
+SINAMICS G120C: auch dort nur LSS/Leistungsschalter eingangsseitig,
+kein MSS, da der FU selbst den Motorschutz übernimmt).
+Die 4–5,5-kW-Schwelle Direktanlauf→Stern-Dreieck/Sanftstarter/FU ist
+**keine feste Norm**, sondern Praxis-Faustregel, abhängig von den TAB
+(Technische Anschlussbedingungen) des jeweiligen Netzbetreibers.
+
 ---
 
 ### Modul 4/5 – Ventilantriebe Heizung/Kälte/Lüftung (Session 55, komprimiert)
