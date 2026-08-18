@@ -1844,9 +1844,9 @@
   },
   {
     "id": "420_000018",
-    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos zu, 24V AC/DC",
+    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos zu, M30x1,5, 24V AC/DC",
     "gewerk": "420",
-    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos geschlossen (NC), Stellkraft 110N, Anschluss M30x1,5, Siemens STA121, 2 Abgangsklemmen in der Feldgeraete-Klemmleiste (L geschaltet + N Rückleiter), Datenpunktbedarf 1x BO.",
+    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos geschlossen (NC), Stellkraft 110N, Anschlussgewinde M30x1,5, Siemens STA121, 2 Abgangsklemmen in der Feldgeraete-Klemmleiste (L geschaltet + N Rückleiter), Datenpunktbedarf 1x BO.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1863,7 +1863,7 @@
     "funktionsbereich": [
       "heizung"
     ],
-    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos zu, 24V AC/DC (Siemens STA121)",
+    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos zu, M30x1,5, 24V AC/DC (Siemens STA121)",
     "feldgeraet_artikel_nr": "STA121",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
@@ -1872,9 +1872,9 @@
   },
   {
     "id": "420_000019",
-    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos auf, 24V AC/DC",
+    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos auf, M30x1,5, 24V AC/DC",
     "gewerk": "420",
-    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos offen (NO), Stellkraft 110N, Anschluss M30x1,5, Siemens STP121 (NO-Pendant zu STA121, Bezeichnung analog zum verifizierten Paar STA321/STP321 abgeleitet, Artikel nicht separat ueber Distributor-Listung bestaetigt), 2 Abgangsklemmen in der Feldgeraete-Klemmleiste (L geschaltet + N Rückleiter), Datenpunktbedarf 1x BO.",
+    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos offen (NO), Stellkraft 110N, Anschlussgewinde M30x1,5, Siemens STP121 (NO-Pendant zu STA121, Bezeichnung analog zum verifizierten Paar STA321/STP321 abgeleitet, Artikel nicht separat ueber Distributor-Listung bestaetigt), 2 Abgangsklemmen in der Feldgeraete-Klemmleiste (L geschaltet + N Rückleiter), Datenpunktbedarf 1x BO.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1891,7 +1891,7 @@
     "funktionsbereich": [
       "heizung"
     ],
-    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos auf, 24V AC/DC (Siemens STP121)",
+    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos auf, M30x1,5, 24V AC/DC (Siemens STP121)",
     "feldgeraet_artikel_nr": "STP121",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
@@ -1900,9 +1900,9 @@
   },
   {
     "id": "420_000020",
-    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos zu, 230V AC (mit Koppelrelais)",
+    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos zu, M30x1,5, 230V AC (mit Koppelrelais)",
     "gewerk": "420",
-    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos geschlossen (NC), Stellkraft 110N, Anschluss M30x1,5, Siemens STA321. Ansteuerung über Koppelrelais (24V-AC-Spule, Phoenix Contact PLC-RSC-24UC/21-21, Wechslerkontakt schaltet 230V AC), da DDC-Binärausgänge (TXM1.8T) nur 24V AC direkt schalten. 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für den DDC-Ausgang zur Relaisspule (BO-Landeklemme + G0-Rückleiter) + Koppelrelais in der Leistungsbaugruppe + 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für die geschaltete 230V-AC-Versorgung zum Antrieb (L + N), Datenpunktbedarf 1x BO.",
+    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos geschlossen (NC), Stellkraft 110N, Anschlussgewinde M30x1,5, Siemens STA321. Ansteuerung über Koppelrelais (24V-AC-Spule, Phoenix Contact PLC-RSC-24UC/21-21, Wechslerkontakt schaltet 230V AC), da DDC-Binärausgänge (TXM1.8T) nur 24V AC direkt schalten. 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für den DDC-Ausgang zur Relaisspule (BO-Landeklemme + G0-Rückleiter) + Koppelrelais in der Leistungsbaugruppe + 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für die geschaltete 230V-AC-Versorgung zum Antrieb (L + N), Datenpunktbedarf 1x BO.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1934,7 +1934,7 @@
     "funktionsbereich": [
       "heizung"
     ],
-    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos zu, 230V AC ueber Koppelrelais (Siemens STA321)",
+    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos zu, M30x1,5, 230V AC ueber Koppelrelais (Siemens STA321)",
     "feldgeraet_artikel_nr": "STA321",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "230vac",
@@ -1943,9 +1943,9 @@
   },
   {
     "id": "420_000021",
-    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos auf, 230V AC (mit Koppelrelais)",
+    "name": "Thermischer Ventilantrieb Ein/Aus, stromlos auf, M30x1,5, 230V AC (mit Koppelrelais)",
     "gewerk": "420",
-    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos offen (NO), Stellkraft 110N, Anschluss M30x1,5, Siemens STP321.L20. Ansteuerung über Koppelrelais (24V-AC-Spule, Phoenix Contact PLC-RSC-24UC/21-21, Wechslerkontakt schaltet 230V AC), da DDC-Binärausgänge (TXM1.8T) nur 24V AC direkt schalten. 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für den DDC-Ausgang zur Relaisspule (BO-Landeklemme + G0-Rückleiter) + Koppelrelais in der Leistungsbaugruppe + 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für die geschaltete 230V-AC-Versorgung zum Antrieb (L + N), Datenpunktbedarf 1x BO.",
+    "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos offen (NO), Stellkraft 110N, Anschlussgewinde M30x1,5, Siemens STP321.L20. Ansteuerung über Koppelrelais (24V-AC-Spule, Phoenix Contact PLC-RSC-24UC/21-21, Wechslerkontakt schaltet 230V AC), da DDC-Binärausgänge (TXM1.8T) nur 24V AC direkt schalten. 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für den DDC-Ausgang zur Relaisspule (BO-Landeklemme + G0-Rückleiter) + Koppelrelais in der Leistungsbaugruppe + 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für die geschaltete 230V-AC-Versorgung zum Antrieb (L + N), Datenpunktbedarf 1x BO.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1977,7 +1977,7 @@
     "funktionsbereich": [
       "heizung"
     ],
-    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos auf, 230V AC ueber Koppelrelais (Siemens STP321.L20)",
+    "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos auf, M30x1,5, 230V AC ueber Koppelrelais (Siemens STP321.L20)",
     "feldgeraet_artikel_nr": "STP321.L20",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "230vac",
