@@ -2102,5 +2102,50 @@
     "kategorie": "Koppelrelais",
     "benoetigt_steuerspannung": "24vac",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "2900934",
+    "bezeichnung": "RIF-2-BPT/4X21 Relaissockel, Push-in, fuer 2- oder 4-fach-Wechsler-Steckrelais, 12A",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "koppelrelais",
+    "b_mm": 31.0,
+    "te_breite": 2,
+    "h_mm": 96.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Koppelrelais",
+    "zubehoer_artikel_nr": "2903686",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2903686",
+    "bezeichnung": "REL-IR4/L-24AC/4X21 Steckrelais 24V AC, 4 Wechsler, 6A (steckt in Sockel 2900934)",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "koppelrelais",
+    "b_mm": 21.2,
+    "te_breite": 2,
+    "h_mm": 27.5,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Koppelrelais",
+    "keine_platzierung_mp": true,
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5ST3010",
+    "bezeichnung": "Hilfsschalter 1S+1Oe fuer Leitungsschutzschalter 5SL/5SY/5SP, universell aufsteckbar, 0,5TE",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "b_mm": 9.0,
+    "te_breite": 1,
+    "h_mm": 81.0,
+    "zone": [
+      "evert"
+    ],
+    "kategorie": "Hilfsschalter",
+    "geprueft": false
   }
 ]

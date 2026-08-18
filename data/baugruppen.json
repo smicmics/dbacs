@@ -2043,5 +2043,61 @@
     "automationsanbindung": true,
     "kategorie": "Umluftkühlgeräte",
     "geprueft": false
+  },
+  {
+    "id": "420_000022",
+    "name": "Umwaelzpumpe Yonos/Stratos PICO, Schalten Ein/Aus, Betrieb, Stoerung, 230V AC",
+    "gewerk": "420",
+    "beschreibung": "Umwaelzpumpe Wilo Yonos/Stratos PICO (3...45W, 230V 1~) - keine eigene Signalelektronik am Gerät (nur Netzstecker), daher Schalten/Ueberwachen komplett schrankseitig aufgebaut: Energie ueber LSS 1-polig B6A (5SL6106-7) mit aufgestecktem Hilfsschalter (5ST3010, 1S+1Oe) - bei LSS-Ausloesung interne Verdrahtung direkt auf einen BI (Stoerung, kein Signal = Ausfall). Schaltbefehl: DDC-BO speist die 24V-AC-Spule des Koppelrelais (Sockel 2900934 + Steckrelais REL-IR4/L-24AC/4X21, 2903686, 4 Wechsler) direkt (keine eigene Klemme, reine Schrankinnenverdrahtung); 2 Relaiskontakte schalten die Pumpenversorgung (L+N), der 3. Kontakt liefert intern direkt auf einen BI die Betriebsmeldung. Nur der Leistungsabgang zur Pumpe verlaesst den Schrank: 3 Klemmen L, N, PE (Regel 11 - PE immer mitfuehren, bei Schutzklasse-II-Geraeten bleibt die Klemme unbelegt). Datenpunktbedarf 1x BO + 2x BI, keine Klemme fuer BO/BI noetig (reine Schrankinnenverdrahtung zwischen Koppelrelais/Hilfsschalter und DDC-Modul).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2900934",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "2903686",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "lueftung"
+    ],
+    "betriebsmittel": "Umwaelzpumpe, elektronisch geregelt, 230V AC, ohne eigene Signalklemmen (Wilo Yonos/Stratos PICO)",
+    "feldgeraet_artikel_nr": "Yonos/Stratos PICO",
+    "automationsanbindung": true,
+    "kategorie": "Umwälzpumpen",
+    "geprueft": false
   }
 ]

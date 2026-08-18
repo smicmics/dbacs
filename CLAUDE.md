@@ -14,8 +14,21 @@
 
 ---
 
-## Offene Punkte (Stand Session 55 – vor Beginn der nächsten Sitzung lesen)
+## Offene Punkte (Stand Session 56 – vor Beginn der nächsten Sitzung lesen)
 
+- **Session 56 (neu):** Baugruppen `420_000022` (Umwälzpumpe Wilo Yonos/
+  Stratos PICO) und `430_000026` (Umluftkühlgerät Schneider Uniflair HDCV)
+  sowie die neuen Bauteile `2900934`/`2903686` (Phoenix Contact
+  Relaissockel+Steckrelais REL-IR4/L-24AC/4X21) und `5ST3010` (Siemens
+  LSS-Hilfsschalter) haben noch **keinen Preis** eingetragen. Beide
+  Baugruppen tragen nur Platzhalter-`feldgeraet_artikel_nr` (kein
+  konkreter Wilo-/Schneider-Bestellcode für eine repräsentative
+  Baugröße). `5ST3010`-Höhe (81mm) von der 5SL6-LSS-Reihe übernommen,
+  nicht eigenständig verifiziert. Schneider-Baugruppe basiert auf dem
+  allgemeinen Carel-pCO5+-Handbuch, kein HDCV-spezifischer
+  Original-Klemmenplan gefunden (nur Bild-Scans). Wilo-Baugruppen
+  MAXO/MAXO-Z (mit SSM/SBM/DI/AI-Signalklemmen) sind noch **nicht**
+  angelegt, nur PICO (signallos, Koppelrelais-Pattern) ist fertig.
 - Preise aller 9 Session-55-Ventilantrieb-Baugruppen (`420_000013`–
   `420_000021`) und des neuen Koppelrelais-Bauteils `2967073` unbestätigt/
   fehlend – kein belastbarer EUR-Preis eingetragen (Recherche fand nur 3
@@ -442,6 +455,32 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
     Verbraucher. Neues Bauteil `2967073` (Phoenix Contact
     PLC-RSC-24UC/21-21, baugleiche Baureihe wie die 230V-Spulen-Variante
     `2967099` aus Regel 6, nur andere Spulenspannung).
+11. **PE bei Leistungsklemmen für externe Betriebsmittel (Session 56,
+    verbindlich):** verlässt eine Leistungsversorgung den Schaltschrank zu
+    einem externen Betriebsmittel (z. B. Pumpe), wird die Klemmleiste immer
+    komplett mit Schutzleiter angelegt – **L, N, PE** (1~) bzw. **L1, L2,
+    L3, N, PE** (3~) – unabhängig von der Schutzklasse des Zielgeräts. Hat
+    ein Gerät Schutzklasse II (kein PE-Anschluss), bleibt die PE-Klemme
+    einfach unbelegt; der zusätzliche Platzbedarf ist für DBACS
+    vernachlässigbar. Vereinfacht die Klemmenzahl-Vorhersage, da nicht pro
+    Gerät recherchiert werden muss, ob ein PE-Anschluss vorhanden ist.
+12. **Schrankinterne Verdrahtung ohne Klemme (Session 56, verbindlich):**
+    sitzen zwei Bauteile einer Baugruppe **beide innerhalb desselben
+    Schaltschranks** (z. B. Koppelrelais und DDC-Modul, oder ein
+    Hilfsschalter am LSS und das DDC-Modul), braucht die Verbindung
+    zwischen ihnen **keine eigene Klemme** – das ist reine
+    Schrankinnenverdrahtung, kein Feldkabel. Der Datenpunkt (`dp_ai/ao/
+    bi/bo`) wird trotzdem verzeichnet, aber direkt als Override auf der
+    jeweiligen Bauteil-Zeile (z. B. dem Koppelrelais oder dem
+    Hilfsschalter) statt auf einer eigenen `3209510`-Klemmenzeile. Klemmen
+    in `klemm_l/f/s` sind ausschließlich für Verbindungen reserviert, die
+    den Schrank tatsächlich verlassen (Feldgerät, externes Betriebsmittel).
+    Beispiel: Baugruppe „Umwälzpumpe Yonos/Stratos PICO" (`420_000022`) –
+    DDC-BO speist die Koppelrelais-Spule direkt, der Betriebsmeldekontakt
+    des Relais sowie der Störkontakt des LSS-Hilfsschalters gehen direkt
+    auf die DDC-BI-Klemmen, ohne dass irgendeine dieser drei Verbindungen
+    eine eigene `3209510`-Klemme braucht – nur der tatsächliche
+    Leistungsabgang zur Pumpe (L/N/PE, siehe Regel 11) bekommt Klemmen.
 
 ---
 
