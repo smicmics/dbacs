@@ -1683,7 +1683,7 @@
     "id": "420_000014",
     "name": "Ventilantrieb Zonenregelung 0...10V mit Positionsrückmeldung, 200N, 24V AC/DC",
     "gewerk": "420",
-    "beschreibung": "Ventilantrieb Zonenregelung - kompakter Stellantrieb für kleine Sitzventile (Heizkörper/Kühldecke/Fan-Coil), Stellkraft 200N, Hub 1,2-6,5mm, Stellsignal DC 0...10V mit Positionsrückmeldung, Siemens Acvatix SSB161.05HF, 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (G/G0 Versorgung 24V AC/DC + Y Stellsignal-Eingang 0...10V + U Rueckmeldesignal-Ausgang 0...10V), Datenpunktbedarf 1x AO + 1x AI.",
+    "beschreibung": "Ventilantrieb Zonenregelung - kompakter Stellantrieb für kleine Sitzventile (Heizkörper/Kühldecke/Fan-Coil), Stellkraft 200N, Hub 1,2-6,5mm, Stellsignal DC 0...10V mit Positionsrückmeldung, Siemens Acvatix SSB161.05HF, auch fuer kleine Nacherhitzer in RLT-Anlagen einsetzbar, 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (G/G0 Versorgung 24V AC/DC + Y Stellsignal-Eingang 0...10V + U Rueckmeldesignal-Ausgang 0...10V), Datenpunktbedarf 1x AO + 1x AI.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1710,7 +1710,8 @@
     ],
     "funktionsbereich": [
       "heizung",
-      "kaelte"
+      "kaelte",
+      "lueftung"
     ],
     "betriebsmittel": "Ventilantrieb Zonenregelung, 0...10V mit Positionsrückmeldung, 200N (Siemens SSB161.05HF)",
     "feldgeraet_artikel_nr": "SSB161.05HF",
