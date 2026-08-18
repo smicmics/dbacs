@@ -1804,9 +1804,9 @@
   },
   {
     "id": "420_000017",
-    "name": "Fußbodenheizungs-Antrieb 0...10V mit Stellungsrückmeldung, 24V AC/DC",
+    "name": "Kleinventilantrieb 0...10V mit Stellungsrückmeldung, M30x1,5, 24V AC/DC",
     "gewerk": "420",
-    "beschreibung": "Fußbodenheizungs-Antrieb - motorischer Stellantrieb für Heizkreisverteiler-Ventile, Anschluss M30x1,5, Stellsignal DC 0...10V mit Stellungsrückmeldung, Oventrop Aktor M ST L (1012726), 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (Versorgung 24V AC/DC + Stellsignal-Eingang 0...10V + Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Klemmenbelegung als plausible Annahme analog zu vergleichbaren 0...10V-Stellantrieben mit Rückmeldung modelliert (kein vollstaendiges Anschlussschema mit Pin-Ebene geprueft - vor Verdrahtung im Projekt Oventrop-Datenblatt gegenprüfen).",
+    "beschreibung": "Kleinventilantrieb - motorischer Stellantrieb für Heizkreisverteiler-Ventile und kleine Klimakassetten, Anschlussgewinde M30x1,5, Stellsignal DC 0...10V mit Stellungsrückmeldung, Oventrop Aktor M ST L (1012726), 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (Versorgung 24V AC/DC + Stellsignal-Eingang 0...10V + Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Klemmenbelegung als plausible Annahme analog zu vergleichbaren 0...10V-Stellantrieben mit Rückmeldung modelliert (kein vollstaendiges Anschlussschema mit Pin-Ebene geprueft - vor Verdrahtung im Projekt Oventrop-Datenblatt gegenprüfen).",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1832,9 +1832,10 @@
       }
     ],
     "funktionsbereich": [
-      "heizung"
+      "heizung",
+      "kaelte"
     ],
-    "betriebsmittel": "Fußbodenheizungs-Antrieb, motorisch, 0...10V mit Stellungsrückmeldung, 24V AC/DC (Oventrop Aktor M ST L, 1012726)",
+    "betriebsmittel": "Kleinventilantrieb, motorisch, M30x1,5, 0...10V mit Stellungsrückmeldung, 24V AC/DC (Oventrop Aktor M ST L, 1012726)",
     "feldgeraet_artikel_nr": "1012726",
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vac",
