@@ -1861,8 +1861,7 @@
       }
     ],
     "funktionsbereich": [
-      "heizung",
-      "kaelte"
+      "heizung"
     ],
     "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos zu, 24V AC/DC (Siemens STA121)",
     "feldgeraet_artikel_nr": "STA121",
@@ -1890,8 +1889,7 @@
       }
     ],
     "funktionsbereich": [
-      "heizung",
-      "kaelte"
+      "heizung"
     ],
     "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos auf, 24V AC/DC (Siemens STP121)",
     "feldgeraet_artikel_nr": "STP121",
@@ -1934,8 +1932,7 @@
       }
     ],
     "funktionsbereich": [
-      "heizung",
-      "kaelte"
+      "heizung"
     ],
     "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos zu, 230V AC ueber Koppelrelais (Siemens STA321)",
     "feldgeraet_artikel_nr": "STA321",
@@ -1978,8 +1975,7 @@
       }
     ],
     "funktionsbereich": [
-      "heizung",
-      "kaelte"
+      "heizung"
     ],
     "betriebsmittel": "Thermischer Ventilantrieb, 2-Punkt, stromlos auf, 230V AC ueber Koppelrelais (Siemens STP321.L20)",
     "feldgeraet_artikel_nr": "STP321.L20",
