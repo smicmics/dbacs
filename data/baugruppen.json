@@ -2099,5 +2099,167 @@
     "automationsanbindung": true,
     "kategorie": "Umwälzpumpen",
     "geprueft": false
+  },
+  {
+    "id": "420_000023",
+    "name": "Umwaelzpumpe Stratos MAXO, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, 230V AC",
+    "gewerk": "420",
+    "beschreibung": "Umwaelzpumpe Wilo Stratos MAXO (ca. 40W...1,5kW, 230V 1~) - vollintegrierte Pumpenelektronik mit eigenem Klemmenraum (SSM/SBM/Digitaleingaenge/Analogeingaenge), Original-Klemmenplan verifiziert (Wilo-Stratos-MAXO/-D/-Z Einbau- und Betriebsanleitung Ed.02/2025-05). Netzanschluss ueber LSS 1-polig B10A (5SL6110-7, Pumpenleistung bis 1,5kW = ca. 6,5A, B6A waere zu knapp) auf 3 Klemmen L/N/PE (Regel 11). SBM (oranger Klemmenblock, potentialfreier Schliesser, Werkseinstellung Motor in Betrieb) auf 2 Klemmen = 1x BI Betriebsmeldung. SSM (roter Klemmenblock, potentialfreier Wechsler) auf 2 Klemmen = 1x BI Sammelstoermeldung. Digitaleingang DI1 (Klemmen 31/33, Funktion Extern AUS) auf 2 Klemmen = 1x BO Schalten Ein/Aus. Analogeingang AI1 (Klemmen 12/13, 0...10V) auf 2 Klemmen = 1x AO Sollwert-/Drehzahlvorgabe. Alle Signalklemmen echte Feldklemmen (Pumpe steht ausserhalb des Schranks), SELV-Bereich (SSM/SBM duerfen laut Handbuch auch bis 250V AC betrieben werden, getrennte Leitungsfuehrung noetig um SELV-Schutz der uebrigen Schnittstellen zu erhalten). Kommunikationskarte (CIF-Modul fuer Modbus/BACnet/etc.) bewusst nicht Teil dieser Grundbaugruppe, bei Bedarf als eigene Baugruppe ergaenzbar. Datenpunktbedarf 1x BO + 1x BI + 1x AO... + 1x BI (SSM) = 2x BI + 1x BO + 1x AO gesamt.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6110-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "lueftung"
+    ],
+    "betriebsmittel": "Umwaelzpumpe, elektronisch geregelt, 0...10V mit Betriebs-/Stoermeldung, 230V AC (Wilo Stratos MAXO)",
+    "feldgeraet_artikel_nr": "Stratos MAXO",
+    "automationsanbindung": true,
+    "kategorie": "Umwälzpumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000024",
+    "name": "Umwaelzpumpe Stratos MAXO-Z (Trinkwasser-Zirkulation), Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, 230V AC",
+    "gewerk": "420",
+    "beschreibung": "Trinkwasser-Zirkulationspumpe Wilo Stratos MAXO-Z, DVGW W551/W553-konform - elektrisch identische Beschaltung wie Stratos MAXO (420_000023), gleiche Elektronikplattform, nur fuer Trinkwarmwasser-Zirkulation zertifiziert. Netzanschluss LSS 1-polig B10A (5SL6110-7) auf 3 Klemmen L/N/PE (Regel 11). SBM auf 2 Klemmen = 1x BI Betriebsmeldung. SSM auf 2 Klemmen = 1x BI Sammelstoermeldung. DI1 (Extern AUS) auf 2 Klemmen = 1x BO Schalten Ein/Aus. AI1 (0...10V) auf 2 Klemmen = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6110-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Trinkwasser-Zirkulationspumpe, elektronisch geregelt, 0...10V mit Betriebs-/Stoermeldung, 230V AC (Wilo Stratos MAXO-Z)",
+    "feldgeraet_artikel_nr": "Stratos MAXO-Z",
+    "automationsanbindung": true,
+    "kategorie": "Umwälzpumpen",
+    "geprueft": false
   }
 ]
