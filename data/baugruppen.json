@@ -1983,5 +1983,65 @@
     "benoetigt_steuerspannung": "230vac",
     "kategorie": "Ventilantriebe",
     "geprueft": false
+  },
+  {
+    "id": "430_000026",
+    "name": "Umluftkühlgerät (CRAH) Schneider Uniflair HDCV, 20...250 kW, mit Freigabe/Sammelstörung/Warnung/Sollwertführung",
+    "gewerk": "430",
+    "beschreibung": "Umluftkühlgerät (CRAH - Computer Room Air Handler) - Chilled-Water-Praezisionsklimageraet fuer Rechenzentren/USV-Raeume, Kaelteleistung 20...250 kW, Regler Carel pCO5+ (Schneider Electric Uniflair HDCV). Keine Versorgungsspannung aus dem Schaltschrank noetig (Geraet erhaelt eigenen Netzanschluss inkl. Reglerversorgung). 4 Abgangsklemmenpaare in der Feldgeraete-Klemmleiste: Freigabe/Fernein-Ausschaltung (DDC-BO auf potentialfreien Digitaleingang des Reglers) + Sammelstoerung (potentialfreier Alarmkontakt Type A) + Warnung (potentialfreier Alarmkontakt Type B, unabhaengig von Sammelstoerung konfigurierbar) + Sollwertfuehrung (DDC-AO auf 0...10V-Analogeingang des Reglers). Datenpunktbedarf 1x BO + 2x BI + 1x AO. Regler-Anschlussbild ueber die Carel-pCO5+-Plattform baugroessenunabhaengig identisch (Originalhandbuch verifiziert), Kommunikationskarten (Modbus/BACnet/etc.) bewusst nicht Teil dieser Grundbaugruppe, bei Bedarf als eigene Baugruppe ergaenzbar. HDCV-spezifischer Original-Klemmenplan nicht gefunden (nur bildbasierte Scans), Werte aus allgemeinem Carel-pCO5+-Handbuch und allgemeiner Uniflair-CW/DX-Betriebsanleitung abgeleitet - vor Verdrahtung im Projekt HDCV-spezifisches Elektro-Installationshandbuch bei Schneider Electric anfordern.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Umluftkuehlgeraet (CRAH), Chilled Water, 20...250 kW (Schneider Electric Uniflair HDCV)",
+    "feldgeraet_artikel_nr": "HDCV",
+    "automationsanbindung": true,
+    "kategorie": "Umluftkühlgeräte",
+    "geprueft": false
   }
 ]
