@@ -2147,5 +2147,66 @@
     ],
     "kategorie": "Hilfsschalter",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6325-6",
+    "bezeichnung": "LSS 5SL6 B25 A, 3-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "b_mm": 54.0,
+    "te_breite": 3,
+    "h_mm": 90.0,
+    "zone": [
+      "evert"
+    ],
+    "kategorie": "Leitungsschutzschalter",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3813635",
+    "bezeichnung": "KG10.T204/GBA301 Reparaturschalter, 4-polig, 20A, rot/gelb (nur L+N genutzt, PE nicht geschaltet)",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "zubehoer_artikel_nr": "0758484",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3813641",
+    "bezeichnung": "KG20.T204/GBA301 Reparaturschalter, 4-polig, 25A, rot/gelb (L1/L2/L3/N, PE nicht geschaltet)",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "zubehoer_artikel_nr": "0758484",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "0758484",
+    "bezeichnung": "K2.H010/A11-VE Hilfskontaktblock, seitlich, 1 Schliesser + 1 Oeffner, 100A/690V",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "geprueft": false
   }
 ]

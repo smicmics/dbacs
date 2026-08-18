@@ -2046,9 +2046,9 @@
   },
   {
     "id": "420_000022",
-    "name": "Umwaelzpumpe Yonos/Stratos PICO, Schalten Ein/Aus, Betrieb, Stoerung, 230V AC",
+    "name": "Umwaelzpumpe Yonos/Stratos PICO 3...45W, Schalten Ein/Aus, Betrieb, Stoerung, inkl. Rep.-Schalter, 230V AC",
     "gewerk": "420",
-    "beschreibung": "Umwaelzpumpe Wilo Yonos/Stratos PICO (3...45W, 230V 1~) - keine eigene Signalelektronik am Gerät (nur Netzstecker), daher Schalten/Ueberwachen komplett schrankseitig aufgebaut: Energie ueber LSS 1-polig B6A (5SL6106-7) mit aufgestecktem Hilfsschalter (5ST3010, 1S+1Oe) - bei LSS-Ausloesung interne Verdrahtung direkt auf einen BI (Stoerung, kein Signal = Ausfall). Schaltbefehl: DDC-BO speist die 24V-AC-Spule des Koppelrelais (Sockel 2900934 + Steckrelais REL-IR4/L-24AC/4X21, 2903686, 4 Wechsler) direkt (keine eigene Klemme, reine Schrankinnenverdrahtung); 2 Relaiskontakte schalten die Pumpenversorgung (L+N), der 3. Kontakt liefert intern direkt auf einen BI die Betriebsmeldung. Nur der Leistungsabgang zur Pumpe verlaesst den Schrank: 3 Klemmen L, N, PE (Regel 11 - PE immer mitfuehren, bei Schutzklasse-II-Geraeten bleibt die Klemme unbelegt). Datenpunktbedarf 1x BO + 2x BI, keine Klemme fuer BO/BI noetig (reine Schrankinnenverdrahtung zwischen Koppelrelais/Hilfsschalter und DDC-Modul).",
+    "beschreibung": "Umwaelzpumpe Wilo Yonos/Stratos PICO (3...45W, 230V 1~) - keine eigene Signalelektronik am Gerät (nur Netzstecker), daher Schalten/Ueberwachen komplett schrankseitig aufgebaut: Energie ueber LSS 1-polig B6A (5SL6106-7) mit aufgestecktem Hilfsschalter (5ST3010, 1S+1Oe) - bei LSS-Ausloesung interne Verdrahtung direkt auf einen BI (Stoerung, kein Signal = Ausfall). Schaltbefehl: DDC-BO speist die 24V-AC-Spule des Koppelrelais (Sockel 2900934 + Steckrelais REL-IR4/L-24AC/4X21, 2903686, 4 Wechsler) direkt (keine eigene Klemme, reine Schrankinnenverdrahtung); 2 Relaiskontakte schalten die Pumpenversorgung (L+N), der 3. Kontakt liefert intern direkt auf einen BI die Betriebsmeldung. Nur der Leistungsabgang zur Pumpe verlaesst den Schrank: 3 Klemmen L, N, PE (Regel 11 - PE immer mitfuehren, bei Schutzklasse-II-Geraeten bleibt die Klemme unbelegt). Datenpunktbedarf 1x BO + 2x BI, keine Klemme fuer BO/BI noetig (reine Schrankinnenverdrahtung zwischen Koppelrelais/Hilfsschalter und DDC-Modul). Reparaturschalter (Kraus & Naimer KG-Reihe, rot/gelb, normativ gefordert nach EN 60204-1/VDE 0113 zur allpoligen Freischaltung des Betriebsmittels ausserhalb der Sichtweite zur Hauptabsicherung) mit Hilfskontaktblock (K2.H010/A11-VE) gehoert zur Baugruppe - schaltet nur die stromfuehrenden Leiter (L bzw. L1/L2/L3/N), PE wird nicht mitgeschaltet. Hilfskontakt meldet Betaetigung als 1x BI auf 2 Klemmen.",
     "bauteile": [
       {
         "artikel_nr": "5SL6106-7",
@@ -2087,6 +2087,27 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0758484",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -2102,9 +2123,9 @@
   },
   {
     "id": "420_000023",
-    "name": "Umwaelzpumpe Stratos MAXO, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, 230V AC",
+    "name": "Umwaelzpumpe Stratos MAXO 40W...1,5kW, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, inkl. Rep.-Schalter, 230V AC",
     "gewerk": "420",
-    "beschreibung": "Umwaelzpumpe Wilo Stratos MAXO (ca. 40W...1,5kW, 230V 1~) - vollintegrierte Pumpenelektronik mit eigenem Klemmenraum (SSM/SBM/Digitaleingaenge/Analogeingaenge), Original-Klemmenplan verifiziert (Wilo-Stratos-MAXO/-D/-Z Einbau- und Betriebsanleitung Ed.02/2025-05). Netzanschluss ueber LSS 1-polig B10A (5SL6110-7, Pumpenleistung bis 1,5kW = ca. 6,5A, B6A waere zu knapp) auf 3 Klemmen L/N/PE (Regel 11). SBM (oranger Klemmenblock, potentialfreier Schliesser, Werkseinstellung Motor in Betrieb) auf 2 Klemmen = 1x BI Betriebsmeldung. SSM (roter Klemmenblock, potentialfreier Wechsler) auf 2 Klemmen = 1x BI Sammelstoermeldung. Digitaleingang DI1 (Klemmen 31/33, Funktion Extern AUS) auf 2 Klemmen = 1x BO Schalten Ein/Aus. Analogeingang AI1 (Klemmen 12/13, 0...10V) auf 2 Klemmen = 1x AO Sollwert-/Drehzahlvorgabe. Alle Signalklemmen echte Feldklemmen (Pumpe steht ausserhalb des Schranks), SELV-Bereich (SSM/SBM duerfen laut Handbuch auch bis 250V AC betrieben werden, getrennte Leitungsfuehrung noetig um SELV-Schutz der uebrigen Schnittstellen zu erhalten). Kommunikationskarte (CIF-Modul fuer Modbus/BACnet/etc.) bewusst nicht Teil dieser Grundbaugruppe, bei Bedarf als eigene Baugruppe ergaenzbar. Datenpunktbedarf 1x BO + 1x BI + 1x AO... + 1x BI (SSM) = 2x BI + 1x BO + 1x AO gesamt.",
+    "beschreibung": "Umwaelzpumpe Wilo Stratos MAXO (ca. 40W...1,5kW, 230V 1~) - vollintegrierte Pumpenelektronik mit eigenem Klemmenraum (SSM/SBM/Digitaleingaenge/Analogeingaenge), Original-Klemmenplan verifiziert (Wilo-Stratos-MAXO/-D/-Z Einbau- und Betriebsanleitung Ed.02/2025-05). Netzanschluss ueber LSS 1-polig B10A (5SL6110-7, Pumpenleistung bis 1,5kW = ca. 6,5A, B6A waere zu knapp) auf 3 Klemmen L/N/PE (Regel 11). SBM (oranger Klemmenblock, potentialfreier Schliesser, Werkseinstellung Motor in Betrieb) auf 2 Klemmen = 1x BI Betriebsmeldung. SSM (roter Klemmenblock, potentialfreier Wechsler) auf 2 Klemmen = 1x BI Sammelstoermeldung. Digitaleingang DI1 (Klemmen 31/33, Funktion Extern AUS) auf 2 Klemmen = 1x BO Schalten Ein/Aus. Analogeingang AI1 (Klemmen 12/13, 0...10V) auf 2 Klemmen = 1x AO Sollwert-/Drehzahlvorgabe. Alle Signalklemmen echte Feldklemmen (Pumpe steht ausserhalb des Schranks), SELV-Bereich (SSM/SBM duerfen laut Handbuch auch bis 250V AC betrieben werden, getrennte Leitungsfuehrung noetig um SELV-Schutz der uebrigen Schnittstellen zu erhalten). Kommunikationskarte (CIF-Modul fuer Modbus/BACnet/etc.) bewusst nicht Teil dieser Grundbaugruppe, bei Bedarf als eigene Baugruppe ergaenzbar. Datenpunktbedarf 1x BO + 1x BI + 1x AO... + 1x BI (SSM) = 2x BI + 1x BO + 1x AO gesamt. Reparaturschalter (Kraus & Naimer KG-Reihe, rot/gelb, normativ gefordert nach EN 60204-1/VDE 0113 zur allpoligen Freischaltung des Betriebsmittels ausserhalb der Sichtweite zur Hauptabsicherung) mit Hilfskontaktblock (K2.H010/A11-VE) gehoert zur Baugruppe - schaltet nur die stromfuehrenden Leiter (L bzw. L1/L2/L3/N), PE wird nicht mitgeschaltet. Hilfskontakt meldet Betaetigung als 1x BI auf 2 Klemmen.",
     "bauteile": [
       {
         "artikel_nr": "5SL6110-7",
@@ -2164,6 +2185,27 @@
         "menge": 1,
         "zone": "klemm_f",
         "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0758484",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
@@ -2184,9 +2226,9 @@
   },
   {
     "id": "420_000024",
-    "name": "Umwaelzpumpe Stratos MAXO-Z (Trinkwasser-Zirkulation), Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, 230V AC",
+    "name": "Umwaelzpumpe Stratos MAXO-Z (Trinkwasser-Zirkulation) 40W...1,5kW, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, inkl. Rep.-Schalter, 230V AC",
     "gewerk": "420",
-    "beschreibung": "Trinkwasser-Zirkulationspumpe Wilo Stratos MAXO-Z, DVGW W551/W553-konform - elektrisch identische Beschaltung wie Stratos MAXO (420_000023), gleiche Elektronikplattform, nur fuer Trinkwarmwasser-Zirkulation zertifiziert. Netzanschluss LSS 1-polig B10A (5SL6110-7) auf 3 Klemmen L/N/PE (Regel 11). SBM auf 2 Klemmen = 1x BI Betriebsmeldung. SSM auf 2 Klemmen = 1x BI Sammelstoermeldung. DI1 (Extern AUS) auf 2 Klemmen = 1x BO Schalten Ein/Aus. AI1 (0...10V) auf 2 Klemmen = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe.",
+    "beschreibung": "Trinkwasser-Zirkulationspumpe Wilo Stratos MAXO-Z, DVGW W551/W553-konform - elektrisch identische Beschaltung wie Stratos MAXO (420_000023), gleiche Elektronikplattform, nur fuer Trinkwarmwasser-Zirkulation zertifiziert. Netzanschluss LSS 1-polig B10A (5SL6110-7) auf 3 Klemmen L/N/PE (Regel 11). SBM auf 2 Klemmen = 1x BI Betriebsmeldung. SSM auf 2 Klemmen = 1x BI Sammelstoermeldung. DI1 (Extern AUS) auf 2 Klemmen = 1x BO Schalten Ein/Aus. AI1 (0...10V) auf 2 Klemmen = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe. Reparaturschalter (Kraus & Naimer KG-Reihe, rot/gelb, normativ gefordert nach EN 60204-1/VDE 0113 zur allpoligen Freischaltung des Betriebsmittels ausserhalb der Sichtweite zur Hauptabsicherung) mit Hilfskontaktblock (K2.H010/A11-VE) gehoert zur Baugruppe - schaltet nur die stromfuehrenden Leiter (L bzw. L1/L2/L3/N), PE wird nicht mitgeschaltet. Hilfskontakt meldet Betaetigung als 1x BI auf 2 Klemmen.",
     "bauteile": [
       {
         "artikel_nr": "5SL6110-7",
@@ -2251,6 +2293,27 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0758484",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -2264,37 +2327,37 @@
   },
   {
     "id": "420_000025",
-    "name": "Umwaelzpumpe Stratos GIGA2.0, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, 400V AC 3~",
+    "name": "Umwaelzpumpe Stratos GIGA2.0 0,37...7,5kW (max. 25A 3~), Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, inkl. Rep.-Schalter, 400V AC 3~",
     "gewerk": "420",
-    "beschreibung": "Umwaelzpumpe Wilo Stratos GIGA2.0 (ca. 0,37...7,5+kW, 400V 3~) - gleiche Elektronik-Plattform (IE5-EC-Motor, integrierter Frequenzumrichter) wie Stratos MAXO, daher kein externes Schuetz/Motorschutzschalter noetig (elektronischer Vollschutz uebernimmt Anlauf/Ueberlastschutz, Nutzer-Entscheidung Session 56 nach Abgleich mit Recherchebefund). Netzanschluss ueber LSS 3-polig C16A (5SL6316-7, bereits im Katalog, dimensioniert auf oberes Leistungsende der Baureihe ~7,5kW = ca. 11-13A bei 400V 3~) auf 5 Klemmen L1/L2/L3/N/PE (Regel 11). Signalklemmen ANALOG zu Stratos MAXO angenommen (SBM/SSM/DI1/AI1) - fuer GIGA2.0 nicht einzeln am Original-Klemmenplan verifiziert (gleiche Recherche-Einschraenkung wie beim urspruenglichen Wilo-Rechercheagenten), vor Verwendung im Projekt gegenpruefen. SBM (Schliesser) = 1x BI Betriebsmeldung, SSM (Wechsler) = 1x BI Sammelstoermeldung, DI1 Extern AUS = 1x BO Schalten Ein/Aus, AI1 0...10V = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe. Kein Motorschutzschalter noetig (Regel: bei elektronisch selbstgeschuetzten Pumpen mit integriertem Sanftanlauf-FU entfaellt der klassische Motoranlaufstrom, den ein MSS abfangen muesste - analog zum bestehenden DBACS-Muster bei Frequenzumrichter-Baugruppen (Session 45, SINAMICS G120C), wo eingangsseitig ebenfalls nur LSS/Leistungsschalter statt MSS verwendet wird. Session 56, nach Recherche zur allgemeinen Motorleistungsreihe/Schaltgeraetekonzept-Praxis bestaetigt.)",
+    "beschreibung": "Umwaelzpumpe Wilo Stratos GIGA2.0 (ca. 0,37...7,5+kW, 400V 3~) - gleiche Elektronik-Plattform (IE5-EC-Motor, integrierter Frequenzumrichter) wie Stratos MAXO, daher kein externes Schuetz/Motorschutzschalter noetig (elektronischer Vollschutz uebernimmt Anlauf/Ueberlastschutz, Nutzer-Entscheidung Session 56 nach Abgleich mit Recherchebefund). Netzanschluss ueber LSS 3-polig C16A (5SL6316-7, bereits im Katalog, dimensioniert auf oberes Leistungsende der Baureihe ~7,5kW = ca. 11-13A bei 400V 3~) auf 5 Klemmen L1/L2/L3/N/PE (Regel 11). Signalklemmen ANALOG zu Stratos MAXO angenommen (SBM/SSM/DI1/AI1) - fuer GIGA2.0 nicht einzeln am Original-Klemmenplan verifiziert (gleiche Recherche-Einschraenkung wie beim urspruenglichen Wilo-Rechercheagenten), vor Verwendung im Projekt gegenpruefen. SBM (Schliesser) = 1x BI Betriebsmeldung, SSM (Wechsler) = 1x BI Sammelstoermeldung, DI1 Extern AUS = 1x BO Schalten Ein/Aus, AI1 0...10V = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe. Kein Motorschutzschalter noetig (Regel: bei elektronisch selbstgeschuetzten Pumpen mit integriertem Sanftanlauf-FU entfaellt der klassische Motoranlaufstrom, den ein MSS abfangen muesste - analog zum bestehenden DBACS-Muster bei Frequenzumrichter-Baugruppen (Session 45, SINAMICS G120C), wo eingangsseitig ebenfalls nur LSS/Leistungsschalter statt MSS verwendet wird. Session 56, nach Recherche zur allgemeinen Motorleistungsreihe/Schaltgeraetekonzept-Praxis bestaetigt.) KORREKTUR (Session 56, nach Original-Handbuch-Pruefung): LSS-Charakteristik von C16A auf korrektes B25A (5SL6325-6) geaendert - Original-Handbuch (Wilo 2222520, Ed.01/2024-08) verlangt B-Charakteristik (Ueberlast 1,13-1,45x Inenn, Kurzschluss 3-5x Inenn), max. netzseitige Absicherung 25A (3~)/16A (1~), muss immer der tatsaechlichen Pumpengroesse entsprechen - hier auf die Baureihen-Obergrenze dimensioniert (Nutzer-Vorgabe hoechste Leistung). Zusatzhinweis aus dem Handbuch: FI-Schutzschalter nur Typ B zulaessig (Frequenzumrichter kann normale RCD/RCM-Funktion beeintraechtigen), nicht als eigenes DBACS-Bauteil modelliert, nur als Planungshinweis dokumentiert. Reparaturschalter (Kraus & Naimer KG-Reihe, rot/gelb, normativ gefordert nach EN 60204-1/VDE 0113 zur allpoligen Freischaltung des Betriebsmittels ausserhalb der Sichtweite zur Hauptabsicherung) mit Hilfskontaktblock (K2.H010/A11-VE) gehoert zur Baugruppe - schaltet nur die stromfuehrenden Leiter (L bzw. L1/L2/L3/N), PE wird nicht mitgeschaltet. Hilfskontakt meldet Betaetigung als 1x BI auf 2 Klemmen.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6316-7",
+        "artikel_nr": "5SL6325-6",
         "menge": 1,
         "zone": "evert"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212120",
         "menge": 1,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212120",
         "menge": 1,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212120",
         "menge": 1,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212123",
         "menge": 1,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212131",
         "menge": 1,
         "zone": "klemm_l"
       },
@@ -2336,6 +2399,27 @@
         "menge": 1,
         "zone": "klemm_f",
         "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0758484",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
@@ -2356,37 +2440,37 @@
   },
   {
     "id": "420_000026",
-    "name": "Umwaelzpumpe Wilo CronoLine-E, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, 400V AC 3~",
+    "name": "Umwaelzpumpe Wilo CronoLine-E (max. 25A 3~, analog GIGA2.0 dimensioniert), Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, inkl. Rep.-Schalter, 400V AC 3~",
     "gewerk": "420",
-    "beschreibung": "Umwaelzpumpe Wilo CronoLine-IL-E/-DL-E/-BL-E (grosse Inline-/Blockpumpen, 400V 3~, elektronische Variante mit integriertem Frequenzumrichter + integriertem Motor-Vollschutz KLF) - kein externes Schuetz/Motorschutzschalter noetig, Elektronik uebernimmt Motorschutz + Sanftanlauf (Nutzer-Entscheidung Session 56 nach Abgleich mit Recherchebefund, analog GIGA2.0). Netzanschluss ueber LSS 3-polig C16A (5SL6316-7, bereits im Katalog) auf 5 Klemmen L1/L2/L3/N/PE (Regel 11). ACHTUNG Leistungsbereich der -E-Variante nicht vollstaendig recherchiert (nur ein Einzelbeleg 5,5kW bei DN100 gefunden, Gesamtspanne der Baureihe unklar - die nicht-elektronische Basis-Baureihe CronoLine-IL/CronoBloc-BL reicht laut Recherche bis weit ueber 22kW, ob die -E-Variante denselben Bereich abdeckt ist unbestaetigt) - C16A vor Projekteinsatz anhand der tatsaechlich benoetigten Baugroesse gegenpruefen, ggf. groesser dimensionieren. Signalklemmen ANALOG zu Stratos MAXO/GIGA2.0 angenommen (SBM/SSM/DI1/AI1), nicht einzeln am Original-Klemmenplan verifiziert. SBM = 1x BI Betriebsmeldung, SSM = 1x BI Sammelstoermeldung, DI1 Extern AUS = 1x BO Schalten Ein/Aus, AI1 0...10V = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe. Kein Motorschutzschalter noetig (Regel: bei elektronisch selbstgeschuetzten Pumpen mit integriertem Sanftanlauf-FU entfaellt der klassische Motoranlaufstrom, den ein MSS abfangen muesste - analog zum bestehenden DBACS-Muster bei Frequenzumrichter-Baugruppen (Session 45, SINAMICS G120C), wo eingangsseitig ebenfalls nur LSS/Leistungsschalter statt MSS verwendet wird. Session 56, nach Recherche zur allgemeinen Motorleistungsreihe/Schaltgeraetekonzept-Praxis bestaetigt.)",
+    "beschreibung": "Umwaelzpumpe Wilo CronoLine-IL-E/-DL-E/-BL-E (grosse Inline-/Blockpumpen, 400V 3~, elektronische Variante mit integriertem Frequenzumrichter + integriertem Motor-Vollschutz KLF) - kein externes Schuetz/Motorschutzschalter noetig, Elektronik uebernimmt Motorschutz + Sanftanlauf (Nutzer-Entscheidung Session 56 nach Abgleich mit Recherchebefund, analog GIGA2.0). Netzanschluss ueber LSS 3-polig C16A (5SL6316-7, bereits im Katalog) auf 5 Klemmen L1/L2/L3/N/PE (Regel 11). ACHTUNG Leistungsbereich der -E-Variante nicht vollstaendig recherchiert (nur ein Einzelbeleg 5,5kW bei DN100 gefunden, Gesamtspanne der Baureihe unklar - die nicht-elektronische Basis-Baureihe CronoLine-IL/CronoBloc-BL reicht laut Recherche bis weit ueber 22kW, ob die -E-Variante denselben Bereich abdeckt ist unbestaetigt) - C16A vor Projekteinsatz anhand der tatsaechlich benoetigten Baugroesse gegenpruefen, ggf. groesser dimensionieren. Signalklemmen ANALOG zu Stratos MAXO/GIGA2.0 angenommen (SBM/SSM/DI1/AI1), nicht einzeln am Original-Klemmenplan verifiziert. SBM = 1x BI Betriebsmeldung, SSM = 1x BI Sammelstoermeldung, DI1 Extern AUS = 1x BO Schalten Ein/Aus, AI1 0...10V = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe. Kein Motorschutzschalter noetig (Regel: bei elektronisch selbstgeschuetzten Pumpen mit integriertem Sanftanlauf-FU entfaellt der klassische Motoranlaufstrom, den ein MSS abfangen muesste - analog zum bestehenden DBACS-Muster bei Frequenzumrichter-Baugruppen (Session 45, SINAMICS G120C), wo eingangsseitig ebenfalls nur LSS/Leistungsschalter statt MSS verwendet wird. Session 56, nach Recherche zur allgemeinen Motorleistungsreihe/Schaltgeraetekonzept-Praxis bestaetigt.) KORREKTUR (Session 56): LSS von C16A auf B25A (5SL6325-6) geaendert, analog zur GIGA2.0-Erkenntnis (echte Original-Handbuchpruefung fuer CronoLine-E selbst trotz mehrerer Versuche nicht moeglich - ManualsLib blockierte WebFetch, PDF-Mirror lieferte keinen lesbaren Text). Wert ist eine begruendete Uebertragung von GIGA2.0 (gleiche Wilo-Elektronikklasse, integrierter FU+Motor-Vollschutz), NICHT am CronoLine-E-Originalhandbuch verifiziert - vor Projekteinsatz nachpruefen, sobald ein lesbares Original-PDF verfuegbar ist. Reparaturschalter (Kraus & Naimer KG-Reihe, rot/gelb, normativ gefordert nach EN 60204-1/VDE 0113 zur allpoligen Freischaltung des Betriebsmittels ausserhalb der Sichtweite zur Hauptabsicherung) mit Hilfskontaktblock (K2.H010/A11-VE) gehoert zur Baugruppe - schaltet nur die stromfuehrenden Leiter (L bzw. L1/L2/L3/N), PE wird nicht mitgeschaltet. Hilfskontakt meldet Betaetigung als 1x BI auf 2 Klemmen.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6316-7",
+        "artikel_nr": "5SL6325-6",
         "menge": 1,
         "zone": "evert"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212120",
         "menge": 1,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212120",
         "menge": 1,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212120",
         "menge": 1,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212123",
         "menge": 1,
         "zone": "klemm_l"
       },
       {
-        "artikel_nr": "3209510",
+        "artikel_nr": "3212131",
         "menge": 1,
         "zone": "klemm_l"
       },
@@ -2428,6 +2512,27 @@
         "menge": 1,
         "zone": "klemm_f",
         "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0758484",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
       },
       {
         "artikel_nr": "3209510",
