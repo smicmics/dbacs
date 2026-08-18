@@ -2261,5 +2261,189 @@
     "automationsanbindung": true,
     "kategorie": "Umwälzpumpen",
     "geprueft": false
+  },
+  {
+    "id": "420_000025",
+    "name": "Umwaelzpumpe Stratos GIGA2.0, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, 400V AC 3~",
+    "gewerk": "420",
+    "beschreibung": "Umwaelzpumpe Wilo Stratos GIGA2.0 (ca. 0,37...7,5+kW, 400V 3~) - gleiche Elektronik-Plattform (IE5-EC-Motor, integrierter Frequenzumrichter) wie Stratos MAXO, daher kein externes Schuetz/Motorschutzschalter noetig (elektronischer Vollschutz uebernimmt Anlauf/Ueberlastschutz, Nutzer-Entscheidung Session 56 nach Abgleich mit Recherchebefund). Netzanschluss ueber LSS 3-polig C16A (5SL6316-7, bereits im Katalog, dimensioniert auf oberes Leistungsende der Baureihe ~7,5kW = ca. 11-13A bei 400V 3~) auf 5 Klemmen L1/L2/L3/N/PE (Regel 11). Signalklemmen ANALOG zu Stratos MAXO angenommen (SBM/SSM/DI1/AI1) - fuer GIGA2.0 nicht einzeln am Original-Klemmenplan verifiziert (gleiche Recherche-Einschraenkung wie beim urspruenglichen Wilo-Rechercheagenten), vor Verwendung im Projekt gegenpruefen. SBM (Schliesser) = 1x BI Betriebsmeldung, SSM (Wechsler) = 1x BI Sammelstoermeldung, DI1 Extern AUS = 1x BO Schalten Ein/Aus, AI1 0...10V = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "lueftung"
+    ],
+    "betriebsmittel": "Umwaelzpumpe, elektronisch geregelt (integrierter FU), 0...10V mit Betriebs-/Stoermeldung, 400V AC 3~ (Wilo Stratos GIGA2.0)",
+    "feldgeraet_artikel_nr": "Stratos GIGA2.0",
+    "automationsanbindung": true,
+    "kategorie": "Umwälzpumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000026",
+    "name": "Umwaelzpumpe Wilo CronoLine-E, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, 400V AC 3~",
+    "gewerk": "420",
+    "beschreibung": "Umwaelzpumpe Wilo CronoLine-IL-E/-DL-E/-BL-E (grosse Inline-/Blockpumpen, 400V 3~, elektronische Variante mit integriertem Frequenzumrichter + integriertem Motor-Vollschutz KLF) - kein externes Schuetz/Motorschutzschalter noetig, Elektronik uebernimmt Motorschutz + Sanftanlauf (Nutzer-Entscheidung Session 56 nach Abgleich mit Recherchebefund, analog GIGA2.0). Netzanschluss ueber LSS 3-polig C16A (5SL6316-7, bereits im Katalog) auf 5 Klemmen L1/L2/L3/N/PE (Regel 11). ACHTUNG Leistungsbereich der -E-Variante nicht vollstaendig recherchiert (nur ein Einzelbeleg 5,5kW bei DN100 gefunden, Gesamtspanne der Baureihe unklar - die nicht-elektronische Basis-Baureihe CronoLine-IL/CronoBloc-BL reicht laut Recherche bis weit ueber 22kW, ob die -E-Variante denselben Bereich abdeckt ist unbestaetigt) - C16A vor Projekteinsatz anhand der tatsaechlich benoetigten Baugroesse gegenpruefen, ggf. groesser dimensionieren. Signalklemmen ANALOG zu Stratos MAXO/GIGA2.0 angenommen (SBM/SSM/DI1/AI1), nicht einzeln am Original-Klemmenplan verifiziert. SBM = 1x BI Betriebsmeldung, SSM = 1x BI Sammelstoermeldung, DI1 Extern AUS = 1x BO Schalten Ein/Aus, AI1 0...10V = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "lueftung"
+    ],
+    "betriebsmittel": "Umwaelzpumpe, grosse Inline-/Blockbauform, elektronisch geregelt (integrierter FU), 0...10V mit Betriebs-/Stoermeldung, 400V AC 3~ (Wilo CronoLine-E)",
+    "feldgeraet_artikel_nr": "CronoLine-E",
+    "automationsanbindung": true,
+    "kategorie": "Umwälzpumpen",
+    "geprueft": false
   }
 ]
