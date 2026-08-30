@@ -499,6 +499,20 @@ def export_baugruppen(wb):
         for dpf in ('dp_ai', 'dp_ao', 'dp_bi', 'dp_bo'):
             if rec.get(dpf):
                 bt[dpf] = int(rec[dpf])
+        # dp_fb_ai/ao/bi/bo + feldbus_protokoll (Session 58): kommunikative
+        # (Feldbus-)Datenpunkte je Verwendung dieses Bauteils in DIESER
+        # Baugruppe - analog zu den physischen dp_*-Overrides oben, nur landen
+        # sie in Modul 4 in den Feldbus-Kapazitaets-/Bedarfsgruppen (mbus /
+        # modbus_rtu / modbus_tcp) statt im physischen dpDemand. Damit koennen
+        # Feldgeraete-Baugruppen (z.B. Energiezaehler, Energy Valve) Werte
+        # ausweisen, die "kommunikativ" gelesen werden und KEINEN
+        # Schaltschrankplatz verbrauchen. Die Overrides sitzen typ. auf einer
+        # ohnehin vorhandenen Klemmenzeile der Baugruppe (kein eigenes Bauteil).
+        for dpf in ('dp_fb_ai', 'dp_fb_ao', 'dp_fb_bi', 'dp_fb_bo'):
+            if rec.get(dpf):
+                bt[dpf] = int(rec[dpf])
+        if rec.get('feldbus_protokoll') is not None:
+            bt['feldbus_protokoll'] = str(rec['feldbus_protokoll'])
         # lvb_erforderlich (Session 49): dieser Datenpunktbedarf darf nur durch
         # ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt werden.
         if rec.get('lvb_erforderlich'):
@@ -591,6 +605,13 @@ def export_feldgeraete(wb):
             entry['preis_eur'] = float(rec['preis_stueck_eur'])
         if rec.get('quelle_hinweis'):
             entry['quelle_hinweis'] = str(rec['quelle_hinweis'])
+        # kommunikative_datenpunkte (Session 58): Klartext-Liste, welche Werte
+        # dieses Feldgeraet ueber den Bus (M-Bus / Modbus / BACnet) bereitstellt
+        # und die in Modul 4 als kommunikative Datenpunkte gezaehlt werden (ohne
+        # Schaltschrankplatz). Reine Anzeige in Modul 5 ("Kommunikativ
+        # ausgelesen: ...").
+        if rec.get('kommunikative_datenpunkte'):
+            entry['kommunikative_datenpunkte'] = str(rec['kommunikative_datenpunkte'])
         # zubehoer_feldgeraet_artikel_nr (Lueftungssensoren-Session): Pflichtzubehoer,
         # das NICHT als eigene Baugruppe waehlbar ist (z.B. Montagekonsole eines
         # Kanalrauchmelders), aber automatisch mit der Menge des Hauptgeraets in die

@@ -157,6 +157,25 @@
   dokumentiert SDBAM ausdrücklich nur für Maximaldrucküberwachung (eigene
   DWR-Baureihe für Minimaldruckbegrenzung vorgesehen) – auf ausdrücklichen
   Nutzer-Wunsch dennoch für beide Rollen eingesetzt, siehe `quelle_hinweis`.
+- **Session 58 (neu) – kommunikative Datenpunkte an Baugruppen + Belimo
+  Energy Valve:** Neue Systematik implementiert (siehe „Modul 4/5 – Session 58"
+  weiter unten). Belimo `EV050R2+KBAC`/`EV100F+KBAC` als Feldgeräte + 2
+  Baugruppen `420_000027`/`028` (Kategorie „Ventilantriebe", `funktionsbereich
+  [heizung,lueftung,kaelte]`) angelegt und im Browser verifiziert. Offen:
+  Belimo DN100 `kvs` + `+KBAC`-Leistungsaufnahme (VA) unbestätigt; Switch
+  `2891021` Preis Richtwert 125 € (Listung 2019); Aderfarben/Klemmen aus
+  älterem `EV..+BAC`-Datenblatt (V4 nicht optisch gegengeprüft).
+- **Session 58 – Zähler (Wärme/Kälte/Wasser) noch NICHT angelegt (Phase 2):**
+  Portfolio-Matrix Wärme/Kälte/Wasser je DN15–25 / DN50 / DN100, Varianten
+  {M-Bus busgespeist, M-Bus + 24 V, Dual M-Bus + Modbus RTU (nur Wärme/Kälte
+  DN50/DN100)}. Eigene Kategorie „Energie und Zählwerteinrichtungen". Aquametro
+  hat **kein Modbus-TCP-Modul** → Dual = M-Bus + Modbus RTU (RS485 direkt an
+  CPU, kein Zusatzbauteil). Aquametro-Listenpreise nicht öffentlich → Geräte
+  mit belastbarem Preis wählen (Zenner zelsius/MTK-M/WPD). Kompaktzähler
+  24 V AC, getrennte Rechenwerke 24 V DC. `MR006` (PW20) evtl. **abgekündigt**
+  – Nachfolge prüfen. Rohfakten: `scratchpad/fork_zaehler_ergebnis.md`.
+- **Elektro-Medium** analog Energy Valve später (Nutzer-Hinweis „Später müssen
+  wir das auch für Elektro machen").
 
 Sonst keine offenen Punkte – Session 51/52 vollständig implementiert UND im
 Browser verifiziert; die daraus erarbeiteten Modellierungsregeln sind jetzt
@@ -556,6 +575,46 @@ kein MSS, da der FU selbst den Motorschutz übernimmt).
 Die 4–5,5-kW-Schwelle Direktanlauf→Stern-Dreieck/Sanftstarter/FU ist
 **keine feste Norm**, sondern Praxis-Faustregel, abhängig von den TAB
 (Technische Anschlussbedingungen) des jeweiligen Netzbetreibers.
+
+---
+
+### Modul 4/5 – Kommunikative Datenpunkte an Baugruppen + Kommunikationsbauteil-Ratchet (Session 58, komprimiert)
+
+Neues Muster für Feldgeräte, die **über einen Bus gelesene Werte** liefern, die
+**keinen Schaltschrankplatz verbrauchen** (Energiezähler, Belimo Energy Valve …):
+
+- **`dp_fb_ai/ao/bi/bo` + `feldbus_protokoll` jetzt auch je
+  `baugruppen_bauteile`-Verknüpfungszeile** (xlsx_to_json + Modul 4). Die
+  Overrides sitzen auf einer ohnehin vorhandenen `3209510`-Klemmenzeile der
+  Baugruppe (kein eigenes Träger-Bauteil) – analog zu den physischen
+  `dp_*`-Overrides der DDC-Reserve-Baugruppen. In `buildQueues()` landen sie in
+  `fbDemand[protokoll]` (mbus / modbus_rtu / modbus_tcp), NICHT in `dpDemand` →
+  Statistik-Gruppen „Komm. …", keine physische Platzierung.
+- **Kommunikationsbauteil-Ratchet** (neu, `kommWatermark` /
+  `m04_komm_watermark`, Muster = `steuerspannungWatermark`): je nach Bus wird
+  automatisch EIN geteiltes schrankinternes Bauteil in `steuer` ergänzt:
+  - `mbus` → M-Bus-Pegelwandler **`MR006`** (PW20, 24 V AC/DC).
+  - `modbus_tcp` (inkl. BACnet/IP – **kein eigener Gruppen-Key**, „Modbus IP
+    trägt die gleiche Systematik") → Ethernet-Switch **`2891021`** (Phoenix
+    Contact FL SWITCH SFN 5TX-24VAC, 24 V AC).
+  - `modbus_rtu` → **nichts** (RS485 direkt an einen CPU-Port).
+  Manuell platzierte `MR006`/`MR004C`/`PW100` bzw. `2891021`/`2891001`/`EDS-205`
+  gelten als vorhanden → keine Auto-Ergänzung. Keine Größen-/Mengenstaffelung
+  in v1 (bei >20 Zählern manuell `MR004C` = PW60). `resetDdcWatermark()` leert
+  auch `kommWatermark`. `MR006`/`MR004C` bekamen `benoetigt_steuerspannung:
+  '24vac'` → der Steuerspannungs-Ratchet zieht den Trafo automatisch nach.
+- **Modul 5** zeigt je Feldgerät `kommunikative_datenpunkte` (neue
+  `feldgeraete`-Freitextspalte) als „Kommunikativ ausgelesen: …".
+- **Belimo Energy Valve** (`420_000027`/`028`): Hybridmodus analog + IP – 4
+  `klemm_f`-Klemmen (2× 24 V + Y + U), 1 AO + 1 AI physisch, dazu auf der
+  U-Klemmenzeile `dp_fb_ai:9, dp_fb_bi:1, dp_fb_ao:2` @ `modbus_tcp`. `+KBAC` =
+  SuperCap-Notstellung (Auf/Zu wählbar). Schutzklasse III/PELV → **kein PE**.
+  1 Belimo-Baugruppe je Baugröße (BACnet/IP vs. Modbus TCP ist Gerätekonfig,
+  kein Portfolio-Split).
+
+Alles im Browser verifiziert (dp_fb-Zählung in „Komm. Modbus TCP/IP", Switch
+1× geteilt über n Ventile, Klemmen/Stückliste/Steuerspannung stimmen, Modul 5
+zeigt Auslese-Liste, keine Konsolenfehler).
 
 ---
 

@@ -63,6 +63,7 @@ table.stk th{background:var(--bg3);color:var(--tx2);font-weight:600;padding:7px 
 table.stk td{padding:6px 9px;border-bottom:.5px solid var(--bord);vertical-align:top;}
 table.stk .num{text-align:right;font-family:var(--mono);}
 table.stk .src{color:var(--tx3);font-size:11px;}
+table.stk .komm{color:var(--tx2);font-size:11px;margin-top:2px;font-style:italic;}
 .stk-total{text-align:right;font-size:14px;font-weight:700;margin-top:10px;color:var(--tx);}
 .stk-empty{color:var(--tx3);font-size:12px;padding:24px 0;}
 
@@ -231,6 +232,7 @@ function aggregateFeldgeraete() {
         bezeichnung: fg ? fg.bezeichnung : bg.betriebsmittel,
         hersteller:  fg ? fg.hersteller  : '–',
         preis_eur:   fg && typeof fg.preis_eur === 'number' ? fg.preis_eur : null,
+        komm_dp:     fg ? (fg.kommunikative_datenpunkte || null) : null,
         quellen:     new Set(),
         menge:       0,
         zubehoerNr:    fg ? fg.zubehoer_feldgeraet_artikel_nr : null,
@@ -277,7 +279,7 @@ function render() {
     const summe = hasPreis ? e.menge * e.preis_eur : null;
     if (hasPreis) total += summe;
     return `<tr>
-      <td>${e.bezeichnung}<div class="src">aus: ${[...e.quellen].join(', ')}</div></td>
+      <td>${e.bezeichnung}<div class="src">aus: ${[...e.quellen].join(', ')}</div>${e.komm_dp ? `<div class="komm">Kommunikativ ausgelesen: ${e.komm_dp}</div>` : ''}</td>
       <td>${e.hersteller}</td>
       <td class="num">${e.menge}</td>
       <td class="num">${hasPreis ? e.preis_eur.toFixed(2) : '–'}</td>

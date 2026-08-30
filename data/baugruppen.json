@@ -2550,5 +2550,902 @@
     "automationsanbindung": true,
     "kategorie": "Umwälzpumpen",
     "geprueft": false
+  },
+  {
+    "id": "420_000027",
+    "name": "Energieventil DN50 Verschraubung, druckunabhaengig mit Energiezaehlung, Notstellfunktion Auf/Zu, Hybrid analog + IP, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Energieventil (Belimo Energy Valve 4) - druckunabhaengiges Regelventil mit integriertem thermischem Energiezaehler und elektronischer Notstellfunktion ueber SuperCap (Notstellrichtung Auf ODER Zu per Konfiguration). DN50, Verschraubung Rp2\"/G2 1/2\", PN25. Schaltschrankanschluss als Hybrid analog + IP: 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (2x Versorgung 24 V AC/DC + Y Stellsignal-Eingang 2..10 V + U Rueckmeldesignal-Ausgang 0..10 V), Datenpunktbedarf 1x AO + 1x AI physisch. Zusaetzlich IP-Anbindung ueber RJ45 (BACnet/IP oder Modbus TCP - gleiche Schaltschrank-Systematik): 9x AI + 1x BI + 2x AO kommunikativ, verbrauchen KEINEN Schaltschrankplatz. Fuer die IP-Anbindung wird automatisch ein Ethernet-Switch (24 V AC) im Schrank ergaenzt. Schutzklasse III/PELV -> kein PE. Kein natives 4-20 mA.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1,
+        "dp_fb_ai": 9,
+        "dp_fb_ao": 2,
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "lueftung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Energieventil, druckunabhaengig, mit therm. Energiezaehler, Notstellung SuperCap, DN50 (Belimo EV050R2+KBAC)",
+    "feldgeraet_artikel_nr": "EV050R2+KBAC",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000028",
+    "name": "Energieventil DN100 Flansch, druckunabhaengig mit Energiezaehlung, Notstellfunktion Auf/Zu, Hybrid analog + IP, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "Energieventil (Belimo Energy Valve 4) - druckunabhaengiges Regelventil mit integriertem thermischem Energiezaehler und elektronischer Notstellfunktion ueber SuperCap (Notstellrichtung Auf ODER Zu per Konfiguration). DN100, Flansch PN16. Schaltschrankanschluss als Hybrid analog + IP: 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (2x Versorgung 24 V AC/DC + Y Stellsignal-Eingang 2..10 V + U Rueckmeldesignal-Ausgang 0..10 V), Datenpunktbedarf 1x AO + 1x AI physisch. Zusaetzlich IP-Anbindung ueber RJ45 (BACnet/IP oder Modbus TCP - gleiche Schaltschrank-Systematik): 9x AI + 1x BI + 2x AO kommunikativ, verbrauchen KEINEN Schaltschrankplatz. Fuer die IP-Anbindung wird automatisch ein Ethernet-Switch (24 V AC) im Schrank ergaenzt. Schutzklasse III/PELV -> kein PE. Kein natives 4-20 mA.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1,
+        "dp_fb_ai": 9,
+        "dp_fb_ao": 2,
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "lueftung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Energieventil, druckunabhaengig, mit therm. Energiezaehler, Notstellung SuperCap, DN100 (Belimo EV100F+KBAC)",
+    "feldgeraet_artikel_nr": "EV100F+KBAC",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Ventilantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000029",
+    "name": "Waermemengenzaehler DN15-25 Kompakt, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Waermemengenzaehler DN15-25 Kompakt, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 7 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Waermemengenzaehler DN15-25 Kompakt, M-Bus (WMZ-KOMPAKT-DN20)",
+    "feldgeraet_artikel_nr": "WMZ-KOMPAKT-DN20",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000030",
+    "name": "Waermemengenzaehler DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Waermemengenzaehler DN15-25 Kompakt, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vac) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Waermemengenzaehler DN15-25 Kompakt, M-Bus (WMZ-KOMPAKT-DN20)",
+    "feldgeraet_artikel_nr": "WMZ-KOMPAKT-DN20",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000031",
+    "name": "Waermemengenzaehler DN50, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Waermemengenzaehler DN50, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 7 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Waermemengenzaehler DN50, M-Bus (WMZ-DN50)",
+    "feldgeraet_artikel_nr": "WMZ-DN50",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000032",
+    "name": "Waermemengenzaehler DN50, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Waermemengenzaehler DN50, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vdc) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Waermemengenzaehler DN50, M-Bus (WMZ-DN50)",
+    "feldgeraet_artikel_nr": "WMZ-DN50",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000033",
+    "name": "Waermemengenzaehler DN50, Dual M-Bus + Modbus RTU",
+    "gewerk": "420",
+    "beschreibung": "Waermemengenzaehler DN50, Dual-Kommunikation M-Bus + Modbus RTU. Rechenwerk mit 2 Kommunikationskarten (Aquametro CALEC ST III: M-Bus onboard + RS485 onboard, konfigurierbar auf Modbus RTU). Schaltschrank: 6 Klemmen - 2 M-Bus + 2 RS485 (A/B) + 2x 24 V (24vdc). Die 7 Werte werden kommunikativ auf BEIDEN Bussen bereitgestellt (zaehlen in Gruppe M-Bus UND Modbus RTU). M-Bus -> automatischer Pegelwandler; Modbus RTU (RS485) geht direkt an einen RS485-Port der Automationsstation (kein Zusatzbauteil).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Waermemengenzaehler DN50, M-Bus (WMZ-DN50)",
+    "feldgeraet_artikel_nr": "WMZ-DN50",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000034",
+    "name": "Waermemengenzaehler DN100, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Waermemengenzaehler DN100, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 7 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Waermemengenzaehler DN100, M-Bus (WMZ-DN100)",
+    "feldgeraet_artikel_nr": "WMZ-DN100",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000035",
+    "name": "Waermemengenzaehler DN100, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Waermemengenzaehler DN100, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vdc) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Waermemengenzaehler DN100, M-Bus (WMZ-DN100)",
+    "feldgeraet_artikel_nr": "WMZ-DN100",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000036",
+    "name": "Waermemengenzaehler DN100, Dual M-Bus + Modbus RTU",
+    "gewerk": "420",
+    "beschreibung": "Waermemengenzaehler DN100, Dual-Kommunikation M-Bus + Modbus RTU. Rechenwerk mit 2 Kommunikationskarten (Aquametro CALEC ST III: M-Bus onboard + RS485 onboard, konfigurierbar auf Modbus RTU). Schaltschrank: 6 Klemmen - 2 M-Bus + 2 RS485 (A/B) + 2x 24 V (24vdc). Die 7 Werte werden kommunikativ auf BEIDEN Bussen bereitgestellt (zaehlen in Gruppe M-Bus UND Modbus RTU). M-Bus -> automatischer Pegelwandler; Modbus RTU (RS485) geht direkt an einen RS485-Port der Automationsstation (kein Zusatzbauteil).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Waermemengenzaehler DN100, M-Bus (WMZ-DN100)",
+    "feldgeraet_artikel_nr": "WMZ-DN100",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000037",
+    "name": "Kaeltemengenzaehler DN15-25 Kompakt, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Kaeltemengenzaehler DN15-25 Kompakt, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 7 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "betriebsmittel": "Kaeltemengenzaehler DN15-25 Kompakt, M-Bus (KMZ-KOMPAKT-DN20)",
+    "feldgeraet_artikel_nr": "KMZ-KOMPAKT-DN20",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000038",
+    "name": "Kaeltemengenzaehler DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Kaeltemengenzaehler DN15-25 Kompakt, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vac) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "betriebsmittel": "Kaeltemengenzaehler DN15-25 Kompakt, M-Bus (KMZ-KOMPAKT-DN20)",
+    "feldgeraet_artikel_nr": "KMZ-KOMPAKT-DN20",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000039",
+    "name": "Kaeltemengenzaehler DN50, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Kaeltemengenzaehler DN50, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 7 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "betriebsmittel": "Kaeltemengenzaehler DN50, M-Bus (KMZ-DN50)",
+    "feldgeraet_artikel_nr": "KMZ-DN50",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000040",
+    "name": "Kaeltemengenzaehler DN50, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Kaeltemengenzaehler DN50, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vdc) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "betriebsmittel": "Kaeltemengenzaehler DN50, M-Bus (KMZ-DN50)",
+    "feldgeraet_artikel_nr": "KMZ-DN50",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000041",
+    "name": "Kaeltemengenzaehler DN50, Dual M-Bus + Modbus RTU",
+    "gewerk": "420",
+    "beschreibung": "Kaeltemengenzaehler DN50, Dual-Kommunikation M-Bus + Modbus RTU. Rechenwerk mit 2 Kommunikationskarten (Aquametro CALEC ST III: M-Bus onboard + RS485 onboard, konfigurierbar auf Modbus RTU). Schaltschrank: 6 Klemmen - 2 M-Bus + 2 RS485 (A/B) + 2x 24 V (24vdc). Die 7 Werte werden kommunikativ auf BEIDEN Bussen bereitgestellt (zaehlen in Gruppe M-Bus UND Modbus RTU). M-Bus -> automatischer Pegelwandler; Modbus RTU (RS485) geht direkt an einen RS485-Port der Automationsstation (kein Zusatzbauteil).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "betriebsmittel": "Kaeltemengenzaehler DN50, M-Bus (KMZ-DN50)",
+    "feldgeraet_artikel_nr": "KMZ-DN50",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000042",
+    "name": "Kaeltemengenzaehler DN100, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Kaeltemengenzaehler DN100, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 7 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "betriebsmittel": "Kaeltemengenzaehler DN100, M-Bus (KMZ-DN100)",
+    "feldgeraet_artikel_nr": "KMZ-DN100",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000043",
+    "name": "Kaeltemengenzaehler DN100, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Kaeltemengenzaehler DN100, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vdc) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "betriebsmittel": "Kaeltemengenzaehler DN100, M-Bus (KMZ-DN100)",
+    "feldgeraet_artikel_nr": "KMZ-DN100",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000044",
+    "name": "Kaeltemengenzaehler DN100, Dual M-Bus + Modbus RTU",
+    "gewerk": "420",
+    "beschreibung": "Kaeltemengenzaehler DN100, Dual-Kommunikation M-Bus + Modbus RTU. Rechenwerk mit 2 Kommunikationskarten (Aquametro CALEC ST III: M-Bus onboard + RS485 onboard, konfigurierbar auf Modbus RTU). Schaltschrank: 6 Klemmen - 2 M-Bus + 2 RS485 (A/B) + 2x 24 V (24vdc). Die 7 Werte werden kommunikativ auf BEIDEN Bussen bereitgestellt (zaehlen in Gruppe M-Bus UND Modbus RTU). M-Bus -> automatischer Pegelwandler; Modbus RTU (RS485) geht direkt an einen RS485-Port der Automationsstation (kein Zusatzbauteil).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "betriebsmittel": "Kaeltemengenzaehler DN100, M-Bus (KMZ-DN100)",
+    "feldgeraet_artikel_nr": "KMZ-DN100",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000045",
+    "name": "Wasserzaehler DN15-25 Kompakt, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Wasserzaehler DN15-25 Kompakt, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 3 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Wasserzaehler DN15-25 Kompakt, M-Bus (WZ-DN20)",
+    "feldgeraet_artikel_nr": "WZ-DN20",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000046",
+    "name": "Wasserzaehler DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Wasserzaehler DN15-25 Kompakt, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vac) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 3 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Wasserzaehler DN15-25 Kompakt, M-Bus (WZ-DN20)",
+    "feldgeraet_artikel_nr": "WZ-DN20",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000047",
+    "name": "Wasserzaehler DN50, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Wasserzaehler DN50, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 3 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Wasserzaehler DN50, M-Bus (WZ-DN50)",
+    "feldgeraet_artikel_nr": "WZ-DN50",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000048",
+    "name": "Wasserzaehler DN50, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Wasserzaehler DN50, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vac) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 3 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Wasserzaehler DN50, M-Bus (WZ-DN50)",
+    "feldgeraet_artikel_nr": "WZ-DN50",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000049",
+    "name": "Wasserzaehler DN100, M-Bus busgespeist",
+    "gewerk": "420",
+    "beschreibung": "Wasserzaehler DN100, M-Bus busgespeist. Schaltschrankanschluss: 2 M-Bus-Klemmen (2-Draht, verpolungssicher) in der Feldgeraete-Klemmleiste; der Zaehler wird ueber den M-Bus gespeist (~1,5 mA / 1 Unit Load), keine eigene Versorgung. 3 Werte werden kommunikativ ueber M-Bus gelesen und verbrauchen KEINEN Schaltschrankplatz. Im Schrank wird automatisch ein M-Bus-Pegelwandler (Relay PW20 = MR006, 24 V AC/DC) ergaenzt (geteilt ueber alle M-Bus-Zaehler; ab >20 Zaehlern manuell PW60 = MR004C waehlen). Kompakt- vs. getrenntes Rechenwerk hat keinen Einfluss auf den Schaltschrankanschluss.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Wasserzaehler DN100, M-Bus (WZ-DN100)",
+    "feldgeraet_artikel_nr": "WZ-DN100",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000050",
+    "name": "Wasserzaehler DN100, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "gewerk": "420",
+    "beschreibung": "Wasserzaehler DN100, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vac) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 3 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Wasserzaehler DN100, M-Bus (WZ-DN100)",
+    "feldgeraet_artikel_nr": "WZ-DN100",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
   }
 ]

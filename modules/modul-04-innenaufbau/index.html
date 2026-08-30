@@ -611,7 +611,7 @@ fieldset{
       <div class="eb-field" id="lvb_realisierung_row" title="Wie die geforderte LVB realisiert wird. DDC-Modul = LVB-fähige E/A-Module (TXM1.8U-ML für AO, TXM1.6R-M für BO). Schaltschrank-LVB · Metz = normale E/A-Module + je Ausgang ein Metz-Gerät mit Hand-0-Auto-Ebene in Reihe (KMA-F8 für AO, KRS-E06 für BO). Türeinbau · Romutec folgt.">
         <label>LVB-Realisierung</label>
         <select id="lvb_realisierung" onchange="onLvbChange()" disabled>
-          <option value="ddc" selected>DDC-Modul (-ML / -M)</option>
+          <option value="ddc" selected>DDC-Modul</option>
           <option value="metz">Schaltschrank-LVB · Metz</option>
           <option value="romutec" disabled>Türeinbau · Romutec – folgt</option>
         </select>
@@ -892,6 +892,12 @@ let letzteDdcAuto      = null;
 // automatisch ergaenzt wurde. Sinkt nie von selbst (gleiches Ratchet-Prinzip
 // wie DDC), siehe buildQueues()/resetDdcWatermark().
 let steuerspannungWatermark = {};
+// Kommunikationsbauteil-Ratchet (Session 58): { 'mbus'|'modbus_tcp': true }
+// fuer jeden Bus-Typ, fuer den schon einmal automatisch ein schrankinternes
+// Kommunikationsbauteil (M-Bus-Pegelwandler bzw. Ethernet-Switch) ergaenzt
+// wurde. Gleiches Ratchet-Prinzip; geteilt ueber alle Feldgeraete.
+let kommWatermark = {};
+let letzteKommAuto = null;
 // Ergebnis des letzten buildQueues()-Laufs, analog letzteDdcAuto – die
 // automatisch ergaenzten Steuerspannungs-Bauteile (Trafo/Netzteil+Sicherung)
 // werden dort bereits in bgInstanceQueue geschrieben (Zeichnung), fehlen
@@ -994,6 +1000,8 @@ function init() {
   if(wm) try { ddcWatermark = JSON.parse(wm); } catch(e){}
   const swm = localStorage.getItem('m04_steuerspannung_watermark');
   if(swm) try { steuerspannungWatermark = JSON.parse(swm); } catch(e){}
+  const kwm = localStorage.getItem('m04_komm_watermark');
+  if(kwm) try { kommWatermark = JSON.parse(kwm); } catch(e){}
 
   loadMontagebereich(gs('schrank_typ'));
   setGewerk(localStorage.getItem('m04_gewerk') || 'lueftung');
@@ -2340,6 +2348,7 @@ function calculate() {
     letzteFelder = [];
     letzteDdcAuto = null;
     letzteSteuerspannungAuto = null;
+    letzteKommAuto = null;
     buildFuellstand(null, null);
     buildStueckliste(null);
     updateReserveWarning(false);
@@ -2349,9 +2358,10 @@ function calculate() {
   }
 
   const ddcReservePct = Math.min(0.5, Math.max(0, (g('ddc_reserve_pct') || 20) / 100));
-  const { felder, reserveShortfall, ddcAuto, ddcSummary, totalDemandTe, steuerspannungAuto } = calculateFelder(klemmraum, reservePct, ddcReservePct);
+  const { felder, reserveShortfall, ddcAuto, ddcSummary, totalDemandTe, steuerspannungAuto, kommAuto } = calculateFelder(klemmraum, reservePct, ddcReservePct);
   letzteFelder = felder;
   letzteSteuerspannungAuto = steuerspannungAuto;
+  letzteKommAuto = kommAuto;
   letzteDdcAuto = ddcAuto;
 
   // Links: ein Schranksicht-Block je Feld, in Reihenfolge – nur tatsächlich
@@ -2429,7 +2439,7 @@ function calculate() {
   buildStueckliste(aggZones);
   updateDdcSummary(ddcSummary);
   updateReserveWarning(reserveShortfall);
-  updateDdcAutoDisplay(ddcAuto, steuerspannungAuto);
+  updateDdcAutoDisplay(ddcAuto, steuerspannungAuto, kommAuto);
 }
 
 // ── Weiche Reserve-Warnung (getrennt vom harten Overflow-"!" im Schrankbild) ──
@@ -2454,7 +2464,7 @@ function updateReserveWarning(shortfall) {
 // selbst. Das DDC-Warndreieck (separat vom Reserve-Warndreieck) meldet,
 // wenn für mindestens einen Datenpunkttyp kein passendes Modul im
 // Katalog existiert (aktuell z. B. alle Feldbus-Typen).
-function updateDdcAutoDisplay(ddcAuto, steuerspannungAuto) {
+function updateDdcAutoDisplay(ddcAuto, steuerspannungAuto, kommAuto) {
   const el = document.getElementById('ddc-auto-liste');
   const warn = document.getElementById('ddc-warn');
   if (el) {
@@ -2476,8 +2486,14 @@ function updateDdcAutoDisplay(ddcAuto, steuerspannungAuto) {
              <span class="bel-dot" style="background:#6B6862"></span>
              <span class="bel-name">${m.menge}× ${m.eb.bezeichnung}</span>
            </div>`).join('');
-    el.innerHTML = (ddcItems || ssItems)
-      ? '<div class="ddc-auto-hdr"><span>Automatisch ergänzt</span><button class="btn-ddc-reset" onclick="resetDdcWatermark()" title="Löscht die gemerkte Mindest-Stückzahl (Watermark, siehe CLAUDE.md Session 28e) und berechnet die Auto-Ergänzung neu aus dem aktuellen Bedarf – z. B. um Reste aus vorherigen Testläufen zu entfernen.">↺ Zurücksetzen</button></div>' + ddcItems + ssItems
+    // Kommunikationsbauteile (Session 58): M-Bus-Pegelwandler / Ethernet-Switch.
+    const kommItems = (kommAuto || []).map(m =>
+          `<div class="bel-zeile bel-zeile-auto" title="${m.eb.bezeichnung} – automatisch ergänzt für die Bus-Anbindung platzierter Feldgeräte (M-Bus → Pegelwandler, Modbus TCP → Switch). Bleibt bestehen, auch wenn der Bedarf später sinkt.">
+             <span class="bel-dot" style="background:#6B6862"></span>
+             <span class="bel-name">${m.menge}× ${m.eb.bezeichnung}</span>
+           </div>`).join('');
+    el.innerHTML = (ddcItems || ssItems || kommItems)
+      ? '<div class="ddc-auto-hdr"><span>Automatisch ergänzt</span><button class="btn-ddc-reset" onclick="resetDdcWatermark()" title="Löscht die gemerkte Mindest-Stückzahl (Watermark, siehe CLAUDE.md Session 28e) und berechnet die Auto-Ergänzung neu aus dem aktuellen Bedarf – z. B. um Reste aus vorherigen Testläufen zu entfernen.">↺ Zurücksetzen</button></div>' + ddcItems + ssItems + kommItems
       : '';
   }
   if (warn) {
@@ -2713,6 +2729,8 @@ function resetDdcWatermark() {
   // Infrastruktur zurücksetzen"), kein zweiter Button nötig.
   steuerspannungWatermark = {};
   localStorage.removeItem('m04_steuerspannung_watermark');
+  kommWatermark = {};
+  localStorage.removeItem('m04_komm_watermark');
   calculate();
 }
 
@@ -2996,6 +3014,17 @@ function buildQueues(ddcReservePct) {
           // davon, ob sie ein eigenes physisches Gerät bekommt) – 2
           // zusammengefasste Sensoren brauchen weiterhin 2x den Datenpunkt.
           accumulateDp(dpQuelle, bt.menge);
+          // Kommunikative (Feldbus-)Datenpunkte je Verknuepfungszeile
+          // (Session 58): bt.dp_fb_ai/ao/bi/bo + bt.feldbus_protokoll -
+          // landen NICHT in dpDemand (kein Schaltschrankplatz), sondern in
+          // der Feldbus-Bedarfsgruppe des jeweiligen Protokolls (mbus /
+          // modbus_rtu / modbus_tcp). Damit weist eine Feldgeraete-Baugruppe
+          // (Energiezaehler, Energy Valve) die ueber Bus gelesenen Werte aus.
+          // Der Pegelwandler (mbus) bzw. Ethernet-Switch (modbus_tcp) wird
+          // weiter unten per Ratchet ergaenzt (neededKomm).
+          if (bt.feldbus_protokoll && fbDemand[bt.feldbus_protokoll]) {
+            FB_DP_TYPES.forEach(t => { if (bt[t]) fbDemand[bt.feldbus_protokoll][t] += bt[t] * bt.menge; });
+          }
           // lvb_erforderlich (Session 49): dieser Datenpunkt-Bedarf darf nur
           // durch ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt
           // werden (z.B. "Binärausgang (BO) mit LVB auf Klemmleiste") – siehe
@@ -3181,6 +3210,41 @@ function buildQueues(ddcReservePct) {
   if (cpuEb && cpuEb.benoetigt_steuerspannung && (cpuCount > 0 || neededExtraCpus > 0)) {
     neededSteuerspannung.add(cpuEb.benoetigt_steuerspannung);
   }
+
+  // ── Kommunikationsbauteil-Ratchet (Session 58) ─────────────────────────
+  // Feldgeraete mit kommunikativen Datenpunkten (dp_fb_* + feldbus_protokoll)
+  // brauchen je nach Bus ein schrankinternes Kommunikationsbauteil:
+  //   M-Bus      -> M-Bus-Pegelwandler (MR006 / PW20, 24 V AC/DC)
+  //   Modbus TCP -> Ethernet-Switch (2891021, 24 V AC) - IP-Sterntopologie
+  //   Modbus RTU -> nichts (Anschluss direkt an einen CPU-RS485-Port)
+  // Ratchet wie steuerspannungWatermark: einmal ergaenzt, sinkt nicht von
+  // selbst; EIN Bauteil deckt beliebig viele Feldgeraete. Manuell platzierte
+  // Exemplare zaehlen als vorhanden -> keine Auto-Ergaenzung. Keine
+  // Groessen-/Mengenstaffelung in v1 (bei >20 Zaehlern bzw. grossen DN
+  // stattdessen manuell PW60 = MR004C waehlen, Hinweis im Auto-Titel).
+  const KOMM_AUTO = { mbus: 'MR006', modbus_tcp: '2891021' }; // modbus_rtu bewusst nicht
+  const neededKomm = new Set();
+  FB_SUMMARY_GROUPS.forEach(g => {
+    if (KOMM_AUTO[g.key] && FB_DP_TYPES.some(t => fbDemand[g.key][t] > 0)) neededKomm.add(g.key);
+  });
+  const manuellVorhandenKomm = new Set();
+  belegung.forEach(item => {
+    if (item.typ !== 'einzel') return;
+    if (item.artikel_nr === 'MR006' || item.artikel_nr === 'MR004C' || item.artikel_nr === 'PW100') manuellVorhandenKomm.add('mbus');
+    if (['2891021', '2891001', 'EDS-205'].includes(item.artikel_nr)) manuellVorhandenKomm.add('modbus_tcp');
+  });
+  let kommWatermarkChanged = false;
+  neededKomm.forEach(k => { if (!kommWatermark[k]) { kommWatermark[k] = true; kommWatermarkChanged = true; } });
+  const kommAuto = []; // [{eb, menge}]
+  Object.keys(kommWatermark).forEach(k => {
+    if (!kommWatermark[k] || manuellVorhandenKomm.has(k)) return;
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === KOMM_AUTO[k]);
+    if (!eb) return;
+    kommAuto.push({ eb, menge: 1 });
+    if (eb.benoetigt_steuerspannung) neededSteuerspannung.add(eb.benoetigt_steuerspannung);
+  });
+  if (kommWatermarkChanged) localStorage.setItem('m04_komm_watermark', JSON.stringify(kommWatermark));
+
   const manuellVorhandeneSteuerspannung = new Set();
   belegung.forEach(item => {
     if (item.typ === 'baugruppe' && item.menge > 0 && STEUERSPANNUNG_TYP_VON_BG[item.bg_id]) {
@@ -3270,6 +3334,17 @@ function buildQueues(ddcReservePct) {
     if (!LVB_METZ_ART_SET.has(m.eb.artikel_nr)) return;
     for (let q = 0; q < m.menge; q++) queues.steuer.push({...autoDev(m.eb), rowBreak: true});
   });
+  // Kommunikationsbauteile (Session 58): M-Bus-Pegelwandler / Ethernet-Switch,
+  // an keine CPU-Gruppe gebunden – als eigenstaendige Hutschienengeraete in
+  // die Steuerungs-Zone. Titel-Zusatz je nach Typ.
+  kommAuto.forEach(m => {
+    const hint = m.eb.artikel_nr === 'MR006'
+      ? ' (automatisch ergänzt – M-Bus-Pegelwandler; bei >20 Zählern / großen DN manuell PW60 wählen)'
+      : ' (automatisch ergänzt – Ethernet-Switch für IP-Feldgeräte)';
+    for (let q = 0; q < m.menge; q++) {
+      queues.steuer.push({...autoDev(m.eb), title: m.eb.bezeichnung + hint, rowBreak: true});
+    }
+  });
 
   // DDC-Zusammenfassung für die Eingabeleiste: physikalisch wie bisher
   // (Kapazität = manuell platzierte ddc_io-Module + automatisch ergänzte,
@@ -3287,7 +3362,7 @@ function buildQueues(ddcReservePct) {
     });
   });
 
-  return { queues, bgInstanceQueue, ddcAuto, ddcSummary, steuerspannungAuto };
+  return { queues, bgInstanceQueue, ddcAuto, ddcSummary, steuerspannungAuto, kommAuto };
 }
 
 // ── Baugruppen-Zusammenhalt über Zonen hinweg (Session 49, Nachtrag:
@@ -3475,7 +3550,7 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, bgInstanceQ
 function calculateFelder(klemmraum, reservePct, ddcReservePct) {
   const modus = getEffektiveZoneModus();
   const plan = FELDPLAN[modus] || FELDPLAN['1feld'];
-  const { queues, bgInstanceQueue, ddcAuto, ddcSummary, steuerspannungAuto } = buildQueues(ddcReservePct);
+  const { queues, bgInstanceQueue, ddcAuto, ddcSummary, steuerspannungAuto, kommAuto } = buildQueues(ddcReservePct);
 
   // Gesamt-Bedarf je Zone EINMAL vor jeder Platzierung erfassen – für die
   // über alle Felder aggregierte Füllstand-Anzeige (siehe calculate()).
@@ -3557,7 +3632,7 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
     });
   });
 
-  return { felder, ddcAuto, ddcSummary, reserveShortfall, totalDemandTe, steuerspannungAuto };
+  return { felder, ddcAuto, ddcSummary, reserveShortfall, totalDemandTe, steuerspannungAuto, kommAuto };
 }
 
 function kurzLabel(eb) {
@@ -4070,6 +4145,13 @@ function aggregateStueckliste() {
   if (letzteSteuerspannungAuto) {
     letzteSteuerspannungAuto.forEach(m => {
       add(m.eb.artikel_nr, m.zone, m.menge);
+    });
+  }
+  // Automatisch ergänzte Kommunikationsbauteile (Session 58): M-Bus-
+  // Pegelwandler / Ethernet-Switch, immer Zone 'steuer' (siehe buildQueues()).
+  if (letzteKommAuto) {
+    letzteKommAuto.forEach(m => {
+      add(m.eb.artikel_nr, 'steuer', m.menge);
     });
   }
   const order = {klemm_e:0, uss:1, evert:2, leist:3, steuer:4, klemm_l:5, klemm_f:6, klemm_s:7};

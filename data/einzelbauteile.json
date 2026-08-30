@@ -1867,6 +1867,7 @@
       "steuer"
     ],
     "kategorie": "DDC-Automationseinrichtung",
+    "benoetigt_steuerspannung": "24vac",
     "preis_eur": 236.6,
     "geprueft": false
   },
@@ -1882,6 +1883,7 @@
       "steuer"
     ],
     "kategorie": "DDC-Automationseinrichtung",
+    "benoetigt_steuerspannung": "24vac",
     "preis_eur": 351.4,
     "geprueft": false
   },
@@ -2295,6 +2297,22 @@
     "kategorie": "Reparaturschalter",
     "keine_platzierung_mp": true,
     "preis_eur": 14.28,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2891021",
+    "bezeichnung": "FL SWITCH SFN 5TX-24VAC Industrial-Ethernet-Switch, 5x RJ45, unmanaged, 24V AC, DIN-Schiene",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "sonstige",
+    "b_mm": 28.0,
+    "te_breite": 2,
+    "h_mm": 110.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "Netzwerkeinrichtung",
+    "benoetigt_steuerspannung": "24vac",
+    "preis_eur": 125.0,
     "geprueft": false
   }
 ]

@@ -322,5 +322,109 @@
     "preis_eur": 267.99,
     "quelle_hinweis": "Honeywell/FEMA STB+TWF, Doppelthermostat mit 2 unabhaengigen Schaltelementen in einem Gehaeuse: STB (Oeffnerkontakt, selbstueberwachend, Wiedereinschaltsperre mit manuellem Reset) + TW (Wechselkontakt, ohne Sicherheitsfunktion), gepruft nach Druckgeraeterichtlinie 2014/68/EU und DIN EN14597, TÜV-Pruefzeichen TW/STB 90 407, gemeinsamer Einstellbereich 30-110°C, max. zulaessige Temperatur am Fuehler 130°C, Tauchhuelse Messing G1/2\" (im Lieferumfang), Eintauchtiefe 150mm, Schaltleistung 10(2)A/250V, IP54, plombierbar. Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Mechanische Thermostate\": http://www.fema-armaturen.ch/pdf/web_04.pdf  ||  [Preisrecherche 08/2026] 267.99 EUR netto (Distributor, www.lagerwerk.com) – netto aus brutto 318,91; DIN 3440; andries24 abw. 293,79 netto",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "EV050R2+KBAC",
+    "bezeichnung": "Belimo Energy Valve 4 DN50, Verschraubung Rp2\"/G2 1/2\", druckunabhaengiges Regelventil mit therm. Energiezaehler, Notstellung SuperCap (Auf/Zu waehlbar), alle Bus-Protokolle (BACnet/IP, Modbus TCP, BACnet MS/TP, Modbus RTU, MP-Bus, analog)",
+    "hersteller": "Belimo",
+    "kategorie": "Regelventil mit Energiemessung",
+    "preis_eur": 1815.0,
+    "quelle_hinweis": "Belimo Energy Valve 4, Bestellcode EV050R2+KBAC (\"K\"=SuperCap-Notstellung, Notstellrichtung Auf ODER Zu per Webserver/App waehlbar). DN50 Rp2\"/G2 1/2\", PN25, kvs 30,4, V'nom 15 m3/h. Versorgung 24 V AC/DC (PELV, Schutzklasse III -> kein separater PE), ~26 VA (Cap-Ladung). Anschluss: fest 1 m 6x0,75 mm2 + 1x RJ45 (am Sensor-Modul). Adern 1 GND / 2 +24V / 3 Y (2..10V Stellsignal) / 5 U (0..10V Rueckmeldung) / 6-7 RS485. Kein natives 4-20 mA. Hybridmodus analog + IP gleichzeitig. Ext. Temp-Fuehler T1 (Pt1000, 3 m) serienmaessig. Ein Geraet = alle Protokolle, umschaltbar - keine getrennten Bestellnummern. Preis 1815,02 EUR netto (ifs-store.com, 30.08.2026; mauerkasten.de 1947,65 aus brutto). Quelle: https://ifs-store.com/BELIMO-EV050R2-KBAC/",
+    "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Waerme-/Kaelteleistung, kumulierte Energiemenge, interne Ist-Stellgroesse Ventil, externer Temperatursensor, Geraetenummer. BI: Sammelstoerung. AO: Sollwert (Volumenstrom/Temperatur/Leistung), Vorgabe Stellgroesse Ventil (Position-Override).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EV100F+KBAC",
+    "bezeichnung": "Belimo Energy Valve 4 DN100, Flansch PN16, druckunabhaengiges Regelventil mit therm. Energiezaehler, Notstellung SuperCap (Auf/Zu waehlbar), alle Bus-Protokolle",
+    "hersteller": "Belimo",
+    "kategorie": "Regelventil mit Energiemessung",
+    "preis_eur": 6187.3,
+    "quelle_hinweis": "Belimo Energy Valve 4, Bestellcode EV100F+KBAC. DN100 Flansch PN16 (EN 1092-2), ps 1600 kPa, V'nom 20 l/s = 72 m3/h; kvs UNBESTAETIGT. Notstell-Laufzeit ~35 s, IP40, 1 m PVC-Anschlusskabel + RJ45. Elektrik/Protokolle wie EV050R2+KBAC (24 V AC/DC, Hybridmodus, alle Bus-Protokolle umschaltbar). Leistungsaufnahme +KBAC am DN100 nicht separat verifiziert (Annahme ~26 VA wie DN50). Preis 6187,30 EUR netto (hvac.de, 30.08.2026; brutto 7362,89). Quelle: https://hvac.de/en/water-solutions/11041-ev100fkbac.html",
+    "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Waerme-/Kaelteleistung, kumulierte Energiemenge, interne Ist-Stellgroesse Ventil, externer Temperatursensor, Geraetenummer. BI: Sammelstoerung. AO: Sollwert (Volumenstrom/Temperatur/Leistung), Vorgabe Stellgroesse Ventil (Position-Override).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "WMZ-KOMPAKT-DN20",
+    "bezeichnung": "Ultraschall-Kompaktwaermezaehler DN15-25 (Mess- und Rechenwerk kombiniert), M-Bus, MID/EN 1434 Kl. 2, qp 0,6-6 m3/h, Fuehlerpaar Pt500/Pt1000",
+    "hersteller": "Zenner",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "preis_eur": 149.0,
+    "quelle_hinweis": "Referenzgeraet Zenner zelsius C5 IUF (Ultraschall-Kompakt-WMZ DN15 qp1,5 M-Bus, MID); Aquametro-Aequivalent AMTRON SONIC D (Kompakt DN15-20, Fuehler fest). M-Bus busgespeist (~1,5 mA / 1 Unit Load). Batteriebetrieb 16 s Messzyklus / bei 24-V-AC-Netzversorgung 1 s + unbegrenzte Auslesehaeufigkeit. Preis 148,70 EUR netto (stark-elektronik.de, 30.08.2026). Quelle: https://www.stark-elektronik.de/p/m-bus-ultraschall-kompaktwaermezaehler-zelsius-r-qp-1-5-m-h-mid-2025-geeicht",
+    "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "WMZ-DN50",
+    "bezeichnung": "Ultraschall-Waermezaehler DN50, getrenntes Rechenwerk + Durchflusssensor, M-Bus, MID/EN 1434, qp 15 m3/h, Fuehlerpaar Pt100/500/1000",
+    "hersteller": "Aquametro",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "Aquametro CALEC ST III (Standard/Smart/Advanced) + AMFLO SONIC DN50 bzw. AMTRON SONIC D DN50. Rechenwerk-Versorgung 24 V DC oder 230 V AC (kein 24 V AC). M-Bus busgespeist. Listenpreis Aquametro/Integra nicht oeffentlich (Vertrieb ueber Angebot/Systemhaus) - kein belastbarer Netto-Preis. Quelle: https://integra-metering.com/product/calec-st-iii-standard-smart/",
+    "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "WMZ-DN100",
+    "bezeichnung": "Ultraschall-Waermezaehler DN100, getrenntes Rechenwerk + Durchflusssensor, M-Bus, MID/EN 1434, qp 60 m3/h",
+    "hersteller": "Aquametro",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "Wie WMZ-DN50, Baugroesse DN100 (Aquametro CALEC ST III + AMFLO SONIC DN100). Rechenwerk 24 V DC / 230 V AC. Kein oeffentlicher Netto-Preis. Quelle: https://integra-metering.com/product/calec-st-iii-standard-smart/",
+    "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KMZ-KOMPAKT-DN20",
+    "bezeichnung": "Ultraschall-Kompaktkaeltezaehler DN15-25 (Mess- und Rechenwerk kombiniert), M-Bus, MID + PTB K 7.2 (Kaelte/Kombi), glykoltauglich, IP68",
+    "hersteller": "Zenner",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "Baugleich zur Kompakt-Waermezaehler-Familie (zelsius C5 / AMTRON SONIC D), mit Kaelte- bzw. Kombizulassung PTB K 7.2 und Glykol-Auswahl. M-Bus busgespeist. Kein belastbarer Netto-Preis fuer die Kaeltevariante gefunden (Referenz Waermevariante ~149 EUR). Quelle: https://aquametro.com/product/amtron-sonic-d/",
+    "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KMZ-DN50",
+    "bezeichnung": "Ultraschall-Kaeltezaehler DN50, getrenntes Rechenwerk + Durchflusssensor, M-Bus, MID + PTB K 7.2, glykoltauglich, qp 15 m3/h",
+    "hersteller": "Aquametro",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "Aquametro CALEC ST III + AMFLO SONIC DN50, Kaelte-/Kombizulassung, gleitende Stoffdaten Wasser-Glykol. Rechenwerk 24 V DC / 230 V AC. Kein oeffentlicher Netto-Preis. Quelle: https://integra-metering.com/product/calec-st-iii-standard-smart/",
+    "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KMZ-DN100",
+    "bezeichnung": "Ultraschall-Kaeltezaehler DN100, getrenntes Rechenwerk + Durchflusssensor, M-Bus, MID + PTB K 7.2, glykoltauglich, qp 60 m3/h",
+    "hersteller": "Aquametro",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "Wie KMZ-DN50, Baugroesse DN100. Kein oeffentlicher Netto-Preis. Quelle: https://integra-metering.com/product/calec-st-iii-standard-smart/",
+    "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "WZ-DN20",
+    "bezeichnung": "Hauswasserzaehler Mehrstrahl-Trockenlaeufer DN15-25 mit integriertem M-Bus-Modul, MID/OIML R49, Q3 2,5-10 m3/h",
+    "hersteller": "Zenner",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "preis_eur": 129.0,
+    "quelle_hinweis": "Zenner MTK-M (M190 R34 = DN20, Referenz); M-Bus im Zaehlwerk integriert. Alternativ Ultraschall (Diehl HYDRUS / Itron Cyble) oder Aquametro TOPAS SONIC (DN15-40). M-Bus busgespeist / Anbaumodul mit eigener Li-Batterie. Preis DN20 129,00 EUR netto (DN15 ~149, DN25 ~159; energie-zaehler.com, 30.08.2026). Quelle: https://www.energie-zaehler.com/MTKHWX-R12G34",
+    "kommunikative_datenpunkte": "AI: aktueller Durchfluss, Zaehlernummer, kumulierter Durchfluss.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "WZ-DN50",
+    "bezeichnung": "Grosswasserzaehler Woltmann DN50 Q3 25 m3/h + aufgesetztes M-Bus-EDC-Modul (batteriegestuetzt Li), MID, BL 200 mm",
+    "hersteller": "Zenner",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "preis_eur": 459.0,
+    "quelle_hinweis": "Zenner Woltmann WPD DN50 + M-Bus-EDC-Modul (Li-Batterie bis 15 J.). Aquametro fuehrt keine Wasserzaehler > DN40. Schaltschrankseitig nur 2 M-Bus-Klemmen (busgespeist), keine Hilfsspannung. Preis 459,00 EUR netto inkl. Eichgebuehr (stark-elektronik.de, 30.08.2026). Quelle: https://www.stark-elektronik.de/p/m-bus-woltman-grosswasserzaehler-typ-wpd-q3-25-dn50",
+    "kommunikative_datenpunkte": "AI: aktueller Durchfluss, Zaehlernummer, kumulierter Durchfluss.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "WZ-DN100",
+    "bezeichnung": "Grosswasserzaehler Woltmann DN100 (bzw. Verbundzaehler) + M-Bus-EDC-Modul, MID, BL 250 mm",
+    "hersteller": "Zenner",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "Zenner Woltmann WPD DN100 + M-Bus-EDC. Preis auf Anfrage (energie-zaehler.com listet DN125 als naechste Groesse). Quelle: https://www.energie-zaehler.com/WPD-DN125-EDC-MBUS",
+    "kommunikative_datenpunkte": "AI: aktueller Durchfluss, Zaehlernummer, kumulierter Durchfluss.",
+    "geprueft": false
   }
 ]
