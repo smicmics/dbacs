@@ -16,6 +16,29 @@
 
 ## Offene Punkte (Stand Session 57 – vor Beginn der nächsten Sitzung lesen)
 
+- **Session 57 – Desigo-PX-Lebenszyklus geprüft (Nutzer-Frage „abgekündigt?"):**
+  Desigo PX ist **NICHT** abgekündigt. Nur die alte **„PX Classic"-Generation**
+  (PXC00 / PXC64-U / PXC128-U / `PXC..-E.D`, BACnet/**LonTalk**, Engineering
+  XWorks Plus) ist im Phase-out – Ankündigung Nov/Dez 2024, Servicephase
+  01.04.2026–31.12.2032. Dorthin gehört auch der Katalog-Alteintrag
+  **`PXC100-D`** (verwaister `ddc_io`-Eintrag ohne `auto_ea_cpu`/dp-Felder –
+  bei nächster Katalogpflege entfernen). Die aktuelle Linie **PXC4 / PXC5 /
+  PXC7** ist aktiv (AHR Expo 01/2026, durchgängig BACnet/SC). **`TXM1.x`-
+  I/O-Module bleiben aktiv** (jüngste Datenblatt-Rev. 03/2026, keine
+  Nachfolgereihe – kein Wechsel nötig). ABER: die im Katalog verwendete
+  **`.A`-Revision** (`PXC4.E16.A` / `PXC5.E24.A` / `PXC7.E400.A`) ist durch
+  die **`-2`/`-N`/`S/M/L`-Revision** abgelöst (fehlt in aktueller
+  Siemens-Sortimentsbeschreibung; kein förmlicher PCN gefunden). Empfohlene
+  Umstellung der Katalog-Artikelnummern (Modellierungslogik unverändert –
+  Onboard-E/A, TXM-Erweiterung, 24 V AC):
+  `PXC4.E16.A → PXC4.E16-2` (bzw. `.E16S-2` BACnet/SC, `.M16-2` MS/TP),
+  `PXC5.E24.A → PXC5.E24-N`, `PXC7.E400.A → PXC7.E400L-N` (bzw. `S`/`M`).
+  **Vor Umsetzung noch verifizieren** (HIT-Portal, Fork kam nicht an die
+  Datenblatt-Details): Onboard-E/A-Zahlen der `-2`/`-N`-Typen (bleibt
+  `PXC4.E16-2` bei 16, `PXC5.E24-N` bei 24?), 24-V-Versorgungsart, sowie
+  neue Preise (die Session-57-Preise gelten für die `.A`-Typen). Desigo
+  Optic / Building X sind Leit-/Cloud-Ebene, **kein** Ersatz auf
+  Automationsstationsebene.
 - **Session 57 – Preisrecherche (neu):** kompletter Bauteilkatalog per
   4 Hintergrund-Forks bepreist (Herstellerlistenpreis bevorzugt, sonst
   namhafter Großhandel/Distributor; Gebrauchtbörsen ausgeschlossen; alle
