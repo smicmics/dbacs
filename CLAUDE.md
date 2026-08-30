@@ -16,29 +16,35 @@
 
 ## Offene Punkte (Stand Session 57 – vor Beginn der nächsten Sitzung lesen)
 
-- **Session 57 – Desigo-PX-Lebenszyklus geprüft (Nutzer-Frage „abgekündigt?"):**
-  Desigo PX ist **NICHT** abgekündigt. Nur die alte **„PX Classic"-Generation**
-  (PXC00 / PXC64-U / PXC128-U / `PXC..-E.D`, BACnet/**LonTalk**, Engineering
-  XWorks Plus) ist im Phase-out – Ankündigung Nov/Dez 2024, Servicephase
-  01.04.2026–31.12.2032. Dorthin gehört auch der Katalog-Alteintrag
-  **`PXC100-D`** (verwaister `ddc_io`-Eintrag ohne `auto_ea_cpu`/dp-Felder –
-  bei nächster Katalogpflege entfernen). Die aktuelle Linie **PXC4 / PXC5 /
-  PXC7** ist aktiv (AHR Expo 01/2026, durchgängig BACnet/SC). **`TXM1.x`-
-  I/O-Module bleiben aktiv** (jüngste Datenblatt-Rev. 03/2026, keine
-  Nachfolgereihe – kein Wechsel nötig). ABER: die im Katalog verwendete
-  **`.A`-Revision** (`PXC4.E16.A` / `PXC5.E24.A` / `PXC7.E400.A`) ist durch
-  die **`-2`/`-N`/`S/M/L`-Revision** abgelöst (fehlt in aktueller
-  Siemens-Sortimentsbeschreibung; kein förmlicher PCN gefunden). Empfohlene
-  Umstellung der Katalog-Artikelnummern (Modellierungslogik unverändert –
-  Onboard-E/A, TXM-Erweiterung, 24 V AC):
-  `PXC4.E16.A → PXC4.E16-2` (bzw. `.E16S-2` BACnet/SC, `.M16-2` MS/TP),
-  `PXC5.E24.A → PXC5.E24-N`, `PXC7.E400.A → PXC7.E400L-N` (bzw. `S`/`M`).
-  **Vor Umsetzung noch verifizieren** (HIT-Portal, Fork kam nicht an die
-  Datenblatt-Details): Onboard-E/A-Zahlen der `-2`/`-N`-Typen (bleibt
-  `PXC4.E16-2` bei 16, `PXC5.E24-N` bei 24?), 24-V-Versorgungsart, sowie
-  neue Preise (die Session-57-Preise gelten für die `.A`-Typen). Desigo
-  Optic / Building X sind Leit-/Cloud-Ebene, **kein** Ersatz auf
-  Automationsstationsebene.
+- **Session 57 – Desigo-PX auf aktuelle Revision umgestellt (ERLEDIGT):**
+  Frage „abgekündigt?" geprüft – Desigo PX ist **NICHT** abgekündigt, nur
+  die alte **„PX Classic"-Generation** (PXC00 / PXC64-U / PXC128-U /
+  `PXC..-E.D`, BACnet/**LonTalk**, Engineering XWorks Plus) ist im Phase-out
+  (Ankündigung Nov/Dez 2024, Servicephase 01.04.2026–31.12.2032). Der
+  verwaiste Katalog-Alteintrag `PXC100-D` ist jetzt **`aktiv=0`** (fällt aus
+  dem JSON). Die 3 `ddc_cpu`-Zeilen wurden von der `.A`- auf die aktuelle
+  Revision umgestellt (Siemens-Datenblätter 02–03/2026), Modellierungslogik
+  unverändert (dp-Felder, `auto_ea_cpu`, 24V AC):
+  - `PXC4.E16.A → PXC4.E16-2` (ASN S55375-C150), Onboard 12 UIO + 4 Relais
+    (unverändert), onboard+TXM bis 50 E/A, `max_ea_module` 2→4, Preis 875 €.
+  - `PXC5.E24.A → PXC5.E24-N` (ASN S55375-C154), Onboard 2 DI + 8 UIO +
+    8 XIO + 6 Relais (unverändert), bis 80 E/A / 120 DP, `max_ea_module`
+    6→7, Preis 1407 € (**SIPATEC-Seite noch „PXC5.E24", -N-Zuordnung
+    unbestätigt**).
+  - `PXC7.E400.A → PXC7.E400L-N` (ASN S55375-C155, `auto_ea_cpu`),
+    0 Onboard-Regel-E/A (1 DI, bewusst nicht als dp modelliert), bis 400
+    E/A / 600 DP, `max_ea_module` 64→50, Preis 1932→**3535 €** (der alte
+    Wert galt für die kleinere E400M/250-DP-Variante).
+  - `h_mm` aller 3 von 90 auf **124** korrigiert (aktuelle Datenblätter).
+  - `TXM1.x`-I/O-Module unverändert aktiv (Datenblatt-Rev. 03/2026, keine
+    Nachfolgereihe). Desigo Optic / Building X = Leit-/Cloud-Ebene, **kein**
+    Ersatz auf Automationsstationsebene.
+  - Im Browser verifiziert (CPU-Dropdown, Auto-Ergänzung PXC7.E400L-N,
+    Onboard-Deckung PXC4.E16-2 / PXC5.E24-N, keine Konsolenfehler).
+  - **Rest-Unsicherheit:** `max_ea_module` aus Punktesummen abgeleitet
+    (Datenblätter nennen keine Modulzahl); Preise sind SIPATEC-Netto
+    (kein öffentlicher Siemens-Listenpreis); `PXC4.M16-2`/`E16S-2` (MS/TP-
+    bzw. reine SC-Variante) nicht angelegt.
 - **Session 57 – Preisrecherche (neu):** kompletter Bauteilkatalog per
   4 Hintergrund-Forks bepreist (Herstellerlistenpreis bevorzugt, sonst
   namhafter Großhandel/Distributor; Gebrauchtbörsen ausgeschlossen; alle
@@ -48,13 +54,13 @@
   Distributor-/Straßenpreise (echte Siemens/Phoenix-Listenpreise nur nach
   Login), teils aus Brutto zurückgerechnet – siehe `quelle_hinweis`.
   **Noch ohne Preis (Herstelleranfrage nötig):**
-  Einzelbauteile `PXC100-D`, `3RT2026-1AB00`, `4AP2142-8BC40-0HA0`,
+  Einzelbauteile `3RT2026-1AB00`, `4AP2142-8BC40-0HA0`,
   `4AM4042-5AN00-0EA0` (alle abgekündigt/Auslauf), `PW100` (Relay GmbH);
   Feldgeräte `20N842S021` (KRIWAN INT511 24V-Variante), `PST010RG12S`,
   `TWP1F`, `STB1F` (Honeywell/FEMA, teils abgekündigt).
-  **Näherungswerte** (nächstliegendes gelistetes Modell, im `quelle_hinweis`
-  markiert): `PXC4.E16.A`≈875 €, `PXC5.E24.A`≈1407 €, `PXC7.E400.A`≈1932 €
-  (letzterer evtl. zu niedrig – Modell E400M/250DP statt 500DP).
+  (Die damaligen `.A`-CPU-Näherungspreise sind mit der PXC-Umstellung oben
+  überholt – jetzt `PXC4.E16-2` 875 €, `PXC5.E24-N` 1407 €, `PXC7.E400L-N`
+  3535 €.)
 - **Session 57 – DDC-Modul-Katalog:** `TXM1.8U-ML` jetzt bepreist
   (433,30 €). **`TXM1.8X`/`TXM1.8X-ML` bewusst NICHT angelegt** – reales
   `TXM1.8U` kann bereits 0–10V-AO, `TXM1.8X` unterscheidet sich nur durch
@@ -737,12 +743,14 @@ Verifizierungsdetails) archiviert in
   (echtes Hellgrau, kontrastreich auf dem Zeichenpapier `#FDFCF8` –
   Zwischenstand `#9A9890`/`--tx2` war ein UI-Grauton, auf Papier weiterhin zu
   dunkel). Farbpunkt in der Belegungsliste bewusst unverändert.
-- **Onboard-Kapazität der Kompaktstationen `PXC4.E16.A`/`PXC5.E24.A`
-  berücksichtigt:** `buildQueues()` entschied bisher über externe TX-I/O-
-  Module BEVOR die gewählte CPU aufgelöst war – deren Onboard-Kapazität
-  konnte nie angerechnet werden. CPU-Auflösung jetzt vor
-  `computeDdcAutoModules()`; `PXC4.E16.A` bekam `dp_ai=12`/`dp_ao=12`,
-  `PXC5.E24.A` `dp_ai=16`/`dp_ao=16` (analog zur `TXM1.8U`-Konvention: nur
+- **Onboard-Kapazität der Kompaktstationen** (Artikelnr. seit Session 57
+  `PXC4.E16-2`/`PXC5.E24-N`, s. o.) **berücksichtigt:** `buildQueues()`
+  entschied bisher über externe TX-I/O-Module BEVOR die gewählte CPU
+  aufgelöst war – deren Onboard-Kapazität konnte nie angerechnet werden.
+  CPU-Auflösung jetzt vor `computeDdcAutoModules()`; die kompakte
+  16-E/A-Station bekam `dp_ai=12`/`dp_ao=12`, die 24-E/A-Station
+  `dp_ai=16`/`dp_ao=16`, `dp_bi=2`, `dp_bo=6` (analog zur
+  `TXM1.8U`-Konvention: universelle Punkte nur
   AI/AO, bewusst kein `dp_bi`/`dp_bo`-Zuschlag aus dem universellen Pool).
   Nur die ERSTE CPU-Gruppe bekommt den Onboard-Zuschlag (konservativ) – die
   bestehende Überlauf-Logik (`max_ea_module`, eigenes Netzteil+Sicherung je

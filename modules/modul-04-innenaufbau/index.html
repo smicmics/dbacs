@@ -3032,8 +3032,8 @@ function buildQueues(ddcReservePct) {
   // Gesamtkapazität), nicht mit fester Zuordnung "dieses Modul gehört zu
   // jener CPU" (wie auch sonst bei der Datenpunkt-Bilanz).
   // auto_ea_cpu (Session 50): seit es mehrere ddc_cpu-Typen im Katalog gibt
-  // (Kompaktstationen PXC4.E16.A/PXC5.E24.A MIT Onboard-E/A, sowie die
-  // modulare PXC7.E400.A OHNE jegliches Onboard-E/A) muss hier eindeutig die
+  // (Kompaktstationen PXC4.E16-2/PXC5.E24-N MIT Onboard-E/A, sowie die
+  // modulare PXC7.E400L-N OHNE jegliches Onboard-E/A) muss hier eindeutig die
   // für die automatische Netzteil→CPU→E/A-Modul-Ergänzung vorgesehene CPU
   // gewählt werden – ein reines `find(bauteil_typ==='ddc_cpu')` wäre von der
   // zufälligen Katalog-Reihenfolge abhängig. Fallback (kein Katalogeintrag
@@ -3044,7 +3044,7 @@ function buildQueues(ddcReservePct) {
   // statt der modularen, wenn der Platz das nahelegt.
   // Reihenfolge (Session 51 Nachtrag 5, Nutzer-Fund): die CPU-Auflösung
   // MUSS vor computeDdcAutoModules() stehen, sonst kann eine Kompaktstation
-  // (Onboard-E/A, z.B. PXC4.E16.A mit dp_ai/dp_ao/dp_bi=12) ihre eigene
+  // (Onboard-E/A, z.B. PXC4.E16-2 mit dp_ai/dp_ao=12) ihre eigene
   // Kapazität nie in die Modul-Bedarfsrechnung einbringen – es wurde
   // bislang IMMER ein externes TX-I/O-Modul ergänzt, obwohl die gewählte
   // Kompaktstation den Bedarf onboard hätte decken können.
@@ -3069,12 +3069,12 @@ function buildQueues(ddcReservePct) {
   // ist (cpuCount===0; eine manuell platzierte CPU zählt bereits über
   // accumulateDp() in dpSupply, s.o.) UND die Kompaktstation für mindestens
   // einen aktuell offenen Datenpunkttyp überhaupt Onboard-Kapazität mitbringt
-  // (bei der modularen PXC7.E400.A ohne jegliches Onboard-E/A bleibt
+  // (bei der modularen PXC7.E400L-N ohne jegliches Onboard-Regel-E/A bleibt
   // cpuBenoetigt dadurch false – bytegleiches Verhalten wie zuvor).
   const cpuBenoetigt = cpuCount === 0 && !!cpuEb
     && PHYS_DP_TYPES.some(t => (cpuEb[t]||0) > 0 && dpDemand[t] > dpSupply[t]);
   const dpSupplyEffective = {...dpSupply};
-  // Onboard-E/A der Kompaktstationen (PXC4.E16.A/PXC5.E24.A) hat KEINE
+  // Onboard-E/A der Kompaktstationen (PXC4.E16-2/PXC5.E24-N) hat KEINE
   // lokale Vorrangbedienung (Session 57). Ist LVB generell gefordert und
   // wird ueber LVB-faehige E/A-Module realisiert (nicht Metz – dort sitzt
   // die Handebene ohnehin extern hinter dem Ausgang), duerfen die
