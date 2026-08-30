@@ -106,7 +106,12 @@ header a:hover{color:var(--tx2);}
    Erweiterungen im Statistikfeld. top-Wert bei 1920px empirisch im Browser
    gegen #einzel_auswahl justiert. */
 #ddc-summary-field{position:relative;}
-#cpu_typ_row{position:absolute;left:20px;bottom:14px;width:200px;}
+/* CPU-Typ + die beiden LVB-Auswahlfelder (Session 57) teilen sich eine
+   absolut positionierte Zeile am unteren Rand des Statistikblocks, links
+   neben #ddc_summary_totals. */
+#cpu_lvb_row{position:absolute;left:20px;right:150px;bottom:12px;display:flex;gap:8px;align-items:flex-end;}
+#cpu_lvb_row .eb-field{flex:1 1 0;margin:0;}
+#cpu_lvb_row select{width:100%;}
 /* Summenanzeige rechtsbündig neben dem CPU-Feld (Session 51 Nachtrag,
    Nutzer-Vorgabe) – gleiche bottom-Ausrichtung wie #cpu_typ_row. */
 #ddc_summary_totals{position:absolute;right:20px;bottom:14px;text-align:right;font-size:9.5px;color:var(--tx2);line-height:1.35;}
@@ -589,11 +594,28 @@ fieldset{
   <div class="eb-block eb-block-statistik" id="ddc-summary-field" title="Kapazität/belegt je Datenpunkttyp – physikalisch (manuell + automatisch platzierte DDC-Module) sowie kommunikativ je Feldbus-Protokoll (nur manuell platzierte Module/CPU)">
     <div class="eb-block-title">Statistik · DDC-Automationseinrichtung</div>
     <div class="ddc-summary-row" id="ddc-summary-row"><span class="ddc-chip-empty">–</span></div>
-    <div class="eb-field" id="cpu_typ_row" title="Welcher CPU-Typ für die automatische Netzteil→CPU→E/A-Modul-Ergänzung verwendet wird. Automatisch = die modulare Automationsstation (kein Onboard-E/A, katalogseitig markiert). Bei knappem Platz kann stattdessen bewusst eine Kompaktstation gewählt werden.">
-      <label>CPU-Typ (Auto-Ergänzung)</label>
-      <select id="cpu_typ_override" onchange="onCpuTypChange()">
-        <option value="">Automatisch</option>
-      </select>
+    <div id="cpu_lvb_row">
+      <div class="eb-field" id="cpu_typ_row" title="Welcher CPU-Typ für die automatische Netzteil→CPU→E/A-Modul-Ergänzung verwendet wird. Automatisch = die modulare Automationsstation (kein Onboard-E/A, katalogseitig markiert). Bei knappem Platz kann stattdessen bewusst eine Kompaktstation gewählt werden.">
+        <label>CPU-Typ (Auto)</label>
+        <select id="cpu_typ_override" onchange="onCpuTypChange()">
+          <option value="">Automatisch</option>
+        </select>
+      </div>
+      <div class="eb-field" id="lvb_anforderung_row" title="Lokale Vorrangbedienung (LVB / Hand-0-Auto, ISO 16484-2) – nach Kundenvorgabe generell für alle Ausgänge (AO/BO) gefordert? 'ohne LVB' = die Auto-Ergänzung setzt Standardmodule ohne Handebene (Zustand wie bisher).">
+        <label>LVB-Anforderung</label>
+        <select id="lvb_anforderung" onchange="onLvbChange()">
+          <option value="ohne" selected>ohne LVB</option>
+          <option value="gefordert">generell gefordert</option>
+        </select>
+      </div>
+      <div class="eb-field" id="lvb_realisierung_row" title="Wie die geforderte LVB realisiert wird. DDC-Modul = LVB-fähige E/A-Module (TXM1.8U-ML für AO, TXM1.6R-M für BO). Schaltschrank-LVB · Metz = normale E/A-Module + je Ausgang ein Metz-Gerät mit Hand-0-Auto-Ebene in Reihe (KMA-F8 für AO, KRS-E06 für BO). Türeinbau · Romutec folgt.">
+        <label>LVB-Realisierung</label>
+        <select id="lvb_realisierung" onchange="onLvbChange()" disabled>
+          <option value="ddc" selected>DDC-Modul (-ML / -M)</option>
+          <option value="metz">Schaltschrank-LVB · Metz</option>
+          <option value="romutec" disabled>Türeinbau · Romutec – folgt</option>
+        </select>
+      </div>
     </div>
     <div id="ddc_summary_totals" title="Summe aller aktuell verbrauchten Datenpunkte über alle vier Typen (AI/AO/BI/BO) hinweg – physikalisch (feste Verdrahtung) und kommunikativ (Feldbus, alle drei Protokolle zusammen) – sowie Anzahl Baugruppen-Instanzen mit hinterlegtem Betriebsmittel (volle Liste in Modul 5)"></div>
   </div>
@@ -952,6 +974,13 @@ function init() {
   populateCpuTypAuswahl();
   const cpuOv = localStorage.getItem('m04_cpu_typ_override');
   if(cpuOv) _v('cpu_typ_override', cpuOv);
+
+  // Globale LVB-Auswahl (Session 57)
+  const lvbA = localStorage.getItem('m04_lvb_anforderung');
+  if(lvbA) _v('lvb_anforderung', lvbA);
+  const lvbR = localStorage.getItem('m04_lvb_realisierung');
+  if(lvbR) _v('lvb_realisierung', lvbR);
+  syncLvbRealisierungState();
 
   // Belegung wiederherstellen (ältere Einträge ohne "typ" = Baugruppe)
   const bels = localStorage.getItem('m04_belegung');
@@ -1553,6 +1582,22 @@ function populateCpuTypAuswahl() {
 }
 function onCpuTypChange() {
   localStorage.setItem('m04_cpu_typ_override', gs('cpu_typ_override'));
+  calculate();
+}
+
+// ── Globale LVB-Auswahl (Session 57) ─────────────────────────────────
+// #lvb_anforderung: 'ohne' (Standard, Verhalten wie bisher) / 'gefordert'
+// (Kundenvorgabe – alle Ausgaenge AO/BO ueber Handebene). #lvb_realisierung
+// nur relevant wenn 'gefordert': 'ddc' = LVB-faehige E/A-Module (-ML/-M),
+// 'metz' = normale Module + Metz-Handebene-Geraet je Ausgang in Reihe,
+// 'romutec' (Tuereinbau) folgt. Siehe buildQueues()/computeDdcAutoModules().
+function syncLvbRealisierungState() {
+  document.getElementById('lvb_realisierung').disabled = gs('lvb_anforderung') !== 'gefordert';
+}
+function onLvbChange() {
+  localStorage.setItem('m04_lvb_anforderung', gs('lvb_anforderung'));
+  localStorage.setItem('m04_lvb_realisierung', gs('lvb_realisierung'));
+  syncLvbRealisierungState();
   calculate();
 }
 
@@ -2533,41 +2578,72 @@ function computeDdcAutoModules(demand, supply, reservePct, needsLvb) {
   const modules = []; // [{eb, menge}]
   const unmet = [];
 
-  PHYS_DP_TYPES.forEach(type => {
+  // ── Analog 0-10V: AI + AO teilen sich EINE physische 8-Punkte-Bank ──
+  // In der Siemens-TX-I/O-Familie gibt es KEIN dediziertes AI- oder
+  // AO-Modul (0-10V) – beide laufen ueber das Universalmodul TXM1.8U bzw.
+  // TXM1.8U-ML (mit LVB + Display). Die 8 Punkte sind frei zwischen AI und
+  // AO aufteilbar, daher wird der Restbedarf beider Typen zusammengezaehlt
+  // und EIN Modultyp in der noetigen Stueckzahl gewaehlt (1x AI + 1x AO =
+  // 1 Modul, nicht 2 – Nutzer-Fund Session 57). LVB betrifft nur den
+  // Ausgang → needsLvb.dp_ao entscheidet ueber die -ML-Variante.
+  const analogRest = remaining.dp_ai + remaining.dp_ao;
+  if (analogRest > 0) {
+    const analogArt = (needsLvb && needsLvb.dp_ao) ? 'TXM1.8U-ML' : 'TXM1.8U';
+    const analogMod = ddcModule_DB.find(m => m.artikel_nr === analogArt);
+    if (analogMod) {
+      const pool = analogMod.dp_ai || analogMod.dp_ao || 8;
+      modules.push({ eb: analogMod, menge: Math.ceil(analogRest / pool) });
+      remaining.dp_ai = 0; remaining.dp_ao = 0;
+    } else {
+      if (remaining.dp_ai > 0) unmet.push('dp_ai');
+      if (remaining.dp_ao > 0) unmet.push('dp_ao');
+    }
+  }
+
+  // ── Binaer: je Typ genau EIN dediziertes Modul (BI = TXM1.8D/16D,
+  // BO = TXM1.6R bzw. TXM1.6R-M mit LVB). Da jedes Modul nur seinen einen
+  // Typ traegt, entfaellt das Cross-Credit-Problem der Analog-Bank. ──
+  ['dp_bi', 'dp_bo'].forEach(type => {
     if (remaining[type] <= 0) return;
     let candidates = ddcModule_DB.filter(m => (m[type] || 0) > 0);
     if (needsLvb && needsLvb[type]) candidates = candidates.filter(m => m.lvb_integriert);
     if (!candidates.length) { unmet.push(type); return; }
-    candidates.sort((a, b) => {
-      const scoreA = PHYS_DP_TYPES.filter(t => remaining[t] > 0 && (a[t] || 0) > 0).length;
-      const scoreB = PHYS_DP_TYPES.filter(t => remaining[t] > 0 && (b[t] || 0) > 0).length;
-      if (scoreB !== scoreA) return scoreB - scoreA;
-      return (b[type] || 0) - (a[type] || 0);
-    });
+    candidates.sort((a, b) => (b[type] || 0) - (a[type] || 0));
     const chosen = candidates[0];
-    const menge = Math.max(0, ...PHYS_DP_TYPES
-      .filter(t => remaining[t] > 0 && (chosen[t] || 0) > 0)
-      .map(t => Math.ceil(remaining[t] / chosen[t])));
+    const menge = Math.ceil(remaining[type] / chosen[type]);
     if (menge <= 0) return;
     let entry = modules.find(m => m.eb.artikel_nr === chosen.artikel_nr);
     if (!entry) { entry = { eb: chosen, menge: 0 }; modules.push(entry); }
     entry.menge += menge;
-    // Nur den gerade bearbeiteten Typ verbrauchen (Session 49) – bei einem
-    // Modul mit GENAU einem dp_*-Feld (alle bisherigen Katalogmodule) ist das
-    // ohnehin identisch zum alten "alle Felder abziehen". Bei einem echten
-    // Mehrzweck-/Universalmodul (z.B. TXM1.8U: dp_ai UND dp_ao gleichzeitig,
-    // aber physisch nur 8 gemeinsame, flexible Kanäle) hätte ein Abzug ALLER
-    // Felder das Risiko, dieselben physischen Kanäle doppelt gutzuschreiben
-    // (1 Modul für AI-Bedarf gekauft würde dann fälschlich AUCH die volle
-    // AO-Kapazität "gratis" abdecken) – das könnte in Kombi-Bedarfsfällen zu
-    // einer zu gering berechneten Modulanzahl führen (unter-versorgt). Ohne
-    // Cross-Abzug wird im Zweifel eher ein Modul zu viel vorgeschlagen
-    // (sicher, nur suboptimal) statt zu wenig (unsicher).
     remaining[type] = Math.max(0, remaining[type] - chosen[type] * menge);
   });
 
   return { modules, unmet: [...new Set(unmet)] };
 }
+
+// ── Schaltschrank-LVB ueber Metz-Handebene-Geraete (Session 57) ───────
+// Alternative zur LVB-faehigen E/A-Modul-Variante (-ML/-M): die DDC-Seite
+// bleibt ein normales Modul, je Ausgangspunkt kommt EIN Metz-Geraet mit
+// Hand-0-Auto-Ebene in Reihe dahinter – KMA-F8 (Analogwertgeber 0-10V) fuer
+// AO, KRS-E06 (Relais-Schnittstelle mit Handebene) fuer BO. 1 Geraet je
+// Punkt (nicht 1 je 8), inkl. derselben Reserve wie die E/A-Module.
+const LVB_METZ_ART = { dp_ao: '110730', dp_bo: '110661' };
+const LVB_METZ_ART_SET = new Set(Object.values(LVB_METZ_ART));
+function computeLvbMetzDevices(demand, reservePct) {
+  const keep = 1 - reservePct;
+  const out = [];
+  [['dp_ao', LVB_METZ_ART.dp_ao], ['dp_bo', LVB_METZ_ART.dp_bo]].forEach(([t, art]) => {
+    const bedarf = (keep > 0 ? (demand[t] || 0) / keep : (demand[t] || 0));
+    const n = Math.ceil(bedarf);
+    if (n <= 0) return;
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === art);
+    if (!eb) { console.warn('LVB-Metz-Artikel', art, 'fehlt im Katalog – uebersprungen'); return; }
+    out.push({ eb, menge: n });
+  });
+  return out;
+}
+// computeLvbRomutecDevices(): Tuereinbau-LVB (Romutec RAG/romod) – spaeter.
+function computeLvbRomutecDevices() { return []; }
 
 // ── DDC-Auto-Modul-Ratchet (Session 28e) ──────────────────────────────
 // Nutzer-Entscheidung nach Rücksprache: einmal als nötig erkannte
@@ -2760,6 +2836,10 @@ function buildQueues(ddcReservePct) {
 
   const dpDemand = {}, dpSupply = {};
   PHYS_DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
+  // AO/BO-Kapazitaet, die aus Kompakt-CPU-Onboard-E/A OHNE LVB stammt –
+  // wird bei aktiver LVB-Anforderung (DDC-Weg) aus dpSupplyEffective wieder
+  // abgezogen (Session 57, siehe lvbSperrtOnboardOut weiter unten).
+  const cpuOnboardOut = { dp_ao: 0, dp_bo: 0 };
   // CPU-Ergaenzung (Session 49, Kapazitaets-Gruppen seit Session 50): CPU/
   // E-A-Modul sind kein fester Bestandteil einer Baugruppe (bg.bauteile) -
   // sie werden separat benoetigt, um deren DDC-Datenpunktbedarf tatsaechlich
@@ -2772,6 +2852,15 @@ function buildQueues(ddcReservePct) {
   // nach computeDdcAutoModules()).
   let cpuCount = 0, ioUnitsManual = 0;
   const needsLvb = {}; // je PHYS_DP_TYPES-Typ: mind. ein Beitrag braucht LVB (siehe computeDdcAutoModules())
+  // Globale LVB-Vorgabe (#lvb_anforderung, Session 57): erzwingt fuer ALLE
+  // Ausgaenge (AO/BO) LVB-faehige E/A-Module – ausser die Realisierung
+  // laeuft ueber Schaltschrank-LVB (Metz), dort bleibt die DDC-Seite normal
+  // und die Handebene kommt als separates Metz-Geraet je Ausgang (siehe
+  // computeLvbMetzDevices(), weiter unten vor applyDdcWatermark()).
+  if (gs('lvb_anforderung') === 'gefordert' && gs('lvb_realisierung') !== 'metz') {
+    needsLvb.dp_ao = true;
+    needsLvb.dp_bo = true;
+  }
   const fbDemand = {}, fbSupply = {};
   FB_SUMMARY_GROUPS.forEach(g => {
     fbDemand[g.key] = {}; fbSupply[g.key] = {};
@@ -2789,6 +2878,9 @@ function buildQueues(ddcReservePct) {
       // Auto-Platzierungs-Kandidat gefuehrt (keine automatische CPU-
       // Vervielfachung), siehe Session 41.
       PHYS_DP_TYPES.forEach(t => { if (eb[t]) dpSupply[t] += eb[t] * menge; });
+      if (eb.bauteil_typ === 'ddc_cpu' && !eb.lvb_integriert) {
+        ['dp_ao', 'dp_bo'].forEach(t => { if (eb[t]) cpuOnboardOut[t] += eb[t] * menge; });
+      }
       if (eb.feldbus_protokoll) {
         eb.feldbus_protokoll.split(',').map(s => s.trim()).forEach(p => {
           if (!fbSupply[p]) return;
@@ -2982,7 +3074,28 @@ function buildQueues(ddcReservePct) {
   const cpuBenoetigt = cpuCount === 0 && !!cpuEb
     && PHYS_DP_TYPES.some(t => (cpuEb[t]||0) > 0 && dpDemand[t] > dpSupply[t]);
   const dpSupplyEffective = {...dpSupply};
-  if (cpuBenoetigt) PHYS_DP_TYPES.forEach(t => { if (cpuEb[t]) dpSupplyEffective[t] += cpuEb[t]; });
+  // Onboard-E/A der Kompaktstationen (PXC4.E16.A/PXC5.E24.A) hat KEINE
+  // lokale Vorrangbedienung (Session 57). Ist LVB generell gefordert und
+  // wird ueber LVB-faehige E/A-Module realisiert (nicht Metz – dort sitzt
+  // die Handebene ohnehin extern hinter dem Ausgang), duerfen die
+  // Onboard-AO/BO-Punkte den Bedarf NICHT decken, sonst wuerde kein
+  // externes -ML/-M-Modul ergaenzt. Zwei Faelle:
+  //  (a) manuell platzierte Kompakt-CPU – ihr Onboard-Beitrag steckt schon
+  //      in dpSupply (accumulateDp), wird hier wieder abgezogen
+  //      (cpuOnboardOut, nur AO/BO, nur ddc_cpu ohne lvb_integriert);
+  //  (b) automatisch zu ergaenzende Kompakt-CPU – wird unten in der
+  //      cpuBenoetigt-Schleife fuer AO/BO uebersprungen.
+  // Onboard-AI/BI bleiben in beiden Faellen unveraendert anrechenbar.
+  const lvbSperrtOnboardOut = gs('lvb_anforderung') === 'gefordert' && gs('lvb_realisierung') !== 'metz';
+  if (lvbSperrtOnboardOut) {
+    dpSupplyEffective.dp_ao = Math.max(0, dpSupplyEffective.dp_ao - cpuOnboardOut.dp_ao);
+    dpSupplyEffective.dp_bo = Math.max(0, dpSupplyEffective.dp_bo - cpuOnboardOut.dp_bo);
+  }
+  if (cpuBenoetigt) PHYS_DP_TYPES.forEach(t => {
+    if (!cpuEb[t]) return;
+    if (lvbSperrtOnboardOut && (t === 'dp_ao' || t === 'dp_bo')) return;
+    dpSupplyEffective[t] += cpuEb[t];
+  });
 
   const ddcAuto = computeDdcAutoModules(dpDemand, dpSupplyEffective, ddcReservePct, needsLvb);
 
@@ -3018,6 +3131,21 @@ function buildQueues(ddcReservePct) {
       entry.menge += delta;
     };
     addOrMerge(cpuEb, neededExtraCpus);
+  }
+
+  // Schaltschrank-LVB (Metz, Session 57): normale E/A-Module + je Ausgang
+  // ein Metz-Handebene-Geraet in Reihe. Als eigene Eintraege in
+  // ddcAuto.modules, damit Ratchet (applyDdcWatermark) UND Stueckliste
+  // (letzteDdcAuto in aggregateStueckliste()) sie automatisch mitfuehren.
+  // Bewusst NACH autoIoUnitsRaw/totalIoUnitsRaw (s.o.), damit die
+  // Metz-Geraete die CPU-Gruppenzahl nicht aufblaehen – sie haengen an
+  // keiner CPU, sondern sitzen als eigenstaendige Hutschienengeraete in
+  // der Steuerungs-Zone (Platzierung weiter unten ueber LVB_METZ_ART_SET).
+  if (gs('lvb_anforderung') === 'gefordert' && gs('lvb_realisierung') === 'metz') {
+    computeLvbMetzDevices(dpDemand, ddcReservePct).forEach(md => {
+      let e = ddcAuto.modules.find(m => m.eb.artikel_nr === md.eb.artikel_nr);
+      if (e) e.menge += md.menge; else ddcAuto.modules.push(md);
+    });
   }
 
   // Ratchet EINMAL für alles zusammen (E/A-Modultypen UND die soeben
@@ -3133,6 +3261,14 @@ function buildQueues(ddcReservePct) {
   neuGruppen.forEach(ioUnits => {
     if (cpuEb) queues.steuer.push({...autoDev(cpuEb), rowBreak: true, groupStart: true});
     ioUnits.forEach(eb => queues.steuer.push({...autoDev(eb), rowBreak: true}));
+  });
+  // Schaltschrank-LVB (Metz, Session 57): eigenstaendige Hutschienengeraete
+  // in der Steuerungs-Zone, an keine CPU-Gruppe gebunden. Mengen stehen als
+  // koppelrelais-Eintraege in ddcAuto.modules (geratcht) – hier nur noch
+  // platzieren, NICHT ueber den ddc_io-Filter oben (Metz ist kein ddc_io).
+  ddcAuto.modules.forEach(m => {
+    if (!LVB_METZ_ART_SET.has(m.eb.artikel_nr)) return;
+    for (let q = 0; q < m.menge; q++) queues.steuer.push({...autoDev(m.eb), rowBreak: true});
   });
 
   // DDC-Zusammenfassung für die Eingabeleiste: physikalisch wie bisher

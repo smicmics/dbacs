@@ -423,8 +423,8 @@
     "bezeichnung": "Schnittstellenmodul KRS-E06 mit Handbedienebene (LVB digital/binär), 24VAC/DC, 6A",
     "hersteller": "Metz Connect",
     "bauteil_typ": "koppelrelais",
-    "b_mm": 22.5,
-    "te_breite": 2,
+    "b_mm": 17.5,
+    "te_breite": 1,
     "h_mm": 61.3,
     "zone": [
       "steuer"

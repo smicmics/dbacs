@@ -1722,9 +1722,9 @@
   },
   {
     "id": "420_000015",
-    "name": "Ventilantrieb mit Notstellfunktion (Fail Open) 0...10V mit Rückmeldung, 1100N, 24V AC/DC",
+    "name": "Ventilantrieb mit Notstellfunktion (Fail Open/Close) 0...10V mit Rückmeldung, 1100N, 24V AC/DC",
     "gewerk": "420",
-    "beschreibung": "Ventilantrieb mit Notstellfunktion - Stellantrieb mit Federruecklauf für Siemens-Combi-Ventile VPF43../VPF53.. (PICV), fährt bei Spannungsausfall selbsttätig auf (Fail Open, z.B. Frostschutz-Anwendung), Stellkraft 1100N, Hub 20/40mm, Stellsignal 3-Punkt/DC 0...10V/4...20mA mit Positionsrückmeldung, Siemens Acvatix SQV91P30, 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (G/G0 Versorgung 24V AC/DC + Y Stellsignal-Eingang + U Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Fail-Safe-Funktion rein mechanisch/intern (Feder bzw. SuperCap), kein zusätzliches DDC-Signal nötig.",
+    "beschreibung": "Ventilantrieb mit Notstellfunktion - Stellantrieb mit Federruecklauf für Siemens-Combi-Ventile VPF43../VPF53.. (PICV), fährt bei Spannungsausfall selbsttätig in die konfigurierte Notstellposition (Fail Open oder Fail Close, per Konfiguration, z.B. Frostschutz), Stellkraft 1100N, Hub 20/40mm, Stellsignal 3-Punkt/DC 0...10V/4...20mA mit Positionsrückmeldung, Siemens Acvatix SQV91P30, 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (G/G0 Versorgung 24V AC/DC + Y Stellsignal-Eingang + U Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Fail-Safe-Funktion rein mechanisch/intern (Feder bzw. SuperCap), kein zusätzliches DDC-Signal nötig.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
@@ -1763,9 +1763,9 @@
   },
   {
     "id": "420_000016",
-    "name": "Ventilantrieb mit Notstellfunktion (Fail Open) 0...10V mit Rückmeldung, 1100N, 230V AC",
+    "name": "Ventilantrieb mit Notstellfunktion (Fail Open/Close) 0...10V mit Rückmeldung, 1100N, 230V AC",
     "gewerk": "420",
-    "beschreibung": "Ventilantrieb mit Notstellfunktion - wie 24V-Variante (Siemens Acvatix SQV91P30), jedoch mit optionalem 230V-Zusatzmodul ASP1.1 für Direktanschluss an 230V AC statt 24V AC/DC. Stellkraft 1100N, Hub 20/40mm, Stellsignal DC 0...10V mit Positionsrückmeldung, für Siemens-Combi-Ventile VPF43../VPF53.. (PICV), fährt bei Spannungsausfall selbsttätig auf (Fail Open). 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (Versorgung 230V AC + Stellsignal-Eingang + Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Klemmenbezeichnung des ASP1.1-Moduls nicht im Detail verifiziert - Anschlussschema vor Verdrahtung im Projekt gegenprüfen.",
+    "beschreibung": "Ventilantrieb mit Notstellfunktion - wie 24V-Variante (Siemens Acvatix SQV91P30), jedoch mit optionalem 230V-Zusatzmodul ASP1.1 für Direktanschluss an 230V AC statt 24V AC/DC. Stellkraft 1100N, Hub 20/40mm, Stellsignal DC 0...10V mit Positionsrückmeldung, für Siemens-Combi-Ventile VPF43../VPF53.. (PICV), fährt bei Spannungsausfall selbsttätig in die konfigurierte Notstellposition (Fail Open oder Fail Close, per Konfiguration). 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (Versorgung 230V AC + Stellsignal-Eingang + Rueckmeldesignal-Ausgang), Datenpunktbedarf 1x AO + 1x AI. Klemmenbezeichnung des ASP1.1-Moduls nicht im Detail verifiziert - Anschlussschema vor Verdrahtung im Projekt gegenprüfen.",
     "bauteile": [
       {
         "artikel_nr": "3209510",
