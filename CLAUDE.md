@@ -14,8 +14,22 @@
 
 ---
 
-## Offene Punkte (Stand Session 56 – vor Beginn der nächsten Sitzung lesen)
+## Offene Punkte (Stand Session 57 – vor Beginn der nächsten Sitzung lesen)
 
+- **Session 57 (neu):** DDC-Modul-Preise weiter unbestätigt (Recherche fand
+  nur einen Distributor-Wert TXM1.8U ≈274,40 € sipatec, nicht übernommen).
+  `TXM1.6R`/`TXM1.6R-M`/`TXM1.8U` tragen weiter die alten Preise
+  (275/319/404 €), `TXM1.8U-ML` hat keinen Preis. Metz `110661`/`110730`
+  (KRS-E06/KMA-F8) ohne Preis. **`TXM1.8X`/`TXM1.8X-ML` bewusst NICHT
+  angelegt** – reales `TXM1.8U` kann bereits 0–10V-AO, `TXM1.8X`
+  unterscheidet sich nur durch 4–20mA; erst anlegen, wenn ein 4–20-mA-
+  Feldgerät in den Katalog kommt (dann als `nicht_auto`-Manuell-Option).
+  **Türeinbau-LVB Romutec** noch nicht umgesetzt – `computeLvbRomutecDevices()`
+  ist ein `return []`-Stub, Options-Eintrag „Türeinbau · Romutec – folgt"
+  disabled. Recherche-Stand: Serie **RAG** (analog 0–10V, z. B. RAG3030,
+  8 TE, 24V AC/DC) + **romod 4DO-R** (binär, Modbus RTU) + IBGTflex-
+  Trägerrahmen; für „1× AO + 1× Relais" zwei getrennte Geräte, konkrete
+  Türmodul-Artikelnummern/Preise nicht gefunden.
 - **Session 56 (neu):** Baugruppen `420_000022` (Umwälzpumpe Wilo Yonos/
   Stratos PICO) und `430_000026` (Umluftkühlgerät Schneider Uniflair HDCV)
   sowie die neuen Bauteile `2900934`/`2903686` (Phoenix Contact
@@ -515,6 +529,60 @@ kein MSS, da der FU selbst den Motorschutz übernimmt).
 Die 4–5,5-kW-Schwelle Direktanlauf→Stern-Dreieck/Sanftstarter/FU ist
 **keine feste Norm**, sondern Praxis-Faustregel, abhängig von den TAB
 (Technische Anschlussbedingungen) des jeweiligen Netzbetreibers.
+
+---
+
+### Modul 4 – DDC-Modul-Auto-Ergänzung: Shared-Pool + globale LVB-Auswahl (Session 57, komprimiert)
+
+Nutzer-Fund per Screenshot: 1 AI + 1 AO ergaben **2× TXM1.8U**, weil
+`computeDdcAutoModules()` je Datenpunkttyp einen eigenen 8er-Pool rechnete.
+
+- **Analog-Shared-Pool (verbindlich):** In der Siemens-TX-I/O-Familie gibt es
+  **kein dediziertes AI- oder AO-Modul für 0–10V** – beides läuft über das
+  Universalmodul `TXM1.8U` (bzw. `TXM1.8U-ML` mit LVB), dessen 8 Punkte frei
+  zwischen AI und AO aufteilbar sind. `computeDdcAutoModules()` zählt daher
+  `remaining.dp_ai + remaining.dp_ao` zusammen und wählt EIN Modul in
+  `ceil(summe/8)` Stück (1 AI + 1 AO = **1** Modul). BI (`TXM1.8D`/`16D`)
+  und BO (`TXM1.6R`/`TXM1.6R-M`) bleiben je genau ein dediziertes Modul,
+  ohne Cross-Credit-Problem. `TXM1.8X`/`TXM1.8X-ML` (nur Unterschied:
+  4–20mA) bewusst **nicht** im Katalog – siehe Offene Punkte.
+- **Globale LVB-Auswahl:** 2 Selects in `#cpu_lvb_row` neben CPU-Typ.
+  `#lvb_anforderung` (`ohne` = Standard/Verhalten wie bisher / `gefordert`)
+  und `#lvb_realisierung` (`ddc` / `metz` / `romutec` disabled), zweites
+  Feld gesperrt solange Anforderung = `ohne`. Persistenz
+  `m04_lvb_anforderung`/`m04_lvb_realisierung`.
+  - `gefordert` + `ddc` → `needsLvb.dp_ao = needsLvb.dp_bo = true` (in
+    `buildQueues()` global gesetzt, zusätzlich zum bestehenden
+    baugruppenweisen `bt.lvb_erforderlich`): AO → `TXM1.8U-ML`,
+    BO → `TXM1.6R-M`.
+  - `gefordert` + `metz` → **Schaltschrank-LVB**: DDC-Seite bleibt normal
+    (`TXM1.8U`/`TXM1.6R`), `computeLvbMetzDevices()` ergänzt **je
+    Ausgangspunkt** ein Metz-Handebene-Gerät in Reihe – `110730` KMA-F8
+    (AO, 0–10V-Analogwertgeber) / `110661` KRS-E06 (BO, Relais-
+    Schnittstelle). 1 Gerät je Punkt (nicht je 8), inkl. gleicher
+    DDC-Reserve. Fester Konstant `LVB_METZ_ART = {dp_ao:'110730',
+    dp_bo:'110661'}` mit Load-Guard. Geräte laufen über `ddcAuto.modules`
+    → Ratchet + Stückliste (`letzteDdcAuto`) automatisch, Platzierung als
+    eigenständige Hutschienengeräte in `queues.steuer` (kein `ddc_io`-
+    Filter, keine CPU-Gruppe).
+  - `romutec` → `computeLvbRomutecDevices()` ist `return []`-Stub.
+- **Kompaktstation + LVB:** Onboard-E/A der PXC4/PXC5 hat **keine** LVB.
+  Bei `gefordert` + `ddc` wird der Onboard-`dp_ao`/`dp_bo`-Beitrag NICHT
+  in `dpSupplyEffective` angerechnet (manuell platzierte CPU: über
+  `cpuOnboardOut`-Tracking in `accumulateDp()` wieder abgezogen; auto-CPU:
+  in der `cpuBenoetigt`-Schleife für AO/BO übersprungen). Onboard-AI/BI
+  bleiben anrechenbar. Bei `metz` darf Onboard decken (Handebene sitzt
+  extern dahinter).
+- **Katalog:** `420_000015`/`420_000016` „(Fail Open)" → „(Fail
+  Open/Close)" + Beschreibung („in die konfigurierte Notstellposition, per
+  Konfiguration") – Gerät kann beide Notstellrichtungen, **keine**
+  Schaltungsänderung (Abschaltung sitzt im Frostschutz-Koppelrelais,
+  Regel 6). Metz `110661` von falschen 22,5mm auf **17,5mm / 1 TE**
+  korrigiert (Recherche-Fund).
+- Alle Szenarien im Browser verifiziert (ohne LVB / ddc / metz / Kompakt-
+  CPU je Richtung, Stückliste + Zeichnung + Positionsnummern + Watermark
+  konsistent, keine Konsolenfehler). Recherche per Subagent (Web,
+  Siemens-TX-I/O-Datenblätter + Metz + Romutec).
 
 ---
 
