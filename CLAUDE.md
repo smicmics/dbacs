@@ -16,20 +16,43 @@
 
 ## Offene Punkte (Stand Session 57 – vor Beginn der nächsten Sitzung lesen)
 
-- **Session 57 (neu):** DDC-Modul-Preise weiter unbestätigt (Recherche fand
-  nur einen Distributor-Wert TXM1.8U ≈274,40 € sipatec, nicht übernommen).
-  `TXM1.6R`/`TXM1.6R-M`/`TXM1.8U` tragen weiter die alten Preise
-  (275/319/404 €), `TXM1.8U-ML` hat keinen Preis. Metz `110661`/`110730`
-  (KRS-E06/KMA-F8) ohne Preis. **`TXM1.8X`/`TXM1.8X-ML` bewusst NICHT
-  angelegt** – reales `TXM1.8U` kann bereits 0–10V-AO, `TXM1.8X`
-  unterscheidet sich nur durch 4–20mA; erst anlegen, wenn ein 4–20-mA-
-  Feldgerät in den Katalog kommt (dann als `nicht_auto`-Manuell-Option).
-  **Türeinbau-LVB Romutec** noch nicht umgesetzt – `computeLvbRomutecDevices()`
-  ist ein `return []`-Stub, Options-Eintrag „Türeinbau · Romutec – folgt"
-  disabled. Recherche-Stand: Serie **RAG** (analog 0–10V, z. B. RAG3030,
-  8 TE, 24V AC/DC) + **romod 4DO-R** (binär, Modbus RTU) + IBGTflex-
-  Trägerrahmen; für „1× AO + 1× Relais" zwei getrennte Geräte, konkrete
-  Türmodul-Artikelnummern/Preise nicht gefunden.
+- **Session 57 – Preisrecherche (neu):** kompletter Bauteilkatalog per
+  4 Hintergrund-Forks bepreist (Herstellerlistenpreis bevorzugt, sonst
+  namhafter Großhandel/Distributor; Gebrauchtbörsen ausgeschlossen; alle
+  netto, Stand ~08/2026, Provenienz je Eintrag als `[Preisrecherche
+  08/2026] …`-Zusatz im `quelle_hinweis`). **Ergebnis: Einzelbauteile
+  141/146, Feldgeräte 32/36 mit `preis_eur`.** Viele Werte sind
+  Distributor-/Straßenpreise (echte Siemens/Phoenix-Listenpreise nur nach
+  Login), teils aus Brutto zurückgerechnet – siehe `quelle_hinweis`.
+  **Noch ohne Preis (Herstelleranfrage nötig):**
+  Einzelbauteile `PXC100-D`, `3RT2026-1AB00`, `4AP2142-8BC40-0HA0`,
+  `4AM4042-5AN00-0EA0` (alle abgekündigt/Auslauf), `PW100` (Relay GmbH);
+  Feldgeräte `20N842S021` (KRIWAN INT511 24V-Variante), `PST010RG12S`,
+  `TWP1F`, `STB1F` (Honeywell/FEMA, teils abgekündigt).
+  **Näherungswerte** (nächstliegendes gelistetes Modell, im `quelle_hinweis`
+  markiert): `PXC4.E16.A`≈875 €, `PXC5.E24.A`≈1407 €, `PXC7.E400.A`≈1932 €
+  (letzterer evtl. zu niedrig – Modell E400M/250DP statt 500DP).
+- **Session 57 – DDC-Modul-Katalog:** `TXM1.8U-ML` jetzt bepreist
+  (433,30 €). **`TXM1.8X`/`TXM1.8X-ML` bewusst NICHT angelegt** – reales
+  `TXM1.8U` kann bereits 0–10V-AO, `TXM1.8X` unterscheidet sich nur durch
+  4–20 mA; erst anlegen, wenn ein 4–20-mA-Feldgerät in den Katalog kommt
+  (dann als `nicht_auto`-Manuell-Option).
+- **Session 57 – Türeinbau-LVB Romutec** noch nicht umgesetzt –
+  `computeLvbRomutecDevices()` ist ein `return []`-Stub, Options-Eintrag
+  „Türeinbau · Romutec – folgt" disabled. Recherche-Stand: Serie **RAG**
+  (analog 0–10V, z. B. RAG3030, 8 TE, 24V AC/DC) + **romod 4DO-R** (binär,
+  Modbus RTU) + IBGTflex-Trägerrahmen; für „1× AO + 1× Relais" zwei
+  getrennte Geräte, konkrete Türmodul-Artikelnummern/Preise nicht gefunden.
+- **Feldgeräte-Katalogzeilen fehlen (nicht nur Preise):** die von
+  Baugruppen referenzierten `feldgeraet_artikel_nr` `SAX61.03`,
+  `SSB161.05HF`, `SQV91P30`(+`ASP1.1`), `STA121`/`STA321`/`STP121`/
+  `STP321.L20`, `1012726` (Oventrop) sowie die Wilo-Pumpen (`Yonos/Stratos
+  PICO`, `Stratos MAXO`/`MAXO-Z`/`GIGA2.0`, `CronoLine-E`) und `HDCV`
+  (Schneider) existieren **nur als Platzhalter-String**, nicht als eigene
+  `feldgeraete`-Katalogzeile – Modul 5 kann sie daher nicht bepreisen. Vor
+  einer Feldgeräte-Kalkulation müssen diese Zeilen erst angelegt werden
+  (Abmessungen/Kategorie/Preis je Gerät), das ist eine Katalog-Aufgabe,
+  keine reine Preissuche.
 - **Session 56 (neu):** Baugruppen `420_000022` (Umwälzpumpe Wilo Yonos/
   Stratos PICO) und `430_000026` (Umluftkühlgerät Schneider Uniflair HDCV)
   sowie die neuen Bauteile `2900934`/`2903686` (Phoenix Contact
@@ -43,13 +66,6 @@
   Original-Klemmenplan gefunden (nur Bild-Scans). Wilo-Baugruppen
   MAXO/MAXO-Z (mit SSM/SBM/DI/AI-Signalklemmen) sind noch **nicht**
   angelegt, nur PICO (signallos, Koppelrelais-Pattern) ist fertig.
-- Preise aller 9 Session-55-Ventilantrieb-Baugruppen (`420_000013`–
-  `420_000021`) und des neuen Koppelrelais-Bauteils `2967073` unbestätigt/
-  fehlend – kein belastbarer EUR-Preis eingetragen (Recherche fand nur 3
-  Referenzpreise, nicht übernommen da Quelle/Variante nicht sicher
-  deckungsgleich mit dem HIT-Portal-Datenblatt: SAX61.03 ≈362,60 €,
-  SSB161.05HF ≈198,00 €, SQV91P30-Combi-Ventil-Antrieb 791,00 € netto
-  SIPATEC).
 - **STP121** (`420_000019`, 24V thermischer Ventilantrieb, stromlos auf) –
   Artikelnummer nicht über eine eigene Distributor-Listung verifiziert,
   nur per Namenskonvention vom bestätigten Paar STA321/STP321 auf die
@@ -71,20 +87,10 @@
   der europäischen Symaro-Reihe nicht (nur biegsame Kapillare, auch bei
   QAM2120.040). Alternativen anderer Hersteller sind noch zu recherchieren
   (Nutzer-Vorgabe: „Wir werden noch Alternativen suchen").
-- Preise mehrerer Session-52-Feldgeräte unbestätigt/fehlend (QBM81-10,
-  QBM3020-10, KRM-1-DZ/KRM-2-DZ, Montagekonsole KS) – siehe
-  `quelle_hinweis` je Eintrag.
 - Grundsatzfrage farbige L1/L2/L3-Klemmen (UT-Reihe Einspeisung) vs. Praxis
   (Nutzer-Hinweis Session 52: „in der Praxis werden die farbigen Klemmen für
   L1 L2 und L3 meist gar nicht eingesetzt") – ggf. später auf grau+PE
   umstellen, noch nicht entschieden.
-- Preise Session-53-Feldgeräte unbestätigt: Kanal-CO2-Fühler QPM2100 (kein
-  belastbarer EU/EUR-Preis gefunden) und Luftstromwächter KRIWAN INT511
-  20N842S021 (gefundene Distributor-Preise nicht eindeutig dieser
-  24V-AC/DC-Variante zuordenbar) – siehe `quelle_hinweis` je Eintrag.
-- Preise aller 5 Session-54-Feldgeräte unbestätigt/fehlend (QAF64.2-J,
-  QBM3020-3, QFM2160, QAA27, QPA2062) – kein belastbarer EUR-Preis gefunden,
-  siehe `quelle_hinweis` je Eintrag.
 - **Zurückgestellt (Session 54):** Raumtemperatur- und Feuchtesensor mit
   Sollwertversteller sowie Raumtemperatur-/Feuchte-/CO2-Sensor mit
   Sollwertversteller – in der aktuellen Siemens-Symaro-Reihe existiert keine
@@ -96,10 +102,6 @@
   modbus_rtu/modbus_tcp). Alternativen anderer Hersteller noch zu
   recherchieren, falls der Nutzer diese beiden Kombinationen weiterhin
   benötigt.
-- Preise aller 10 Session-54-Feldgeräte Heizung/Kälte/Sanitär unbestätigt/
-  fehlend (QBE1900-P7, QBE2003-P4, QBE2003-P10, PST010RG12S, QVE1901,
-  SDBAM6, SYR-933.1, TWP1F, STB1F, STB+TWF) – kein belastbarer EUR-Preis
-  gefunden, siehe `quelle_hinweis` je Eintrag.
 - **Sicherheitsdruckbegrenzer „2-stufig" (Nutzer-Anfrage Session 54) nicht
   gefunden:** weder im Honeywell/FEMA-SDBAM-Katalog noch sonst ein
   Einzelgerät mit 2 unabhängigen Schaltpunkten in einem Gehäuse gefunden.
@@ -126,10 +128,6 @@
   dokumentiert SDBAM ausdrücklich nur für Maximaldrucküberwachung (eigene
   DWR-Baureihe für Minimaldruckbegrenzung vorgesehen) – auf ausdrücklichen
   Nutzer-Wunsch dennoch für beide Rollen eingesetzt, siehe `quelle_hinweis`.
-- Preise der 2 USV-Feldgeräte (`2320225` QUINT-UPS-Umschalteinheit,
-  `2320296` UPS-BAT-Batteriemodul, beide Phoenix Contact, `480_000011`)
-  unbestätigt/fehlend – kein belastbarer EUR-Preis gefunden, siehe
-  `quelle_hinweis` je Eintrag.
 
 Sonst keine offenen Punkte – Session 51/52 vollständig implementiert UND im
 Browser verifiziert; die daraus erarbeiteten Modellierungsregeln sind jetzt
@@ -583,6 +581,13 @@ Nutzer-Fund per Screenshot: 1 AI + 1 AO ergaben **2× TXM1.8U**, weil
   CPU je Richtung, Stückliste + Zeichnung + Positionsnummern + Watermark
   konsistent, keine Konsolenfehler). Recherche per Subagent (Web,
   Siemens-TX-I/O-Datenblätter + Metz + Romutec).
+- **Preisrecherche im selben Zug:** kompletter Bauteil- + Feldgeräte-Katalog
+  per 4 Hintergrund-Forks bepreist (Einzelbauteile 141/146, Feldgeräte
+  32/36), Werte + Provenienz in `ga_komponenten.xlsx` (`preis_stueck_eur`
+  + `[Preisrecherche 08/2026] …`-Zusatz im `quelle_hinweis`, nicht-
+  destruktiv an bestehende Hinweise angehängt). Restliste + fehlende
+  Feldgeräte-Katalogzeilen siehe „Offene Punkte" oben. Writer-Skripte:
+  `scratchpad/xlsx_write_prices.py`, Rohdaten `scratchpad/prices_fork*.txt`.
 
 ---
 

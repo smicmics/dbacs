@@ -346,6 +346,7 @@
       "uss"
     ],
     "kategorie": "Überspannungsschutz & Vorsicherung",
+    "preis_eur": 86.19,
     "geprueft": false
   },
   {
@@ -360,6 +361,7 @@
       "uss"
     ],
     "kategorie": "Überspannungsschutz & Vorsicherung",
+    "preis_eur": 23.89,
     "geprueft": false
   },
   {
@@ -374,6 +376,7 @@
       "steuer"
     ],
     "kategorie": "Überspannungsschutz",
+    "preis_eur": 21.75,
     "geprueft": false
   },
   {
@@ -388,6 +391,7 @@
       "steuer"
     ],
     "kategorie": "Überspannungsschutz",
+    "preis_eur": 140.82,
     "geprueft": false
   },
   {
@@ -402,6 +406,7 @@
       "leist"
     ],
     "kategorie": "Netzversorgung/Transformatoren",
+    "preis_eur": 464.97,
     "geprueft": false
   },
   {
@@ -431,6 +436,7 @@
     ],
     "kategorie": "Koppelrelais",
     "lvb_integriert": true,
+    "preis_eur": 32.76,
     "geprueft": false
   },
   {
@@ -446,6 +452,7 @@
     ],
     "kategorie": "Koppelrelais",
     "lvb_integriert": true,
+    "preis_eur": 17.93,
     "geprueft": false
   },
   {
@@ -460,6 +467,7 @@
       "steuer"
     ],
     "kategorie": "Netzwerkeinrichtung",
+    "preis_eur": 100.0,
     "geprueft": false
   },
   {
@@ -474,6 +482,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 0.8,
     "geprueft": false
   },
   {
@@ -488,6 +497,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 0.8,
     "geprueft": false
   },
   {
@@ -502,6 +512,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 0.8,
     "geprueft": false
   },
   {
@@ -516,6 +527,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 0.8,
     "geprueft": false
   },
   {
@@ -530,6 +542,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 2.5,
     "geprueft": false
   },
   {
@@ -544,6 +557,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 0.9,
     "geprueft": false
   },
   {
@@ -558,6 +572,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 0.9,
     "geprueft": false
   },
   {
@@ -572,6 +587,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 0.9,
     "geprueft": false
   },
   {
@@ -586,6 +602,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 0.9,
     "geprueft": false
   },
   {
@@ -600,6 +617,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 2.6,
     "geprueft": false
   },
   {
@@ -614,6 +632,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.2,
     "geprueft": false
   },
   {
@@ -628,6 +647,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.2,
     "geprueft": false
   },
   {
@@ -642,6 +662,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.2,
     "geprueft": false
   },
   {
@@ -656,6 +677,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.2,
     "geprueft": false
   },
   {
@@ -670,6 +692,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 2.9,
     "geprueft": false
   },
   {
@@ -684,6 +707,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.5,
     "geprueft": false
   },
   {
@@ -698,6 +722,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.5,
     "geprueft": false
   },
   {
@@ -712,6 +737,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.5,
     "geprueft": false
   },
   {
@@ -726,6 +752,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.5,
     "geprueft": false
   },
   {
@@ -740,6 +767,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 3.2,
     "geprueft": false
   },
   {
@@ -754,6 +782,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.8,
     "geprueft": false
   },
   {
@@ -768,6 +797,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.8,
     "geprueft": false
   },
   {
@@ -782,6 +812,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.8,
     "geprueft": false
   },
   {
@@ -796,6 +827,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 1.8,
     "geprueft": false
   },
   {
@@ -810,6 +842,7 @@
       "klemm_e"
     ],
     "kategorie": "Einspeiseklemmen",
+    "preis_eur": 4.3,
     "geprueft": false
   },
   {
@@ -828,6 +861,7 @@
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "doppelstock_variante_artikel_nr": "3210567",
     "trennklemme_variante_artikel_nr": "3210156",
+    "preis_eur": 0.6,
     "geprueft": false
   },
   {
@@ -844,6 +878,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 0.6,
     "geprueft": false
   },
   {
@@ -860,6 +895,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 2.1,
     "geprueft": false
   },
   {
@@ -876,6 +912,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 0.7,
     "geprueft": false
   },
   {
@@ -892,6 +929,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 0.7,
     "geprueft": false
   },
   {
@@ -908,6 +946,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 2.2,
     "geprueft": false
   },
   {
@@ -924,6 +963,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 1.1,
     "geprueft": false
   },
   {
@@ -940,6 +980,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 1.1,
     "geprueft": false
   },
   {
@@ -956,6 +997,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 2.9,
     "geprueft": false
   },
   {
@@ -972,6 +1014,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 1.6,
     "geprueft": false
   },
   {
@@ -988,6 +1031,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 1.6,
     "geprueft": false
   },
   {
@@ -1004,6 +1048,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 3.6,
     "geprueft": false
   },
   {
@@ -1020,6 +1065,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 2.37,
     "geprueft": false
   },
   {
@@ -1036,6 +1082,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 2.37,
     "geprueft": false
   },
   {
@@ -1052,6 +1099,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "preis_eur": 5.64,
     "geprueft": false
   },
   {
@@ -1083,6 +1131,7 @@
       "evert"
     ],
     "kategorie": "Leitungsschutzschalter",
+    "preis_eur": 13.69,
     "geprueft": false
   },
   {
@@ -1099,6 +1148,7 @@
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "dp_bi": 8,
+    "preis_eur": 136.5,
     "geprueft": false
   },
   {
@@ -1115,6 +1165,7 @@
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "dp_bi": 16,
+    "preis_eur": 186.9,
     "geprueft": false
   },
   {
@@ -1188,6 +1239,7 @@
     "dp_ai": 8,
     "dp_ao": 8,
     "lvb_integriert": true,
+    "preis_eur": 433.3,
     "geprueft": false
   },
   {
@@ -1210,6 +1262,7 @@
     "ddc_sicherung_artikel_nr": "5SL6106-7",
     "ddc_sicherung2_artikel_nr": "5SL6110-7",
     "auto_ea_cpu": true,
+    "preis_eur": 1932.0,
     "geprueft": false
   },
   {
@@ -1225,6 +1278,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 21.61,
     "geprueft": false
   },
   {
@@ -1240,6 +1294,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 27.37,
     "geprueft": false
   },
   {
@@ -1255,6 +1310,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 38.05,
     "geprueft": false
   },
   {
@@ -1270,6 +1326,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 59.1,
     "geprueft": false
   },
   {
@@ -1285,6 +1342,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 34.24,
     "geprueft": false
   },
   {
@@ -1300,6 +1358,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 49.33,
     "geprueft": false
   },
   {
@@ -1315,6 +1374,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 61.8,
     "geprueft": false
   },
   {
@@ -1345,6 +1405,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 47.31,
     "geprueft": false
   },
   {
@@ -1360,6 +1421,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 66.4,
     "geprueft": false
   },
   {
@@ -1375,6 +1437,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 132.46,
     "geprueft": false
   },
   {
@@ -1390,6 +1453,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 232.0,
     "geprueft": false
   },
   {
@@ -1405,6 +1469,7 @@
     ],
     "kategorie": "Schütze",
     "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "preis_eur": 221.0,
     "geprueft": false
   },
   {
@@ -1420,6 +1485,7 @@
     ],
     "kategorie": "Hilfsschalterblock",
     "keine_platzierung_mp": true,
+    "preis_eur": 11.84,
     "geprueft": false
   },
   {
@@ -1434,6 +1500,7 @@
       "leist"
     ],
     "kategorie": "Motorschutzschalter",
+    "preis_eur": 63.34,
     "geprueft": false
   },
   {
@@ -1478,6 +1545,7 @@
       "leist"
     ],
     "kategorie": "Motorschutzschalter",
+    "preis_eur": 157.36,
     "geprueft": false
   },
   {
@@ -1492,6 +1560,7 @@
       "leist"
     ],
     "kategorie": "Motorschutzschalter",
+    "preis_eur": 210.6,
     "geprueft": false
   },
   {
@@ -1539,6 +1608,7 @@
     ],
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
+    "preis_eur": 24.44,
     "geprueft": false
   },
   {
@@ -1553,6 +1623,7 @@
       "leist"
     ],
     "kategorie": "Frequenzumrichter",
+    "preis_eur": 544.0,
     "geprueft": false
   },
   {
@@ -1567,6 +1638,7 @@
       "leist"
     ],
     "kategorie": "Frequenzumrichter",
+    "preis_eur": 962.09,
     "geprueft": false
   },
   {
@@ -1596,6 +1668,7 @@
       "leist"
     ],
     "kategorie": "Frequenzumrichter",
+    "preis_eur": 2058.9,
     "geprueft": false
   },
   {
@@ -1611,6 +1684,7 @@
     ],
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
+    "preis_eur": 35.5,
     "geprueft": false
   },
   {
@@ -1626,6 +1700,7 @@
     ],
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
+    "preis_eur": 53.53,
     "geprueft": false
   },
   {
@@ -1670,6 +1745,7 @@
       "evert"
     ],
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
+    "preis_eur": 26.98,
     "geprueft": false
   },
   {
@@ -1684,6 +1760,7 @@
       "evert"
     ],
     "kategorie": "Energieverteilung-Schutzeinrichtungen",
+    "preis_eur": 22.24,
     "geprueft": false
   },
   {
@@ -1728,6 +1805,7 @@
       "steuer"
     ],
     "kategorie": "Netzwerkeinrichtung",
+    "preis_eur": 114.77,
     "geprueft": false
   },
   {
@@ -1772,6 +1850,7 @@
       "leist"
     ],
     "kategorie": "Zeitrelais",
+    "preis_eur": 73.9,
     "geprueft": false
   },
   {
@@ -1787,6 +1866,7 @@
     ],
     "kategorie": "Fronttafel-/Türeinbau",
     "keine_platzierung_mp": true,
+    "preis_eur": 23.3,
     "geprueft": false
   },
   {
@@ -1801,6 +1881,7 @@
       "steuer"
     ],
     "kategorie": "DDC-Automationseinrichtung",
+    "preis_eur": 236.6,
     "geprueft": false
   },
   {
@@ -1815,6 +1896,7 @@
       "steuer"
     ],
     "kategorie": "DDC-Automationseinrichtung",
+    "preis_eur": 351.4,
     "geprueft": false
   },
   {
@@ -1844,6 +1926,7 @@
     ],
     "kategorie": "Messgerät/Energiezähler",
     "keine_platzierung_mp": true,
+    "preis_eur": 307.17,
     "geprueft": false
   },
   {
@@ -1859,6 +1942,7 @@
     ],
     "kategorie": "Messgerät/Energiezähler",
     "keine_platzierung_mp": true,
+    "preis_eur": 356.04,
     "geprueft": false
   },
   {
@@ -1874,6 +1958,7 @@
     ],
     "kategorie": "Messgerät/Energiezähler",
     "keine_platzierung_mp": true,
+    "preis_eur": 532.11,
     "geprueft": false
   },
   {
@@ -1888,6 +1973,7 @@
       "evert"
     ],
     "kategorie": "Messgerät/Energiezähler",
+    "preis_eur": 199.92,
     "geprueft": false
   },
   {
@@ -1927,6 +2013,7 @@
     "ddc_netzteil_artikel_nr": "4AM4042-4TN00-0EA0",
     "ddc_sicherung_artikel_nr": "5SL6106-7",
     "ddc_sicherung2_artikel_nr": "5SL6110-7",
+    "preis_eur": 875.0,
     "geprueft": false
   },
   {
@@ -1952,6 +2039,7 @@
     "ddc_netzteil_artikel_nr": "4AM4042-4TN00-0EA0",
     "ddc_sicherung_artikel_nr": "5SL6106-7",
     "ddc_sicherung2_artikel_nr": "5SL6110-7",
+    "preis_eur": 1407.0,
     "geprueft": false
   },
   {
@@ -2000,6 +2088,7 @@
     ],
     "kategorie": "Koppelrelais",
     "benoetigt_steuerspannung": "230vac",
+    "preis_eur": 24.34,
     "geprueft": false
   },
   {
@@ -2015,6 +2104,7 @@
     ],
     "kategorie": "Steuerspannung",
     "drehstrom_variante_artikel_nr": "4AM4042-5AN00-0EA0",
+    "preis_eur": 174.74,
     "geprueft": false
   },
   {
@@ -2044,6 +2134,7 @@
     ],
     "kategorie": "Steuerspannung",
     "drehstrom_variante_artikel_nr": "4AM4042-5AT10-0FA0",
+    "preis_eur": 161.16,
     "geprueft": false
   },
   {
@@ -2058,6 +2149,7 @@
       "leist"
     ],
     "kategorie": "Steuerspannung",
+    "preis_eur": 161.25,
     "geprueft": false
   },
   {
@@ -2072,6 +2164,7 @@
       "leist"
     ],
     "kategorie": "Netzversorgung/Transformatoren",
+    "preis_eur": 373.8,
     "geprueft": false
   },
   {
@@ -2086,6 +2179,7 @@
       "leist"
     ],
     "kategorie": "Netzversorgung/Transformatoren",
+    "preis_eur": 158.82,
     "geprueft": false
   },
   {
@@ -2101,6 +2195,7 @@
     ],
     "kategorie": "Koppelrelais",
     "benoetigt_steuerspannung": "24vac",
+    "preis_eur": 21.41,
     "geprueft": false
   },
   {
@@ -2116,6 +2211,7 @@
     ],
     "kategorie": "Koppelrelais",
     "zubehoer_artikel_nr": "2903686",
+    "preis_eur": 6.16,
     "geprueft": false
   },
   {
@@ -2132,6 +2228,7 @@
     "kategorie": "Koppelrelais",
     "keine_platzierung_mp": true,
     "benoetigt_steuerspannung": "24vac",
+    "preis_eur": 10.25,
     "geprueft": false
   },
   {
@@ -2146,6 +2243,7 @@
       "evert"
     ],
     "kategorie": "Hilfsschalter",
+    "preis_eur": 10.33,
     "geprueft": false
   },
   {
@@ -2160,6 +2258,7 @@
       "evert"
     ],
     "kategorie": "Leitungsschutzschalter",
+    "preis_eur": 21.55,
     "geprueft": false
   },
   {
@@ -2176,6 +2275,7 @@
     "kategorie": "Reparaturschalter",
     "keine_platzierung_mp": true,
     "zubehoer_artikel_nr": "0758484",
+    "preis_eur": 46.55,
     "geprueft": false
   },
   {
@@ -2192,6 +2292,7 @@
     "kategorie": "Reparaturschalter",
     "keine_platzierung_mp": true,
     "zubehoer_artikel_nr": "0758484",
+    "preis_eur": 44.79,
     "geprueft": false
   },
   {
@@ -2207,6 +2308,7 @@
     ],
     "kategorie": "Reparaturschalter",
     "keine_platzierung_mp": true,
+    "preis_eur": 14.28,
     "geprueft": false
   }
 ]
