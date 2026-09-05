@@ -2854,6 +2854,11 @@ function buildQueues(ddcReservePct) {
 
   const dpDemand = {}, dpSupply = {};
   PHYS_DP_TYPES.forEach(t => { dpDemand[t] = 0; dpSupply[t] = 0; });
+  // Anzahl IP-Feldgeraete (feldbus_protokoll modbus_tcp / BACnet-IP) - fuer die
+  // MENGENBASIERTE Switch-Ergaenzung (Session 58 Nachtrag): 1 Switch = 5 Ports,
+  // 1 Port fuer die Automationsstation bzw. den Uplink zum vorherigen Switch
+  // -> 4 freie Ports je Switch, ceil(n/4) Switches.
+  let ipTeilnehmer = 0;
   // AO/BO-Kapazitaet, die aus Kompakt-CPU-Onboard-E/A OHNE LVB stammt –
   // wird bei aktiver LVB-Anforderung (DDC-Weg) aus dpSupplyEffective wieder
   // abgezogen (Session 57, siehe lvbSperrtOnboardOut weiter unten).
@@ -2924,6 +2929,7 @@ function buildQueues(ddcReservePct) {
       else if (eb.bauteil_typ === 'ddc_io') ioUnitsManual += item.menge;
       const farbe = BG_COLORS[item.ci];
       accumulateDp(eb, item.menge, {physisch: item.ddcPhysisch !== false, kommunikativ: !!item.ddcKommunikativ, protokoll: item.ddcProtokoll});
+      if (item.ddcKommunikativ && item.ddcProtokoll === 'modbus_tcp') ipTeilnehmer += item.menge;
       // keine_platzierung_mp (Session 41): Bauteil wird auf ein anderes
       // Bauteil aufgesteckt (z.B. Hilfsschalterblock auf ein Schütz) - braucht
       // kein eigenes TE-Feld auf der Montageplatte, bleibt aber in der
@@ -3008,6 +3014,7 @@ function buildQueues(ddcReservePct) {
           // unten per Ratchet ergaenzt (neededKomm).
           if (bt.feldbus_protokoll && fbDemand[bt.feldbus_protokoll]) {
             FB_DP_TYPES.forEach(t => { if (bt[t]) fbDemand[bt.feldbus_protokoll][t] += bt[t] * bt.menge; });
+            if (bt.feldbus_protokoll === 'modbus_tcp') ipTeilnehmer += bt.menge;
           }
           if(!queues[zone]) return;
           // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden
@@ -3224,35 +3231,42 @@ function buildQueues(ddcReservePct) {
   // ── Kommunikationsbauteil-Ratchet (Session 58) ─────────────────────────
   // Feldgeraete mit kommunikativen Datenpunkten (dp_fb_* + feldbus_protokoll)
   // brauchen je nach Bus ein schrankinternes Kommunikationsbauteil:
-  //   M-Bus      -> M-Bus-Pegelwandler (MR006 / PW20, 24 V AC/DC)
-  //   Modbus TCP -> Ethernet-Switch (2891021, 24 V AC) - IP-Sterntopologie
-  //   Modbus RTU -> nichts (Anschluss direkt an einen CPU-RS485-Port)
-  // Ratchet wie steuerspannungWatermark: einmal ergaenzt, sinkt nicht von
-  // selbst; EIN Bauteil deckt beliebig viele Feldgeraete. Manuell platzierte
-  // Exemplare zaehlen als vorhanden -> keine Auto-Ergaenzung. Keine
-  // Groessen-/Mengenstaffelung in v1 (bei >20 Zaehlern bzw. grossen DN
-  // stattdessen manuell PW60 = MR004C waehlen, Hinweis im Auto-Titel).
-  const KOMM_AUTO = { mbus: 'MR006', modbus_tcp: '2891021' }; // modbus_rtu bewusst nicht
-  const neededKomm = new Set();
-  FB_SUMMARY_GROUPS.forEach(g => {
-    if (KOMM_AUTO[g.key] && FB_DP_TYPES.some(t => fbDemand[g.key][t] > 0)) neededKomm.add(g.key);
-  });
-  const manuellVorhandenKomm = new Set();
+  //   M-Bus      -> M-Bus-Pegelwandler (MR006 / PW20, 24 V AC/DC) - PRAESENZ-
+  //                 basiert, 1 Stueck (ab >20 Zaehlern manuell PW60 = MR004C).
+  //   Modbus TCP/IP bzw. BACnet/IP (beide feldbus_protokoll 'modbus_tcp')
+  //              -> Ethernet-Switch (2891021, 24 V AC) - MENGENBASIERT: der
+  //                 Switch hat 5 Ports, 1 Port geht an die Automationsstation
+  //                 bzw. beim Verlaengern an den vorherigen Switch -> 4 freie
+  //                 Ports je Switch. Bei n IP-Teilnehmern: ceil(n / 4) Switches
+  //                 (Nutzer-Fund - beim 5. Teilnehmer kommt der 2. Switch).
+  //   Modbus RTU -> nichts (Anschluss direkt an einen CPU-RS485-Port).
+  // Ratchet wie steuerspannungWatermark: sinkt nie von selbst. Manuell
+  // platzierte Exemplare zaehlen als vorhandene Kapazitaet (Pegelwandler:
+  // Praesenz genuegt; Switches: je 4 Ports).
+  const MBUS_PW = 'MR006', IP_SWITCH = '2891021', IP_PORTS_PRO_SWITCH = 4;
+  const mbusBedarf = FB_DP_TYPES.some(t => fbDemand.mbus[t] > 0);
+  let manuellMbus = false, manuellSwitches = 0;
   belegung.forEach(item => {
     if (item.typ !== 'einzel') return;
-    if (item.artikel_nr === 'MR006' || item.artikel_nr === 'MR004C' || item.artikel_nr === 'PW100') manuellVorhandenKomm.add('mbus');
-    if (['2891021', '2891001', 'EDS-205'].includes(item.artikel_nr)) manuellVorhandenKomm.add('modbus_tcp');
+    if (['MR006', 'MR004C', 'PW100'].includes(item.artikel_nr)) manuellMbus = true;
+    if (['2891021', '2891001', 'EDS-205'].includes(item.artikel_nr)) manuellSwitches += item.menge;
   });
+  const switchesBedarf = ipTeilnehmer > 0 ? Math.ceil(ipTeilnehmer / IP_PORTS_PRO_SWITCH) : 0;
+
   let kommWatermarkChanged = false;
-  neededKomm.forEach(k => { if (!kommWatermark[k]) { kommWatermark[k] = true; kommWatermarkChanged = true; } });
+  if (mbusBedarf && !kommWatermark.mbus) { kommWatermark.mbus = true; kommWatermarkChanged = true; }
+  if (switchesBedarf > (kommWatermark.ip_switches || 0)) { kommWatermark.ip_switches = switchesBedarf; kommWatermarkChanged = true; }
+
   const kommAuto = []; // [{eb, menge}]
-  Object.keys(kommWatermark).forEach(k => {
-    if (!kommWatermark[k] || manuellVorhandenKomm.has(k)) return;
-    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === KOMM_AUTO[k]);
-    if (!eb) return;
-    kommAuto.push({ eb, menge: 1 });
-    if (eb.benoetigt_steuerspannung) neededSteuerspannung.add(eb.benoetigt_steuerspannung);
-  });
+  if (kommWatermark.mbus && !manuellMbus) {
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === MBUS_PW);
+    if (eb) { kommAuto.push({ eb, menge: 1 }); if (eb.benoetigt_steuerspannung) neededSteuerspannung.add(eb.benoetigt_steuerspannung); }
+  }
+  const switchesAuto = Math.max(0, (kommWatermark.ip_switches || 0) - manuellSwitches);
+  if (switchesAuto > 0) {
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === IP_SWITCH);
+    if (eb) { kommAuto.push({ eb, menge: switchesAuto }); if (eb.benoetigt_steuerspannung) neededSteuerspannung.add(eb.benoetigt_steuerspannung); }
+  }
   if (kommWatermarkChanged) localStorage.setItem('m04_komm_watermark', JSON.stringify(kommWatermark));
 
   const manuellVorhandeneSteuerspannung = new Set();

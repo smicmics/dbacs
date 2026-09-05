@@ -601,17 +601,24 @@ Neues Muster für Feldgeräte, die **über einen Bus gelesene Werte** liefern, d
   `fbDemand[protokoll]` (mbus / modbus_rtu / modbus_tcp), NICHT in `dpDemand` →
   Statistik-Gruppen „Komm. …", keine physische Platzierung.
 - **Kommunikationsbauteil-Ratchet** (neu, `kommWatermark` /
-  `m04_komm_watermark`, Muster = `steuerspannungWatermark`): je nach Bus wird
-  automatisch EIN geteiltes schrankinternes Bauteil in `steuer` ergänzt:
-  - `mbus` → M-Bus-Pegelwandler **`MR006`** (PW20, 24 V AC/DC).
-  - `modbus_tcp` (inkl. BACnet/IP – **kein eigener Gruppen-Key**, „Modbus IP
-    trägt die gleiche Systematik") → Ethernet-Switch **`2891021`** (Phoenix
-    Contact FL SWITCH SFN 5TX-24VAC, 24 V AC).
+  `m04_komm_watermark`, Muster = `steuerspannungWatermark`, sinkt nie): je nach
+  Bus wird automatisch ein schrankinternes Bauteil in `steuer` ergänzt:
+  - `mbus` → M-Bus-Pegelwandler **`MR006`** (PW20, 24 V AC/DC) – **präsenz-
+    basiert, 1 Stück** (bei >20 Zählern manuell `MR004C` = PW60).
+  - `modbus_tcp` (inkl. **BACnet/IP** – kein eigener Gruppen-Key) → Ethernet-
+    Switch **`2891021`** (Phoenix Contact FL SWITCH SFN 5TX-24VAC) –
+    **MENGENBASIERT**: 5 Ports, 1 Port für die Automationsstation bzw. den
+    Uplink zum vorherigen Switch → 4 freie Ports je Switch → `ceil(n / 4)`
+    Switches bei `n` IP-Teilnehmern (5. Teilnehmer ⇒ 2. Switch). `n` zählt
+    **alle** `modbus_tcp`-Träger – interne (z. B. UMG in der Tür) UND externe
+    (Belimo, Wilo CIF-ETH, künftig CRAH mit Schnittstelle) sowie direkt
+    platzierte kommunikative Einzelbauteile. Watermark speichert
+    `ip_switches` (Zahl).
   - `modbus_rtu` → **nichts** (RS485 direkt an einen CPU-Port).
-  Manuell platzierte `MR006`/`MR004C`/`PW100` bzw. `2891021`/`2891001`/`EDS-205`
-  gelten als vorhanden → keine Auto-Ergänzung. Keine Größen-/Mengenstaffelung
-  in v1 (bei >20 Zählern manuell `MR004C` = PW60). `resetDdcWatermark()` leert
-  auch `kommWatermark`. `MR006`/`MR004C` bekamen `benoetigt_steuerspannung:
+  Manuell platzierte `MR006`/`MR004C`/`PW100` gelten als M-Bus vorhanden;
+  manuelle `2891021`/`2891001`/`EDS-205` liefern je 4 Ports Kapazität
+  (`switchesAuto = ceil(n/4) − manuelle`). `resetDdcWatermark()` leert auch
+  `kommWatermark`. `MR006`/`MR004C`/`2891021` haben `benoetigt_steuerspannung:
   '24vac'` → der Steuerspannungs-Ratchet zieht den Trafo automatisch nach.
 - **Modul 5** zeigt je Feldgerät `kommunikative_datenpunkte` (neue
   `feldgeraete`-Freitextspalte) als „Kommunikativ ausgelesen: …".
