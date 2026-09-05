@@ -3760,10 +3760,14 @@ function tuerFarbe(eb) {
 // Direktbauteile mit zone 'tuer' UND passendem Feld-Index aus der Belegung
 // sammeln (je Menge einzeln aufgelistet). Feld-Index kommt aus dem Batch
 // (Session 48, siehe #feld_auf_row) – Alt-Batches ohne feld (1feld-Modus
-// oder vor Session 48 angelegt) gelten als Feld 1. Baugruppen-Bauteile
-// bewusst noch nicht berücksichtigt – Baugruppen sind aktuell leer (siehe
-// CLAUDE.md Session 40), bei Bedarf hier analog zu placeBauteile()s
-// bg.bauteile-Zweig nachziehen.
+// oder vor Session 48 angelegt) gelten als Feld 1.
+// Baugruppen-Bauteile (Session 58, Nutzer-Fund „Zähler nicht in der Türe
+// platziert"): eine Baugruppe kann ein Bauteil mit `bt.zone === 'tuer'`
+// tragen (z.B. „Messgerät/Energiezähler UMG 96 (Türeinbau)" 480_000012 ff.).
+// Solche Bauteile laufen NICHT über die queues/bgInstanceQueue (zone 'tuer'
+// ist nicht in ALLE_ZONEN) – sie werden hier direkt aus der Belegung
+// aufgelöst. Baugruppen-Instanzen haben keine feldweise Türzuordnung
+// (kein #feld_auf_row für Baugruppen) → immer Feld 1.
 function getTuerItems(feldIndex) {
   const items = [];
   belegung.forEach(item => {
@@ -3776,6 +3780,21 @@ function getTuerItems(feldIndex) {
       for (let q = 0; q < b.n; q++) items.push(eb);
     });
   });
+  if (feldIndex === 1) {
+    const variante = klemmenVariante();
+    belegung.forEach(item => {
+      if (item.typ !== 'baugruppe') return;
+      const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
+      if (!bg) return;
+      resolveBaugruppenBauteile(bg, variante).forEach(bt => {
+        if (bt.zone !== 'tuer') return;
+        const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+        if (!eb || !eb.zone.includes('tuer')) return;
+        const n = (item.menge || 1) * (bt.menge || 1);
+        for (let q = 0; q < n; q++) items.push(eb);
+      });
+    });
+  }
   return items;
 }
 

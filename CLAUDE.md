@@ -628,10 +628,28 @@ Neues Muster für Feldgeräte, die **über einen Bus gelesene Werte** liefern, d
   SuperCap-Notstellung (Auf/Zu wählbar). Schutzklasse III/PELV → **kein PE**.
   1 Belimo-Baugruppe je Baugröße (BACnet/IP vs. Modbus TCP ist Gerätekonfig,
   kein Portfolio-Split).
+- **Automation-UMG „Türeinbau" (`480_000012`–`014`, Kat. „Messgerät/
+  Energiezähler", gewerk 480):** die 3 Janitza-UMG-96RM (`5222001` RTU /
+  `5222069` M-Bus / `UMG96RM-PN` TCP) als **Schaltschrank-Bestandteil** (kein
+  Feldgerät, kein Modul-5-Eintrag) – `bt.zone:'tuer'` (`keine_platzierung_mp`,
+  erscheint in der **Türansicht**), `dp_fb_ai:17` je Protokoll, plus 1× LSS
+  `5SL6316-7` (C16 3-polig) in `evert` für die Messspannungs-Eingänge.
+- **`tuer`-Zone an Baugruppen (Bugfix, Nutzer-Fund „Zähler nicht in der Türe
+  platziert"):** `getTuerItems(feldIndex)` durchlief bisher nur
+  `belegung`-Einträge mit `typ==='einzel'` – ein `bt.zone==='tuer'`-Bauteil in
+  einer Baugruppe kam nie in die Türansicht (die Baugruppen-Bauteil-Schleife
+  in `buildQueues()` bricht bei `if(!queues[zone]) return;` ab, `tuer` ist
+  nicht in `ALLE_ZONEN`). Fix: `getTuerItems()` löst jetzt zusätzlich (nur
+  `feldIndex===1`, Baugruppen haben keine feldweise Tür-Zuordnung) alle
+  `typ==='baugruppe'`-Einträge über `resolveBaugruppenBauteile()` auf und
+  sammelt `bt.zone==='tuer'`-Bauteile (× `item.menge` × `bt.menge`). Die
+  kommunikativen Datenpunkte selbst wurden schon vorher korrekt gezählt (die
+  fb-Routing-Zeile steht bewusst **vor** dem `queues[zone]`-Guard).
 
-Alles im Browser verifiziert (dp_fb-Zählung in „Komm. Modbus TCP/IP", Switch
-1× geteilt über n Ventile, Klemmen/Stückliste/Steuerspannung stimmen, Modul 5
-zeigt Auslese-Liste, keine Konsolenfehler).
+Alles im Browser verifiziert (dp_fb-Zählung in „Komm. Modbus TCP/IP" bzw.
+„Komm. M-Bus", Switch 1× geteilt über n Ventile, `480_000013` 1×/2× → 1/2
+UMG-Symbole in der Türansicht, LSS in `evert`, Klemmen/Stückliste/
+Steuerspannung stimmen, Modul 5 zeigt Auslese-Liste, keine Konsolenfehler).
 
 ---
 
