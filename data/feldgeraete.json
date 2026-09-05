@@ -426,5 +426,25 @@
     "quelle_hinweis": "Zenner Woltmann WPD DN100 + M-Bus-EDC. Preis auf Anfrage (energie-zaehler.com listet DN125 als naechste Groesse). Quelle: https://www.energie-zaehler.com/WPD-DN125-EDC-MBUS",
     "kommunikative_datenpunkte": "AI: aktueller Durchfluss, Zaehlernummer, kumulierter Durchfluss.",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "WILO-CIF-MB-RTU",
+    "bezeichnung": "Wilo Kommunikationsmodul Modbus RTU (Pumpen-Steckkarte) - CIF-Modul Art. 2190368 fuer Stratos MAXO/MAXO-Z/GIGA2.0; IF-Modul Art. 2097809 fuer CronoLine-E/IL-E",
+    "hersteller": "Wilo",
+    "kategorie": "Umwälzpumpen",
+    "preis_eur": 339.0,
+    "quelle_hinweis": "Wilo CIF-Modul Modbus RTU (Art. 2190368, EAN 4048482802725, PG14), Wilo-Listenpreis 339,00 EUR netto (wilo.com Katalog, 05.09.2026). Steckkarte in den CIF-Slot der Pumpe, KEINE eigene Spannungsversorgung (aus Pumpenelektronik, SELV/galv. getrennt). RS485 EIA/TIA-485-A, Klemmen A(-)/B(+)/GND, 120-Ohm-Terminierung integriert schaltbar, Daisy-Chain. Adresse/Baudrate im Pumpenmenue. Fuer die aeltere -E-Blockpumpengeneration (CronoLine-E/IL-E, Stratos GIGA 1. Gen.) das baugleiche IF-Modul Modbus RTU Art. 2097809 (Wilo-Liste 341,00 EUR) - Datenpunkte weitgehend identisch. Kein Ethernet/Modbus-TCP fuer die IF-Generation. Quelle: https://wilo.com/de/de/Katalog/de/zubehoer/cif-module/cif-modul-modbus-rtu",
+    "kommunikative_datenpunkte": "AI: Drehzahl, Volumenstrom, Druck, Wirkleistung, Stromaufnahme, kumulierte Energiemenge. AO: Sollwertfuehrung, Stellsignal. BO: Umschaltung Betriebsart.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "WILO-CIF-ETH",
+    "bezeichnung": "Wilo CIF-Modul Ethernet Multiprotocol (Pumpen-Steckkarte) - Modbus TCP oder BACnet/IP umschaltbar, Art. 2211408, fuer Stratos MAXO/MAXO-Z/GIGA2.0",
+    "hersteller": "Wilo",
+    "kategorie": "Umwälzpumpen",
+    "preis_eur": 717.0,
+    "quelle_hinweis": "Wilo CIF-Modul Ethernet Multiprotocol (Art. 2211408, EAN 4062679124520), Wilo-Listenpreis 717,00 EUR netto (wilo.com Katalog, 05.09.2026). Protokoll Modbus TCP ODER BACnet/IP (Konfiguration, eines aktiv). Steckkarte in den CIF-Slot, KEINE eigene Versorgung. 2x RJ45 (geschirmt) mit integriertem Ethernet-Switch (10/100, Auto-MDI-X) - ein Port ans Netzwerk, zweiter zum Durchschleifen zur naechsten Pumpe (nur bei eingeschalteter Pumpe). Max. 100 m je Segment. NICHT fuer die IF-Generation (CronoLine-E) und nicht fuer Stratos PICO. Wilo-Smart Gateway ist die Cloud-Anbindung, NICHT der GLT-Weg. Quelle: https://wilo.com/de/de/Katalog/de/zubehoer/cif-module/cif-modul-ethernet",
+    "kommunikative_datenpunkte": "AI: Drehzahl, Volumenstrom, Druck, Wirkleistung, Stromaufnahme, kumulierte Energiemenge. AO: Sollwertfuehrung, Stellsignal. BO: Umschaltung Betriebsart.",
+    "geprueft": false
   }
 ]

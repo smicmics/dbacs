@@ -4132,6 +4132,10 @@ function aggregateStueckliste() {
     resolveBaugruppenBauteile(bg, variante).forEach(bt => {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
       if(!eb) return;
+      // Virtueller Kommunikationsdatenpunkt-Traeger (Session 58, KOMM-FB):
+      // kein physisches Bauteil - traegt nur dp_fb_*, gehoert nicht in die
+      // Stueckliste.
+      if(eb.artikel_nr === 'KOMM-FB') return;
       add(bt.artikel_nr, bt.zone || eb.zone[0], bt.menge * geraeteAnzahl);
     });
   });

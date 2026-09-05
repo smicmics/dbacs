@@ -2314,5 +2314,21 @@
     "benoetigt_steuerspannung": "24vac",
     "preis_eur": 125.0,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "KOMM-FB",
+    "bezeichnung": "Kommunikationsdatenpunkt-Traeger (virtuell, kein physisches Bauteil)",
+    "hersteller": "-",
+    "bauteil_typ": "sonstige",
+    "b_mm": 1.0,
+    "te_breite": 1,
+    "h_mm": 1.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "DDC-Automationseinrichtung",
+    "automationsanbindung": true,
+    "keine_platzierung_mp": true,
+    "geprueft": false
   }
 ]
