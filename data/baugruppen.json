@@ -2738,7 +2738,7 @@
   },
   {
     "id": "420_000032",
-    "name": "Waermemengenzaehler DN50, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "name": "Waermemengenzaehler DN50, M-Bus mit 24V-Versorgung (erhoehte Ausleserate), Rechenwerk getrennte DC-Versorgung",
     "gewerk": "420",
     "beschreibung": "Waermemengenzaehler DN50, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vdc) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt. Rechenwerk getrennte DC-Versorgung.",
     "bauteile": [
@@ -2777,7 +2777,7 @@
   },
   {
     "id": "420_000033",
-    "name": "Waermemengenzaehler DN50, Dual M-Bus + Modbus RTU",
+    "name": "Waermemengenzaehler DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
     "gewerk": "420",
     "beschreibung": "Waermemengenzaehler DN50, Dual-Kommunikation M-Bus + Modbus RTU. Rechenwerk mit 2 Kommunikationskarten (Aquametro CALEC ST III: M-Bus onboard + RS485 onboard, konfigurierbar auf Modbus RTU). Schaltschrank: 6 Klemmen - 2 M-Bus + 2 RS485 (A/B) + 2x 24 V (24vdc). Die 7 Werte werden kommunikativ auf BEIDEN Bussen bereitgestellt (zaehlen in Gruppe M-Bus UND Modbus RTU). M-Bus -> automatischer Pegelwandler; Modbus RTU (RS485) geht direkt an einen RS485-Port der Automationsstation (kein Zusatzbauteil). Rechenwerk getrennte DC-Versorgung.",
     "bauteile": [
@@ -2856,7 +2856,7 @@
   },
   {
     "id": "420_000035",
-    "name": "Waermemengenzaehler DN100, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "name": "Waermemengenzaehler DN100, M-Bus mit 24V-Versorgung (erhoehte Ausleserate), Rechenwerk getrennte DC-Versorgung",
     "gewerk": "420",
     "beschreibung": "Waermemengenzaehler DN100, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vdc) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt. Rechenwerk getrennte DC-Versorgung.",
     "bauteile": [
@@ -2895,7 +2895,7 @@
   },
   {
     "id": "420_000036",
-    "name": "Waermemengenzaehler DN100, Dual M-Bus + Modbus RTU",
+    "name": "Waermemengenzaehler DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
     "gewerk": "420",
     "beschreibung": "Waermemengenzaehler DN100, Dual-Kommunikation M-Bus + Modbus RTU. Rechenwerk mit 2 Kommunikationskarten (Aquametro CALEC ST III: M-Bus onboard + RS485 onboard, konfigurierbar auf Modbus RTU). Schaltschrank: 6 Klemmen - 2 M-Bus + 2 RS485 (A/B) + 2x 24 V (24vdc). Die 7 Werte werden kommunikativ auf BEIDEN Bussen bereitgestellt (zaehlen in Gruppe M-Bus UND Modbus RTU). M-Bus -> automatischer Pegelwandler; Modbus RTU (RS485) geht direkt an einen RS485-Port der Automationsstation (kein Zusatzbauteil). Rechenwerk getrennte DC-Versorgung.",
     "bauteile": [
@@ -3041,7 +3041,7 @@
   },
   {
     "id": "420_000040",
-    "name": "Kaeltemengenzaehler DN50, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "name": "Kaeltemengenzaehler DN50, M-Bus mit 24V-Versorgung (erhoehte Ausleserate), Rechenwerk getrennte DC-Versorgung",
     "gewerk": "420",
     "beschreibung": "Kaeltemengenzaehler DN50, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vdc) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt. Rechenwerk getrennte DC-Versorgung.",
     "bauteile": [
@@ -3080,7 +3080,7 @@
   },
   {
     "id": "420_000041",
-    "name": "Kaeltemengenzaehler DN50, Dual M-Bus + Modbus RTU",
+    "name": "Kaeltemengenzaehler DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
     "gewerk": "420",
     "beschreibung": "Kaeltemengenzaehler DN50, Dual-Kommunikation M-Bus + Modbus RTU. Rechenwerk mit 2 Kommunikationskarten (Aquametro CALEC ST III: M-Bus onboard + RS485 onboard, konfigurierbar auf Modbus RTU). Schaltschrank: 6 Klemmen - 2 M-Bus + 2 RS485 (A/B) + 2x 24 V (24vdc). Die 7 Werte werden kommunikativ auf BEIDEN Bussen bereitgestellt (zaehlen in Gruppe M-Bus UND Modbus RTU). M-Bus -> automatischer Pegelwandler; Modbus RTU (RS485) geht direkt an einen RS485-Port der Automationsstation (kein Zusatzbauteil). Rechenwerk getrennte DC-Versorgung.",
     "bauteile": [
@@ -3159,7 +3159,7 @@
   },
   {
     "id": "420_000043",
-    "name": "Kaeltemengenzaehler DN100, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+    "name": "Kaeltemengenzaehler DN100, M-Bus mit 24V-Versorgung (erhoehte Ausleserate), Rechenwerk getrennte DC-Versorgung",
     "gewerk": "420",
     "beschreibung": "Kaeltemengenzaehler DN100, M-Bus mit 24-V-Versorgung. Wie die busgespeiste Variante, zusaetzlich 2 Klemmen 24 V (24vdc) - erforderlich bei erhoehter Ausleserate (haeufiges GLT-Polling / kurzer Messzyklus): der Zaehler/das Rechenwerk laeuft dann im 1-s-Zyklus statt 16-s-Batteriebetrieb. 4 Klemmen gesamt (2 M-Bus + 2x 24 V). 7 Werte kommunikativ ueber M-Bus. Pegelwandler + Steuerspannung werden automatisch ergaenzt. Rechenwerk getrennte DC-Versorgung.",
     "bauteile": [
@@ -3198,7 +3198,7 @@
   },
   {
     "id": "420_000044",
-    "name": "Kaeltemengenzaehler DN100, Dual M-Bus + Modbus RTU",
+    "name": "Kaeltemengenzaehler DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
     "gewerk": "420",
     "beschreibung": "Kaeltemengenzaehler DN100, Dual-Kommunikation M-Bus + Modbus RTU. Rechenwerk mit 2 Kommunikationskarten (Aquametro CALEC ST III: M-Bus onboard + RS485 onboard, konfigurierbar auf Modbus RTU). Schaltschrank: 6 Klemmen - 2 M-Bus + 2 RS485 (A/B) + 2x 24 V (24vdc). Die 7 Werte werden kommunikativ auf BEIDEN Bussen bereitgestellt (zaehlen in Gruppe M-Bus UND Modbus RTU). M-Bus -> automatischer Pegelwandler; Modbus RTU (RS485) geht direkt an einen RS485-Port der Automationsstation (kein Zusatzbauteil). Rechenwerk getrennte DC-Versorgung.",
     "bauteile": [
