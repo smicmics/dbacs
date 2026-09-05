@@ -2996,6 +2996,19 @@ function buildQueues(ddcReservePct) {
           if (eb.bauteil_typ === 'ddc_cpu') cpuCount += bt.menge;
           else if (eb.bauteil_typ === 'ddc_io') ioUnitsManual += bt.menge;
           const zone = bt.zone || eb.zone[0];
+          // Kommunikative (Feldbus-)Datenpunkte je Verknuepfungszeile
+          // (Session 58): bt.dp_fb_ai/ao/bi/bo + bt.feldbus_protokoll -
+          // landen NICHT in dpDemand (kein Schaltschrankplatz), sondern in
+          // der Feldbus-Bedarfsgruppe des jeweiligen Protokolls (mbus /
+          // modbus_rtu / modbus_tcp). MUSS vor dem `queues[zone]`-Guard
+          // stehen: bei einem Tuereinbau-Bauteil (zone 'tuer', NICHT in
+          // ALLE_ZONEN/queues) wuerde die Zeile sonst komplett uebersprungen
+          // und die kommunikativen Datenpunkte gingen verloren. Der
+          // Pegelwandler (mbus) bzw. Ethernet-Switch (modbus_tcp) wird weiter
+          // unten per Ratchet ergaenzt (neededKomm).
+          if (bt.feldbus_protokoll && fbDemand[bt.feldbus_protokoll]) {
+            FB_DP_TYPES.forEach(t => { if (bt[t]) fbDemand[bt.feldbus_protokoll][t] += bt[t] * bt.menge; });
+          }
           if(!queues[zone]) return;
           // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden
           // bt.zone-Override – ein Bauteil wie eine Klemme traegt selbst keinen
@@ -3014,17 +3027,6 @@ function buildQueues(ddcReservePct) {
           // davon, ob sie ein eigenes physisches Gerät bekommt) – 2
           // zusammengefasste Sensoren brauchen weiterhin 2x den Datenpunkt.
           accumulateDp(dpQuelle, bt.menge);
-          // Kommunikative (Feldbus-)Datenpunkte je Verknuepfungszeile
-          // (Session 58): bt.dp_fb_ai/ao/bi/bo + bt.feldbus_protokoll -
-          // landen NICHT in dpDemand (kein Schaltschrankplatz), sondern in
-          // der Feldbus-Bedarfsgruppe des jeweiligen Protokolls (mbus /
-          // modbus_rtu / modbus_tcp). Damit weist eine Feldgeraete-Baugruppe
-          // (Energiezaehler, Energy Valve) die ueber Bus gelesenen Werte aus.
-          // Der Pegelwandler (mbus) bzw. Ethernet-Switch (modbus_tcp) wird
-          // weiter unten per Ratchet ergaenzt (neededKomm).
-          if (bt.feldbus_protokoll && fbDemand[bt.feldbus_protokoll]) {
-            FB_DP_TYPES.forEach(t => { if (bt[t]) fbDemand[bt.feldbus_protokoll][t] += bt[t] * bt.menge; });
-          }
           // lvb_erforderlich (Session 49): dieser Datenpunkt-Bedarf darf nur
           // durch ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt
           // werden (z.B. "Binärausgang (BO) mit LVB auf Klemmleiste") – siehe

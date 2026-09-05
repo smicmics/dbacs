@@ -3643,5 +3643,83 @@
     "automationsanbindung": true,
     "kategorie": "Energie und Zählwerteinrichtungen",
     "geprueft": false
+  },
+  {
+    "id": "480_000012",
+    "name": "Messgerät/Energiezähler UMG 96RM, Modbus RTU (Türeinbau)",
+    "gewerk": "480",
+    "beschreibung": "Messgeraet/Energiezaehler (Janitza UMG 96RM (RS485/Modbus RTU)) IM GA-Schaltschrank - Fronttafeleinbau 96x96mm in der Tuer (erscheint in der Tueransicht). KEINE Abgangsklemmen: die Modbus-RTU-Anbindung an die Automationsstation ist schrankinterne Verdrahtung. Fuer die Messspannungs-Eingaenge L1/L2/L3 wird ein 3-poliger Leitungsschutzschalter (5SL6316-7, C16 A; alternativ 3x 1-polig, z.B. 5SL6106-7) in der Energieverteilung eingeplant - dessen Platzbedarf ist dieser Baugruppe zugeordnet. 17 Werte kommunikativ (AI). Anders als die Elektro-Feldgeraete-Variante 440_00000x ist der Zaehler hier BESTANDTEIL DER SCHALTSCHRANK-STUECKLISTE (kein externes Feldgeraet, kein Modul-5-Eintrag). Datenpunkte identisch zur Elektro-Variante.",
+    "bauteile": [
+      {
+        "artikel_nr": "5222001",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Messgerät/Energiezähler",
+    "geprueft": false
+  },
+  {
+    "id": "480_000013",
+    "name": "Messgerät/Energiezähler UMG 96RM-M, M-Bus (Türeinbau)",
+    "gewerk": "480",
+    "beschreibung": "Messgeraet/Energiezaehler (Janitza UMG 96RM-M (M-Bus)) IM GA-Schaltschrank - Fronttafeleinbau 96x96mm in der Tuer (erscheint in der Tueransicht). KEINE Abgangsklemmen: die M-Bus-Anbindung an die Automationsstation ist schrankinterne Verdrahtung. Fuer die Messspannungs-Eingaenge L1/L2/L3 wird ein 3-poliger Leitungsschutzschalter (5SL6316-7, C16 A; alternativ 3x 1-polig, z.B. 5SL6106-7) in der Energieverteilung eingeplant - dessen Platzbedarf ist dieser Baugruppe zugeordnet. 17 Werte kommunikativ (AI). Anders als die Elektro-Feldgeraete-Variante 440_00000x ist der Zaehler hier BESTANDTEIL DER SCHALTSCHRANK-STUECKLISTE (kein externes Feldgeraet, kein Modul-5-Eintrag). Datenpunkte identisch zur Elektro-Variante.",
+    "bauteile": [
+      {
+        "artikel_nr": "5222069",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "mbus"
+      },
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Messgerät/Energiezähler",
+    "geprueft": false
+  },
+  {
+    "id": "480_000014",
+    "name": "Messgerät/Energiezähler UMG 96RM-PN, Modbus TCP/IP (Türeinbau)",
+    "gewerk": "480",
+    "beschreibung": "Messgeraet/Energiezaehler (Janitza UMG 96RM-PN (Modbus TCP/PROFINET)) IM GA-Schaltschrank - Fronttafeleinbau 96x96mm in der Tuer (erscheint in der Tueransicht). KEINE Abgangsklemmen: die Modbus-TCP/IP-Anbindung an die Automationsstation ist schrankinterne Verdrahtung. Fuer die Messspannungs-Eingaenge L1/L2/L3 wird ein 3-poliger Leitungsschutzschalter (5SL6316-7, C16 A; alternativ 3x 1-polig, z.B. 5SL6106-7) in der Energieverteilung eingeplant - dessen Platzbedarf ist dieser Baugruppe zugeordnet. 17 Werte kommunikativ (AI). Anders als die Elektro-Feldgeraete-Variante 440_00000x ist der Zaehler hier BESTANDTEIL DER SCHALTSCHRANK-STUECKLISTE (kein externes Feldgeraet, kein Modul-5-Eintrag). Datenpunkte identisch zur Elektro-Variante.",
+    "bauteile": [
+      {
+        "artikel_nr": "UMG96RM-PN",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_tcp"
+      },
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Messgerät/Energiezähler",
+    "geprueft": false
   }
 ]
