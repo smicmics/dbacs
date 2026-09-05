@@ -157,25 +157,35 @@
   dokumentiert SDBAM ausdrücklich nur für Maximaldrucküberwachung (eigene
   DWR-Baureihe für Minimaldruckbegrenzung vorgesehen) – auf ausdrücklichen
   Nutzer-Wunsch dennoch für beide Rollen eingesetzt, siehe `quelle_hinweis`.
-- **Session 58 (neu) – kommunikative Datenpunkte an Baugruppen + Belimo
-  Energy Valve:** Neue Systematik implementiert (siehe „Modul 4/5 – Session 58"
-  weiter unten). Belimo `EV050R2+KBAC`/`EV100F+KBAC` als Feldgeräte + 2
-  Baugruppen `420_000027`/`028` (Kategorie „Ventilantriebe", `funktionsbereich
-  [heizung,lueftung,kaelte]`) angelegt und im Browser verifiziert. Offen:
-  Belimo DN100 `kvs` + `+KBAC`-Leistungsaufnahme (VA) unbestätigt; Switch
-  `2891021` Preis Richtwert 125 € (Listung 2019); Aderfarben/Klemmen aus
-  älterem `EV..+BAC`-Datenblatt (V4 nicht optisch gegengeprüft).
-- **Session 58 – Zähler (Wärme/Kälte/Wasser) noch NICHT angelegt (Phase 2):**
-  Portfolio-Matrix Wärme/Kälte/Wasser je DN15–25 / DN50 / DN100, Varianten
-  {M-Bus busgespeist, M-Bus + 24 V, Dual M-Bus + Modbus RTU (nur Wärme/Kälte
-  DN50/DN100)}. Eigene Kategorie „Energie und Zählwerteinrichtungen". Aquametro
-  hat **kein Modbus-TCP-Modul** → Dual = M-Bus + Modbus RTU (RS485 direkt an
-  CPU, kein Zusatzbauteil). Aquametro-Listenpreise nicht öffentlich → Geräte
-  mit belastbarem Preis wählen (Zenner zelsius/MTK-M/WPD). Kompaktzähler
-  24 V AC, getrennte Rechenwerke 24 V DC. `MR006` (PW20) evtl. **abgekündigt**
-  – Nachfolge prüfen. Rohfakten: `scratchpad/fork_zaehler_ergebnis.md`.
-- **Elektro-Medium** analog Energy Valve später (Nutzer-Hinweis „Später müssen
-  wir das auch für Elektro machen").
+- **Session 58 (neu) – kommunikative Datenpunkte an Baugruppen (Systematik +
+  Portfolio):** Neue Systematik implementiert (siehe „Modul 4/5 – Session 58"
+  weiter unten), im Browser verifiziert. Neu angelegt:
+  - **Belimo Energy Valve** `420_000027`/`028` (Kat. „Ventilantriebe",
+    `[heizung,lueftung,kaelte]`), Feldgeräte `EV050R2+KBAC`/`EV100F+KBAC`,
+    Hybrid analog + IP (`modbus_tcp`).
+  - **Wärme-/Kälte-/Wasserzähler** `420_000029`–`420_000050` (22 Baugruppen,
+    Kat. „Energie und Zählwerteinrichtungen"): je DN15–25 / DN50 / DN100 ×
+    {M-Bus busgespeist, M-Bus + 24 V, Dual M-Bus + Modbus RTU (nur Wärme/Kälte
+    DN50/DN100)}. 24 V: Kompakt/Wasser → `24vac`, getrennte Rechenwerke DN50/
+    DN100 → `24vdc` (Namenszusatz „Rechenwerk getrennte DC-Versorgung").
+    Aquametro hat **kein Modbus-TCP-Modul** → Dual = M-Bus + Modbus RTU.
+  - **Wilo Pumpen-Kommunikationsmodule** `420_000051`/`052` (Kat.
+    „Umwälzpumpen", hinter den Pumpen): CIF-Modul Modbus RTU (Art. 2190368,
+    339 €) + CIF-Modul Ethernet Modbus TCP/BACnet-IP (Art. 2211408, 717 €);
+    IF-Modul 2097809 für CronoLine-E/IL-E im `quelle_hinweis`.
+  - **Elektro-Energiezähler / Netzanalysatoren** `440_000001`–`003` (gewerk
+    440, `[elektro]`, Kat. „Energie und Zählwerteinrichtungen"): Modbus RTU /
+    M-Bus / Modbus TCP, je 17 AI kommunikativ, Referenzgeräte Janitza UMG 96RM
+    (`5222001`/`5222069`/`UMG96RM-PN`) bzw. Schneider Acti9 iEM33xx. Keine
+    Steuerspannung (Versorgung am Einbauort in der Elektro-Verteilung).
+  - **Schneider CRAH `430_000026`** um Betriebsmeldung (BI) ergänzt (jetzt
+    1× BO + 3× BI + 1× AO, 10 Klemmen); reduzierte Variante `430_000027`
+    „… Nur Monitoring" (nur 3× BI).
+  Offen: Belimo DN100 `kvs`/VA unbestätigt; `2891021`-Preis Richtwert 125 €;
+  Aquametro-Preise DN50/DN100 nicht öffentlich; `MR006` (PW20) evtl.
+  abgekündigt; Rohfakten in `scratchpad/fork_*_ergebnis.md`.
+- **Elektro-Medium**: Energiezähler erledigt (s. o.); weitere Elektro-Feldgeräte
+  (z. B. FU-/Motorstatus kommunikativ) bei Bedarf analog.
 
 Sonst keine offenen Punkte – Session 51/52 vollständig implementiert UND im
 Browser verifiziert; die daraus erarbeiteten Modellierungsregeln sind jetzt

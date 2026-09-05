@@ -3564,5 +3564,84 @@
     "automationsanbindung": true,
     "kategorie": "Umluftkühlgeräte",
     "geprueft": false
+  },
+  {
+    "id": "440_000001",
+    "name": "Elektro-Energiezaehler / Netzanalysator, Modbus RTU",
+    "gewerk": "440",
+    "beschreibung": "Elektro-Energiezaehler / Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung und erhaelt dort seine Spannungsversorgung (Messspannung / Hilfsspannung). Aus dem GA-Schaltschrank wird er NUR kommunikativ ausgelesen, keine physischen Datenpunkte, keine Steuerspannung. 17 Werte kommunikativ (AI), verbrauchen KEINEN Schaltschrankplatz. Schaltschrankseitig 2 Klemmen RS485 (A/B) in der Feldgeraete-Klemmleiste, verdrahtet direkt an einen RS485-Port der Automationsstation - kein Pegelwandler noetig.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., Modbus RTU (Janitza UMG 96RM / Schneider Acti9 iEM3350)",
+    "feldgeraet_artikel_nr": "EZ-NA-RTU",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000002",
+    "name": "Elektro-Energiezaehler / Netzanalysator, M-Bus",
+    "gewerk": "440",
+    "beschreibung": "Elektro-Energiezaehler / Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung und erhaelt dort seine Spannungsversorgung (Messspannung / Hilfsspannung). Aus dem GA-Schaltschrank wird er NUR kommunikativ ausgelesen, keine physischen Datenpunkte, keine Steuerspannung. 17 Werte kommunikativ (AI), verbrauchen KEINEN Schaltschrankplatz. Schaltschrankseitig 2 Klemmen M-Bus (a/b) in der Feldgeraete-Klemmleiste; im GA-Schrank wird automatisch ein M-Bus-Pegelwandler ergaenzt (geteilt ueber alle M-Bus-Zaehler).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., M-Bus (Janitza UMG 96RM-M / Schneider Acti9 iEM3135)",
+    "feldgeraet_artikel_nr": "EZ-NA-MBUS",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000003",
+    "name": "Elektro-Energiezaehler / Netzanalysator, Modbus TCP / IP",
+    "gewerk": "440",
+    "beschreibung": "Elektro-Energiezaehler / Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung und erhaelt dort seine Spannungsversorgung (Messspannung / Hilfsspannung). Aus dem GA-Schaltschrank wird er NUR kommunikativ ausgelesen, keine physischen Datenpunkte, keine Steuerspannung. 17 Werte kommunikativ (AI), verbrauchen KEINEN Schaltschrankplatz. Schaltschrankseitig KEINE Klemme - RJ45 auf einen Ethernet-Switch im GA-Schrank, der mit der Automationsstation verbunden ist (Switch wird automatisch ergaenzt).",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., Modbus TCP/IP (Janitza UMG 96RM-PN)",
+    "feldgeraet_artikel_nr": "EZ-NA-TCP",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
   }
 ]
