@@ -1,7 +1,27 @@
 # DBACS – Revisionsstand
-**Stand:** 5. Juli 2026 – Session 27 (Modul 4: Bauteil-Datenbasis über Excel-Pipeline nachgezogen, Recherche + Befüllung 18 neuer Katalogeinträge; Klemmen-Herstellerbereinigung auf Phoenix Contact UT/PT-Reihe, 41 Katalogzeilen; Nutzer-Gegenprüfung + `geprueft`-Feld für einzelbauteile ergänzt)
 
-**Pausiert – Fortsetzung nächste Sitzung.** Offene Punkte siehe „Nächster Schritt" in `project_dbacs.md`-Gedächtnis bzw. Punkt 10 unten: Listenpreise für die Klemmen und übrigen neuen Katalogeinträge, weitere `geprueft`-Markierung durch den Nutzer, die vier noch unverifizierten Einträge (Schirmklemme, Moxa-Switch, Wachendorff-Gateway, alte Steuertrafo-Variante).
+**Stand:** 5. September 2026 – Session 58 (Modul 4/5: kommunikative Datenpunkte
+an Baugruppen + Kommunikationsbauteil-Ratchet; Belimo Energy Valve, 22 Wärme-/
+Kälte-/Wasserzähler, 2 Wilo-CIF-Module, Schneider CRAH +Betrieb/Nur-Monitoring,
+3 Elektro-Energiezähler, 3 Automation-UMG-Türeinbau; `tuer`-Zone-an-Baugruppen-
+Bugfix in `getTuerItems()`).
+
+> **Diese Datei ist NICHT mehr die maßgebliche laufende Doku.** Seit ~Session 30
+> wird der Projektfortschritt vollständig in **`CLAUDE.md`** geführt
+> (Abschnitt „Offene Punkte" + die je Themenblock komprimierten Session-
+> Zusammenfassungen), ausführliche Session-Protokolle liegen in
+> `docs/archiv/claude-md-modul4-sessions-*.md`. Maßgeblich für den echten
+> Projektstand ist immer der letzte Commit + `CLAUDE.md`. Der Body unten
+> (Modul 1–3, Datenbanken, gesperrte Entscheidungen) ist weiterhin als
+> Referenz für die abgeschlossenen Module 1–3 gültig, der Abschnitt
+> „Offene Punkte" darin ist überholt.
+
+**Pausiert – Fortsetzung nächste Sitzung ("wir machen morgen weiter").**
+Alle Session-58-Arbeiten implementiert, in `ga_komponenten.xlsx` eingetragen,
+als JSON exportiert (baugruppen 96 · einzelbauteile 147 · feldgeraete 52) und
+im Browser verifiziert. Keine bekannten offenen Bugs. Nächster Schritt und
+Restlisten (Preisrecherche, fehlende Feldgeräte-Katalogzeilen) siehe
+`CLAUDE.md` → „Offene Punkte (Stand Session 58)".
 
 **Meilenstein:** Git-Tag `meilenstein-2026-07-04-modul4-design` (Sessions 22–24) + Git-Tag `meilenstein-2026-07-05-modul4-abgeschlossen` (Sessions 25–26, Modul 4 Design/Darstellung fertig, vor Beginn der Bauteile/Funktionsgruppen-Integration) – je vollständiges Backup (ZIP, Git-Bundle, Claude-Gedächtnis) unter `C:\Users\SMI\Backups\dbacs\`.
 

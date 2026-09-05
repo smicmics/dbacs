@@ -14,7 +14,24 @@
 
 ---
 
-## Offene Punkte (Stand Session 57 – vor Beginn der nächsten Sitzung lesen)
+## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
+
+> **Sitzungsstand Ende Session 58 (05.09.2026) – „wir machen morgen weiter":**
+> Alle Session-58-Arbeiten (kommunikative Datenpunkte an Baugruppen, Belimo
+> Energy Valve, 22 Wärme-/Kälte-/Wasserzähler, 2 Wilo-CIF-Module, CRAH
+> +Betrieb/Nur-Monitoring, 3 Elektro-Energiezähler, 3 Automation-UMG-
+> Türeinbau) sind implementiert, in `ga_komponenten.xlsx` eingetragen, per
+> `xlsx_to_json.py` als JSON exportiert (baugruppen 96 · einzelbauteile 147 ·
+> feldgeraete 52) und im Browser verifiziert. Zuletzt behoben: der
+> `tuer`-Zone-an-Baugruppen-Bug (Zähler erscheint jetzt in der Türansicht,
+> siehe „Modul 4/5 – Session 58"). `git status` = nur `CLAUDE.md` +
+> `modul-04-innenaufbau/index.html` offen (Stop-Hook committet+pusht). Keine
+> bekannten offenen Bugs – die Punkte unten sind Recherche-/Katalog-Restlisten,
+> keine Blocker.
+> **Nächster sinnvoller Schritt:** vom Nutzer offene Preis-/Katalogpunkte
+> (siehe unten „Session 57 – Preisrecherche" + „Feldgeräte-Katalogzeilen
+> fehlen") abarbeiten oder die vom Nutzer angekündigte weitere Elektro-Feldgerät-
+> Erfassung (FU-/Motorstatus kommunikativ) beginnen.
 
 - **Session 57 – Desigo-PX auf aktuelle Revision umgestellt (ERLEDIGT):**
   Frage „abgekündigt?" geprüft – Desigo PX ist **NICHT** abgekündigt, nur
@@ -181,6 +198,13 @@
   - **Schneider CRAH `430_000026`** um Betriebsmeldung (BI) ergänzt (jetzt
     1× BO + 3× BI + 1× AO, 10 Klemmen); reduzierte Variante `430_000027`
     „… Nur Monitoring" (nur 3× BI).
+  - **Automation-UMG „Türeinbau" `480_000012`–`014`** (gewerk 480,
+    `[automation]`, Kat. „Messgerät/Energiezähler"): die 3 Janitza UMG 96RM
+    (`5222001` RTU / `5222069` M-Bus / `UMG96RM-PN` TCP) als
+    Schaltschrank-Bestandteil (kein Feldgerät) – `bt.zone:'tuer'` (erscheint
+    in der Türansicht), `dp_fb_ai:17` je Protokoll, plus 1× LSS `5SL6316-7`
+    (C16 3-polig) in `evert`. Dazu Bugfix `getTuerItems()`: löst jetzt auch
+    Baugruppen mit `bt.zone==='tuer'` auf (siehe „Modul 4/5 – Session 58").
   Offen: Belimo DN100 `kvs`/VA unbestätigt; `2891021`-Preis Richtwert 125 €;
   Aquametro-Preise DN50/DN100 nicht öffentlich; `MR006` (PW20) evtl.
   abgekündigt; Rohfakten in `scratchpad/fork_*_ergebnis.md`.
