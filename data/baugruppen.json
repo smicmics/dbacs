@@ -155,10 +155,10 @@
     "id": "480_000007",
     "name": "Automationsstation (AE)",
     "gewerk": "480",
-    "beschreibung": "Automationsstation mit ihrer notwendigen Grundausstattung: Desigo-PX-Modulare Automationsstation (PXC7.E400.A, kein Onboard-E/A, bis 500 Datenpunkte ueber TX-I/O). Steuerspannung 24V AC wird geteilt aus dem allgemeinen Steuerspannungs-Trafo im Leistungsfeld bezogen (automatisch ergaenzt, falls noch nicht vorhanden) - kein eigenes Netzteil mehr direkt vor der CPU. Ohne Abgangsklemmleiste - reine Versorgungs-/Recheneinheit, die restlichen E/A-Module ergaenzt DBACS automatisch anhand des tatsaechlichen Datenpunktbedarfs, bis zur Herstellerobergrenze von 64 TXM-Modulen je Automationsstation - danach eine komplett neue Gruppe (eigene CPU, teilt sich weiterhin denselben Steuerspannungs-Trafo).",
+    "beschreibung": "Automationsstation mit ihrer notwendigen Grundausstattung: Desigo-PX-Modulare Automationsstation (PXC7.E400L-N, kein Onboard-E/A, bis 400 physikalische E/A / 600 Datenpunkte ueber TX-I/O). Steuerspannung 24V AC wird geteilt aus dem allgemeinen Steuerspannungs-Trafo im Leistungsfeld bezogen (automatisch ergaenzt, falls noch nicht vorhanden) - kein eigenes Netzteil mehr direkt vor der CPU. Ohne Abgangsklemmleiste - reine Versorgungs-/Recheneinheit, die restlichen E/A-Module ergaenzt DBACS automatisch anhand des tatsaechlichen Datenpunktbedarfs, bis zur Herstellerobergrenze (ca. 50 TXM-Module) je Automationsstation - danach eine komplett neue Gruppe (eigene CPU, teilt sich weiterhin denselben Steuerspannungs-Trafo).",
     "bauteile": [
       {
-        "artikel_nr": "PXC7.E400.A",
+        "artikel_nr": "PXC7.E400L-N",
         "menge": 1,
         "rowBreak": true
       }

@@ -3102,6 +3102,14 @@ function buildQueues(ddcReservePct) {
   // cpuBenoetigt dadurch false – bytegleiches Verhalten wie zuvor).
   const cpuBenoetigt = cpuCount === 0 && !!cpuEb
     && PHYS_DP_TYPES.some(t => (cpuEb[t]||0) > 0 && dpDemand[t] > dpSupply[t]);
+  // Kommunikative Datenpunkte (M-Bus / Modbus RTU / Modbus TCP) koennen nur
+  // von einer Automationsstation ausgelesen werden: der M-Bus-Pegelwandler
+  // haengt eingangsseitig per RS232/USB an der CPU, Modbus RTU an einem
+  // RS485-Port, Modbus TCP ueber den Switch am Ethernet-Port. Ist noch keine
+  // CPU platziert, muss also auch bei reinem Feldbus-Bedarf (0 physische
+  // Datenpunkte) eine Station ergaenzt werden (Session 58 Nachtrag).
+  const kommBrauchtController = cpuCount === 0 && FB_SUMMARY_GROUPS.some(g =>
+    FB_DP_TYPES.some(t => fbDemand[g.key][t] > 0));
   const dpSupplyEffective = {...dpSupply};
   // Onboard-E/A der Kompaktstationen (PXC4.E16-2/PXC5.E24-N) hat KEINE
   // lokale Vorrangbedienung (Session 57). Ist LVB generell gefordert und
@@ -3149,7 +3157,7 @@ function buildQueues(ddcReservePct) {
     // sind, MINDESTENS aber 1, wenn die erste CPU rein über ihre eigene
     // Onboard-Kapazität gebraucht wird (auch ohne ein einziges externes
     // Modul – reiner Onboard-Fall, vorher fehlte hier jede CPU-Ergänzung).
-    const gruppenBedarf = Math.max(ceilDiv(totalIoUnitsRaw, maxPerCpu), cpuBenoetigt ? 1 : 0);
+    const gruppenBedarf = Math.max(ceilDiv(totalIoUnitsRaw, maxPerCpu), (cpuBenoetigt || kommBrauchtController) ? 1 : 0);
     neededExtraCpus = Math.max(0, gruppenBedarf - cpuCount);
   }
   if (neededExtraCpus > 0) {
