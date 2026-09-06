@@ -102,6 +102,14 @@ Reihenfolge** – nie rückwärts vom gewünschten Datenpunkt her raten:
    (dann wären sie ein eigenes Bauteil). Bus direkt am Gerät ⇒ kommunikativ,
    ohne Schaltschrankplatz.
 
+**Das Datenblatt ist die Grenze, nicht die Wunschliste.** Ein Datenpunkt, den
+das Projekt braucht, für den das gewählte Gerät aber **keinen Anschluss / keine
+Schnittstelle** hat, wird **nicht erfunden**. Das ist das Signal, in Phase 1/2
+zurückzuspringen und ein **alternatives Bauteil** zu suchen, das die Funktion
+real herausführt (anderer Sensor mit aktivem Ausgang, Antrieb mit Rückmelde-
+kontakt, Zähler mit Busmodul …). In der Restliste festhalten: „Funktion X am
+Gerät Y nicht anschließbar → Alternative gesucht / Rückfrage an den Nutzer".
+
 Erstelle je neuem/geändertem Katalogeintrag eine **Herleitungstabelle** – das ist
 Pflicht und spart dem Nutzer die Gegenprüfarbeit. Sie muss die Kette
 **elektrische Datenblattangabe → Anschluss-/Bauteilbedarf → Datenpunkt** sichtbar
