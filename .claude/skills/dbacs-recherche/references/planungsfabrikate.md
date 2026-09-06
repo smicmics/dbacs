@@ -29,7 +29,12 @@ Alternativen mit Link + Begründung, wenn der Standard nicht passt → Freigabe*
 ## Preisrecherche – Konvention
 
 - Herstellerlistenpreis bevorzugt; sonst namhafter Großhandel/Distributor.
-- Gebrauchtbörsen ausgeschlossen.
+- Reine Gebraucht-/Privatangebote ausgeschlossen. Die eBay-/Marktplatz-
+  Storefront eines Fachdistributors ist als Quelle zulässig, **wenn es sich um
+  Neuware handelt** (Brutto-Rückrechnung erlaubt) – dann im `quelle_hinweis`
+  zusätzlich vermerken, dass der Artikel **abgekündigt/Auslauf** ist und daher
+  kein regulärer Listenpreis vorliegt (z. B. „… ; Artikel abgekündigt, Preis aus
+  Distributor-Marktplatz-Neuware zurückgerechnet, kein Siemens-Listenpreis").
 - Alle Werte **netto**, Stichmonat notieren (`~MM/YYYY`).
 - Provenienz je Eintrag additiv in `quelle_hinweis`:
   `[Preisrecherche MM/YYYY] <Wert> netto, Quelle <Distributor/URL>, ggf. aus Brutto zurückgerechnet`.

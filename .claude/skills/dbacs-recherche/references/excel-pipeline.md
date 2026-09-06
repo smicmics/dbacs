@@ -53,8 +53,14 @@ Katalog-Default), `zeilenumbruch_davor` (→ `rowBreak`), `neue_gruppe` (→
 DP-Overrides `dp_ai/dp_ao/dp_bi/dp_bo`, kommunikative DP-Overrides
 `dp_fb_ai/dp_fb_ao/dp_fb_bi/dp_fb_bo` + `feldbus_protokoll`, `lvb_erforderlich`.
 
-Kommunikative Datenpunkte sitzen konventionell auf einer ohnehin vorhandenen
-`3209510`-Klemmenzeile der Baugruppe (kein eigenes Träger-Bauteil).
+**Hauskonvention für kommunikative Datenpunkte (ergänzt CLAUDE.md Session 58):**
+die `dp_fb_*`-Overrides + `feldbus_protokoll` sitzen auf der **Geräte-/
+Bauteilzeile** der Baugruppe (die `6SL3210…`-/Zähler-/`EV…`-Zeile), **nicht** auf
+einer `3209510`-Klemmenzeile – Begründung Regel 12: die Busleitung zur CPU ist
+Schrankinnenverdrahtung und braucht keine eigene Klemme. (Die früheren
+Session-58-Einträge – Energy Valve, Zähler – tragen den Override noch auf einer
+`3209510`-Zeile; eine Angleichung ist eine separate Katalog-Aufgabe, siehe
+Restliste.)
 
 ### `feldgeraete` → `feldgeraete.json`
 Externe Betriebsmittel außerhalb des Schranks (Pumpen, Feldsensoren/-aktoren).

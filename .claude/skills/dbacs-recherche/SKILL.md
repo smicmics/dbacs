@@ -68,7 +68,11 @@ Fork-Prompt enthält:
    Zusammenfasser scheitert daran zuverlässig.
 3. **Preisquellen-Rang**: Herstellerlistenpreis → namhafter Großhandel/
    Distributor → (nur zur Not, klar markiert) aus Brutto zurückgerechnet.
-   Gebrauchtbörsen ausgeschlossen. Alles netto, Stand als `~MM/YYYY` notieren.
+   Reine Gebraucht-/Privatangebote ausgeschlossen; die Marktplatz-Storefront
+   eines Fachdistributors mit **Neuware** ist zulässig, dann aber im
+   `quelle_hinweis` zusätzlich „abgekündigt/Auslauf, kein regulärer Listenpreis"
+   vermerken (Details `references/planungsfabrikate.md`). Alles netto, Stand als
+   `~MM/YYYY` notieren.
 4. **Ausgabeformat**: strukturierte Fakten **mit Quell-URL je Einzelfakt**,
    geschrieben nach `scratchpad/fork_<n>_<slug>_ergebnis.md` (Projekt-Scratchpad,
    gitignored – bleibt über Sessions erhalten). Keine Excel-Zugriffe im Fork.
@@ -122,8 +126,9 @@ Die vorletzte Spalte ist der Kern: hier steht z. B. „aktives 0–10 V-Signal �
 `benoetigt_steuerspannung` (Regel 5)", „nur 1 Wechslerkontakt, aber Abschaltung
 + getrennte Meldung nötig ⇒ Koppelrelais 230 V (Regel 6)", „Schutzklasse III,
 kein eigener Erdungsanschluss im Klemmenplan ⇒ keine PE-Klemme (Regel 8)",
-„Motorstatus über RS485 ⇒ `dp_fb_bi` @ `modbus_rtu`, keine physische Klemme,
-kein Kommunikationsbauteil-Ratchet (Session-58-Systematik)".
+„Motorstatus über RS485 ⇒ `dp_fb_bi` @ `modbus_rtu` als Override **auf der
+Geräte-/Bauteilzeile** (Regel 12), keine physische Klemme, kein
+Kommunikationsbauteil-Ratchet (Session-58-Systematik)".
 
 Dazu:
 - Die **Modellierungsregeln aus `CLAUDE.md`** anwenden und je Entscheidung
