@@ -40,6 +40,28 @@ Detail-Referenzen in diesem Skill:
 
 ## Ablauf in 7 Phasen
 
+### Phase 0 – Auftragsformat (was der Nutzer liefert)
+
+Für neue Baugruppen/Bauteile erwartet der Skill je Eintrag:
+
+1. **Bauteil-/Gerätefunktion** in einem Satz (+ Planungsfabrikat, falls es vom
+   Standard in `references/planungsfabrikate.md` abweicht).
+2. **Gewünschte Datenpunktzuordnung** = die *Soll-Liste* des Projekts, physisch
+   und kommunikativ getrennt, z. B.:
+   `phys: BI Betrieb, BI Störung, AO Drehzahlsollwert · komm (Modbus RTU): AI Strom, AI Wirkleistung, AI Energiezähler`.
+3. Optional: Anschlussart / Spannung / besondere Anforderung.
+
+**Diese Soll-Liste ist der Umfang – nicht der volle Funktionsvorrat des Geräts.**
+Gerade kommunikativ bieten Geräte hunderte Register an; modelliert wird nur der
+angeforderte Bruchteil. Bei physischen Datenpunkten ebenso: nur die wirklich
+gebrauchten, nicht jeder verfügbare Onboard-Kontakt. Die Aufgabe des Skills ist,
+**jeden gewünschten Datenpunkt gegen das Datenblatt zu bestätigen**
+(realer Anschluss / reales Register vorhanden), nicht die Liste zu erweitern.
+
+Ist die Soll-Liste unklar oder fehlt sie, hier **einmal** nachfragen, dann
+weiter. Kommt gar keine Zuordnung, einen begründeten Minimalvorschlag machen und
+in der Freigabe-Vorlage markieren.
+
 ### Phase 1 – Auftrag in Themenblöcke zerlegen
 
 Zerlege die Rechercheaufgabe in **3–6 in sich geschlossene Blöcke**, einer je
@@ -131,6 +153,14 @@ Geräte-/Bauteilzeile** (Regel 12), keine physische Klemme, kein
 Kommunikationsbauteil-Ratchet (Session-58-Systematik)".
 
 Dazu:
+- **Soll-Ist-Abgleich der Datenpunkte:** jeden vom Nutzer gewünschten Datenpunkt
+  (Phase 0) einzeln gegen das Datenblatt prüfen und in der Herleitung als
+  **✓ bestätigt** (realer Anschluss / reales Register + Fundstelle) oder
+  **✗ nicht umsetzbar** kennzeichnen. Nichts über die Soll-Liste hinaus
+  modellieren. Ist ein gewünschter Datenpunkt **✗** und passt sonst alles:
+  1–2 **alternative Bauteile** recherchieren, die die Funktion real herausführen,
+  mit Link + Kurzbegründung – und in der Freigabe-Vorlage **eine gebündelte
+  Rückfrage** an den Nutzer stellen (Gerät wechseln vs. Datenpunkt streichen).
 - Die **Modellierungsregeln aus `CLAUDE.md`** anwenden und je Entscheidung
   benennen, welche Regel greift (Klemmzonen-Grundsatz, Steuerspannungs-Ratchet,
   Koppelrelais-Pattern, PE-Klemme nur bei eigener Erdungsklemme im Plan,
