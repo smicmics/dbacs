@@ -19,3 +19,7 @@ data/*.xlsx
 
 # Claude local settings
 .claude/settings.local.json
+
+# Recherche-Scratchpad (Fork-Rohergebnisse, Writer-Skripte – lokal, nicht versioniert)
+scratchpad/
+.claude/skills/*-workspace/

@@ -1,0 +1,53 @@
+{
+  "skill_name": "dbacs-recherche",
+  "evals": [
+    {
+      "id": 0,
+      "name": "feldgeraet-katalogzeile-sax61",
+      "prompt": "In DBACS fehlt die Feldgeraete-Katalogzeile fuer den Siemens-Ventilantrieb SAX61.03 (wird von Baugruppe 420_000013 nur als Platzhalter-String referenziert). Recherchier Hersteller, sinnvolle kategorie, Abmessungen und einen belastbaren Netto-Preis und leg mir die fertige feldgeraete-Sheet-Zeile (alle Spaltenwerte) plus eine kurze Herleitung mit Quell-Links zur Freigabe vor. Aendere noch nichts an den Projektdateien.",
+      "expected_output": "Vorschlag einer feldgeraete-Zeile mit artikel_nr=SAX61.03, hersteller=Siemens, kategorie, quelle_hinweis mit Provenienz und Stichmonat, Netto-Preis mit Quelle (oder als offener Punkt markiert). Herleitung nennt die Datenblattquelle. Haelt am Freigabe-Punkt an.",
+      "files": [],
+      "assertions": [
+        {"name": "stops_before_file_changes", "text": "Das Ergebnis legt einen Vorschlag zur Freigabe vor und beschreibt die Excel-/Export-/Browser-Schritte nur, statt Dateien zu aendern, ga_komponenten.xlsx zu schreiben oder xlsx_to_json.py auszufuehren."},
+        {"name": "feldgeraete_row_complete", "text": "Die vorgeschlagene Zeile enthaelt mindestens die feldgeraete-Pflichtspalten: aktiv, artikel_nr = SAX61.03, bezeichnung, hersteller = Siemens, kategorie."},
+        {"name": "price_sourced_or_marked_open", "text": "Der Netto-Preis ist mit Quelle/URL und Stichmonat angegeben ODER klar als offener Punkt markiert - keine unbelegte Zahl."},
+        {"name": "dimensions_sourced_or_omitted", "text": "Angegebene Abmessungen sind mit einer konkreten Datenblatt-/Quell-URL belegt; nicht belegte Abmessungen sind als offen markiert statt geraten."},
+        {"name": "herleitung_with_links", "text": "Es gibt eine kurze Herleitung, in der die zentralen Fakten jeweils mit Quell-Link hinterlegt sind."},
+        {"name": "quelle_hinweis_format", "text": "Falls ein Preis gefunden wurde, folgt der quelle_hinweis-Textvorschlag dem Muster '[Preisrecherche MM/YYYY] <Wert> netto, Quelle ...'."}
+      ]
+    },
+    {
+      "id": 1,
+      "name": "preisrecherche-abgekuendigte-bauteile",
+      "prompt": "Fuer diese DBACS-Einzelbauteile fehlt noch der Preis: 3RT2026-1AB00, 4AP2142-8BC40-0HA0, 4AM4042-5AN00-0EA0, PW100, 5ST3010. Finde belastbare Netto-Preise (Herstellerliste oder namhafter Distributor, keine Gebrauchtboersen), mit Quelle je Wert und Stichmonat. Leg mir die Ergebnisse als Tabelle zur Freigabe vor. Trag noch nichts ein.",
+      "expected_output": "Tabelle mit je Artikel: Netto-Preis + Quelle/URL + Stichmonat, oder klare Markierung 'nicht belastbar auffindbar'. Aufgeteilt in mehrere Recherchebloecke. quelle_hinweis-Textbaustein je Zeile. Kein Excel-Eintrag.",
+      "files": [],
+      "assertions": [
+        {"name": "all_five_articles_addressed", "text": "Alle fuenf Artikelnummern kommen im Ergebnis mit einem Rechercheergebnis vor."},
+        {"name": "each_price_has_source_and_month", "text": "Jeder genannte Preis hat eine Quelle/URL, einen Stichmonat und ist als netto gekennzeichnet."},
+        {"name": "unfound_marked_not_guessed", "text": "Nicht belastbar auffindbare Preise sind ausdruecklich als offen markiert und nicht geschaetzt."},
+        {"name": "no_used_market_sources", "text": "Keine Gebrauchtboerse wird als Preisquelle verwendet."},
+        {"name": "quelle_hinweis_snippet_per_row", "text": "Fuer jede Zeile gibt es einen fertigen quelle_hinweis-Textbaustein im Format '[Preisrecherche MM/YYYY] ...'."},
+        {"name": "research_split_into_blocks", "text": "Die Recherche ist erkennbar in mehrere Bloecke aufgeteilt (je Artikel oder je Hersteller)."},
+        {"name": "stops_before_entry", "text": "Es wird nichts in ga_komponenten.xlsx eingetragen; die Folgeschritte werden nur beschrieben."}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "neue-baugruppe-fu-motorstatus",
+      "prompt": "Wir wollen in DBACS eine neue Baugruppe fuer einen Frequenzumrichter-Motorabgang mit kommunikativem Motorstatus (Modbus RTU) anlegen. Erarbeite Klemmen, Zonen, Datenpunkte und die Bauteilliste nach unseren Modellierungsregeln und leg mir eine Herleitungstabelle plus Vorschlag fuer die baugruppen- und baugruppen_bauteile-Zeilen zur Freigabe vor. Noch keine Dateiaenderungen.",
+      "expected_output": "Herleitungstabelle (Klemme -> Zone -> Datenpunkt -> Bauteil/Artikel-Nr.), benannte Modellierungsregeln, LSS statt MSS begruendet, kommunikativer Status als dp_fb_* @ modbus_rtu, Vorschlag baugruppen- und baugruppen_bauteile-Zeilen mit echten artikel_nr. Haelt an der Freigabe an.",
+      "files": [],
+      "assertions": [
+        {"name": "herleitungstabelle_present", "text": "Das Ergebnis enthaelt eine Herleitungstabelle mit den Spalten Klemme lt. Datenblatt -> DBACS-Zone -> Datenpunkt -> Bauteil/Artikel-Nr."},
+        {"name": "lss_not_mss_justified", "text": "Es wird begruendet, dass bei integriertem Frequenzumrichter eingangsseitig ein LSS statt eines Motorschutzschalters genuegt."},
+        {"name": "comm_status_as_dp_fb_rtu", "text": "Der kommunikative Motorstatus ist als dp_fb_* mit feldbus_protokoll = modbus_rtu modelliert, nicht als physische Klemme."},
+        {"name": "no_comm_bauteil_for_rtu", "text": "Es wird festgestellt, dass Modbus RTU keinen Kommunikationsbauteil-Ratchet ausloest, anders als Modbus TCP / M-Bus."},
+        {"name": "real_artikel_nr", "text": "Die baugruppen_bauteile-Zeilen verwenden echte Artikelnummern aus einzelbauteile.json, keine Typbezeichnungen."},
+        {"name": "baugruppe_id_and_fields", "text": "Die baugruppen-Zeile hat eine id im Schema <DIN-276-Code>_<6-stellig>, gewerk als numerischen Code, sowie gesetzte kategorie und funktionsbereich."},
+        {"name": "named_modelling_rules", "text": "Die angewandten Modellierungsregeln aus CLAUDE.md werden konkret benannt."},
+        {"name": "stops_before_file_changes", "text": "Das Ergebnis haelt an der Freigabe an und fuehrt keine Datei-/Excel-/git-Aenderungen aus."}
+      ]
+    }
+  ]
+}
