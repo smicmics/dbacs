@@ -33,6 +33,27 @@
 > fehlen") abarbeiten oder die vom Nutzer angekündigte weitere Elektro-Feldgerät-
 > Erfassung (FU-/Motorstatus kommunikativ) beginnen.
 
+- **Session 59 – Anlagen-/Makro-Baugruppen (Baugruppe aus Baugruppen) – Konzept
+  offen, wird für Lüftung/Kälte/Heizung gebraucht:** Ziel ist, aus bereits
+  katalogisierten, geprüften Baugruppen/Einzelbauteilen eine übergeordnete
+  Anlagen-Baugruppe zusammenzusetzen (Beispiel Nutzer: „statischer Heizkreis mit
+  Referenzraumsensor" → Pumpe + Ventil + Vorlauf-/Rücklauf-/Raumsensor, alle
+  schon in der DB) und diese selbst als Baugruppe in die DB aufzunehmen –
+  greift auf vorhandene, verifizierte Daten zu, spart die Einzelableitung.
+  **Blocker:** `baugruppen_bauteile` verknüpft eine Baugruppe bisher nur mit
+  `einzelbauteile` (Artikelnummern), es gibt keinen „Baugruppe enthält
+  Baugruppen"-Mechanismus (in Session 51 Nachtrag 7 als
+  `grundschaltung`/`zusatzbaustein`/`standalone` angedacht, zurückgestellt).
+  Nötige Schritte: (1) Darstellung entscheiden – neues Sheet
+  `baugruppen_baugruppen`, oder `typ`/`bg_id`-Referenz auf `baugruppen_bauteile`,
+  oder Auflösung/Flattening beim Export; (2) `xlsx_to_json.py` + Modul 4/5
+  anpassen (Stückliste, Feldgeräteliste, DDC-/Steuerspannungs-/Kommunikations-
+  Statistik müssen enthaltene Baugruppen mitzählen); (3) 1–2 Beispiele von Hand
+  bauen; (4) danach eigener Skill `dbacs-anlagenbaugruppe` (zerlegt eine
+  Anlagenfunktion, mappt Teilfunktionen auf vorhandene Katalogeinträge, reicht
+  fehlende Teile an `dbacs-recherche` weiter, setzt zusammen, fährt die
+  Pipeline). Der bestehende `dbacs-recherche`-Skill (`.claude/skills/`,
+  Session 59 angelegt) bleibt unverändert der „Lücke-füllen"-Baustein.
 - **Session 57 – Desigo-PX auf aktuelle Revision umgestellt (ERLEDIGT):**
   Frage „abgekündigt?" geprüft – Desigo PX ist **NICHT** abgekündigt, nur
   die alte **„PX Classic"-Generation** (PXC00 / PXC64-U / PXC128-U /
