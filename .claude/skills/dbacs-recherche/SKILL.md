@@ -82,12 +82,40 @@ schreiben.
 
 ### Phase 3 – Zusammenführen und Herleitung bauen
 
-Lies alle `scratchpad/fork_*_ergebnis.md`. Erstelle je neuem/geändertem
-Katalogeintrag eine **Herleitungstabelle** – das ist Pflicht und spart dem Nutzer
-die Gegenprüfarbeit:
+Lies alle `scratchpad/fork_*_ergebnis.md`. Die Herleitung folgt einer **festen
+Reihenfolge** – nie rückwärts vom gewünschten Datenpunkt her raten:
 
-| Klemme lt. Datenblatt | Funktion | DBACS-Zone (`klemm_l/f/s`, `steuer` …) | Datenpunkt (`dp_ai/ao/bi/bo`, `dp_fb_*`) | Bauteil / Artikel-Nr. |
-|---|---|---|---|---|
+1. **Datenblatt des Feldgeräts / externen Bauteils auswerten** – jeder
+   elektrische Anschluss mit seiner Angabe (Signalart, Spannung, Kontakt/
+   Wechsler, Schutzklasse, VA, eigener Erdungsanschluss ja/nein).
+2. **Daraus die Anschluss-Anforderung an den Schaltschrank ableiten** – wie wird
+   das Gerät angeklemmt, in welcher Zone (`klemm_l/f/s` …), und **welche
+   schrankinternen Bauteile** zieht das nach sich (Koppelrelais, Steuertrafo/
+   Netzteil über den Ratchet, LSS/MSS, PE-Klemme nur bei eigener Erdungsklemme
+   im Plan …).
+3. **Erst wenn Anschluss und Bauteile feststehen: die physischen Datenpunkte
+   definieren** (`dp_ai/ao/bi/bo`) – sie ergeben sich aus den real verdrahteten
+   Signalen, nicht umgekehrt.
+4. **Kommunikative Datenpunkte** (`dp_fb_*` + Protokoll) ebenfalls auf
+   Datenblatt-Basis definieren, **sobald die Werte nicht über eine
+   herstellereigene Zusatz-/Kommunikationskarte mit eigener Platzierung laufen**
+   (dann wären sie ein eigenes Bauteil). Bus direkt am Gerät ⇒ kommunikativ,
+   ohne Schaltschrankplatz.
+
+Erstelle je neuem/geändertem Katalogeintrag eine **Herleitungstabelle** – das ist
+Pflicht und spart dem Nutzer die Gegenprüfarbeit. Sie muss die Kette
+**elektrische Datenblattangabe → Anschluss-/Bauteilbedarf → Datenpunkt** sichtbar
+machen, nicht nur das Ergebnis:
+
+| Klemme / Anschluss lt. Datenblatt | Elektrische Angabe (Signalart, Spannung, Kontakt/Wechsler, Schutzklasse, VA) | DBACS-Zone (`klemm_l/f/s`, `steuer` …) | Datenpunkt (`dp_ai/ao/bi/bo`, `dp_fb_*` + Protokoll) | → Ableitung: welche Modellierungsregel greift und warum | Bauteil / Artikel-Nr. |
+|---|---|---|---|---|---|
+
+Die vorletzte Spalte ist der Kern: hier steht z. B. „aktives 0–10 V-Signal ⇒
+`benoetigt_steuerspannung` (Regel 5)", „nur 1 Wechslerkontakt, aber Abschaltung
++ getrennte Meldung nötig ⇒ Koppelrelais 230 V (Regel 6)", „Schutzklasse III,
+kein eigener Erdungsanschluss im Klemmenplan ⇒ keine PE-Klemme (Regel 8)",
+„Motorstatus über RS485 ⇒ `dp_fb_bi` @ `modbus_rtu`, keine physische Klemme,
+kein Kommunikationsbauteil-Ratchet (Session-58-Systematik)".
 
 Dazu:
 - Die **Modellierungsregeln aus `CLAUDE.md`** anwenden und je Entscheidung
