@@ -16,7 +16,44 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
-> **Sitzungsstand Ende Session 58 (05.09.2026) – „wir machen morgen weiter":**
+> **Sitzungsstand Ende Session 59 (07.09.2026) – Lüftung: Ventilator-Baugruppen:**
+> 17 neue Ventilator-Baugruppen `430_000028`–`430_000044` angelegt (11 Familie A
+> Asynchronmotor: 2× 230 V 1-stufig · 2× Direktanlauf · 3× Stern-Dreieck-
+> Anlaufschaltung · 2× Dahlander 2-Touren D1/D2 · 2× FU-geregelt [FU als
+> Feldgerät am Gerät, nicht im Schrank]; 4 Familie B EC-Ventilator drehzahl-
+> geregelt; 2 Kommunikationsmodule „Modul Modbus RTU / TCP/IP"). Dazu 43 neue
+> Einzelbauteile (3RV2-MSS-Lücken, Schütze 3RT2017/18/28/35, Stern-Dreieck-
+> Kombis `3RA24…`, Überlastrelais `3RU2…`, PTC-Auslösegerät `3RN2012-1BW30`,
+> mech. Verriegelung `3RA29…`, LSS C32/C40 3-pol, Reparaturschalter KG32/41/64/80
+> + Hilfskontakte `0319691`/`0758478`) und 9 Feldgeräte (EC-Ventilatoren +
+> AC-/FU-Platzhalter). Bestand-Korrekturen: Hilfskontakt-Fehlpaarung `0758484`
+> (K2) → `0319691` (K0) bei `3813635`/`3813641` **und** den Pumpen-Baugruppen
+> `420_000022`–`026`; `3RV2011`-Maße 54×77→45×97, Einstellbereich-Texte; `3RV2041`
+> = S3. **Neu:** `kategorie` „Stern-Dreieck-Kombination"/„Überlastrelais"/
+> „Motorschutz"/„Schützzubehör"/„Kommunikationsmodule"; `bauteil_typ`
+> `ueberlastrelais`/`thermistorrelais`/`schuetzkombination`/`verriegelung`.
+> Motorvollschutz durchgängig **nur PTC + Auslösegerät** (2. Kontakt hart in
+> Schützspule, 1. Kontakt → BI); bei DOL/Y-D getrennte BI für MSS **und** PTC.
+> DDC-BO → Schützspule **immer über Koppelrelais `2967073`** (Siemens-Triac
+> bauartbedingt). Stern-Dreieck: fertige `3RA24`-Kombi, Sternzeit einstellbar
+> 0,5–60 s (für Lüfterlast ~10–20 s). Dahlander: diskret, 3 Schütze + mech.
+> Verriegelung + 2 getrennte `3RU2` + Austrudelzeit 30–60 s (`2905814`/DDC-
+> Totzeit). EC-Ventilator: nur 1 Onboard-Melderelais → Wechsler beidseitig
+> ausgelesen (BI Betrieb + BI Störung), Enable direkt vom `TXM1.6R`.
+> Export ok: **baugruppen 113 · einzelbauteile 190 · feldgeraete 61**.
+> Browser: Dropdown-Gruppierung „Ventilatoren"/„Kommunikationsmodule" im
+> Lüftungs-Tab korrekt, alle 17 laden, Bauteile/DP-Overrides/Stückliste
+> resolven, keine Konsolenfehler; volle Platzierungs-/Ratchet-Prüfung mit
+> konfiguriertem Schrank (Modul 1–3) noch offen. Details:
+> `scratchpad/ventilatoren_katalog_final.md` + `fork_1..9_*_ergebnis.md`.
+> **Restliste (→ unten):** viele Preise/Maße Distributor-Näherung bzw. offen;
+> 3RV2-/3RU2-Buchstabenstaffel interpoliert; K&N-Reparaturschalter mit
+> DBACS-internem Schlüssel (`KG32-T204` …) statt echter K&N-Bestellnr.;
+> 1-poliger C-LSS (C10/C13) noch nicht angelegt (230-V-Abgang nutzt `5SL6216-7`);
+> Dahlander-kW-Paare Richtwerte; Modbus-TCP-Gateway noch kein Feldgerät;
+> `3RN2012` `benoetigt_steuerspannung`=`230vac` gesetzt (Weitbereich, ggf. 24vac).
+>
+> **Sitzungsstand Ende Session 58 (05.09.2026):**
 > Alle Session-58-Arbeiten (kommunikative Datenpunkte an Baugruppen, Belimo
 > Energy Valve, 22 Wärme-/Kälte-/Wasserzähler, 2 Wilo-CIF-Module, CRAH
 > +Betrieb/Nur-Monitoring, 3 Elektro-Energiezähler, 3 Automation-UMG-
@@ -24,14 +61,7 @@
 > `xlsx_to_json.py` als JSON exportiert (baugruppen 96 · einzelbauteile 147 ·
 > feldgeraete 52) und im Browser verifiziert. Zuletzt behoben: der
 > `tuer`-Zone-an-Baugruppen-Bug (Zähler erscheint jetzt in der Türansicht,
-> siehe „Modul 4/5 – Session 58"). `git status` = nur `CLAUDE.md` +
-> `modul-04-innenaufbau/index.html` offen (Stop-Hook committet+pusht). Keine
-> bekannten offenen Bugs – die Punkte unten sind Recherche-/Katalog-Restlisten,
-> keine Blocker.
-> **Nächster sinnvoller Schritt:** vom Nutzer offene Preis-/Katalogpunkte
-> (siehe unten „Session 57 – Preisrecherche" + „Feldgeräte-Katalogzeilen
-> fehlen") abarbeiten oder die vom Nutzer angekündigte weitere Elektro-Feldgerät-
-> Erfassung (FU-/Motorstatus kommunikativ) beginnen.
+> siehe „Modul 4/5 – Session 58").
 
 - **Session 59 – Anlagen-/Makro-Baugruppen (Baugruppe aus Baugruppen) – Konzept
   offen, wird für Lüftung/Kälte/Heizung gebraucht:** Ziel ist, aus bereits

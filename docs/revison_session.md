@@ -1,10 +1,19 @@
 # DBACS – Revisionsstand
 
-**Stand:** 5. September 2026 – Session 58 (Modul 4/5: kommunikative Datenpunkte
-an Baugruppen + Kommunikationsbauteil-Ratchet; Belimo Energy Valve, 22 Wärme-/
-Kälte-/Wasserzähler, 2 Wilo-CIF-Module, Schneider CRAH +Betrieb/Nur-Monitoring,
-3 Elektro-Energiezähler, 3 Automation-UMG-Türeinbau; `tuer`-Zone-an-Baugruppen-
-Bugfix in `getTuerItems()`).
+**Stand:** 7. September 2026 – Session 59 (Lüftung: 17 Ventilator-Baugruppen
+`430_000028`–`430_000044` – Asynchronmotor 230 V/400 V mit Direktanlauf,
+Stern-Dreieck-Anlaufschaltung, Dahlander 2-Touren und FU-geregelt; EC-Ventilatoren
+drehzahlgeregelt; 2 Kommunikationsmodule Modbus RTU/TCP. + 43 Einzelbauteile
+(3RV2-/3RT2-Lücken, Stern-Dreieck-Kombis 3RA24, Überlastrelais 3RU2, PTC-
+Auslösegerät 3RN2012, Reparaturschalter KG32–KG80) + 9 Feldgeräte.
+Bestand-Korrektur Hilfskontakt 0758484→0319691 auch bei Pumpen 420_000022–026.
+Export: baugruppen 113 · einzelbauteile 190 · feldgeraete 61. Details in
+`scratchpad/ventilatoren_katalog_final.md`. Maßgeblich: `CLAUDE.md` → „Offene Punkte".
+
+Vorherige Session 58 (05.09.2026): kommunikative Datenpunkte an Baugruppen +
+Kommunikationsbauteil-Ratchet; Belimo Energy Valve, 22 Wärme-/Kälte-/Wasserzähler,
+2 Wilo-CIF-Module, Schneider CRAH, 3 Elektro-Energiezähler, 3 Automation-UMG-
+Türeinbau; `tuer`-Zone-an-Baugruppen-Bugfix in `getTuerItems()`.
 
 > **Diese Datei ist NICHT mehr die maßgebliche laufende Doku.** Seit ~Session 30
 > wird der Projektfortschritt vollständig in **`CLAUDE.md`** geführt

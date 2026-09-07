@@ -2105,7 +2105,7 @@
         "zone": "klemm_f"
       },
       {
-        "artikel_nr": "0758484",
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -2208,7 +2208,7 @@
         "zone": "klemm_f"
       },
       {
-        "artikel_nr": "0758484",
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -2311,7 +2311,7 @@
         "zone": "klemm_f"
       },
       {
-        "artikel_nr": "0758484",
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -2422,7 +2422,7 @@
         "zone": "klemm_f"
       },
       {
-        "artikel_nr": "0758484",
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -2535,7 +2535,7 @@
         "zone": "klemm_f"
       },
       {
-        "artikel_nr": "0758484",
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -3720,6 +3720,1144 @@
     ],
     "automationsanbindung": true,
     "kategorie": "Messgerät/Energiezähler",
+    "geprueft": false
+  },
+  {
+    "id": "430_000028",
+    "name": "Ventilator 1-stufig, Kleinventilator bis 1,5 kW, 230V AC 1~",
+    "gewerk": "430",
+    "beschreibung": "Einstufiger 230-V-Kleinventilator. LSS 2-polig C16 (L+N), Schuetz 24 V AC ueber Koppelrelais 2967073 vom DDC-BO. Motorvollschutz ueber PTC-Kaltleiter (3RN2012-1BW30, 2 Feldadern) -> 1 BI Stoerung. Betriebsmeldung ueber Schuetz-Hilfskontakt -> 1 BI. Reparaturschalter KG10 mit voreilendem Hilfskontakt -> 1 BI Stellung. Bauteilauswahl innerhalb des Leistungsbands anzupassen.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6216-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3RT2016-1AB01",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209523",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Wechselstrom-Ventilator (Kondensatormotor), 230 V 1~, bis 1,5 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-1PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000029",
+    "name": "Ventilator 1-stufig, Kleinventilator 1,5-3 kW, 230V AC 1~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000028, groesseres Leistungsband: Schuetz 3RT2024 (24 V AC), Reparaturschalter KG20.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6216-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3RT2024-1AB00",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209523",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Wechselstrom-Ventilator (Kondensatormotor), 230 V 1~, 1,5-3 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-1PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000030",
+    "name": "Ventilator Direktanlauf 1-stufig, 1,1-4 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Drehstrom-Ventilator im Direktanlauf. Motorschutzschalter 3RV2 (Kurzschluss + Ueberlast) mit Hilfsschalter -> 1 BI Stoerung MSS. Schuetz 24 V AC ueber Koppelrelais 2967073 vom DDC-BO, Betriebsmeldung Schuetz-Hilfskontakt -> 1 BI. PTC-Wicklungsschutz (3RN2012) -> 1 BI Stoerung PTC (getrennt vom MSS: PKZM vs. PTC). Reparaturschalter KG20. N entfaellt am Drehstrom-Motorabgang. Bauteilauswahl je realer Motorleistung anzupassen.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2011-1JA10",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RV2901-1E",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RT2016-1AB01",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Drehstrom-Asynchronmotor-Ventilator, 400 V 3~, Direktanlauf, bis 4 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-3PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000031",
+    "name": "Ventilator Direktanlauf 1-stufig, 4-7,5 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000030, groesseres Band: MSS 3RV2021-4CA10 (S0), Schuetz 3RT2025 (17 A / 7,5 kW). Direktanlauf im oeffentlichen Netz TAB-abhaengig ggf. schon ab ~4 kW Stern-Dreieck-pflichtig.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2021-4CA10",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RV2901-1E",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RT2025-1AB00",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Drehstrom-Asynchronmotor-Ventilator, 400 V 3~, Direktanlauf, 4-7,5 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-3PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000032",
+    "name": "Ventilator Stern-Dreieck-Anlaufschaltung, 5,5-11 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Drehstrom-Ventilator mit Stern-Dreieck-ANLAUFSCHALTUNG (eine Betriebsdrehzahl; die Y->D-Umschaltung laeuft automatisch im Schrank ueber das Funktionsmodul der 3RA24-Kombi). Sternzeit fuer Luefterlast ~10-20 s einstellen (Laufrad-Schwungmasse, quadratische Kennlinie, nur ~1/3 Moment im Stern). Nur EIN Steuereingang -> 1 DDC-BO ueber Koppelrelais 2967073. Ueberlastrelais 3RU2 im Y-Zweig (I_N x 0,58) -> 1 BI Sammelstoerung. Vorgeschalteter 3RV2 als Kurzschluss-/Trennorgan. PTC-Wicklungsschutz -> 1 BI. Motorabgang 6 Adern + PE (PT 2,5). Reparaturschalter KG32.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2021-4DA10",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RA2423-8XF32-1AC2",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RU2126-4AB0",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 6,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "KG32-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Drehstrom-Asynchronmotor-Ventilator, 400 V 3~, Stern-Dreieck-Anlaufschaltung, bis 11 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-3PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000033",
+    "name": "Ventilator Stern-Dreieck-Anlaufschaltung, 11-18,5 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000032, groesseres Band: 3RA2425-8XF32 (deckt 15 und 18,5 kW), 3RU2126-4CB0, KS-Schutz 3RV2031-4EA10, Motorabgang PT 4, Reparaturschalter KG41.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2031-4EA10",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RA2425-8XF32-1AC2",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RU2126-4CB0",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3211757",
+        "menge": 6,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3211766",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "KG41-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Drehstrom-Asynchronmotor-Ventilator, 400 V 3~, Stern-Dreieck-Anlaufschaltung, bis 18,5 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-3PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000034",
+    "name": "Ventilator Stern-Dreieck-Anlaufschaltung, 18,5-25 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000032, oberstes Band: 3RA2426-8XF32 (22 kW; fuer 25 kW im Projekt ggf. 3RA2434 bis 30 kW), 3RU2136-4EB0, KS-Schutz 3RV2031-4HA10, Motorabgang PT 4, Reparaturschalter KG64. Ab Hochlaufzeit > 20 s Sanftstarter statt Y-D.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2031-4HA10",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RA2426-8XF32-1AC2",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RU2136-4EB0",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3211757",
+        "menge": 6,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3211766",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "KG64-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Drehstrom-Asynchronmotor-Ventilator, 400 V 3~, Stern-Dreieck-Anlaufschaltung, bis 25 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-3PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000035",
+    "name": "Ventilator 2-Touren (Dahlander), 1,5/5,5 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Echter 2-Touren-Ventilator (Dahlander, eine Wicklung Dreieck/Doppelstern). 3 Schuetze: KM1 langsam, KM2 schnell/Netz, KM3 Sternbruecke; Oeffnerverriegelung + mechanische Verriegelung KM1/KM2, 50 ms Umschaltpause. Beim Wechsel schnell->langsam Austrudelzeit ~30-60 s (Zeitrelais 2905814 bzw. DDC-Totzeit) wegen generatorischem Bremsen am traegen Laufrad. 2 getrennte Ueberlastrelais 3RU2 (je Drehzahlstufe, realer Stufen-I_N), Oeffner in Reihe -> 1 BI Sammelstoerung. Kurzschlussschutz 3RV2 auf I_2. 2x DDC-BO (Stufe 1/2, verriegelt) je ueber Koppelrelais 2967073. 2x BI Betrieb (KM1/KM2-Hilfskontakt). PTC-Wicklungsschutz -> 1 BI. Motorabgang 6 Adern + 2x PE (2 Motorkabel). Reparaturschalter KG20.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RT2015-1AB01",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RT2025-1AB00",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RT2016-1AB01",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RA2921-2A",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RU2116-1FB0",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RU2126-4AB0",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RV2011-1KA10",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "2905814",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 6,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 2,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Polumschaltbarer Drehstrom-Asynchronmotor-Ventilator (Dahlander), 400 V 3~, 2 Betriebsdrehzahlen 1,5/5,5 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-3PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000036",
+    "name": "Ventilator 2-Touren (Dahlander), 4/17 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000035, groessere Klasse (I_1 ~10,5 A / I_2 ~34,5 A). KM1 3RT2024, KM2 3RT2027, KM3 3RT2025, Ueberlast 3RU2116-1JB0 / 3RU2136-4EB0, KS-Schutz 3RV2031-4EA10, Reparaturschalter KG41. Hinweis: KM2||KM3-Einschaltstrom am 6-A-Koppelrelais-Limit - im Projekt ggf. 230-V-Schuetzspulen (3RT202x-1AP..) + Koppelrelais 2967099. Motorabgang 1U/1V/1W PT 2,5 + 2U/2V/2W PT 4.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RT2024-1AB00",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RT2027-1AB00",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RT2025-1AB00",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RA2921-2A",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RU2116-1JB0",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3RU2136-4EB0",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3RV2031-4EA10",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "2905814",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "3RN2012-1BW30",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3211757",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3211766",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "KG41-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Polumschaltbarer Drehstrom-Asynchronmotor-Ventilator (Dahlander), 400 V 3~, 2 Betriebsdrehzahlen 4/17 kW",
+    "feldgeraet_artikel_nr": "AC-VENT-3PH",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000037",
+    "name": "Ventilator FU-geregelt (FU am Geraet), 1,1-7,5 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Drehzahlgeregelter Ventilator; der Frequenzumrichter ist am Lueftungsgeraet angebaut (Feldgeraet, NICHT im Schrank). Im Schrank nur LSS (kein MSS/Schuetz - der FU uebernimmt Motorschutz + Sanftanlauf), Motorabgang L1/L2/L3/PE zum FU, und die FU-Steuerung: 1 BO Freigabe/Enable (potentialfrei vom TXM1.6R, kein Koppelrelais), 1 AO Drehzahl 0-10 V, 1 BI Betrieb + 1 BI Stoerung (FU-Relaiskontakte). PTC-Kaltleiter geht an den FU (dessen Stoermeldung deckt ihn ab) - kein separates Auslosegeraet im Schrank. Reparaturschalter KG20 mit voreilendem Hilfskontakt auf die FU-Freigabe -> 1 BI Stellung. Modbus optional ueber Baugruppe 'Modul Modbus RTU/TCP'.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Drehstrom-Asynchronmotor-Ventilator mit angebautem Frequenzumrichter, 400 V 3~, drehzahlgeregelt, bis 7,5 kW",
+    "feldgeraet_artikel_nr": "FU-VENT-EXT",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000038",
+    "name": "Ventilator FU-geregelt (FU am Geraet), 7,5-25 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000037, groesseres Band: LSS 3-polig C32, Motorabgang PT 10, Reparaturschalter KG64.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6332-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "KG64-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Drehstrom-Asynchronmotor-Ventilator mit angebautem Frequenzumrichter, 400 V 3~, drehzahlgeregelt, 7,5-25 kW",
+    "feldgeraet_artikel_nr": "FU-VENT-EXT",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000039",
+    "name": "EC-Ventilator drehzahlgeregelt 0-10V, bis 1,5 kW, 230V AC 1~",
+    "gewerk": "430",
+    "beschreibung": "EC-Ventilator: Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf sitzen am Motor. Im Schrank nur LSS (kein MSS/Schuetz), Versorgungsabgang L/N/PE, und die Steuerung wie bei einem FU: 1 BO Freigabe/Enable (potentialfrei vom TXM1.6R, kein Koppelrelais; bei ebm-papst Logik invertieren), 1 AO Drehzahl 0-10 V. Der EINE Onboard-Melderelais-Wechsler wird beidseitig ausgelesen: COM+NC -> 1 BI Stoerung, COM+NO -> 1 BI 'Betrieb ohne Stoerung' (versorgt + stoerungsfrei, keine echte Wellendrehung - echte Laufmeldung nur ueber Modbus). Reparaturschalter KG10 mit voreilendem Hilfskontakt auf die Freigabe -> 1 BI Stellung. Keine eigene Steuerspannung. Modbus optional ueber Baugruppe 'Modul Modbus RTU/TCP'.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6216-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_f",
+        "dp_bi": 2
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209523",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "EC-Ventilator (elektronisch kommutiert), 230 V 1~, drehzahlgeregelt, bis 1,5 kW",
+    "feldgeraet_artikel_nr": "K3G250-AV29-B2",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000040",
+    "name": "EC-Ventilator drehzahlgeregelt 0-10V, bis 4 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000039, 3~400 V: LSS 3-polig C16, Motorabgang L1/L2/L3/PE, Reparaturschalter KG20.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_f",
+        "dp_bi": 2
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "EC-Ventilator (elektronisch kommutiert), 400 V 3~, drehzahlgeregelt, bis 4 kW",
+    "feldgeraet_artikel_nr": "K3G500-RA28-03",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000041",
+    "name": "EC-Ventilator drehzahlgeregelt 0-10V, 4-11 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000040, groesseres Band: LSS 3-polig B25, Motorabgang PT 10, Reparaturschalter KG32.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6325-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_f",
+        "dp_bi": 2
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "KG32-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "EC-Ventilator (elektronisch kommutiert), 400 V 3~, drehzahlgeregelt, 4-11 kW",
+    "feldgeraet_artikel_nr": "K3G560-PC04-01",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000042",
+    "name": "EC-Ventilator drehzahlgeregelt 0-10V, 11-24 kW, 400V AC 3~",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000040, oberstes Band: LSS 3-polig C40, Motorabgang PT 10, Reparaturschalter KG64.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6340-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_f",
+        "dp_bi": 2
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "KG64-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "EC-Ventilator (elektronisch kommutiert), 400 V 3~, drehzahlgeregelt, 11-24 kW",
+    "feldgeraet_artikel_nr": "K3G630-AT09-01",
+    "automationsanbindung": true,
+    "kategorie": "Ventilatoren",
+    "geprueft": false
+  },
+  {
+    "id": "430_000043",
+    "name": "Modul Modbus RTU (Feldgeraet-Schnittstelle)",
+    "gewerk": "430",
+    "beschreibung": "Zusaetzlich zu einer physischen FU-/EC-Ventilatorbaugruppe waehlbar. RS485 A/B direkt an einen Modbus-RTU-Port der Automationsstation (kein Kommunikationsbauteil-Ratchet). Erzeugt 2 Bus-Klemmen (klemm_f) + kommunikative Datenpunkte; die tatsaechlich genutzten Register (Betrieb, Stoerung, Ist-Drehzahl, Strom, Wirkleistung, Energie, Betriebsstunden) im Projekt auswaehlen. Die meisten FU/EC haben Modbus RTU onboard ohne Zusatzkarte.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_fb_ai": 5,
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung",
+      "heizung",
+      "kaelte",
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kommunikationsmodule",
+    "geprueft": false
+  },
+  {
+    "id": "430_000044",
+    "name": "Modul Modbus TCP/IP (Feldgeraet-Schnittstelle)",
+    "gewerk": "430",
+    "beschreibung": "Zusaetzlich zu einer physischen FU-/EC-Ventilatorbaugruppe waehlbar. Modbus TCP/IP nur ueber ein Hersteller-Gateway (projektspezifisch, noch kein DBACS-Feldgeraet). Erzeugt 2 Anschlussklemmen (klemm_f) + kommunikative Datenpunkte; zieht ueber den Ratchet den Ethernet-Switch 2891021 nach (Session-58-Systematik).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f",
+        "dp_fb_ai": 5,
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung",
+      "heizung",
+      "kaelte",
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kommunikationsmodule",
     "geprueft": false
   }
 ]

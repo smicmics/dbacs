@@ -476,5 +476,77 @@
     "quelle_hinweis": "Netzanalysator/Energiezaehler mit Ethernet-Schnittstelle (Modbus TCP/IP bzw. PROFINET). Janitza UMG 96RM-PN (~532 EUR netto Preisrecherche 08/2026). Versorgung am Einbauort in der Elektro-Unterverteilung, NICHT aus dem GA-Schaltschrank. Schaltschrankseitig KEINE Klemme - RJ45 auf einen Ethernet-Switch im GA-Schrank, der mit der Automationsstation verbunden ist (Switch wird automatisch ergaenzt). 17 Werte kommunikativ.",
     "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Blindleistung, cos phi, Frequenz, Spannung L1-L2, Spannung L2-L3, Spannung L3-L1, Spannung L1-N, Spannung L2-N, Spannung L3-N, Stromaufnahme I1, Stromaufnahme I2, Stromaufnahme I3, Stromaufnahme IN.",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "K3G250-AV29-B2",
+    "bezeichnung": "EC-Radialventilator RadiCal, 1~230 V, ~0,75 kW / 3,3 A",
+    "hersteller": "ebm-papst",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "K3G500-RA28-03",
+    "bezeichnung": "EC-Radialventilator RadiCal 'e2', 3~400 V, ~3,6 kW / 5,5 A",
+    "hersteller": "ebm-papst",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "K3G560-PC04-01",
+    "bezeichnung": "EC-Radialventilator RadiCal, 3~400 V, ~5,0 kW / 7,7 A",
+    "hersteller": "ebm-papst",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "K3G630-AT09-01",
+    "bezeichnung": "EC-Radialventilator RadiCal, 3~380-480 V, ~13,75 kW / 21 A",
+    "hersteller": "ebm-papst",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "ECblue-MK116",
+    "bezeichnung": "EC-Ventilator ECblue Basic Baugroesse D, 1~230 V, ~2,4 kW / 4,7 A",
+    "hersteller": "ZIEHL-ABEGG",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GKHB-GD220",
+    "bezeichnung": "EC-Ventilator GKHB (Aussenlaeufer GD220), 3~400 V",
+    "hersteller": "Rosenberg",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "AC-VENT-3PH",
+    "bezeichnung": "Drehstrom-Asynchronmotor-Ventilator, 400 V 3~ (repraesentativer Platzhalter, Motor projektspezifisch)",
+    "hersteller": "generisch",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "AC-VENT-1PH",
+    "bezeichnung": "Wechselstrom-Ventilator mit Kondensatormotor, 230 V 1~ (Platzhalter)",
+    "hersteller": "generisch",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "FU-VENT-EXT",
+    "bezeichnung": "Frequenzumrichter am Lueftungsgeraet angebaut, 400 V 3~ (Platzhalter fuer FU-geregelte Ventilatorbaugruppen)",
+    "hersteller": "generisch",
+    "kategorie": "Ventilator",
+    "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "geprueft": false
   }
 ]

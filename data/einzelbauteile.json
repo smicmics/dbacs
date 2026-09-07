@@ -81,12 +81,12 @@
   },
   {
     "artikel_nr": "3RV2011-1AA10",
-    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 1,0–1,6 A, 0,55 kW",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 1,1-1,6 A, 0,55 kW (S00)",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
-    "b_mm": 54.0,
+    "b_mm": 45.0,
     "te_breite": 3,
-    "h_mm": 77.0,
+    "h_mm": 97.0,
     "zone": [
       "leist"
     ],
@@ -96,12 +96,12 @@
   },
   {
     "artikel_nr": "3RV2011-1CA10",
-    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 2,5–4,0 A, 1,5 kW",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 1,8-2,5 A, 0,75 kW (S00)",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
-    "b_mm": 54.0,
+    "b_mm": 45.0,
     "te_breite": 3,
-    "h_mm": 77.0,
+    "h_mm": 97.0,
     "zone": [
       "leist"
     ],
@@ -111,12 +111,12 @@
   },
   {
     "artikel_nr": "3RV2011-1EA10",
-    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 4,0–6,3 A, 2,2 kW",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 2,8-4,0 A, 1,5 kW (S00)",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
-    "b_mm": 54.0,
+    "b_mm": 45.0,
     "te_breite": 3,
-    "h_mm": 77.0,
+    "h_mm": 97.0,
     "zone": [
       "leist"
     ],
@@ -126,12 +126,12 @@
   },
   {
     "artikel_nr": "3RV2011-1JA10",
-    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 6,0–10 A, 4,0 kW",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 7,0-10 A, 4,0 kW (S00)",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
-    "b_mm": 54.0,
+    "b_mm": 45.0,
     "te_breite": 3,
-    "h_mm": 77.0,
+    "h_mm": 97.0,
     "zone": [
       "leist"
     ],
@@ -1536,12 +1536,12 @@
   },
   {
     "artikel_nr": "3RV2041-4HA10",
-    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 36–50 A, 22 kW (S3)",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 36-50 A, 22 kW (S3)",
     "hersteller": "Siemens",
     "bauteil_typ": "motorschutz",
-    "b_mm": 55.0,
+    "b_mm": 70.0,
     "te_breite": 4,
-    "h_mm": 140.0,
+    "h_mm": 165.0,
     "zone": [
       "leist"
     ],
@@ -2262,7 +2262,7 @@
     ],
     "kategorie": "Reparaturschalter",
     "keine_platzierung_mp": true,
-    "zubehoer_artikel_nr": "0758484",
+    "zubehoer_artikel_nr": "0319691",
     "preis_eur": 46.55,
     "geprueft": false
   },
@@ -2279,7 +2279,7 @@
     ],
     "kategorie": "Reparaturschalter",
     "keine_platzierung_mp": true,
-    "zubehoer_artikel_nr": "0758484",
+    "zubehoer_artikel_nr": "0319691",
     "preis_eur": 44.79,
     "geprueft": false
   },
@@ -2329,6 +2329,671 @@
     "kategorie": "DDC-Automationseinrichtung",
     "automationsanbindung": true,
     "keine_platzierung_mp": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2011-1FA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 3,5-5,0 A, 1,5 kW (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 97.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 38.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2011-1GA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 4,5-6,3 A, 2,2 kW (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 97.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 38.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2011-1HA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 5,5-8,0 A, 3,0 kW (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 97.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 38.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2011-1KA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 9,0-12,5 A, 5,5 kW (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 97.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 40.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2021-4CA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 16-22 A, 7,5 kW (S0)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 97.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 80.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2031-4DA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 18-25 A, 11 kW (S2)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 55.0,
+    "te_breite": 4,
+    "h_mm": 140.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 150.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2031-4FA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 28-40 A, 18,5 kW (S2)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 55.0,
+    "te_breite": 4,
+    "h_mm": 140.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 175.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2031-4HA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 36-50 A, 22 kW (S2)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 55.0,
+    "te_breite": 4,
+    "h_mm": 140.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 200.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2031-4RA10",
+    "bezeichnung": "Motorschutzschalter 3RV2, Einstellung 47-63 A, 25-30 kW (S2)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "motorschutz",
+    "b_mm": 55.0,
+    "te_breite": 4,
+    "h_mm": 140.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Motorschutzschalter",
+    "preis_eur": 230.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RV2901-1E",
+    "bezeichnung": "Hilfsschalter seitlich 1S+1Oe fuer Motorschutzschalter 3RV2 (S00/S0/S2)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "sonstige",
+    "b_mm": 9.0,
+    "te_breite": 1,
+    "h_mm": 45.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Hilfsschalter",
+    "keine_platzierung_mp": true,
+    "preis_eur": 15.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RT2017-1AB01",
+    "bezeichnung": "Schuetz AC-3, 12 A, 5,5 kW / 400 V, 24 V AC 50/60 Hz (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "b_mm": 36.0,
+    "te_breite": 2,
+    "h_mm": 70.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schütze",
+    "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RT2017-1AP01",
+    "bezeichnung": "Schuetz AC-3, 12 A, 5,5 kW / 400 V, 230 V AC 50/60 Hz (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "b_mm": 36.0,
+    "te_breite": 2,
+    "h_mm": 70.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schütze",
+    "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RT2018-1AB01",
+    "bezeichnung": "Schuetz AC-3, 16 A, 7,5 kW / 400 V, 24 V AC 50/60 Hz (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "b_mm": 36.0,
+    "te_breite": 2,
+    "h_mm": 70.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schütze",
+    "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RT2018-1AP01",
+    "bezeichnung": "Schuetz AC-3, 16 A, 7,5 kW / 400 V, 230 V AC 50/60 Hz (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "b_mm": 36.0,
+    "te_breite": 2,
+    "h_mm": 70.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schütze",
+    "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RT2028-1AB00",
+    "bezeichnung": "Schuetz AC-3, 38 A, 18,5 kW / 400 V, 24 V AC 50/60 Hz (S0)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 102.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schütze",
+    "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RT2028-1AP00",
+    "bezeichnung": "Schuetz AC-3, 38 A, 18,5 kW / 400 V, 230 V AC 50/60 Hz (S0)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 102.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schütze",
+    "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RT2035-1AB00",
+    "bezeichnung": "Schuetz AC-3, 40 A, 18,5 kW / 400 V, 24 V AC 50/60 Hz (S2)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "b_mm": 55.0,
+    "te_breite": 4,
+    "h_mm": 130.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schütze",
+    "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RT2035-1AP00",
+    "bezeichnung": "Schuetz AC-3, 40 A, 18,5 kW / 400 V, 230 V AC 50/60 Hz (S2)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetz",
+    "b_mm": 55.0,
+    "te_breite": 4,
+    "h_mm": 130.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schütze",
+    "zubehoer_artikel_nr": "3RH2911-1FA22",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RA2415-8XF31-1AB0",
+    "bezeichnung": "Stern-Dreieck-Schuetzkombination 5,5 kW / 400 V, Sternzeit 0,5-60 s einstellbar, 24 V AC (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetzkombination",
+    "b_mm": 135.0,
+    "te_breite": 8,
+    "h_mm": 68.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Stern-Dreieck-Kombination",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RA2416-8XF31-1AB0",
+    "bezeichnung": "Stern-Dreieck-Schuetzkombination 7,5 kW / 400 V, Sternzeit 0,5-60 s einstellbar, 24 V AC (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetzkombination",
+    "b_mm": 135.0,
+    "te_breite": 8,
+    "h_mm": 68.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Stern-Dreieck-Kombination",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RA2423-8XF32-1AC2",
+    "bezeichnung": "Stern-Dreieck-Schuetzkombination 11 kW / 400 V, Sternzeit 0,5-60 s einstellbar, 24 V AC (S0)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetzkombination",
+    "b_mm": 135.0,
+    "te_breite": 8,
+    "h_mm": 101.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Stern-Dreieck-Kombination",
+    "preis_eur": 640.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RA2425-8XF32-1AC2",
+    "bezeichnung": "Stern-Dreieck-Schuetzkombination 15/18,5 kW / 400 V, Sternzeit 0,5-60 s einstellbar, 24 V AC (S0)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetzkombination",
+    "b_mm": 135.0,
+    "te_breite": 8,
+    "h_mm": 101.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Stern-Dreieck-Kombination",
+    "preis_eur": 700.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RA2426-8XF32-1AC2",
+    "bezeichnung": "Stern-Dreieck-Schuetzkombination 22 kW / 400 V, Sternzeit 0,5-60 s einstellbar, 24 V AC (S0)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "schuetzkombination",
+    "b_mm": 135.0,
+    "te_breite": 8,
+    "h_mm": 101.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Stern-Dreieck-Kombination",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2116-1FB0",
+    "bezeichnung": "Thermisches Ueberlastrelais Class 10, Einstellung 3,5-5,0 A (S00), Schuetzanbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ueberlastrelais",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 76.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Überlastrelais",
+    "keine_platzierung_mp": true,
+    "preis_eur": 35.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2116-1HB0",
+    "bezeichnung": "Thermisches Ueberlastrelais Class 10, Einstellung 5,5-8,0 A (S00), Schuetzanbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ueberlastrelais",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 76.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Überlastrelais",
+    "keine_platzierung_mp": true,
+    "preis_eur": 35.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2116-1JB0",
+    "bezeichnung": "Thermisches Ueberlastrelais Class 10, Einstellung 7,0-10 A (S00), Schuetzanbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ueberlastrelais",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 76.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Überlastrelais",
+    "keine_platzierung_mp": true,
+    "preis_eur": 38.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2116-1KB0",
+    "bezeichnung": "Thermisches Ueberlastrelais Class 10, Einstellung 9,0-12,5 A (S00), Schuetzanbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ueberlastrelais",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 76.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Überlastrelais",
+    "keine_platzierung_mp": true,
+    "preis_eur": 40.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2126-4AB0",
+    "bezeichnung": "Thermisches Ueberlastrelais Class 10, Einstellung 11-16 A (S0), Schuetzanbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ueberlastrelais",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 85.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Überlastrelais",
+    "keine_platzierung_mp": true,
+    "preis_eur": 48.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2126-4CB0",
+    "bezeichnung": "Thermisches Ueberlastrelais Class 10, Einstellung 17-22 A (S0), Schuetzanbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ueberlastrelais",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 85.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Überlastrelais",
+    "keine_platzierung_mp": true,
+    "preis_eur": 52.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2126-4DB0",
+    "bezeichnung": "Thermisches Ueberlastrelais Class 10, Einstellung 20-25 A (S0), Schuetzanbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ueberlastrelais",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 85.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Überlastrelais",
+    "keine_platzierung_mp": true,
+    "preis_eur": 55.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2136-4EB0",
+    "bezeichnung": "Thermisches Ueberlastrelais Class 10, Einstellung 22-32 A (S2), Schuetzanbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "ueberlastrelais",
+    "b_mm": 55.0,
+    "te_breite": 4,
+    "h_mm": 100.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Überlastrelais",
+    "keine_platzierung_mp": true,
+    "preis_eur": 90.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RU2916-3AA01",
+    "bezeichnung": "Einzelmontagebuegel / Sammelschienenadapter fuer Ueberlastrelais 3RU2 (S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "sonstige",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 76.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schützzubehör",
+    "keine_platzierung_mp": true,
+    "preis_eur": 12.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RN2012-1BW30",
+    "bezeichnung": "Thermistor-Motorschutzrelais (PTC-Wicklungsschutz), 1 Fuehlerkreis, 2 Wechsler, Wiedereinschaltsperre, AC/DC 24-240 V",
+    "hersteller": "Siemens",
+    "bauteil_typ": "thermistorrelais",
+    "b_mm": 22.5,
+    "te_breite": 2,
+    "h_mm": 100.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "Motorschutz",
+    "benoetigt_steuerspannung": "230vac",
+    "preis_eur": 100.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RA2911-2A",
+    "bezeichnung": "Mechanische Verriegelung frontseitig fuer Schuetze 3RT2 (Baugroesse S00)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "verriegelung",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 58.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schützzubehör",
+    "keine_platzierung_mp": true,
+    "preis_eur": 10.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3RA2921-2A",
+    "bezeichnung": "Mechanische Verriegelung frontseitig fuer Schuetze 3RT2 (Baugroesse S0)",
+    "hersteller": "Siemens",
+    "bauteil_typ": "verriegelung",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 85.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Schützzubehör",
+    "keine_platzierung_mp": true,
+    "preis_eur": 12.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6332-7",
+    "bezeichnung": "LSS 5SL6 C32 A, 3-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "b_mm": 54.0,
+    "te_breite": 3,
+    "h_mm": 90.0,
+    "zone": [
+      "evert"
+    ],
+    "kategorie": "Leitungsschutzschalter",
+    "preis_eur": 22.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6340-7",
+    "bezeichnung": "LSS 5SL6 C40 A, 3-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "b_mm": 54.0,
+    "te_breite": 3,
+    "h_mm": 90.0,
+    "zone": [
+      "evert"
+    ],
+    "kategorie": "Leitungsschutzschalter",
+    "preis_eur": 28.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KG32-T204",
+    "bezeichnung": "Kraus & Naimer KG32.T204 Reparaturschalter, 4-polig, 32 A, rot/gelb (bis 11 kW / 400 V 3~)",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "zubehoer_artikel_nr": "0319691",
+    "preis_eur": 44.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KG41-T204",
+    "bezeichnung": "Kraus & Naimer KG41.T204 Reparaturschalter, 4-polig, 40 A, rot/gelb (bis 15 kW / 400 V 3~)",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "zubehoer_artikel_nr": "0758478",
+    "preis_eur": 54.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KG64-T204",
+    "bezeichnung": "Kraus & Naimer KG64.T204 Reparaturschalter, 4-polig, 63 A, rot/gelb (bis 22 kW / 400 V 3~)",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "zubehoer_artikel_nr": "0758478",
+    "preis_eur": 70.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KG80-T204",
+    "bezeichnung": "Kraus & Naimer KG80.T204 Reparaturschalter, 4-polig, 80 A, rot/gelb (bis 30 kW / 400 V 3~, deckt 25 kW)",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "zubehoer_artikel_nr": "0758484",
+    "preis_eur": 130.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "0319691",
+    "bezeichnung": "Kraus & Naimer K0.H010/A11-VE Hilfskontaktblock, seitlich, 1 Schliesser + 1 Oeffner (voreilend, fuer KG20/KG32)",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "preis_eur": 11.0,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "0758478",
+    "bezeichnung": "Kraus & Naimer K1.H010/A11-VE Hilfskontaktblock, seitlich, 1 Schliesser + 1 Oeffner (voreilend, fuer KG41/KG64)",
+    "hersteller": "Kraus & Naimer",
+    "bauteil_typ": "reparaturschalter",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "klemm_f"
+    ],
+    "kategorie": "Reparaturschalter",
+    "keine_platzierung_mp": true,
+    "preis_eur": 14.0,
     "geprueft": false
   }
 ]
