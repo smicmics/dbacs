@@ -43,8 +43,23 @@
 > Export ok: **baugruppen 113 · einzelbauteile 190 · feldgeraete 61**.
 > Browser: Dropdown-Gruppierung „Ventilatoren"/„Kommunikationsmodule" im
 > Lüftungs-Tab korrekt, alle 17 laden, Bauteile/DP-Overrides/Stückliste
-> resolven, keine Konsolenfehler; volle Platzierungs-/Ratchet-Prüfung mit
-> konfiguriertem Schrank (Modul 1–3) noch offen. Details:
+> resolven, keine Konsolenfehler. **Nachtrag (07.09.2026, volle Platzierungs-/
+> Ratchet-Prüfung mit konfiguriertem Schrank – jetzt erledigt):** Standschrank
+> 800×2000, Drehstrom 3~/Schiene 3-polig (Modul 1–3) → alle 17 Baugruppen in
+> Modul 4 gesetzt, keine JS-Fehler/Konsolenfehler, kein `undefined`/`NaN` in
+> Stückliste (52 Positionen). DDC-Ratchet korrekt: 2× TXM1.8U (AI/AO-Pool),
+> 7× TXM1.8D-16 (BI), 5× TXM1.6R (BO), 1× PXC7.E400L-N + Steuertrafo 24V +
+> Sicherheits-/Trenntrafo 230V + LSS. Kommunikationsbauteil-Ratchet korrekt:
+> 1× Ethernet-Switch `2891021` nur für das Modbus-TCP/IP-Modul (kein
+> M-Bus-Pegelwandler, da kein M-Bus-Gerät gesetzt). Im 800mm-Schrank
+> erwartungsgemäß harter Overflow (rote „!"-Markierung, Steuerbaugr.-Zone) –
+> 17 Motor-/EC-Ventilator-Baugruppen sprengen einen einzelnen 800mm-Schrank,
+> das ist die korrekt arbeitende Überlauferkennung, kein Bug. Mit 1200×2000
+> (Standschrank) passt alles ohne Overflow (Leistung 65%, Steuerung 87%,
+> Kl.-Feldgeräte 93%). Modul 5 aggregiert alle 15 Feldgeräte-Zeilen korrekt
+> (Platzhalter `AC-VENT-1PH`/`AC-VENT-3PH`/`FU-VENT-EXT` gruppiert + 4
+> EC-Ventilator-Einzelzeilen), zeigt „–" statt Fehler für die noch fehlenden
+> Preise. Details Katalogrecherche:
 > `scratchpad/ventilatoren_katalog_final.md` + `fork_1..9_*_ergebnis.md`.
 > **Restliste (→ unten):** viele Preise/Maße Distributor-Näherung bzw. offen;
 > 3RV2-/3RU2-Buchstabenstaffel interpoliert; K&N-Reparaturschalter mit
