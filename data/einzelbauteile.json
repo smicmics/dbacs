@@ -2827,7 +2827,7 @@
     "te_breite": 2,
     "h_mm": 100.0,
     "zone": [
-      "steuer"
+      "leist"
     ],
     "kategorie": "Motorschutz",
     "benoetigt_steuerspannung": "230vac",

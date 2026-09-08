@@ -1,6 +1,15 @@
 # DBACS – Revisionsstand
 
-**Stand:** 7. September 2026 – Session 59 (Lüftung: 17 Ventilator-Baugruppen
+**Stand:** 8. September 2026 – Session 60 (Zonen-Korrektur Ventilator-Baugruppen
+`430_000028`–`430_000036`: PTC-Auslösegerät `3RN2012-1BW30` und Koppelrelais
+`2967073` von Zone `steuer` → `leist` in allen 9 Asynchronmotor-Baugruppen +
+Katalog-Default `3RN2012-1BW30` `steuer` → `leist`. Motorschutzschalter bleibt
+in `leist` (Nutzer-Vereinfachung), PTC-Fühlerklemmen bleiben `klemm_f`.
+Export unverändert baugruppen 113 · einzelbauteile 190 · feldgeraete 61.
+Neue verbindliche **Regel 13** in `CLAUDE.md`. Details: `CLAUDE.md` → „Offene
+Punkte" Sitzungsstand Session 60.)
+
+Vorherige Session 59 (07.09.2026): Lüftung: 17 Ventilator-Baugruppen
 `430_000028`–`430_000044` – Asynchronmotor 230 V/400 V mit Direktanlauf,
 Stern-Dreieck-Anlaufschaltung, Dahlander 2-Touren und FU-geregelt; EC-Ventilatoren
 drehzahlgeregelt; 2 Kommunikationsmodule Modbus RTU/TCP. + 43 Einzelbauteile

@@ -16,6 +16,37 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Ende Session 60 (08.09.2026) – Zonen-Korrektur Ventilator-
+> Baugruppen `430_000028`–`430_000036` (9 BG, Asynchronmotor):** auf Nutzer-
+> Vorgabe zur korrekten Platzbedarf-Verteilung angepasst. (1) **PTC-Auslösegerät
+> `3RN2012-1BW30`** (Thermistor-Motorvollschutz) gehört zum Leistungsschutz →
+> `bt.zone` `steuer` → `leist` in allen 9 BG; zusätzlich Katalog-Default
+> `einzelbauteile.zone` `['steuer']` → `['leist']` (Artikel nur hier verwendet,
+> macht die Overrides redundant). `dp_bi:1` bleibt als Override auf der
+> Bauteilzeile (PTC-Störmeldung → DDC-BI, Regel 12, keine eigene Klemme).
+> (2) **Koppelrelais `2967073`** in denselben 9 BG `bt.zone` `steuer` → `leist`
+> (Katalog-Default war schon `leist`; Angleichung an die Pumpen-Baugruppen
+> `420_000022`). (3) **NICHT geändert – bewusst:** die PTC-Fühlerklemmen (2×
+> `3209510`, ohne dp) bleiben in `klemm_f`; der **Motorschutzschalter `3RV20xx`**
+> bleibt in `leist`, obwohl keine der 9 BG eine vorgeschaltete Sicherung hat und
+> der MSS damit den Leitungsschutz übernimmt (nach der Regel „MSS ohne
+> Vorsicherung → `evert`" gehörte er zu den LSS) – für das eine Bauteil je BG
+> akzeptiert der Nutzer die Vereinfachung, spart 7+2 Zonen-Overrides und den
+> Overflow-Sonderfall in einer `evert`-Zone ohne Schienensystem (nur ~105 mm
+> hoch). Der Hilfsschalter `3RV2901-1E` bleibt entsprechend in `leist`.
+> Export unverändert **baugruppen 113 · einzelbauteile 190 · feldgeraete 61**.
+> Browser-Verifikation (Standschrank 1200×2000, Drehstrom 3~/Schiene 3-polig,
+> BG `430_000032` platziert): `aggregateStueckliste()` + `resolveBaugruppen-
+> Bauteile()` für alle 9 BG bestätigen `thermistorrelais`/`koppelrelais`/
+> `motorschutz` → `leist`; Stückliste zeigt PTC + Koppelrelais unter „L", nur
+> die DDC-Auto-Module unter „S", PTC-Fühlerklemmen unter „KF"; Zonen-Füllstand
+> Energievert. 54 % · Leistung 29 % · Steuerung 33 %, kein Overflow, keine
+> Konsolenfehler. Writer/Analyse im Session-Scratchpad.
+> **Als Regel destilliert (→ Regel 13 unter „Baugruppen-Modellierungsregeln"):**
+> PTC-Auslösegerät + Koppelrelais gehören in die Leistungszone; MSS-Zonenwahl
+> hängt von der Vorsicherung ab (mit → `leist`, ohne → grundsätzlich `evert`,
+> Ausnahme pro Einzelfall zulässig).
+
 > **Sitzungsstand Ende Session 59 (07.09.2026) – Lüftung: Ventilator-Baugruppen:**
 > 17 neue Ventilator-Baugruppen `430_000028`–`430_000044` angelegt (11 Familie A
 > Asynchronmotor: 2× 230 V 1-stufig · 2× Direktanlauf · 3× Stern-Dreieck-
@@ -641,6 +672,29 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
     auf die DDC-BI-Klemmen, ohne dass irgendeine dieser drei Verbindungen
     eine eigene `3209510`-Klemme braucht – nur der tatsächliche
     Leistungsabgang zur Pumpe (L/N/PE, siehe Regel 11) bekommt Klemmen.
+13. **Motorschutz-Bauteile: Zonenzuordnung (Session 60, verbindlich):**
+    a) **PTC-Auslösegerät / Thermistor-Motorschutzrelais** (z. B. `3RN2012-1BW30`,
+       `bauteil_typ='thermistorrelais'`) gehört funktional zum Motor-/Leistungs-
+       schutz (wie MSS, Überlastrelais, Schütz) → Zone **`leist`**, nicht
+       `steuer`, obwohl sein Meldekontakt als BI zur DDC geht (die Zone richtet
+       sich nach der Bauteilfunktion, nicht nach dem BI-Ziel – vgl. Regel 1).
+       Der `dp_bi`-Override sitzt auf der Bauteilzeile, keine eigene Klemme
+       (Regel 12).
+    b) **Koppelrelais zwischen DDC-BO und Schützspule** (z. B. `2967073`) sitzt
+       ebenfalls in der Leistungsbaugruppe → Zone **`leist`** (Katalog-Default).
+    c) **Motorschutzschalter** (`3RV2…`, `bauteil_typ='motorschutz'`): sitzt in
+       der Baugruppe eine **Vorsicherung** vor dem MSS → MSS in **`leist`**.
+       Fehlt die Vorsicherung (nicht erforderlich), übernimmt der MSS zugleich
+       den Leitungsschutz → er gehört grundsätzlich in die Energieverteilung
+       **`evert`** zu den LSS/Sicherungen. **Pragmatische Ausnahme pro
+       Einzelfall zulässig:** bei nur einem MSS je Baugruppe und einer `evert`-
+       Zone, die ihn ohne Schienensystem sprengen würde (≈105 mm), darf der MSS
+       zur Vermeidung eines Zonen-Overflows in `leist` bleiben (so in
+       `430_000030`–`036` entschieden, Session 60). Der seitliche MSS-Hilfs-
+       schalter (`3RV2901-1E`) folgt immer der Zone seines MSS.
+    d) **PTC-Fühlerklemmen** (Thermistorschleife aus der Motorwicklung, 2×
+       `3209510` ohne dp): bleiben in **`klemm_f`** (Feldkabel-Abgangsklemmen),
+       nicht `klemm_l` – Session-60-Entscheidung des Nutzers.
 
 ### Referenz: Motorleistungsreihe & Schaltgerätekonzept Drehstrommotoren (Session 56)
 
