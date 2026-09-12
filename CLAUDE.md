@@ -16,7 +16,51 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
-> **Sitzungsstand Session 61 (12.09.2026) – Auswahltext-Namen der 15 Ventilator-
+> **Sitzungsstand Session 61 Teil 2 (12.09.2026) – DP-Zählungs-Bug in allen 15
+> Ventilator-Baugruppen behoben (Nutzer-Fund):** beim Nachfragen, warum
+> `430_000028` 4 statt der in der Beschreibung genannten 3 BI zeigte, Root
+> Cause im Code gefunden: `accumulateDp()` in Modul 4 rechnet
+> `demand[t] += (bt.dp_xx ?? eb.dp_xx) * bt.menge` – der dp-Override wird also
+> mit der Klemmenanzahl (`menge`) DERSELBEN Zeile multipliziert. Bei den
+> Session-59-Ventilator-Baugruppen saßen die 2 (bzw. 3) Klemmen einer
+> Signalverbindung durchgängig in EINER `baugruppen_bauteile`-Zeile
+> (`menge:2`/`3` + `dp_xx`-Override), statt wie bei den etablierten Pumpen-
+> Baugruppen (`420_000022`ff.) auf mehrere Einzelzeilen mit je `menge:1`
+> aufgeteilt zu sein (nur eine davon trägt den Override) – das hat den
+> physikalischen Datenpunktbedarf durchgängig verdoppelt (bei den beiden
+> EC-Ventilator-Wechsler-Zeilen mit `menge:3`/`dp_bi:2` sogar auf das
+> 3-Fache verzerrt statt der beabsichtigten 2 BI). **Fix:** jede betroffene
+> Klemmenzeile (Artikel `3209510`, Zone `klemm_f`, `menge`>1, mit dp-Override)
+> in `ga_komponenten.xlsx`/Sheet `baugruppen_bauteile` aufgeteilt – je
+> dp-Einheit eine Zeile `menge:1` mit dem Override, die restlichen Klemmen als
+> eigene `menge:1`-Zeile(n) ohne dp (Gesamt-Klemmenzahl/Platzbedarf je Zone
+> unverändert). Betrifft `430_000028`–`430_000042` (alle 15), 74 neue Zeilen
+> durch die Aufteilung (544→583 Datenzeilen im Sheet). Ergebnis je Baugruppe
+> (Soll laut Beschreibung = jetzt Ist):
+> - `028`/`029` (1-stufig): BI 4→**3**, BO 1 (unveraendert)
+> - `030`/`031` (Direktanlauf): BI 5→**4**, BO 1
+> - `032`–`034` (Stern-Dreieck): BI 5→**4**, BO 1
+> - `035`/`036` (Dahlander): BI 6→**5**, BO 2 (unveraendert)
+> - `037`/`038` (FU-geregelt): AO 2→**1**, BI 6→**3**, BO 2→**1**
+> - `039`–`042` (EC-Ventilator): AO 2→**1**, BI 8→**3**, BO 2→**1**
+> Export **baugruppen 113 · einzelbauteile 190 · feldgeraete 61** (Zahlen
+> unveraendert). Backup vor der strukturellen Änderung:
+> `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-ventilator-klemmen-split_20260912.xlsx`.
+> Verifikation: (1) direkte Nachrechnung der `accumulateDp()`-Formel gegen
+> `baugruppen.json` im Browser (JS-Konsole) für alle 15 IDs – Ist-Werte exakt
+> wie oben; (2) Live-UI-Test in Modul 4 (Standschrank, Montagebereich
+> 699×1499, `430_000028` bzw. `430_000037` einzeln platziert) – Statistik
+> zeigt jetzt BI 3/16 bzw. AO 1/8 · BI 3/16 · BO 1/6, keine Konsolenfehler.
+> Klemmen-Gesamtbreite je Zone (Platzbedarf) vor/nach Fix identisch geprüft.
+> **Als Regel zu ergänzen:** DDC-Datenpunkt-Overrides (`dp_ai/ao/bi/bo`) auf
+> einer Klemmenzeile IMMER mit `menge:1` versehen – trägt ein Signal mehrere
+> Klemmen (Gegenader/gemeinsamer Leiter), gehören die zusätzlichen Klemmen auf
+> eine SEPARATE Zeile ohne dp-Override (Vorbild: Pumpen-Baugruppen
+> `420_000022`ff.). Ein `bt.dp_xx`-Override wird von der App IMMER mit
+> `bt.menge` derselben Zeile multipliziert (`accumulateDp()`), nie geteilt.
+
+> **Sitzungsstand Session 61 Teil 1 (12.09.2026) – Auswahltext-Namen der 15
+> Ventilator-
 > Baugruppen `430_000028`–`430_000042` ergänzt:** Nutzer-Fund per Screenshot –
 > im Baugruppen-Dropdown war für z. B. „Ventilator 1-stufig, Kleinventilator
 > bis 1,5 kW, 230V AC 1~" nicht erkennbar, wie die Aufschaltung erfolgt (BI/BO-
@@ -727,6 +771,21 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
     d) **PTC-Fühlerklemmen** (Thermistorschleife aus der Motorwicklung, 2×
        `3209510` ohne dp): bleiben in **`klemm_f`** (Feldkabel-Abgangsklemmen),
        nicht `klemm_l` – Session-60-Entscheidung des Nutzers.
+14. **DP-Override auf Klemmenzeilen immer mit `menge:1` (Session 61,
+    verbindlich):** `accumulateDp()` in Modul 4 multipliziert einen
+    `dp_ai/ao/bi/bo`-Override IMMER mit der `menge` derselben
+    `baugruppen_bauteile`-Zeile (`demand[t] += dp_xx * menge`) – nie
+    aufteilen/anteilig denken. Braucht ein Feldsignal mehrere Klemmen (z. B.
+    2 Adern für einen potentialfreien Kontakt, oder 3 für einen beidseitig
+    ausgelesenen Wechsler), MUSS jede Klemme eine eigene Zeile mit `menge:1`
+    bekommen – nur die Zeile(n), die tatsächlich ein Signal führen, tragen
+    den dp-Override, die übrigen (Gegenader/gemeinsamer Leiter) bleiben
+    `menge:1` ohne dp. Eine einzelne Zeile mit `menge:2`+`dp_bi:1` zählt sonst
+    2 BI statt 1. Vorbild: Pumpen-Baugruppen `420_000022`ff. Fehlerbild bei
+    Verstoß: Session 59 hatte alle 15 Ventilator-Baugruppen
+    (`430_000028`–`430_000042`) mit zusammengefassten Klemmenzeilen gebaut –
+    dadurch war der BI/BO/AO-Bedarf durchgängig 2× (teils 3×) zu hoch, in
+    Session 61 korrigiert (siehe Sitzungsstand oben).
 
 ### Referenz: Motorleistungsreihe & Schaltgerätekonzept Drehstrommotoren (Session 56)
 
