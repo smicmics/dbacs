@@ -3777,6 +3777,11 @@
         "zone": "klemm_f"
       },
       {
+        "artikel_nr": "0319691",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
@@ -3848,6 +3853,11 @@
       },
       {
         "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -3928,6 +3938,11 @@
         "zone": "klemm_f"
       },
       {
+        "artikel_nr": "0319691",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
@@ -4000,6 +4015,11 @@
       },
       {
         "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -4080,6 +4100,11 @@
         "zone": "klemm_f"
       },
       {
+        "artikel_nr": "0319691",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
@@ -4156,6 +4181,11 @@
         "zone": "klemm_f"
       },
       {
+        "artikel_nr": "0758478",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
@@ -4228,6 +4258,11 @@
       },
       {
         "artikel_nr": "KG64-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0758478",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -4336,6 +4371,11 @@
       },
       {
         "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -4458,6 +4498,11 @@
         "zone": "klemm_f"
       },
       {
+        "artikel_nr": "0758478",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
@@ -4545,6 +4590,11 @@
       },
       {
         "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -4640,6 +4690,11 @@
         "zone": "klemm_f"
       },
       {
+        "artikel_nr": "0758478",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
@@ -4731,6 +4786,11 @@
         "zone": "klemm_f"
       },
       {
+        "artikel_nr": "0319691",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
@@ -4813,6 +4873,11 @@
       },
       {
         "artikel_nr": "3813641",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0319691",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -4903,6 +4968,11 @@
         "zone": "klemm_f"
       },
       {
+        "artikel_nr": "0319691",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f",
@@ -4985,6 +5055,11 @@
       },
       {
         "artikel_nr": "KG64-T204",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0758478",
         "menge": 1,
         "zone": "klemm_f"
       },
@@ -5091,19 +5166,14 @@
   },
   {
     "id": "410_000002",
-    "name": "Nachspeisearmatur fuer Systeme mit MAG, Reflex Fillcontrol Smart, 230V AC, Sammelstoerung",
+    "name": "Nachspeisearmatur fuer Systeme mit MAG, Reflex Fillcontrol Smart, 230V AC mit Netzstecker, Sammelstoerung",
     "gewerk": "410",
-    "beschreibung": "Elektronisch geregelte Nachspeisestation fuer Anlagen mit Membran-Druckausdehnungsgefaess (MAG), Reflex Fillcontrol Smart (Art. 6813500). Eigene 230V-AC-Versorgung <100W/4A ueber Netzstecker (bauseits/schrankseitig hier als fest verdrahteter Abgang modelliert), abgesichert per LSS 1-polig B6A (5SL6106-7) in der Energieverteilung + Reparaturschalter (Kraus & Naimer KG10.T204, normativ gefordert zur allpoligen Freischaltung). 3 Klemmen L/N/PE (Regel 11) in der Leistungsklemmleiste. Potentialfreier Wechslerkontakt 'Sammelstoermeldung' auf der Steuerungsplatine (max. 230V/2A, eigener Erdungsanschluss PE auf der Platine ist geraeteintern, nicht Teil dieses Abgangs) auf 2 Klemmen der Feldgeraete-Klemmleiste, direkt als BI verdrahtet (kein Koppelrelais noetig, bereits potentialfrei). Datenpunktbedarf 1x BI. Zusaetzliche RS485-Schnittstelle auf der Platine vorhanden, Protokoll nicht spezifiziert - nicht Teil dieser Baugruppe (kein GLT-Bezug angefordert).",
+    "beschreibung": "Elektronisch geregelte Nachspeisestation fuer Anlagen mit Membran-Druckausdehnungsgefaess (MAG), Reflex Fillcontrol Smart (Art. 6813500). Werkseitiger Netzstecker (Schuko) - laut Original-Betriebsanleitung 'Die Spannungsversorgung des Geraetes erfolgt ueber einen Schuko-Stecker'. Schaltschrank versorgt dafuer eine Aufputz-Schutzkontaktsteckdose vor Ort (Busch-Jaeger 2300 EWSI, Pflichtzubehoer-Feldgeraet ueber zubehoer_feldgeraet_artikel_nr), LSS 1-polig B6A (5SL6106-7) + 3 Klemmen L/N/PE (Regel 11) bleiben dafuer unveraendert bestehen. KEIN Reparaturschalter noetig (Regel 16) - Ausstecken bewirkt dieselbe Spannungsfreiheit wie ein externer Schalter, waere redundant. Potentialfreier Wechslerkontakt 'Sammelstoermeldung' auf der Steuerungsplatine (max. 230V/2A) auf 2 Klemmen der Feldgeraete-Klemmleiste, direkt als BI verdrahtet (kein Koppelrelais noetig, bereits potentialfrei). Datenpunktbedarf 1x BI. Zusaetzliche RS485-Schnittstelle auf der Platine vorhanden, Protokoll nicht spezifiziert - nicht Teil dieser Baugruppe.",
     "bauteile": [
       {
         "artikel_nr": "5SL6106-7",
         "menge": 1,
         "zone": "evert"
-      },
-      {
-        "artikel_nr": "3813635",
-        "menge": 1,
-        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -5145,19 +5215,14 @@
   },
   {
     "id": "410_000003",
-    "name": "Druckhaltestation kompressorgesteuert, Reflex Reflexomat XS, 230V AC, Nachspeiseanforderung, Sammelstoerung",
+    "name": "Druckhaltestation kompressorgesteuert, Reflex Reflexomat XS, 230V AC mit Netzstecker, Nachspeiseanforderung, Sammelstoerung",
     "gewerk": "410",
-    "beschreibung": "Kompressorgesteuerte Druckhaltestation Reflex Reflexomat XS (Art. 8800100, Steuerung 'Reflex Control Smart', 0,25kW Kompressor, IP54). 230V-AC-Versorgung ueber LSS 1-polig B6A (5SL6106-7) in der Energieverteilung + Reparaturschalter (KG10.T204), 3 Klemmen L/N/PE (Regel 11). Externe Nachspeiseanforderung ('Levelcontrol', Klemmen P3/P4 laut Klemmenplan) erwartet ein 230V-Signal ueber L+N, KEIN potentialfreier Kontakt und kein 24V-Signal - TXM1.8T liefert nur 24V AC, daher Koppelrelais 24V-AC-Spule (2967073, Regel 10) zwischengeschaltet: DDC-BO speist die Relaisspule direkt (keine eigene Klemme, Regel 12), 1 Relaiskontakt schaltet L durchgehend zu P3, N wird direkt zu P4 durchverdrahtet (2 Klemmen Feldgeraete-Klemmleiste). Potentialfreier Sammelstoerkontakt (Wechsler, max. 230V/8A) auf 2 weiteren Klemmen direkt als BI (kein Koppelrelais noetig). Datenpunktbedarf 1x BO + 1x BI. RS485/Modbus-RTU-Schnittstelle bereits im Grundgeraet integriert (Druck/Fuellstand/Kompressorstatus abrufbar), aber NICHT Teil dieser Baugruppe (keine Analogausgaenge zur GLT vorhanden - Prozesswerte nur digital ueber Modbus, hier nicht angefordert/nicht modelliert).",
+    "beschreibung": "Kompressorgesteuerte Druckhaltestation Reflex Reflexomat XS (Art. 8800100, Steuerung 'Reflex Control Smart', 0,25kW Kompressor, IP54). Werkseitiger Netzstecker - Lieferumfang laut Original-Betriebsanleitung enthaelt 'Netzkabel mit Stecker (230V~)'. Schaltschrank versorgt dafuer eine Aufputz-Schutzkontaktsteckdose vor Ort (Busch-Jaeger 2300 EWSI, Pflichtzubehoer-Feldgeraet), LSS 1-polig B6A (5SL6106-7) + 3 Klemmen L/N/PE (Regel 11) bleiben unveraendert. KEIN Reparaturschalter noetig (Regel 16). Externe Nachspeiseanforderung ('Levelcontrol', Klemmen P3/P4 laut Klemmenplan) erwartet ein 230V-Signal ueber L+N, KEIN potentialfreier Kontakt und kein 24V-Signal - TXM1.8T liefert nur 24V AC, daher Koppelrelais 24V-AC-Spule (2967073, Regel 10) zwischengeschaltet: DDC-BO speist die Relaisspule direkt (keine eigene Klemme, Regel 12), 1 Relaiskontakt schaltet L durchgehend zu P3, N wird direkt zu P4 durchverdrahtet (2 Klemmen Feldgeraete-Klemmleiste). Potentialfreier Sammelstoerkontakt (Wechsler, max. 230V/8A) auf 2 weiteren Klemmen direkt als BI. Datenpunktbedarf 1x BO + 1x BI. RS485/Modbus-RTU-Schnittstelle bereits im Grundgeraet integriert, aber NICHT Teil dieser Baugruppe.",
     "bauteile": [
       {
         "artikel_nr": "5SL6106-7",
         "menge": 1,
         "zone": "evert"
-      },
-      {
-        "artikel_nr": "3813635",
-        "menge": 1,
-        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -5217,17 +5282,12 @@
     "id": "410_000004",
     "name": "Druckhaltestation pumpengesteuert, Reflex Variomat Touch VS 2, 230V AC, Nachspeiseanforderung, Sammelstoerung, Trockenlaufschutz, Druck/Niveau 4-20mA",
     "gewerk": "410",
-    "beschreibung": "Pumpengesteuerte Druckhaltestation Reflex Variomat Touch VS 2 (Beispiel Steuerung VS 2-1/35, Art. 8910110, IP64). 230V-AC-Versorgung Gesamtstation max. 16A (Klemmenplan 'L Supply 230V, max. 16A') ueber LSS 2-polig C16A (5SL6216-7) in der Energieverteilung + Reparaturschalter (KG10.T204, 20A-Nennstrom deckt die 16A), 3 Klemmen L/N/PE (Regel 11). GROESSERE BAUGROESSEN DER VS-2-BAUREIHE KOENNEN 400V/20A BENOETIGEN - hier bewusst die kleinste Baugroesse (VS 2-1/35, 230V einphasig) als Referenz gewaehlt, siehe quelle_hinweis Restliste. Externe Nachspeiseanforderung: Klemme 22b wird zusammen mit 22a verdrahtet, Spannung (+24V) liefert die Station SELBST ueber Klemme 43 - es ist ein geraeteeigener Spannungs-Loop, der extern nur per potentialfreiem Kontakt/Schalter gebrueckt werden darf (keine externe Spannungseinspeisung). Da TXM1.8T nur einen spannungsbehafteten 24V-AC-Ausgang liefert (keinen potentialfreien Kontakt), auch hier Koppelrelais 24V-AC-Spule (2967073, Regel 10) zwischengeschaltet: DDC-BO speist die Spule, 1 Relaiskontakt bruecke rein potentialfrei die Klemmen 22b/43 (2 Klemmen Feldgeraete-Klemmleiste, keine DBACS-seitige Spannung wird eingespeist). Potentialfreier Sammelstoerkontakt ('Group message, floating', Klemme 24/25) auf 2 Klemmen direkt als BI. Eigener potentialfreier Trockenlaufschutz-Kontakt ('Dry-run protection message, floating', Klemme 13) getrennt von der Sammelstoerung auf 2 weiteren Klemmen als eigener BI. Analoge Ausgaenge Druck (Klemme 19 'Pressure') und Niveau (Klemme 21 'Level') serienmaessig auf der Control-Touch-Bedieneinheit, Signalart AUSDRUECKLICH 4-20mA ('Standard 4-20mA', NICHT 0-10V) mit gemeinsamer analoger Masse GNDA (Klemme 20) - 3 Klemmen (Signal Druck, GNDA gemeinsam, Signal Niveau). ERSTER 4-20mA-Anwendungsfall im DBACS-Katalog: dafuer TXM1.8X statt TXM1.8U vorgesehen (neue Katalogzeile, siehe einzelbauteile-Eintrag TXM1.8X) - DBACS' automatische DDC-Modulwahl unterscheidet aktuell NICHT nach Signalart, daher fuer diese 2 AI-Punkte manuelle Substitution durch TXM1.8X noetig (siehe quelle_hinweis TXM1.8X). Datenpunktbedarf 1x BO + 2x BI + 2x AI.",
+    "beschreibung": "Pumpengesteuerte Druckhaltestation Reflex Variomat Touch VS 2 (Beispiel Steuerung VS 2-1/35, Art. 8910110, IP64). Laut Original-Betriebsanleitung ECHT klemmenbasiert fest verdrahtet (Kabeldurchfuehrungen fuer Einspeisung+Absicherung im 'Anschlussteil', Einspeiseklemme 'X0/1 L Einspeisung 230V') - anders als die uebrigen Reflex-Baugruppen dieser Session, die per Netzstecker/Steckdose angeschlossen werden. Reale Anschlussleistung laut Datenblatt nur 230V/5A (nicht 16A wie zunaechst angenommen) - LSS korrigiert auf 1-polig B6A (5SL6106-7). Das Anschlussteil hat einen EIGENEN Hauptschalter eingebaut (siehe Uebersichtsbild 'Elektrischer Anschluss') - ein zusaetzlicher externer Reparaturschalter entfaellt (Regel 16, gleicher Effekt: Spannungsfreiheit vor Ort herstellbar). 3 Klemmen L/N/PE (Regel 11) bleiben, da die Einspeisung tatsaechlich aus dem Schrank kommt. Externe Nachspeiseanforderung: Klemme 22b/43 ist ein geraeteeigener Spannungs-Loop (+24V von der Station selbst), extern nur per potentialfreiem Kontakt zu bruecken - Koppelrelais 24V-AC-Spule (2967073, Regel 15). Potentialfreier Sammelstoerkontakt (Klemme 24/25) auf 2 Klemmen als BI. Eigener potentialfreier Trockenlaufschutz-Kontakt (Klemme 13) getrennt als BI. Analoge Ausgaenge Druck (Klemme 19) und Niveau (Klemme 21), Signalart 4-20mA mit gemeinsamer Masse GNDA (Klemme 20). Je Signal ein 500-Ohm-Praezisionswiderstand (Artikel BUERDE-500R) parallel an der Klemme wandelt 4-20mA in 2-10V - dadurch liest ein STANDARD TXM1.8U (automatische DDC-Modulwahl waehlt ohnehin immer dieses Modul) das Signal korrekt, TXM1.8X ist NICHT erforderlich (bleibt rein manuelle Alternative). Datenpunktbedarf 1x BO + 2x BI + 2x AI.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6216-7",
+        "artikel_nr": "5SL6106-7",
         "menge": 1,
         "zone": "evert"
-      },
-      {
-        "artikel_nr": "3813635",
-        "menge": 1,
-        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -5289,6 +5349,11 @@
         "dp_ai": 1
       },
       {
+        "artikel_nr": "BUERDE-500R",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
@@ -5298,6 +5363,11 @@
         "menge": 1,
         "zone": "klemm_f",
         "dp_ai": 1
+      },
+      {
+        "artikel_nr": "BUERDE-500R",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -5313,19 +5383,14 @@
   },
   {
     "id": "410_000005",
-    "name": "Vakuum-Spruehrohrentgasung mit Nachspeisung, Reflex Servitec S, 230V AC, Nachspeiseanforderung, Sammelstoerung",
+    "name": "Vakuum-Spruehrohrentgasung mit Nachspeisung, Reflex Servitec S, 230V AC mit Netzstecker, Nachspeiseanforderung, Sammelstoerung",
     "gewerk": "410",
-    "beschreibung": "Vakuum-Spruehrohrentgasungsgeraet mit integrierter Nachspeisung Reflex Servitec S (Art. 8832000, 0,2kW, IP42). 230V-AC-Versorgung ueber LSS 1-polig B6A (5SL6106-7) in der Energieverteilung + Reparaturschalter (KG10.T204), 3 Klemmen L/N/PE (Regel 11) - Geraet hat werkseitig einen eigenen Netzstecker, hier als fest verdrahteter Abgang modelliert. Externe Nachspeiseanforderung (Betriebsart 'Levelcontrol', Klemmen P3/P4 laut Klemmenplan Pos.2) erwartet ein 230V-Signal ueber L+N (identisches Anschlussschema wie beim Reflexomat, der genau dieses Signal im Verbund erzeugt) - Koppelrelais 24V-AC-Spule (2967073, Regel 10): DDC-BO speist die Spule, 1 Relaiskontakt schaltet L zu P3, N direkt zu P4 (2 Klemmen Feldgeraete-Klemmleiste). Potentialfreier Sammelstoerkontakt (Klemme 26/27/28 'C/NC/NO', max. 230V/8A) auf 2 Klemmen direkt als BI. Datenpunktbedarf 1x BO + 1x BI. Vollstaendiger Original-Klemmenplan (18 Positionen, Servitec-S-Betriebsanleitung Rev. B 28.08.2019) ausgewertet.",
+    "beschreibung": "Vakuum-Spruehrohrentgasungsgeraet mit integrierter Nachspeisung Reflex Servitec S (Art. 8832000, 0,2kW, IP42). Werkseitiger Netzstecker - Original-Klemmenplan Pos. 14: 'Spannungsversorgung 230V über Kabel mit Netzstecker, werkseitig'. Schaltschrank versorgt dafuer eine Aufputz-Schutzkontaktsteckdose vor Ort (Busch-Jaeger 2300 EWSI, Pflichtzubehoer-Feldgeraet), LSS 1-polig B6A (5SL6106-7) + 3 Klemmen L/N/PE (Regel 11) bleiben unveraendert. KEIN Reparaturschalter noetig (Regel 16). Externe Nachspeiseanforderung (Betriebsart 'Levelcontrol', Klemmen P3/P4) erwartet ein 230V-Signal ueber L+N (identisches Anschlussschema wie beim Reflexomat) - Koppelrelais 24V-AC-Spule (2967073, Regel 10): DDC-BO speist die Spule, 1 Relaiskontakt schaltet L zu P3, N direkt zu P4 (2 Klemmen Feldgeraete-Klemmleiste). Potentialfreier Sammelstoerkontakt (Klemme 26/27/28 'C/NC/NO', max. 230V/8A) auf 2 Klemmen direkt als BI. Datenpunktbedarf 1x BO + 1x BI. Vollstaendiger Original-Klemmenplan (Servitec-S-Betriebsanleitung Rev. B 28.08.2019) ausgewertet.",
     "bauteile": [
       {
         "artikel_nr": "5SL6106-7",
         "menge": 1,
         "zone": "evert"
-      },
-      {
-        "artikel_nr": "3813635",
-        "menge": 1,
-        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -5383,19 +5448,14 @@
   },
   {
     "id": "410_000006",
-    "name": "Trinkwasser-Hygiene-Spuelstation, Viega 2241.10, 230V AC, Sammelstoerung, Reset extern",
+    "name": "Trinkwasser-Hygiene-Spuelstation, Viega 2241.10, 230V AC mit Netzstecker, Sammelstoerung, Reset extern",
     "gewerk": "410",
-    "beschreibung": "Automatische Trinkwasser-Hygiene-Spuelstation Viega 2241.10 (Herst.-Art.-Nr. 762216, eine Spuelstrecke PWC/PWH). Eigenes externes Steckernetzteil 230V AC -> 12V DC, max. 15,6W, ueber LSS 1-polig B6A (5SL6106-7) in der Energieverteilung + Reparaturschalter (KG10.T204), 3 Klemmen L/N/PE (Regel 11) - Geraet hat werkseitig einen eigenen Netzstecker, hier als fest verdrahteter Abgang modelliert. Potentialfreier Alarmkontakt (Klemme 1/2 der Phoenix-Steckklemme, Arbeitskontakt/Schliesser, max. 24V DC/0,5A - stromlos geoeffnet, loest bei Stationsausfall NICHT von selbst aus) auf 2 Klemmen direkt als BI Sammelstoerung. Externer Reset (Klemme 3/4): die Station liefert die 24V DC fuer die Reset-Schleife SELBST (Klemme 3 = Reset OUT, Klemme 4 = Reset IN) - extern darf laut Anleitung nur ein potentialfreier Schalter/Relaiskontakt die beiden Klemmen bruecken, KEINE externe Spannungseinspeisung. Da TXM1.8T nur einen spannungsbehafteten 24V-AC-Ausgang liefert (keinen potentialfreien Kontakt), Koppelrelais 24V-AC-Spule (2967073, Regel 10): DDC-BO speist die Spule, 1 Relaiskontakt bruecke rein potentialfrei Klemme 3/4 (2 Klemmen Feldgeraete-Klemmleiste, keine DBACS-seitige Spannung eingespeist). Datenpunktbedarf 1x BI + 1x BO. Optionales Zusatzmodul 'GLT-Modul binaer 2241.87' (8 potentialfreie Eingaenge + 12 Relaisausgaenge) fuer erweiterte GLT-Anbindung existiert, ist NICHT Teil dieser Grundbaugruppe (nur die angefragten 2 Datenpunkte ueber die Basis-Klemme modelliert).",
+    "beschreibung": "Automatische Trinkwasser-Hygiene-Spuelstation Viega 2241.10 (Herst.-Art.-Nr. 762216, eine Spuelstrecke PWC/PWH). Eigenes externes Steckernetzteil 230V AC -> 12V DC, max. 15,6W - Steckernetzteil wird in eine Aufputz-Schutzkontaktsteckdose vor Ort eingesteckt, die der Schaltschrank versorgt (Busch-Jaeger 2300 EWSI, Pflichtzubehoer-Feldgeraet), LSS 1-polig B6A (5SL6106-7) + 3 Klemmen L/N/PE (Regel 11) bleiben unveraendert. KEIN Reparaturschalter noetig (Regel 16). Potentialfreier Alarmkontakt (Klemme 1/2, Arbeitskontakt, max. 24V DC/0,5A) auf 2 Klemmen direkt als BI Sammelstoerung. Externer Reset (Klemme 3/4): die Station liefert die 24V DC fuer die Reset-Schleife SELBST, extern darf laut Anleitung nur ein potentialfreier Schalter/Relaiskontakt die beiden Klemmen bruecken - Koppelrelais 24V-AC-Spule (2967073, Regel 15): DDC-BO speist die Spule, 1 Relaiskontakt bruecke rein potentialfrei Klemme 3/4 (2 Klemmen Feldgeraete-Klemmleiste). Datenpunktbedarf 1x BI + 1x BO. Optionales Zusatzmodul 'GLT-Modul binaer 2241.87' existiert, ist NICHT Teil dieser Grundbaugruppe.",
     "bauteile": [
       {
         "artikel_nr": "5SL6106-7",
         "menge": 1,
         "zone": "evert"
-      },
-      {
-        "artikel_nr": "3813635",
-        "menge": 1,
-        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -5525,6 +5585,11 @@
         "menge": 1,
         "zone": "klemm_s",
         "dp_ai": 1
+      },
+      {
+        "artikel_nr": "BUERDE-500R",
+        "menge": 1,
+        "zone": "klemm_s"
       },
       {
         "artikel_nr": "3209510",

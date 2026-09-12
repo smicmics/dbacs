@@ -119,6 +119,80 @@
 > Tauchfühler nicht katalogisiert (s.o.). Herleitungstabellen je Baugruppe im
 > Session-Abschlussbericht (Chat), Rohdaten `scratchpad/fork_1..5_*_ergebnis.md`.
 
+> **Sitzungsstand Session 62 Nachtrag 3 (12.09.2026) - Reparaturschalter-
+> Korrektur, Buerdewiderstand statt TXM1.8X-Zwang, Hilfskontaktblock-Luecke
+> bei Ventilatoren (3 Nutzer-Funde in einer Sitzung):**
+> 1. **Reparaturschalter entfaellt bei 5 Sanitaer-Baugruppen** (Nutzer-Frage
+>    "warum Reparaturschalter, wird doch gar nicht benoetigt" zu
+>    `410_000002`): Original-Betriebsanleitungen geprueft - `410_000002`
+>    Fillcontrol Smart ("Spannungsversorgung ueber Schuko-Stecker"),
+>    `410_000003` Reflexomat XS ("Netzkabel mit Stecker im Lieferumfang"),
+>    `410_000005` Servitec S ("Spannungsversorgung 230V ueber Kabel mit
+>    Netzstecker, werkseitig"), `410_000006` Viega 2241.10 (externes
+>    Steckernetzteil) haben ALLE einen werkseitigen Netzstecker.
+>    Nutzer-Vorgabe: LSS + L/N/PE-Klemmen bleiben unveraendert (der
+>    Schaltschrank versorgt weiterhin eine Aufputz-Schutzkontaktsteckdose
+>    vor Ort, in die das Geraet eingesteckt wird) - nur der Reparaturschalter
+>    entfaellt (Ausstecken = Spannungsfreiheit, redundant). Neues
+>    Pflichtzubehoer-Feldgeraet `2CKA002083A0368` (Busch-Jaeger 2300 EWSI,
+>    Schutzkontaktsteckdose Aufputz IP44) ueber `zubehoer_feldgeraet_artikel_nr`
+>    an alle 4 betroffenen Feldgeraete gehaengt. `410_000004` Variomat VS 2
+>    ist dagegen laut Anleitung ECHT klemmenbasiert fest verdrahtet
+>    (Kabeldurchfuehrungen, Einspeiseklemme X0/1) - hat aber einen eigenen
+>    Hauptschalter im Anschlussteil eingebaut (gleicher Effekt:
+>    Spannungsfreiheit vor Ort herstellbar) -> Reparaturschalter ebenfalls
+>    entfernt, LSS bleibt (dabei Rating korrigiert: reale Anschlussleistung
+>    laut Datenblatt nur 230V/5A, nicht 16A wie urspruenglich angenommen -
+>    `5SL6216-7` 2-polig C16A -> `5SL6106-7` 1-polig B6A). Als Regel 16
+>    verallgemeinert. `name`-Felder der 4 Steckdosen-Baugruppen um "...mit
+>    Netzstecker" ergaenzt (Nutzer-Vorgabe: Bezug zur Steckdose in der
+>    Feldgeraeteliste ohne Rueckfrage nachvollziehbar).
+> 2. **Buerdewiderstand statt TXM1.8X-Zwang** (Nutzer-Vorgabe: "kein
+>    DDC-Modul manuell auswaehlen muessen"): `computeDdcAutoModules()` waehlt
+>    fuer jeden Analog-Bedarf (AI+AO-Pool) ohnehin IMMER `TXM1.8U`/`-ML`
+>    (hartcodiert, siehe Code-Kommentar dort) - `TXM1.8X` wird von der
+>    automatischen DDC-Modulwahl nie ausgewaehlt und kann es auch nicht
+>    (kein Code-Pfad dafuer). Nutzer-Hinweis: ein 4-20mA-Signal wird mit einem
+>    500-Ohm-Praezisionswiderstand parallel an der Klemme zu einem 2-10V-Signal
+>    gewandelt (4mA*500R=2V, 20mA*500R=10V) und liegt damit im
+>    0-10V-Eingangsbereich von `TXM1.8U` - neues generisches Einzelbauteil
+>    `BUERDE-500R` (kein Hersteller-Artikel ermittelt) ergaenzt bei allen 3
+>    echten 4-20mA-Punkten (Variomat `410_000004` Druck+Niveau, AquaVip
+>    `410_000009` Durchfluss - NICHT bei der passiven Pt1000-Temperatur der
+>    AquaVip, die braucht keine Wandlung). `TXM1.8X`/`-ML` bleiben im Katalog
+>    als rein manuelle Alternative, werden aber nie automatisch vorausgesetzt
+>    - der zuvor dokumentierte "offene Punkt DDC-Ratchet signalart-blind" ist
+>    damit erledigt/hinfaellig.
+> 3. **Hilfskontaktblock-Luecke in allen 15 Ventilator-Baugruppen behoben**
+>    (Nutzer-Fund beim Nachrechnen der Variomat-Klemmen: "Reparaturschalter
+>    = 1 BI 2 Klemmen" als Erwartung; beim Quer-Check ueber alle Baugruppen
+>    mit Reparaturschalter gefunden): die Pumpen-Baugruppen (`420_000022`ff.)
+>    fuehren korrekt einen Hilfskontaktblock (`0319691`/`0758478`) als eigene
+>    Bauteilzeile neben dem Reparaturschalter (Regel-2-konform, macht die
+>    Rueckmelde-BI-Klemme physikalisch plausibel). Alle 15 Ventilator-
+>    Baugruppen (`430_000028`-`430_000042`, Session 59) zaehlten zwar
+>    korrekt 1 BI "Stellung" (Regel 14, 2 Klemmen), hatten aber KEINEN
+>    Hilfskontaktblock als Bauteil - gleicher Reparaturschalter-Artikel
+>    (`3813635`/`3813641`) wie bei den Pumpen, also dieselbe physikalische
+>    Situation, nur ohne das Bauteil in der Stueckliste. Ergaenzt:
+>    `3813635`/`3813641`/`KG32-T204` -> `0319691`, `KG41-T204`/`KG64-T204` ->
+>    `0758478` (analog Pumpen-Muster). `KG80-T204` hat noch kein passendes
+>    Gegenstueck im Katalog - aktuell von keiner Baugruppe verwendet, bei
+>    Bedarf nachrecherchieren. Betrifft NICHT die 5 Sanitaer-Baugruppen aus
+>    Punkt 1 (dort entfaellt der Reparaturschalter ja komplett).
+> **Export:** baugruppen 122 (unveraendert, nur bearbeitet) · einzelbauteile
+> 192->**193** (`BUERDE-500R`) · feldgeraete 71->**72**
+> (`2CKA002083A0368`). Backups:
+> `ga_komponenten_vor-buerdewiderstand_20260912.xlsx` und
+> `ga_komponenten_nach-reparaturschalter-fix_20260912.xlsx`. Browser-
+> Verifikation: alle 5 Sanitaer-Baugruppen + `410_000009` + Ventilator-
+> Stichproben (`430_000028`/`032`/`033`/`034`/`036`/`038`/`042`, KG10 bis
+> KG64) direkt aus `baugruppen.json` gegen die echte `accumulateDp()`-Formel
+> nachgerechnet - Werte exakt wie oben; `410_000004` zusaetzlich live in
+> Modul 4 platziert (Statistik AI 2/8 · BI 2/16 · BO 1/6, `5SL6106-7` statt
+> `5SL6216-7` in der Stueckliste, kein Reparaturschalter mehr), keine
+> Konsolenfehler.
+
 > **Sitzungsstand Session 62 Nachtrag (12.09.2026) – Kategorie-Umbenennung +
 > Viega-Trinkwassersensoren:** Nutzer-Vorgabe zur Kategoriestruktur: die 5
 > Fork-Baugruppen `410_000001`–`005` von „Nachspeise-/Druckhaltetechnik" →
@@ -952,6 +1026,28 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
     ist in beiden Faellen: der TXM-Ausgang liefert etwas anderes (Spannung
     vs. Kontakt, oder falsche Spannungshoehe) als das Ziel braucht, also immer
     Koppelrelais zwischen DDC-BO und externem Anschluss.
+16. **Reparaturschalter entfällt bei Netzstecker-Anschluss oder geräteeigenem
+    Hauptschalter (Session 62, verbindlich):** Der externe Reparaturschalter
+    ist normativ (EN 60204-1/VDE 0113) nur für **fest verdrahtete**
+    Betriebsmittel gefordert, zur allpoligen Freischaltung außerhalb der
+    Sichtweite der Hauptabsicherung. Hat ein Feldgerät laut Datenblatt
+    **ausschließlich einen werkseitig konfektionierten Netzstecker** (Schuko
+    o. ä.) zur Spannungsversorgung, entfällt der Reparaturschalter – Ausstecken
+    erfüllt exakt denselben Zweck (Spannungsfreiheit), ein zusätzlicher
+    Schalter wäre redundant. Die Versorgung selbst ändert sich dadurch NICHT:
+    LSS + L/N/PE-Klemmen (Regel 11) bleiben, der Schaltschrank versorgt
+    stattdessen eine **Aufputz-Schutzkontaktsteckdose vor Ort**, in die das
+    Gerät eingesteckt wird – diese Steckdose wird als eigenes
+    Pflichtzubehör-Feldgerät (`zubehoer_feldgeraet_artikel_nr`, Referenz
+    Busch-Jaeger 2300 EWSI `2CKA002083A0368`) ergänzt, damit sie in Modul 5
+    sichtbar/bepreisbar ist. Gleiches gilt, wenn ein fest verdrahtetes Gerät
+    einen **eigenen, bereits eingebauten Hauptschalter** besitzt (z. B. Reflex
+    Variomat Touch VS 2, Hauptschalter im Anschlussteil) – auch hier ist die
+    Funktion „Spannungsfreiheit vor Ort herstellbar" bereits geräteseitig
+    erfüllt. Der Hinweis auf die Anschlussart gehört in den Auswahltext
+    (`name`, z. B. „...230V AC mit Netzstecker...") UND in die `beschreibung`,
+    damit der Bezug zur zusätzlichen Steckdose in der Feldgeräteliste (Modul 5)
+    ohne Rückfrage nachvollziehbar bleibt.
 
 ### Referenz: Motorleistungsreihe & Schaltgerätekonzept Drehstrommotoren (Session 56)
 

@@ -563,6 +563,8 @@
     "hersteller": "Reflex",
     "kategorie": "Nachspeise-/Druckhaltetechnik",
     "quelle_hinweis": "[Recherche 09/2026] Reflex Fillcontrol Smart, Art. 6813500. Originalbetriebsanleitung SI21221/9131436 (11.2024): https://media.hornbach.de/hb/installationmanual/as.179713939.pdf (299x320x194mm, 3,2kg, IPX4, 230V/50Hz <100W/4A). Kein Nettopreis gefunden - offen.",
+    "zubehoer_feldgeraet_artikel_nr": "2CKA002083A0368",
+    "zubehoer_menge": 1,
     "geprueft": false
   },
   {
@@ -572,6 +574,8 @@
     "kategorie": "Nachspeise-/Druckhaltetechnik",
     "preis_eur": 5361.0,
     "quelle_hinweis": "[Preisrecherche 09/2026] 5.361,00 EUR (Grosshandelslistenpreis pdod.de-Produktdatenbank, Stand-Datum auf der Seite nicht ausgewiesen, vermutlich 2025/2026er Katalogstand, kein garantiert aktueller Siemens/Reflex-Herstellerlistenpreis) https://www.pdod.de/de/articles/reflex/8800100/DE . Betriebsanleitung Rev. A 07.09.2022: https://assets.heizung-billiger.de/documents/rfma_si21166_deb_reflexomat_xs.pdf , Klemmenplan-Auswertung: https://www.manualslib.com/manual/2877264/Reflex-Reflexomat-Xs.html?page=9 . IP54, 0,25kW Kompressor. Absicherung der Steuerung (A) nicht gefunden - offen.",
+    "zubehoer_feldgeraet_artikel_nr": "2CKA002083A0368",
+    "zubehoer_menge": 1,
     "geprueft": false
   },
   {
@@ -589,6 +593,8 @@
     "hersteller": "Reflex",
     "kategorie": "Nachspeise-/Druckhaltetechnik",
     "quelle_hinweis": "[Recherche 09/2026] Reflex Servitec S, Art. 8832000, IP42. Betriebsanleitung Rev.B 28.08.2019: https://xom-web.reflex.de/xom-rest/assets/cb1c3bf2-ed04-48a1-af3d-fcb877b70029/content?locale=de (per pypdf lokal ausgelesen). 0,2kW, 230V/50Hz, Absicherung 10A, Klemmenplan Kap.6.5.1 vollstaendig ausgewertet (18 Positionen). Kein Nettopreis gefunden - offen.",
+    "zubehoer_feldgeraet_artikel_nr": "2CKA002083A0368",
+    "zubehoer_menge": 1,
     "geprueft": false
   },
   {
@@ -597,6 +603,8 @@
     "hersteller": "Viega",
     "kategorie": "Hygienetechnik",
     "quelle_hinweis": "[Recherche 09/2026] Viega Spuelstation 2241.10 (Herst.-Art.-Nr. 762216, EAN 4015211762216), 340x525x80mm, IP54 (Steuerung/Magnetventil), IP68 Rueckstausensor. Gebrauchsanleitung: https://pspstmsimanuals.blob.core.windows.net/pub-production/Manuals/28e2eb588686a154ac1140940114470b_de_DE.pdf (per pdftotext lokal ausgewertet). Externes Steckernetzteil 230V AC -> 12V DC max 1300mA, max 15,6W. Kein belastbarer Nettopreis gefunden (2 stark abweichende Distributor-Bruttopreise 1.434 EUR / 2.140 EUR, Stand Abruf 09/2026) - offen. Optionales GLT-Modul binaer 2241.87 (8 potentialfreie Eingaenge + 12 Relaisausgaenge max 24V/100mA) NICHT Teil dieser Baugruppe - Viega-Produktseite dafuer aktuell 404, Daten nur aus Distributor-Snippets, nicht abschliessend verifiziert.",
+    "zubehoer_feldgeraet_artikel_nr": "2CKA002083A0368",
+    "zubehoer_menge": 1,
     "geprueft": false
   },
   {
@@ -632,6 +640,14 @@
     "quelle_hinweis": "[Session 62 Nachtrag] Viega AquaVip-Durchfluss- und Temperatursensor, DN20-Variante (Baureihe auch DN10 Art. 792473 2...40l/min und DN32 Art. 792497 14...240l/min lieferbar, hier nur DN20 auf Nutzer-Wunsch katalogisiert). Messbereich 5-85 l/min, Betriebsdruck max. 1,2MPa(60C)/0,6MPa(110C), Werkstoff Siliziumbronze/Kunststoff, fuer Trinkwasser- und Heizungsinstallationen. Eingangsspannung 24V lt. Viega-Produktseite (AC/DC nicht spezifiziert, als 24VDC angenommen - typisch fuer eine 4-20mA-Stromschleife, nicht am Originaldatenblatt verifiziert). Benoetigt Zubehoerkabel 5841.531 zur konventionellen Signal-Ausleitung. Kein Preis gefunden. Quelle: viega.de Produktseite AquaVip-Durchfluss-und-5841-50.",
     "zubehoer_feldgeraet_artikel_nr": "5841.531",
     "zubehoer_menge": 1,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2CKA002083A0368",
+    "bezeichnung": "Schutzkontaktsteckdose Aufputz IP44, 250V/16A, mit Klappdeckel (Busch-Jaeger 2300 EWSI)",
+    "hersteller": "Busch-Jaeger",
+    "kategorie": "Zubehoer",
+    "quelle_hinweis": "[Session 62 Nachtrag] Pflichtzubehoer fuer Reflex-/Viega-Geraete mit werkseitigem Netzstecker (Fillcontrol Smart, Reflexomat XS, Servitec S, Viega 2241.10) - Nutzer-Vorgabe: der Schaltschrank versorgt vor Ort eine Aufputz-Schutzkontaktsteckdose (LSS+L/N/PE-Klemmen bleiben in der jeweiligen Baugruppe unveraendert), das Geraet wird dort eingesteckt statt fest verdrahtet. Kein Preis gefunden.",
     "geprueft": false
   }
 ]
