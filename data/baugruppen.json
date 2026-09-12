@@ -5058,5 +5058,498 @@
     "automationsanbindung": true,
     "kategorie": "Kommunikationsmodule",
     "geprueft": false
+  },
+  {
+    "id": "410_000001",
+    "name": "Nachspeisearmatur mit M-Bus-Wasserzaehler, Reflex Fillset Compact Twist M-Bus",
+    "gewerk": "410",
+    "beschreibung": "Nachspeisearmatur zur Anlagenbefuellung/-nachspeisung aus dem Trinkwassernetz mit integriertem, werkseitig verbautem M-Bus-faehigem Wasserzaehler (Reflex Fillset Compact Twist M-Bus, Art. 6811855, R1/2\", Systemtrenner nach DIN 1988-100/DIN EN 1717 (BA) mit Schmutzfaenger). Die Armatur selbst ist rein mechanisch-hydraulisch, benoetigt KEINE elektrische Versorgung aus dem Schaltschrank. Der Zaehler wird kommunikativ per M-Bus ausgelesen (2 Klemmen in der Feldgeraete-Klemmleiste, verpolungssicher), 1 Wert (Wasserverbrauch/Zaehlerstand) kommunikativ, KEIN Schaltschrankplatz. Automatische Ergaenzung des M-Bus-Pegelwandlers (MR006/PW20) ueber den bestehenden Kommunikations-bauteil-Ratchet (geteilt mit allen anderen M-Bus-Zaehlern im Projekt). OFFENER PUNKT: Spannungsversorgung des M-Bus-Moduls selbst (busgespeist oder externe 24V, Batterie) war im oeffentlichen Reflex-Datenblatt (1 Seite, PR1724de/6811855) nicht dokumentiert - hier in Analogie zu den bereits katalogisierten Waerme-/Kaelte-/Wasserzaehlern (420_000029ff.) als busgespeist angenommen, NICHT herstellerseitig bestaetigt. Kein Klemmenplan im oeffentlichen Datenblatt auffindbar.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 1,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer",
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Nachspeisearmatur mit integriertem M-Bus-Wasserzaehler (Reflex Fillset Compact Twist M-Bus)",
+    "feldgeraet_artikel_nr": "6811855",
+    "automationsanbindung": true,
+    "kategorie": "Druckhaltung und Nachspeisung",
+    "geprueft": false
+  },
+  {
+    "id": "410_000002",
+    "name": "Nachspeisearmatur fuer Systeme mit MAG, Reflex Fillcontrol Smart, 230V AC, Sammelstoerung",
+    "gewerk": "410",
+    "beschreibung": "Elektronisch geregelte Nachspeisestation fuer Anlagen mit Membran-Druckausdehnungsgefaess (MAG), Reflex Fillcontrol Smart (Art. 6813500). Eigene 230V-AC-Versorgung <100W/4A ueber Netzstecker (bauseits/schrankseitig hier als fest verdrahteter Abgang modelliert), abgesichert per LSS 1-polig B6A (5SL6106-7) in der Energieverteilung + Reparaturschalter (Kraus & Naimer KG10.T204, normativ gefordert zur allpoligen Freischaltung). 3 Klemmen L/N/PE (Regel 11) in der Leistungsklemmleiste. Potentialfreier Wechslerkontakt 'Sammelstoermeldung' auf der Steuerungsplatine (max. 230V/2A, eigener Erdungsanschluss PE auf der Platine ist geraeteintern, nicht Teil dieses Abgangs) auf 2 Klemmen der Feldgeraete-Klemmleiste, direkt als BI verdrahtet (kein Koppelrelais noetig, bereits potentialfrei). Datenpunktbedarf 1x BI. Zusaetzliche RS485-Schnittstelle auf der Platine vorhanden, Protokoll nicht spezifiziert - nicht Teil dieser Baugruppe (kein GLT-Bezug angefordert).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer",
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Nachspeisestation fuer MAG-Systeme, 230V AC (Reflex Fillcontrol Smart)",
+    "feldgeraet_artikel_nr": "6813500",
+    "automationsanbindung": true,
+    "kategorie": "Druckhaltung und Nachspeisung",
+    "geprueft": false
+  },
+  {
+    "id": "410_000003",
+    "name": "Druckhaltestation kompressorgesteuert, Reflex Reflexomat XS, 230V AC, Nachspeiseanforderung, Sammelstoerung",
+    "gewerk": "410",
+    "beschreibung": "Kompressorgesteuerte Druckhaltestation Reflex Reflexomat XS (Art. 8800100, Steuerung 'Reflex Control Smart', 0,25kW Kompressor, IP54). 230V-AC-Versorgung ueber LSS 1-polig B6A (5SL6106-7) in der Energieverteilung + Reparaturschalter (KG10.T204), 3 Klemmen L/N/PE (Regel 11). Externe Nachspeiseanforderung ('Levelcontrol', Klemmen P3/P4 laut Klemmenplan) erwartet ein 230V-Signal ueber L+N, KEIN potentialfreier Kontakt und kein 24V-Signal - TXM1.8T liefert nur 24V AC, daher Koppelrelais 24V-AC-Spule (2967073, Regel 10) zwischengeschaltet: DDC-BO speist die Relaisspule direkt (keine eigene Klemme, Regel 12), 1 Relaiskontakt schaltet L durchgehend zu P3, N wird direkt zu P4 durchverdrahtet (2 Klemmen Feldgeraete-Klemmleiste). Potentialfreier Sammelstoerkontakt (Wechsler, max. 230V/8A) auf 2 weiteren Klemmen direkt als BI (kein Koppelrelais noetig). Datenpunktbedarf 1x BO + 1x BI. RS485/Modbus-RTU-Schnittstelle bereits im Grundgeraet integriert (Druck/Fuellstand/Kompressorstatus abrufbar), aber NICHT Teil dieser Baugruppe (keine Analogausgaenge zur GLT vorhanden - Prozesswerte nur digital ueber Modbus, hier nicht angefordert/nicht modelliert).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer",
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Druckhaltestation kompressorgesteuert, 230V AC (Reflex Reflexomat XS)",
+    "feldgeraet_artikel_nr": "8800100",
+    "automationsanbindung": true,
+    "kategorie": "Druckhaltung und Nachspeisung",
+    "geprueft": false
+  },
+  {
+    "id": "410_000004",
+    "name": "Druckhaltestation pumpengesteuert, Reflex Variomat Touch VS 2, 230V AC, Nachspeiseanforderung, Sammelstoerung, Trockenlaufschutz, Druck/Niveau 4-20mA",
+    "gewerk": "410",
+    "beschreibung": "Pumpengesteuerte Druckhaltestation Reflex Variomat Touch VS 2 (Beispiel Steuerung VS 2-1/35, Art. 8910110, IP64). 230V-AC-Versorgung Gesamtstation max. 16A (Klemmenplan 'L Supply 230V, max. 16A') ueber LSS 2-polig C16A (5SL6216-7) in der Energieverteilung + Reparaturschalter (KG10.T204, 20A-Nennstrom deckt die 16A), 3 Klemmen L/N/PE (Regel 11). GROESSERE BAUGROESSEN DER VS-2-BAUREIHE KOENNEN 400V/20A BENOETIGEN - hier bewusst die kleinste Baugroesse (VS 2-1/35, 230V einphasig) als Referenz gewaehlt, siehe quelle_hinweis Restliste. Externe Nachspeiseanforderung: Klemme 22b wird zusammen mit 22a verdrahtet, Spannung (+24V) liefert die Station SELBST ueber Klemme 43 - es ist ein geraeteeigener Spannungs-Loop, der extern nur per potentialfreiem Kontakt/Schalter gebrueckt werden darf (keine externe Spannungseinspeisung). Da TXM1.8T nur einen spannungsbehafteten 24V-AC-Ausgang liefert (keinen potentialfreien Kontakt), auch hier Koppelrelais 24V-AC-Spule (2967073, Regel 10) zwischengeschaltet: DDC-BO speist die Spule, 1 Relaiskontakt bruecke rein potentialfrei die Klemmen 22b/43 (2 Klemmen Feldgeraete-Klemmleiste, keine DBACS-seitige Spannung wird eingespeist). Potentialfreier Sammelstoerkontakt ('Group message, floating', Klemme 24/25) auf 2 Klemmen direkt als BI. Eigener potentialfreier Trockenlaufschutz-Kontakt ('Dry-run protection message, floating', Klemme 13) getrennt von der Sammelstoerung auf 2 weiteren Klemmen als eigener BI. Analoge Ausgaenge Druck (Klemme 19 'Pressure') und Niveau (Klemme 21 'Level') serienmaessig auf der Control-Touch-Bedieneinheit, Signalart AUSDRUECKLICH 4-20mA ('Standard 4-20mA', NICHT 0-10V) mit gemeinsamer analoger Masse GNDA (Klemme 20) - 3 Klemmen (Signal Druck, GNDA gemeinsam, Signal Niveau). ERSTER 4-20mA-Anwendungsfall im DBACS-Katalog: dafuer TXM1.8X statt TXM1.8U vorgesehen (neue Katalogzeile, siehe einzelbauteile-Eintrag TXM1.8X) - DBACS' automatische DDC-Modulwahl unterscheidet aktuell NICHT nach Signalart, daher fuer diese 2 AI-Punkte manuelle Substitution durch TXM1.8X noetig (siehe quelle_hinweis TXM1.8X). Datenpunktbedarf 1x BO + 2x BI + 2x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6216-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer",
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Druckhaltestation pumpengesteuert, 230V AC (Reflex Variomat Touch VS 2, Steuerung Art. 8910110)",
+    "feldgeraet_artikel_nr": "8910110",
+    "automationsanbindung": true,
+    "kategorie": "Druckhaltung und Nachspeisung",
+    "geprueft": false
+  },
+  {
+    "id": "410_000005",
+    "name": "Vakuum-Spruehrohrentgasung mit Nachspeisung, Reflex Servitec S, 230V AC, Nachspeiseanforderung, Sammelstoerung",
+    "gewerk": "410",
+    "beschreibung": "Vakuum-Spruehrohrentgasungsgeraet mit integrierter Nachspeisung Reflex Servitec S (Art. 8832000, 0,2kW, IP42). 230V-AC-Versorgung ueber LSS 1-polig B6A (5SL6106-7) in der Energieverteilung + Reparaturschalter (KG10.T204), 3 Klemmen L/N/PE (Regel 11) - Geraet hat werkseitig einen eigenen Netzstecker, hier als fest verdrahteter Abgang modelliert. Externe Nachspeiseanforderung (Betriebsart 'Levelcontrol', Klemmen P3/P4 laut Klemmenplan Pos.2) erwartet ein 230V-Signal ueber L+N (identisches Anschlussschema wie beim Reflexomat, der genau dieses Signal im Verbund erzeugt) - Koppelrelais 24V-AC-Spule (2967073, Regel 10): DDC-BO speist die Spule, 1 Relaiskontakt schaltet L zu P3, N direkt zu P4 (2 Klemmen Feldgeraete-Klemmleiste). Potentialfreier Sammelstoerkontakt (Klemme 26/27/28 'C/NC/NO', max. 230V/8A) auf 2 Klemmen direkt als BI. Datenpunktbedarf 1x BO + 1x BI. Vollstaendiger Original-Klemmenplan (18 Positionen, Servitec-S-Betriebsanleitung Rev. B 28.08.2019) ausgewertet.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer",
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Vakuum-Spruehrohrentgasung mit Nachspeisung, 230V AC (Reflex Servitec S)",
+    "feldgeraet_artikel_nr": "8832000",
+    "automationsanbindung": true,
+    "kategorie": "Druckhaltung und Nachspeisung",
+    "geprueft": false
+  },
+  {
+    "id": "410_000006",
+    "name": "Trinkwasser-Hygiene-Spuelstation, Viega 2241.10, 230V AC, Sammelstoerung, Reset extern",
+    "gewerk": "410",
+    "beschreibung": "Automatische Trinkwasser-Hygiene-Spuelstation Viega 2241.10 (Herst.-Art.-Nr. 762216, eine Spuelstrecke PWC/PWH). Eigenes externes Steckernetzteil 230V AC -> 12V DC, max. 15,6W, ueber LSS 1-polig B6A (5SL6106-7) in der Energieverteilung + Reparaturschalter (KG10.T204), 3 Klemmen L/N/PE (Regel 11) - Geraet hat werkseitig einen eigenen Netzstecker, hier als fest verdrahteter Abgang modelliert. Potentialfreier Alarmkontakt (Klemme 1/2 der Phoenix-Steckklemme, Arbeitskontakt/Schliesser, max. 24V DC/0,5A - stromlos geoeffnet, loest bei Stationsausfall NICHT von selbst aus) auf 2 Klemmen direkt als BI Sammelstoerung. Externer Reset (Klemme 3/4): die Station liefert die 24V DC fuer die Reset-Schleife SELBST (Klemme 3 = Reset OUT, Klemme 4 = Reset IN) - extern darf laut Anleitung nur ein potentialfreier Schalter/Relaiskontakt die beiden Klemmen bruecken, KEINE externe Spannungseinspeisung. Da TXM1.8T nur einen spannungsbehafteten 24V-AC-Ausgang liefert (keinen potentialfreien Kontakt), Koppelrelais 24V-AC-Spule (2967073, Regel 10): DDC-BO speist die Spule, 1 Relaiskontakt bruecke rein potentialfrei Klemme 3/4 (2 Klemmen Feldgeraete-Klemmleiste, keine DBACS-seitige Spannung eingespeist). Datenpunktbedarf 1x BI + 1x BO. Optionales Zusatzmodul 'GLT-Modul binaer 2241.87' (8 potentialfreie Eingaenge + 12 Relaisausgaenge) fuer erweiterte GLT-Anbindung existiert, ist NICHT Teil dieser Grundbaugruppe (nur die angefragten 2 Datenpunkte ueber die Basis-Klemme modelliert).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Trinkwasser-Hygiene-Spuelstation, 230V AC (Viega 2241.10)",
+    "feldgeraet_artikel_nr": "762216",
+    "automationsanbindung": true,
+    "kategorie": "Trinkwasserhygiene",
+    "geprueft": false
+  },
+  {
+    "id": "410_000007",
+    "name": "Tauchtemperatursensor Trinkwasser direktmessend 13,5mm, Viega 2245.62, Pt1000",
+    "gewerk": "410",
+    "beschreibung": "Kurzer, direktmessender Trinkwassertemperaturfuehler (Pt1000, passiv) fuer Viega-Pressysteme - schraubt direkt in ein Viega-T-Stueck Rp1/2 (Raxofix/Sanfix/Sanpress), KEIN separates Schutzrohr/Tauchhuelse noetig (im Gegensatz zum Heizungs-Fuehler QAE2120, der ein 100mm-Schutzrohr braucht - fuer duenne, gepresste Trinkwasserleitungen ungeeignet). 2 Klemmen in klemm_s (passiv, Pt1000-Widerstandsschleife), Datenpunktbedarf 1x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Multifunktionssensor 2245.62, Pt1000, G1/2 x 13,5mm (Viega)",
+    "feldgeraet_artikel_nr": "734855",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren flüssiges Medium",
+    "geprueft": false
+  },
+  {
+    "id": "410_000008",
+    "name": "Tauchtemperatursensor Trinkwasser direktmessend 25,5mm, Viega 2245.62, Pt1000",
+    "gewerk": "410",
+    "beschreibung": "Wie 410_000007, laengere Variante G1/2 x 25,5mm (fuer T-Stuecke mit groesserem Nenndurchmesser bzw. groesserer Einbautiefe).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "Multifunktionssensor 2245.62, Pt1000, G1/2 x 25,5mm (Viega)",
+    "feldgeraet_artikel_nr": "735173",
+    "automationsanbindung": true,
+    "kategorie": "Sensoren flüssiges Medium",
+    "geprueft": false
+  },
+  {
+    "id": "410_000009",
+    "name": "Durchfluss- und Temperatursensor DN20, Viega AquaVip 5841.50, 5-85 l/min, 4-20mA + Pt1000, 24V",
+    "gewerk": "410",
+    "beschreibung": "Kombinierter Durchfluss-/Temperatursensor fuer Trinkwasser (Viega AquaVip), DN20/G1\", 5...85 l/min. Ueber Zubehoerkabel 5841.531 als 2 getrennte Analogsignale herausgefuehrt: Durchfluss 4-20mA (aktiv) + Temperatur Pt1000 (passiv), beide klemm_s (Regel 1: auch aktive Analogsensoren gehoeren in klemm_s, nicht klemm_f). Zusaetzlich 24V-Einspeisung zum Sensor (2 Klemmen, keine eigene dp). ACHTUNG: 4-20mA-Signal braucht TXM1.8X statt TXM1.8U - DBACS automatische DDC-Modulwahl ist aktuell signalart-blind (bekannter offener Punkt seit Session 62), TXM1.8X manuell waehlen. Datenpunktbedarf 2x AI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "sanitaer"
+    ],
+    "betriebsmittel": "AquaVip-Durchfluss- und Temperatursensor 5841.50, DN20 (Viega)",
+    "feldgeraet_artikel_nr": "792480",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vdc",
+    "kategorie": "Sensoren flüssiges Medium",
+    "geprueft": false
   }
 ]

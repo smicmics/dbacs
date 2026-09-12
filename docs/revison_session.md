@@ -1,6 +1,18 @@
 # DBACS – Revisionsstand
 
-**Stand:** 8. September 2026 – Session 60 (Zonen-Korrektur Ventilator-Baugruppen
+**Stand:** 12. September 2026 – Session 62 (6 neue Sanitär-Baugruppen
+`410_000001`–`410_000006`, Gewerk 410 vorher leer: Reflex Nachspeise-/
+Druckhaltetechnik – Fillset Compact Twist M-Bus, Fillcontrol Smart, Reflexomat
+XS, Variomat Touch VS 2, Servitec S – + Viega Hygiene-Spülstation 2241.10.
+Erster 4-20mA-Anwendungsfall im Katalog (Variomat Druck/Niveau) → neue
+`TXM1.8X`/`TXM1.8X-ML`-Katalogzeilen; DDC-Ratchet ist noch signalart-blind
+(offener Punkt). Neue Regel 15 (Koppelrelais auch bei geräteeigener
+potentialfreier Brücken-Anforderung). Kurzer Siemens-Tauchfühler ohne
+Tauchhülse recherchiert, aber NICHT katalogisiert (kein aktives Produkt).
+Export baugruppen 113→119 · einzelbauteile 190→192 · feldgeraete 61→67.
+Details: `CLAUDE.md` → „Offene Punkte" Sitzungsstand Session 62.)
+
+Vorherige Session 60 (08.09.2026): Zonen-Korrektur Ventilator-Baugruppen
 `430_000028`–`430_000036`: PTC-Auslösegerät `3RN2012-1BW30` und Koppelrelais
 `2967073` von Zone `steuer` → `leist` in allen 9 Asynchronmotor-Baugruppen +
 Katalog-Default `3RN2012-1BW30` `steuer` → `leist`. Motorschutzschalter bleibt

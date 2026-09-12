@@ -16,6 +16,151 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 62 (12.09.2026) – Sanitär-Baugruppen Reflex/Viega
+> (Nachspeise-/Druckhaltetechnik + Hygienetechnik), erster 4-20mA-Anwendungsfall:**
+> 6 neue Baugruppen `410_000001`–`410_000006` (Gewerk 410 Sanitär, neu
+> angelegt – vorher leer –, `funktionsbereich` je `[sanitaer,heizung,kaelte]`
+> außer der reinen Trinkwasser-Baugruppe `006` nur `[sanitaer]`), Kategorien
+> „Nachspeise-/Druckhaltetechnik" (`001`–`005`) und „Hygienetechnik" (`006`).
+> Alle als externe Betriebsmittel modelliert (wie Wilo-Pumpen/Schneider-CRAH),
+> mit realen Reflex-/Viega-Bestellnummern (kein Platzhalter nötig, alle 6
+> Artikel öffentlich verifiziert) + `feldgeraete`-Zeilen für Modul 5:
+> - **`410_000001`** Reflex Fillset Compact Twist M-Bus (Art. `6811855`):
+>   rein mechanisch, keine Steuerspannung. M-Bus-Wasserzähler kommunikativ
+>   ausgelesen nach Session-58-Muster (`dp_fb_ai:1` auf 2. Klemme, zieht
+>   `MR006`-Pegelwandler automatisch). Spannungsversorgung des M-Bus-Moduls
+>   selbst NICHT im öffentlichen Datenblatt dokumentiert – als busgespeist
+>   angenommen (Analogie zu `420_000029`ff.), nicht bestätigt.
+> - **`410_000002`** Reflex Fillcontrol Smart (Art. `6813500`): 230V AC <100W
+>   ab Schrank (LSS B6A `5SL6106-7` + Reparaturschalter `3813635`, L/N/PE
+>   Regel 11). Potentialfreier Wechsler „Sammelstörmeldung" (max. 230V/2A)
+>   direkt als BI (kein Koppelrelais nötig). 1× BI.
+> - **`410_000003`** Reflex Reflexomat XS (Art. `8800100`, kompressorgesteuert):
+>   230V AC (LSS B6A + Rep.-Schalter). Externe Nachspeiseanforderung P3/P4
+>   erwartet ein **230V-Signal über L+N** (kein potentialfreier Kontakt) →
+>   Koppelrelais `2967073` (Regel 10): Kontakt schaltet L zu P3, N direkt zu
+>   P4. Potentialfreier Sammelstörkontakt (max. 230V/8A) direkt als BI. 1×
+>   BO + 1× BI. RS485/Modbus RTU bereits im Grundgerät integriert, aber kein
+>   Analogausgang zur GLT vorhanden (Prozesswerte nur digital) – nicht Teil
+>   der Baugruppe.
+> - **`410_000004`** Reflex Variomat Touch VS 2 (Referenz-Baugröße VS 2-1/35,
+>   Steuerung Art. `8910110`, pumpengesteuert): 230V AC max. 16A (LSS
+>   2-polig C16A `5SL6216-7` + Rep.-Schalter `3813635`, 20A deckt 16A).
+>   Externe Nachspeiseanforderung (Klemme 22b/43) ist eine **geräteeigene
+>   24V-Schleife, die extern nur potentialfrei gebrückt werden darf** (keine
+>   externe Spannung) → ebenfalls Koppelrelais `2967073`, jetzt nach neuer
+>   **Regel 15** (Erweiterung Regel 10: TXM liefert Spannung, Ziel will
+>   potentialfreie Brücke). Eigener potentialfreier Sammelstörkontakt UND
+>   eigener potentialfreier Trockenlaufschutz-Kontakt (Klemme 13, getrennt)
+>   direkt als 2× BI. **Analoge Ausgänge Druck (Klemme 19) und Niveau
+>   (Klemme 21) sind ausdrücklich 4-20mA („Standard 4-20mA"), NICHT 0-10V** –
+>   erster 4-20mA-Fall im Katalog. 1× BO + 2× BI + 2× AI.
+>   **Grundsätzliche Katalogerweiterung:** neue `ddc_io`-Einzelbauteile
+>   `TXM1.8X`/`TXM1.8X-ML` (analog `TXM1.8U`/`-ML`, gleiches Gehäuse,
+>   dp_ai=8/dp_ao=8, Preise SIPATEC 358,40€/544,60€) für 4-20mA-Punkte
+>   angelegt. **WICHTIGER GRUNDSÄTZLICHER OFFENER PUNKT:** DBACS'
+>   automatische DDC-Modul-Ergänzung (`computeDdcAutoModules()`) unterscheidet
+>   aktuell NICHT nach Signalart und wählt für jeden AI/AO-Bedarf immer
+>   `TXM1.8U` – im Browser-Test bestätigt (Variomat-Baugruppe bekam
+>   automatisch `TXM1.8U` statt `TXM1.8X`). Für `410_000004` muss der Nutzer
+>   die 2 AI-Punkte aktuell manuell auf `TXM1.8X` umstellen. Eine
+>   signalart-bewusste Ratchet-Erweiterung ist eine eigene Modul-4-Aufgabe,
+>   nicht Teil dieser Session. Zusätzlich unklar (Kurzbeschreibung, nicht am
+>   Originaldatenblatt verifiziert): ob `TXM1.8X` AO evtl. nur auf Kanal 5-8
+>   statt allen 8 kann. Baugrößen-Hinweis: größere VS-2-Baugrößen können laut
+>   Klemmenplan-Textauszug 400V/20A statt 230V/16A benötigen (Referenz bewusst
+>   die kleinste Baugröße).
+> - **`410_000005`** Reflex Servitec S (Art. `8832000`, Vakuum-Sprührohr-
+>   entgasung mit Nachspeisung): 230V AC 0,2kW (LSS B6A + Rep.-Schalter).
+>   Identisches P3/P4-230V-Signal-Anschlussschema wie Reflexomat (Koppelrelais
+>   `2967073`, Regel 10). Potentialfreier Sammelstörkontakt (max. 230V/8A)
+>   direkt als BI. 1× BO + 1× BI. Vollständiger 18-Positionen-Klemmenplan aus
+>   der Betriebsanleitung (Rev. B, 28.08.2019) ausgewertet.
+> - **`410_000006`** Viega Trinkwasser-Hygiene-Spülstation 2241.10 (Herst.-
+>   Art.-Nr. `762216`): externes Steckernetzteil 230V AC→12V DC max. 15,6W
+>   (LSS B6A + Rep.-Schalter). Potentialfreier Alarmkontakt (Klemme 1/2, max.
+>   24V DC/0,5A, Arbeitskontakt) direkt als BI. Reset-Eingang (Klemme 3/4) ist
+>   wie beim Variomat eine geräteeigene Spannungsschleife, die nur
+>   potentialfrei gebrückt werden darf → Koppelrelais `2967073` (Regel 15).
+>   1× BI + 1× BO. Optionales GLT-Modul `2241.87` (8 potentialfreie Eingänge
+>   + 12 Relaisausgänge) NICHT Teil der Grundbaugruppe (Viega-Produktseite
+>   dafür aktuell 404, Daten nur aus Distributor-Snippets).
+> **Neue Regel 15** (Koppelrelais auch wenn TXM nur Spannung liefert, Ziel
+> aber potentialfreie Brücke erwartet) unter „Baugruppen-Modellierungsregeln"
+> ergänzt.
+> **Item „kurzer Siemens-Tauchfühler ohne Tauchhülse" NICHT umgesetzt:**
+> vollständige Recherche der QAE21../QAE317x-Familie ergab, dass eine kürzere
+> G½"-Direkteinschraubvariante ohne Tauchhülse aktuell nicht existiert – das
+> einzige historische Produkt dieser Art (`QAE2122.013` + `AQE2102`,
+> einstellbar bis 130mm) ist abgekündigt, der Nachfolgetyp `QAE2121.015`
+> braucht wieder eine separate 150mm-Tauchhülse. Analog zur bereits
+> dokumentierten Erkenntnis beim Stabfühler mit Flansch (siehe unten) bewusst
+> NICHT mit einem abgekündigten Artikel katalogisiert – bei Bedarf
+> Alternativhersteller recherchieren (siehe Restliste).
+> **Export:** baugruppen 113→**119** · einzelbauteile 190→**192** ·
+> feldgeraete 61→**67**. Backup vor Schreibzugriff:
+> `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-sanitaer-reflex-viega_*.xlsx`.
+> Browser-Verifikation (Standschrank 1200×2000, Drehstrom 3~/Schiene
+> 3-polig, alle 6 Baugruppen im Sanitär-Tab platziert): Statistik zeigt AI
+> 2/8 (Variomat, via TXM1.8U statt TXM1.8X – siehe offener Punkt oben), BI
+> 6/16, BO 4/6, Komm. M-Bus AI 1/0; Stückliste zählt korrekt 4× Koppelrelais,
+> 5× Reparaturschalter, 15 Klemmen `klemm_l` (5×L/N/PE), 25 Klemmen `klemm_f`,
+> 7 LSS (5×B6A + 1×C16A + 1× automatisch ergänzte Steuertrafo-Sekundärsicherung
+> B10A); Modul 5 zeigt alle 6 Feldgeräte mit realen Bestellnummern, Preis wo
+> vorhanden sonst „–"; keine Konsolenfehler. **Restliste:** Nettopreise fehlen
+> für `6811855`/`6813500`/`8832000`/`762216` (nur unklare/divergierende
+> Distributor-Bruttopreise gefunden); `8800100`/`8910110` mit Preis, aber
+> Stand-Datum unsicher; Fillset-M-Bus-Modul-Spannungsversorgung unbestätigt;
+> Variomat-Baugrößen-Spannung (230V/16A vs. 400V/20A) nicht eindeutig einer
+> Baugröße zuordenbar; `TXM1.8X`-AO-Kanalbeschränkung (evtl. nur Kanal 5-8)
+> nicht am Originaldatenblatt verifiziert; DDC-Ratchet signalart-blind
+> (grundsätzliche Lücke, s.o.); Viega-GLT-Modul `2241.87` technische Daten
+> nur aus Distributor-Snippets (Originalseite 404); kürzerer Siemens-
+> Tauchfühler nicht katalogisiert (s.o.). Herleitungstabellen je Baugruppe im
+> Session-Abschlussbericht (Chat), Rohdaten `scratchpad/fork_1..5_*_ergebnis.md`.
+
+> **Sitzungsstand Session 62 Nachtrag (12.09.2026) – Kategorie-Umbenennung +
+> Viega-Trinkwassersensoren:** Nutzer-Vorgabe zur Kategoriestruktur: die 5
+> Fork-Baugruppen `410_000001`–`005` von „Nachspeise-/Druckhaltetechnik" →
+> **„Druckhaltung und Nachspeisung"** umbenannt, `410_000006` von
+> „Hygienetechnik" → **„Trinkwasserhygiene"**. Dazu 3 neue Baugruppen
+> (Kategorie **„Sensoren flüssiges Medium"**, wie die bestehenden
+> Heizungs-Tauchfühler `430_000006`/`007`) für den vom Nutzer angefragten
+> kurzen Trinkwasser-Temperaturfühler – Recherche-Ergebnis: Siemens Symaro
+> QAE21.. hat KEINE Variante, die wirklich ohne Tauchhülse auskommt (auch die
+> „ohne Schutzrohr im Lieferumfang"-Typen brauchen laut Original-Datenblatt
+> CE1N1781de zwingend ein separates Schutzrohr, Mindestlänge/-eintauchtiefe
+> bleibt bei 100mm/60mm) – auf Nutzer-Hinweis stattdessen **Planungsfabrikat-
+> Abweichung zu Viega** (bereits Fabrikat der Spülstation `410_000006`):
+> - **`410_000007`/`008`** Viega Multifunktionssensor 2245.62 (Art. `734855`
+>   G½×13,5mm / `735173` G½×25,5mm), Pt1000 passiv, schraubt DIREKT in ein
+>   Viega-T-Stück Rp½ (Raxofix/Sanfix/Sanpress) – kein Schutzrohr/Tauchhülse
+>   nötig, damit für dünne Pressrohre geeignet (vs. dem 100mm-Schweißanschluss
+>   der Heizungsvariante). 2 Klemmen `klemm_s`, 1× AI, `menge:1` je Zeile
+>   (Regel 14 beachtet).
+> - **`410_000009`** Viega AquaVip-Durchfluss-/Temperatursensor 5841.50 DN20
+>   (Art. `792480`, 5...85 l/min; Baureihe auch DN10 `792473`/DN32 `792497`,
+>   nur DN20 auf Nutzer-Wunsch katalogisiert): Pt1000 (passiv, 1× AI) +
+>   Durchfluss 4-20mA (aktiv, 1× AI) + 24V-Einspeisung (2 Klemmen ohne dp),
+>   alle in `klemm_s` (Regel 1 – auch der aktive 4-20mA-Sensor bleibt
+>   Messsensor, keine `klemm_f`). `benoetigt_steuerspannung:'24vdc'`
+>   (Steuerspannungs-Ratchet zieht automatisch ein 24V-DC-Netzteil nach,
+>   Browser bestätigt). Braucht Zubehörkabel `5841.531` (als
+>   `zubehoer_feldgeraet_artikel_nr`) zur Signal-Ausleitung als konventionelle
+>   Punkt-zu-Punkt-Signale statt über Viegas eigenes AquaVip-CAN-Bus-System.
+>   **Wichtiger offener Punkt (bereits als Grundsatzlücke bekannt):** die
+>   4-20mA-Signale brauchen `TXM1.8X`, DBACS' Auto-Modulwahl schlägt aber
+>   weiterhin `TXM1.8U` vor (signalart-blind, siehe Session-62-Haupteintrag) –
+>   Nutzer muss manuell umstellen.
+> Export: baugruppen 119→**122** · feldgeraete 67→**71**. Backups:
+> `ga_komponenten_vor-kategorie-rename-sanitaer_20260912.xlsx` und
+> `ga_komponenten_vor-viega-sensoren_20260912.xlsx`. Browser-Verifikation
+> (Standschrank, `410_000009` platziert): Statistik AI 2/8 · 25%, BI/BO/AO 0,
+> 24V-DC-Netzteil automatisch ergänzt, Stückliste löst Klemmen korrekt auf,
+> keine Konsolenfehler. Preise für `734855` nur unsicher aus Distributor-
+> Bruttopreis hochgerechnet (35,72€ netto), `735173`/`792480`/`5841.531` ohne
+> Preis gefunden.
+
 > **Sitzungsstand Session 61 Teil 2 (12.09.2026) – DP-Zählungs-Bug in allen 15
 > Ventilator-Baugruppen behoben (Nutzer-Fund):** beim Nachfragen, warum
 > `430_000028` 4 statt der in der Beschreibung genannten 3 BI zeigte, Root
@@ -786,6 +931,27 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
     (`430_000028`–`430_000042`) mit zusammengefassten Klemmenzeilen gebaut –
     dadurch war der BI/BO/AO-Bedarf durchgängig 2× (teils 3×) zu hoch, in
     Session 61 korrigiert (siehe Sitzungsstand oben).
+15. **Koppelrelais auch wenn TXM nur einen spannungsbehafteten Ausgang, das
+    Ziel aber einen potentialfreien Kontakt/Bruecke erwartet (Session 62,
+    verbindlich, Erweiterung von Regel 10):** Regel 10 deckte bisher den Fall
+    „DDC-BO muss eine hoehere Spannung schalten" ab. Ebenso ein Koppelrelais-
+    Fall ist: das externe Geraet erwartet an seinem Steuereingang **keine
+    Spannung von aussen**, sondern nur einen **potentialfreien Schalter-/
+    Relaiskontakt**, der eine geraeteeigene (oft eigene 24V-)Schleife
+    bruecken/schliessen soll (z. B. Reflex Variomat Klemme 22b/43 „External
+    make-up request", Viega 2241.10 Klemme 3/4 „Reset" – die Station liefert
+    die Spannung fuer die Schleife jeweils selbst). `TXM1.8T` liefert nur
+    einen spannungsbehafteten 24V-AC-Ausgang, **keinen** potentialfreien
+    Kontakt – ihn direkt auf eine geraeteeigene Spannungsschleife zu legen,
+    wuerde zwei Spannungsquellen kurzschliessen. Auch hier: Koppelrelais 24V-
+    AC-Spule (`2967073`), DDC-BO speist die Spule (keine eigene Klemme,
+    Regel 12), der potentialfreie Relaiskontakt bruecke die externe Schleife
+    OHNE dass DBACS-seitig eine Spannung eingespeist wird. Gilt genauso fuer
+    den bereits laenger bekannten Fall „Ziel erwartet 230V L+N am Eingang"
+    (Reflex P3/P4 bei Reflexomat/Servitec, ebenfalls Regel 10) – Kernkriterium
+    ist in beiden Faellen: der TXM-Ausgang liefert etwas anderes (Spannung
+    vs. Kontakt, oder falsche Spannungshoehe) als das Ziel braucht, also immer
+    Koppelrelais zwischen DDC-BO und externem Anschluss.
 
 ### Referenz: Motorleistungsreihe & Schaltgerätekonzept Drehstrommotoren (Session 56)
 

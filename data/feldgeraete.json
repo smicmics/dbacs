@@ -548,5 +548,90 @@
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "6811855",
+    "bezeichnung": "Nachspeisearmatur mit M-Bus-Wasserzaehler, Compact Twist M-Bus, R1/2\"",
+    "hersteller": "Reflex",
+    "kategorie": "Nachspeise-/Druckhaltetechnik",
+    "quelle_hinweis": "[Recherche 09/2026] Reflex Fillset Compact Twist M-Bus, Art. 6811855, EAN 4036705227400. Datenblatt PR1724de/6811855: https://documents.pdod.de/reflex/pr1724de_6811855.pdf (157x175x117mm, 2,42kg, kvs 0,86, PN10, max 65°C). Kein Nettopreis gefunden (nur Distributor-Bruttopreise 471-750 EUR, Stand Abruf 09/2026, shkhelden.de) - offen.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "6813500",
+    "bezeichnung": "Nachspeisestation fuer MAG-Systeme, Fillcontrol Smart, 230V AC",
+    "hersteller": "Reflex",
+    "kategorie": "Nachspeise-/Druckhaltetechnik",
+    "quelle_hinweis": "[Recherche 09/2026] Reflex Fillcontrol Smart, Art. 6813500. Originalbetriebsanleitung SI21221/9131436 (11.2024): https://media.hornbach.de/hb/installationmanual/as.179713939.pdf (299x320x194mm, 3,2kg, IPX4, 230V/50Hz <100W/4A). Kein Nettopreis gefunden - offen.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "8800100",
+    "bezeichnung": "Druckhaltestation kompressorgesteuert, Reflexomat XS, 80l, 230V AC",
+    "hersteller": "Reflex",
+    "kategorie": "Nachspeise-/Druckhaltetechnik",
+    "preis_eur": 5361.0,
+    "quelle_hinweis": "[Preisrecherche 09/2026] 5.361,00 EUR (Grosshandelslistenpreis pdod.de-Produktdatenbank, Stand-Datum auf der Seite nicht ausgewiesen, vermutlich 2025/2026er Katalogstand, kein garantiert aktueller Siemens/Reflex-Herstellerlistenpreis) https://www.pdod.de/de/articles/reflex/8800100/DE . Betriebsanleitung Rev. A 07.09.2022: https://assets.heizung-billiger.de/documents/rfma_si21166_deb_reflexomat_xs.pdf , Klemmenplan-Auswertung: https://www.manualslib.com/manual/2877264/Reflex-Reflexomat-Xs.html?page=9 . IP54, 0,25kW Kompressor. Absicherung der Steuerung (A) nicht gefunden - offen.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "8910110",
+    "bezeichnung": "Druckhaltestation pumpengesteuert, Variomat Touch VS 2-1/35, Steuereinheit, 230V AC",
+    "hersteller": "Reflex",
+    "kategorie": "Nachspeise-/Druckhaltetechnik",
+    "preis_eur": 7397.4,
+    "quelle_hinweis": "[Preisrecherche 09/2026] 7.397,40 EUR netto ohne MwSt. It. einer Distributor-Quelle (zweite Quelle nennt abweichend 5.675,00 EUR ohne Netto/Brutto-Kennzeichnung - beide Werte aus Suchmaschinen-Snippets, nicht direkt gegengeprueft, Stand unklar ~2025/2026). Betriebsanleitung Variomat Touch VS 2-1/35/60/75/95, 11.2020 Rev.A/C: https://www.manualslib.com/manual/2147383/Reflex-Variomat-Touch-Vs-2-1-35.html . Steuerelektronik 230V AC 50-60Hz T0,16A; Gesamtstation VS2-1/35 230V max.16A einphasig - GROESSERE VS-2-Baugroessen koennen laut Klemmenplan-Textauszug 400V/20A benoetigen, in der gemeinsamen Anleitung nicht eindeutig einer Baugroesse zugeordnet, vor Projekteinsatz mit anderer Baugroesse pruefen. IP64 (Bedieneinheit).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "8832000",
+    "bezeichnung": "Vakuum-Spruehrohrentgasung mit Nachspeisung, Servitec S, 230V AC",
+    "hersteller": "Reflex",
+    "kategorie": "Nachspeise-/Druckhaltetechnik",
+    "quelle_hinweis": "[Recherche 09/2026] Reflex Servitec S, Art. 8832000, IP42. Betriebsanleitung Rev.B 28.08.2019: https://xom-web.reflex.de/xom-rest/assets/cb1c3bf2-ed04-48a1-af3d-fcb877b70029/content?locale=de (per pypdf lokal ausgelesen). 0,2kW, 230V/50Hz, Absicherung 10A, Klemmenplan Kap.6.5.1 vollstaendig ausgewertet (18 Positionen). Kein Nettopreis gefunden - offen.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "762216",
+    "bezeichnung": "Trinkwasser-Hygiene-Spuelstation, Viega 2241.10, eine Spuelstrecke PWC/PWH, 230V AC",
+    "hersteller": "Viega",
+    "kategorie": "Hygienetechnik",
+    "quelle_hinweis": "[Recherche 09/2026] Viega Spuelstation 2241.10 (Herst.-Art.-Nr. 762216, EAN 4015211762216), 340x525x80mm, IP54 (Steuerung/Magnetventil), IP68 Rueckstausensor. Gebrauchsanleitung: https://pspstmsimanuals.blob.core.windows.net/pub-production/Manuals/28e2eb588686a154ac1140940114470b_de_DE.pdf (per pdftotext lokal ausgewertet). Externes Steckernetzteil 230V AC -> 12V DC max 1300mA, max 15,6W. Kein belastbarer Nettopreis gefunden (2 stark abweichende Distributor-Bruttopreise 1.434 EUR / 2.140 EUR, Stand Abruf 09/2026) - offen. Optionales GLT-Modul binaer 2241.87 (8 potentialfreie Eingaenge + 12 Relaisausgaenge max 24V/100mA) NICHT Teil dieser Baugruppe - Viega-Produktseite dafuer aktuell 404, Daten nur aus Distributor-Snippets, nicht abschliessend verifiziert.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "734855",
+    "bezeichnung": "Multifunktionssensor 2245.62, Pt1000, G1/2 x 13,5mm, fuer Viega-T-Stueck Rp1/2 (Raxofix/Sanfix/Sanpress)",
+    "hersteller": "Viega",
+    "kategorie": "Sensor",
+    "preis_eur": 35.72,
+    "quelle_hinweis": "[Session 62 Nachtrag] Viega Temperatursensor 2245.62, offizielle Viega-Variantentabelle (viega.de): Art. 734855 = G1/2 x 13,5mm, Kabellaenge 1000mm, Pt1000, Edelstahl, schraubt direkt in ein Viega-T-Stueck Rp1/2 (kompatibel Raxofix/Sanfix/Sanpress-Pressysteme) - KEIN separates Schutzrohr/Tauchhuelse noetig (Nutzer-Vorgabe: kuerzerer, direktmessender Trinkwasserfuehler als Alternative zum Heizungs-QAE2120 mit 100mm-Schutzrohr). Preis 35,72 EUR netto aus 42,51 EUR brutto (Distributor pumpenscout.de, Titel dort faelschlich \"24,5mm\" - Artikelnummer 734855 und L=13,5mm laut offizieller Viega-Seite jedoch eindeutig, Distributor-Titel vermutlich Tippfehler) hochgerechnet, kein Herstellerlistenpreis bestaetigt. Quelle: viega.de Produktseite Temperatursensor-2245-62.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "735173",
+    "bezeichnung": "Multifunktionssensor 2245.62, Pt1000, G1/2 x 25,5mm, fuer Viega-T-Stueck Rp1/2 (Raxofix/Sanfix/Sanpress)",
+    "hersteller": "Viega",
+    "kategorie": "Sensor",
+    "quelle_hinweis": "[Session 62 Nachtrag] Wie 734855, laengere Variante G1/2 x 25,5mm (offizielle Viega-Variantentabelle). Kein Preis gefunden.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5841.531",
+    "bezeichnung": "AquaVip-Anschlusskabel, Edelstahl, G1/2, Adapter G1/4 auf G1/2, 5-poliger Steckverbinder (PT1000-1/4-20mA/PT1000-2/[frei]/24V), verpolsicher",
+    "hersteller": "Viega",
+    "kategorie": "Zubehoer",
+    "quelle_hinweis": "[Session 62 Nachtrag] Zubehoer-Anschlusskabel fuer AquaVip-Durchfluss-/Temperatursensor 5841.50 - bricht die Sensorsignale als konventionelle Punkt-zu-Punkt-Signale heraus (PIN1 PT1000-1, PIN2 4-20mA, PIN3 PT1000-2, PIN4 vermutlich Bezug/GND fuer die 4-20mA-Schleife - nicht explizit dokumentiert, PIN5 24V-Einspeisung) statt der Viega-eigenen AquaVip-CAN-Bus-Loesung (Controller/Systemkabel) zu nutzen. Kein Preis gefunden, Pin-4-Funktion nicht am Originaldatenblatt verifiziert.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "792480",
+    "bezeichnung": "AquaVip-Durchfluss- und Temperatursensor 5841.50, DN20 G1\", 5...85 l/min, Durchfluss 4-20mA + Temperatur Pt1000, 24V",
+    "hersteller": "Viega",
+    "kategorie": "Sensor",
+    "quelle_hinweis": "[Session 62 Nachtrag] Viega AquaVip-Durchfluss- und Temperatursensor, DN20-Variante (Baureihe auch DN10 Art. 792473 2...40l/min und DN32 Art. 792497 14...240l/min lieferbar, hier nur DN20 auf Nutzer-Wunsch katalogisiert). Messbereich 5-85 l/min, Betriebsdruck max. 1,2MPa(60C)/0,6MPa(110C), Werkstoff Siliziumbronze/Kunststoff, fuer Trinkwasser- und Heizungsinstallationen. Eingangsspannung 24V lt. Viega-Produktseite (AC/DC nicht spezifiziert, als 24VDC angenommen - typisch fuer eine 4-20mA-Stromschleife, nicht am Originaldatenblatt verifiziert). Benoetigt Zubehoerkabel 5841.531 zur konventionellen Signal-Ausleitung. Kein Preis gefunden. Quelle: viega.de Produktseite AquaVip-Durchfluss-und-5841-50.",
+    "zubehoer_feldgeraet_artikel_nr": "5841.531",
+    "zubehoer_menge": 1,
+    "geprueft": false
   }
 ]
