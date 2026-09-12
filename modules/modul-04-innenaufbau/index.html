@@ -3664,7 +3664,7 @@ function kurzLabel(eb) {
              ddc_io:'DDC', ddc_cpu:'CPU', lasttrenner:'LT', ueberspannung:'ÜSS', sicherung:'Sich.',
              signalleuchte:'SL', frequenzumrichter:'FU', wahlschalter:'WS', nothalt:'NH',
              fi_schutzschalter:'FI', zeitrelais:'ZR', steckdose:'STD', quittiertaster:'QT',
-             pegelwandler:'PW', messgeraet:'MG', hauptschalter:'HS'};
+             pegelwandler:'PW', messgeraet:'MG', hauptschalter:'HS', touchpanel:'TP'};
   return m[eb.bauteil_typ] || eb.bezeichnung.substring(0, 4);
 }
 
@@ -3711,6 +3711,13 @@ const TUER_BAND_BETRIEBSMELDUNG   = 0.65; // grüne Signalleuchte
 const TUER_BAND_HANDSCHALTER      = 0.68;
 const TUER_BAND_NOTHALT           = 0.74;
 const TUER_BAND_MESSGERAET        = 0.85;
+// Touchpanel (Session 63, Siemens PXM40/50): deutlich groesser als alle
+// anderen Tuerbauteile (bis 419x270mm) - braucht eine eigene, exklusive
+// Ebene mit genug Abstand zu den Messgeraeten darunter, sonst wuerde es
+// bei der typischen Bandbreite von 0.03-0.06 zwangslaeufig ueberlappen
+// (Nutzer-Vorgabe: "darf sich bei der Platzierung nicht mit anderen
+// Elementen ueberschneiden").
+const TUER_BAND_TOUCHPANEL        = 0.93;
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
 // werden nach bauteil_typ/Farbe gruppiert, nicht einzeln einem bestimmten
@@ -3730,7 +3737,8 @@ function tuerBand(eb) {
   if (eb.bauteil_typ === 'quittiertaster') return TUER_BAND_QUITTIERTASTER;
   if (eb.bauteil_typ === 'wahlschalter') return TUER_BAND_HANDSCHALTER;
   if (eb.bauteil_typ === 'messgeraet') return TUER_BAND_MESSGERAET;
-  return TUER_BAND_HANDSCHALTER; // Fallback für künftige Tür-Bauteiltypen (z.B. Touchpanel)
+  if (eb.bauteil_typ === 'touchpanel') return TUER_BAND_TOUCHPANEL;
+  return TUER_BAND_HANDSCHALTER; // Fallback für künftige, noch unbekannte Tür-Bauteiltypen
 }
 
 // Symbolfarbe je Türbauteil – Nutzer-Vorgabe (Session 47 Nachtrag/Nachtrag 3):
@@ -3754,6 +3762,7 @@ function tuerFarbe(eb) {
   }
   if (eb.bauteil_typ === 'wahlschalter') return TUER_FARBE_GRAU;
   if (eb.bauteil_typ === 'messgeraet') return TUER_FARBE_GELB;
+  if (eb.bauteil_typ === 'touchpanel') return TUER_FARBE_GRAU;
   return TUER_FARBE_STD;
 }
 

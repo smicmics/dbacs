@@ -3104,5 +3104,81 @@
     ],
     "kategorie": "Leitungsschutzschalter",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "S55623-H119",
+    "bezeichnung": "Desigo Touch Panel 10.1\", PXM40, Tuereinbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "touchpanel",
+    "b_mm": 289.0,
+    "te_breite": 17,
+    "h_mm": 198.0,
+    "zone": [
+      "tuer"
+    ],
+    "kategorie": "Bedien-/Anzeigegeraete",
+    "keine_platzierung_mp": true,
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "S55623-H120",
+    "bezeichnung": "Desigo Touch Panel 15.6\", PXM50, Tuereinbau",
+    "hersteller": "Siemens",
+    "bauteil_typ": "touchpanel",
+    "b_mm": 419.0,
+    "te_breite": 24,
+    "h_mm": 270.0,
+    "zone": [
+      "tuer"
+    ],
+    "kategorie": "Bedien-/Anzeigegeraete",
+    "keine_platzierung_mp": true,
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "S55842-Z117",
+    "bezeichnung": "Web-Schnittstelle BACnet/IP, PXG3.W100-1",
+    "hersteller": "Siemens",
+    "bauteil_typ": "sonstige",
+    "b_mm": 90.0,
+    "te_breite": 5,
+    "h_mm": 90.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "DDC-Automationseinrichtung",
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2891152",
+    "bezeichnung": "FL SWITCH SFN 5TX Industrial-Ethernet-Switch, 5x RJ45, unmanaged, 9...32V DC (12/24V DC), DIN-Schiene",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "sonstige",
+    "b_mm": 28.0,
+    "te_breite": 2,
+    "h_mm": 110.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "Netzwerkeinrichtung",
+    "benoetigt_steuerspannung": "24vdc",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "0804038",
+    "bezeichnung": "Steckdose EO-CF/PT, Schutzkontakt, 250V/16A, Hutschienenmontage",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "steckdose",
+    "b_mm": 45.0,
+    "te_breite": 3,
+    "h_mm": 70.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Steckdose/Zubehör",
+    "geprueft": false
   }
 ]

@@ -119,6 +119,65 @@
 > Tauchfühler nicht katalogisiert (s.o.). Herleitungstabellen je Baugruppe im
 > Session-Abschlussbericht (Chat), Rohdaten `scratchpad/fork_1..5_*_ergebnis.md`.
 
+> **Sitzungsstand Session 63 Nachtrag 2 (12.09.2026) - Gruppe Automation
+> erweitert (TouchPanel, Switch, USV-Korrektur, Schaltschranksteckdose):**
+> 1. **2x TouchPanel-Baugruppen** (`480_000015`/`016`, Siemens Desigo
+>    PXM40 10,1"/PXM50 15,6", Original-Datenblaetter CM1N9292/9293
+>    bestaetigt: 24V AC/DC SELV, 14VA/26VA, 1x Ethernet RJ45 je Panel) +
+>    Web-Schnittstelle **PXG3.W100-1** (`S55842-Z117`, DIN-Schiene, 24V
+>    AC/DC, **2 eingebaute Ethernet-Ports** - deckt Panel+Uplink meist ohne
+>    externen Switch ab, zur Inbetriebnahme zwingend erforderlich). Reines
+>    Bediengeraet ohne DP/Klemmen. Neuer `bauteil_typ` `touchpanel` +
+>    **neues, exklusives Tuerband** `TUER_BAND_TOUCHPANEL=0.93` (Code-
+>    Aenderung `modul-04-innenaufbau/index.html`, `tuerBand()`/`tuerFarbe()`/
+>    `kurzLabel()`) - notwendig, da die Panels (bis 419x270mm) um ein
+>    Vielfaches groesser sind als alle bisherigen Tuerbauteile und sonst
+>    zwangslaeufig mit Nachbarbaendern (Abstand nur 0,03-0,06) kollidieren
+>    wuerden. Browser-verifiziert: PXM50 rendert exklusiv im obersten
+>    Bereich der Tuer, keine Ueberschneidung.
+> 2. **Ethernet-Switch als eigenstaendige Automation-Baugruppe**
+>    (`480_000017`): Nutzer wollte den bereits katalogisierten Switch
+>    (`2891021`, 24VAC) auch einzeln waehlbar mit Stoerungs-Hilfskontakt -
+>    dabei Konflikt gefunden: `2891021` ist 24VAC-**only**, fuer USV-Betrieb
+>    (24V-DC-Batteriepufferung) braucht es die **DC-Schwestervariante
+>    `2891152`** (9...32V DC) - neu katalogisiert und fuer diese Baugruppe
+>    verwendet statt `2891021`. Eingebauter Signalkontakt (Relais, Power-/
+>    Verbindungsausfall, generelle FL-SWITCH-SFN-Familieneigenschaft) direkt
+>    als BI, schrankintern (Regel 12), `benoetigt_steuerspannung:'24vdc'`.
+> 3. **USV-Baugruppe `480_000011` korrigiert:** die 3 Meldekontakte (Original-
+>    Datenblatt 104658_en_02 bestaetigt: **13/14 Alarm, 23/24 Batteriebetrieb,
+>    33/34 Batterieladung** - Nutzer-Rueckfrage-Vorschlag „Batteriefehler/
+>    Sammelstoerung/Netzbetrieb/USV-Betrieb" deckt sich exakt mit diesen 3,
+>    nur anders benannt: Batteriefehler=Sammelstoerung=Alarm(13/14),
+>    Netzbetrieb=Kehrwert von Batteriebetrieb, USV-Betrieb=Batteriebetrieb -
+>    **keine 4 getrennten Signale vorhanden**) sassen bisher faelschlich auf
+>    6 Klemmen `klemm_f` - Regel 12 (schrankintern, USV+DDC im selben Schrank)
+>    korrigiert: Klemmen entfernt, `dp_bi:3` direkt auf der QUINT-UPS-Zeile
+>    (`2320225`, analog `TXM1.8U`: 1 Bauteil, mehrere Signalkanaele in einem
+>    dp-Feld). DP-Gesamtsumme unveraendert (3x BI), nur Klemmenbedarf entfaellt.
+> 4. **Schaltschranksteckdose Hutschiene** (`480_000018`): Phoenix Contact
+>    `0804038` (EO-CF/PT, Schutzkontakt, 250V/16A, DIN-Schiene) + LSS 1-polig
+>    B10A (`5SL6110-6`, bereits vorhanden) + Hilfsschalter `5ST3010`, Montage
+>    **im Leistungsfeld** (Nutzer-Vorgabe). Schrankinterne Steckdose (kein
+>    Feldkabel) - Ausloese-BI direkt auf der Hilfsschalter-Zeile, keine Klemme
+>    (Regel 12). Datenpunktbedarf 1x BI.
+> **Export:** baugruppen 160->**164** (4 neu, 1 korrigiert) · einzelbauteile
+> 197->**202** (5 neu: `S55623-H119/-H120`, `S55842-Z117`, `2891152`,
+> `0804038`). Backup: `ga_komponenten_vor-automation-touchpanel-usv_20260912.xlsx`.
+> Browser-Verifikation: alle 4 neuen + die korrigierte USV-Baugruppe aus
+> `baugruppen.json` gegen `accumulateDp()` nachgerechnet (USV weiterhin 3x BI
+> ohne Klemmen, Switch 1x BI, Steckdose 1x BI, TouchPanels 0 DP) - keine
+> verwaisten Referenzen; PXM50-Baugruppe live in Modul 4 platziert (volle
+> Pipeline inkl. `m02_B/H` fuer die Tuer-Aussenmasse noetig, nicht nur
+> Montagebereich) -> Steuerspannungs-Automatik ergaenzt automatisch Trafo,
+> Stueckliste loest Touch Panel + Web-Schnittstelle korrekt auf, Tuer-Ansicht
+> zeigt das Panel exklusiv im obersten Bereich ohne Ueberschneidung, keine
+> Konsolenfehler.
+> **Noch offen (Nutzer-Ankuendigung):** "Danach muessen wir unsere
+> Baugruppen ein wenig umorganisieren" - noch keine konkrete Anweisung,
+> welche Kategorien/Gruppen betroffen sind - bei naechster Gelegenheit
+> nachfragen bzw. vom Nutzer konkretisieren lassen.
+
 > **Sitzungsstand Session 63 Nachtrag (12.09.2026) - MS/NS-Schaltanlagen
 > als Feldgeraete (Nur Monitoring), Ergebnis des Fork-Vorschlags umgesetzt:**
 > Nutzer-Entscheidung nach Pruefung des Fork-Vorschlags: **10 neue

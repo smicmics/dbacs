@@ -1584,50 +1584,18 @@
     "id": "480_000011",
     "name": "Schaltschrank-USV 24V DC mit Meldekontakten",
     "gewerk": "480",
-    "beschreibung": "Schaltschrank-USV - unterbrechungsfreie Stromversorgung fuer die Steuerungsebene (DDC-Automationsstation/TX-I/O), Energieaufrechterhaltung bei Netzausfall. Besteht aus USV-Umschalteinheit (Phoenix Contact QUINT-UPS/24DC/24DC/10, dem vorhandenen 24V-DC-Netzteil nachgeschaltet) + Batteriemodul (Phoenix Contact UPS-BAT/VRLA/24DC/1,3AH, ca. 20min Pufferzeit bei 2A Last), beide auf Tragschiene im Leistungsfeld montiert. 3 potentialfreie Meldekontakte auf die Feldgeraete-Klemmleiste gefuehrt (je 2 Klemmen: Alarm/Pufferbereitschaft, Batteriebetrieb, Batterieladung), Datenpunktbedarf 3x BI. Braucht eine vorhandene oder automatisch ergaenzte 24V-DC-Quelle (Steuerspannungs-Automatik).",
+    "beschreibung": "Schaltschrank-USV - unterbrechungsfreie Stromversorgung fuer die Steuerungsebene (DDC-Automationsstation/TX-I/O), Energieaufrechterhaltung bei Netzausfall. Besteht aus USV-Umschalteinheit (Phoenix Contact QUINT-UPS/24DC/24DC/10, dem vorhandenen 24V-DC-Netzteil nachgeschaltet) + Batteriemodul (Phoenix Contact UPS-BAT/VRLA/24DC/1,3AH, ca. 20min Pufferzeit bei 2A Last), beide auf Tragschiene im Leistungsfeld montiert. KORREKTUR Session 63: die 3 potentialfreien Meldekontakte (Original-Datenblatt 104658_en_02 bestaetigt: Klemme 13/14 Alarm, 23/24 Batteriebetrieb, 33/34 Batterieladung) sitzen schrankintern - USV und DDC-Modul beide in diesem Schrank, keine Klemme noetig (Regel 12), dp_bi:3 direkt auf der QUINT-UPS-Zeile (analog TXM1.8U: 1 Bauteil, mehrere Signalkanaele). Datenpunktbedarf 3x BI. Braucht eine vorhandene oder automatisch ergaenzte 24V-DC-Quelle (Steuerspannungs-Automatik). Hinweis Nutzer-Rueckfrage zu den Meldekontakten: es gibt KEINE eigenen Kontakte fuer \"Netzbetrieb\" oder \"USV-Betrieb\" getrennt von \"Batteriebetrieb\" - Batteriebetrieb AN = USV traegt die Last (Netz weg), Batteriebetrieb AUS = Netzbetrieb (logische Umkehrung, kein zusaetzliches Signal). \"Batteriefehler\" und \"Sammelstoerung\" sind ebenfalls dasselbe einzelne Alarm-Signal (13/14) - keine getrennten Kontakte vorhanden.",
     "bauteile": [
       {
         "artikel_nr": "2320225",
         "menge": 1,
-        "zone": "leist"
+        "zone": "leist",
+        "dp_bi": 3
       },
       {
         "artikel_nr": "2320296",
         "menge": 1,
         "zone": "leist"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f",
-        "dp_bi": 1
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f",
-        "dp_bi": 1
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f"
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f",
-        "dp_bi": 1
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -6960,6 +6928,106 @@
     "feldgeraet_artikel_nr": "3WA-5000A",
     "automationsanbindung": true,
     "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "480_000015",
+    "name": "TouchPanel 10.1\" PXM40 mit Web-Schnittstelle PXG3.W100, Tuereinbau",
+    "gewerk": "480",
+    "beschreibung": "Siemens Desigo Touch Panel PXM40 (10,1\", Tuereinbau) + Web-Schnittstelle PXG3.W100 (DIN-Schiene, im Steuerungsfeld) - lokale Bedien-/Beobachtungsstation fuer mehrere Desigo-PX-Automationsstationen. Beide Komponenten brauchen 24V AC/DC (SELV) - Steuerspannungs-Automatik ergaenzt bei Bedarf einen Trafo/eine Quelle. Die PXG3.W100 hat 2 eingebaute Ethernet-Ports (Panel + Uplink) - fuer EIN Touch Panel reicht das i.d.R. ohne zusaetzlichen externen Switch. Keine Klemmen/Datenpunkte (reines Bediengeraet, kein ueberwachtes Feldgeraet).",
+    "bauteile": [
+      {
+        "artikel_nr": "S55623-H119",
+        "menge": 1,
+        "zone": "tuer"
+      },
+      {
+        "artikel_nr": "S55842-Z117",
+        "menge": 1,
+        "zone": "steuer"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "betriebsmittel": "Desigo Touch Panel PXM40 10.1\" + PXG3.W100 (Siemens)",
+    "kategorie": "Bedien-/Anzeigegeraete",
+    "geprueft": false
+  },
+  {
+    "id": "480_000016",
+    "name": "TouchPanel 15.6\" PXM50 mit Web-Schnittstelle PXG3.W100, Tuereinbau",
+    "gewerk": "480",
+    "beschreibung": "Siemens Desigo Touch Panel PXM50 (15,6\", Tuereinbau) + Web-Schnittstelle PXG3.W100 (DIN-Schiene, im Steuerungsfeld) - wie PXM40, groessere Ausfuehrung. 24V AC/DC (SELV), Steuerspannungs-Automatik ergaenzt bei Bedarf. Keine Klemmen/Datenpunkte (reines Bediengeraet).",
+    "bauteile": [
+      {
+        "artikel_nr": "S55623-H120",
+        "menge": 1,
+        "zone": "tuer"
+      },
+      {
+        "artikel_nr": "S55842-Z117",
+        "menge": 1,
+        "zone": "steuer"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "betriebsmittel": "Desigo Touch Panel PXM50 15.6\" + PXG3.W100 (Siemens)",
+    "kategorie": "Bedien-/Anzeigegeraete",
+    "geprueft": false
+  },
+  {
+    "id": "480_000017",
+    "name": "Ethernet-Switch FL SWITCH SFN 5TX, 24V DC, mit Signalkontakt Stoerung",
+    "gewerk": "480",
+    "beschreibung": "Phoenix Contact FL SWITCH SFN 5TX, DC-Variante (2891152, 9...32V DC) statt der sonst im Kommunikationsbauteil-Ratchet automatisch ergaenzten 24VAC-Variante (2891021) - Nutzer-Vorgabe: Anschluss an die 24V-DC-Steuerspannung, damit der Switch bei USV-Betrieb (Batteriepufferung) weiterlaeuft. Eingebauter Signalkontakt (Relais, meldet Power-/Verbindungsausfall) direkt als BI verdrahtet - Switch und DDC-Modul sitzen beide in diesem Schrank, keine Klemme noetig (Regel 12). Steuerspannungs-Automatik ergaenzt bei Bedarf ein 24V-DC-Netzteil. Datenpunktbedarf 1x BI (Stoerung).",
+    "bauteile": [
+      {
+        "artikel_nr": "2891152",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "betriebsmittel": "FL SWITCH SFN 5TX-DC (Phoenix Contact)",
+    "automationsanbindung": true,
+    "kategorie": "Netzwerkeinrichtung",
+    "geprueft": false
+  },
+  {
+    "id": "480_000018",
+    "name": "Schaltschranksteckdose Hutschiene, LSS B10 mit Hilfskontakt, im Leistungsfeld",
+    "gewerk": "480",
+    "beschreibung": "Schutzkontakt-Steckdose fuer Hutschienenmontage (Phoenix Contact EO-CF/PT, 250V/16A) im Leistungsfeld (Nutzer-Vorgabe), abgesichert mit LSS 1-polig B10A (5SL6110-6, 10A passend zur Steckdosen-Absicherung) + Hilfsschalter (5ST3010, 1S+1Oe). Schrankinterne Steckdose (kein Feldkabel, kein externer Verbraucher) - Ausloese-BI direkt auf der Hilfsschalter-Zeile, keine Klemme noetig (Regel 12). Datenpunktbedarf 1x BI (Ausloesung).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6110-6",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "0804038",
+        "menge": 1,
+        "zone": "leist"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "betriebsmittel": "Schaltschranksteckdose EO-CF/PT (Phoenix Contact)",
+    "automationsanbindung": true,
+    "kategorie": "Steckdose/Zubehör",
     "geprueft": false
   }
 ]
