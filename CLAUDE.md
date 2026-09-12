@@ -16,6 +16,38 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 61 (12.09.2026) – Auswahltext-Namen der 15 Ventilator-
+> Baugruppen `430_000028`–`430_000042` ergänzt:** Nutzer-Fund per Screenshot –
+> im Baugruppen-Dropdown war für z. B. „Ventilator 1-stufig, Kleinventilator
+> bis 1,5 kW, 230V AC 1~" nicht erkennbar, wie die Aufschaltung erfolgt (BI/BO-
+> Belegung) und ob der Reparaturschalter enthalten ist, obwohl die Statistik
+> bereits 4 BI/1 BO zeigte. Nach Vorbild der Pumpen-Baugruppen (`420_000022`ff.,
+> Namensmuster `<Bauteil> <Leistungsband>, <Funktion 1>, <Funktion 2>, ...,
+> inkl. Rep.-Schalter, <Spannung>`) alle 15 `name`-Felder in
+> `ga_komponenten.xlsx` umgestellt, `beschreibung` unverändert (war bereits
+> ausführlich). Funktionsteil je Baugruppen-Familie aus den tatsächlichen
+> `dp_bi/bo/ao`-Overrides der Bauteile abgeleitet, nicht neu erfunden:
+> - 1-stufig 230V (`028`/`029`): „Schalten Ein/Aus, Betrieb, Stoerung"
+> - Direktanlauf 3~ (`030`/`031`): „Schalten Ein/Aus, Betrieb, Stoerung MSS,
+>   Stoerung PTC" (MSS-Hilfsschalter und PTC melden getrennt, Regel 13c)
+> - Stern-Dreieck (`032`–`034`): „Schalten Ein/Aus, Betrieb, Stoerung
+>   Ueberlast, Stoerung PTC"
+> - Dahlander 2-Touren (`035`/`036`): „Schalten Stufe 1/2 (verriegelt), Betrieb
+>   Stufe 1/2, Sammelstoerung Ueberlast, Stoerung PTC" (2× BO/2× BI Betrieb,
+>   da beide Drehzahlstufen eigene Schütz-Hilfskontakte haben)
+> - FU-geregelt/EC-Ventilator (`037`–`042`): „Freigabe, Sollwertfuehrung
+>   0...10V, Betrieb, Stoerung" (Enable statt Schalten Ein/Aus, da FU/EC-
+>   Elektronik selbst schaltet); bei `039`–`042` das redundante „0-10V" aus
+>   dem Bauteil-Präfix entfernt (steht jetzt nur noch im Funktionsteil).
+> Kommunikationsmodule `430_000043`/`044` unverändert (keine eigene
+> Aufschaltung, sind Zusatzbausteine zu einer physischen Baugruppe).
+> Export **baugruppen 113 · einzelbauteile 190 · feldgeraete 61** (Zahlen
+> unverändert, reine Textänderung). Backup vor Schreibzugriff:
+> `C:\Users\SMI\Backups\dbacs\excel\ga_komponenten_vor-ventilator-namen_20260912.xlsx`.
+> Browser-Verifikation: alle 15 neuen Namen erscheinen korrekt im Lüftungs-
+> Dropdown, `430_000032` testweise platziert → Belegung/Stückliste lösen
+> weiterhin korrekt auf, keine Konsolenfehler.
+
 > **Sitzungsstand Ende Session 60 (08.09.2026) – Zonen-Korrektur Ventilator-
 > Baugruppen `430_000028`–`430_000036` (9 BG, Asynchronmotor):** auf Nutzer-
 > Vorgabe zur korrekten Platzbedarf-Verteilung angepasst. (1) **PTC-Auslösegerät
