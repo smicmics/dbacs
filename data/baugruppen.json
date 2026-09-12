@@ -819,12 +819,12 @@
         "zone": "leist"
       },
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       },
       {
-        "artikel_nr": "5SL6110-7",
+        "artikel_nr": "5SL6110-6",
         "menge": 1,
         "zone": "evert"
       }
@@ -847,7 +847,7 @@
         "zone": "leist"
       },
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       }
@@ -870,12 +870,12 @@
         "zone": "leist"
       },
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       },
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       }
@@ -2062,7 +2062,7 @@
     "beschreibung": "Umwaelzpumpe Wilo Yonos/Stratos PICO (3...45W, 230V 1~) - keine eigene Signalelektronik am Gerät (nur Netzstecker), daher Schalten/Ueberwachen komplett schrankseitig aufgebaut: Energie ueber LSS 1-polig B6A (5SL6106-7) mit aufgestecktem Hilfsschalter (5ST3010, 1S+1Oe) - bei LSS-Ausloesung interne Verdrahtung direkt auf einen BI (Stoerung, kein Signal = Ausfall). Schaltbefehl: DDC-BO speist die 24V-AC-Spule des Koppelrelais (Sockel 2900934 + Steckrelais REL-IR4/L-24AC/4X21, 2903686, 4 Wechsler) direkt (keine eigene Klemme, reine Schrankinnenverdrahtung); 2 Relaiskontakte schalten die Pumpenversorgung (L+N), der 3. Kontakt liefert intern direkt auf einen BI die Betriebsmeldung. Nur der Leistungsabgang zur Pumpe verlaesst den Schrank: 3 Klemmen L, N, PE (Regel 11 - PE immer mitfuehren, bei Schutzklasse-II-Geraeten bleibt die Klemme unbelegt). Datenpunktbedarf 1x BO + 2x BI, keine Klemme fuer BO/BI noetig (reine Schrankinnenverdrahtung zwischen Koppelrelais/Hilfsschalter und DDC-Modul). Reparaturschalter (Kraus & Naimer KG-Reihe, rot/gelb, normativ gefordert nach EN 60204-1/VDE 0113 zur allpoligen Freischaltung des Betriebsmittels ausserhalb der Sichtweite zur Hauptabsicherung) mit Hilfskontaktblock (K2.H010/A11-VE) gehoert zur Baugruppe - schaltet nur die stromfuehrenden Leiter (L bzw. L1/L2/L3/N), PE wird nicht mitgeschaltet. Hilfskontakt meldet Betaetigung als 1x BI auf 2 Klemmen.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       },
@@ -2139,7 +2139,7 @@
     "beschreibung": "Umwaelzpumpe Wilo Stratos MAXO (ca. 40W...1,5kW, 230V 1~) - vollintegrierte Pumpenelektronik mit eigenem Klemmenraum (SSM/SBM/Digitaleingaenge/Analogeingaenge), Original-Klemmenplan verifiziert (Wilo-Stratos-MAXO/-D/-Z Einbau- und Betriebsanleitung Ed.02/2025-05). Netzanschluss ueber LSS 1-polig B10A (5SL6110-7, Pumpenleistung bis 1,5kW = ca. 6,5A, B6A waere zu knapp) auf 3 Klemmen L/N/PE (Regel 11). SBM (oranger Klemmenblock, potentialfreier Schliesser, Werkseinstellung Motor in Betrieb) auf 2 Klemmen = 1x BI Betriebsmeldung. SSM (roter Klemmenblock, potentialfreier Wechsler) auf 2 Klemmen = 1x BI Sammelstoermeldung. Digitaleingang DI1 (Klemmen 31/33, Funktion Extern AUS) auf 2 Klemmen = 1x BO Schalten Ein/Aus. Analogeingang AI1 (Klemmen 12/13, 0...10V) auf 2 Klemmen = 1x AO Sollwert-/Drehzahlvorgabe. Alle Signalklemmen echte Feldklemmen (Pumpe steht ausserhalb des Schranks), SELV-Bereich (SSM/SBM duerfen laut Handbuch auch bis 250V AC betrieben werden, getrennte Leitungsfuehrung noetig um SELV-Schutz der uebrigen Schnittstellen zu erhalten). Kommunikationskarte (CIF-Modul fuer Modbus/BACnet/etc.) bewusst nicht Teil dieser Grundbaugruppe, bei Bedarf als eigene Baugruppe ergaenzbar. Datenpunktbedarf 1x BO + 1x BI + 1x AO... + 1x BI (SSM) = 2x BI + 1x BO + 1x AO gesamt. Reparaturschalter (Kraus & Naimer KG-Reihe, rot/gelb, normativ gefordert nach EN 60204-1/VDE 0113 zur allpoligen Freischaltung des Betriebsmittels ausserhalb der Sichtweite zur Hauptabsicherung) mit Hilfskontaktblock (K2.H010/A11-VE) gehoert zur Baugruppe - schaltet nur die stromfuehrenden Leiter (L bzw. L1/L2/L3/N), PE wird nicht mitgeschaltet. Hilfskontakt meldet Betaetigung als 1x BI auf 2 Klemmen.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6110-7",
+        "artikel_nr": "5SL6110-6",
         "menge": 1,
         "zone": "evert"
       },
@@ -2242,7 +2242,7 @@
     "beschreibung": "Trinkwasser-Zirkulationspumpe Wilo Stratos MAXO-Z, DVGW W551/W553-konform - elektrisch identische Beschaltung wie Stratos MAXO (420_000023), gleiche Elektronikplattform, nur fuer Trinkwarmwasser-Zirkulation zertifiziert. Netzanschluss LSS 1-polig B10A (5SL6110-7) auf 3 Klemmen L/N/PE (Regel 11). SBM auf 2 Klemmen = 1x BI Betriebsmeldung. SSM auf 2 Klemmen = 1x BI Sammelstoermeldung. DI1 (Extern AUS) auf 2 Klemmen = 1x BO Schalten Ein/Aus. AI1 (0...10V) auf 2 Klemmen = 1x AO Sollwertvorgabe. Kommunikationskarte bewusst nicht Teil dieser Grundbaugruppe. Reparaturschalter (Kraus & Naimer KG-Reihe, rot/gelb, normativ gefordert nach EN 60204-1/VDE 0113 zur allpoligen Freischaltung des Betriebsmittels ausserhalb der Sichtweite zur Hauptabsicherung) mit Hilfskontaktblock (K2.H010/A11-VE) gehoert zur Baugruppe - schaltet nur die stromfuehrenden Leiter (L bzw. L1/L2/L3/N), PE wird nicht mitgeschaltet. Hilfskontakt meldet Betaetigung als 1x BI auf 2 Klemmen.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6110-7",
+        "artikel_nr": "5SL6110-6",
         "menge": 1,
         "zone": "evert"
       },
@@ -5171,7 +5171,7 @@
     "beschreibung": "Elektronisch geregelte Nachspeisestation fuer Anlagen mit Membran-Druckausdehnungsgefaess (MAG), Reflex Fillcontrol Smart (Art. 6813500). Werkseitiger Netzstecker (Schuko) - laut Original-Betriebsanleitung 'Die Spannungsversorgung des Geraetes erfolgt ueber einen Schuko-Stecker'. Schaltschrank versorgt dafuer eine Aufputz-Schutzkontaktsteckdose vor Ort (Busch-Jaeger 2300 EWSI, Pflichtzubehoer-Feldgeraet ueber zubehoer_feldgeraet_artikel_nr), LSS 1-polig B6A (5SL6106-7) + 3 Klemmen L/N/PE (Regel 11) bleiben dafuer unveraendert bestehen. KEIN Reparaturschalter noetig (Regel 16) - Ausstecken bewirkt dieselbe Spannungsfreiheit wie ein externer Schalter, waere redundant. Potentialfreier Wechslerkontakt 'Sammelstoermeldung' auf der Steuerungsplatine (max. 230V/2A) auf 2 Klemmen der Feldgeraete-Klemmleiste, direkt als BI verdrahtet (kein Koppelrelais noetig, bereits potentialfrei). Datenpunktbedarf 1x BI. Zusaetzliche RS485-Schnittstelle auf der Platine vorhanden, Protokoll nicht spezifiziert - nicht Teil dieser Baugruppe.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       },
@@ -5220,7 +5220,7 @@
     "beschreibung": "Kompressorgesteuerte Druckhaltestation Reflex Reflexomat XS (Art. 8800100, Steuerung 'Reflex Control Smart', 0,25kW Kompressor, IP54). Werkseitiger Netzstecker - Lieferumfang laut Original-Betriebsanleitung enthaelt 'Netzkabel mit Stecker (230V~)'. Schaltschrank versorgt dafuer eine Aufputz-Schutzkontaktsteckdose vor Ort (Busch-Jaeger 2300 EWSI, Pflichtzubehoer-Feldgeraet), LSS 1-polig B6A (5SL6106-7) + 3 Klemmen L/N/PE (Regel 11) bleiben unveraendert. KEIN Reparaturschalter noetig (Regel 16). Externe Nachspeiseanforderung ('Levelcontrol', Klemmen P3/P4 laut Klemmenplan) erwartet ein 230V-Signal ueber L+N, KEIN potentialfreier Kontakt und kein 24V-Signal - TXM1.8T liefert nur 24V AC, daher Koppelrelais 24V-AC-Spule (2967073, Regel 10) zwischengeschaltet: DDC-BO speist die Relaisspule direkt (keine eigene Klemme, Regel 12), 1 Relaiskontakt schaltet L durchgehend zu P3, N wird direkt zu P4 durchverdrahtet (2 Klemmen Feldgeraete-Klemmleiste). Potentialfreier Sammelstoerkontakt (Wechsler, max. 230V/8A) auf 2 weiteren Klemmen direkt als BI. Datenpunktbedarf 1x BO + 1x BI. RS485/Modbus-RTU-Schnittstelle bereits im Grundgeraet integriert, aber NICHT Teil dieser Baugruppe.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       },
@@ -5285,7 +5285,7 @@
     "beschreibung": "Pumpengesteuerte Druckhaltestation Reflex Variomat Touch VS 2 (Beispiel Steuerung VS 2-1/35, Art. 8910110, IP64). Laut Original-Betriebsanleitung ECHT klemmenbasiert fest verdrahtet (Kabeldurchfuehrungen fuer Einspeisung+Absicherung im 'Anschlussteil', Einspeiseklemme 'X0/1 L Einspeisung 230V') - anders als die uebrigen Reflex-Baugruppen dieser Session, die per Netzstecker/Steckdose angeschlossen werden. Reale Anschlussleistung laut Datenblatt nur 230V/5A (nicht 16A wie zunaechst angenommen) - LSS korrigiert auf 1-polig B6A (5SL6106-7). Das Anschlussteil hat einen EIGENEN Hauptschalter eingebaut (siehe Uebersichtsbild 'Elektrischer Anschluss') - ein zusaetzlicher externer Reparaturschalter entfaellt (Regel 16, gleicher Effekt: Spannungsfreiheit vor Ort herstellbar). 3 Klemmen L/N/PE (Regel 11) bleiben, da die Einspeisung tatsaechlich aus dem Schrank kommt. Externe Nachspeiseanforderung: Klemme 22b/43 ist ein geraeteeigener Spannungs-Loop (+24V von der Station selbst), extern nur per potentialfreiem Kontakt zu bruecken - Koppelrelais 24V-AC-Spule (2967073, Regel 15). Potentialfreier Sammelstoerkontakt (Klemme 24/25) auf 2 Klemmen als BI. Eigener potentialfreier Trockenlaufschutz-Kontakt (Klemme 13) getrennt als BI. Analoge Ausgaenge Druck (Klemme 19) und Niveau (Klemme 21), Signalart 4-20mA mit gemeinsamer Masse GNDA (Klemme 20). Je Signal ein 500-Ohm-Praezisionswiderstand (Artikel BUERDE-500R) parallel an der Klemme wandelt 4-20mA in 2-10V - dadurch liest ein STANDARD TXM1.8U (automatische DDC-Modulwahl waehlt ohnehin immer dieses Modul) das Signal korrekt, TXM1.8X ist NICHT erforderlich (bleibt rein manuelle Alternative). Datenpunktbedarf 1x BO + 2x BI + 2x AI.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       },
@@ -5388,7 +5388,7 @@
     "beschreibung": "Vakuum-Spruehrohrentgasungsgeraet mit integrierter Nachspeisung Reflex Servitec S (Art. 8832000, 0,2kW, IP42). Werkseitiger Netzstecker - Original-Klemmenplan Pos. 14: 'Spannungsversorgung 230V über Kabel mit Netzstecker, werkseitig'. Schaltschrank versorgt dafuer eine Aufputz-Schutzkontaktsteckdose vor Ort (Busch-Jaeger 2300 EWSI, Pflichtzubehoer-Feldgeraet), LSS 1-polig B6A (5SL6106-7) + 3 Klemmen L/N/PE (Regel 11) bleiben unveraendert. KEIN Reparaturschalter noetig (Regel 16). Externe Nachspeiseanforderung (Betriebsart 'Levelcontrol', Klemmen P3/P4) erwartet ein 230V-Signal ueber L+N (identisches Anschlussschema wie beim Reflexomat) - Koppelrelais 24V-AC-Spule (2967073, Regel 10): DDC-BO speist die Spule, 1 Relaiskontakt schaltet L zu P3, N direkt zu P4 (2 Klemmen Feldgeraete-Klemmleiste). Potentialfreier Sammelstoerkontakt (Klemme 26/27/28 'C/NC/NO', max. 230V/8A) auf 2 Klemmen direkt als BI. Datenpunktbedarf 1x BO + 1x BI. Vollstaendiger Original-Klemmenplan (Servitec-S-Betriebsanleitung Rev. B 28.08.2019) ausgewertet.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       },
@@ -5453,7 +5453,7 @@
     "beschreibung": "Automatische Trinkwasser-Hygiene-Spuelstation Viega 2241.10 (Herst.-Art.-Nr. 762216, eine Spuelstrecke PWC/PWH). Eigenes externes Steckernetzteil 230V AC -> 12V DC, max. 15,6W - Steckernetzteil wird in eine Aufputz-Schutzkontaktsteckdose vor Ort eingesteckt, die der Schaltschrank versorgt (Busch-Jaeger 2300 EWSI, Pflichtzubehoer-Feldgeraet), LSS 1-polig B6A (5SL6106-7) + 3 Klemmen L/N/PE (Regel 11) bleiben unveraendert. KEIN Reparaturschalter noetig (Regel 16). Potentialfreier Alarmkontakt (Klemme 1/2, Arbeitskontakt, max. 24V DC/0,5A) auf 2 Klemmen direkt als BI Sammelstoerung. Externer Reset (Klemme 3/4): die Station liefert die 24V DC fuer die Reset-Schleife SELBST, extern darf laut Anleitung nur ein potentialfreier Schalter/Relaiskontakt die beiden Klemmen bruecken - Koppelrelais 24V-AC-Spule (2967073, Regel 15): DDC-BO speist die Spule, 1 Relaiskontakt bruecke rein potentialfrei Klemme 3/4 (2 Klemmen Feldgeraete-Klemmleiste). Datenpunktbedarf 1x BI + 1x BO. Optionales Zusatzmodul 'GLT-Modul binaer 2241.87' existiert, ist NICHT Teil dieser Grundbaugruppe.",
     "bauteile": [
       {
-        "artikel_nr": "5SL6106-7",
+        "artikel_nr": "5SL6106-6",
         "menge": 1,
         "zone": "evert"
       },
@@ -5615,6 +5615,806 @@
     "automationsanbindung": true,
     "benoetigt_steuerspannung": "24vdc",
     "kategorie": "Sensoren flüssiges Medium",
+    "geprueft": false
+  },
+  {
+    "id": "440_000004",
+    "name": "LSS 1-polig B6 mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B6 A, 1-polig, 6 kA mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B6 A, 1-polig, 6 kA, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000005",
+    "name": "LSS 1-polig B10 mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B10 A, 1-polig, 6 kA mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6110-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B10 A, 1-polig, 6 kA, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000006",
+    "name": "LSS 1-polig B16 mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B16 A, 1-polig, 6 kA mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6116-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B16 A, 1-polig, 6 kA, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000007",
+    "name": "LSS 2-polig B6 mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B6 A, 2-polig, 6 kA mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6206-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B6 A, 2-polig, 6 kA, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000008",
+    "name": "LSS 2-polig B10 mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B10 A, 2-polig, 6 kA mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6210-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B10 A, 2-polig, 6 kA, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000009",
+    "name": "LSS 2-polig B16 mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B16 A, 2-polig, 6 kA mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6216-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B16 A, 2-polig, 6 kA, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000010",
+    "name": "LSS 3-polig B16 mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B16 A, 3-polig, 6 kA mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6316-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B16 A, 3-polig, 6 kA, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000011",
+    "name": "LSS 3-polig C16 mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 C16 A, 3-polig, 6 kA mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 C16 A, 3-polig, 6 kA, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000012",
+    "name": "FI-Schutzschalter 30mA mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 30mA, Typ A mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SV3344-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 30mA, Typ A, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000013",
+    "name": "FI-Schutzschalter 300mA mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 300mA, Typ A mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SV3644-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 300mA, Typ A, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000014",
+    "name": "FI-Schutzschalter 500mA mit Hilfskontakt, 1x BI Ausloesung, im Schaltschrank",
+    "gewerk": "440",
+    "beschreibung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 500mA, Typ A mit aufgestecktem Hilfsschalter 5ST3010 (1S+1Oe, universell aufsteckbar fuer 5SL/5SY/5SP-LSS UND 5SV3/5SU1-FI-Schutzschalter). Schrankintern verdrahtet, Hilfsschalter UND DDC-Modul sitzen beide im selben Schrank -> keine eigene Klemme noetig (Regel 12), dp_bi-Override direkt auf der Hilfsschalter-Bauteilzeile. Fuer ein beliebiges, vom Schrank aus geschuetztes/ueberwachtes Stromkreis-Segment (z.B. Steckdosen-, Beleuchtungs- oder Hilfsstromkreis im Schrank selbst). Datenpunktbedarf 1x BI (Ausloesung/Fehlerstrom).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SV3744-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 500mA, Typ A, Siemens",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000015",
+    "name": "LSS 1-polig B6 mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B6 A, 1-polig, 6 kA mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B6 A, 1-polig, 6 kA (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SL6106-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000016",
+    "name": "LSS 1-polig B10 mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B10 A, 1-polig, 6 kA mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B10 A, 1-polig, 6 kA (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SL6110-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000017",
+    "name": "LSS 1-polig B16 mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B16 A, 1-polig, 6 kA mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B16 A, 1-polig, 6 kA (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SL6116-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000018",
+    "name": "LSS 2-polig B6 mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B6 A, 2-polig, 6 kA mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B6 A, 2-polig, 6 kA (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SL6206-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000019",
+    "name": "LSS 2-polig B10 mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B10 A, 2-polig, 6 kA mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B10 A, 2-polig, 6 kA (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SL6210-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000020",
+    "name": "LSS 2-polig B16 mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B16 A, 2-polig, 6 kA mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B16 A, 2-polig, 6 kA (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SL6216-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000021",
+    "name": "LSS 3-polig B16 mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 B16 A, 3-polig, 6 kA mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 B16 A, 3-polig, 6 kA (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SL6316-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000022",
+    "name": "LSS 3-polig C16 mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "LSS 5SL6 C16 A, 3-polig, 6 kA mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "LSS 5SL6 C16 A, 3-polig, 6 kA (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SL6316-7-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000023",
+    "name": "FI-Schutzschalter 30mA mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 30mA, Typ A mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 30mA, Typ A (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SV3344-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000024",
+    "name": "FI-Schutzschalter 300mA mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 300mA, Typ A mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 300mA, Typ A (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SV3644-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000025",
+    "name": "FI-Schutzschalter 500mA mit Hilfskontakt, 1x BI Ausloesung, Feldgeraet (externe Anlage)",
+    "gewerk": "440",
+    "beschreibung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 500mA, Typ A mit Hilfsschalter 5ST3010 (1S+1Oe), eingebaut in einer EXTERNEN Elektro-Unterverteilung oder Schaltanlage - die Energieversorgung/Absicherung selbst ist NICHT Aufgabe dieses Schaltschranks (regelt die externe Anlage). Nur die Ausloese-/Fehlerstrommeldung des Hilfskontakts wird per Feldkabel abgeholt: 2 Klemmen klemm_f (1x dp_bi:1, 1x Gegenader, Regel 14), kein Koppelrelais noetig (potentialfrei). Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 500mA, Typ A (Siemens), extern eingebaut",
+    "feldgeraet_artikel_nr": "5SV3744-6-FELD",
+    "automationsanbindung": true,
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "geprueft": false
+  },
+  {
+    "id": "440_000026",
+    "name": "Wahlschalter Aus-Ein-Auto, 3-Stufen, Siemens SIRIUS ACT, Tuereinbau extern",
+    "gewerk": "440",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A. Fuer Tuereinbau in einem externen Tableau/einer externen Schaltanlage (nicht dieser Schaltschrank) - 3 Schaltstellungen insgesamt, 2 Kontakt(e)/BI fuer die Stellungen Ein, Auto (die verbleibende Grundstellung ergibt sich aus \"kein Kontakt aktiv\"). Je Kontakt 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais noetig. Datenpunktbedarf 2x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A",
+    "feldgeraet_artikel_nr": "3SU1100-2BL60-1NA0",
+    "automationsanbindung": true,
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "440_000027",
+    "name": "Wahlschalter Hand-Auto, 2-Stufen, Siemens SIRIUS ACT, Tuereinbau extern",
+    "gewerk": "440",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit, 1x Schliesser (SPST), 22mm, 500V/10A. Fuer Tuereinbau in einem externen Tableau/einer externen Schaltanlage (nicht dieser Schaltschrank) - 2 Schaltstellungen insgesamt, 1 Kontakt(e)/BI fuer die Stellungen Auto (die verbleibende Grundstellung ergibt sich aus \"kein Kontakt aktiv\"). Je Kontakt 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais noetig. Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit, 1x Schliesser (SPST), 22mm, 500V/10A",
+    "feldgeraet_artikel_nr": "3SU1100-2BF60-3BA0",
+    "automationsanbindung": true,
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "440_000028",
+    "name": "Wahlschalter Aus-Stufe1-Stufe2, 3-Stufen, Siemens SIRIUS ACT, Tuereinbau extern",
+    "gewerk": "440",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A. Fuer Tuereinbau in einem externen Tableau/einer externen Schaltanlage (nicht dieser Schaltschrank) - 3 Schaltstellungen insgesamt, 2 Kontakt(e)/BI fuer die Stellungen Stufe1, Stufe2 (die verbleibende Grundstellung ergibt sich aus \"kein Kontakt aktiv\"). Je Kontakt 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais noetig. Datenpunktbedarf 2x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A",
+    "feldgeraet_artikel_nr": "3SU1100-2BL60-1NA0",
+    "automationsanbindung": true,
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "440_000029",
+    "name": "Wahlschalter Aus-Stufe1-Stufe2-Auto, 4-Stufen, Siemens SIRIUS ACT, Tuereinbau extern",
+    "gewerk": "440",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 4-Stufen (Betaetiger + 3 separate Kontaktelemente, individuell rastbar) - KEINE fertige \"komplette Einheit\" im Katalog gefunden, custom aus Modulsystem aufgebaut, NICHT verifiziert. Fuer Tuereinbau in einem externen Tableau/einer externen Schaltanlage (nicht dieser Schaltschrank) - 4 Schaltstellungen insgesamt, 3 Kontakt(e)/BI fuer die Stellungen Stufe1, Stufe2, Auto (die verbleibende Grundstellung ergibt sich aus \"kein Kontakt aktiv\"). Je Kontakt 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais noetig. Datenpunktbedarf 3x BI. ACHTUNG: 4-Stufen-Hardware nicht verifiziert, siehe quelle_hinweis Feldgeraet.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 4-Stufen (Betaetiger + 3 separate Kontaktelemente, individuell rastbar) - KEINE fertige \"komplette Einheit\" im Katalog gefunden, custom aus Modulsystem aufgebaut, NICHT verifiziert",
+    "feldgeraet_artikel_nr": "3SU1100-4-UNVERIFIZIERT",
+    "automationsanbindung": true,
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "440_000030",
+    "name": "Wahlschalter Zu-Auf, 2-Stufen, Siemens SIRIUS ACT, Tuereinbau extern",
+    "gewerk": "440",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit, 1x Schliesser (SPST), 22mm, 500V/10A. Fuer Tuereinbau in einem externen Tableau/einer externen Schaltanlage (nicht dieser Schaltschrank) - 2 Schaltstellungen insgesamt, 1 Kontakt(e)/BI fuer die Stellungen Auf (die verbleibende Grundstellung ergibt sich aus \"kein Kontakt aktiv\"). Je Kontakt 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais noetig. Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit, 1x Schliesser (SPST), 22mm, 500V/10A",
+    "feldgeraet_artikel_nr": "3SU1100-2BF60-3BA0",
+    "automationsanbindung": true,
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "440_000031",
+    "name": "Wahlschalter Zu-Auf-Auto, 3-Stufen, Siemens SIRIUS ACT, Tuereinbau extern",
+    "gewerk": "440",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A. Fuer Tuereinbau in einem externen Tableau/einer externen Schaltanlage (nicht dieser Schaltschrank) - 3 Schaltstellungen insgesamt, 2 Kontakt(e)/BI fuer die Stellungen Auf, Auto (die verbleibende Grundstellung ergibt sich aus \"kein Kontakt aktiv\"). Je Kontakt 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais noetig. Datenpunktbedarf 2x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A",
+    "feldgeraet_artikel_nr": "3SU1100-2BL60-1NA0",
+    "automationsanbindung": true,
+    "kategorie": "Handschalter",
     "geprueft": false
   }
 ]

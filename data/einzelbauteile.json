@@ -140,7 +140,7 @@
     "geprueft": false
   },
   {
-    "artikel_nr": "5SL6106-7",
+    "artikel_nr": "5SL6106-6",
     "bezeichnung": "LSS 5SL6 B6 A, 1-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
@@ -155,7 +155,7 @@
     "geprueft": false
   },
   {
-    "artikel_nr": "5SL6110-7",
+    "artikel_nr": "5SL6110-6",
     "bezeichnung": "LSS 5SL6 B10 A, 1-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
@@ -170,7 +170,7 @@
     "geprueft": false
   },
   {
-    "artikel_nr": "5SL6116-7",
+    "artikel_nr": "5SL6116-6",
     "bezeichnung": "LSS 5SL6 B16 A, 1-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
@@ -185,7 +185,7 @@
     "geprueft": false
   },
   {
-    "artikel_nr": "5SL6206-7",
+    "artikel_nr": "5SL6206-6",
     "bezeichnung": "LSS 5SL6 B6 A, 2-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
@@ -200,7 +200,7 @@
     "geprueft": false
   },
   {
-    "artikel_nr": "5SL6210-7",
+    "artikel_nr": "5SL6210-6",
     "bezeichnung": "LSS 5SL6 B10 A, 2-polig, 6 kA",
     "hersteller": "Siemens",
     "bauteil_typ": "lss",
@@ -3047,6 +3047,62 @@
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "keine_platzierung_mp": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6216-6",
+    "bezeichnung": "LSS 5SL6 B16 A, 2-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "b_mm": 36.0,
+    "te_breite": 2,
+    "h_mm": 90.0,
+    "zone": [
+      "evert"
+    ],
+    "kategorie": "Leitungsschutzschalter",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6316-6",
+    "bezeichnung": "LSS 5SL6 B16 A, 3-polig, 6 kA",
+    "hersteller": "Siemens",
+    "bauteil_typ": "lss",
+    "b_mm": 54.0,
+    "te_breite": 3,
+    "h_mm": 90.0,
+    "zone": [
+      "evert"
+    ],
+    "kategorie": "Leitungsschutzschalter",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SV3644-6",
+    "bezeichnung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 300mA, Typ A",
+    "hersteller": "Siemens",
+    "bauteil_typ": "fi_schutzschalter",
+    "b_mm": 72.0,
+    "te_breite": 4,
+    "h_mm": 90.0,
+    "zone": [
+      "evert"
+    ],
+    "kategorie": "Leitungsschutzschalter",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SV3744-6",
+    "bezeichnung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 500mA, Typ A",
+    "hersteller": "Siemens",
+    "bauteil_typ": "fi_schutzschalter",
+    "b_mm": 72.0,
+    "te_breite": 4,
+    "h_mm": 90.0,
+    "zone": [
+      "evert"
+    ],
+    "kategorie": "Leitungsschutzschalter",
     "geprueft": false
   }
 ]

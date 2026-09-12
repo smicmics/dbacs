@@ -119,6 +119,90 @@
 > Tauchfühler nicht katalogisiert (s.o.). Herleitungstabellen je Baugruppe im
 > Session-Abschlussbericht (Chat), Rohdaten `scratchpad/fork_1..5_*_ergebnis.md`.
 
+> **Sitzungsstand Session 63 (12.09.2026) - Gruppe Elektro befuellt (LSS/FI
+> mit Hilfskontakt, Handschalter) + katalogweite LSS-Artikelnummer-Korrektur:**
+> **1. Wichtiger Bugfund (Siemens-Originaldatenblaetter geprueft):** bei der
+> 5SL6-Reihe kennzeichnet der Suffix **`-6` die B-Charakteristik, `-7` die
+> C-Charakteristik** - das war im DBACS-Katalog vertauscht. `5SL6106-7`,
+> `5SL6110-7`, `5SL6116-7`, `5SL6206-7`, `5SL6210-7` waren als "B6/B10/B16"
+> katalogisiert, sind laut Siemens-TeDatasheet aber tatsaechlich **C6/C10/C16**
+> - betraf 11 bestehende Baugruppen (Pumpen `420_000022`-`026`,
+> Steuerspannungs-Baugruppen `480_000008`-`010`, Sanitaer `410_000002`-`006`).
+> Korrigiert: alle 5 Artikel auf die echten B-Artikelnummern umbenannt
+> (`5SL6106-6` usw.), Abmessungen identisch (90x18x76mm bei allen Suffix-
+> Varianten, per Datenblatt bestaetigt), betroffene `baugruppen_bauteile`-
+> Referenzen automatisch mit umbenannt (13 Zeilen). Bestehende C16/C32/C40-
+> Artikel (`5SL6216-7`, `5SL6316-7`, `5SL6332-7`, `5SL6340-7`) waren
+> bereits korrekt C-gekennzeichnet, unveraendert. `5SL6325-6` (B25) war
+> ebenfalls schon korrekt.
+> **2. Neue Einzelbauteile:** `5SL6216-6` (B16, 2-polig, Luecke in der
+> Reihe geschlossen), `5SL6316-6` (B16, 3-polig), `5SV3644-6` (FI 40A/
+> 300mA Typ A), `5SV3744-6` (FI 40A/500mA Typ A) - alle 4 per Original-
+> Siemens-Datenblatt verifiziert. Bestehender Hilfsschalter `5ST3010`
+> laut Distributor-Beleg explizit auch fuer FI-Schutzschalter 5SV3/5SU1
+> geeignet ("universell aufsteckbar") - kein separater FI-Hilfsschalter
+> noetig.
+> **3. 11 schrankinterne "LSS/FI mit Hilfskontakt"-Baugruppen**
+> (`440_000004`-`014`, Gewerk 440 Elektro, Kategorie „Schutzorgane mit
+> Meldekontakt"): je LSS/FI + `5ST3010`-Hilfsschalter, Zone `evert`,
+> `dp_bi:1` direkt auf der Hilfsschalter-Zeile (Regel 12 - Hilfsschalter
+> und DDC-Modul sitzen beide im selben Schrank, keine Klemme noetig).
+> Abdeckung: 1-/2-/3-polig B6/B10/B16 + 3-polig C16 + FI 30/300/500mA.
+> **4. 11 Feldgeraet-Varianten derselben Elemente** (`440_000015`-`025`):
+> gleiche Hardware, aber in einer EXTERNEN Elektro-Unterverteilung/
+> Schaltanlage eingebaut (Nutzer-Vorgabe: „Energieversorgung fuer die
+> Sicherungen ist nicht Aufgabe des Schaltschranks") - nur 2 Klemmen
+> `klemm_f` fuer die Ausloese-BI (Regel 14), kein LSS/keine Energieklemmen
+> in dieser Baugruppe selbst. Je ein neues `feldgeraete`-Katalogobjekt
+> (Artikel-Suffix `-FELD`) angelegt, damit Modul 5 sie fuehren kann.
+> **5. 6 Handschalter-Feldgeraete** (`440_000026`-`031`, Siemens SIRIUS ACT,
+> Tuereinbau in EXTERNEN Tableaus/Schaltanlagen): Kontaktzahl = Anzahl
+> Schaltstellungen minus 1 (Standard-Siemens-„komplette Einheit" - die
+> Grundstellung ergibt sich aus „kein Kontakt aktiv"), je Kontakt 2 Klemmen
+> `klemm_f`, potentialfrei, kein Koppelrelais:
+>   - Aus-Ein-Auto (3-stufig, `3SU1100-2BL60-1NA0`, 2NO) -> 2x BI
+>   - Hand-Auto (2-stufig, `3SU1100-2BF60-3BA0`, SPST) -> 1x BI
+>   - Aus-Stufe1-Stufe2 (3-stufig, gleiche Hardware wie Aus-Ein-Auto) -> 2x BI
+>   - Aus-Stufe1-Stufe2-Auto (4-stufig) -> 3x BI. **ACHTUNG unverifiziert:**
+>     keine fertige SIRIUS-ACT-„komplette Einheit" fuer 4 Stufen im Katalog
+>     gefunden (Siemens bietet dort augenscheinlich nur 2-/3-stufige
+>     Fertigeinheiten an) - Platzhalter-Artikel `3SU1100-4-UNVERIFIZIERT`
+>     gesetzt, vor Projekteinsatz das SIRIUS-ACT-Systemhandbuch pruefen
+>     (vermutlich Betaetiger + 3 separate Kontaktelemente aus dem
+>     Baukastensystem statt einer fertigen Einheit).
+>   - Zu-Auf (2-stufig, gleiche Hardware wie Hand-Auto) -> 1x BI
+>   - Zu-Auf-Auto (3-stufig, gleiche Hardware wie Aus-Ein-Auto) -> 2x BI
+> **Export:** baugruppen 122->**150** (28 neu) · einzelbauteile 193->**197**
+> (4 neu) · feldgeraete 72->**86** (14 neu: 11 LSS/FI + 3 Handschalter-
+> Artikel, `3SU1100-2BL60-1NA0`/`3SU1100-2BF60-3BA0` je einmal fuer
+> mehrere Baugruppen wiederverwendet). Backups:
+> `ga_komponenten_vor-lss-artikelnr-fix_20260912.xlsx` und
+> `ga_komponenten_vor-elektro-lss-fi-handschalter_20260912.xlsx`. Browser-
+> Verifikation: alle 28 neuen Baugruppen aus `baugruppen.json` gegen die
+> echte `accumulateDp()`-Formel nachgerechnet (DP-Werte exakt wie oben),
+> `440_000010` (LSS 3-polig B16, schrankintern) live platziert -> BI 1/16,
+> `440_000029` (4-Stufen-Wahlschalter) live platziert -> BI 3/16,
+> vollstaendiger Katalog-Scan (Regel 7) bestaetigt keine neuen verwaisten
+> Artikelreferenzen (nur bereits dokumentierte Alt-Luecken wie Wilo-Pumpen/
+> Siemens-Aktoren-Platzhalter), keine Konsolenfehler.
+> **Parallel-Fork (Vorschlag, NICHT umgesetzt) zu Mittelspannungs-/
+> Niederspannungs-Schaltanlagen** (Lasttrennschalter, Leistungsschalter,
+> Planungsfabrikat Siemens) lieferte Ergebnis - Kernpunkte: Leitreihen
+> **3KL/3KM sind abgekuendigt**, Nachfolger **3KF** (NS-Lasttrennschalter
+> bis 800A, Hilfsschalter separates Zubehoer `3KF9…`, keine Kommunikation
+> moeglich, max. 1x BI Stellungsmeldung); **3WL abgeloest durch 3WA**
+> (Leistungsschalter 630A-6300A, gestaffelte Auslöseeinheiten ETU300/
+> ETU600, `ready4COM`+Kommunikationsmodul `COM190` fuer Strom-/Spannungs-/
+> Leistungsmesswerte + Condition Monitoring; ohne Kommunikationsmodul nur
+> potentialfrei: Stellung/Ausgeloest/Federspeicher-Bereit als BI, Fern-Ein/
+> Fern-Aus/Ruecksetzen als BO ueber Einschalt-/Ausloese-/Ruecksetzmagnet).
+> Noch NICHT im Katalog angelegt - wartet auf Nutzer-Entscheidung zu:
+> 3KF- vs. 3KD-Leitreihe (Strombereich), ob 3WA-Ausstattungsstufen als
+> getrennte Baugruppen-Familie (wie CRAH „Nur Monitoring"-Muster) modelliert
+> werden sollen, Standard-Spulenspannung fuer Fern-Ein/Aus (24VDC direkt vs.
+> Koppelrelais), DIN-276-Zuordnung (vermutlich 440 Elektro). Details im
+> Session-Chat-Bericht des Forks.
+
 > **Sitzungsstand Session 62 Nachtrag 3 (12.09.2026) - Reparaturschalter-
 > Korrektur, Buerdewiderstand statt TXM1.8X-Zwang, Hilfskontaktblock-Luecke
 > bei Ventilatoren (3 Nutzer-Funde in einer Sitzung):**

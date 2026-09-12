@@ -649,5 +649,117 @@
     "kategorie": "Zubehoer",
     "quelle_hinweis": "[Session 62 Nachtrag] Pflichtzubehoer fuer Reflex-/Viega-Geraete mit werkseitigem Netzstecker (Fillcontrol Smart, Reflexomat XS, Servitec S, Viega 2241.10) - Nutzer-Vorgabe: der Schaltschrank versorgt vor Ort eine Aufputz-Schutzkontaktsteckdose (LSS+L/N/PE-Klemmen bleiben in der jeweiligen Baugruppe unveraendert), das Geraet wird dort eingesteckt statt fest verdrahtet. Kein Preis gefunden.",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6106-6-FELD",
+    "bezeichnung": "LSS 5SL6 B6 A, 1-polig, 6 kA, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6106-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6110-6-FELD",
+    "bezeichnung": "LSS 5SL6 B10 A, 1-polig, 6 kA, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6110-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6116-6-FELD",
+    "bezeichnung": "LSS 5SL6 B16 A, 1-polig, 6 kA, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6116-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6206-6-FELD",
+    "bezeichnung": "LSS 5SL6 B6 A, 2-polig, 6 kA, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6206-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6210-6-FELD",
+    "bezeichnung": "LSS 5SL6 B10 A, 2-polig, 6 kA, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6210-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6216-6-FELD",
+    "bezeichnung": "LSS 5SL6 B16 A, 2-polig, 6 kA, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6216-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6316-6-FELD",
+    "bezeichnung": "LSS 5SL6 B16 A, 3-polig, 6 kA, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6316-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SL6316-7-FELD",
+    "bezeichnung": "LSS 5SL6 C16 A, 3-polig, 6 kA, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6316-7, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SV3344-6-FELD",
+    "bezeichnung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 30mA, Typ A, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SV3344-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SV3644-6-FELD",
+    "bezeichnung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 300mA, Typ A, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SV3644-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "5SV3744-6-FELD",
+    "bezeichnung": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 500mA, Typ A, in externer Unterverteilung/Schaltanlage eingebaut",
+    "hersteller": "Siemens",
+    "kategorie": "Schutzorgane mit Meldekontakt",
+    "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SV3744-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3SU1100-2BL60-1NA0",
+    "bezeichnung": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A",
+    "hersteller": "Siemens",
+    "kategorie": "Handschalter",
+    "quelle_hinweis": "[Session 63] Fuer Tuereinbau in externen Tableaus/Schaltanlagen (nicht dieser Schaltschrank) - Kontaktzahl = Anzahl Schaltstellungen minus 1 (Standard-Siemens-\"komplette Einheit\"; die erste/neutrale Stellung ergibt sich aus \"kein Kontakt aktiv\").",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3SU1100-2BF60-3BA0",
+    "bezeichnung": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit, 1x Schliesser (SPST), 22mm, 500V/10A",
+    "hersteller": "Siemens",
+    "kategorie": "Handschalter",
+    "quelle_hinweis": "[Session 63] Fuer Tuereinbau in externen Tableaus/Schaltanlagen (nicht dieser Schaltschrank) - Kontaktzahl = Anzahl Schaltstellungen minus 1 (Standard-Siemens-\"komplette Einheit\"; die erste/neutrale Stellung ergibt sich aus \"kein Kontakt aktiv\").",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3SU1100-4-UNVERIFIZIERT",
+    "bezeichnung": "Siemens SIRIUS ACT Wahlschalter 4-Stufen (Betaetiger + 3 separate Kontaktelemente, individuell rastbar) - KEINE fertige \"komplette Einheit\" im Katalog gefunden, custom aus Modulsystem aufgebaut, NICHT verifiziert",
+    "hersteller": "Siemens",
+    "kategorie": "Handschalter",
+    "quelle_hinweis": "[Session 63] Fuer Tuereinbau in externen Tableaus/Schaltanlagen (nicht dieser Schaltschrank) - Kontaktzahl = Anzahl Schaltstellungen minus 1 (Standard-Siemens-\"komplette Einheit\"; die erste/neutrale Stellung ergibt sich aus \"kein Kontakt aktiv\"). ACHTUNG: keine fertige 4-Stufen-Einheit im SIRIUS-ACT-Katalog gefunden, Artikelnummer/Aufbau nicht verifiziert - vor Verwendung im Projekt SIRIUS-ACT-Systemhandbuch pruefen.",
+    "geprueft": false
   }
 ]
