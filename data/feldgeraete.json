@@ -761,5 +761,85 @@
     "kategorie": "Handschalter",
     "quelle_hinweis": "[Session 63] Fuer Tuereinbau in externen Tableaus/Schaltanlagen (nicht dieser Schaltschrank) - Kontaktzahl = Anzahl Schaltstellungen minus 1 (Standard-Siemens-\"komplette Einheit\"; die erste/neutrale Stellung ergibt sich aus \"kein Kontakt aktiv\"). ACHTUNG: keine fertige 4-Stufen-Einheit im SIRIUS-ACT-Katalog gefunden, Artikelnummer/Aufbau nicht verifiziert - vor Verwendung im Projekt SIRIUS-ACT-Systemhandbuch pruefen.",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "3KF-63A",
+    "bezeichnung": "Sicherungslasttrennschalter Siemens 3KF, 32-63 A, BG1 - repraesentativer Platzhalter (echte Bestellnummer haengt von Konfiguration/Sicherungseinsatz ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3KF-160A",
+    "bezeichnung": "Sicherungslasttrennschalter Siemens 3KF, 100-160 A, BG2 - repraesentativer Platzhalter (echte Bestellnummer haengt von Konfiguration/Sicherungseinsatz ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3KF-250A",
+    "bezeichnung": "Sicherungslasttrennschalter Siemens 3KF, 200-250 A, BG2/3 - repraesentativer Platzhalter (echte Bestellnummer haengt von Konfiguration/Sicherungseinsatz ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3KF-400A",
+    "bezeichnung": "Sicherungslasttrennschalter Siemens 3KF, 315-400 A, BG3/4 - repraesentativer Platzhalter (echte Bestellnummer haengt von Konfiguration/Sicherungseinsatz ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3KF-800A",
+    "bezeichnung": "Sicherungslasttrennschalter Siemens 3KF, 630-800 A, BG5 - repraesentativer Platzhalter (echte Bestellnummer haengt von Konfiguration/Sicherungseinsatz ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3WA-630A",
+    "bezeichnung": "Leistungsschalter Siemens SENTRON 3WA, 630 A, BG1, Einschubtechnik - repraesentativer Platzhalter (echte Bestellnummer haengt von ETU/Antrieb/Baugroesse ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3WA-1250A",
+    "bezeichnung": "Leistungsschalter Siemens SENTRON 3WA, 1250 A, BG1, Einschubtechnik - repraesentativer Platzhalter (echte Bestellnummer haengt von ETU/Antrieb/Baugroesse ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3WA-2000A",
+    "bezeichnung": "Leistungsschalter Siemens SENTRON 3WA, 2000 A, BG1/2, Einschubtechnik - repraesentativer Platzhalter (echte Bestellnummer haengt von ETU/Antrieb/Baugroesse ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3WA-3200A",
+    "bezeichnung": "Leistungsschalter Siemens SENTRON 3WA, 3200 A, BG2/3, Einschubtechnik - repraesentativer Platzhalter (echte Bestellnummer haengt von ETU/Antrieb/Baugroesse ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3WA-5000A",
+    "bezeichnung": "Leistungsschalter Siemens SENTRON 3WA, 5000 A, BG3, Einschubtechnik - repraesentativer Platzhalter (echte Bestellnummer haengt von ETU/Antrieb/Baugroesse ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "geprueft": false
   }
 ]

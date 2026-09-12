@@ -6416,5 +6416,550 @@
     "automationsanbindung": true,
     "kategorie": "Handschalter",
     "geprueft": false
+  },
+  {
+    "id": "440_000032",
+    "name": "Lasttrennschalter 32-63 A, Siemens 3KF (BG1), Ein/Aus/Ausgeloest, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Sicherungslasttrennschalter Siemens 3KF, 32-63 A (BG1), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber 3KF9-Hilfsschalter (2 getrennte Kontakte), Ausgeloest ueber elektronische Sicherungsueberwachung EFM10 (3KF9010-1AA00, 1 Wechsler) - nur vorhanden wenn mit Sicherungen bestueckt. Kein Verriegelt-/Sammelstoerungssignal verfuegbar (reines mechanisches Schaltgeraet, keine Auslöseelektronik ausser der optionalen Sicherungsueberwachung). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 3x BI (Ein, Aus, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Sicherungslasttrennschalter 3KF, 32-63 A (Siemens)",
+    "feldgeraet_artikel_nr": "3KF-63A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000033",
+    "name": "Lasttrennschalter 100-160 A, Siemens 3KF (BG2), Ein/Aus/Ausgeloest, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Sicherungslasttrennschalter Siemens 3KF, 100-160 A (BG2), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber 3KF9-Hilfsschalter (2 getrennte Kontakte), Ausgeloest ueber elektronische Sicherungsueberwachung EFM10 (3KF9010-1AA00, 1 Wechsler) - nur vorhanden wenn mit Sicherungen bestueckt. Kein Verriegelt-/Sammelstoerungssignal verfuegbar (reines mechanisches Schaltgeraet, keine Auslöseelektronik ausser der optionalen Sicherungsueberwachung). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 3x BI (Ein, Aus, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Sicherungslasttrennschalter 3KF, 100-160 A (Siemens)",
+    "feldgeraet_artikel_nr": "3KF-160A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000034",
+    "name": "Lasttrennschalter 200-250 A, Siemens 3KF (BG2/3), Ein/Aus/Ausgeloest, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Sicherungslasttrennschalter Siemens 3KF, 200-250 A (BG2/3), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber 3KF9-Hilfsschalter (2 getrennte Kontakte), Ausgeloest ueber elektronische Sicherungsueberwachung EFM10 (3KF9010-1AA00, 1 Wechsler) - nur vorhanden wenn mit Sicherungen bestueckt. Kein Verriegelt-/Sammelstoerungssignal verfuegbar (reines mechanisches Schaltgeraet, keine Auslöseelektronik ausser der optionalen Sicherungsueberwachung). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 3x BI (Ein, Aus, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Sicherungslasttrennschalter 3KF, 200-250 A (Siemens)",
+    "feldgeraet_artikel_nr": "3KF-250A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000035",
+    "name": "Lasttrennschalter 315-400 A, Siemens 3KF (BG3/4), Ein/Aus/Ausgeloest, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Sicherungslasttrennschalter Siemens 3KF, 315-400 A (BG3/4), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber 3KF9-Hilfsschalter (2 getrennte Kontakte), Ausgeloest ueber elektronische Sicherungsueberwachung EFM10 (3KF9010-1AA00, 1 Wechsler) - nur vorhanden wenn mit Sicherungen bestueckt. Kein Verriegelt-/Sammelstoerungssignal verfuegbar (reines mechanisches Schaltgeraet, keine Auslöseelektronik ausser der optionalen Sicherungsueberwachung). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 3x BI (Ein, Aus, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Sicherungslasttrennschalter 3KF, 315-400 A (Siemens)",
+    "feldgeraet_artikel_nr": "3KF-400A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000036",
+    "name": "Lasttrennschalter 630-800 A, Siemens 3KF (BG5), Ein/Aus/Ausgeloest, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Sicherungslasttrennschalter Siemens 3KF, 630-800 A (BG5), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber 3KF9-Hilfsschalter (2 getrennte Kontakte), Ausgeloest ueber elektronische Sicherungsueberwachung EFM10 (3KF9010-1AA00, 1 Wechsler) - nur vorhanden wenn mit Sicherungen bestueckt. Kein Verriegelt-/Sammelstoerungssignal verfuegbar (reines mechanisches Schaltgeraet, keine Auslöseelektronik ausser der optionalen Sicherungsueberwachung). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 3x BI (Ein, Aus, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Sicherungslasttrennschalter 3KF, 630-800 A (Siemens)",
+    "feldgeraet_artikel_nr": "3KF-800A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000037",
+    "name": "Leistungsschalter 630 A, Siemens 3WA (BG1), Ein/Aus/Ausgeloest/Trennstellung, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Offener Leistungsschalter Siemens SENTRON 3WA, 630 A (BG1), Einschubtechnik, NUR MONITORING - das Geraet steht in einer fremden Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber den Standard-Hilfsschalterblock (2S+2Oe, im Grundgeraet enthalten, je 1 Kontakt fuer Ein und Aus getrennt genutzt). Ausgeloest ueber den werkseitig immer vorhandenen 1. Ausgeloest-meldeschalter S24 (1 Wechsler, Ersatzteil-Referenz 3WA9111-0AH02) - bei jedem Leistungsschalter mit Ausloeseeinheit (ETU) standardmaessig eingebaut. Trennstellung ueber Positionsmeldeschalter PSS321 fuer Einschubtechnik (3WA9111-0AH11, 3x Wechsler Betriebsstellung/2x Teststellung/1x Trennstellung - hier nur die Trennstellungs-Info ausgewertet). KEINE separate Sammelstoerung: es gibt keinen eigenen Sammelstoerkontakt als Standard - S24 deckt das ab; ein echtes zusaetzliches Alarmsignal gaebe es nur ueber das optionale digitale I/O-Modul IOM230 (3 frei parametrierbare Ausgaenge), bewusst NICHT Teil dieser Baugruppe (Nutzer-Entscheidung Session 63). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 4x BI (Ein, Aus, Ausgeloest, Trennstellung).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Leistungsschalter 3WA, 630 A (Siemens)",
+    "feldgeraet_artikel_nr": "3WA-630A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000038",
+    "name": "Leistungsschalter 1250 A, Siemens 3WA (BG1), Ein/Aus/Ausgeloest/Trennstellung, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Offener Leistungsschalter Siemens SENTRON 3WA, 1250 A (BG1), Einschubtechnik, NUR MONITORING - das Geraet steht in einer fremden Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber den Standard-Hilfsschalterblock (2S+2Oe, im Grundgeraet enthalten, je 1 Kontakt fuer Ein und Aus getrennt genutzt). Ausgeloest ueber den werkseitig immer vorhandenen 1. Ausgeloest-meldeschalter S24 (1 Wechsler, Ersatzteil-Referenz 3WA9111-0AH02) - bei jedem Leistungsschalter mit Ausloeseeinheit (ETU) standardmaessig eingebaut. Trennstellung ueber Positionsmeldeschalter PSS321 fuer Einschubtechnik (3WA9111-0AH11, 3x Wechsler Betriebsstellung/2x Teststellung/1x Trennstellung - hier nur die Trennstellungs-Info ausgewertet). KEINE separate Sammelstoerung: es gibt keinen eigenen Sammelstoerkontakt als Standard - S24 deckt das ab; ein echtes zusaetzliches Alarmsignal gaebe es nur ueber das optionale digitale I/O-Modul IOM230 (3 frei parametrierbare Ausgaenge), bewusst NICHT Teil dieser Baugruppe (Nutzer-Entscheidung Session 63). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 4x BI (Ein, Aus, Ausgeloest, Trennstellung).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Leistungsschalter 3WA, 1250 A (Siemens)",
+    "feldgeraet_artikel_nr": "3WA-1250A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000039",
+    "name": "Leistungsschalter 2000 A, Siemens 3WA (BG1/2), Ein/Aus/Ausgeloest/Trennstellung, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Offener Leistungsschalter Siemens SENTRON 3WA, 2000 A (BG1/2), Einschubtechnik, NUR MONITORING - das Geraet steht in einer fremden Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber den Standard-Hilfsschalterblock (2S+2Oe, im Grundgeraet enthalten, je 1 Kontakt fuer Ein und Aus getrennt genutzt). Ausgeloest ueber den werkseitig immer vorhandenen 1. Ausgeloest-meldeschalter S24 (1 Wechsler, Ersatzteil-Referenz 3WA9111-0AH02) - bei jedem Leistungsschalter mit Ausloeseeinheit (ETU) standardmaessig eingebaut. Trennstellung ueber Positionsmeldeschalter PSS321 fuer Einschubtechnik (3WA9111-0AH11, 3x Wechsler Betriebsstellung/2x Teststellung/1x Trennstellung - hier nur die Trennstellungs-Info ausgewertet). KEINE separate Sammelstoerung: es gibt keinen eigenen Sammelstoerkontakt als Standard - S24 deckt das ab; ein echtes zusaetzliches Alarmsignal gaebe es nur ueber das optionale digitale I/O-Modul IOM230 (3 frei parametrierbare Ausgaenge), bewusst NICHT Teil dieser Baugruppe (Nutzer-Entscheidung Session 63). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 4x BI (Ein, Aus, Ausgeloest, Trennstellung).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Leistungsschalter 3WA, 2000 A (Siemens)",
+    "feldgeraet_artikel_nr": "3WA-2000A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000040",
+    "name": "Leistungsschalter 3200 A, Siemens 3WA (BG2/3), Ein/Aus/Ausgeloest/Trennstellung, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Offener Leistungsschalter Siemens SENTRON 3WA, 3200 A (BG2/3), Einschubtechnik, NUR MONITORING - das Geraet steht in einer fremden Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber den Standard-Hilfsschalterblock (2S+2Oe, im Grundgeraet enthalten, je 1 Kontakt fuer Ein und Aus getrennt genutzt). Ausgeloest ueber den werkseitig immer vorhandenen 1. Ausgeloest-meldeschalter S24 (1 Wechsler, Ersatzteil-Referenz 3WA9111-0AH02) - bei jedem Leistungsschalter mit Ausloeseeinheit (ETU) standardmaessig eingebaut. Trennstellung ueber Positionsmeldeschalter PSS321 fuer Einschubtechnik (3WA9111-0AH11, 3x Wechsler Betriebsstellung/2x Teststellung/1x Trennstellung - hier nur die Trennstellungs-Info ausgewertet). KEINE separate Sammelstoerung: es gibt keinen eigenen Sammelstoerkontakt als Standard - S24 deckt das ab; ein echtes zusaetzliches Alarmsignal gaebe es nur ueber das optionale digitale I/O-Modul IOM230 (3 frei parametrierbare Ausgaenge), bewusst NICHT Teil dieser Baugruppe (Nutzer-Entscheidung Session 63). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 4x BI (Ein, Aus, Ausgeloest, Trennstellung).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Leistungsschalter 3WA, 3200 A (Siemens)",
+    "feldgeraet_artikel_nr": "3WA-3200A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000041",
+    "name": "Leistungsschalter 5000 A, Siemens 3WA (BG3), Ein/Aus/Ausgeloest/Trennstellung, Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "Offener Leistungsschalter Siemens SENTRON 3WA, 5000 A (BG3), Einschubtechnik, NUR MONITORING - das Geraet steht in einer fremden Schaltanlage, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellung Ein/Aus ueber den Standard-Hilfsschalterblock (2S+2Oe, im Grundgeraet enthalten, je 1 Kontakt fuer Ein und Aus getrennt genutzt). Ausgeloest ueber den werkseitig immer vorhandenen 1. Ausgeloest-meldeschalter S24 (1 Wechsler, Ersatzteil-Referenz 3WA9111-0AH02) - bei jedem Leistungsschalter mit Ausloeseeinheit (ETU) standardmaessig eingebaut. Trennstellung ueber Positionsmeldeschalter PSS321 fuer Einschubtechnik (3WA9111-0AH11, 3x Wechsler Betriebsstellung/2x Teststellung/1x Trennstellung - hier nur die Trennstellungs-Info ausgewertet). KEINE separate Sammelstoerung: es gibt keinen eigenen Sammelstoerkontakt als Standard - S24 deckt das ab; ein echtes zusaetzliches Alarmsignal gaebe es nur ueber das optionale digitale I/O-Modul IOM230 (3 frei parametrierbare Ausgaenge), bewusst NICHT Teil dieser Baugruppe (Nutzer-Entscheidung Session 63). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 4x BI (Ein, Aus, Ausgeloest, Trennstellung).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "Leistungsschalter 3WA, 5000 A (Siemens)",
+    "feldgeraet_artikel_nr": "3WA-5000A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
   }
 ]

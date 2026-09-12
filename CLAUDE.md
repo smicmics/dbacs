@@ -119,6 +119,62 @@
 > Tauchfühler nicht katalogisiert (s.o.). Herleitungstabellen je Baugruppe im
 > Session-Abschlussbericht (Chat), Rohdaten `scratchpad/fork_1..5_*_ergebnis.md`.
 
+> **Sitzungsstand Session 63 Nachtrag (12.09.2026) - MS/NS-Schaltanlagen
+> als Feldgeraete (Nur Monitoring), Ergebnis des Fork-Vorschlags umgesetzt:**
+> Nutzer-Entscheidung nach Pruefung des Fork-Vorschlags: **10 neue
+> Feldgeraet-Baugruppen** `440_000032`-`440_000041` (Gewerk 440, Kategorie
+> „Schaltanlagen-Komponenten") - die Geraete stehen in EINER FREMDEN
+> Elektro-Unterverteilung/Schaltanlage (nicht in diesem Schrank), DBACS
+> holt nur die Meldekontakte ab: kein LSS, keine Energieversorgung, nur
+> `klemm_f`-Klemmen (Regel 14, je BI 2 Klemmen, potentialfrei, kein
+> Koppelrelais).
+> **Recherche „Was geht wirklich?" (Original-Siemens-Bestellkatalog LV13
+> 10/2022 fuer 3WA, Zubehoerdatenblatt fuer 3KF/EFM10 geprueft):**
+> - **3WA Leistungsschalter:** Ein/Aus ueber den Standard-Hilfsschalterblock
+>   (2 Schliesser + 2 Oeffner, im Grundgeraet OHNE Aufpreis enthalten,
+>   je 1 Kontakt getrennt fuer Ein/Aus). **Ausgeloest** ueber den „Ersten
+>   Ausgeloestmeldeschalter S24" (1 Wechsler) - **werkseitig bei JEDEM
+>   Leistungsschalter mit Ausloeseeinheit (ETU) standardmaessig eingebaut**,
+>   nicht optional (Ersatzteil-Referenz `3WA9111-0AH02`). **Trennstellung**
+>   nur bei Einschubtechnik ueber Positionsmeldeschalter PSS321
+>   (`3WA9111-0AH11`, 3x Wechsler Betriebs-/2x Test-/1x Trennstellung) -
+>   optionales Zubehoer, hier als Standardausstattung angenommen (Nutzer
+>   wollte Trennstellung explizit als eigenes Signal). **Keine separate
+>   Sammelstoerung**: es gibt keinen eigenen Sammelstoerkontakt als
+>   Standard - S24 deckt das ab (ein Ausloesevorgang IST die Stoerungs-
+>   meldung); ein echtes zusaetzliches Alarmsignal gaebe es nur ueber das
+>   optionale digitale I/O-Modul IOM230 (3 frei parametrierbare Ausgaenge
+>   "zum Melden von Ereignissen, Zustaenden, Ausloesungen oder Alarmen") -
+>   bewusst NICHT Teil der Baugruppe (Nutzer-Ruecksprache: kein Standard-
+>   kontakt, waere ein separates Zusatzmodul). => **4x BI je 3WA-Baugruppe**
+>   (Ein, Aus, Ausgeloest, Trennstellung).
+> - **3KF Lasttrennschalter:** reines mechanisches Schaltgeraet - Ein/Aus
+>   ueber 3KF9-Hilfsschalter (Standardzubehoer). **Ausgeloest** nur als
+>   Sicherungsausfall-Anzeige ueber die elektronische Sicherungsueberwachung
+>   EFM10 (`3KF9010-1AA00`, 1 Wechsler) - nur vorhanden wenn das Geraet mit
+>   Sicherungen bestueckt ist (hier als Standardfall angenommen, da 3KF in
+>   der Praxis meist als Sicherungslasttrennschalter eingesetzt wird).
+>   **Kein Verriegelt-Signal gefunden** (nur mechanische Tuerkupplungs-/
+>   Schluesselverriegelung als Sicherheitsfunktion, kein elektrischer
+>   Meldekontakt dafuer im Zubehoerkatalog). **Keine Stoerungselektronik**
+>   (reines Trenngeraet). => **3x BI je 3KF-Baugruppe** (Ein, Aus,
+>   Ausgeloest).
+> **Leitungsreihen** (Nutzer: „Berechnung egal, nur Richtwert gemeint",
+> Abstufung bestaetigt): je 5 Stufen pro Familie, `feldgeraet_artikel_nr`
+> als repraesentativer Platzhalter (echte Bestellnummer haengt von ETU/
+> Antrieb/Sicherungseinsatz/Baugroesse ab, Siemens-Konfigurator noetig):
+>   - 3KF: 32-63A (BG1) · 100-160A (BG2) · 200-250A (BG2/3) · 315-400A
+>     (BG3/4) · 630-800A (BG5)
+>   - 3WA: 630A · 1250A · 2000A · 3200A · 5000A (BG1-3)
+> **Export:** baugruppen 150->**160** (10 neu) · feldgeraete 86->**96**
+> (10 neu, einzelbauteile unveraendert 197 - reine Feldgeraet-Baugruppen
+> ohne neue Schrank-Bauteile). Backup:
+> `ga_komponenten_vor-schaltanlagen-feldgeraete_20260912.xlsx`. Browser-
+> Verifikation: alle 10 Baugruppen aus `baugruppen.json` gegen
+> `accumulateDp()` nachgerechnet (3KF exakt 3x BI, 3WA exakt 4x BI, keine
+> verwaisten Referenzen, alle `feldgeraet_artikel_nr` aufloesbar),
+> `440_000039` (3WA 2000A) live platziert -> BI 4/16, keine Konsolenfehler.
+
 > **Sitzungsstand Session 63 (12.09.2026) - Gruppe Elektro befuellt (LSS/FI
 > mit Hilfskontakt, Handschalter) + katalogweite LSS-Artikelnummer-Korrektur:**
 > **1. Wichtiger Bugfund (Siemens-Originaldatenblaetter geprueft):** bei der
