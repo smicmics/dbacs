@@ -2231,6 +2231,7 @@
       "evert"
     ],
     "kategorie": "Hilfsschalter",
+    "keine_platzierung_mp": true,
     "preis_eur": 10.33,
     "geprueft": false
   },
