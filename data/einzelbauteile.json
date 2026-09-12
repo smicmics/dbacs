@@ -3039,13 +3039,14 @@
     "bezeichnung": "Praezisionswiderstand 500 Ohm (0,1%), Buerdewiderstand fuer 4-20mA-Signal an 0-10V-Eingang (TXM1.8U)",
     "hersteller": "generisch",
     "bauteil_typ": "sonstige",
-    "b_mm": 6.2,
-    "te_breite": 1,
-    "h_mm": 48.6,
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
     "zone": [
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "keine_platzierung_mp": true,
     "geprueft": false
   }
 ]

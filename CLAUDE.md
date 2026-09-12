@@ -192,6 +192,27 @@
 > Modul 4 platziert (Statistik AI 2/8 · BI 2/16 · BO 1/6, `5SL6106-7` statt
 > `5SL6216-7` in der Stueckliste, kein Reparaturschalter mehr), keine
 > Konsolenfehler.
+> **Korrektur direkt im Anschluss (Nutzer-Fund per Screenshot):**
+> `BUERDE-500R` hatte faelschlich eigenen Montageplatten-Platzbedarf
+> (b_mm/h_mm gesetzt) - der Buerdewiderstand wird aber OHNE eigene Klemme
+> direkt an den 2 bestehenden Signalklemmen schrankintern verdrahtet, braucht
+> keinen Extra-Platz. Fix: `keine_platzierung_mp:true` gesetzt (b_mm/h_mm auf
+> None), analog zu aufgestecktem Schuetz-Zubehoer - bleibt in der Stueckliste
+> sichtbar, entfaellt aber in der Zeichnung/Platzbedarfsrechnung. Zusaetzlich
+> klargestellt (Nutzer-Regel fuer 4-20mA-Klemmenzahl, bereits korrekt
+> umgesetzt): ein 4-20mA-Signal braucht wie ein passiver AI genau 2 Adern
+> (Signal + Ruecklauf/GNDA), WENN das Feldgeraet seine Elektronik selbst
+> versorgt (z. B. Variomat-Stationsausgaenge Druck/Niveau, dort sogar GNDA
+> zwischen beiden Signalen geteilt -> nur 3 Klemmen fuer 2 AI, passend zum
+> Original-Klemmenplan). NUR bei separat zu versorgenden Gebern (z. B.
+> AquaVip-Durchflusssensor, braucht eigene 24V-Einspeisung lt. Datenblatt)
+> kommen 2 weitere Klemmen fuer die Versorgung dazu (bei `410_000009` bereits
+> so modelliert: 2 Signal + 2 Versorgung = 4 Klemmen fuer den 4-20mA-Punkt).
+> Export einzelbauteile unveraendert 193 (nur Feldaenderung). Browser:
+> `410_000004` erneut platziert - AI/BI/BO unveraendert (2/2/1), Kl.-Feld.-
+> Fuellstand sinkt sichtbar (Bespiel-Schrank 37%->10%), Buerdewiderstand
+> weiterhin 2x in der Stueckliste; `410_000009` AI 2/8 · BI/BO 0 bestaetigt;
+> keine Konsolenfehler.
 
 > **Sitzungsstand Session 62 Nachtrag (12.09.2026) – Kategorie-Umbenennung +
 > Viega-Trinkwassersensoren:** Nutzer-Vorgabe zur Kategoriestruktur: die 5
