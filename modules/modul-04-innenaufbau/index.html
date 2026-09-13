@@ -273,6 +273,22 @@ legend{
 .gewerk-tab.active{background:var(--blue);border-color:var(--blue);color:#fff;}
 .gewerk-tab:hover:not(.active){border-color:var(--tx2);color:var(--tx);}
 
+/* ── "Anlagen"-Zeile (Session 64, Design-Entwurf ohne Inhalte) ──
+   Zweite, optisch abgesetzte Tab-Reihe fuer zusammengesetzte Baugruppen
+   ("Anlagen"), die auf bereits bestehende Einzelbaugruppen referenzieren.
+   Gemeinsames Zeilen-Label statt Wiederholung auf jedem Button; gestrichelter
+   Rahmen + eigene Akzentfarbe grenzt die Buttons klar von der ersten
+   (regulaeren) Gewerke-Reihe ab, ohne mehr Hoehe zu brauchen als eine
+   normale .gewerk-tabs-Zeile. */
+.gewerk-tabs-anlagen-row{display:flex;align-items:center;gap:5px;margin-bottom:8px;}
+.gewerk-anlagen-label{
+  font-size:8px;color:var(--tx2);text-transform:uppercase;letter-spacing:.03em;
+  flex-shrink:0;white-space:nowrap;
+}
+.gewerk-tabs-anlagen{margin-bottom:0;flex:1;gap:4px 4px;}
+.gewerk-tab-anlage{border-style:dashed;font-size:9px;padding:4px 6px;}
+.gewerk-tab-anlage.active{background:var(--orange);border-color:var(--orange);border-style:solid;color:#fff;}
+
 /* ── BG-Auswahl ── */
 .bg-add-row{display:flex;gap:6px;margin-top:6px;min-width:0;}
 .bg-add-row input[type=number]{width:55px;flex-shrink:0;}
@@ -628,12 +644,29 @@ fieldset{
       <button class="gewerk-tab active" id="tab-lueftung" data-gewerk="lueftung" title="430 · Raumlufttechnische Anlagen" onclick="setGewerk('lueftung')">Lüftung</button>
       <button class="gewerk-tab" id="tab-kaelte" data-gewerk="kaelte" title="434 · Kältetechnische Anlagen" onclick="setGewerk('kaelte')">Kälte</button>
       <button class="gewerk-tab" id="tab-elektro" data-gewerk="elektro" title="440 · Elektroanlagen" onclick="setGewerk('elektro')">Elektro</button>
-      <button class="gewerk-tab" id="tab-beleuchtung" data-gewerk="beleuchtung" title="445 · Beleuchtungsanlagen" onclick="setGewerk('beleuchtung')">Beleuchtung</button>
-      <button class="gewerk-tab" id="tab-netzwerk" data-gewerk="netzwerk" title="450 · Informations-/Sicherheitstechnik (Netzwerk, Brandmelde-/Gefahrenmeldeanlagen)" onclick="setGewerk('netzwerk')">Netzwerk</button>
-      <button class="gewerk-tab" id="tab-aufzug" data-gewerk="aufzug" title="460 · Aufzugsanlagen" onclick="setGewerk('aufzug')">Aufzug</button>
-      <button class="gewerk-tab" id="tab-nutzungsspezifisch" data-gewerk="nutzungsspezifisch" title="470 · Nutzungsspezifische Anlagen" onclick="setGewerk('nutzungsspezifisch')">Nutzungsspezifisch</button>
       <button class="gewerk-tab" id="tab-automation" data-gewerk="automation" title="480 · Gebäudeautomation" onclick="setGewerk('automation')">Automation</button>
-      <button class="gewerk-tab" id="tab-sonstige" data-gewerk="sonstige" title="490 · Sonstige Anlagen" onclick="setGewerk('sonstige')">Sonstige</button>
+    </div>
+    <!-- Design-Entwurf (Session 64, noch ohne Inhalte): zweite Reihe fuer
+         "Anlagen" - zusammengesetzte Baugruppen, die auf bereits bestehende,
+         geprüfte Einzelbaugruppen referenzieren statt sie erneut aus
+         Einzelbauteilen aufzubauen (Nutzer-Vorgabe). Nutzt die bisher kaum
+         befuellten DIN-276-Gewerke 445/450/460/470/490 fuer die interne
+         Datenbank-Kennung (z.B. "410_Anlagen"), zeigt aber bewusst nur den
+         kurzen Gewerke-Namen je Button (keine Wiederholung von "Anlagen" an
+         jedem einzelnen Button) - eine gemeinsame Zeilenbeschriftung links
+         reicht, da die zweite Reihe optisch klar von der ersten getrennt ist. -->
+    <div class="gewerk-tabs-anlagen-row">
+      <span class="gewerk-anlagen-label">Anlagen</span>
+      <div class="gewerk-tabs gewerk-tabs-anlagen">
+        <button class="gewerk-tab gewerk-tab-anlage" id="tab-sanitaer-anlagen" data-gewerk="sanitaer_anlagen" title="410_Anlagen · Sanitär-Anlagen" onclick="setGewerk('sanitaer_anlagen')">Sanitär</button>
+        <button class="gewerk-tab gewerk-tab-anlage" id="tab-heizung-anlagen" data-gewerk="heizung_anlagen" title="420_Anlagen · Heizungs-Anlagen" onclick="setGewerk('heizung_anlagen')">Heizung</button>
+        <button class="gewerk-tab gewerk-tab-anlage" id="tab-lueftung-anlagen" data-gewerk="lueftung_anlagen" title="430_Anlagen · Lüftungs-Anlagen" onclick="setGewerk('lueftung_anlagen')">Lüftung</button>
+        <button class="gewerk-tab gewerk-tab-anlage" id="tab-kaelte-anlagen" data-gewerk="kaelte_anlagen" title="434_Anlagen · Kälte-Anlagen" onclick="setGewerk('kaelte_anlagen')">Kälte</button>
+        <button class="gewerk-tab gewerk-tab-anlage" id="tab-elektro-anlagen" data-gewerk="elektro_anlagen" title="440_Anlagen · Elektro-Anlagen" onclick="setGewerk('elektro_anlagen')">Elektro</button>
+        <button class="gewerk-tab gewerk-tab-anlage" id="tab-sicherheit-anlagen" data-gewerk="sicherheit_anlagen" title="450_Anlagen · Sicherheitstechnik-Anlagen" onclick="setGewerk('sicherheit_anlagen')">Sicherheit</button>
+        <button class="gewerk-tab gewerk-tab-anlage" id="tab-automation-anlagen" data-gewerk="automation_anlagen" title="480_Anlagen · Automations-Anlagen" onclick="setGewerk('automation_anlagen')">Automation</button>
+        <button class="gewerk-tab gewerk-tab-anlage" id="tab-sonstige-anlagen" data-gewerk="sonstige_anlagen" title="490_Anlagen · Sonstige Anlagen" onclick="setGewerk('sonstige_anlagen')">Sonstige</button>
+      </div>
     </div>
 
     <div class="eb-field">
