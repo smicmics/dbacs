@@ -3686,37 +3686,45 @@ function getGehaeuseAussenmasse(typ) {
 
 // Ergonomische Höhen-Bänder als Anteil der Türhöhe (0=unten, 1=oben) –
 // Nutzer-Erfahrungswerte, gestützt durch DIN EN 60204-1 (Hauptschalter
-// 0,6–1,9m, empfohlen <1,7m) und DIN 18040 (Bedienhöhe 0,85–1,05m):
-// Hauptschalter etwas unterhalb der Türmitte, darüber Phasenkontroll-
-// leuchten, darüber Sammelstörmeldeleuchte+Quittierung, darüber die
-// Betriebsmeldeleuchte (grün), darüber der Handschalter, darüber (exklusiv,
-// siehe tuerBand()) der Not-Halt, im oberen Drittel (Gesichtshöhe eines
-// stehenden Menschen) Messgeräte/Touchpanel. Nutzer-Korrektur (Session 47
-// Nachtrag): Handschalter/grün/rot waren zuvor teils auf derselben Ebene –
-// jetzt strikt getrennt, Reihenfolge von oben nach unten: Handschalter >
-// grüne LED > rote LED, exakt wie vom Nutzer vorgegeben.
+// 0,6–1,9m, empfohlen <1,7m) und DIN 18040 (Bedienhöhe 0,85–1,05m).
+// Session-63-Nachtrag (Nutzer-Korrektur zur ursprünglichen Touchpanel-
+// Platzierung): die komplette Reihenfolge wurde neu vom Nutzer vorgegeben,
+// von unten nach oben – Hauptschalter (unterste, bedienbare Ebene) <
+// Phasenleuchten < Not-Halt (eigene, exklusive Ebene, jetzt direkt über den
+// Phasenleuchten statt oben nahe der Bediengeräte – besser sichtbar/
+// erreichbar in Rumpfhöhe) < Sammelstörmeldeleuchte+Quittierung (weiterhin
+// gemeinsam, Quittierung gehört funktional zur Störmeldung) < Betriebs-
+// meldeleuchte (grün, weiterhin als eigene Reihe direkt über der
+// Störmeldung, NICHT zusammengelegt – ausdrückliche Nutzer-Vorgabe) <
+// Handschalter < Messgeräte < Touchpanel/künftige Romutec-Ebene (oberste
+// Ebene, Kopfhöhe eines stehenden Menschen – muss vom Menschen bedient
+// werden können, siehe Session-63-Korrektur).
 const TUER_BAND_HAUPTSCHALTER     = 0.40;
 const TUER_BAND_PHASENKONTROLLE   = 0.48;
-// Quittiertaster sitzt eine eigene Ebene über der Phasenkontrolle, NICHT
-// mehr zusammen mit der roten Signalleuchte – Nutzer-Korrektur (Session 47
-// Nachtrag 3): "Die Quittiertaste gehört über die Phasenleuchtenzone, nicht
-// in die Reihe mit den roten LEDs".
-const TUER_BAND_QUITTIERTASTER    = 0.52;
-// Handschalter/grün/rot bilden eine enger gestaffelte Dreiergruppe – Nutzer-
-// Korrektur (Session 47 Nachtrag 2): der Abstand zwischen diesen drei Bändern
-// ist nur noch halb so groß wie zuvor (0,03 statt 0,06), damit die Gruppe
-// sich klar vom eigenständigen Not-Halt-Band darüber absetzt.
+// Not-Halt: eigene, exklusive Ebene (kein anderer Bauteiltyp teilt sich
+// dieses Band, siehe tuerBand()) – Nutzer-Vorgabe bleibt "darf auf der
+// gleichen Ebene kein anderes Bauteil sein" (Session 47 Nachtrag), nur die
+// Position wurde in Session 63 von oberhalb des Handschalters auf direkt
+// über die Phasenleuchten verschoben.
+const TUER_BAND_NOTHALT           = 0.55;
+// Störmeldung (rot) + Quittiertaster teilen sich bewusst dasselbe Band
+// (Nutzer-Vorgabe Session 63: Quittierung gehört zur Störmeldung) – anders
+// als Störmeldung/Betriebsmeldung, die laut Nutzer explizit getrennte,
+// direkt aufeinanderfolgende Reihen bleiben.
 const TUER_BAND_STOERMELDUNG      = 0.62; // rote Signalleuchte
+const TUER_BAND_QUITTIERTASTER    = TUER_BAND_STOERMELDUNG;
 const TUER_BAND_BETRIEBSMELDUNG   = 0.65; // grüne Signalleuchte
 const TUER_BAND_HANDSCHALTER      = 0.68;
-const TUER_BAND_NOTHALT           = 0.74;
 const TUER_BAND_MESSGERAET        = 0.85;
 // Touchpanel (Session 63, Siemens PXM40/50): deutlich groesser als alle
 // anderen Tuerbauteile (bis 419x270mm) - braucht eine eigene, exklusive
 // Ebene mit genug Abstand zu den Messgeraeten darunter, sonst wuerde es
 // bei der typischen Bandbreite von 0.03-0.06 zwangslaeufig ueberlappen
 // (Nutzer-Vorgabe: "darf sich bei der Platzierung nicht mit anderen
-// Elementen ueberschneiden").
+// Elementen ueberschneiden"). Zugleich oberste/exklusive Ebene für eine
+// künftige Romutec-LVB-Handebene (noch nicht implementiert, siehe
+// computeLvbRomutecDevices()-Stub) – beide auf gleicher Kopfhöhe, da beide
+// vom Menschen direkt bedient werden müssen.
 const TUER_BAND_TOUCHPANEL        = 0.93;
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
