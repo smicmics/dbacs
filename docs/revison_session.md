@@ -1,24 +1,69 @@
 # DBACS – Revisionsstand
 
-**Stand:** 13. September 2026 – Session 64 (Türband-Reihenfolge neu sortiert
-[Nutzer-Korrektur: Touchpanel muss in Kopfhöhe bedienbar sein], Not-Halt-
-Pilzdrucktaster + 3 Signalleuchten von 22mm/Bohrungsmaß auf reale Bauteilmaße
-40mm bzw. 29,5mm korrigiert [Original-Siemens-Datenblätter], Türbänder gegen
-die realen Maße kollisionssicher nachgerechnet und retuned [Hauptschalter
-0,40→0,35, Betriebsmeldung 0,65→0,67, Handschalter 0,68→0,715, Messgerät
-0,85→0,83] – verifiziert auf 800×800-Wandschrank UND 1200×2000-Standschrank,
-0 Überlappungen außer der bewusst zurückgestellten Randkombination Messgerät+
-Touchpanel-PXM50 auf sehr kleinen Türen. Zusätzlich Romutec-LVB (Türeinbau-
-Realisierung) implementiert: `computeLvbRomutecDevices()`-Stub aufgelöst,
-neuer LVB-Trägerrahmen-Ratchet (RTR4050S/RTR4084S/RTR7050S + RLA8000-
-Leerplatten, Trägerrahmen als 2 verschachtelte Rechtecke auf dem Touchpanel-
-Türband), 9 neue Katalogeinträge (einzelbauteile 202→211: 3 Trägerrahmen,
-Leerplatte, RAG2020, RKK2020-H0, RLK1010-H0, RPK2020-H0, RKS3030). BI bleibt
-bei Romutec-Realisierung bewusst unverändert an der DDC (Fail-Operational-
-Anforderung). Browser-verifiziert (30×BO+10×AO-Reserve-Testszenario, 11
-Kartenplätze → RTR7050S + 1 Leerplatte, keine Überlappung, keine
-Konsolenfehler). Details: `CLAUDE.md` → „Offene Punkte" Sitzungsstand
-Session 64 + Session 64 Nachtrag.)
+**Stand:** 13. September 2026 – Session 64, finaler Stand nach 5 Nachträgen
+(Modul 4, `modules/modul-04-innenaufbau/index.html`):
+
+1. **Türband-Reihenfolge final** (mehrfache Nutzer-Korrektur per Browser-
+   Review, Ausgangspunkt: "Touchpanel muss in Kopfhöhe bedienbar sein"):
+   unten→oben Hauptschalter < Phasenleuchten (weiß) < Not-Halt (exklusiv) <
+   Störmeldung (rot) + Quittiertaster < Betriebsmeldung (grün) <
+   Handschalter < Messgerät < Touchpanel/Romutec-LVB-Ebene. Werte:
+   `TUER_BAND_HAUPTSCHALTER` 0,30 · `PHASENKONTROLLE` 0,41 · `NOTHALT` 0,47 ·
+   `STOERMELDUNG`/`QUITTIERTASTER` 0,53 · `BETRIEBSMELDUNG` 0,585 ·
+   `HANDSCHALTER` 0,64 · `MESSGERAET` 0,74 · `TOUCHPANEL` 0,85 (=exakt
+   1700mm auf dem 2000mm-Standschrank, Nutzer-Ziel "ca. 1,7m Kopfhöhe"
+   bestätigt).
+2. **Katalogkorrektur, 4 Bauteile** (Original-Siemens-Datenblätter direkt
+   gelesen statt der unzuverlässigen Web-Zusammenfassung; wiederkehrendes
+   Muster "Katalogwert = Einbau-/Bohrungsdurchmesser statt reales
+   Bauteilmaß"): Not-Halt-Pilzdrucktaster `3SU1100-1HB20-1CH0` 22→40mm,
+   Signalleuchten `3SU1102-6AA20/-40/-60-3AA0` (rot/grün/weiß) je 22→29,5mm,
+   Handschalter/Wahlschalter `3SU1100-2BL60-3NA0` 22→32,3mm, Quittiertaster
+   `3SU1152-0AB50-1BA0` 22→29,5mm.
+3. **Mindest-Stegmaß für reale Blechtür-Ausschnitte eingeführt** (Nutzer-
+   Hinweis: Bänder bestimmen auch, wo später in die ~1,5mm-Blechtür
+   gefräst wird – zwischen Ausschnitten muss Steg-Blech stehen bleiben):
+   12mm Standardpuffer, 22mm für den größeren Übergang Messgerät→
+   Touchpanel, statt der ursprünglichen 5mm.
+4. **Verifiziert auf BEIDEN Referenztüren** (800×800 Wandschrank, 1200×2000
+   Standschrank, alle 9 Türbauteile gleichzeitig, direkte SVG-Rect-
+   Kollisionsprüfung): Standschrank 0 Überlappungen; Wandschrank nur noch
+   die eine bewusst zurückgestellte Randkombination Messgerät+Touchpanel-
+   PXM50 gleichzeitig auf sehr kleiner Tür (Touchpanel dort laut Nutzer
+   "gar nicht oder nur klein vorhanden"). Keine Konsolenfehler.
+5. **Romutec-LVB (dritte Realisierung neben DDC-Modul/Metz) implementiert:**
+   `computeLvbRomutecDevices()`-Stub aufgelöst, DDC-Seite bleibt normal,
+   RAG2020 (AO, 4 Kanäle/Karte)/RKS3030 (BO generisch, 6 Kanäle/Karte)
+   seriell zwischen DDC und Koppelrelais/Aktor – kein separates
+   Koppelrelais nötig (steckt im Romutec-Modul). Neuer LVB-Trägerrahmen-
+   Ratchet (RTR4050S/RTR4084S/RTR7050S + RLA8000-Leerplatten für
+   unbestückte Plätze), Trägerrahmen als 2 verschachtelte Rechtecke auf dem
+   Touchpanel-Türband gezeichnet. BI bleibt bei Romutec bewusst unverändert
+   direkt an der DDC (Nutzer-Vorgabe: Fail-Operational-Anforderung bei
+   DDC-Ausfall, kein Bus, keine Doppelverdrahtung). 9 neue Katalogeinträge
+   (einzelbauteile 202→211).
+6. **Gewerke-Tabs neu strukturiert:** zweite Button-Reihe „Anlagen" (8
+   Gewerke, gestrichelter Rahmen, orange bei Auswahl) direkt unter der
+   regulären Baugruppen-Reihe, identische Schriftgröße/Spaltenbreite für
+   exakte Spaltenausrichtung; Label über der Auswahl auf „Baugruppe ·
+   Anlage" geändert (dasselbe Dropdown wird künftig für beides genutzt).
+   **Datenmodell noch nicht umgesetzt** – siehe unten, nächster Schritt.
+
+Export unverändert **einzelbauteile 202→211** (9 neue Romutec-Teile), **9
+neue Baugruppen NICHT enthalten** (Anlagen-Feature startet erst als
+nächstes). Vor Beginn der Anlagenbaugruppen-Arbeit Backup nach
+`C:\Users\SMI\Backups\dbacs\excel\` gezogen (siehe unten). Details:
+`CLAUDE.md` → „Offene Punkte" Sitzungsstand Session 64 + Nachträge 1–5.
+
+**Nächster Schritt (bereits besprochen, noch nicht implementiert):**
+Anlagenbaugruppen – eine Anlage referenziert mehrere bestehende, bereits
+verifizierte Baugruppen und fügt sie beim Hinzufügen als normale
+`{typ:'baugruppe', bg_id, menge}`-Einträge in die Belegung ein (keine
+Verschachtelung im Datenmodell, keine Änderung an Platzierung/Stückliste/
+DP-Logik nötig – siehe Memory `project_anlagenbaugruppen.md`). Fehlbedienung
+(falsche Anlage gewählt) wird nicht automatisch rückgängig gemacht, Nutzer
+löscht die einzelnen Baugruppen manuell oder beginnt neu – kein Ziel der
+Anwendung, Korrekturkomfort zu bieten.)
 
 Vorherige Session 62 (12.09.2026): 6 neue Sanitär-Baugruppen
 `410_000001`–`410_000006`, Gewerk 410 vorher leer: Reflex Nachspeise-/
