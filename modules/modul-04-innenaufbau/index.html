@@ -3110,7 +3110,6 @@ function buildQueues(ddcReservePct) {
             FB_DP_TYPES.forEach(t => { if (bt[t]) fbDemand[bt.feldbus_protokoll][t] += bt[t] * bt.menge; });
             if (bt.feldbus_protokoll === 'modbus_tcp') ipTeilnehmer += bt.menge;
           }
-          if(!queues[zone]) return;
           // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden
           // bt.zone-Override – ein Bauteil wie eine Klemme traegt selbst keinen
           // DDC-Datenpunktbedarf (wird ja auch ohne DDC-Bezug verwendet), kann
@@ -3127,6 +3126,13 @@ function buildQueues(ddcReservePct) {
           // Datenpunktbedarf gilt für JEDE Sub-Instanz einzeln (unabhängig
           // davon, ob sie ein eigenes physisches Gerät bekommt) – 2
           // zusammengefasste Sensoren brauchen weiterhin 2x den Datenpunkt.
+          // MUSS vor dem `queues[zone]`-Guard stehen (Session 64 Nachtrag 6,
+          // Nutzer-Fund/Bug: physische DP-Overrides auf Tuereinbau-Bauteilen
+          // -zone 'tuer', NICHT in ALLE_ZONEN/queues- wurden sonst komplett
+          // verworfen, obwohl Regel 12 genau dieses Muster vorsieht, z.B.
+          // Hauptschalter-Hilfsschalter/Wahlschalter/Signalleuchten mit
+          // schrankinternem BI/BO. Gleiche Begruendung wie bei den bereits
+          // vor diesem Guard stehenden dp_fb_*-Feldbus-Datenpunkten oben.
           accumulateDp(dpQuelle, bt.menge);
           // lvb_erforderlich (Session 49): dieser Datenpunkt-Bedarf darf nur
           // durch ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt
@@ -3135,6 +3141,7 @@ function buildQueues(ddcReservePct) {
           if (bt.lvb_erforderlich) {
             PHYS_DP_TYPES.forEach(t => { if (dpQuelle[t]) needsLvb[t] = true; });
           }
+          if(!queues[zone]) return;
           if(eb.keine_platzierung_mp) return;
           if (!geraetPlatzieren) return; // zweite Sub-Instanz teilt sich das oben bereits angelegte Gerät
           if(!zonen[zone]) zonen[zone] = [];

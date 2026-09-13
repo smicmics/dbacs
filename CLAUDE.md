@@ -16,6 +16,106 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 65 (13.09.2026) – Erste 14 ASP-Grundausstattungs-
+> Baugruppen (Automation) für die geplante Anlagen-Funktion + wichtiger
+> Bugfix physische DP auf Tür-Bauteilen:**
+> Vorarbeit für die erste Anlage „ASP · Schaltschranktür" (Nutzer-Vorgabe:
+> „Wir starten mit Automation... die Grundausstattung des ASP in mehreren
+> Varianten"). Alle 14 Baugruppen sitzen komplett auf der Schaltschranktür
+> DESSELBEN Schranks wie die DDC – Nutzer-Vorgabe ausdrücklich „Es werden
+> keine Klemmen benötigt, weil sich alles im Schaltschrank abspielt" →
+> durchgängig Regel 12 (schrankintern, DP-Override direkt auf der
+> Bauteilzeile, keine `3209510`-Klemme), `zone:'tuer'`.
+> **Neue Baugruppen** `480_000019`–`480_000032`, Gewerk 480, Kategorien
+> „Fronttafel-/Türeinbau" (8) und neu „Handschalter" (6):
+> - `019` Hauptschalter mit Stellungsmeldung: `3LD2504-0TK51` + NEU
+>   `3LD9200-5B` (Hilfsschalter 1Ö+1S, Original-Siemens-Bestellauswahlhilfe
+>   SIEP-T10353 – einzige für Frontbefestigung erhältliche Variante,
+>   `3LD9200-6C` nur für Bodenbefestigung). 2×BI (Ein/Aus, ein Bauteil
+>   liefert beide Kontakte).
+> - `020` Phasenkontrollleuchten 3× weiß + Einzelsicherung: 3×
+>   `3SU1102-6AA60-3AA0` + 3× `5SL6106-6` (bereits katalogisierter LSS,
+>   bewusst OHNE `5ST3010`-Hilfsschalter – Nutzer-Vorgabe „nimm die normale
+>   Sicherung, das wird in der Praxis auch so gemacht", kein Meldekontakt
+>   nötig da kein DP). 0 Datenpunkte.
+> - `021` Störquittiertaster mit Sammelstörungsleuchte: `3SU1152-0AB50-1BA0`
+>   (1×BI Quittierung) + `3SU1102-6AA20-3AA0` (1×BO Sammelstörung).
+> - `022`/`024`/`027` Handschalter Aus-Ein-Auto/Aus-Stufe1-Stufe2/
+>   Zu-Auf-Auto (je 3-stufig, `3SU1100-2BL60-3NA0` wiederverwendet – bereits
+>   real vermessener Tür-Wahlschalter aus Session 64, 32,3mm): je 2×BI.
+> - `023`/`026` Handschalter Hand-Auto/Zu-Auf (je 2-stufig, NEU
+>   `3SU1100-2BF60-3BA0` als Tür-Einzelbauteil angelegt – Artikel bereits
+>   als Elektro-Feldgerät `440_000027`/`030` bekannt [Session 63], dort ohne
+>   Abmessungen; hier b_mm/h_mm 32,3mm vom 3-stufigen Familienmitglied
+>   übernommen, nicht separat vermessen): je 1×BI.
+> - `025` Handschalter Aus-Stufe1-Stufe2-Auto (4-stufig, NEU
+>   `3SU1100-4-UNVERIFIZIERT` als Tür-Einzelbauteil – wie Elektro-Pendant
+>   `440_000029` weiterhin keine fertige SIRIUS-ACT-Einheit gefunden): 3×BI.
+> - `028`/`030` Betriebsmeldeleuchte grün / Störmeldeleuchte rot, **über
+>   Schaltschranksteuerung** (Nutzer-Korrektur: nicht „ohne DDC-Anbindung"
+>   nennen): nur die bloße Leuchte, 0 DP – Ansteuerung erfolgt über eine zum
+>   Auswahlzeitpunkt noch unbekannte Betriebsmittel-Baugruppe; „DBACS baut
+>   keine Schaltung, sondern erfasst Platzbedarf und Bauteile" (Nutzer-
+>   Zitat), daher irrelevant welcher Kontakt später tatsächlich schaltet.
+> - `029`/`031` Betriebsmeldeleuchte grün / Störmeldeleuchte rot, DDC-
+>   Ansteuerung (BO): gleiche Leuchte, 1×BO (TXM1.6R liefert 24V AC/DC
+>   direkt, kein Koppelrelais nötig).
+> - `032` Not-Halt mit Auslösemeldung: `3SU1100-1HB20-1CH0` (hat bereits 1Ö
+>   lt. Katalog), 1×BI.
+> **3-Stellungen-Frage (Nutzer-Rückfrage, geklärt):** ein 3-stufiger SIRIUS-
+> ACT-Wahlschalter („komplette Einheit") hat nur 2 physische Kontakte – die
+> Nullstellung ergibt sich aus „kein Kontakt aktiv" (Siemens-Bauart, bereits
+> in Session 63 am Datenblatt verifiziert), daher `Kontaktzahl =
+> Schaltstellungen − 1`. Die 3. Stellung wird DDC-seitig aus „kein Kontakt
+> aktiv" hergeleitet (virtueller Software-Punkt) – Nutzer bestätigt „das ist
+> Siemens-spezifisch und i.O.", keine Katalogänderung nötig.
+> **Wichtiger Bugfix in `buildQueues()` (Modul 4):** physische DP-Overrides
+> (`dp_ai/ao/bi/bo`) auf Baugruppen-Bauteilen mit `zone:'tuer'` wurden
+> bisher **komplett verworfen**, weil die Zeile
+> `accumulateDp(dpQuelle, bt.menge)` NACH dem Guard `if(!queues[zone])
+> return;` stand – `'tuer'` ist keine reguläre Platzierungszone
+> (`ALLE_ZONEN`/`queues`), die Zeile wurde also übersprungen, BEVOR der
+> Datenpunkt gezählt wurde. Für kommunikative `dp_fb_*`-Datenpunkte war das
+> bereits in Session 58 korrigiert (Zählung sitzt dort schon vor dem Guard,
+> mit exakt demselben Begründungskommentar) – für **physische** `dp_bi/bo`
+> fehlte dieselbe Korrektur, weil es bis zu dieser Session keine Baugruppe
+> gab, die genau dieses Muster (physischer DP direkt auf einem
+> Tür-Bauteil, Regel 12) tatsächlich nutzte. Fix: die komplette
+> `dpUeberschrieben`/`dpQuelle`/`accumulateDp()`/`lvb_erforderlich`-Passage
+> vor den `queues[zone]`-Guard verschoben (analog zur bereits davor
+> stehenden Feldbus-Passage). **Fund per systematischem Test:** beim
+> Verifizieren summierte sich `BI` bei mehreren gleichzeitig platzierten
+> ASP-Baugruppen nicht (blieb bei „2" statt korrekt zu steigen) – isoliert
+> auf `zone:'tuer'`-Bauteile eingegrenzt (der Hauptschalter-Hilfsschalter
+> mit `zone:'steuer'` zählte von Anfang an richtig, alle `zone:'tuer'`-
+> Bauteile nie). Nach dem Fix direkt gegen `buildQueues()` verifiziert: alle
+> 14 Baugruppen gleichzeitig → BI 15/32 · BO 3/6 (exakt wie von Hand
+> berechnet), Regressionscheck bestehende `dp_fb_*`-Baugruppe (`480_000012`,
+> UMG-Türeinbau) weiterhin korrekt (17 kommunikative AI unverändert), keine
+> Konsolenfehler.
+> **Browser-Verifikation:** alle 14 Baugruppen gleichzeitig platziert,
+> Türansicht zeigt korrekt 17 Bauteile (Hilfsschalter unsichtbar wie
+> gewollt, `zone:'steuer'`+`keine_platzierung_mp`), Stückliste löst alle
+> Artikel korrekt auf (inkl. automatisch ergänzter Steuertrafo+2×LSS für die
+> DDC-CPU-Steuerspannung), keine verwaisten Referenzen, keine Konsolenfehler.
+> **Export:** einzelbauteile 211→**214** (3 neu: `3LD9200-5B`,
+> `3SU1100-2BF60-3BA0`, `3SU1100-4-UNVERIFIZIERT`), baugruppen 164→**178**
+> (14 neu), feldgeraete unverändert 96. Kein Backup nötig (keine
+> strukturelle Änderung, nur neue Zeilen).
+> **Restliste:** `3LD9200-5B`-Preis nur Distributor-Richtwert (11,54€ netto,
+> Elektro4000.de), kein Siemens-Listenpreis; Abmessungen `3LD9200-5B` vom
+> Schwestertyp `-5C` übernommen; `3SU1100-2BF60-3BA0`/`3SU1100-4-
+> UNVERIFIZIERT` Tür-Abmessungen (32,3mm) vom 3-stufigen Familienmitglied
+> übernommen, nicht einzeln vermessen; kein Preis für die beiden neuen
+> Wahlschalter-Varianten recherchiert; 4-stufiger Wahlschalter weiterhin
+> ohne verifizierte Hardware. **Nächster Schritt (Nutzer-Ankündigung):**
+> Baugruppennamen-Konvention für Anlagen nochmal besprechen (Grundbauteile,
+> die immer dazugehören, sollen NICHT im Auswahltext auftauchen, aber für
+> Claude nachvollziehbar bleiben) – noch keine Entscheidung getroffen, ob
+> dafür ein neues Stammdatenpflege-Modul (analog Modul 7) für Anlagen
+> gebaut wird oder ob es bei einmaliger Erstellung durch Claude + späteren
+> Anpassungen auf Zuruf bleibt.
+
 > **Sitzungsstand Session 64 Nachtrag 6 (13.09.2026) – Quittiertaster bekommt
 > eigenes Band, Störmeldung/Betriebsmeldung-Steg halbiert, Messgerät/
 > Touchpanel-Restpunkt bestätigt unlösbar auf kleiner Tür:**

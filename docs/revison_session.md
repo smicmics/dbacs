@@ -1,6 +1,19 @@
 # DBACS – Revisionsstand
 
-**Stand:** 13. September 2026 – Session 64, Nachtrag 6 (Modul 4,
+**Stand:** 13. September 2026 – Session 65 (Modul 4,
+`modules/modul-04-innenaufbau/index.html`): erste 14 ASP-Grundausstattungs-
+Baugruppen (Automation, Vorarbeit für die Anlagen-Funktion) angelegt –
+Hauptschalter mit Stellungsmeldung, Phasenkontrollleuchten, Störquittiertaster
+mit Sammelstörungsleuchte, 6 Handschalter-Varianten, Betriebs-/Störmeldeleuchte
+je „über Schaltschranksteuerung" und „DDC-Ansteuerung (BO)", Not-Halt mit
+Auslösemeldung. Alle schrankintern ohne Klemmen (Regel 12). Dabei wichtigen
+Bugfix in `buildQueues()` gefunden+behoben: physische DP-Overrides auf
+Tür-Bauteilen (`zone:'tuer'`) wurden vor dem Fix komplett verworfen (Guard
+`if(!queues[zone]) return` stand vor der Datenpunkt-Zählung). Export:
+einzelbauteile 211→214, baugruppen 164→178. Details: `CLAUDE.md` → „Offene
+Punkte" Sitzungsstand Session 65.
+
+Vorheriger Stand – Session 64, Nachtrag 6 (Modul 4,
 `modules/modul-04-innenaufbau/index.html`): Quittiertaster bekam eine eigene
 Ebene zwischen Phasenleuchten und Not-Halt (teilte sich vorher fälschlich
 das Band mit der roten Störmeldung, Nachtrag-5-Fehlgriff), Störmeldung/

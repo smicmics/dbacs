@@ -7029,5 +7029,284 @@
     "automationsanbindung": true,
     "kategorie": "Steckdose/Zubehör",
     "geprueft": false
+  },
+  {
+    "id": "480_000019",
+    "name": "Hauptschalter 3-polig 63A mit Stellungsmeldung (Ein/Aus)",
+    "gewerk": "480",
+    "beschreibung": "Siemens Lasttrennschalter 3LD2504-0TK51 (3-polig, 63A, Fronttafeleinbau mit Drehantrieb) + Hilfsschalter 3LD9200-5B (1 Oeffner + 1 Schliesser) fuer Stellungsmeldung Ein/Aus. Schrankintern verdrahtet (DDC im selben Schrank) - keine Klemmen, DP-Override direkt auf der Hilfsschalter-Zeile (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3LD2504-0TK51",
+        "menge": 1,
+        "zone": "tuer"
+      },
+      {
+        "artikel_nr": "3LD9200-5B",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_bi": 2
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
+  },
+  {
+    "id": "480_000020",
+    "name": "Phasenkontrollleuchten 3x weiss mit Einzelsicherung",
+    "gewerk": "480",
+    "beschreibung": "3x Siemens SIRIUS ACT Signalleuchte weiss (3SU1102-6AA60-3AA0, L1/L2/L3-Netzkontrolle, Fronttafeleinbau) + 3x Siemens LSS 5SL6106-6 (B6A, 1-polig, je Leuchte eine eigene Absicherung, bewusst OHNE Hilfsschalter 5ST3010 - kein Meldekontakt noetig, da kein Datenpunkt). Keine Datenpunkte.",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1102-6AA60-3AA0",
+        "menge": 3,
+        "zone": "tuer"
+      },
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 3,
+        "zone": "evert"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
+  },
+  {
+    "id": "480_000021",
+    "name": "Störquittiertaster mit Sammelstörungsleuchte",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Leuchtdrucktaste blau (3SU1152-0AB50-1BA0, Quittierung/Reset) + Signalleuchte rot (3SU1102-6AA20-3AA0, Sammelstoerung), beide Fronttafeleinbau. Schrankintern (Regel 12): 1xBI Stoerquittierung auf der Taster-Zeile, 1xBO Ansteuerung Sammelstoerungsleuchte auf der Signalleuchte-Zeile.",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1152-0AB50-1BA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3SU1102-6AA20-3AA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bo": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
+  },
+  {
+    "id": "480_000022",
+    "name": "Handschalter Aus-Ein-Auto (3-Stufen)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit (3SU1100-2BL60-3NA0), Fronttafeleinbau dieses Schranks. Kontaktzahl = Schaltstellungen-1: 2xBI, schrankintern (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1100-2BL60-3NA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bi": 2
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "480_000023",
+    "name": "Handschalter Hand-Auto (2-Stufen)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit (3SU1100-2BF60-3BA0), Fronttafeleinbau dieses Schranks. 1xBI, schrankintern (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1100-2BF60-3BA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "480_000024",
+    "name": "Handschalter Aus-Stufe1-Stufe2 (3-Stufen)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit (3SU1100-2BL60-3NA0, gleiche Hardware wie Aus-Ein-Auto), Fronttafeleinbau dieses Schranks. 2xBI, schrankintern (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1100-2BL60-3NA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bi": 2
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "480_000025",
+    "name": "Handschalter Aus-Stufe1-Stufe2-Auto (4-Stufen, unverifiziert)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 4-Stufen (3SU1100-4-UNVERIFIZIERT - keine fertige komplette Einheit im Katalog gefunden, siehe quelle_hinweis am Bauteil), Fronttafeleinbau dieses Schranks. 3xBI, schrankintern (Regel 12). Vor Projekteinsatz Hardware verifizieren.",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1100-4-UNVERIFIZIERT",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bi": 3
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "480_000026",
+    "name": "Handschalter Zu-Auf (2-Stufen)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit (3SU1100-2BF60-3BA0, gleiche Hardware wie Hand-Auto), Fronttafeleinbau dieses Schranks. 1xBI, schrankintern (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1100-2BF60-3BA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "480_000027",
+    "name": "Handschalter Zu-Auf-Auto (3-Stufen)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit (3SU1100-2BL60-3NA0, gleiche Hardware wie Aus-Ein-Auto), Fronttafeleinbau dieses Schranks. 2xBI, schrankintern (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1100-2BL60-3NA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bi": 2
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Handschalter",
+    "geprueft": false
+  },
+  {
+    "id": "480_000028",
+    "name": "Betriebsmeldeleuchte grün, über Schaltschranksteuerung",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Signalleuchte gruen (3SU1102-6AA40-3AA0), Fronttafeleinbau. Ansteuerung erfolgt ueber die Schaltschranksteuerung (Kontakt einer noch nicht feststehenden Betriebsmittel-Baugruppe, z.B. Schuetz-/Koppelrelaiskontakt) - zum Zeitpunkt der ASP-Auswahl ist die konkrete Quelle unbekannt und fuer DBACS irrelevant (reine Platzbedarfs-/Stuecklistenerfassung, keine Schaltungsplanung). Keine Datenpunkte.",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1102-6AA40-3AA0",
+        "menge": 1,
+        "zone": "tuer"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
+  },
+  {
+    "id": "480_000029",
+    "name": "Betriebsmeldeleuchte grün, DDC-Ansteuerung (BO)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Signalleuchte gruen (3SU1102-6AA40-3AA0), Fronttafeleinbau. Direkt ueber DDC-Binaerausgang angesteuert (TXM1.6R liefert 24V AC/DC direkt an die LED-Leuchte, kein Koppelrelais noetig). 1xBO, schrankintern (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1102-6AA40-3AA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bo": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
+  },
+  {
+    "id": "480_000030",
+    "name": "Störmeldeleuchte rot, über Schaltschranksteuerung",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Signalleuchte rot (3SU1102-6AA20-3AA0), Fronttafeleinbau. Ansteuerung erfolgt ueber die Schaltschranksteuerung (z.B. Hilfskontakt eines Motorschutzschalters/einer Sicherung) - analog Betriebsmeldeleuchte, keine Schaltungsplanung durch DBACS. Keine Datenpunkte.",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1102-6AA20-3AA0",
+        "menge": 1,
+        "zone": "tuer"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
+  },
+  {
+    "id": "480_000031",
+    "name": "Störmeldeleuchte rot, DDC-Ansteuerung (BO)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Signalleuchte rot (3SU1102-6AA20-3AA0), Fronttafeleinbau. Direkt ueber DDC-Binaerausgang angesteuert. 1xBO, schrankintern (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1102-6AA20-3AA0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bo": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
+  },
+  {
+    "id": "480_000032",
+    "name": "Not-Halt-Pilzdrucktaster mit Auslösemeldung (BI)",
+    "gewerk": "480",
+    "beschreibung": "Siemens SIRIUS ACT Not-Halt-Pilzdrucktaster (3SU1100-1HB20-1CH0, 1Oe, Drehentriegelung), Fronttafeleinbau. Der vorhandene Oeffnerkontakt liefert die Ausloesemeldung. 1xBI, schrankintern (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3SU1100-1HB20-1CH0",
+        "menge": 1,
+        "zone": "tuer",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
   }
 ]
