@@ -280,11 +280,18 @@ legend{
    Baugruppen-Reihe darüber (Nutzer-Vorgabe: "identisch große Schrift für
    alles") – jeder Anlagen-Button steht dadurch exakt unter seinem
    Baugruppen-Pendant. Gestrichelter Rahmen + eigene Akzentfarbe im aktiven
-   Zustand (siehe .gewerk-tab-anlage.active) reichen als Unterscheidung, ohne
-   eigene Zeilenbeschriftung. */
+   Zustand (siehe .gewerk-tab-anlage.active) unterscheiden die Reihen
+   zusaetzlich zur Beschriftung. .gewerk-tabs-suffix steht bewusst NACH den
+   Buttons (nicht davor), damit die Spaltenausrichtung zwischen den beiden
+   Reihen erhalten bleibt (Nutzer-Vorgabe "Baugruppe"/"Anlage" als Text
+   vor oder hinter der jeweiligen Reihe). */
 .gewerk-tabs-anlagen{margin-top:2px;}
 .gewerk-tab-anlage{border-style:dashed;}
 .gewerk-tab-anlage.active{background:var(--orange);border-color:var(--orange);border-style:solid;color:#fff;}
+.gewerk-tabs-suffix{
+  font-size:9px;color:var(--tx2);margin-left:6px;padding-left:6px;
+  border-left:1px solid var(--bords);white-space:nowrap;align-self:center;
+}
 
 /* ── BG-Auswahl ── */
 .bg-add-row{display:flex;gap:6px;margin-top:6px;min-width:0;}
@@ -652,6 +659,7 @@ fieldset{
       <button class="gewerk-tab" id="tab-sicherheit" data-gewerk="sicherheit" title="450 · Sicherheitstechnik" onclick="setGewerk('sicherheit')">Sicherheit</button>
       <button class="gewerk-tab" id="tab-automation" data-gewerk="automation" title="480 · Gebäudeautomation" onclick="setGewerk('automation')">Automation</button>
       <button class="gewerk-tab" id="tab-sonstige" data-gewerk="sonstige" title="490 · Sonstige Anlagen" onclick="setGewerk('sonstige')">Sonstige</button>
+      <span class="gewerk-tabs-suffix">Baugruppe</span>
     </div>
     <div class="gewerk-tabs gewerk-tabs-anlagen">
       <button class="gewerk-tab gewerk-tab-anlage" id="tab-sanitaer-anlagen" data-gewerk="sanitaer_anlagen" title="410_Anlagen · Sanitär-Anlagen" onclick="setGewerk('sanitaer_anlagen')">Sanitär</button>
@@ -662,6 +670,7 @@ fieldset{
       <button class="gewerk-tab gewerk-tab-anlage" id="tab-sicherheit-anlagen" data-gewerk="sicherheit_anlagen" title="450_Anlagen · Sicherheitstechnik-Anlagen" onclick="setGewerk('sicherheit_anlagen')">Sicherheit</button>
       <button class="gewerk-tab gewerk-tab-anlage" id="tab-automation-anlagen" data-gewerk="automation_anlagen" title="480_Anlagen · Automations-Anlagen" onclick="setGewerk('automation_anlagen')">Automation</button>
       <button class="gewerk-tab gewerk-tab-anlage" id="tab-sonstige-anlagen" data-gewerk="sonstige_anlagen" title="490_Anlagen · Sonstige Anlagen" onclick="setGewerk('sonstige_anlagen')">Sonstige</button>
+      <span class="gewerk-tabs-suffix">Anlage</span>
     </div>
 
     <div class="eb-field">
@@ -4026,7 +4035,18 @@ function buildTuerAnsicht(feldIndex, wrap, inner) {
     const y = masse.h * (1 - band);   // band=0 unten, SVG-Y wächst nach unten
     list.forEach(eb => {
       const bw = effW(eb), bh = Math.max(eb.h_mm || 22, minRealW);
-      const bx = x * sc, by = (y - (eb.h_mm||22)/2) * sc, bwpx = bw*sc, bhpx = bh*sc;
+      const bx = x * sc, bwpx = bw*sc, bhpx = bh*sc;
+      // Vertikal an der Türhöhe geklemmt (Session 64 Nachtrag 4, Nutzer-Fund:
+      // ein hohes Bauteil wie das PXM50-Touchpanel [270mm] ragte auf einer
+      // kurzen Wandschranktür [800mm] bei Band 0,86 oben über die Türkante
+      // hinaus, weil die Bänder gegen den 2000mm-Standschrank kalibriert
+      // sind - eine feste Prozent-Ebene kann auf einer viel kürzeren Tür
+      // schlicht keinen Platz mehr für ein grosses Bauteil bieten). Diese
+      // Klammer verhindert nur das optische Herausragen über die Tür-
+      // Aussenkante, löst aber NICHT das eigentliche Kopfhöhen-Problem auf
+      // kurzen Türen (siehe CLAUDE.md Restliste).
+      const byRaw = (y - (eb.h_mm||22)/2) * sc;
+      const by = Math.min(Math.max(byRaw, 0), DH - bhpx);
       const farbe = tuerFarbe(eb);
       if (eb.bauteil_typ === 'lvb_traegerrahmen') {
         // Romutec-Traegerrahmen (Session 64, Nutzer-Vorgabe): 2 verschachtelte
