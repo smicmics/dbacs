@@ -1288,6 +1288,10 @@ function filterBaugruppen(gew) {
   const kategorien = {};
   BAUGRUPPEN_DB
     .filter(b => b.kategorie && b.funktionsbereich && b.funktionsbereich.includes(gew))
+    // Session 64 Nachtrag 6: PXM50-Touchpanel-Baugruppe auf zu kurzen Türen
+    // ausgeblendet (siehe tuerTouchpanelPasstAufTuer()) – Nutzer-Entscheidung
+    // gegen den rechnerisch unlösbaren Messgerät/Touchpanel-Restpunkt.
+    .filter(tuerTouchpanelPasstAufTuer)
     .forEach(b => { (kategorien[b.kategorie] = kategorien[b.kategorie] || []).push(b); });
   Object.keys(kategorien).sort().forEach(kat => {
     const og = document.createElement('optgroup');
@@ -3863,21 +3867,40 @@ function getGehaeuseAussenmasse(typ) {
 // 800mm-Tür, gebraucht 205mm) – seltene Kombination (Touchpanel laut
 // Nutzer auf Wandschränken "gar nicht oder nur klein vorhanden"), reine
 // Prozentbänder können das nicht für jede Türhöhe garantieren.
-const TUER_BAND_HAUPTSCHALTER     = 0.30;
-const TUER_BAND_PHASENKONTROLLE   = 0.41;
+// Session 64 Nachtrag 6 (Nutzer-Korrektur nach drittem Browser-Review):
+// Quittiertaster bekommt eine EIGENE Ebene zwischen Phasenleuchten und
+// Not-Halt (Nutzer: "Der Quittiertaster sollte zwischen Phasenleuchte und
+// Notaus") – teilt sich NICHT mehr das Band mit der roten Störmeldung
+// (Nachtrag-5-Entscheidung dazu war falsch: durch die eingemischten
+// Quittiertaster-Kacheln war die "rote Reihe" nicht rein rot, Nutzer-Fund
+// "die roten Signalleuchten sind nicht unter den grünen"). Störmeldung
+// bleibt dadurch unverändert bei 0,53, direkt unter Betriebsmeldung – nur
+// jetzt ohne Quittiertaster-Beimischung. Hauptschalter + Phasenleuchten
+// mussten dafür nach unten rutschen (0,30→0,25 / 0,41→0,355), um Platz für
+// die neue Zwischenebene zu schaffen (Hauptschalter hatte nach unten reichlich
+// Luft, siehe Türboden-Freiraum), Not-Halt/Störmeldung/Betriebsmeldung/
+// Handschalter/Messgerät/Touchpanel bleiben unverändert.
+const TUER_BAND_HAUPTSCHALTER     = 0.25;
+const TUER_BAND_PHASENKONTROLLE   = 0.355;
+// Quittiertaster: eigenes Band, 84mm/44mm-Marge auf dem bindenden
+// 800mm-Wandschrank (Δ zu Phasenleuchten 44mm≥42mm nötig, Δ zu Not-Halt
+// 48mm≥47mm nötig – gleiche 12mm-Steg-Formel wie alle anderen Paare).
+const TUER_BAND_QUITTIERTASTER    = 0.41;
 // Not-Halt: eigene, exklusive Ebene (kein anderer Bauteiltyp teilt sich
 // dieses Band, siehe tuerBand()) – Nutzer-Vorgabe bleibt "darf auf der
-// gleichen Ebene kein anderes Bauteil sein" (Session 47 Nachtrag). Sitzt
-// seit Session 64 Nachtrag 5 wieder zwischen Phasenleuchten und Störmeldung
-// (nicht mehr darüber).
+// gleichen Ebene kein anderes Bauteil sein" (Session 47 Nachtrag).
 const TUER_BAND_NOTHALT           = 0.47;
-// Störmeldung (rot) + Quittiertaster teilen sich bewusst dasselbe Band
-// (Nutzer-Vorgabe Session 63: Quittierung gehört zur Störmeldung) – direkt
-// angrenzend UNTER Betriebsmeldung (Session 64 Nachtrag 5: "rote Reihe
-// soll unter die grüne Reihe").
+// Störmeldung (rot) – seit Nachtrag 6 wieder ALLEIN auf ihrem Band (siehe
+// oben), direkt angrenzend UNTER Betriebsmeldung. Der Mindest-Steg zur
+// Betriebsmeldung ist hier bewusst nur HALB so groß wie der sonstige
+// 12mm-Standard (Nutzer-Vorgabe: "können auch mit der Hälfte des aktuellen
+// Abstands gesetzt werden, weil sie funktional zusammengehören" – rot+grün
+// bilden ein Signalleuchten-Paar, kein voller Trenn-Steg zwischen den
+// beiden nötig). Physischer Kollisionsschutz bleibt trotzdem gewahrt
+// (14,75+14,75+6mm Mindest-Steg = 36,75mm nötig, 37,6mm tatsächlich auf dem
+// bindenden 800mm-Wandschrank).
 const TUER_BAND_STOERMELDUNG      = 0.53; // rote Signalleuchte
-const TUER_BAND_QUITTIERTASTER    = TUER_BAND_STOERMELDUNG;
-const TUER_BAND_BETRIEBSMELDUNG   = 0.585; // grüne Signalleuchte
+const TUER_BAND_BETRIEBSMELDUNG   = 0.577; // grüne Signalleuchte
 const TUER_BAND_HANDSCHALTER      = 0.64;
 const TUER_BAND_MESSGERAET        = 0.74;
 // Touchpanel (Session 63, Siemens PXM40/50): deutlich groesser als alle
@@ -3892,6 +3915,39 @@ const TUER_BAND_MESSGERAET        = 0.74;
 // (Restpunkt, s. o.): Messgerät + Touchpanel PXM50 GLEICHZEITIG auf einem
 // sehr kleinen Wandschrank oder einem Standschrank <1800mm Höhe.
 const TUER_BAND_TOUCHPANEL        = 0.85;
+
+// Session 64 Nachtrag 6 (Nutzer-Entscheidung zum Messgerät/Touchpanel-
+// Restpunkt): rechnerisch bestätigt unlösbar durch reines Bänder-Stauchen
+// (s. Kommentar oben) – also stattdessen die GRÖSSE der wählbaren
+// Touchpanel-Baugruppe von der tatsächlichen Türhöhe UND dem tatsächlich
+// schon platzierten Messgerät abhängig machen. Auf zu kurzen Türen wird die
+// große Variante (PXM50, 270mm) im Baugruppen-Dropdown ausgeblendet, nur
+// die kleinere (PXM40, 198mm) bleibt wählbar ("automatisch erzwingen" statt
+// nur Warnhinweis). Bewusst NICHT gegen das größte katalogisierte
+// Messgerät (Worst Case) geprüft – das hätte auf JEDEM Wandschrank (max.
+// 1200mm, siehe wandschraenke.json) auch PXM40 gesperrt, weil UMG96
+// (96mm) + PXM40 (198mm) selbst dort nie den 22mm-Steg schaffen (Nutzer-
+// Entscheidung: reale Verwendungsfälle sind meist kleinere Messgeräte oder
+// gar keins auf derselben Tür). Stattdessen: nur einschränken, wenn AUF
+// DIESER TÜR bereits ein Messgerät steht (`getTuerItems()`), sonst frei
+// wählbar. Bekannte Lücke: reagiert nicht rückwirkend, wenn NACH der
+// Touchpanel-Wahl noch ein (zu großes) Messgerät ergänzt wird – die
+// Prüfung läuft nur beim Aufbau des Dropdowns (Gewerke-Tab-Wechsel), nicht
+// bei jeder Belegungsänderung.
+function tuerTouchpanelPasstAufTuer(bg) {
+  const tpBauteil = (bg.bauteile || [])
+    .map(bt => EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr))
+    .find(eb => eb && eb.bauteil_typ === 'touchpanel');
+  if (!tpBauteil) return true; // keine Touchpanel-Baugruppe -> keine Einschränkung
+  const masse = getGehaeuseAussenmasse(gs('schrank_typ'));
+  if (!masse) return true; // Türmaße unbekannt -> nicht vorschnell ausblenden
+  const messgeraeteAufTuer = getTuerItems(1).filter(eb => eb.bauteil_typ === 'messgeraet');
+  if (messgeraeteAufTuer.length === 0) return true; // (noch) kein Messgerät auf der Tür
+  const messgeraetMaxH = Math.max(...messgeraeteAufTuer.map(eb => eb.h_mm || 0));
+  const neededMm = messgeraetMaxH / 2 + (tpBauteil.h_mm || 0) / 2 + 22; // 22mm Mindest-Steg, s. o.
+  const neededBand = neededMm / masse.h;
+  return (TUER_BAND_TOUCHPANEL - TUER_BAND_MESSGERAET) >= neededBand;
+}
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
 // werden nach bauteil_typ/Farbe gruppiert, nicht einzeln einem bestimmten

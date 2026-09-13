@@ -16,6 +16,75 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 64 Nachtrag 6 (13.09.2026) – Quittiertaster bekommt
+> eigenes Band, Störmeldung/Betriebsmeldung-Steg halbiert, Messgerät/
+> Touchpanel-Restpunkt bestätigt unlösbar auf kleiner Tür:**
+> Nutzer-Review per Browser-Screenshot (Wandschrank) ergab: die "rote Reihe"
+> unter der grünen war durch die eingemischten blauen Quittiertaster-Kacheln
+> nicht rein rot – Nachtrag-5-Entscheidung (Störmeldung+Quittiertaster
+> teilen sich ein Band) war ein Fehlgriff. Nutzer-Korrektur: **Quittiertaster
+> bekommt eine eigene, exklusive Ebene zwischen Phasenleuchten und Not-Halt**
+> (nicht mehr im Störmeldung-Band). Störmeldung bleibt unverändert bei 0,53,
+> jetzt aber ALLEIN, direkt unter Betriebsmeldung. Um Platz für die neue
+> Zwischenebene zu schaffen, sind Hauptschalter (0,30→**0,25**) und
+> Phasenleuchten (0,41→**0,355**) nach unten gerutscht (Nutzer-Hinweis:
+> "Phasenleuchten können noch tiefer gesetzt werden, wenn der Platz benötigt
+> wird" – reichlich Freiraum zwischen Hauptschalter und Türunterkante
+> vorhanden). Neue Konstante `TUER_BAND_QUITTIERTASTER = 0.41` (eigenständig,
+> nicht mehr Alias von `TUER_BAND_STOERMELDUNG`).
+> **Zusätzlich** auf Nutzer-Vorgabe der Mindest-Steg zwischen Störmeldung
+> (rot) und Betriebsmeldung (grün) halbiert (Nutzer: "können auch mit der
+> Hälfte des aktuellen Abstands gesetzt werden, weil sie funktional
+> zusammengehören") – 12mm-Standard-Steg → **6mm** nur für dieses Paar,
+> `TUER_BAND_BETRIEBSMELDUNG` 0,585→**0,577** (Störmeldung-Band selbst
+> unverändert). Physischer Kollisionsschutz bleibt gewahrt (36,75mm nötig,
+> 37,6mm tatsächlich auf dem bindenden 800mm-Wandschrank).
+> **Browser-Verifikation** (direkte SVG-Rect-Kollisionsprüfung, alle 9
+> Türbauteile gleichzeitig auf BEIDEN Referenztüren): Standschrank 1200×2000
+> weiterhin 0 Überlappungen; Wandschrank 800×800 weiterhin NUR die eine
+> bereits dokumentierte Randkombination (Messgerät UMG96 + Touchpanel PXM50
+> gleichzeitig, 96mm Überlappung, unverändert). Neue Bandreihenfolge korrekt
+> unten→oben: Hauptschalter(0,25) < Phasenleuchten(0,355) <
+> Quittiertaster(0,41) < Not-Halt(0,47) < Störmeldung(0,53) <
+> Betriebsmeldung(0,577) < Handschalter(0,64) < Messgerät(0,74) <
+> Touchpanel(0,85). Keine Konsolenfehler.
+> **Rechnerisch bestätigt (Nutzer-Anfrage "prüfe die Abstandsregel Messgerät/
+> Touchpanel"): der Messgerät→Touchpanel-PXM50-Restpunkt auf dem 800mm-
+> Wandschrank ist mit dem Prozentband-Ansatz NICHT lösbar, unabhängig davon
+> wie stark andere Bänder gestaucht werden.** Rechnung: benötigter Abstand
+> für 22mm-Steg = 48+135+22 = 205mm; selbst wenn ALLE 6 Stege zwischen
+> Hauptschalter und Handschalter auf 0mm gesetzt würden, wären nur ca. 85mm
+> zusätzlicher Spielraum gewinnbar (real gemessen: 84,8mm Summe aller
+> aktuellen Kanten-Lücken) – bei weitem nicht genug, und ein Verschieben
+> von Messgerät/Handschalter nach unten würde zudem entweder die Reihenfolge
+> Handschalter<Messgerät<Touchpanel verletzen oder Touchpanels fixierte
+> Kopfhöhe (0,85 = 1700mm auf dem 2000mm-Standschrank) aufgeben.
+> **Nutzer-Entscheidung zur Auflösung: statt Bänder zu stauchen, wird die
+> WÄHLBARE Touchpanel-Baugröße von der Tür abhängig gemacht** (neue Funktion
+> `tuerTouchpanelPasstAufTuer()`, eingehängt in `filterBaugruppen()`) – auf
+> zu kurzen Türen verschwindet die große Variante (PXM50) aus dem
+> Baugruppen-Dropdown, nur die kleine (PXM40) bleibt wählbar. Bewusst NICHT
+> gegen das größte katalogisierte Messgerät (Worst Case) geprüft, sondern
+> NUR gegen ein auf der jeweiligen Tür bereits tatsächlich platziertes
+> Messgerät (`getTuerItems()`) – ein erster Versuch mit Worst-Case-Prüfung
+> (gegen UMG96, 96mm) hätte auf JEDEM Wandschrank (max. 1200mm It.
+> `wandschraenke.json`) auch PXM40 gesperrt, weil UMG96+PXM40 dort nie den
+> 22mm-Steg schaffen – vom Nutzer als zu aggressiv abgelehnt ("nur gegen
+> tatsächlich platziertes Messgerät" statt Worst-Case). Solange auf einer
+> Tür (noch) kein Messgerät steht, ist die Touchpanel-Wahl frei (beide
+> Varianten wählbar), unabhängig von der Türhöhe. **Bekannte Lücke:** die
+> Prüfung läuft nur beim Aufbau des Baugruppen-Dropdowns (Gewerke-Tab-
+> Wechsel), nicht bei jeder Belegungsänderung – wird NACH einer bereits
+> getroffenen Touchpanel-Wahl noch ein zu großes Messgerät auf dieselbe Tür
+> ergänzt, wird das nicht rückwirkend erkannt/verhindert (Nutzer-Vorgabe
+> akzeptiert diese Lücke ausdrücklich als Kompromiss gegenüber Worst-Case).
+> Browser-verifiziert (Simulation via `tuerTouchpanelPasstAufTuer()` direkt
+> in der Konsole, `filterBaugruppen('automation')` fehlerfrei): kein
+> Messgerät auf der Tür → beide Varianten wählbar (jede Türgröße); UMG96 auf
+> 800mm- oder 1200mm-Wandschrank → beide Varianten gesperrt; UMG96 auf
+> 1200×2000-Standschrank → beide weiterhin wählbar (37mm Marge, wie bereits
+> in der Kollisionsprüfung oben bestätigt). Keine Konsolenfehler.
+
 > **Sitzungsstand Session 64 Nachtrag 5 (13.09.2026) – Türband-Reihenfolge
 > final korrigiert (Rot direkt unter Grün) + Mindest-Stegmaß für Blechtür-
 > Ausschnitte eingeführt:**

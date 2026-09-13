@@ -1,7 +1,19 @@
 # DBACS – Revisionsstand
 
-**Stand:** 13. September 2026 – Session 64, finaler Stand nach 5 Nachträgen
-(Modul 4, `modules/modul-04-innenaufbau/index.html`):
+**Stand:** 13. September 2026 – Session 64, Nachtrag 6 (Modul 4,
+`modules/modul-04-innenaufbau/index.html`): Quittiertaster bekam eine eigene
+Ebene zwischen Phasenleuchten und Not-Halt (teilte sich vorher fälschlich
+das Band mit der roten Störmeldung, Nachtrag-5-Fehlgriff), Störmeldung/
+Betriebsmeldung-Steg auf Nutzer-Wunsch halbiert (funktional zusammengehörig).
+Auf beiden Referenztüren kollisionsfrei verifiziert. Der Messgerät+
+Touchpanel-Restpunkt (rechnerisch bestätigt unlösbar per Bänder-Stauchen)
+ist jetzt gelöst, indem die wählbare Touchpanel-Baugröße (PXM40/PXM50) im
+Dropdown von der Türhöhe UND einem tatsächlich bereits platzierten
+Messgerät abhängt (`tuerTouchpanelPasstAufTuer()`), statt Worst-Case gegen
+das größte Katalog-Messgerät zu prüfen. Details: `CLAUDE.md` → „Offene
+Punkte" Sitzungsstand Session 64 Nachtrag 6.
+
+Vorheriger Stand – Session 64, finaler Stand nach 5 Nachträgen:
 
 1. **Türband-Reihenfolge final** (mehrfache Nutzer-Korrektur per Browser-
    Review, Ausgangspunkt: "Touchpanel muss in Kopfhöhe bedienbar sein"):
