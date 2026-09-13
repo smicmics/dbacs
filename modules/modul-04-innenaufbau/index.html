@@ -3816,83 +3816,79 @@ function getGehaeuseAussenmasse(typ) {
 // Ergonomische Höhen-Bänder als Anteil der Türhöhe (0=unten, 1=oben) –
 // Nutzer-Erfahrungswerte, gestützt durch DIN EN 60204-1 (Hauptschalter
 // 0,6–1,9m, empfohlen <1,7m) und DIN 18040 (Bedienhöhe 0,85–1,05m).
-// Reihenfolge von unten nach oben (Session 63): Hauptschalter <
-// Phasenleuchten < Not-Halt (eigene, exklusive Ebene) < Sammelstörmelde-
-// leuchte+Quittierung < Betriebsmeldeleuchte (grün, eigene Reihe, NICHT mit
-// der Störmeldung zusammengelegt) < Handschalter < Messgeräte <
-// Touchpanel/künftige Romutec-Ebene (oberste Ebene, Kopfhöhe eines
-// stehenden Menschen).
 //
-// Session-63-Nachtrag 2 (Nutzer-Fund per Browser-Test): die reinen
-// Prozentwerte reichten bei kleinen Türen (800×800 Wandschrank) nicht mehr
-// aus, sobald die Bauteile auf ihre echten Maße korrigiert waren (Signal-
-// leuchten 22→29,5mm, Not-Halt 22→40mm, s. Katalogkorrektur) – Störmeldung/
-// Betriebsmeldung/Handschalter überlappten sich (Bandabstand 0,03 × 800mm
-// = 24mm Pitch, gebraucht aber 29,5mm für zwei 29,5mm hohe Leuchten
-// übereinander), und auf dem 1200×2000-Standschrank überlappten sich
-// Messgerät (96×96mm) und Touchpanel PXM50 (419×270mm, Bandabstand 0,08 ×
-// 2000mm = 160mm, gebraucht aber 96/2+270/2 = 183mm). Nutzer-Vorgabe:
-// Hauptschalter darf weiter nach unten rücken, um Platz zu schaffen – die
-// komplette obere Gruppe wurde daraufhin gegen die realen Bauteilmaße
-// (Katalog `b_mm`/`h_mm`, größte real verwendete Variante je Typ:
-// Hauptschalter 90×106mm, Not-Halt 40×40mm, Signalleuchten je 29,5×29,5mm,
-// Handschalter/Quittiertaster 22×22mm, Messgerät UMG96 96×96mm, Touchpanel
-// PXM50 419×270mm als Worst-Case) nachgerechnet und mit Sicherheitsmarge
-// (≥6mm auf dem 800mm-Wandschrank, deutlich mehr auf dem 2000mm-Stand-
-// schrank) neu bemessen. Rechenweg: notwendiger Bandabstand
-// Δband ≥ (halbe Höhe unteres Bauteil + halbe Höhe oberes Bauteil) / H_mm.
-// Geprüft für 800×800 (Wandschrank) UND 1200×2000 (Standschrank) per
-// Browser-Test (direkte SVG-Rect-Auswertung, keine Überlappung mehr in
-// beiden Fällen für die reguläre Bauteilgruppe). Bewusst NICHT abgedeckt:
-// Messgerät + Touchpanel PXM50 GLEICHZEITIG auf einem sehr kleinen
-// Wandschrank oder einem Standschrank <1800mm Höhe – seltene Kombination
-// (Touchpanel ist laut Nutzer auf Wandschränken "gar nicht oder nur klein
-// vorhanden"), reine Prozentbänder können das nicht für jede Türhöhe
-// garantieren (bräuchte eine dynamische, mm-basierte Mindestabstandslogik,
-// zurückgestellt).
-const TUER_BAND_HAUPTSCHALTER     = 0.35;
-const TUER_BAND_PHASENKONTROLLE   = 0.48;
+// Session 64 Nachtrag 4 (Nutzer-Korrektur nach Browser-Review, finale
+// Reihenfolge unten→oben): Hauptschalter < Phasenleuchten (weiß) <
+// Sammelstörmeldeleuchte (rot) + Quittierung < Not-Halt (eigene, exklusive
+// Ebene) < Betriebsmeldeleuchte (grün) < Handschalter < Messgeräte <
+// Touchpanel/Romutec-LVB-Ebene (oberste Ebene, Kopfhöhe). Zwei Korrekturen
+// gegenüber dem vorherigen Stand:
+// 1. Störmeldung+Quittiertaster sitzen jetzt ZWISCHEN Phasenleuchten und
+//    Not-Halt (vorher darüber) – Nutzer-Vorgabe: "benötigen eine eigene
+//    Ebene zwischen Phasenleuchte und Pilztaster".
+// 2. Handschalter und Messgerät sind wieder getrennte Bänder (der
+//    Nachtrag-3-Versuch, beide ein Band teilen zu lassen, war ein
+//    Fehlgriff – Nutzer-Fund: "Schalter sind mit in der Ebene, benötigen
+//    aber eine eigene"). Messgerät bekommt dadurch mehr Abstand zum
+//    Touchpanel zurück ("Messgeräte müssen etwas tiefer, damit Platz zum
+//    Touchpanel bleibt").
+// Zusätzlich zwei Katalogkorrekturen (gleiches Bohrung-statt-Bauteil-Muster
+// wie zuvor bei Not-Halt/Signalleuchten): Handschalter (Wahlschalter
+// 3SU1100-2BL60-3NA0) 22mm→**32,3mm** ("es scheint, als wäre hier nur die
+// Bohrung dargestellt" – Nutzer-Fund, Originaldatenblatt bestätigt
+// Außendurchmesser des Betätigungselements 32,3mm) und Quittiertaster
+// (3SU1152-0AB50-1BA0) 22mm→**29,5mm** (dieselbe Recherche, gleiches
+// Betätigungselement wie die Signalleuchten).
+// Phasenleuchten rücken deutlich näher an den Hauptschalter heran (Nutzer-
+// Vorgabe: "Abstand zum Hauptschalter genauso groß wie der Abstand der
+// grünen und roten Signalleuchte zueinander") – wörtlich exakt umgesetzt
+// wäre das auf dem 800mm-Wandschrank aber zu wenig für den 90×106mm großen
+// Hauptschalter (bräuchte 72,8mm, ein 1:1 kopierter Leuchten-Abstand liefert
+// dort nur ~35mm) – stattdessen der knappst mögliche Abstand, der auf
+// BEIDEN Referenztüren (800×800 Wandschrank, 1200×2000 Standschrank) noch
+// nicht überlappt (Rechenweg wie gehabt: Δband ≥ (halbe Höhe unten + halbe
+// Höhe oben + 5mm Puffer) / H_mm, jeweils gegen H=800mm als bindende
+// Randbedingung geprüft). Alle 7 Bandabstände (bis auf den einen bereits
+// dokumentierten Restpunkt) verifiziert auf BEIDEN Referenztüren:
+// Hauptschalter→Phasenleuchten 88mm≥73mm nötig, Phasenleuchten→Störmeldung
+// 44mm≥35mm, Störmeldung→Not-Halt 52mm≥40mm, Not-Halt→Betriebsmeldung
+// 52mm≥40mm, Betriebsmeldung→Handschalter 48mm≥36mm, Handschalter→Messgerät
+// 84mm≥69mm (alle auf dem 800mm-Wandschrank, dem bindenden Fall – auf dem
+// 2000mm-Standschrank jeweils deutlich mehr Marge). Touchpanel liegt damit
+// bei **1740mm** auf dem 2000mm-Standschrank (Nutzer-Ziel "ca. 1,7m
+// Kopfhöhe", bestätigt).
+// Bewusst weiterhin NICHT abgedeckt (Restpunkt): Messgerät + Touchpanel
+// PXM50 GLEICHZEITIG auf einem sehr kleinen Wandschrank oder einem
+// Standschrank <1800mm Höhe (Messgerät→Touchpanel 88mm auf 800mm-Tür,
+// gebraucht 188mm) – seltene Kombination (Touchpanel laut Nutzer auf
+// Wandschränken "gar nicht oder nur klein vorhanden"), reine Prozentbänder
+// können das nicht für jede Türhöhe garantieren.
+const TUER_BAND_HAUPTSCHALTER     = 0.30;
+const TUER_BAND_PHASENKONTROLLE   = 0.41;
+// Störmeldung (rot) + Quittiertaster teilen sich bewusst dasselbe Band
+// (Nutzer-Vorgabe Session 63: Quittierung gehört zur Störmeldung) – sitzen
+// seit Session 64 Nachtrag 4 zwischen Phasenleuchten und Not-Halt.
+const TUER_BAND_STOERMELDUNG      = 0.465; // rote Signalleuchte
+const TUER_BAND_QUITTIERTASTER    = TUER_BAND_STOERMELDUNG;
 // Not-Halt: eigene, exklusive Ebene (kein anderer Bauteiltyp teilt sich
 // dieses Band, siehe tuerBand()) – Nutzer-Vorgabe bleibt "darf auf der
 // gleichen Ebene kein anderes Bauteil sein" (Session 47 Nachtrag).
-const TUER_BAND_NOTHALT           = 0.55;
-// Störmeldung (rot) + Quittiertaster teilen sich bewusst dasselbe Band
-// (Nutzer-Vorgabe Session 63: Quittierung gehört zur Störmeldung) – anders
-// als Störmeldung/Betriebsmeldung, die laut Nutzer explizit getrennte,
-// direkt aufeinanderfolgende Reihen bleiben.
-const TUER_BAND_STOERMELDUNG      = 0.62; // rote Signalleuchte
-const TUER_BAND_QUITTIERTASTER    = TUER_BAND_STOERMELDUNG;
-const TUER_BAND_BETRIEBSMELDUNG   = 0.67; // grüne Signalleuchte
-// Session 64 Nachtrag 3 (Nutzer-Fund: "Touchpanel ist immer noch oben" –
-// die ursprüngliche Beschwerde "muss in etwa Kopfhöhe sein" war mit der
-// reinen Umsortierung der übrigen Bänder nie tatsächlich behoben, das Band
-// selbst blieb bei 0,93 = 1860mm auf dem 2000mm-Standschrank, spürbar über
-// Kopfhöhe): Handschalter UND Messgerät teilen sich jetzt bewusst dasselbe
-// Band (nebeneinander in einer Reihe, wie schon Störmeldung+Quittiertaster)
-// – das spart eine Ebene in der Abstandskette Betriebsmeldung→…→Touchpanel
-// und erlaubt dem Touchpanel dadurch, spürbar tiefer zu rücken. Nachgerechnet
-// (Δband ≥ halbe Höhe unten + halbe Höhe oben, jeweils größeres Bauteil der
-// geteilten Ebene = Messgerät 96mm, nicht Handschalter 22mm):
-// Betriebsmeldung→Ebene 180mm ≥ 68mm nötig, Ebene→Touchpanel 200mm ≥ 188mm
-// nötig (beides auf dem 2000mm-Standschrank) und 72mm ≥ 68mm nötig auf dem
-// 800mm-Wandschrank (Betriebsmeldung→Ebene) – Touchpanel jetzt bei
-// 1720mm statt 1860mm auf dem 2000mm-Standschrank, spürbar näher an
-// realistischer Kopf-/Augenhöhe.
-const TUER_BAND_HANDSCHALTER      = 0.76;
-const TUER_BAND_MESSGERAET        = TUER_BAND_HANDSCHALTER;
+const TUER_BAND_NOTHALT           = 0.53;
+const TUER_BAND_BETRIEBSMELDUNG   = 0.595; // grüne Signalleuchte
+const TUER_BAND_HANDSCHALTER      = 0.655;
+const TUER_BAND_MESSGERAET        = 0.76;
 // Touchpanel (Session 63, Siemens PXM40/50): deutlich groesser als alle
 // anderen Tuerbauteile (bis 419x270mm) - braucht eine eigene, exklusive
-// Ebene mit genug Abstand zum Handschalter/Messgeraet-Band darunter, sonst
-// wuerde es zwangslaeufig ueberlappen (Nutzer-Vorgabe: "darf sich bei der
+// Ebene mit genug Abstand zum Messgeraet darunter, sonst wuerde es
+// zwangslaeufig ueberlappen (Nutzer-Vorgabe: "darf sich bei der
 // Platzierung nicht mit anderen Elementen ueberschneiden"). Zugleich
 // oberste/exklusive Ebene für die Romutec-LVB-Handebene (Session 64
 // implementiert, computeLvbRomutecDevices()) – beide auf gleicher
-// Kopfhöhe, da beide vom Menschen direkt bedient werden müssen. Bewusst
-// NICHT abgedeckt (Restpunkt, s. o.): Messgerät + Touchpanel PXM50
-// GLEICHZEITIG auf einem sehr kleinen Wandschrank oder einem Standschrank
-// <1800mm Höhe – reine Prozentbänder können das nicht für jede Türhöhe
-// garantieren, zurückgestellt.
-const TUER_BAND_TOUCHPANEL        = 0.86;
+// Kopfhöhe (~1,7m auf dem 2000mm-Standschrank), da beide vom Menschen
+// direkt bedient werden müssen. Bewusst NICHT abgedeckt (Restpunkt, s. o.):
+// Messgerät + Touchpanel PXM50 GLEICHZEITIG auf einem sehr kleinen
+// Wandschrank oder einem Standschrank <1800mm Höhe.
+const TUER_BAND_TOUCHPANEL        = 0.87;
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
 // werden nach bauteil_typ/Farbe gruppiert, nicht einzeln einem bestimmten

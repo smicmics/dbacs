@@ -1662,9 +1662,9 @@
     "bezeichnung": "Wahlschalter SIRIUS ACT 3-Stufen (z.B. Hand-0-Automatik), Fronttafeleinbau, beleuchtet, 10A",
     "hersteller": "Siemens",
     "bauteil_typ": "wahlschalter",
-    "b_mm": 22.0,
+    "b_mm": 32.3,
     "te_breite": 2,
-    "h_mm": 22.0,
+    "h_mm": 32.3,
     "zone": [
       "tuer"
     ],
@@ -1844,9 +1844,9 @@
     "bezeichnung": "Leuchtdrucktaste SIRIUS ACT 22mm, blau (Quittierung/Reset), 24V AC/DC, Fronttafeleinbau",
     "hersteller": "Siemens",
     "bauteil_typ": "quittiertaster",
-    "b_mm": 22.0,
+    "b_mm": 29.5,
     "te_breite": 2,
-    "h_mm": 22.0,
+    "h_mm": 29.5,
     "zone": [
       "tuer"
     ],

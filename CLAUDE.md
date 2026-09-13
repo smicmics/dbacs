@@ -16,6 +16,57 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 64 Nachtrag 4 (13.09.2026) – Türband-Reihenfolge
+> final korrigiert + 2 weitere Bohrung-statt-Bauteil-Katalogfehler:**
+> Nutzer-Review per Browser-Screenshot ergab zwei strukturelle Korrekturen
+> an der Session-64-Bandreihenfolge:
+> 1. **Störmeldung (rot) + Quittiertaster** sitzen jetzt zwischen
+>    Phasenleuchten und Not-Halt (vorher darüber).
+> 2. **Handschalter und Messgerät sind wieder getrennte Bänder** – der
+>    Nachtrag-3-Versuch, beide ein Band teilen zu lassen, war ein
+>    Fehlgriff (Nutzer-Fund: "Schalter sind mit in der Ebene, benötigen
+>    aber eine eigene").
+> Finale Reihenfolge unten→oben: Hauptschalter < Phasenleuchten <
+> Störmeldung+Quittiertaster < Not-Halt < Betriebsmeldung < Handschalter <
+> Messgerät < Touchpanel/Romutec-Ebene.
+> **2 weitere Katalogkorrekturen** (gleiches Bohrung-statt-Bauteil-Muster
+> wie zuvor bei Not-Halt/Signalleuchten, Original-Siemens-Datenblätter
+> direkt gelesen): Handschalter (Wahlschalter `3SU1100-2BL60-3NA0`,
+> Nutzer-Fund "scheint nur die Bohrung zu sein") 22mm→**32,3mm**
+> (Außendurchmesser des Betätigungselements); Quittiertaster
+> (`3SU1152-0AB50-1BA0`) 22mm→**29,5mm** (gleiches Betätigungselement wie
+> die Signalleuchten). Export einzelbauteile unverändert 211 (reine
+> Feldänderung).
+> **Bandwerte neu berechnet** (Δband ≥ (halbe Höhe unten + halbe Höhe oben +
+> 5mm Puffer)/H_mm, gegen H=800mm als bindende Randbedingung geprüft, s.
+> Code-Kommentar in `tuerBand()`-Block für die genauen Zahlen):
+> `TUER_BAND_HAUPTSCHALTER` 0,35→**0,30**, `TUER_BAND_PHASENKONTROLLE`
+> 0,48→**0,41** (Nutzer-Vorgabe: möglichst nah an Hauptschalter, siehe
+> Restpunkt unten), `TUER_BAND_STOERMELDUNG`/`QUITTIERTASTER` 0,62→**0,465**,
+> `TUER_BAND_NOTHALT` 0,55→**0,53**, `TUER_BAND_BETRIEBSMELDUNG`
+> 0,67→**0,595**, `TUER_BAND_HANDSCHALTER` 0,76→**0,655**,
+> `TUER_BAND_MESSGERAET` (jetzt wieder eigenständig) →**0,76**,
+> `TUER_BAND_TOUCHPANEL` 0,86→**0,87**. Touchpanel/Romutec-Ebene liegt damit
+> bei **1740mm** auf dem 2000mm-Standschrank (Nutzer-Ziel „ca. 1,7m
+> Kopfhöhe" bestätigt).
+> **Restpunkt (Nutzer-Vorgabe nicht 1:1 umsetzbar):** Nutzer wollte den
+> Abstand Hauptschalter→Phasenleuchten genauso groß wie den Abstand
+> zwischen grüner und roter Signalleuchte – wörtlich kopiert wäre das auf
+> dem 800mm-Wandschrank zu wenig für den 90×106mm großen Hauptschalter
+> (bräuchte 72,8mm, ein 1:1 kopierter Leuchten-Abstand liefert dort nur
+> ~35mm). Stattdessen der knappstmögliche Abstand gewählt, der auf BEIDEN
+> Referenztüren nicht überlappt.
+> **Browser-Verifikation:** alle 9 Türbauteile (Hauptschalter, 3×
+> Signalleuchte, Not-Halt, Quittiertaster, Handschalter, Messgerät,
+> Touchpanel PXM50) gleichzeitig auf BEIDEN Referenztüren geprüft
+> (direkte SVG-Rect-Kollisionsprüfung) – 800×800 Wandschrank: 0
+> Überlappungen außer der bereits dokumentierten Randkombination
+> (Messgerät/Handschalter + Touchpanel PXM50 gleichzeitig auf einer sehr
+> kleinen Tür); 1200×2000 Standschrank: 0 Überlappungen. Reihenfolge von
+> oben nach unten im Browser bestätigt (Touchpanel → Messgerät →
+> Handschalter → Betriebsmeldung → Not-Halt → Störmeldung+Quittiertaster →
+> Phasenleuchten → Hauptschalter). Keine Konsolenfehler.
+
 > **Sitzungsstand Session 64 Nachtrag 3 (13.09.2026) – Touchpanel-Kopfhöhe
 > tatsächlich korrigiert (Nutzer-Fund: "Touchpanel ist immer noch oben"):**
 > Die Session-64-Bandumsortierung hatte nur die REIHENFOLGE der übrigen
