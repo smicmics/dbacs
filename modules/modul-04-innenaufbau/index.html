@@ -674,7 +674,7 @@ fieldset{
     </div>
 
     <div class="eb-field">
-      <label>Baugruppe</label>
+      <label>Baugruppe · Anlage</label>
       <div class="bg-add-row">
         <select id="bg_auswahl" style="flex:1">
           <option value="">Laden …</option>
@@ -3817,78 +3817,81 @@ function getGehaeuseAussenmasse(typ) {
 // Nutzer-Erfahrungswerte, gestützt durch DIN EN 60204-1 (Hauptschalter
 // 0,6–1,9m, empfohlen <1,7m) und DIN 18040 (Bedienhöhe 0,85–1,05m).
 //
-// Session 64 Nachtrag 4 (Nutzer-Korrektur nach Browser-Review, finale
-// Reihenfolge unten→oben): Hauptschalter < Phasenleuchten (weiß) <
-// Sammelstörmeldeleuchte (rot) + Quittierung < Not-Halt (eigene, exklusive
-// Ebene) < Betriebsmeldeleuchte (grün) < Handschalter < Messgeräte <
-// Touchpanel/Romutec-LVB-Ebene (oberste Ebene, Kopfhöhe). Zwei Korrekturen
-// gegenüber dem vorherigen Stand:
-// 1. Störmeldung+Quittiertaster sitzen jetzt ZWISCHEN Phasenleuchten und
-//    Not-Halt (vorher darüber) – Nutzer-Vorgabe: "benötigen eine eigene
-//    Ebene zwischen Phasenleuchte und Pilztaster".
-// 2. Handschalter und Messgerät sind wieder getrennte Bänder (der
-//    Nachtrag-3-Versuch, beide ein Band teilen zu lassen, war ein
-//    Fehlgriff – Nutzer-Fund: "Schalter sind mit in der Ebene, benötigen
-//    aber eine eigene"). Messgerät bekommt dadurch mehr Abstand zum
-//    Touchpanel zurück ("Messgeräte müssen etwas tiefer, damit Platz zum
-//    Touchpanel bleibt").
-// Zusätzlich zwei Katalogkorrekturen (gleiches Bohrung-statt-Bauteil-Muster
-// wie zuvor bei Not-Halt/Signalleuchten): Handschalter (Wahlschalter
-// 3SU1100-2BL60-3NA0) 22mm→**32,3mm** ("es scheint, als wäre hier nur die
-// Bohrung dargestellt" – Nutzer-Fund, Originaldatenblatt bestätigt
-// Außendurchmesser des Betätigungselements 32,3mm) und Quittiertaster
-// (3SU1152-0AB50-1BA0) 22mm→**29,5mm** (dieselbe Recherche, gleiches
-// Betätigungselement wie die Signalleuchten).
-// Phasenleuchten rücken deutlich näher an den Hauptschalter heran (Nutzer-
-// Vorgabe: "Abstand zum Hauptschalter genauso groß wie der Abstand der
-// grünen und roten Signalleuchte zueinander") – wörtlich exakt umgesetzt
-// wäre das auf dem 800mm-Wandschrank aber zu wenig für den 90×106mm großen
-// Hauptschalter (bräuchte 72,8mm, ein 1:1 kopierter Leuchten-Abstand liefert
-// dort nur ~35mm) – stattdessen der knappst mögliche Abstand, der auf
-// BEIDEN Referenztüren (800×800 Wandschrank, 1200×2000 Standschrank) noch
-// nicht überlappt (Rechenweg wie gehabt: Δband ≥ (halbe Höhe unten + halbe
-// Höhe oben + 5mm Puffer) / H_mm, jeweils gegen H=800mm als bindende
-// Randbedingung geprüft). Alle 7 Bandabstände (bis auf den einen bereits
-// dokumentierten Restpunkt) verifiziert auf BEIDEN Referenztüren:
-// Hauptschalter→Phasenleuchten 88mm≥73mm nötig, Phasenleuchten→Störmeldung
-// 44mm≥35mm, Störmeldung→Not-Halt 52mm≥40mm, Not-Halt→Betriebsmeldung
-// 52mm≥40mm, Betriebsmeldung→Handschalter 48mm≥36mm, Handschalter→Messgerät
-// 84mm≥69mm (alle auf dem 800mm-Wandschrank, dem bindenden Fall – auf dem
-// 2000mm-Standschrank jeweils deutlich mehr Marge). Touchpanel liegt damit
-// bei **1740mm** auf dem 2000mm-Standschrank (Nutzer-Ziel "ca. 1,7m
-// Kopfhöhe", bestätigt).
+// Session 64 Nachtrag 5 (Nutzer-Korrektur nach zweitem Browser-Review,
+// finale Reihenfolge unten→oben): Hauptschalter < Phasenleuchten (weiß) <
+// Not-Halt (eigene, exklusive Ebene) < Sammelstörmeldeleuchte (rot) +
+// Quittierung < Betriebsmeldeleuchte (grün) < Handschalter < Messgeräte <
+// Touchpanel/Romutec-LVB-Ebene (oberste Ebene, Kopfhöhe). Wichtigste
+// Korrektur gegenüber Nachtrag 4: Störmeldung+Quittiertaster sitzen wieder
+// UNTER Not-Halt (nicht mehr darüber) – Nutzer-Vorgabe: "die rote
+// Signalleuchten-Reihe soll unter die Reihe mit den grünen Signalleuchten"
+// (also direkt angrenzend an Betriebsmeldung, mit Not-Halt darunter statt
+// dazwischen). Der Nachtrag-4-Versuch, Störmeldung zwischen Phasenleuchten
+// und Not-Halt zu platzieren, war eine Fehlinterpretation der Nachtrag-3-
+// Vorgabe – die ADJAZENZ von Rot direkt unter Grün war schon in der
+// allerersten Korrekturliste vorgegeben.
+//
+// Zusätzlich NEUE Randbedingung (Nutzer-Hinweis, wichtig für die reale
+// Fertigung): die Bänder bestimmen nicht nur die Optik, sondern auch, wo
+// später Ausschnitte in die ~1,5mm starke Blechtür gefräst/gestanzt werden
+// – zwischen zwei benachbarten Ausschnitten muss genug Blech-Steg stehen
+// bleiben, damit die Tür stabil bleibt. Der bisherige Rechenpuffer (5mm)
+// war dafür zu knapp bemessen (Nutzer-Fund: "Messgerät ist immer noch
+// sehr nah am Touchpanel"). Neuer Mindest-Steg: **12mm** Standard,
+// **22mm** für den Übergang Messgerät→Touchpanel (deutlich größerer
+// Ausschnitt, braucht mehr Material drumherum). Rechenweg unverändert:
+// Δband ≥ (halbe Höhe unteres Bauteil + halbe Höhe oberes Bauteil +
+// Mindest-Steg) / H_mm, + 5% Sicherheitsmarge, geprüft gegen H=800mm
+// (Wandschrank, bindende Randbedingung für alle Paare außer Messgerät→
+// Touchpanel) bzw. H=2000mm (Standschrank, für Messgerät→Touchpanel sowie
+// zur Kontrolle aller anderen Paare mit deutlich mehr Marge). Alle 7
+// Bandabstände (bis auf den einen bekannten Restpunkt) verifiziert auf
+// BEIDEN Referenztüren, Marge auf dem bindenden 800mm-Wandschrank 1–8mm:
+// Hauptschalter→Phasenleuchten 88mm≥80mm, Phasenleuchten→Not-Halt
+// 48mm≥47mm, Not-Halt→Störmeldung 48mm≥47mm, Störmeldung→Betriebsmeldung
+// 44mm≥42mm, Betriebsmeldung→Handschalter 44mm≥43mm, Handschalter→
+// Messgerät 80mm≥76mm. Touchpanel liegt damit bei **exakt 1700mm** auf dem
+// 2000mm-Standschrank (Nutzer-Ziel "ca. 1,7m Kopfhöhe", bestätigt).
+// Katalogkorrekturen (unverändert aus Nachtrag 4, gleiches Bohrung-statt-
+// Bauteil-Muster wie zuvor bei Not-Halt/Signalleuchten): Handschalter
+// (Wahlschalter 3SU1100-2BL60-3NA0) 22mm→32,3mm, Quittiertaster
+// (3SU1152-0AB50-1BA0) 22mm→29,5mm (beide "Außendurchmesser des
+// Betätigungselements" lt. Original-Datenblatt).
 // Bewusst weiterhin NICHT abgedeckt (Restpunkt): Messgerät + Touchpanel
 // PXM50 GLEICHZEITIG auf einem sehr kleinen Wandschrank oder einem
-// Standschrank <1800mm Höhe (Messgerät→Touchpanel 88mm auf 800mm-Tür,
-// gebraucht 188mm) – seltene Kombination (Touchpanel laut Nutzer auf
-// Wandschränken "gar nicht oder nur klein vorhanden"), reine Prozentbänder
-// können das nicht für jede Türhöhe garantieren.
+// Standschrank <1800mm Höhe (Messgerät→Touchpanel nur 88mm auf der
+// 800mm-Tür, gebraucht 205mm) – seltene Kombination (Touchpanel laut
+// Nutzer auf Wandschränken "gar nicht oder nur klein vorhanden"), reine
+// Prozentbänder können das nicht für jede Türhöhe garantieren.
 const TUER_BAND_HAUPTSCHALTER     = 0.30;
 const TUER_BAND_PHASENKONTROLLE   = 0.41;
-// Störmeldung (rot) + Quittiertaster teilen sich bewusst dasselbe Band
-// (Nutzer-Vorgabe Session 63: Quittierung gehört zur Störmeldung) – sitzen
-// seit Session 64 Nachtrag 4 zwischen Phasenleuchten und Not-Halt.
-const TUER_BAND_STOERMELDUNG      = 0.465; // rote Signalleuchte
-const TUER_BAND_QUITTIERTASTER    = TUER_BAND_STOERMELDUNG;
 // Not-Halt: eigene, exklusive Ebene (kein anderer Bauteiltyp teilt sich
 // dieses Band, siehe tuerBand()) – Nutzer-Vorgabe bleibt "darf auf der
-// gleichen Ebene kein anderes Bauteil sein" (Session 47 Nachtrag).
-const TUER_BAND_NOTHALT           = 0.53;
-const TUER_BAND_BETRIEBSMELDUNG   = 0.595; // grüne Signalleuchte
-const TUER_BAND_HANDSCHALTER      = 0.655;
-const TUER_BAND_MESSGERAET        = 0.76;
+// gleichen Ebene kein anderes Bauteil sein" (Session 47 Nachtrag). Sitzt
+// seit Session 64 Nachtrag 5 wieder zwischen Phasenleuchten und Störmeldung
+// (nicht mehr darüber).
+const TUER_BAND_NOTHALT           = 0.47;
+// Störmeldung (rot) + Quittiertaster teilen sich bewusst dasselbe Band
+// (Nutzer-Vorgabe Session 63: Quittierung gehört zur Störmeldung) – direkt
+// angrenzend UNTER Betriebsmeldung (Session 64 Nachtrag 5: "rote Reihe
+// soll unter die grüne Reihe").
+const TUER_BAND_STOERMELDUNG      = 0.53; // rote Signalleuchte
+const TUER_BAND_QUITTIERTASTER    = TUER_BAND_STOERMELDUNG;
+const TUER_BAND_BETRIEBSMELDUNG   = 0.585; // grüne Signalleuchte
+const TUER_BAND_HANDSCHALTER      = 0.64;
+const TUER_BAND_MESSGERAET        = 0.74;
 // Touchpanel (Session 63, Siemens PXM40/50): deutlich groesser als alle
 // anderen Tuerbauteile (bis 419x270mm) - braucht eine eigene, exklusive
-// Ebene mit genug Abstand zum Messgeraet darunter, sonst wuerde es
-// zwangslaeufig ueberlappen (Nutzer-Vorgabe: "darf sich bei der
-// Platzierung nicht mit anderen Elementen ueberschneiden"). Zugleich
-// oberste/exklusive Ebene für die Romutec-LVB-Handebene (Session 64
-// implementiert, computeLvbRomutecDevices()) – beide auf gleicher
-// Kopfhöhe (~1,7m auf dem 2000mm-Standschrank), da beide vom Menschen
-// direkt bedient werden müssen. Bewusst NICHT abgedeckt (Restpunkt, s. o.):
-// Messgerät + Touchpanel PXM50 GLEICHZEITIG auf einem sehr kleinen
-// Wandschrank oder einem Standschrank <1800mm Höhe.
-const TUER_BAND_TOUCHPANEL        = 0.87;
+// Ebene mit genug Abstand zum Messgeraet darunter (22mm Mindest-Steg statt
+// 12mm, s.o.), sonst wuerde es zwangslaeufig ueberlappen (Nutzer-Vorgabe:
+// "darf sich bei der Platzierung nicht mit anderen Elementen
+// ueberschneiden"). Zugleich oberste/exklusive Ebene für die Romutec-LVB-
+// Handebene (Session 64 implementiert, computeLvbRomutecDevices()) – beide
+// auf gleicher Kopfhöhe (exakt 1,7m auf dem 2000mm-Standschrank), da beide
+// vom Menschen direkt bedient werden müssen. Bewusst NICHT abgedeckt
+// (Restpunkt, s. o.): Messgerät + Touchpanel PXM50 GLEICHZEITIG auf einem
+// sehr kleinen Wandschrank oder einem Standschrank <1800mm Höhe.
+const TUER_BAND_TOUCHPANEL        = 0.85;
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
 // werden nach bauteil_typ/Farbe gruppiert, nicht einzeln einem bestimmten

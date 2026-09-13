@@ -16,6 +16,45 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 64 Nachtrag 5 (13.09.2026) – Türband-Reihenfolge
+> final korrigiert (Rot direkt unter Grün) + Mindest-Stegmaß für Blechtür-
+> Ausschnitte eingeführt:**
+> Nachtrag 4 hatte Störmeldung+Quittiertaster fälschlich ZWISCHEN
+> Phasenleuchten und Not-Halt platziert (Fehlinterpretation der Nachtrag-3-
+> Vorgabe). Nutzer-Korrektur per Browser-Screenshot: die rote Signalleuchten-
+> Reihe muss direkt UNTER der grünen sitzen (keine Ebene dazwischen) – das
+> war schon in der allerersten Korrekturliste so vorgegeben. Finale
+> Reihenfolge unten→oben: Hauptschalter < Phasenleuchten (weiß) < Not-Halt
+> (exklusiv) < Störmeldung (rot) + Quittiertaster < Betriebsmeldung (grün) <
+> Handschalter < Messgerät < Touchpanel/Romutec-Ebene.
+> **Neue Randbedingung (Nutzer-Hinweis, fertigungsrelevant):** die Bänder
+> bestimmen auch, wo später Ausschnitte in die ~1,5mm starke Blechtür
+> gefräst werden – zwischen zwei Ausschnitten muss genug Steg-Blech stehen
+> bleiben (Nutzer-Fund: „Messgerät ist immer noch sehr nah am Touchpanel").
+> Der bisherige 5mm-Rechenpuffer war dafür zu knapp – jetzt **12mm**
+> Mindest-Steg als Standard, **22mm** für den größeren Übergang
+> Messgerät→Touchpanel. Alle 7 Bandabstände (bis auf den einen bekannten
+> Restpunkt) auf BEIDEN Referenztüren (800×800 Wandschrank, 1200×2000
+> Standschrank) mit 1–8mm Marge auf dem bindenden Wandschrank-Fall
+> verifiziert. Touchpanel/Romutec-Ebene liegt jetzt bei **exakt 1700mm**
+> auf dem Standschrank (Nutzer-Ziel „ca. 1,7m Kopfhöhe" bestätigt).
+> Neue Bandwerte: `TUER_BAND_NOTHALT` 0,53→**0,47**,
+> `TUER_BAND_STOERMELDUNG`/`QUITTIERTASTER` 0,465→**0,53**,
+> `TUER_BAND_BETRIEBSMELDUNG` 0,595→**0,585**, `TUER_BAND_HANDSCHALTER`
+> 0,655→**0,64**, `TUER_BAND_MESSGERAET` 0,76→**0,74**,
+> `TUER_BAND_TOUCHPANEL` 0,87→**0,85** (Hauptschalter/Phasenleuchten
+> unverändert bei 0,30/0,41).
+> Zusätzlich Label „Baugruppe" → **„Baugruppe · Anlage"** über der
+> Baugruppen-Auswahl (Nutzer-Vorgabe: dasselbe Dropdown wird künftig für
+> beides genutzt, je nach aktivem Button in der zweiten Gewerke-Reihe).
+> **Browser-Verifikation:** Reihenfolge auf beiden Referenztüren korrekt
+> (Touchpanel→Messgerät→Handschalter→Grün→Rot+Quittiertaster→Not-Halt→
+> Weiß→Hauptschalter), Standschrank 0 Überlappungen, Wandschrank nur noch
+> die eine bekannte Randkombination (Messgerät+Touchpanel PXM50
+> gleichzeitig auf sehr kleiner Tür – Wahlschalter überlappt jetzt NICHT
+> mehr, da der größere Steg auch dort mehr Abstand erzwingt). Keine
+> Konsolenfehler.
+
 > **Sitzungsstand Session 64 Nachtrag 4 (13.09.2026) – Türband-Reihenfolge
 > final korrigiert + 2 weitere Bohrung-statt-Bauteil-Katalogfehler:**
 > Nutzer-Review per Browser-Screenshot ergab zwei strukturelle Korrekturen
