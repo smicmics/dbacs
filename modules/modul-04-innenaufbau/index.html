@@ -3854,18 +3854,36 @@ const TUER_BAND_NOTHALT           = 0.55;
 const TUER_BAND_STOERMELDUNG      = 0.62; // rote Signalleuchte
 const TUER_BAND_QUITTIERTASTER    = TUER_BAND_STOERMELDUNG;
 const TUER_BAND_BETRIEBSMELDUNG   = 0.67; // grüne Signalleuchte
-const TUER_BAND_HANDSCHALTER      = 0.715;
-const TUER_BAND_MESSGERAET        = 0.83;
+// Session 64 Nachtrag 3 (Nutzer-Fund: "Touchpanel ist immer noch oben" –
+// die ursprüngliche Beschwerde "muss in etwa Kopfhöhe sein" war mit der
+// reinen Umsortierung der übrigen Bänder nie tatsächlich behoben, das Band
+// selbst blieb bei 0,93 = 1860mm auf dem 2000mm-Standschrank, spürbar über
+// Kopfhöhe): Handschalter UND Messgerät teilen sich jetzt bewusst dasselbe
+// Band (nebeneinander in einer Reihe, wie schon Störmeldung+Quittiertaster)
+// – das spart eine Ebene in der Abstandskette Betriebsmeldung→…→Touchpanel
+// und erlaubt dem Touchpanel dadurch, spürbar tiefer zu rücken. Nachgerechnet
+// (Δband ≥ halbe Höhe unten + halbe Höhe oben, jeweils größeres Bauteil der
+// geteilten Ebene = Messgerät 96mm, nicht Handschalter 22mm):
+// Betriebsmeldung→Ebene 180mm ≥ 68mm nötig, Ebene→Touchpanel 200mm ≥ 188mm
+// nötig (beides auf dem 2000mm-Standschrank) und 72mm ≥ 68mm nötig auf dem
+// 800mm-Wandschrank (Betriebsmeldung→Ebene) – Touchpanel jetzt bei
+// 1720mm statt 1860mm auf dem 2000mm-Standschrank, spürbar näher an
+// realistischer Kopf-/Augenhöhe.
+const TUER_BAND_HANDSCHALTER      = 0.76;
+const TUER_BAND_MESSGERAET        = TUER_BAND_HANDSCHALTER;
 // Touchpanel (Session 63, Siemens PXM40/50): deutlich groesser als alle
 // anderen Tuerbauteile (bis 419x270mm) - braucht eine eigene, exklusive
-// Ebene mit genug Abstand zu den Messgeraeten darunter, sonst wuerde es
-// bei der typischen Bandbreite von 0.03-0.06 zwangslaeufig ueberlappen
-// (Nutzer-Vorgabe: "darf sich bei der Platzierung nicht mit anderen
-// Elementen ueberschneiden"). Zugleich oberste/exklusive Ebene für eine
-// künftige Romutec-LVB-Handebene (noch nicht implementiert, siehe
-// computeLvbRomutecDevices()-Stub) – beide auf gleicher Kopfhöhe, da beide
-// vom Menschen direkt bedient werden müssen.
-const TUER_BAND_TOUCHPANEL        = 0.93;
+// Ebene mit genug Abstand zum Handschalter/Messgeraet-Band darunter, sonst
+// wuerde es zwangslaeufig ueberlappen (Nutzer-Vorgabe: "darf sich bei der
+// Platzierung nicht mit anderen Elementen ueberschneiden"). Zugleich
+// oberste/exklusive Ebene für die Romutec-LVB-Handebene (Session 64
+// implementiert, computeLvbRomutecDevices()) – beide auf gleicher
+// Kopfhöhe, da beide vom Menschen direkt bedient werden müssen. Bewusst
+// NICHT abgedeckt (Restpunkt, s. o.): Messgerät + Touchpanel PXM50
+// GLEICHZEITIG auf einem sehr kleinen Wandschrank oder einem Standschrank
+// <1800mm Höhe – reine Prozentbänder können das nicht für jede Türhöhe
+// garantieren, zurückgestellt.
+const TUER_BAND_TOUCHPANEL        = 0.86;
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
 // werden nach bauteil_typ/Farbe gruppiert, nicht einzeln einem bestimmten
@@ -3990,15 +4008,25 @@ function buildTuerAnsicht(feldIndex, wrap, inner) {
   const bands = {};
   items.forEach(eb => { (bands[tuerBand(eb)] = bands[tuerBand(eb)] || []).push(eb); });
 
+  // Mindest-Realmaß, das ein Bauteil beim Layout beanspruchen muss, damit
+  // das erzwungene Mindest-Zeichenmaß (3px, s. u.) beim Rendern nicht über
+  // die eigentlich zugeteilte Lücke hinaus in den Nachbarn hineinragt
+  // (Session 64 Nachtrag 3, Nutzer-Fund: Handschalter 22mm neben Messgerät
+  // 96mm auf demselben Band überlappte minimal, weil die Cursor-Fortschaltung
+  // mit dem realen b_mm rechnete, aber die Zeichenbreite auf 3px hochgeklemmt
+  // wurde – bei sehr kleinen/großen Bauteilen im selben Band reichte die
+  // reale Lücke dann nicht mehr aus).
+  const minRealW = 3 / sc;
   Object.entries(bands).forEach(([bandStr, list]) => {
     const band = +bandStr;
     const gap = 8; // mm Abstand zwischen Bauteilmitten innerhalb einer Reihe
-    const totalW = list.reduce((s, eb) => s + (eb.b_mm || 22), 0) + gap * (list.length - 1);
+    const effW = eb => Math.max(eb.b_mm || 22, minRealW);
+    const totalW = list.reduce((s, eb) => s + effW(eb), 0) + gap * (list.length - 1);
     let x = masse.b / 2 - totalW / 2; // um die Türmitte zentriert (Nutzer-Vorgabe)
     const y = masse.h * (1 - band);   // band=0 unten, SVG-Y wächst nach unten
     list.forEach(eb => {
-      const bw = eb.b_mm || 22, bh = eb.h_mm || 22;
-      const bx = x * sc, by = (y - bh/2) * sc, bwpx = Math.max(3, bw*sc), bhpx = Math.max(3, bh*sc);
+      const bw = effW(eb), bh = Math.max(eb.h_mm || 22, minRealW);
+      const bx = x * sc, by = (y - (eb.h_mm||22)/2) * sc, bwpx = bw*sc, bhpx = bh*sc;
       const farbe = tuerFarbe(eb);
       if (eb.bauteil_typ === 'lvb_traegerrahmen') {
         // Romutec-Traegerrahmen (Session 64, Nutzer-Vorgabe): 2 verschachtelte

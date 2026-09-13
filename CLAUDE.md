@@ -16,6 +16,30 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 64 Nachtrag 3 (13.09.2026) – Touchpanel-Kopfhöhe
+> tatsächlich korrigiert (Nutzer-Fund: "Touchpanel ist immer noch oben"):**
+> Die Session-64-Bandumsortierung hatte nur die REIHENFOLGE der übrigen
+> Bänder korrigiert – `TUER_BAND_TOUCHPANEL` selbst blieb bei 0,93 (1860mm
+> auf dem 2000mm-Standschrank), die ursprüngliche Beschwerde ("muss in etwa
+> Kopfhöhe sein") war damit nie tatsächlich behoben. Fix: Handschalter und
+> Messgerät teilen sich jetzt bewusst dasselbe Band (0,76, nebeneinander in
+> einer Reihe, wie schon Störmeldung+Quittiertaster) – spart eine Ebene in
+> der Abstandskette und erlaubt dem Touchpanel-Band, auf **0,86** zu sinken
+> (1720mm statt 1860mm auf dem 2000mm-Standschrank – spürbar näher an
+> realistischer Kopf-/Augenhöhe). Nachgerechnet und per Browser-Test auf
+> BEIDEN Referenzschränken (800×800 Wandschrank, 1200×2000 Standschrank)
+> verifiziert: 0 Überlappungen auf dem Standschrank, auf dem Wandschrank nur
+> die bereits dokumentierte Randkombination (Messgerät/Handschalter +
+> Touchpanel PXM50 gleichzeitig auf einer sehr kleinen Tür).
+> **Zusätzlicher Bugfix in `buildTuerAnsicht()`** (beim Verifizieren
+> gefunden): die Row-Layout-Cursor-Fortschaltung rechnete mit dem realen
+> `b_mm`, während die Zeichenbreite auf mind. 3px hochgeklemmt wird – bei
+> einem sehr kleinen Bauteil (Handschalter 22mm) neben einem sehr großen
+> (Messgerät 96mm) im selben Band reichte die reale Lücke dann nicht mehr
+> aus, minimale Überlappung. Fix: Cursor-Fortschaltung nutzt jetzt dieselbe
+> effektive (geklemmte) Breite wie die Zeichnung (`effW()`-Helper) – betrifft
+> alle Mehrfach-Bauteil-Bänder, nicht nur diesen Fall. Keine Konsolenfehler.
+
 > **Sitzungsstand Session 64 (13.09.2026) – Türbänder neu sortiert +
 > Pilztaster-/Signalleuchten-Maßkorrektur + Bandwerte kollisionssicher
 > nachgerechnet:**
