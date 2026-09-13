@@ -16,6 +16,69 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 64 (13.09.2026) – Türbänder neu sortiert +
+> Pilztaster-/Signalleuchten-Maßkorrektur + Bandwerte kollisionssicher
+> nachgerechnet:**
+> 1. **Türband-Reihenfolge neu** (Nutzer-Korrektur: Touchpanel-Position war
+>    nicht ergonomisch – "muss vom Menschen bedient werden, sollte in
+>    Kopfhöhe sein"): neue Reihenfolge unten→oben in `modul-04-innenaufbau/
+>    index.html` (`tuerBand()`): Hauptschalter < Phasenleuchten (weiß) <
+>    Not-Halt (exklusiv, jetzt direkt über den Phasenleuchten statt oben
+>    beim Handschalter) < Sammelstörmeldeleuchte (rot) + Quittiertaster
+>    (gemeinsames Band – Quittierung gehört funktional zur Störmeldung) <
+>    Betriebsmeldeleuchte (grün, weiterhin eigene Reihe, NICHT mit der
+>    Störmeldung zusammengelegt – ausdrückliche Nutzer-Vorgabe) < Handschalter
+>    < Messgeräte < Touchpanel/künftige Romutec-LVB-Ebene (oberste, exklusive
+>    Ebene, Kopfhöhe – beide sollen später auf derselben Ebene sitzen).
+> 2. **Katalogkorrektur Not-Halt + 3 Signalleuchten** (Nutzer-Fund: „Pilztaster
+>    zu klein dargestellt"): `b_mm`/`h_mm` waren bei allen vier SIRIUS-ACT-
+>    22mm-Bauteilen nur der Einbaudurchmesser/Bohrung (22mm), nicht das reale
+>    Bauteil. Original-Siemens-Datenblätter direkt gelesen (PDF, nicht der
+>    Web-Zusammenfasser – der scheitert an Siemens-PDFs zuverlässig):
+>    `3SU1100-1HB20-1CH0` Not-Halt-Pilzdrucktaster → **40×40mm**
+>    („Außendurchmesser des Betätigungselements", OHNE das gelbe
+>    Unterlegschild-Warnschild Ø75mm – Nutzer-Vorgabe: Schilder zählen nicht
+>    zum Platzbedarf); `3SU1102-6AA20/-6AA40/-6AA60-3AA0` (rot/grün/weiß
+>    Signalleuchten) → je **29,5×29,5mm** (alle drei unabhängig am
+>    Originaldatenblatt bestätigt, identisches Betätigungselement, nur
+>    LED-Farbe unterschiedlich). Backup nicht nötig (reine Feldänderung, kein
+>    Strukturwechsel). Export unverändert **einzelbauteile 202** (nur Werte
+>    geändert). Restliste: dasselbe Muster (Katalogwert = Bohrung statt
+>    Bauteilmaß) vermutlich auch bei Quittiertaster/Wahlschalter – noch nicht
+>    geprüft.
+> 3. **Bandwerte kollisionssicher nachgerechnet** (Browser-Test deckte durch
+>    die Maßkorrektur zwei echte Überlappungen auf): auf dem 1200×2000-
+>    Standschrank überlappten sich Messgerät (UMG96, 96×96mm) und Touchpanel
+>    PXM50 (419×270mm) – Bandabstand 0,08×2000mm=160mm, gebraucht 96/2+270/2
+>    =183mm. Auf dem 800×800-Wandschrank überlappten sich zusätzlich
+>    Störmeldung/Betriebsmeldung/Handschalter (Bandabstand 0,03×800mm=24mm
+>    Pitch, gebraucht 29,5mm für zwei gleich hohe Leuchten). Nutzer-Vorgabe:
+>    Hauptschalter darf weiter nach unten rücken, um der oberen Gruppe Raum
+>    zu verschaffen – alle Bänder gegen die realen Katalogmaße (größte real
+>    verwendete Variante je Typ) mit Sicherheitsmarge neu bemessen:
+>    `TUER_BAND_HAUPTSCHALTER` 0,40→**0,35**, `TUER_BAND_BETRIEBSMELDUNG`
+>    0,65→**0,67**, `TUER_BAND_HANDSCHALTER` 0,68→**0,715**,
+>    `TUER_BAND_MESSGERAET` 0,85→**0,83** (Phasenkontrolle/Not-Halt/
+>    Störmeldung/Touchpanel unverändert). Verifiziert per direkter
+>    SVG-Rect-Kollisionsprüfung (JS, alle Paare paarweise auf Achsen-Überlappung
+>    getestet) auf BEIDEN Referenzschränken (800×800 Wandschrank UND
+>    1200×2000 Standschrank, je mit allen 9 Türbauteilen gleichzeitig
+>    platziert: Hauptschalter, 3× Signalleuchte, Not-Halt, Quittiertaster,
+>    Wahlschalter, Messgerät, Touchpanel PXM50) – auf dem Standschrank 0
+>    Überlappungen, auf dem Wandschrank nur noch die eine bewusst nicht
+>    abgedeckte Randkombination (siehe unten). Keine Konsolenfehler.
+>    **Bewusst nicht gelöst (Restpunkt):** Messgerät + Touchpanel PXM50
+>    GLEICHZEITIG auf einem sehr kleinen Wandschrank oder einem Standschrank
+>    <1800mm Höhe überlappen weiterhin (reine Prozentbänder können das nicht
+>    für jede Türhöhe garantieren) – laut Nutzer unrealistische Kombination
+>    (Touchpanel ist auf Wandschränken „gar nicht oder nur klein vorhanden"),
+>    daher zurückgestellt statt mit einer dynamischen mm-basierten
+>    Mindestabstandslogik gelöst.
+> **Noch offen (Ankündigung Nutzer):** danach soll die **Romutec-Ebene**
+> (Handbedienung/LVB über Türelemente, `computeLvbRomutecDevices()`-Stub)
+> begonnen werden – auf derselben Türband-Ebene wie das Touchpanel
+> (`TUER_BAND_TOUCHPANEL`).
+
 > **Sitzungsstand Session 62 (12.09.2026) – Sanitär-Baugruppen Reflex/Viega
 > (Nachspeise-/Druckhaltetechnik + Hygienetechnik), erster 4-20mA-Anwendungsfall:**
 > 6 neue Baugruppen `410_000001`–`410_000006` (Gewerk 410 Sanitär, neu

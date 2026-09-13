@@ -1570,9 +1570,9 @@
     "bezeichnung": "Signalleuchte SIRIUS ACT 22mm, LED grün, 24V AC/DC, Fronttafeleinbau, Federklemme",
     "hersteller": "Siemens",
     "bauteil_typ": "signalleuchte",
-    "b_mm": 22.0,
+    "b_mm": 29.5,
     "te_breite": 2,
-    "h_mm": 22.0,
+    "h_mm": 29.5,
     "zone": [
       "tuer"
     ],
@@ -1586,9 +1586,9 @@
     "bezeichnung": "Signalleuchte SIRIUS ACT 22mm, LED rot, 24V AC/DC, Fronttafeleinbau, Federklemme",
     "hersteller": "Siemens",
     "bauteil_typ": "signalleuchte",
-    "b_mm": 22.0,
+    "b_mm": 29.5,
     "te_breite": 2,
-    "h_mm": 22.0,
+    "h_mm": 29.5,
     "zone": [
       "tuer"
     ],
@@ -1678,9 +1678,9 @@
     "bezeichnung": "Not-Halt-Pilzdrucktaster SIRIUS ACT, 22mm, rot, 1Ö, Drehentriegelung, Fronttafeleinbau",
     "hersteller": "Siemens",
     "bauteil_typ": "nothalt",
-    "b_mm": 22.0,
-    "te_breite": 2,
-    "h_mm": 22.0,
+    "b_mm": 40.0,
+    "te_breite": 3,
+    "h_mm": 40.0,
     "zone": [
       "tuer"
     ],
@@ -1813,9 +1813,9 @@
     "bezeichnung": "Signalleuchte SIRIUS ACT 22mm, LED weiß, 24V AC/DC, Fronttafeleinbau, Federklemme",
     "hersteller": "Siemens",
     "bauteil_typ": "signalleuchte",
-    "b_mm": 22.0,
+    "b_mm": 29.5,
     "te_breite": 2,
-    "h_mm": 22.0,
+    "h_mm": 29.5,
     "zone": [
       "tuer"
     ],

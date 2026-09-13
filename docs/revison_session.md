@@ -1,6 +1,17 @@
 # DBACS – Revisionsstand
 
-**Stand:** 12. September 2026 – Session 62 (6 neue Sanitär-Baugruppen
+**Stand:** 13. September 2026 – Session 64 (Türband-Reihenfolge neu sortiert
+[Nutzer-Korrektur: Touchpanel muss in Kopfhöhe bedienbar sein], Not-Halt-
+Pilzdrucktaster + 3 Signalleuchten von 22mm/Bohrungsmaß auf reale Bauteilmaße
+40mm bzw. 29,5mm korrigiert [Original-Siemens-Datenblätter], Türbänder gegen
+die realen Maße kollisionssicher nachgerechnet und retuned [Hauptschalter
+0,40→0,35, Betriebsmeldung 0,65→0,67, Handschalter 0,68→0,715, Messgerät
+0,85→0,83] – verifiziert auf 800×800-Wandschrank UND 1200×2000-Standschrank,
+0 Überlappungen außer der bewusst zurückgestellten Randkombination Messgerät+
+Touchpanel-PXM50 auf sehr kleinen Türen. Details: `CLAUDE.md` → „Offene
+Punkte" Sitzungsstand Session 64.)
+
+Vorherige Session 62 (12.09.2026): 6 neue Sanitär-Baugruppen
 `410_000001`–`410_000006`, Gewerk 410 vorher leer: Reflex Nachspeise-/
 Druckhaltetechnik – Fillset Compact Twist M-Bus, Fillcontrol Smart, Reflexomat
 XS, Variomat Touch VS 2, Servitec S – + Viega Hygiene-Spülstation 2241.10.
