@@ -74,10 +74,70 @@
 >    (Touchpanel ist auf Wandschränken „gar nicht oder nur klein vorhanden"),
 >    daher zurückgestellt statt mit einer dynamischen mm-basierten
 >    Mindestabstandslogik gelöst.
-> **Noch offen (Ankündigung Nutzer):** danach soll die **Romutec-Ebene**
-> (Handbedienung/LVB über Türelemente, `computeLvbRomutecDevices()`-Stub)
-> begonnen werden – auf derselben Türband-Ebene wie das Touchpanel
-> (`TUER_BAND_TOUCHPANEL`).
+> **Sitzungsstand Session 64 Nachtrag (13.09.2026) – Romutec-LVB (Türeinbau)
+> implementiert, `computeLvbRomutecDevices()`-Stub aufgelöst:**
+> Dritte LVB-Realisierung neben DDC-Modul/Metz jetzt funktionsfähig
+> (`#lvb_realisierung` Option „Türeinbau · Romutec" nicht mehr disabled).
+> Recherche per 3 Hintergrund-Forks zu romutec.de (Original-Datenblätter
+> direkt gelesen) + Nutzer-Korrekturen ergaben folgende Architektur:
+> - **Ausgänge (AO/BO):** wie Metz – DDC-Seite bleibt normales E/A-Modul,
+>   zusätzlich EIN Romutec-Gerät seriell zwischen DDC und Koppelrelais/Aktor.
+>   ANDERS als Metz: kein separates Koppelrelais nötig (steckt im Modul
+>   selbst), UND die Module sind mehrkanalig (nicht 1 Gerät je Punkt):
+>   `RAG2020` (00003417, 4× AO 0-10V/Karte, rein analog, kein Bus) und
+>   `RKS3030` (00001215, 6× BO/Karte, generisches Schaltmodul) decken den
+>   aktuellen Bedarf. Aktortyp-spezifische Module `RKK2020-H0` (Klappen,
+>   00001706), `RLK1010-H0` (Motor 2-stufig, 00001729), `RPK2020-H0` (Motor
+>   1-stufig, 00001451) sind bereits katalogisiert, aber noch nicht in
+>   `computeLvbRomutecDevices()` verdrahtet (fehlende Aktortyp-Zuordnung je
+>   Baugruppen-Bauteil – eigener nächster Schritt, siehe Restliste).
+> - **Eingänge (BI):** bewusst UNVERÄNDERT – bleiben immer direkt an der DDC
+>   (Nutzer-Vorgabe: „wir benötigen zur Sicherstellung der Bedienfähigkeit
+>   bei Ausfall der DDC eine direkt wirksame Lösung" – ein Bus wäre bei
+>   DDC-Ausfall wirkungslos; zusätzlich keine Doppelverdrahtung aus
+>   Sicherheitsgründen ohne galvanische Trennung). Die Positions-/Zustands-
+>   anzeige der LVB-Module selbst kommt über einen **zusätzlichen, aber
+>   elektrisch eigenständigen** Hilfskontakt desselben Koppelrelais/Schützes
+>   (z. B. 2S+2Ö-Hilfsschalterblock) – kein Risiko, da zwei getrennte
+>   Kontaktsätze statt einer Doppelverdrahtung auf einen Kontakt.
+> - **Neuer Ratchet „LVB-Trägerrahmen"** (gleiches Prinzip wie DDC-/
+>   Steuerspannungs-/Kommunikationsbauteil-Ratchet, sinkt nie): zählt die
+>   benötigten Romutec-Kartenplätze (RAG2020+RKS3030, je nach Kanalzahl/
+>   Karte), wählt den kleinsten ausreichenden Trägerrahmen (`RTR4050S`
+>   00002861/6 Plätze · `RTR4084S` 00002620/10 Plätze · `RTR7050S` 00002761/
+>   12 Plätze – durchgängig die abschließbare IP54-„S"-Variante, Nutzer-
+>   Vorgabe „wird es meist werden") und füllt unbestückte Plätze mit
+>   `RLA8000`-Leerplatten (00001223) auf.
+> - **Neue Pseudo-Zone `lvb_modul`** (nicht in `ALLE_ZONEN`, nicht `tuer`):
+>   die einzelnen Romutec-Module + Leerplatten brauchen keinen eigenen
+>   Montageplatten-Platz UND werden nicht einzeln in der Tür gezeichnet (nur
+>   der eine Trägerrahmen), erscheinen aber korrekt in der Stückliste (neuer
+>   Sonderblock in `aggregateStueckliste()`, analog `letzteKommAuto`).
+> - **Grafik:** Trägerrahmen wird auf der Tür als **2 verschachtelte
+>   Rechtecke** gezeichnet (außen Rahmen, innen Sichthaube/Fenster, ~12%
+>   Inset) – Nutzer-Vorgabe „das reicht aus, um den Platzbedarf zu
+>   berücksichtigen". Teilt sich das Touchpanel-Türband (`TUER_BAND_
+>   TOUCHPANEL`), beide Bauteiltypen liegen im selben Band nebeneinander
+>   (bestehender Mehrfachbauteil-pro-Band-Mechanismus deckt das ab).
+> **Katalog:** 9 neue `einzelbauteile` (3 Trägerrahmen + Leerplatte + 5
+> Module) – **einzelbauteile 202→211**. Alle ohne `kategorie` (bewusst nicht
+> manuell im Modul-4-Dropdown wählbar, nur automatisch über den Ratchet).
+> Alle ohne Preis (Nutzer: „können wir später recherchieren").
+> **Browser-Verifikation:** Testszenario 30× BO-Reserve + 10× AO-Reserve
+> (480_000002/480_000004) bei `lvb_anforderung=gefordert`+
+> `lvb_realisierung=romutec` (20% Datenpunkt-Reserve) → 4× RAG2020 + 7×
+> RKS3030 = 11 Kartenplätze → korrekt `RTR7050S` (12 Plätze) + 1×
+> `RLA8000` gewählt; 2 verschachtelte Rechtecke korrekt neben dem Touchpanel
+> platziert, keine Überlappung (direkte SVG-Rect-Kollisionsprüfung), keine
+> Konsolenfehler. Testdaten danach wieder entfernt.
+> **Restliste:** Aktortyp-spezifische Zuordnung (`RKK2020-H0`/`RLK1010-H0`/
+> `RPK2020-H0` statt generischem `RKS3030`) braucht ein neues Feld auf
+> `baugruppen_bauteile`-Ebene, sobald konkrete Baugruppen mit Romutec-LVB
+> angelegt werden – eigener nächster Schritt (Nutzer-Ankündigung). Keine
+> Preise recherchiert. `RAG2020`/RKS3030/RKK.../RLK.../RPK...-Datenblätter
+> haben teils nur eingebettete Grafik-Klemmenpläne (Text-Extraktion
+> unvollständig) – vor echter Feldverdrahtung im Projekt Original-PDF am
+> Bildschirm prüfen.
 
 > **Sitzungsstand Session 62 (12.09.2026) – Sanitär-Baugruppen Reflex/Viega
 > (Nachspeise-/Druckhaltetechnik + Hygienetechnik), erster 4-20mA-Anwendungsfall:**

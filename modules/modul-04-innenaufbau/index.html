@@ -608,12 +608,12 @@ fieldset{
           <option value="gefordert">generell gefordert</option>
         </select>
       </div>
-      <div class="eb-field" id="lvb_realisierung_row" title="Wie die geforderte LVB realisiert wird. DDC-Modul = LVB-fähige E/A-Module (TXM1.8U-ML für AO, TXM1.6R-M für BO). Schaltschrank-LVB · Metz = normale E/A-Module + je Ausgang ein Metz-Gerät mit Hand-0-Auto-Ebene in Reihe (KMA-F8 für AO, KRS-E06 für BO). Türeinbau · Romutec folgt.">
+      <div class="eb-field" id="lvb_realisierung_row" title="Wie die geforderte LVB realisiert wird. DDC-Modul = LVB-fähige E/A-Module (TXM1.8U-ML für AO, TXM1.6R-M für BO). Schaltschrank-LVB · Metz = normale E/A-Module + je Ausgang ein Metz-Gerät mit Hand-0-Auto-Ebene in Reihe (KMA-F8 für AO, KRS-E06 für BO), im Schaltschrank montiert. Türeinbau · Romutec = normale E/A-Module + je Ausgang ein Romutec-Gerät (RAG2020 für AO, RKS3030 für BO) mit integriertem Koppelrelais, in einem Trägerrahmen auf der Schaltschranktür montiert (kein Öffnen des Schranks für die Handbedienung nötig). BI bleibt bei allen drei Realisierungen unverändert direkt an der DDC.">
         <label>LVB-Realisierung</label>
         <select id="lvb_realisierung" onchange="onLvbChange()" disabled>
           <option value="ddc" selected>DDC-Modul</option>
           <option value="metz">Schaltschrank-LVB · Metz</option>
-          <option value="romutec" disabled>Türeinbau · Romutec – folgt</option>
+          <option value="romutec">Türeinbau · Romutec</option>
         </select>
       </div>
     </div>
@@ -903,6 +903,14 @@ let letzteKommAuto = null;
 // werden dort bereits in bgInstanceQueue geschrieben (Zeichnung), fehlen
 // aggregateStueckliste() aber ohne diesen Zwischenspeicher.
 let letzteSteuerspannungAuto = null;
+// LVB-Trägerrahmen-Ratchet (Romutec, Session 64): Anzahl Kartenplaetze
+// (8TE/3HE-Module), die je einmal fuer die Romutec-Realisierung gebraucht
+// wurden - sinkt nie von selbst (gleiches Prinzip wie kommWatermark/
+// steuerspannungWatermark). letzteLvbRomutec wird bei jedem buildQueues()-
+// Lauf neu gesetzt (null, wenn Realisierung != romutec) und von
+// aggregateStueckliste()/getTuerItems() gelesen.
+let lvbRomutecWatermark = 0;
+let letzteLvbRomutec = null;
 
 // ── DOM-Helfer ───────────────────────────────────────────────────────
 const g  = id => +document.getElementById(id).value;
@@ -1002,6 +1010,8 @@ function init() {
   if(swm) try { steuerspannungWatermark = JSON.parse(swm); } catch(e){}
   const kwm = localStorage.getItem('m04_komm_watermark');
   if(kwm) try { kommWatermark = JSON.parse(kwm); } catch(e){}
+  const lrw = localStorage.getItem('m04_lvb_romutec_watermark');
+  if(lrw) { const n = parseInt(lrw, 10); if(!isNaN(n)) lvbRomutecWatermark = n; }
 
   loadMontagebereich(gs('schrank_typ'));
   setGewerk(localStorage.getItem('m04_gewerk') || 'lueftung');
@@ -1598,7 +1608,9 @@ function onCpuTypChange() {
 // (Kundenvorgabe – alle Ausgaenge AO/BO ueber Handebene). #lvb_realisierung
 // nur relevant wenn 'gefordert': 'ddc' = LVB-faehige E/A-Module (-ML/-M),
 // 'metz' = normale Module + Metz-Handebene-Geraet je Ausgang in Reihe,
-// 'romutec' (Tuereinbau) folgt. Siehe buildQueues()/computeDdcAutoModules().
+// 'romutec' (Tuereinbau, Session 64) = normale Module + Romutec-Geraet je
+// Ausgang in Reihe, in einem Traegerrahmen auf der Tuer statt im Schrank.
+// Siehe buildQueues()/computeDdcAutoModules()/computeLvbRomutecDevices().
 function syncLvbRealisierungState() {
   document.getElementById('lvb_realisierung').disabled = gs('lvb_anforderung') !== 'gefordert';
 }
@@ -2658,8 +2670,46 @@ function computeLvbMetzDevices(demand, reservePct) {
   });
   return out;
 }
-// computeLvbRomutecDevices(): Tuereinbau-LVB (Romutec RAG/romod) – spaeter.
-function computeLvbRomutecDevices() { return []; }
+// ── Tuereinbau-LVB ueber Romutec (Session 64) ─────────────────────────
+// Dritte LVB-Realisierung neben DDC-Modul/Metz: die Handbedienebene sitzt
+// NICHT im Schaltschrank, sondern in der Schaltschranktuer (Trägerrahmen-
+// Montage, kein Aufschliessen des Schranks noetig). Wie bei Metz bleibt die
+// DDC-Seite ein normales E/A-Modul, zusaetzlich kommt je Ausgangspunkt ein
+// Romutec-Geraet in Reihe zwischen DDC und Koppelrelais/Aktor – ANDERS als
+// bei Metz braucht es dafuer aber KEIN separates Koppelrelais (steckt im
+// Romutec-Modul selbst) und die Module sind MEHRKANALIG (nicht 1 Geraet je
+// Punkt): RAG2020 deckt 4 AO-Kanaele/Karte, RKS3030 (generisches Schalt-
+// modul, da DBACS aktortyp-spezifische Module RKK2020-H0/RLK1010-H0/
+// RPK2020-H0 mangels Aktortyp-Zuordnung je Baugruppen-Bauteil noch nicht
+// gezielt waehlen kann - siehe Restliste CLAUDE.md) deckt 6 BO-Kanaele/Karte.
+// BI bleibt bei dieser Realisierung unveraendert direkt an der DDC (Nutzer-
+// Vorgabe Session 64: keine Doppelverdrahtung, keine Modbus-Umwidmung).
+const LVB_ROMUTEC_ART = { dp_ao: '00003417', dp_bo: '00001215' }; // RAG2020, RKS3030
+const LVB_ROMUTEC_KANAELE = { dp_ao: 4, dp_bo: 6 };
+function computeLvbRomutecDevices(demand, reservePct) {
+  const keep = 1 - reservePct;
+  const out = [];
+  [['dp_ao', LVB_ROMUTEC_ART.dp_ao], ['dp_bo', LVB_ROMUTEC_ART.dp_bo]].forEach(([t, art]) => {
+    const bedarf = (keep > 0 ? (demand[t] || 0) / keep : (demand[t] || 0));
+    const n = Math.ceil(bedarf / LVB_ROMUTEC_KANAELE[t]);
+    if (n <= 0) return;
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === art);
+    if (!eb) { console.warn('LVB-Romutec-Artikel', art, 'fehlt im Katalog – uebersprungen'); return; }
+    out.push({ eb, menge: n });
+  });
+  return out;
+}
+// Trägerrahmen-Groessen (romutec RTR-Serie, abschliessbare "S"-Variante mit
+// Sichthaube/IP54 - Nutzer-Vorgabe Session 64: "die abschliessbare Variante
+// wird es meist werden"), aufsteigend nach Kapazitaet (Kartenplaetze
+// 8TE/3HE je Platz). LVA8000-Leerplatte gleiche Groesse, fuellt unbestueckte
+// Plaetze auf.
+const LVB_ROMUTEC_RAHMEN = [
+  { artikel_nr: '00002861', kapazitaet: 6 },  // RTR4050S, 313x180mm
+  { artikel_nr: '00002620', kapazitaet: 10 }, // RTR4084S, 483x178mm
+  { artikel_nr: '00002761', kapazitaet: 12 }, // RTR7050S, 313x313mm
+];
+const LVB_ROMUTEC_LEERPLATTE = '00001223'; // RLA8000
 
 // ── DDC-Auto-Modul-Ratchet (Session 28e) ──────────────────────────────
 // Nutzer-Entscheidung nach Rücksprache: einmal als nötig erkannte
@@ -2731,6 +2781,8 @@ function resetDdcWatermark() {
   localStorage.removeItem('m04_steuerspannung_watermark');
   kommWatermark = {};
   localStorage.removeItem('m04_komm_watermark');
+  lvbRomutecWatermark = 0;
+  localStorage.removeItem('m04_lvb_romutec_watermark');
   calculate();
 }
 
@@ -2877,10 +2929,11 @@ function buildQueues(ddcReservePct) {
   const needsLvb = {}; // je PHYS_DP_TYPES-Typ: mind. ein Beitrag braucht LVB (siehe computeDdcAutoModules())
   // Globale LVB-Vorgabe (#lvb_anforderung, Session 57): erzwingt fuer ALLE
   // Ausgaenge (AO/BO) LVB-faehige E/A-Module – ausser die Realisierung
-  // laeuft ueber Schaltschrank-LVB (Metz), dort bleibt die DDC-Seite normal
-  // und die Handebene kommt als separates Metz-Geraet je Ausgang (siehe
-  // computeLvbMetzDevices(), weiter unten vor applyDdcWatermark()).
-  if (gs('lvb_anforderung') === 'gefordert' && gs('lvb_realisierung') !== 'metz') {
+  // laeuft ueber Schaltschrank-LVB (Metz) oder Tuereinbau (Romutec, Session
+  // 64), dort bleibt die DDC-Seite normal und die Handebene kommt als
+  // separates Geraet je Ausgang (siehe computeLvbMetzDevices()/
+  // computeLvbRomutecDevices(), weiter unten vor applyDdcWatermark()).
+  if (gs('lvb_anforderung') === 'gefordert' && gs('lvb_realisierung') !== 'metz' && gs('lvb_realisierung') !== 'romutec') {
     needsLvb.dp_ao = true;
     needsLvb.dp_bo = true;
   }
@@ -3132,7 +3185,7 @@ function buildQueues(ddcReservePct) {
   //  (b) automatisch zu ergaenzende Kompakt-CPU – wird unten in der
   //      cpuBenoetigt-Schleife fuer AO/BO uebersprungen.
   // Onboard-AI/BI bleiben in beiden Faellen unveraendert anrechenbar.
-  const lvbSperrtOnboardOut = gs('lvb_anforderung') === 'gefordert' && gs('lvb_realisierung') !== 'metz';
+  const lvbSperrtOnboardOut = gs('lvb_anforderung') === 'gefordert' && gs('lvb_realisierung') !== 'metz' && gs('lvb_realisierung') !== 'romutec';
   if (lvbSperrtOnboardOut) {
     dpSupplyEffective.dp_ao = Math.max(0, dpSupplyEffective.dp_ao - cpuOnboardOut.dp_ao);
     dpSupplyEffective.dp_bo = Math.max(0, dpSupplyEffective.dp_bo - cpuOnboardOut.dp_bo);
@@ -3192,6 +3245,44 @@ function buildQueues(ddcReservePct) {
       let e = ddcAuto.modules.find(m => m.eb.artikel_nr === md.eb.artikel_nr);
       if (e) e.menge += md.menge; else ddcAuto.modules.push(md);
     });
+  }
+
+  // ── Tuereinbau-LVB (Romutec, Session 64) ──────────────────────────────
+  // Anders als Metz sitzen die Romutec-Geraete NICHT im Schrank (kein
+  // eigenstaendiges Hutschienengeraet in queues.steuer), sondern in einem
+  // gemeinsamen Traegerrahmen auf der Tuer (Touchpanel-Band, Nutzer-Vorgabe:
+  // "unrealistisch, dass beides gleichzeitig zum Einsatz kommt"). Ratchet
+  // (lvbRomutecWatermark) zaehlt die je Realisierung benoetigten Karten-
+  // plaetze, waehlt den kleinsten ausreichenden Rahmen und fuellt den Rest
+  // mit RLA8000-Leerplatten auf (Nutzer-Vorgabe: "wenn er nicht vollstaendig
+  // bestueckt ist, kommen Leerplatten da rein"). letzteLvbRomutec wird von
+  // aggregateStueckliste() (Stueckliste) und getTuerItems() (Zeichnung)
+  // gelesen.
+  letzteLvbRomutec = null;
+  if (gs('lvb_anforderung') === 'gefordert' && gs('lvb_realisierung') === 'romutec') {
+    const romutecModule = computeLvbRomutecDevices(dpDemand, ddcReservePct);
+    const kartenBedarf = romutecModule.reduce((s, m) => s + m.menge, 0);
+    if (kartenBedarf > lvbRomutecWatermark) {
+      lvbRomutecWatermark = kartenBedarf;
+      localStorage.setItem('m04_lvb_romutec_watermark', String(lvbRomutecWatermark));
+    }
+    if (lvbRomutecWatermark > 0) {
+      const rahmenDef = LVB_ROMUTEC_RAHMEN.find(r => r.kapazitaet >= lvbRomutecWatermark) || LVB_ROMUTEC_RAHMEN[LVB_ROMUTEC_RAHMEN.length - 1];
+      const rahmenEb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === rahmenDef.artikel_nr);
+      const leerplatteEb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === LVB_ROMUTEC_LEERPLATTE);
+      if (rahmenEb) {
+        const belegtePlaetze = Math.min(lvbRomutecWatermark, rahmenDef.kapazitaet);
+        letzteLvbRomutec = {
+          rahmen: rahmenEb,
+          kapazitaet: rahmenDef.kapazitaet,
+          module: romutecModule,
+          leerplatten: Math.max(0, rahmenDef.kapazitaet - belegtePlaetze),
+          leerplatteEb
+        };
+      } else {
+        console.warn('LVB-Romutec-Rahmen', rahmenDef.artikel_nr, 'fehlt im Katalog – uebersprungen');
+      }
+    }
   }
 
   // Ratchet EINMAL für alles zusammen (E/A-Modultypen UND die soeben
@@ -3664,7 +3755,8 @@ function kurzLabel(eb) {
              ddc_io:'DDC', ddc_cpu:'CPU', lasttrenner:'LT', ueberspannung:'ÜSS', sicherung:'Sich.',
              signalleuchte:'SL', frequenzumrichter:'FU', wahlschalter:'WS', nothalt:'NH',
              fi_schutzschalter:'FI', zeitrelais:'ZR', steckdose:'STD', quittiertaster:'QT',
-             pegelwandler:'PW', messgeraet:'MG', hauptschalter:'HS', touchpanel:'TP'};
+             pegelwandler:'PW', messgeraet:'MG', hauptschalter:'HS', touchpanel:'TP',
+             lvb_traegerrahmen:'LVB'};
   return m[eb.bauteil_typ] || eb.bezeichnung.substring(0, 4);
 }
 
@@ -3765,7 +3857,10 @@ function tuerBand(eb) {
   if (eb.bauteil_typ === 'quittiertaster') return TUER_BAND_QUITTIERTASTER;
   if (eb.bauteil_typ === 'wahlschalter') return TUER_BAND_HANDSCHALTER;
   if (eb.bauteil_typ === 'messgeraet') return TUER_BAND_MESSGERAET;
-  if (eb.bauteil_typ === 'touchpanel') return TUER_BAND_TOUCHPANEL;
+  // Romutec-Traegerrahmen (Session 64) teilt sich bewusst dieselbe Ebene wie
+  // das Touchpanel - Nutzer-Vorgabe: "unrealistisch, dass beides gleichzeitig
+  // zum Einsatz kommt".
+  if (eb.bauteil_typ === 'touchpanel' || eb.bauteil_typ === 'lvb_traegerrahmen') return TUER_BAND_TOUCHPANEL;
   return TUER_BAND_HANDSCHALTER; // Fallback für künftige, noch unbekannte Tür-Bauteiltypen
 }
 
@@ -3790,7 +3885,7 @@ function tuerFarbe(eb) {
   }
   if (eb.bauteil_typ === 'wahlschalter') return TUER_FARBE_GRAU;
   if (eb.bauteil_typ === 'messgeraet') return TUER_FARBE_GELB;
-  if (eb.bauteil_typ === 'touchpanel') return TUER_FARBE_GRAU;
+  if (eb.bauteil_typ === 'touchpanel' || eb.bauteil_typ === 'lvb_traegerrahmen') return TUER_FARBE_GRAU;
   return TUER_FARBE_STD;
 }
 
@@ -3831,6 +3926,10 @@ function getTuerItems(feldIndex) {
         for (let q = 0; q < n; q++) items.push(eb);
       });
     });
+    // LVB-Traegerrahmen (Romutec, Session 64): ein einzelner, automatisch
+    // ergaenzter Rahmen (letzteLvbRomutec, siehe buildQueues()) - keine
+    // feldweise Zuordnung, analog zu Baugruppen-Tuerbauteilen immer Feld 1.
+    if (letzteLvbRomutec) items.push(letzteLvbRomutec.rahmen);
   }
   return items;
 }
@@ -3873,9 +3972,23 @@ function buildTuerAnsicht(feldIndex, wrap, inner) {
       const bw = eb.b_mm || 22, bh = eb.h_mm || 22;
       const bx = x * sc, by = (y - bh/2) * sc, bwpx = Math.max(3, bw*sc), bhpx = Math.max(3, bh*sc);
       const farbe = tuerFarbe(eb);
-      svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="${farbe}" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
-      if (bwpx > 12 && bhpx > 8) {
-        svg += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
+      if (eb.bauteil_typ === 'lvb_traegerrahmen') {
+        // Romutec-Traegerrahmen (Session 64, Nutzer-Vorgabe): 2 verschachtelte
+        // Rechtecke reichen aus, um den Platzbedarf darzustellen - aussen der
+        // Rahmen selbst, innen die abschliessbare Sichthaube (Fenster).
+        // Einzelne Module/Leerplatten werden bewusst NICHT einzeln gezeichnet
+        // (nur Stueckliste, siehe aggregateStueckliste()).
+        const inset = Math.max(4, Math.min(bwpx, bhpx) * 0.12);
+        svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="${farbe}" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
+        svg += `<rect x="${(bx+inset).toFixed(1)}" y="${(by+inset).toFixed(1)}" width="${(bwpx-2*inset).toFixed(1)}" height="${(bhpx-2*inset).toFixed(1)}" fill="#DCEEF2" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.5" rx="1"><title>${eb.bezeichnung} – Sichthaube</title></rect>`;
+        if (bwpx > 12 && bhpx > 8) {
+          svg += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
+        }
+      } else {
+        svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="${farbe}" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
+        if (bwpx > 12 && bhpx > 8) {
+          svg += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
+        }
       }
       x += bw + gap;
     });
@@ -4237,6 +4350,20 @@ function aggregateStueckliste() {
     letzteKommAuto.forEach(m => {
       add(m.eb.artikel_nr, 'steuer', m.menge);
     });
+  }
+  // LVB-Traegerrahmen (Romutec, Session 64): Rahmen selbst zaehlt als
+  // Tuer-Bauteil (auch wenn er dort als 2 verschachtelte Rechtecke statt der
+  // Standard-Darstellung gezeichnet wird), die einzelnen Module + Leer-
+  // platten stecken NICHT einzeln in der Zeichnung, gehoeren aber laut
+  // Nutzer-Vorgabe trotzdem vollstaendig in die Stueckliste - eigene
+  // Pseudo-Zone 'lvb_modul' (kein Platzierungsbedarf, siehe buildQueues()/
+  // getTuerItems(), die diese Zone bewusst ignorieren).
+  if (letzteLvbRomutec) {
+    add(letzteLvbRomutec.rahmen.artikel_nr, 'tuer', 1);
+    letzteLvbRomutec.module.forEach(m => add(m.eb.artikel_nr, 'lvb_modul', m.menge));
+    if (letzteLvbRomutec.leerplatten > 0 && letzteLvbRomutec.leerplatteEb) {
+      add(letzteLvbRomutec.leerplatteEb.artikel_nr, 'lvb_modul', letzteLvbRomutec.leerplatten);
+    }
   }
   const order = {klemm_e:0, uss:1, evert:2, leist:3, steuer:4, klemm_l:5, klemm_f:6, klemm_s:7};
   return Object.values(agg).sort((a,b) => (order[a.zone]??9) - (order[b.zone]??9));

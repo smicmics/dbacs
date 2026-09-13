@@ -3181,5 +3181,125 @@
     ],
     "kategorie": "Steckdose/Zubehör",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "00002861",
+    "bezeichnung": "Trägerrahmen RTR4050S, 4HE/50TE, Sichthaube IP54, abschließbar, für 6 rtModule 3HE/8TE",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_traegerrahmen",
+    "b_mm": 313.0,
+    "te_breite": 18,
+    "h_mm": 180.0,
+    "zone": [
+      "tuer"
+    ],
+    "keine_platzierung_mp": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "00002620",
+    "bezeichnung": "Trägerrahmen RTR4084S, 4HE/84TE, Sichthaube IP54, abschließbar, für 10 rtModule 3HE/8TE",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_traegerrahmen",
+    "b_mm": 483.0,
+    "te_breite": 27,
+    "h_mm": 178.0,
+    "zone": [
+      "tuer"
+    ],
+    "keine_platzierung_mp": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "00002761",
+    "bezeichnung": "Trägerrahmen RTR7050S, 7HE/2x50TE, Sichthaube IP54, abschließbar, für 12 rtModule 3HE/8TE",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_traegerrahmen",
+    "b_mm": 313.0,
+    "te_breite": 18,
+    "h_mm": 313.0,
+    "zone": [
+      "tuer"
+    ],
+    "keine_platzierung_mp": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "00001223",
+    "bezeichnung": "Leerplatzabdeckung RLA8000, 3HE/8TE, 1 Modulbreite mit Leerschild",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_leerplatte",
+    "b_mm": 40.5,
+    "te_breite": 3,
+    "h_mm": 129.0,
+    "zone": [
+      "lvb_modul"
+    ],
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "00003417",
+    "bezeichnung": "Romutec RAG2020 Analogmodul 4x 0-10V, Steuerschalter Auto-Poti, LED-Kranz-Anzeige",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_romutec_ao",
+    "b_mm": 40.5,
+    "te_breite": 3,
+    "h_mm": 129.0,
+    "zone": [
+      "lvb_modul"
+    ],
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "00001706",
+    "bezeichnung": "Romutec RKK2020-H0 Klappensteuermodul 4x2-Punkt Auf/Zu mit Örtlichmeldung",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_romutec_bo",
+    "b_mm": 40.5,
+    "te_breite": 3,
+    "h_mm": 129.0,
+    "zone": [
+      "lvb_modul"
+    ],
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "00001729",
+    "bezeichnung": "Romutec RLK1010-H0 Motorsteuermodul 2x2-stufig I/II/Stör. mit Örtlichmeldung",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_romutec_bo",
+    "b_mm": 40.5,
+    "te_breite": 3,
+    "h_mm": 129.0,
+    "zone": [
+      "lvb_modul"
+    ],
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "00001451",
+    "bezeichnung": "Romutec RPK2020-H0 Motorsteuermodul 4x1-stufig Betr./Stör. mit Örtlichmeldung",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_romutec_bo",
+    "b_mm": 40.5,
+    "te_breite": 3,
+    "h_mm": 129.0,
+    "zone": [
+      "lvb_modul"
+    ],
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "00001215",
+    "bezeichnung": "Romutec RKS3030 Steuerkarte 6 Kippschalter Auto-0-Ein, 2-polig",
+    "hersteller": "Romutec",
+    "bauteil_typ": "lvb_romutec_bo",
+    "b_mm": 40.5,
+    "te_breite": 3,
+    "h_mm": 129.0,
+    "zone": [
+      "lvb_modul"
+    ],
+    "geprueft": false
   }
 ]

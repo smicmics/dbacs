@@ -8,8 +8,17 @@ die realen Maße kollisionssicher nachgerechnet und retuned [Hauptschalter
 0,40→0,35, Betriebsmeldung 0,65→0,67, Handschalter 0,68→0,715, Messgerät
 0,85→0,83] – verifiziert auf 800×800-Wandschrank UND 1200×2000-Standschrank,
 0 Überlappungen außer der bewusst zurückgestellten Randkombination Messgerät+
-Touchpanel-PXM50 auf sehr kleinen Türen. Details: `CLAUDE.md` → „Offene
-Punkte" Sitzungsstand Session 64.)
+Touchpanel-PXM50 auf sehr kleinen Türen. Zusätzlich Romutec-LVB (Türeinbau-
+Realisierung) implementiert: `computeLvbRomutecDevices()`-Stub aufgelöst,
+neuer LVB-Trägerrahmen-Ratchet (RTR4050S/RTR4084S/RTR7050S + RLA8000-
+Leerplatten, Trägerrahmen als 2 verschachtelte Rechtecke auf dem Touchpanel-
+Türband), 9 neue Katalogeinträge (einzelbauteile 202→211: 3 Trägerrahmen,
+Leerplatte, RAG2020, RKK2020-H0, RLK1010-H0, RPK2020-H0, RKS3030). BI bleibt
+bei Romutec-Realisierung bewusst unverändert an der DDC (Fail-Operational-
+Anforderung). Browser-verifiziert (30×BO+10×AO-Reserve-Testszenario, 11
+Kartenplätze → RTR7050S + 1 Leerplatte, keine Überlappung, keine
+Konsolenfehler). Details: `CLAUDE.md` → „Offene Punkte" Sitzungsstand
+Session 64 + Session 64 Nachtrag.)
 
 Vorherige Session 62 (12.09.2026): 6 neue Sanitär-Baugruppen
 `410_000001`–`410_000006`, Gewerk 410 vorher leer: Reflex Nachspeise-/
