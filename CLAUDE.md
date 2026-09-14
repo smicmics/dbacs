@@ -16,6 +16,76 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 66 (14.09.2026) – Weitere Automation-Baugruppen:
+> Wischrelais-Ergänzung, FI-Typ-B-Korrektur, ÜSS-Zuleitung + 2× Phasen-/
+> Spannungsüberwachung:**
+> Vier Recherche-Themen (3 Hintergrund-Forks + 1 direkte Ergänzung),
+> alle Original-Datenblätter (Siemens TEDatasheet-API, Dehn-PDFs) geprüft.
+> **Nützlicher Fund für künftige Siemens-Recherchen:** `format=pdf&caller=SIOS`
+> (statt `format=html`) an der TEDatasheet-API liefert zuverlässig das
+> Original-PDF, danach lokal mit `pdftotext -layout`
+> (`C:\Program Files\Git\mingw64\bin\pdftotext.exe`) auslesen – deutlich
+> zuverlässiger als der WebFetch-eigene PDF-Zusammenfasser, der an
+> Siemens-PDFs regelmäßig scheitert.
+> 1. **`480_000021` (Störquittiertaster mit Sammelstörungsleuchte) ergänzt**
+>    um `RE22R2HMR` (Zelio-Time-Wischrelais, bereits katalogisiert) – für
+>    Netzausfall-Erkennung, löst ebenfalls eine Störquittierung aus. Nutzer-
+>    Vorgabe: „nur als Bauteil hinzufügen" – keine zusätzliche DP-Zeile,
+>    Zone `leist` (Katalog-Default).
+> 2. **`480_000018` (Schaltschranksteckdose) korrigiert:** LSS `5SL6110-6`
+>    entfernt, ersetzt durch NEU `5SV3321-4` (Siemens SENTRON 5SV3,
+>    2-polig/1P+N, **Typ B**, 16A/30mA, SIGRES, 4TE, 90×72×70mm) – Nutzer-
+>    Vorgabe: „heute Pflicht" für Schutzkontaktsteckdosen. Wichtiger
+>    Recherche-Befund (widerlegt Ausgangsannahme): Siemens führt sehr wohl
+>    2-polige Typ-B-FIs in der bereits katalogisierten SENTRON-5SV3-Familie
+>    – **keine Planungsfabrikat-Abweichung nötig**. Hilfsschalter `5ST3010`
+>    bleibt unverändert (laut Session-63-Recherche bereits explizit auch für
+>    5SV3-FIs geeignet), DP unverändert 1×BI.
+> 3. **NEU `480_000033` „Überspannungsschutz Schaltschrankzuleitung mit
+>    Fernmeldung":** `5SG1812` (Sicherungssockel D03, bereits katalogisiert,
+>    Vorsicherung) + NEU **`952305`** (DEHNguard M TNC 275 **FM**, NICHT
+>    `952300`!) in Zone `uss`. Wichtiger Recherche-Befund: `952300` hat
+>    **keine** nachrüstbare Fernmeldefunktion und **kein** steckbares
+>    Zubehör dafür – die Fernmeldevariante ist eine komplett eigenständige
+>    Bestellvariante mit eigener Artikelnummer, gleiche Maße (3TE,
+>    54×90×66mm), kein Mehrplatzbedarf. 1×BI auf der `952305`-Zeile
+>    (potentialfreier Wechsler, kein Koppelrelais nötig, Regel 12).
+> 4. **NEU `480_000034` „Phasenüberwachung 400V AC (3~) mit
+>    Störmeldekontakt":** `3UG5616-1CR20` (Siemens SIRIUS 3UG5, aktuelle
+>    Generation, digital einstellbar, Phasenfolge/-ausfall/Asymmetrie/
+>    Frequenz/Über-Unterspannung, 2 potentialfreie Wechsler, 3×90-760V AC
+>    eigenversorgt, 22,5×100×90mm). Zone `leist` (Nutzer-Vorgabe „Zone
+>    Leitung"). 1×BI Phasenausfall (Ruhestromprinzip, kein Koppelrelais).
+>    Alternative geprüft, nicht gewählt: `3UG4616-1CR20` (Vorgänger-
+>    generation, 178,59€ netto bestätigt, aber bei einem Distributor als
+>    Auslaufprodukt markiert) – Nutzer hat sich für die aktuelle Generation
+>    entschieden, Preis bleibt dafür offen.
+> 5. **NEU `480_000035` „Phasenüberwachung 230V AC (1~) mit
+>    Störmeldekontakt":** `3UG4631-1AW30` (Siemens SIRIUS 3UG4, 1
+>    potentialfreier Wechsler, Über-/Unterspannung inkl. Netzausfall,
+>    24-240V AC/DC eigenversorgt, 22,5×92×91mm, 231€ netto RS Online).
+>    Funktional ein Spannungsüberwachungsrelais (1~ kennt keine
+>    Phasenfolge), vom Nutzer aber als „Phasenüberwachung 230V AC" benannt.
+>    Zone `leist`. 1×BI.
+> **Browser-Verifikation:** alle 5 Baugruppen gleichzeitig platziert
+> (`buildQueues()` direkt geprüft) – alle Artikel lösen auf, `480_000018`
+> zeigt jetzt `5SV3321-4` statt `5SL6110-6`, `480_000021` zeigt zusätzlich
+> `RE22R2HMR`, BI 5/16 · BO 1/6 exakt wie von Hand berechnet, vollständiger
+> Katalog-Scan (Regel 7) bestätigt 0 verwaiste Artikelreferenzen, keine
+> Konsolenfehler.
+> **Export:** einzelbauteile 214→**218** (4 neu: `952305`, `5SV3321-4`,
+> `3UG5616-1CR20`, `3UG4631-1AW30`), baugruppen 178→**181** (3 neu, 2
+> bearbeitet), feldgeraete unverändert 96.
+> **Restliste (Nutzer-Vorgabe „Preise können wir später recherchieren"):**
+> keiner der 4 neuen Artikel hat einen bestätigten Herstellerlistenpreis –
+> nur Distributor-Näherungen im `quelle_hinweis` vermerkt (`952305`
+> ~142€, `5SV3321-4` ~185-200€, `3UG4631-1AW30` 231€ RS Online) bzw. für
+> `3UG5616-1CR20` gar kein belastbarer Wert gefunden. Bei Bedarf später
+> gezielt nachrecherchieren. Neuer `bauteil_typ` `phasenwaechter` (für
+> `3UG5616-1CR20`/`3UG4631-1AW30`) – noch kein eigenes Kurzlabel in
+> `kurzLabel()` hinterlegt (fällt auf Bezeichnungs-Fallback zurück, kein
+> Fehler, nur optisch weniger prägnant).
+
 > **Sitzungsstand Session 65 (13.09.2026) – Erste 14 ASP-Grundausstattungs-
 > Baugruppen (Automation) für die geplante Anlagen-Funktion + wichtiger
 > Bugfix physische DP auf Tür-Bauteilen:**

@@ -7001,15 +7001,10 @@
   },
   {
     "id": "480_000018",
-    "name": "Schaltschranksteckdose Hutschiene, LSS B10 mit Hilfskontakt, im Leistungsfeld",
+    "name": "Schaltschranksteckdose Hutschiene, FI Typ B mit Hilfskontakt, im Leistungsfeld",
     "gewerk": "480",
-    "beschreibung": "Schutzkontakt-Steckdose fuer Hutschienenmontage (Phoenix Contact EO-CF/PT, 250V/16A) im Leistungsfeld (Nutzer-Vorgabe), abgesichert mit LSS 1-polig B10A (5SL6110-6, 10A passend zur Steckdosen-Absicherung) + Hilfsschalter (5ST3010, 1S+1Oe). Schrankinterne Steckdose (kein Feldkabel, kein externer Verbraucher) - Ausloese-BI direkt auf der Hilfsschalter-Zeile, keine Klemme noetig (Regel 12). Datenpunktbedarf 1x BI (Ausloesung).",
+    "beschreibung": "Schutzkontakt-Steckdose fuer Hutschienenmontage (Phoenix Contact EO-CF/PT, 250V/16A) im Leistungsfeld (Nutzer-Vorgabe), abgesichert mit FI-Schutzschalter 2-polig Typ B 16A/30mA (5SV3321-4 - heute Pflicht fuer Schutzkontaktsteckdosen, ersetzt den bisherigen LSS 5SL6110-6) + Hilfsschalter (5ST3010, 1S+1Oe, laut Session-63-Recherche auch fuer 5SV3-FIs geeignet). Schrankinterne Steckdose (kein Feldkabel, kein externer Verbraucher) - Ausloese-BI direkt auf der Hilfsschalter-Zeile, keine Klemme noetig (Regel 12). Datenpunktbedarf 1x BI (Ausloesung).",
     "bauteile": [
-      {
-        "artikel_nr": "5SL6110-6",
-        "menge": 1,
-        "zone": "leist"
-      },
       {
         "artikel_nr": "5ST3010",
         "menge": 1,
@@ -7018,6 +7013,11 @@
       },
       {
         "artikel_nr": "0804038",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5SV3321-4",
         "menge": 1,
         "zone": "leist"
       }
@@ -7081,7 +7081,7 @@
     "id": "480_000021",
     "name": "Störquittiertaster mit Sammelstörungsleuchte",
     "gewerk": "480",
-    "beschreibung": "Siemens SIRIUS ACT Leuchtdrucktaste blau (3SU1152-0AB50-1BA0, Quittierung/Reset) + Signalleuchte rot (3SU1102-6AA20-3AA0, Sammelstoerung), beide Fronttafeleinbau. Schrankintern (Regel 12): 1xBI Stoerquittierung auf der Taster-Zeile, 1xBO Ansteuerung Sammelstoerungsleuchte auf der Signalleuchte-Zeile.",
+    "beschreibung": "Siemens SIRIUS ACT Leuchtdrucktaste blau (3SU1152-0AB50-1BA0, Quittierung/Reset) + Signalleuchte rot (3SU1102-6AA20-3AA0, Sammelstoerung) + Wischrelais Zelio Time RE22R2HMR (fuer Netzausfall-Erkennung, loest ebenfalls eine Stoerquittierung aus), alle schrankintern. Schrankintern (Regel 12): 1xBI Stoerquittierung auf der Taster-Zeile, 1xBO Ansteuerung Sammelstoerungsleuchte auf der Signalleuchte-Zeile.",
     "bauteile": [
       {
         "artikel_nr": "3SU1152-0AB50-1BA0",
@@ -7094,6 +7094,11 @@
         "menge": 1,
         "zone": "tuer",
         "dp_bo": 1
+      },
+      {
+        "artikel_nr": "RE22R2HMR",
+        "menge": 1,
+        "zone": "leist"
       }
     ],
     "funktionsbereich": [
@@ -7307,6 +7312,68 @@
       "automation"
     ],
     "kategorie": "Fronttafel-/Türeinbau",
+    "geprueft": false
+  },
+  {
+    "id": "480_000033",
+    "name": "Überspannungsschutz Schaltschrankzuleitung mit Fernmeldung",
+    "gewerk": "480",
+    "beschreibung": "Überspannungsschutz für die Schaltschrankzuleitung: DEHNguard M TNC 275 FM (952305, ÜSS Typ 2, 3-polig, mit potentialfreiem Fernmeldekontakt) + Sicherungssockel D03 (5SG1812, 1-polig, 100A, Vorsicherung). Schrankintern verdrahtet (Regel 12): 1xBI Auslösung/Fehlermeldung direkt auf der 952305-Zeile, kein Koppelrelais nötig (potentialfreier Wechsler).",
+    "bauteile": [
+      {
+        "artikel_nr": "5SG1812",
+        "menge": 1,
+        "zone": "uss"
+      },
+      {
+        "artikel_nr": "952305",
+        "menge": 1,
+        "zone": "uss",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Überspannungsschutz & Vorsicherung",
+    "geprueft": false
+  },
+  {
+    "id": "480_000034",
+    "name": "Phasenüberwachung 400V AC (3~) mit Störmeldekontakt",
+    "gewerk": "480",
+    "beschreibung": "Phasenwächter Siemens SIRIUS 3UG5616-1CR20 (2 potentialfreie Wechsler, Phasenfolge/-ausfall/Asymmetrie/Frequenz/Über-Unterspannung, 3x90-760V AC eigenversorgt) für die 400V-3~-Zuleitung, Zone Leistung. 1xBI Phasenausfall (Ruhestromprinzip, potentialfreier Wechsler, kein Koppelrelais nötig).",
+    "bauteile": [
+      {
+        "artikel_nr": "3UG5616-1CR20",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Netzüberwachung",
+    "geprueft": false
+  },
+  {
+    "id": "480_000035",
+    "name": "Phasenüberwachung 230V AC (1~) mit Störmeldekontakt",
+    "gewerk": "480",
+    "beschreibung": "Spannungsüberwachungsrelais Siemens SIRIUS 3UG4631-1AW30 (1 potentialfreier Wechsler, Über-/Unterspannung inkl. Netzausfall, 24-240V AC/DC eigenversorgt) für Schaltschränke mit 1~ 230V-Zuleitung, Zone Leistung. 1xBI (Ruhestromprinzip, potentialfreier Wechsler, kein Koppelrelais nötig).",
+    "bauteile": [
+      {
+        "artikel_nr": "3UG4631-1AW30",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Netzüberwachung",
     "geprueft": false
   }
 ]

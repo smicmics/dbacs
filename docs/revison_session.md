@@ -1,6 +1,17 @@
 # DBACS – Revisionsstand
 
-**Stand:** 13. September 2026 – Session 65 (Modul 4,
+**Stand:** 14. September 2026 – Session 66 (Modul 4,
+`modules/modul-04-innenaufbau/index.html`): weitere Automation-Baugruppen für
+die ASP-Grundausstattung. `480_000021` um Wischrelais `RE22R2HMR` ergänzt;
+`480_000018` (Schaltschranksteckdose) von LSS auf FI Typ B `5SV3321-4`
+korrigiert (heute Pflicht, keine Planungsfabrikat-Abweichung nötig); 3 neue
+Baugruppen: Überspannungsschutz Schaltschrankzuleitung (`480_000033`, DEHNguard
+`952305` MIT Fernmeldung statt `952300`), Phasenüberwachung 400V AC
+(`480_000034`, `3UG5616-1CR20`) und 230V AC (`480_000035`, `3UG4631-1AW30`).
+Export: einzelbauteile 214→218, baugruppen 178→181. Details: `CLAUDE.md` →
+„Offene Punkte" Sitzungsstand Session 66.
+
+Vorheriger Stand – Session 65 (Modul 4,
 `modules/modul-04-innenaufbau/index.html`): erste 14 ASP-Grundausstattungs-
 Baugruppen (Automation, Vorarbeit für die Anlagen-Funktion) angelegt –
 Hauptschalter mit Stellungsmeldung, Phasenkontrollleuchten, Störquittiertaster
