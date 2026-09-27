@@ -1,0 +1,199 @@
+[
+  {
+    "id": "480_A00001",
+    "name": "ASP Standard",
+    "gewerk": "480",
+    "beschreibung": "Automation-Grundausstattung fuer jeden Schaltschrank, unabhaengig von Nutzungsbereich/Verfuegbarkeitsanforderung. Enthaelt Hauptschalter mit Stellungsmeldung, Ueberspannungsschutz Schaltschrankzuleitung mit Fernmeldung, Phasenueberwachung (automatisch nach Projekt-Netztyp: 400V Drehstrom oder 230V Wechselstrom), Phasenkontrollleuchten mit Einzelsicherung, Stoerquittiertaster mit Sammelstoerungsleuchte sowie die Schaltschrank-Innenleuchte mit integrierter Servicesteckdose (deckt den allgemeinen Steckdosenbedarf bereits ab - eine zusaetzliche separate Hutschienensteckdose ist im Standard NICHT enthalten). Bewusst OHNE generische Betriebs-/Stoermeldeleuchte - die kommt erst mit einer konkreten Fach-Anlage dazu (Default dann DDC-Ansteuerung). Automationsstation und Energieversorgung werden vom bestehenden DDC-/Steuerspannungs-Ratchet automatisch ergaenzt, sobald ein Mitglied einen Datenpunkt bzw. eine Steuerspannung benoetigt - beide sind daher bewusst NICHT Teil dieser Anlagen-Definition. Not-Halt und eine redundante Automationsstation bleiben freie Einzelentscheidungen, keiner Anlage zugeordnet.",
+    "mitglieder": [
+      {
+        "bg_id": "480_000019",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000033",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000020",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000021",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000036",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000034",
+        "menge": 1,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000035",
+        "menge": 1,
+        "netztyp_bindung": "wechselstrom"
+      }
+    ],
+    "funktionsbereich": [
+      "automation_anlagen"
+    ],
+    "kategorie": "ASP-Grundausstattung",
+    "geprueft": false
+  },
+  {
+    "id": "480_A00002",
+    "name": "ASP mit Bedienpanel – größere Anlage",
+    "gewerk": "480",
+    "beschreibung": "ASP Standard (480_A00001) plus TouchPanel-Tuereinbau (Groesse waehlbar) und Messgeraet/Energiezaehler UMG96 Tuereinbau (Bus-Protokoll waehlbar) als fester Bestandteil. Reiner Groessen-/Komplexitaets-Tier fuer groessere Anlagen, unabhaengig von Nutzungstyp oder Verfuegbarkeitsanforderung.",
+    "mitglieder": [
+      {
+        "bg_id": "480_000019",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000033",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000020",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000021",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000036",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000034",
+        "menge": 1,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000035",
+        "menge": 1,
+        "netztyp_bindung": "wechselstrom"
+      },
+      {
+        "bg_id": "480_000015",
+        "menge": 1,
+        "gruppe": "touchpanel",
+        "variante_label": "10,1\" PXM40 (klein)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "480_000016",
+        "menge": 1,
+        "gruppe": "touchpanel",
+        "variante_label": "15,6\" PXM50 (groß)"
+      },
+      {
+        "bg_id": "480_000012",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "480_000013",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "480_000014",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "Modbus TCP/IP"
+      }
+    ],
+    "funktionsbereich": [
+      "automation_anlagen"
+    ],
+    "kategorie": "ASP-Grundausstattung",
+    "geprueft": false
+  },
+  {
+    "id": "480_A00003",
+    "name": "ASP Labor/Rechenzentrum/Krankenhaus – hohe Verfügbarkeit",
+    "gewerk": "480",
+    "beschreibung": "ASP mit Bedienpanel (480_A00002) plus Schaltschrank-USV 24V DC mit Meldekontakten, fuer Bereiche mit erhoehten Verfuegbarkeitsanforderungen (Labor, Rechenzentrum, Krankenhaus - z.B. wenn die Automationsstation Notstromaggregate ueberwacht oder Bediengeraete versorgt, UKT-TGA-Standard 3.6). Realisierung 'mit USV fuer DDC' (einfache USV-Absicherung der Automationsstation selbst). Die Variante 'mit externer USV' (echte Doppeleinspeisung, zwei getrennte Energiepfade) ist zurueckgestellt - Feldtyp C in FELDPLAN (Modul 4) ist repeat:false, es gibt aktuell nur EINE Netzeinspeisung pro Anlage; braucht eine eigene Modul-3-Erweiterung.",
+    "mitglieder": [
+      {
+        "bg_id": "480_000019",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000033",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000020",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000021",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000036",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000034",
+        "menge": 1,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000035",
+        "menge": 1,
+        "netztyp_bindung": "wechselstrom"
+      },
+      {
+        "bg_id": "480_000015",
+        "menge": 1,
+        "gruppe": "touchpanel",
+        "variante_label": "10,1\" PXM40 (klein)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "480_000016",
+        "menge": 1,
+        "gruppe": "touchpanel",
+        "variante_label": "15,6\" PXM50 (groß)"
+      },
+      {
+        "bg_id": "480_000012",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "480_000013",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "480_000014",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "Modbus TCP/IP"
+      },
+      {
+        "bg_id": "480_000011",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "automation_anlagen"
+    ],
+    "kategorie": "ASP-Grundausstattung",
+    "geprueft": false
+  }
+]

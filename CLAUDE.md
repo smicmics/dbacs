@@ -105,6 +105,52 @@
 > `scratchpad/anlage_automation_fork_ergebnis.md`,
 > `scratchpad/innenbeleuchtung_fork_ergebnis.md`,
 > `scratchpad/fi_ls_kombi_fork_ergebnis.md`.
+>
+> **Nachtrag Session 67 – Schritt 3 umgesetzt: Anlagen-Engine fertig,
+> Standard-Anlage korrigiert, hohe-Verfügbarkeit-Anlage umbenannt:**
+> Nutzer-Korrektur vor Schritt 3: `480_000018` (Hutschienensteckdose)
+> entfällt aus „ASP Standard" – die Innenleuchte (`480_000036`) bringt
+> bereits eine Servicesteckdose mit, eine zweite ist im Standard unnötig
+> (bleibt als eigenständige Baugruppe im Katalog wählbar). ④a umbenannt zu
+> „ASP Labor/Rechenzentrum/Krankenhaus – hohe Verfügbarkeit" (Reihenfolge).
+> **Neue Excel-Sheets `anlagen` (id/name/gewerk/beschreibung/
+> funktionsbereich/kategorie) + `anlagen_baugruppen`
+> (anlage_id/bg_id/menge/`gruppe`/`variante_label`/`ist_default`/
+> `netztyp_bindung`)** – Join-Muster identisch zu `baugruppen`/
+> `baugruppen_bauteile`, `xlsx_to_json.py` um `export_anlagen()` erweitert
+> → `data/anlagen.json` (3 Anlagen: `480_A00001`/`A00002`/`A00003`, IDs mit
+> „_A"-Marker statt „_0" um Anlagen von Baugruppen zu unterscheiden).
+> **Modul 4 (`modul-04-innenaufbau/index.html`):** `ANLAGEN_DB` per fetch
+> geladen; `filterBaugruppen()` verzweigt bei `gew.endsWith('_anlagen')` in
+> neue `populateAnlagenAuswahl()` (identisches `#bg_auswahl`-Element,
+> Options-Value-Präfix `anlage:<id>` unterscheidet von normalen `bg_id`s);
+> `updateAnlageVariantenUI()` rendert je `gruppe` aus `mitglieder` ein
+> `<select>` (neuer Container `#anlage_varianten`) – TouchPanel-Optionen
+> laufen dabei durch die bereits bestehende `tuerTouchpanelPasstAufTuer()`,
+> damit auf zu kurzen Türen weiterhin nur die kleine Variante erscheint
+> (kein neuer Kollisions-Code nötig, bestehende Prüfung wiederverwendet);
+> `addBaugruppe()` verzweigt bei `anlage:`-Präfix in neues `addAnlage()`,
+> das jedes Mitglied auflöst (fix immer / `netztyp_bindung` nach
+> `m03_zone_netztyp`, automatisch / `gruppe` nach Nutzerwahl im Select) und
+> über die aus `addBaugruppe()` extrahierte `addBaugruppeById()` in die
+> normale Belegung schreibt – **keine Verschachtelung**, `belegung` bleibt
+> nach dem Hinzufügen einer Anlage von manuell einzeln hinzugefügten
+> Baugruppen ununterscheidbar (Architektur-Entscheidung Session 64
+> bestätigt funktionsfähig).
+> **Browser-Verifikation:** ② mit Drehstrom+Default-Varianten →
+> `480_000034` (nicht 035) + `480_000015`+`480_000012`, kein `480_000018`;
+> ② mit Wechselstrom+großem Panel+M-Bus manuell gewählt → korrekt
+> `480_000035`+`480_000016`+`480_000013`; ④a → zusätzlich `480_000011`
+> (USV); vollständiger Katalog-Scan 0 verwaiste Referenzen; Tür-Ansicht +
+> Stückliste rendern korrekt (1200×2000-Standschrank, Drehstrom, Schiene
+> 3-polig); keine Konsolenfehler.
+> **Restliste:** ④b (Doppeleinspeisung) weiterhin zurückgestellt; die
+> Tür-Bündel-Kollisionsprüfung bleibt auf den TouchPanel-Einzelfall
+> beschränkt (kein genereller Check für beliebige Bündel-Kombinationen auf
+> beliebigen Schrankgrößen); `removeBaugruppeQty()` kennt Anlagen nicht
+> (Minus-Klick auf eine gewählte Anlage tut nichts – Mitglieder werden
+> stattdessen einzeln über die Belegungsliste entfernt, konsistent mit der
+> bestehenden „kein Korrektur-Komfort"-Philosophie).
 
 > **Sitzungsstand Session 66 (14.09.2026) – Weitere Automation-Baugruppen:
 > Wischrelais-Ergänzung, FI-Typ-B-Korrektur, ÜSS-Zuleitung + 2× Phasen-/
@@ -1445,7 +1491,8 @@ dbacs/
 │   ├── einzelbauteile.json                      Modul-4-Bauteilkatalog (committed, seit Session 27 über Excel gepflegt)
 │   ├── baugruppen.json                          Modul-4-Baugruppen-DB (committed, seit Session 27 über Excel gepflegt)
 │   ├── feldgeraete.json                         Feldgeräte-Katalog außerhalb des Schaltschranks (committed, Modul 5)
-│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (9 Datensheets + 2 reine Referenz-Sheets `funktionsbereiche`/`zonen`, `einzelbauteile`/`baugruppen`+`baugruppen_bauteile`-Verknüpfungstabelle seit Session 27)
+│   ├── anlagen.json                             Anlagen-Katalog (Bündel bestehender bg_ids, committed, Modul 4 seit Session 67)
+│   └── xlsx_to_json.py                          Konvertierungsskript Excel → JSON (10 Datensheets + 2 reine Referenz-Sheets `funktionsbereiche`/`zonen`, `einzelbauteile`/`baugruppen`+`baugruppen_bauteile`-Verknüpfungstabelle seit Session 27, `anlagen`+`anlagen_baugruppen`-Verknüpfungstabelle seit Session 67)
 └── docs/
     ├── revison_session.md                       aktueller Revisionsstand ← immer zuerst lesen
     └── archiv/                                  ältere Session-Dokumentationen

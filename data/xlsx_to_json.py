@@ -20,6 +20,12 @@ Exportiert folgende Sheets aus ga_komponenten.xlsx:
                                                           schranks, von Modul 5
                                                           genutzt, Session 51
                                                           Nachtrag 7)
+  - anlagen +
+    anlagen_baugruppen   → anlagen.json                 (nur aktive Anlagen;
+                                                          mitglieder[] = bg_id-
+                                                          Buendel aus der
+                                                          Verknüpfungstabelle,
+                                                          Session 67)
 
 Reine Referenz-Sheets (kein Export, keine eigene JSON-Datei):
   - funktionsbereiche     Klartext-Nachschlagewerk zu 'gewerk'/'funktionsbereich'
@@ -631,6 +637,87 @@ def export_feldgeraete(wb):
     print(f'{len(rows)} Feldgeraete exportiert → {JSON_FILE.name}')
 
 
+def export_anlagen(wb):
+    # Anlagen (Session 67): buendeln mehrere bestehende bg_ids zu einer
+    # fertigen Automation-/Fach-Anlagen-Konfiguration - analog zu
+    # baugruppen+baugruppen_bauteile, nur eine Ebene hoeher (Anlage ->
+    # Baugruppen statt Baugruppe -> Einzelbauteile). KEINE Verschachtelung
+    # im Sinne von "Anlage referenziert Anlage" - `mitglieder` enthaelt
+    # ausschliesslich bg_id-Verweise auf `baugruppen`. Modul 4 loest eine
+    # Anlage beim Uebernehmen (addAnlage()) zu normalen
+    # {typ:'baugruppe', bg_id, menge}-Belegungseintraegen auf, die gesamte
+    # uebrige Engine (Zonen/DP/Stueckliste/Tuer) bleibt unveraendert.
+    SHEET = 'anlagen'
+    JOIN_SHEET = 'anlagen_baugruppen'
+    JSON_FILE = Path(__file__).parent / 'anlagen.json'
+
+    if SHEET not in wb.sheetnames:
+        print(f'HINWEIS: Sheet "{SHEET}" nicht gefunden – uebersprungen.')
+        return
+    if JOIN_SHEET not in wb.sheetnames:
+        print(f'HINWEIS: Sheet "{JOIN_SHEET}" nicht gefunden – uebersprungen.')
+        return
+
+    join_ws = wb[JOIN_SHEET]
+    join_headers = [cell.value for cell in next(join_ws.iter_rows(min_row=1, max_row=1))]
+    mitglieder_je_anlage = {}
+    for row in join_ws.iter_rows(min_row=2, values_only=True):
+        if not any(row):
+            continue
+        rec = dict(zip(join_headers, row))
+        anlage_id = rec.get('anlage_id')
+        if not anlage_id or not rec.get('bg_id'):
+            continue
+        m = {'bg_id': str(rec['bg_id']), 'menge': int(rec['menge'])}
+        # gruppe (Session 67): mehrere Zeilen mit derselben `gruppe` bilden
+        # eine echte Praxis-Variante (z.B. TouchPanel-Groesse) - Modul 4
+        # zeigt dafuer ein <select>, `ist_default` markiert die
+        # vorausgewaehlte Option. Zeilen OHNE `gruppe` sind fixe
+        # Standardmitglieder.
+        if rec.get('gruppe') is not None:
+            m['gruppe'] = str(rec['gruppe'])
+        if rec.get('variante_label') is not None:
+            m['variante_label'] = str(rec['variante_label'])
+        if rec.get('ist_default'):
+            m['ist_default'] = True
+        # netztyp_bindung (Session 67): diese Zeile nur uebernehmen, wenn sie
+        # zum aktuell in Modul 3 gewaehlten Netztyp passt (analog
+        # resolveNetztypArtikel() auf Einzelbauteil-Ebene) - KEINE manuelle
+        # Auswahl, automatisch aufgeloest in addAnlage() (Modul 4).
+        if rec.get('netztyp_bindung') is not None:
+            m['netztyp_bindung'] = str(rec['netztyp_bindung'])
+        mitglieder_je_anlage.setdefault(str(anlage_id), []).append(m)
+
+    ws = wb[SHEET]
+    headers = [cell.value for cell in next(ws.iter_rows(min_row=1, max_row=1))]
+
+    rows = []
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        if not any(row):
+            continue
+        rec = dict(zip(headers, row))
+        if not rec.get('aktiv'):
+            continue
+        entry = {
+            'id':          str(rec['id']),
+            'name':        str(rec['name']),
+            'gewerk':      str(rec['gewerk']),
+            'beschreibung': str(rec['beschreibung']),
+            'mitglieder':  mitglieder_je_anlage.get(str(rec['id']), []),
+        }
+        if rec.get('funktionsbereich') is not None:
+            entry['funktionsbereich'] = [f.strip() for f in str(rec['funktionsbereich']).split(',')]
+        if rec.get('kategorie') is not None:
+            entry['kategorie'] = str(rec['kategorie'])
+        entry['geprueft'] = bool(rec.get('geprueft'))
+        rows.append(entry)
+
+    with open(JSON_FILE, 'w', encoding='utf-8') as f:
+        json.dump(rows, f, ensure_ascii=False, indent=2)
+
+    print(f'{len(rows)} Anlagen exportiert → {JSON_FILE.name}')
+
+
 def main():
     if not EXCEL_FILE.exists():
         print(f'FEHLER: {EXCEL_FILE} nicht gefunden.')
@@ -646,6 +733,7 @@ def main():
     export_einzelbauteile(wb)
     export_baugruppen(wb)
     export_feldgeraete(wb)
+    export_anlagen(wb)
 
 
 if __name__ == '__main__':

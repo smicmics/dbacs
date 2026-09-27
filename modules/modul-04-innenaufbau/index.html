@@ -318,6 +318,9 @@ legend{
 .klemmen-variante-row{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:2px;}
 .ddc-auf-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px;}
 .ddc-auf-row .rowbreak-lbl{gap:4px;}
+#anlage_varianten{flex-wrap:wrap;gap:8px 14px;margin-top:6px;}
+.anlage-variante-lbl{display:flex;flex-direction:column;gap:2px;font-size:10px;color:var(--tx2);}
+.anlage-variante-lbl select{font-size:11px;padding:2px 4px;background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;}
 #ddc_protokoll{font-size:10px;padding:1px 4px;background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;}
 .btn-add-sm{background:var(--green);color:#000;}
 .btn-sub-sm{background:var(--bg3);color:var(--tx2);border:1px solid var(--bords);}
@@ -676,7 +679,7 @@ fieldset{
     <div class="eb-field">
       <label>Baugruppe · Anlage</label>
       <div class="bg-add-row">
-        <select id="bg_auswahl" style="flex:1">
+        <select id="bg_auswahl" style="flex:1" onchange="updateAnlageVariantenUI()">
           <option value="">Laden …</option>
         </select>
         <input id="bg_menge" type="number" value="1" min="1" max="99">
@@ -685,6 +688,7 @@ fieldset{
           <button class="btn-sub-sm" onclick="removeBaugruppeQty()" title="Menge abziehen">&#8722;</button>
         </div>
       </div>
+      <div id="anlage_varianten" style="display:none"></div>
     </div>
 
     <div class="eb-field">
@@ -908,6 +912,15 @@ const isDdcSupplyTyp = t => t === 'ddc_io' || t === 'ddc_cpu';
 // ── Daten ────────────────────────────────────────────────────────────
 let EINZELBAUTEILE_DB = [];
 let BAUGRUPPEN_DB     = [];
+// Anlagen (Session 67): eine Anlage buendelt mehrere bestehende bg_ids +
+// Menge, aufgeloest ueber `mitglieder` (analog zu baugruppen.bauteile, aus
+// dem Excel-Join `anlagen_baugruppen` exportiert). Keine Verschachtelung im
+// Datenmodell - `addAnlage()` schreibt beim Uebernehmen einfach mehrere
+// normale {typ:'baugruppe', bg_id, menge}-Eintraege in `belegung`, die
+// gesamte uebrige Engine (Zonen, DP-Statistik, Stueckliste, Tuer-Ansicht,
+// Ratchets) bleibt unveraendert (siehe CLAUDE.md/Memory
+// project_anlagenbaugruppen.md).
+let ANLAGEN_DB        = [];
 let belegung          = [];  // [{typ:'baugruppe', bg_id, menge, ci}, {typ:'einzel', artikel_nr, menge, ci}, ...]
 // Ergebnis des letzten calculateFelder()-Laufs (Session 48) – speist die
 // Feld-Auswahl (#feld_auf_row) für Türbauteile mit der aktuell bekannten
@@ -978,9 +991,10 @@ function loadProjFields() {
 // ── Datenladen ───────────────────────────────────────────────────────
 async function loadData() {
   try {
-    [EINZELBAUTEILE_DB, BAUGRUPPEN_DB] = await Promise.all([
+    [EINZELBAUTEILE_DB, BAUGRUPPEN_DB, ANLAGEN_DB] = await Promise.all([
       fetch('../../data/einzelbauteile.json').then(r => r.json()),
-      fetch('../../data/baugruppen.json').then(r => r.json())
+      fetch('../../data/baugruppen.json').then(r => r.json()),
+      fetch('../../data/anlagen.json').then(r => r.json())
     ]);
     init();
   } catch(e) {
@@ -1281,6 +1295,9 @@ function filterBaugruppen(gew) {
   const sel = document.getElementById('bg_auswahl');
   const cur = sel.value;
   sel.innerHTML = '<option value="">— Baugruppe wählen —</option>';
+  // Anlagen-Tab-Reihe (Session 67): eigener Zweig, gleiches Dropdown-Element,
+  // aber Datenquelle ANLAGEN_DB statt BAUGRUPPEN_DB (siehe populateAnlagenAuswahl()).
+  if (gew.endsWith('_anlagen')) { populateAnlagenAuswahl(sel, gew, cur); return; }
   // funktionsbereich ist seit Session 51 Nachtrag 9 immer ein Array (analog
   // einzelbauteile.zone, Session 44) - eine Baugruppe kann dadurch in
   // mehreren Gewerke-Tabs gleichzeitig erscheinen (z.B. ein Raumsensor in
@@ -1308,19 +1325,128 @@ function filterBaugruppen(gew) {
       });
     sel.appendChild(og);
   });
+  updateAnlageVariantenUI();
 }
+
+// ── Anlagen (Session 67) ────────────────────────────────────────────────
+// Dropdown-Werte fuer Anlagen tragen bewusst das Praefix "anlage:", damit
+// addBaugruppe() zwischen einer normalen bg_id und einer Anlagen-id
+// unterscheiden kann, ohne die IDs selbst zu verwechseln (Anlagen-IDs haben
+// zusaetzlich das Schema "<gewerk>_A00001" statt "<gewerk>_000001").
+function populateAnlagenAuswahl(sel, gew, cur) {
+  const kategorien = {};
+  ANLAGEN_DB
+    .filter(a => a.funktionsbereich && a.funktionsbereich.includes(gew))
+    .forEach(a => { (kategorien[a.kategorie || 'Anlagen'] = kategorien[a.kategorie || 'Anlagen'] || []).push(a); });
+  Object.keys(kategorien).sort().forEach(kat => {
+    const og = document.createElement('optgroup');
+    og.label = kat;
+    kategorien[kat].forEach(a => {
+      const opt = document.createElement('option');
+      opt.value = 'anlage:' + a.id;
+      opt.textContent = a.name;
+      if (opt.value === cur) opt.selected = true;
+      og.appendChild(opt);
+    });
+    sel.appendChild(og);
+  });
+  updateAnlageVariantenUI();
+}
+
+// Baut die Varianten-Auswahl (z.B. TouchPanel-Groesse, UMG-Protokoll) fuer
+// die aktuell im Dropdown gewaehlte Anlage. Jede `gruppe` aus
+// anlage.mitglieder wird zu genau einem <select>; Mitglieder ohne `gruppe`
+// (Standardbestandteile) oder mit `netztyp_bindung` (automatisch nach
+// Projekt-Netztyp aufgeloest, siehe addAnlage()) erscheinen hier NICHT als
+// Auswahl. Fuer die TouchPanel-Gruppe wird die bereits bestehende
+// tuerTouchpanelPasstAufTuer()-Pruefung wiederverwendet, um auf zu kurzen
+// Tueren die grosse Variante auszublenden (gleiche Regel wie im normalen
+// Baugruppen-Dropdown, Session 64 Nachtrag 6).
+function updateAnlageVariantenUI() {
+  const box = document.getElementById('anlage_varianten');
+  const val = gs('bg_auswahl');
+  if (!val.startsWith('anlage:')) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  const anlage = ANLAGEN_DB.find(a => a.id === val.slice(7));
+  if (!anlage) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  const gruppen = {};
+  (anlage.mitglieder || []).forEach(m => {
+    if (!m.gruppe) return;
+    (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(m);
+  });
+  const keys = Object.keys(gruppen);
+  if (!keys.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  box.style.display = 'flex';
+  box.innerHTML = keys.map(gr => {
+    const opts = gruppen[gr]
+      .filter(m => {
+        const bg = BAUGRUPPEN_DB.find(b => b.id === m.bg_id);
+        return bg ? tuerTouchpanelPasstAufTuer(bg) : true;
+      })
+      .map(m => `<option value="${m.bg_id}"${m.ist_default ? ' selected' : ''}>${m.variante_label || m.bg_id}</option>`)
+      .join('');
+    return `<label class="anlage-variante-lbl">${ANLAGE_GRUPPEN_LABEL[gr] || gr}
+      <select id="anlage_variante_${gr}">${opts}</select></label>`;
+  }).join('');
+}
+const ANLAGE_GRUPPEN_LABEL = { touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll' };
 
 // ── Belegung ─────────────────────────────────────────────────────────
 function addBaugruppe() {
-  const bgId  = gs('bg_auswahl');
-  const menge = Math.max(1, g('bg_menge'));
-  if(!bgId) return;
+  const sel = gs('bg_auswahl');
+  if(!sel) return;
+  if(sel.startsWith('anlage:')) { addAnlage(sel.slice(7)); return; }
+  addBaugruppeById(sel, Math.max(1, g('bg_menge')));
+  consolidateBelegung();
+  saveBelegung();
+  renderBelegung();
+  calculate();
+}
+
+// Fuegt EINE Baugruppen-Instanz zur Belegung hinzu (mergt mit einer
+// bestehenden Zeile gleicher bg_id) - aus addBaugruppe() extrahiert
+// (Session 67), damit addAnlage() denselben Merge-Mechanismus fuer jedes
+// ihrer Mitglieder wiederverwenden kann, ohne consolidateBelegung()/
+// saveBelegung()/renderBelegung()/calculate() je Mitglied einzeln
+// auszuloesen (das passiert einmal am Ende von addAnlage()).
+function addBaugruppeById(bgId, menge) {
   const ex = belegung.find(b => b.typ === 'baugruppe' && b.bg_id === bgId);
   if(ex) {
     ex.menge += menge;
   } else {
     belegung.push({typ:'baugruppe', bg_id: bgId, menge, ci: belegung.length % BG_COLORS.length});
   }
+}
+
+// Loest eine Anlage (Buendel bestehender bg_ids, Session 67) zu ihren
+// Mitgliedern auf und schreibt sie als normale Baugruppen-Eintraege in die
+// Belegung - KEINE Verschachtelung im Datenmodell, `belegung` bleibt
+// danach von manuell einzeln hinzugefuegten Baugruppen ununterscheidbar
+// (Architektur-Entscheidung Session 64, siehe CLAUDE.md/Memory
+// project_anlagenbaugruppen.md). Drei Arten von Mitgliedern:
+//  - fix (kein `gruppe`, kein `netztyp_bindung`): immer enthalten.
+//  - netztyp-automatisch (`netztyp_bindung`): nur die zum aktuell in
+//    Modul 3 gewaehlten Netztyp passende Zeile wird uebernommen (analog
+//    resolveNetztypArtikel() auf Einzelbauteil-Ebene, hier auf
+//    Baugruppen-Ebene) - KEINE manuelle Auswahl im Anlagen-Dialog, sonst
+//    entstuende genau die Redundanz, die die Anlagen-Architektur vermeiden
+//    soll (Nutzer-Vorgabe, siehe Fork-Recherche
+//    scratchpad/anlage_automation_fork_ergebnis.md, These 1).
+//  - echte Praxis-Variante (`gruppe`): genau die vom Nutzer in
+//    updateAnlageVariantenUI() gewaehlte bg_id wird uebernommen.
+function addAnlage(anlageId) {
+  const anlage = ANLAGEN_DB.find(a => a.id === anlageId);
+  if(!anlage) return;
+  const anlageMenge = Math.max(1, g('bg_menge'));
+  const netztyp = localStorage.getItem('m03_zone_netztyp') || 'drehstrom';
+  (anlage.mitglieder || []).forEach(m => {
+    if(m.netztyp_bindung && m.netztyp_bindung !== netztyp) return;
+    if(m.gruppe) {
+      const auswahlEl = document.getElementById('anlage_variante_' + m.gruppe);
+      const gewaehlt = auswahlEl ? auswahlEl.value : null;
+      if(gewaehlt !== m.bg_id) return;
+    }
+    addBaugruppeById(m.bg_id, (m.menge || 1) * anlageMenge);
+  });
   consolidateBelegung();
   saveBelegung();
   renderBelegung();
