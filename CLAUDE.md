@@ -16,6 +16,96 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Sitzungsstand Session 67 (27.09.2026) – Start des Anlagen-Features
+> (Schritt 1/2 für Automation), neue Baugruppe Schaltschrank-Innenleuchte,
+> Normenlücken-Korrektur an `480_000018`:**
+> Nutzer-Entscheidung zum Anlagen-Konzept (siehe Memory
+> `project_anlagenbaugruppen.md`): eine Anlage bündelt bestehende `bg_id`s,
+> Schranktyp/Feldaufteilung/Netzanschluss bleiben außerhalb der Anlagen-
+> Definition (kommen aus Modul 1–3), CPU (`480_000007`) und Energieversorgung
+> (`480_000008`–`010`) werden nicht explizit gelistet (automatischer Ratchet),
+> LVB bleibt global. 3-Schritte-Ablauf: (1) Fork recherchiert praxisnahe
+> Konfigurationen, (2) Katalog-Vollständigkeit prüfen/nachbessern, (3) Anlage
+> zusammensetzen (Excel-Sheets `anlagen`/`anlagen_baugruppen` + `addAnlage()`
+> – **Schritt 3 noch nicht umgesetzt**, diese Session deckt nur 1+2 für die
+> Automation-Anlagen ab).
+> **3 Automation-Anlagen-Vorschläge (Schritt 1, Fork-Recherche, Quellen:
+> Werksnorm 8 GLT-Standard + UKT-Krankenhaus-TGA-Standard V3.0):**
+> - **① „ASP Standard"**: Hauptschalter (`019`), ÜSS mit Fernmeldung (`033`),
+>   Phasenüberwachung (`034`/`035`, automatisch nach Projekt-Netztyp),
+>   Phasenkontrollleuchten (`020`), Störquittiertaster mit Sammelstörungsleuchte
+>   (`021`) – **plus NEU Schaltschrank-Innenleuchte (`480_000036`, s.u.)**.
+>   Bewusst OHNE generische Betriebs-/Störmeldeleuchte (`028`–`031`) – die
+>   kommt erst mit einer konkreten Fach-Anlage dazu (Default dann
+>   DDC-Ansteuerung).
+> - **② „ASP mit Bedienpanel"**: ① + TouchPanel (`015` klein/`016` groß,
+>   echte Auswahl) + UMG96 (`012`/`013`/`014`, Protokollauswahl zwingend) als
+>   fester Bestandteil. Reiner Größen-/Komplexitäts-Tier, unabhängig von
+>   Nutzungstyp/Verfügbarkeit.
+> - **④ „ASP Krankenhaus/Labor/Rechenzentrum – hohe Verfügbarkeit"**: ④a = ②
+>   + USV (`011`), sofort umsetzbar. ④b (externe USV = Doppeleinspeisung)
+>   zurückgestellt – **Doppeleinspeisung ist strukturell NICHT vorgesehen**
+>   (Feldtyp C in `FELDPLAN` ist `repeat:false`, Code-Kommentar bestätigt „es
+>   gibt nur EINE Netzeinspeisung pro Anlage"), bräuchte einen neuen
+>   Modul-3-Schalter, der `uss`/`klemm_e` innerhalb desselben Feldes verdoppelt
+>   (funktioniert dann auch im Wandschrank) – eigener Folgeschritt, inkl.
+>   Fachfrage ob eine Netzumschalt-/Verriegelungseinrichtung nötig ist.
+> - Alte „③ Krankenhaus/Labor" entfällt als eigener Vorschlag (Inhalt jetzt in
+>   ②/④ verteilt). Not-Halt (`032`) und die Doppel-CPU bleiben frei wählbare
+>   Einzelentscheidungen, keiner Anlage fest zugeordnet.
+> - Platzbedarf je Anlage wurde je Zone anhand echter `b_mm`/`h_mm`-Summen
+>   berechnet (nicht grob geschätzt, Nutzer-Vorgabe) – Details in
+>   `scratchpad/anlage_automation_fork_ergebnis.md`.
+> - **Bekannte Lücke:** Tür-Kollisionsprüfung ist bisher nur als gezielter
+>   Einzelfall-Filter vorhanden (`tuerTouchpanelPasstAufTuer()`, Session 64),
+>   kein generischer Check für ein komplettes Anlagen-Bündel auf beliebigen
+>   Schrankgrößen – muss für Schritt 3 erweitert werden (Prüfung des GESAMTEN
+>   Bündels gegen die echten Türmaße, nicht nur TouchPanel isoliert).
+> **NEU `480_000036` „Schaltschrank-Innenleuchte mit Servicesteckdose, FI Typ
+> B + LSS mit Hilfskontakten, Magnetmontage, 230V AC"** (Kategorie neu:
+> „Beleuchtung", `bauteil_typ` neu: `innenleuchte`): Phoenix Contact PLD E 608
+> W 315/F (`2702226`, 685lm/9,8W LED, Schuko bis 16A, IP20, Schutzklasse I,
+> Bewegungsmelder integriert) + Magnet-Set (`2702315`) + Anschlusskabel
+> (`2702302`), alle `keine_platzierung_mp:true` (magnetisch an der
+> Gehäuseoberkante, kein Montageplattenbedarf). Fork-Recherche (Rittal/Phoenix/
+> Siemens/weitere geprüft): **keine** Leuchte+Steckdose+FI-Kombi am Markt
+> existent – Phoenix Contact gewählt (etabliertes Fabrikat für Steckdosen).
+> **Wichtiger Normen-Fund:** der bereits katalogisierte FI `5SV3321-4` ist ein
+> reiner FI (RCD), **kein** FI/LS-Kombigerät – bietet keinen
+> Überlast-/Kurzschlussschutz (VDE-0100-430-Lücke), betraf auch die
+> bestehende `480_000018`. Siemens führt **keinen** Typ-B-FI/LS-Kombischalter
+> (komplette 5SU1-Baureihe nur Typ A, Original-Bestellauswahlhilfe SIEP-T10061
+> geprüft) – Fabrikatsabweichung zu Doepke (`DRCBO 4 B16/0,03/1N-B SK`,
+> `09949104`, echter 1P+N-Typ-B-RCBO) wurde dem Nutzer vorgeschlagen, aber
+> **explizit abgelehnt** – Nutzer-Vorgabe: bei Siemens/Typ B bleiben, FI
+> (`5SV3321-4`) + LSS (`5SL6116-6`, 1-polig B16A, bereits katalogisiert) als
+> zwei getrennte Bauteile. **Modellierung Ruhestromkette (neu, wiederverwendbar
+> für ähnliche Fälle):** beide Schutzorgane bekommen je einen Hilfsschalter
+> (`5ST3010`), BEIDE Öffnerkontakte in Reihe auf denselben DDC-Eingang – nur
+> EIN `dp_bi:1`-Override (auf der ersten Hilfsschalter-Zeile), die zweite
+> Hilfsschalter-Zeile trägt bewusst KEIN dp – Auslösung von FI ODER LSS meldet
+> zuverlässig einen Ausfall, ohne die Datenpunktzahl zu erhöhen. Gleiche
+> Korrektur (LSS `5SL6116-6` + 2. Hilfsschalter, Ruhestromkette) rückwirkend
+> auch auf `480_000018` angewendet (schließt dieselbe Normenlücke dort).
+> **Export:** einzelbauteile 218→**221** (`2702226`/`2702315`/`2702302`),
+> baugruppen 181→**182** (`480_000036` neu, `480_000018` bearbeitet),
+> feldgeraete unverändert 96. Backup:
+> `ga_komponenten_vor-innenleuchte-fi-ls_20260927_*.xlsx`. Browser-Verifikation
+> (Standschrank, beide Baugruppen gleichzeitig platziert): vollständiger
+> Katalog-Scan (Regel 7) 0 verwaiste Referenzen, Stückliste zeigt korrekt 4×
+> Hilfsschalter/2×FI/2×LSS/1×Leuchte/1×Magnet-Set/1×Kabel, `ddcSummary` bestätigt
+> exakt `dp_bi.used:2` (1 je Baugruppe trotz je 2 Hilfsschaltern), keine
+> Konsolenfehler.
+> **Restliste:** keine Preise für `2702226`/`2702315`/`2702302` gefunden
+> (Distributoranfrage nötig); Doppeleinspeisung (④b) strukturell offen (s.o.);
+> Schritt 3 (Anlagen-Engine: `anlagen`/`anlagen_baugruppen`-Sheets,
+> `addAnlage()`, Tür-Bündel-Kollisionsprüfung) noch nicht begonnen; „Wartungs-
+> meldeleuchte gelb" (aus Fork-Recherche) auf Nutzer-Wunsch bewusst NICHT
+> umgesetzt (individuelle Nachrüstentscheidung). Rohdaten in
+> `scratchpad/anlage_automation_fork_ergebnis.md`,
+> `scratchpad/innenbeleuchtung_fork_ergebnis.md`,
+> `scratchpad/fi_ls_kombi_fork_ergebnis.md`.
+
 > **Sitzungsstand Session 66 (14.09.2026) – Weitere Automation-Baugruppen:
 > Wischrelais-Ergänzung, FI-Typ-B-Korrektur, ÜSS-Zuleitung + 2× Phasen-/
 > Spannungsüberwachung:**

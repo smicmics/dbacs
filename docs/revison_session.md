@@ -1,6 +1,17 @@
 # DBACS – Revisionsstand
 
-**Stand:** 14. September 2026 – Session 66 (Modul 4,
+**Stand:** 27. September 2026 – Session 67 (Modul 4 Katalog,
+`data/ga_komponenten.xlsx`): Start des Anlagen-Features (Schritt 1+2 für die
+Automation-Anlagen ①/②/④a/④b, Details `CLAUDE.md` → „Offene Punkte"). Neue
+Baugruppe `480_000036` „Schaltschrank-Innenleuchte mit Servicesteckdose, FI
+Typ B + LSS, Magnetmontage" (Phoenix Contact PLD E 608 W 315/F) + Korrektur
+`480_000018` (LSS `5SL6116-6` ergänzt, schließt VDE-0100-430-Normenlücke des
+reinen FI `5SV3321-4` – Siemens hat keinen Typ-B-FI/LS-Kombischalter, Doepke-
+Alternative vom Nutzer abgelehnt, zwei Siemens-Bauteile + Ruhestromketten-
+Hilfsschalter stattdessen). Export: einzelbauteile 218→221, baugruppen
+181→182, feldgeraete unverändert 96. Schritt 3 (Anlagen-Engine) noch offen.
+
+Vorheriger Stand – Session 66 (14.09.2026, Modul 4,
 `modules/modul-04-innenaufbau/index.html`): weitere Automation-Baugruppen für
 die ASP-Grundausstattung. `480_000021` um Wischrelais `RE22R2HMR` ergänzt;
 `480_000018` (Schaltschranksteckdose) von LSS auf FI Typ B `5SV3321-4`

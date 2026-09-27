@@ -3403,5 +3403,48 @@
     ],
     "kategorie": "Netzüberwachung",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "2702226",
+    "bezeichnung": "Schaltschrank-Innenleuchte mit Servicesteckdose PLD E 608 W 315/F, LED 685lm/9,8W, Steckdose Typ F/Schuko bis 16A, IP20, Schutzklasse I, Bewegungsmelder integriert",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "innenleuchte",
+    "b_mm": 315.4,
+    "te_breite": 18,
+    "h_mm": 91.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Beleuchtung",
+    "keine_platzierung_mp": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2702315",
+    "bezeichnung": "PLD E 608-ME MM - Set fuer Magnetbefestigung (Zubehoer zu 2702226)",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "zubehoer",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "leist"
+    ],
+    "keine_platzierung_mp": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2702302",
+    "bezeichnung": "Anschlusskabel 3m, freies Kabelende (Zubehoer zu 2702226)",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "zubehoer",
+    "b_mm": null,
+    "te_breite": null,
+    "h_mm": null,
+    "zone": [
+      "leist"
+    ],
+    "keine_platzierung_mp": true,
+    "geprueft": false
   }
 ]

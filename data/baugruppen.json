@@ -7001,9 +7001,9 @@
   },
   {
     "id": "480_000018",
-    "name": "Schaltschranksteckdose Hutschiene, FI Typ B mit Hilfskontakt, im Leistungsfeld",
+    "name": "Schaltschranksteckdose Hutschiene, FI Typ B + LSS mit Hilfskontakten, im Leistungsfeld",
     "gewerk": "480",
-    "beschreibung": "Schutzkontakt-Steckdose fuer Hutschienenmontage (Phoenix Contact EO-CF/PT, 250V/16A) im Leistungsfeld (Nutzer-Vorgabe), abgesichert mit FI-Schutzschalter 2-polig Typ B 16A/30mA (5SV3321-4 - heute Pflicht fuer Schutzkontaktsteckdosen, ersetzt den bisherigen LSS 5SL6110-6) + Hilfsschalter (5ST3010, 1S+1Oe, laut Session-63-Recherche auch fuer 5SV3-FIs geeignet). Schrankinterne Steckdose (kein Feldkabel, kein externer Verbraucher) - Ausloese-BI direkt auf der Hilfsschalter-Zeile, keine Klemme noetig (Regel 12). Datenpunktbedarf 1x BI (Ausloesung).",
+    "beschreibung": "Schutzkontakt-Steckdose fuer Hutschienenmontage (Phoenix Contact EO-CF/PT, 250V/16A) im Leistungsfeld (Nutzer-Vorgabe), abgesichert mit FI-Schutzschalter 2-polig Typ B 16A/30mA (5SV3321-4, heute Pflicht fuer Schutzkontaktsteckdosen) + vorgeschaltetem LSS 1-polig B16A (5SL6116-6) - schliesst die Normenluecke VDE 0100-430 (ein reiner FI bietet keinen Leitungsschutz). Siemens fuehrt keinen Typ-B-FI/LS-Kombischalter (5SU1-Baureihe nur Typ A, per Original-Bestellauswahlhilfe geprueft), daher zwei getrennte Bauteile statt einem Kombigeraet (Fabrikatsabweichung zu Doepke DRCBO 4 explizit NICHT gewaehlt - Nutzer-Vorgabe: bei Siemens/Typ B bleiben). Je Schutzorgan ein Hilfsschalter (2x 5ST3010, 1S+1Oe, universell aufsteckbar), BEIDE Oeffnerkontakte in Reihe (Ruhestromkette) auf denselben DDC-Eingang gefuehrt - Ausloesung von FI ODER LSS meldet zuverlaessig einen Ausfall dieser Energieversorgung, ohne die Datenpunktzahl zu erhoehen. Schrankinterne Steckdose (kein Feldkabel, kein externer Verbraucher) - keine Klemme noetig (Regel 12). Datenpunktbedarf weiterhin 1x BI (Ausloesung, jetzt FI+LS gemeinsam ueber Ruhestromkette).",
     "bauteile": [
       {
         "artikel_nr": "5ST3010",
@@ -7018,6 +7018,16 @@
       },
       {
         "artikel_nr": "5SV3321-4",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5SL6116-6",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5ST3010",
         "menge": 1,
         "zone": "leist"
       }
@@ -7374,6 +7384,56 @@
       "automation"
     ],
     "kategorie": "Netzüberwachung",
+    "geprueft": false
+  },
+  {
+    "id": "480_000036",
+    "name": "Schaltschrank-Innenleuchte mit Servicesteckdose, FI Typ B + LSS mit Hilfskontakten, Magnetmontage, 230V AC",
+    "gewerk": "480",
+    "beschreibung": "Schaltschrank-Innenleuchte mit integrierter Schutzkontakt-Steckdose (Phoenix Contact PLD E 608 W 315/F, Art. 2702226, LED 685lm/9,8W, Steckdose Typ F/Schuko bis 16A, IP20, Schutzklasse I, integrierter Bewegungsmelder) fuer Wartungsbeleuchtung und mobile Handwerkzeuge/Handlampen. Magnetische Montage an der Innenseite der Gehaeuseoberkante (Magnet-Set 2702315 + Anschlusskabel 2702302 als Zubehoer) - kein Montageplatten-Platzbedarf, kein Bohren (keine_platzierung_mp). Personenschutz ueber FI-Schutzschalter 2-polig Typ B 16A/30mA (Siemens SENTRON 5SV3321-4, identischer Artikel wie in 480_000018) + vorgeschaltetem LSS 1-polig B16A (5SL6116-6) - Siemens fuehrt keinen Typ-B-FI/LS-Kombischalter (komplette 5SU1-Baureihe nur Typ A, per Original-Bestellauswahlhilfe SIEP-T10061 geprueft), daher zwei getrennte Siemens-Bauteile statt einem Kombigeraet (Fabrikatsabweichung zu Doepke DRCBO 4 B16/0,03/1N-B SK explizit NICHT gewaehlt - Nutzer-Vorgabe: bei Siemens/Typ B bleiben). Je Schutzorgan ein Hilfsschalter (2x 5ST3010, 1S+1Oe, universell aufsteckbar), BEIDE Oeffnerkontakte in Reihe (Ruhestromkette) auf denselben DDC-Eingang gefuehrt - Ausloesung von FI ODER LSS unterbricht die Schleife und meldet zuverlaessig einen Ausfall dieser Energieversorgung, ohne die Datenpunktzahl zu erhoehen (1x BI gesamt). Zone leist (analog 480_000018, Automation-Steckdosen-/Leuchten-Baugruppen sitzen im Leistungsfeld). Vorgesehen als Bestandteil der geplanten Anlage 'ASP Standard'. Kein Preis fuer 2702226/2702315/2702302 gefunden (Distributoranfrage noetig).",
+    "bauteile": [
+      {
+        "artikel_nr": "2702226",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "2702315",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "2702302",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5SV3321-4",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "5SL6116-6",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "leist"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Beleuchtung",
     "geprueft": false
   }
 ]
