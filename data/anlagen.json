@@ -34,6 +34,16 @@
         "bg_id": "480_000035",
         "menge": 1,
         "netztyp_bindung": "wechselstrom"
+      },
+      {
+        "bg_id": "480_000037",
+        "menge": 1,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000038",
+        "menge": 1,
+        "netztyp_bindung": "wechselstrom"
       }
     ],
     "funktionsbereich": [
@@ -109,6 +119,16 @@
         "menge": 1,
         "gruppe": "umg_protokoll",
         "variante_label": "Modbus TCP/IP"
+      },
+      {
+        "bg_id": "480_000037",
+        "menge": 1,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000038",
+        "menge": 1,
+        "netztyp_bindung": "wechselstrom"
       }
     ],
     "funktionsbereich": [
@@ -188,6 +208,16 @@
       {
         "bg_id": "480_000011",
         "menge": 1
+      },
+      {
+        "bg_id": "480_000037",
+        "menge": 1,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000038",
+        "menge": 1,
+        "netztyp_bindung": "wechselstrom"
       }
     ],
     "funktionsbereich": [

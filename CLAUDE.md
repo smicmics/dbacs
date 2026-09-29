@@ -100,6 +100,45 @@
 > Über alle Kombinationen: 0 verwaiste Referenzen, kein unerwarteter
 > Overflow, keine Konsolenfehler. Die Anlagen-Engine ist damit gegen alle
 > vier Modul-3-Zonenmodi UND beide Schranktypen verifiziert.
+>
+> **Nachtrag Session 67 (29.09.2026, Teil 5) – Beide Restlücken geschlossen
+> (Nutzer-Vorgabe: „außer Doppeleinspeisung, das machen wir separat"):**
+> 1. **NEU `480_000037`/`480_000038` „Einspeiseklemmen Drehstrom
+>    (L1/L2/L3/N/PE)"/„...Wechselstrom (L/N/PE)"** (Kategorie neu:
+>    „Einspeisung", Zone `klemm_e`) – **keine neuen Einzelbauteile nötig**,
+>    die Phoenix Contact UT-2,5-Reihe war bereits seit Session 27b
+>    katalogisiert, nur nie referenziert (0/181 Baugruppen nutzten bisher
+>    `klemm_e`, jetzt bestätigt behoben). UT2,5 als kleinste/repräsentative
+>    Baugröße gewählt (DBACS bilanziert keine reale Anschlussleistung).
+>    Farbschema L1 braun/L2 schwarz/L3 grau/N blau/PE grün-gelb folgt dem
+>    Standard-Phoenix-Schema – die in Session 52 aufgeworfene Grundsatzfrage
+>    „in der Praxis oft nur grau" bleibt bewusst unentschieden, nur
+>    dokumentiert. Beide neuen Baugruppen zusätzlich in `anlagen_baugruppen`
+>    für ①②④a verankert (`netztyp_bindung` wie bei der Phasenüberwachung,
+>    automatische Auflösung nach Projekt-Netztyp, keine manuelle Auswahl).
+> 2. **Tür-Bündel-Kollisionsprüfung erweitert:** `tuerTouchpanelPasstAufTuer()`
+>    in `touchpanelPasstMitMessgeraetHoehen()` (reine Distanzformel) +
+>    Wrapper extrahiert; neue `tuerTouchpanelPasstAufTuerInAnlage(bg, anlage)`
+>    berücksichtigt zusätzlich Messgeräte, die über DIESELBE Anlage
+>    gleichzeitig hinzukommen (z.B. die `umg_protokoll`-Gruppe), nicht nur
+>    bereits in der Belegung stehende – schließt die beim Bau der
+>    Anlagen-Engine dokumentierte Lücke. `updateAnlageVariantenUI()`
+>    nutzt jetzt diese Variante für den TouchPanel-Options-Filter.
+> **Browser-Verifikation:** ① mit `480_000037` (Drehstrom) korrekt
+> aufgelöst, `klemm_e` 29% befüllt (vorher 0%), keine verwaisten
+> Referenzen. TouchPanel-Filter: auf 1200×2000-Standschrank bleiben
+> beide Größen wählbar (Regressionscheck bestanden); auf einem sehr
+> kleinen 600×600-Wandschrank werden jetzt **beide** Größen korrekt
+> ausgeblendet (rechnerisch passt selbst PXM40 nicht mehr neben das
+> gleichzeitig hinzukommende UMG96-Messgerät – Distanzformel bestätigt:
+> 169mm nötig vs. 66mm Bandabstand verfügbar). **Bekannte Rand-Einschränkung
+> (kein Crash, aber UX-Lücke):** ist die Options-Liste dadurch leer, wählt
+> `addAnlage()` gar kein TouchPanel aus (leerer `<select>`-Wert passt zu
+> keiner `bg_id`) – die Anlage wird trotzdem anstandslos ohne TouchPanel
+> hinzugefügt, ohne Warnhinweis für den Nutzer. Kein Fehlverhalten (keine
+> Bauteile verschwinden unbemerkt, kein Overlap entsteht), aber ein
+> stummes Weglassen ohne Rückmeldung – bei Bedarf später um einen
+> sichtbaren Hinweistext ergänzen. Keine Konsolenfehler in beiden Fällen.
 
 > **Nachtrag Session 67 (29.09.2026) – Zwei echte Platzierungs-Bugs durch
 > Anlagen-Praxistest gefunden + behoben (Nutzer-Fund: „ASP Standard" zeigte

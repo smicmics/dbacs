@@ -7435,5 +7435,71 @@
     "automationsanbindung": true,
     "kategorie": "Beleuchtung",
     "geprueft": false
+  },
+  {
+    "id": "480_000037",
+    "name": "Einspeiseklemmen Drehstrom 3~ (L1/L2/L3/N/PE)",
+    "gewerk": "480",
+    "beschreibung": "Einspeiseklemmen fuer die Netzzuleitung, Zone klemm_e (Modul 3 reserviert dafuer bereits Platz, TE_KLEMME_ES_DS=5TE - bisher aber kein Katalogeintrag, der diese Zone tatsaechlich befuellt). Phoenix Contact UT 2,5 Durchgangsklemmen (0,14-4mm2, kleinste Baugroesse als Platzhalter - DBACS bilanziert keine reale Anschlussleistung), 5-polig: L1 braun (3044077), L2 schwarz (3045088), L3 grau (3044076), N blau (3044089), PE gruen-gelb (3044092). Farbcodierung L1/L2/L3 folgt dem Standard-Phoenix-Contact-Schema (braun/schwarz/grau) - Grundsatzfrage 'in der Praxis oft nur grau' aus Session 52 weiterhin nicht abschliessend entschieden, siehe CLAUDE.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3044077",
+        "menge": 1,
+        "zone": "klemm_e"
+      },
+      {
+        "artikel_nr": "3045088",
+        "menge": 1,
+        "zone": "klemm_e"
+      },
+      {
+        "artikel_nr": "3044076",
+        "menge": 1,
+        "zone": "klemm_e"
+      },
+      {
+        "artikel_nr": "3044089",
+        "menge": 1,
+        "zone": "klemm_e"
+      },
+      {
+        "artikel_nr": "3044092",
+        "menge": 1,
+        "zone": "klemm_e"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Einspeisung",
+    "geprueft": false
+  },
+  {
+    "id": "480_000038",
+    "name": "Einspeiseklemmen Wechselstrom 1~ (L/N/PE)",
+    "gewerk": "480",
+    "beschreibung": "Einspeiseklemmen fuer die Netzzuleitung, Zone klemm_e (Modul 3 reserviert dafuer bereits Platz, TE_KLEMME_ES_WS=3TE). Phoenix Contact UT 2,5 Durchgangsklemmen, 3-polig: L braun (3044077, gleicher Artikel wie L1 der Drehstrom-Variante), N blau (3044089), PE gruen-gelb (3044092).",
+    "bauteile": [
+      {
+        "artikel_nr": "3044077",
+        "menge": 1,
+        "zone": "klemm_e"
+      },
+      {
+        "artikel_nr": "3044089",
+        "menge": 1,
+        "zone": "klemm_e"
+      },
+      {
+        "artikel_nr": "3044092",
+        "menge": 1,
+        "zone": "klemm_e"
+      }
+    ],
+    "funktionsbereich": [
+      "automation"
+    ],
+    "kategorie": "Einspeisung",
+    "geprueft": false
   }
 ]

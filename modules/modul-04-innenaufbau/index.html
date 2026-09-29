@@ -1385,7 +1385,7 @@ function updateAnlageVariantenUI() {
     const opts = gruppen[gr]
       .filter(m => {
         const bg = BAUGRUPPEN_DB.find(b => b.id === m.bg_id);
-        return bg ? tuerTouchpanelPasstAufTuer(bg) : true;
+        return bg ? tuerTouchpanelPasstAufTuerInAnlage(bg, anlage) : true;
       })
       .map(m => `<option value="${m.bg_id}"${m.ist_default ? ' selected' : ''}>${m.variante_label || m.bg_id}</option>`)
       .join('');
@@ -4084,6 +4084,17 @@ const TUER_BAND_TOUCHPANEL        = 0.85;
 // Touchpanel-Wahl noch ein (zu großes) Messgerät ergänzt wird – die
 // Prüfung läuft nur beim Aufbau des Dropdowns (Gewerke-Tab-Wechsel), nicht
 // bei jeder Belegungsänderung.
+// Kernformel aus tuerTouchpanelPasstAufTuer() extrahiert (Session 67), damit
+// sie auch von der Anlagen-bewussten Variante darunter wiederverwendet werden
+// kann, statt die Distanzrechnung zu duplizieren.
+function touchpanelPasstMitMessgeraetHoehen(tpBauteil, messgeraetHoehenMm, masse) {
+  if (!tpBauteil || !masse || !messgeraetHoehenMm.length) return true;
+  const messgeraetMaxH = Math.max(...messgeraetHoehenMm);
+  const neededMm = messgeraetMaxH / 2 + (tpBauteil.h_mm || 0) / 2 + 22; // 22mm Mindest-Steg, s. o.
+  const neededBand = neededMm / masse.h;
+  return (TUER_BAND_TOUCHPANEL - TUER_BAND_MESSGERAET) >= neededBand;
+}
+
 function tuerTouchpanelPasstAufTuer(bg) {
   const tpBauteil = (bg.bauteile || [])
     .map(bt => EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr))
@@ -4092,11 +4103,35 @@ function tuerTouchpanelPasstAufTuer(bg) {
   const masse = getGehaeuseAussenmasse(gs('schrank_typ'));
   if (!masse) return true; // Türmaße unbekannt -> nicht vorschnell ausblenden
   const messgeraeteAufTuer = getTuerItems(1).filter(eb => eb.bauteil_typ === 'messgeraet');
-  if (messgeraeteAufTuer.length === 0) return true; // (noch) kein Messgerät auf der Tür
-  const messgeraetMaxH = Math.max(...messgeraeteAufTuer.map(eb => eb.h_mm || 0));
-  const neededMm = messgeraetMaxH / 2 + (tpBauteil.h_mm || 0) / 2 + 22; // 22mm Mindest-Steg, s. o.
-  const neededBand = neededMm / masse.h;
-  return (TUER_BAND_TOUCHPANEL - TUER_BAND_MESSGERAET) >= neededBand;
+  return touchpanelPasstMitMessgeraetHoehen(tpBauteil, messgeraeteAufTuer.map(eb => eb.h_mm || 0), masse);
+}
+
+// Anlagen-bewusste Variante (Session 67, schliesst die beim Bau der Anlagen-
+// Engine dokumentierte Luecke): tuerTouchpanelPasstAufTuer() sah bisher nur
+// bereits in der Belegung stehende Messgeraete - kommt das Messgeraet aber
+// ERST GLEICHZEITIG ueber dieselbe Anlage (z.B. die umg_protokoll-Gruppe von
+// "ASP mit Bedienpanel"/"hohe Verfuegbarkeit"), war es beim Aufbau der
+// TouchPanel-Groessenauswahl noch nicht sichtbar. Sammelt daher zusaetzlich
+// die Messgeraete-Hoehen aus ALLEN Mitgliedern der Anlage (unabhaengig davon,
+// welche Variante/welcher Netztyp am Ende tatsaechlich gewaehlt wird - rein
+// konservativ, da alle 3 UMG-Protokollvarianten ohnehin identisch 96x96mm
+// gross sind).
+function tuerTouchpanelPasstAufTuerInAnlage(bg, anlage) {
+  const tpBauteil = (bg.bauteile || [])
+    .map(bt => EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr))
+    .find(eb => eb && eb.bauteil_typ === 'touchpanel');
+  if (!tpBauteil) return true;
+  const masse = getGehaeuseAussenmasse(gs('schrank_typ'));
+  if (!masse) return true;
+  const hoehen = getTuerItems(1).filter(eb => eb.bauteil_typ === 'messgeraet').map(eb => eb.h_mm || 0);
+  (anlage.mitglieder || []).forEach(m => {
+    const mbg = BAUGRUPPEN_DB.find(b => b.id === m.bg_id);
+    (mbg ? mbg.bauteile : []).forEach(bt => {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+      if (eb && eb.bauteil_typ === 'messgeraet') hoehen.push(eb.h_mm || 0);
+    });
+  });
+  return touchpanelPasstMitMessgeraetHoehen(tpBauteil, hoehen, masse);
 }
 
 // Ordnet ein Türbauteil einem Höhenband zu – bewusst vereinfacht: Bauteile
