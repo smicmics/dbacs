@@ -2612,16 +2612,17 @@ function calculate() {
   // calculateFelder() bereits feldübergreifend eindeutig, siehe buildIdxMap()).
   const aggZones = {};
   ALLE_ZONEN.forEach(zn => {
-    let mm_total = 0, mm_used = 0; const channels = []; const rows = [];
+    let mm_total = 0, mm_used = 0, overflow = false; const channels = []; const rows = [];
     felder.forEach(f => {
       const z = f.zones[zn];
       if (!z) return;
       mm_total += z.mm_total;
       mm_used  += z.mm_used;
+      if (z.overflow) overflow = true;
       if (z.channels) channels.push(...z.channels);
       if (z.rows) rows.push(...z.rows);
     });
-    aggZones[zn] = { te_belegt: totalDemandTe[zn] || 0, mm_total, mm_used, channels, rows };
+    aggZones[zn] = { te_belegt: totalDemandTe[zn] || 0, mm_total, mm_used, overflow, channels, rows };
   });
   // Session 67: ueber Felder aggregierte Zonenansicht auch global verfuegbar
   // machen (analog letzteFelder/letzteDdcAuto) - Grundlage fuer den
@@ -3937,11 +3938,23 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
   // nach Abschluss aller Felder tatsächlich noch unplatzierter Rest in der
   // Warteschlange steht (harter, echter Überlauf – z. B. MAX_FELDER erreicht
   // oder "kein Fortschritt").
+  // Session 67 Nachtrag (Nutzer-Fund, echter Bug): das ursprüngliche
+  // `if (!z.overflow) return;` übersprang Zonen, deren EIGENER
+  // placeInBands()/placeInKlemmRow()-Aufruf schon mit `overflow:false`
+  // zurückkam, weil in diesem Feld gar keine devs für die Zone anstanden
+  // (0 von 0 "platziert") – genau das passiert, wenn eine Baugruppen-Instanz
+  // schon im Reservierungs-Dry-Run (`platziereBaugruppenFuerFeld()`) für
+  // JEDE ihrer Zonen scheitert (z.B. weil ein Vollfeld/`repeat:false`-
+  // Feldtyp keine Folgefeld-Kaskade kennt) und dadurch NIE in `queues[zn]`
+  // landet – die Instanz blieb dann in `bgInstanceQueue` hängen, ohne dass
+  // die Zone das je bemerkte (0 Bedarf ≠ kein Bedarf). Fix: overflow für
+  // JEDE Zone im letzten sie zeigenden Feld neu aus dem tatsächlichen Rest
+  // ableiten (Warteschlange ODER offene Baugruppen-Instanz), statt nur
+  // einen bereits gesetzten `true`-Wert zu bestätigen/verwerfen.
   const lastFieldIdxForZone = {};
   felder.forEach((f, i) => { Object.keys(f.zones).forEach(zn => { lastFieldIdxForZone[zn] = i; }); });
   felder.forEach((f, i) => {
     Object.entries(f.zones).forEach(([zn, z]) => {
-      if (!z.overflow) return;
       const bgRestZn = bgInstanceQueue.some(inst => inst.zonen[zn]);
       z.overflow = lastFieldIdxForZone[zn] === i && ((queues[zn] || []).length > 0 || bgRestZn);
     });

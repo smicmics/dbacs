@@ -16,6 +16,88 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 67 (29.09.2026, Teil 8) – Echter Overflow-Erkennungs-
+> Bug gefunden + behoben, `480_A00004` Doppeleinspeisung vollständig Ende-
+> zu-Ende verifiziert (Nutzer-Auftrag: „Teste alle ASP-Varianten und
+> Einspeiseformen intensiv... Die Grundausstattung eines ASP muss passen"):**
+> Systematischer Testlauf (①②④a + neu `480_A00004`, je Standschrank/
+> Wandschrank × Drehstrom/Wechselstrom × alle 4 `zone_modus` ×
+> Doppeleinspeisung ja/nein, mit `stuecklisteVsPlatzierungCheck()` +
+> Overflow-Auswertung je Konfiguration) deckte einen echten, bisher
+> unbemerkten Bug in `calculateFelder()` auf:
+> **Bug:** die Overflow-Bereinigung am Ende von `calculateFelder()`
+> (`if (!z.overflow) return;`) übersprang jede Zone, deren EIGENER
+> `placeInBands()`/`placeInKlemmRow()`-Aufruf in diesem Feld bereits mit
+> `overflow:false` zurückkam – das passiert immer dann, wenn in einem Feld
+> gar keine Bauteile für diese Zone zur Platzierung anstanden (0 von 0
+> „platziert"), weil die zugehörige(n) Baugruppen-Instanz(en) schon im
+> Reservierungs-Dry-Run (`platziereBaugruppenFuerFeld()`) für JEDE ihrer
+> Zonen gescheitert sind und dadurch nie in `queues[zn]` (und damit nie in
+> `placeInBands()`) ankamen. In einem `repeat:false`-Feldtyp (z. B. Typ A
+> „Vollfeld" bei `zone_modus='1feld'`, oder Typ C „Einspeisung" bei JEDEM
+> Modus) gibt es kein Folgefeld, das die Instanz nachträglich aufnehmen
+> könnte – sie blieb bis zum Sitzungsende sang- und klanglos in
+> `bgInstanceQueue` hängen, **ohne jede Warnung**: kein rotes „!" in der
+> Zeichnung, keine Overflow-Markierung, nur eine unvollständige Stückliste-
+> vs-Platzierung, die man erst mit dem neuen Cross-Check-Tool bemerkt.
+> Gefunden am konkreten Fall: `480_A00001` „ASP Standard" (Drehstrom) auf
+> einem sehr kleinen 600×600-Wandschrank – `evert`/`leist`/`steuer` waren
+> faktisch zu klein (Montagebereich reicht nicht für Drehstrom-Energie-
+> verteilung + Rest), aber `platziert:19` statt `stueckliste:21`,
+> `fehlendPlatziert:["RE22R2HMR","3UG5616-1CR20"]`, **`overflow:[]` – keine
+> einzige Zone war markiert**, obwohl 2 Artikel komplett fehlten. Sehr
+> wahrscheinlich dieselbe Fehlerklasse wie der in Session 67 Teil 6
+> dokumentierte, nie reproduzierte „ÜSS wieder 0%"-Nutzerfund (dort vermutet
+> als reiner Client-Altzustand – könnte stattdessen genau dieser Bug
+> gewesen sein, wenn der Nutzer eine Konfiguration nahe der Kapazitätsgrenze
+> hatte).
+> **Fix (zwei Stellen in `modul-04-innenaufbau/index.html`):**
+> 1. `calculateFelder()`: die Overflow-Neuberechnung am Ende läuft jetzt
+>    UNBEDINGT für jede Zone in jedem Feld (kein `if (!z.overflow) return;`
+>    mehr) – `z.overflow` wird für jede Zone im JEWEILS LETZTEN sie
+>    zeigenden Feld frisch aus dem tatsächlichen Rest abgeleitet
+>    (`queues[zn].length>0` ODER eine offene `bgInstanceQueue`-Instanz für
+>    diese Zone), unabhängig vom ursprünglichen Wert.
+> 2. `calculate()`: die über alle Felder aggregierte `aggZones`-Ansicht
+>    (`letzteAggZones`, Grundlage für `stuecklisteVsPlatzierungCheck()` UND
+>    `buildFuellstand()`) hatte das `overflow`-Feld bisher komplett
+>    unterschlagen (`aggZones[zn] = {te_belegt, mm_total, mm_used, channels,
+>    rows}` – kein `overflow`-Schlüssel) – jetzt per OR über alle Felder
+>    ergänzt.
+> **Browser-Verifikation des Fixes:** derselbe 600×600-Wandschrank-Fall
+> zeigt jetzt korrekt `overflow:["evert","leist","steuer"]` bei weiterhin
+> `fehlendPlatziert:["RE22R2HMR","3UG5616-1CR20"]` – Stückliste-Lücke UND
+> Overflow-Warnung stimmen jetzt überein. Regressionscheck: ein künstlicher
+> Stresstest (`480_A00003` mit `bg_menge=4` auf `zone_modus='je_feld'`)
+> zeigt weiterhin korrekt NUR `klemm_e`/`uss` als Overflow (Einspeisung ist
+> strukturell `repeat:false`, kann keine 4-fache Menge in einem einzigen
+> Feld aufnehmen – exakt das erwartete Verhalten, keine Überkorrektur).
+> **Vollständiger Testlauf `480_A00004` „ASP Standard mit Doppeleinspeisung"
+> Ende-zu-Ende** (vorher nur die Modul-3-Zonenverdopplung isoliert
+> getestet, jetzt erstmals mit der Anlage selbst kombiniert): Standschrank ×
+> {Drehstrom/Wechselstrom} × {1feld, getrennt_els, einsp_misch, je_feld},
+> plus Wandschrank 600×600 (Wechselstrom – overflow korrekt erkannt, Schrank
+> schlicht zu klein) und Wandschrank 1000×1200 (Wechselstrom – passt
+> vollständig, 0 Abweichungen) – **in JEDER Standschrank-Kombination sowie
+> im ausreichend großen Wandschrank**: `belegung` zeigt korrekt `menge:2`
+> für Hauptschalter/ÜSS/Phasenkontrollleuchten/Phasenüberwachung/
+> Einspeiseklemmen und `menge:1` für Störquittiertaster+SSM/Innenleuchte,
+> `fehlendPlatziert:[]`, `overflow:[]`, 0 Konsolenfehler. Regressionscheck
+> „Doppeleinspeisung in Modul 3 aktiv, aber nicht-verdoppelte Anlage (①) in
+> Modul 4 gewählt": kein Absturz, Zone bleibt einfach unterausgelastet.
+> **Grundausstattung ①②④a zusätzlich regressionsgeprüft** (Standschrank ×
+> Drehstrom/Wechselstrom × 1feld/getrennt_els/einsp_misch, Wandschrank
+> 600×600 Drehstrom): durchgängig `fehlendPlatziert:[]`, `overflow:[]`
+> außer dem oben beschriebenen, jetzt korrekt erkannten Wandschrank-
+> Kapazitätsfall – bestätigt die Grundausstattung ist über alle getesteten
+> Varianten hinweg weiterhin korrekt (keine Regression durch die
+> Doppeleinspeisung/AV-SV-USV-Ergänzungen).
+> **Bestätigt (Nutzer-Erwartung „Ausnahme Wandschrank"):** ein zu kleiner
+> Wandschrank überläuft korrekt sichtbar statt mehr Felder zu bekommen
+> (Wandschrank erzwingt strukturell `zone_modus='1feld'`, keine Folgefeld-
+> Kaskade) – ein ausreichend großer Wandschrank (1000×1200) verkraftet auch
+> die verdoppelte Einspeisegruppe anstandslos.
+
 > **Nachtrag Session 67 (29.09.2026, Teil 7) – Einspeisungsart AV/SV/USV als
 > Modul-3-Grundlage ergänzt (Nutzer-Vorgabe zur Doppeleinspeisungs-
 > Klassifikation):** Nutzer-Feedback zum vorherigen Vorschlag (AV/NEA,
