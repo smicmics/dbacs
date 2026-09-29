@@ -79,6 +79,27 @@
 > aktives Problem, nur bei manueller Wahl der großen Variante relevant).
 > Bleibt als dokumentierte Einschränkung bestehen (siehe Restliste
 > „Tür-Bündel-Kollisionsprüfung").
+>
+> **Nachtrag Session 67 (29.09.2026, Teil 4) – Prüfroutine um Mehrfeld-/
+> Zonenmodi erweitert (Nutzer-Vorgabe: „auch für getrennte Schränke oder
+> Zonen sicherstellen"):** Wandschrank erzwingt immer `zone_modus='1feld'`
+> (bestehende Regel), Mehrfeld ist daher nur am Standschrank relevant.
+> Alle 4 `zone_modus`-Werte mit ④a (Superset aller Anlagen-Mitglieder)
+> getestet:
+> - `1feld` × nebeneinander (Drehstrom): korrekt, bereits übereinander
+>   vorher getestet.
+> - `je_feld`: bei 1×/4× Menge bleibt es bei 1 Feld (Demand passt), bei 8×
+>   korrekt 2 Felder (A+B), Folgefeld-Kaskade funktioniert, kein Overflow.
+> - `getrennt_els` (Einspeisung/Leistung/Steuerung als 3 eigene Felder C/D/
+>   E): korrekt – eine Instanz mit Zonen in unterschiedlichen Feldtypen
+>   (z.B. Hauptschalter tuer+steuer, nur in Feld E) wartet automatisch bis
+>   zum passenden Feld, alle Zonen befüllt, kein Overflow.
+> - `einsp_misch` (Einspeisung getrennt C, Leistung+Steuerung gemischt B),
+>   zusätzlich mit Wechselstrom kombiniert: korrekt, 2 Felder (C+B), auch
+>   mit 3× Menge (Folgefeld-Druck) weiterhin fehlerfrei.
+> Über alle Kombinationen: 0 verwaiste Referenzen, kein unerwarteter
+> Overflow, keine Konsolenfehler. Die Anlagen-Engine ist damit gegen alle
+> vier Modul-3-Zonenmodi UND beide Schranktypen verifiziert.
 
 > **Nachtrag Session 67 (29.09.2026) – Zwei echte Platzierungs-Bugs durch
 > Anlagen-Praxistest gefunden + behoben (Nutzer-Fund: „ASP Standard" zeigte
