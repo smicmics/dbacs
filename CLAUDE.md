@@ -54,6 +54,31 @@
 > Leistung 30–34%, Steuerung 52–77%, keine Nullen, 0 verwaiste Referenzen,
 > beide Baugruppen zeigen FI/LSS/Hilfsschalter korrekt in `evert`, keine
 > Konsolenfehler.
+>
+> **Nachtrag Session 67 (29.09.2026, Teil 3) – Vollständiger Audit + Test
+> aller 3 Anlagen (Nutzer-Auftrag „Prüfe und platziere komplett"):**
+> Zusätzliche ②/④a-Bauteile (TouchPanel `015`/`016`, Web-Schnittstelle
+> `S55842-Z117`, UMG `012`/`013`/`014` + LSS `5SL6316-7`, USV `2320225`/
+> `2320296`) gegen die Modellierungsregeln geprüft – **keine weiteren
+> Zonenfehler gefunden** (LSS der UMG-Baugruppen war schon seit Session 58
+> korrekt in `evert`; USV-Netzteil/Batterie korrekt in `leist`, kein
+> Schutzorgan enthalten). Danach alle 3 Anlagen systematisch durchgetestet:
+> Drehstrom×Schiene ja/nein, Wechselstrom, alle TouchPanel-/UMG-
+> Protokoll-Varianten (10 Kombinationen) – **durchgängig korrekt platziert,
+> 0 verwaiste Referenzen, keine Konsolenfehler.** Dabei einen eigenen
+> Testfehler gefunden und korrigiert (kein App-Bug): direktes Pokern von
+> `m03_zone_schiene` per `localStorage` ohne Modul 3 neu zu durchlaufen
+> lässt abhängige Werte wie `m03_h_evert` veraltet stehen (zeigte
+> fälschlich `evert:0%`) – nach echtem Modul-3-Durchlauf korrekt.
+> **Bestätigte, bereits bekannte Lücke (keine Regression):** die
+> TouchPanel-Größenauswahl (`tuerTouchpanelPasstAufTuer()`) sieht das im
+> selben Anlagen-Aufruf gleichzeitig hinzukommende Messgerät noch nicht,
+> weil dessen Zonen-Zugehörigkeit erst bei `addAnlage()` selbst entsteht –
+> auf einem sehr kleinen 600×600-Wandschrank blieben rechnerisch beide
+> TouchPanel-Größen wählbar (Default „klein" landet aber sicher, kein
+> aktives Problem, nur bei manueller Wahl der großen Variante relevant).
+> Bleibt als dokumentierte Einschränkung bestehen (siehe Restliste
+> „Tür-Bündel-Kollisionsprüfung").
 
 > **Nachtrag Session 67 (29.09.2026) – Zwei echte Platzierungs-Bugs durch
 > Anlagen-Praxistest gefunden + behoben (Nutzer-Fund: „ASP Standard" zeigte
