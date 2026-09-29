@@ -16,6 +16,45 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 67 (29.09.2026, Teil 2) – Zonen-Korrektur FI/LSS
+> (evert statt leist), Cache-Falle beim lokalen Testen behoben, Einspeise-
+> klemmen-Katalog-Lücke bestätigt:**
+> Nutzer-Fund per Screenshot: obwohl der Platzierungs-Bug (s. o.) behoben
+> war, saßen FI/LSS/Hilfsschalter in `480_000036` (neue Innenleuchte) UND
+> `480_000018` (heute editierte Steckdose) fälschlich in Zone `leist` statt
+> `evert` – ich hatte mich am alten „im Leistungsfeld"-Präzedenzfall von
+> `480_000018` orientiert statt gegen die etablierte Regel zu prüfen (die 11
+> LSS/FI-Baugruppen aus Session 63, Gewerk 440, nutzen durchgängig `evert`).
+> **Fix:** `5SV3321-4` (FI) + `5SL6116-6` (LSS) + beide `5ST3010`-
+> Hilfsschalter in beiden Baugruppen auf `evert` verschoben (8 Zeilen in
+> `baugruppen_bauteile`). Die Steckdose/Leuchte selbst (kein Schutzorgan)
+> bleibt bewusst in `leist`.
+> **Wichtiger Nebenfund – Cache-Falle beim lokalen Testen:** der statische
+> Python-Devserver (`http.server`) schickt keine Cache-Control-Header –
+> nach einer Code-/Katalogkorrektur lieferte der Browser bei normalem
+> Reload wiederholt die VORHERIGE Version von `baugruppen.json` **und sogar
+> der HTML/JS-Dateien selbst** aus dem HTTP-Cache aus (sah wie ein neuer
+> Bug aus, war nur veraltete Daten). Fix: `fetch(...,{cache:'no-store'})`
+> für die drei Katalog-JSONs in `loadData()` (Modul 4) ergänzt – deckt aber
+> NICHT das HTML/JS-Dokument selbst ab. **Merksatz für künftige Sessions:**
+> nach jeder Code-Änderung beim lokalen Testen einen Hard-Refresh (Strg+
+> Shift+R) machen bzw. eine Cache-Bust-Query (`?cb=1`) an die URL hängen,
+> sonst können Verifikationsergebnisse falsch-negativ oder falsch-positiv
+> ausfallen.
+> **Bestätigte Katalog-Lücke (nicht neu, aber jetzt sichtbar):** vollständiger
+> Scan über alle 181 Baugruppen zeigt **0 Baugruppen, die jemals etwas in
+> Zone `klemm_e` (Einspeiseklemmen) platzieren** – es gibt schlicht noch
+> keine Einspeiseklemmen-Baugruppe im Katalog (Planungsfabrikat Phoenix
+> Contact UT-Reihe laut Modul-4-Architekturregeln vorgesehen, aber nie
+> angelegt). Betrifft nicht nur Automation/ASP, sondern den gesamten
+> Katalog. Noch nicht behoben – Nutzer-Rückfrage, ob das jetzt als Teil von
+> „ASP Standard" ergänzt wird oder als eigener Folgeschritt.
+> **Browser-Verifikation:** alle 3 Anlagen (①②④a) in Wechselstrom mit
+> erzwungenem Cache-Bust neu getestet – ÜSS 91%, Energievert. 30–38%,
+> Leistung 30–34%, Steuerung 52–77%, keine Nullen, 0 verwaiste Referenzen,
+> beide Baugruppen zeigen FI/LSS/Hilfsschalter korrekt in `evert`, keine
+> Konsolenfehler.
+
 > **Nachtrag Session 67 (29.09.2026) – Zwei echte Platzierungs-Bugs durch
 > Anlagen-Praxistest gefunden + behoben (Nutzer-Fund: „ASP Standard" zeigte
 > in der Zeichnung ÜSS/Energieverteilung/Leistung leer, obwohl in der

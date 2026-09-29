@@ -7008,7 +7008,7 @@
       {
         "artikel_nr": "5ST3010",
         "menge": 1,
-        "zone": "leist",
+        "zone": "evert",
         "dp_bi": 1
       },
       {
@@ -7019,17 +7019,17 @@
       {
         "artikel_nr": "5SV3321-4",
         "menge": 1,
-        "zone": "leist"
+        "zone": "evert"
       },
       {
         "artikel_nr": "5SL6116-6",
         "menge": 1,
-        "zone": "leist"
+        "zone": "evert"
       },
       {
         "artikel_nr": "5ST3010",
         "menge": 1,
-        "zone": "leist"
+        "zone": "evert"
       }
     ],
     "funktionsbereich": [
@@ -7410,23 +7410,23 @@
       {
         "artikel_nr": "5SV3321-4",
         "menge": 1,
-        "zone": "leist"
+        "zone": "evert"
       },
       {
         "artikel_nr": "5ST3010",
         "menge": 1,
-        "zone": "leist",
+        "zone": "evert",
         "dp_bi": 1
       },
       {
         "artikel_nr": "5SL6116-6",
         "menge": 1,
-        "zone": "leist"
+        "zone": "evert"
       },
       {
         "artikel_nr": "5ST3010",
         "menge": 1,
-        "zone": "leist"
+        "zone": "evert"
       }
     ],
     "funktionsbereich": [

@@ -991,10 +991,15 @@ function loadProjFields() {
 // ── Datenladen ───────────────────────────────────────────────────────
 async function loadData() {
   try {
+    // cache:'no-store' (Session 67, Nutzer-Fund): dieser statische Server
+    // schickt keine Cache-Control-Header - ohne no-store lieferte der Browser
+    // nach einer Katalogkorrektur wiederholt die VORHERIGE baugruppen.json
+    // aus dem HTTP-Cache aus, obwohl die Datei laengst neu war (sah wie ein
+    // Zonen-Bug aus, war aber nur veraltete Katalogdaten im Browser).
     [EINZELBAUTEILE_DB, BAUGRUPPEN_DB, ANLAGEN_DB] = await Promise.all([
-      fetch('../../data/einzelbauteile.json').then(r => r.json()),
-      fetch('../../data/baugruppen.json').then(r => r.json()),
-      fetch('../../data/anlagen.json').then(r => r.json())
+      fetch('../../data/einzelbauteile.json', {cache: 'no-store'}).then(r => r.json()),
+      fetch('../../data/baugruppen.json', {cache: 'no-store'}).then(r => r.json()),
+      fetch('../../data/anlagen.json', {cache: 'no-store'}).then(r => r.json())
     ]);
     init();
   } catch(e) {
