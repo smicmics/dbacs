@@ -139,6 +139,42 @@
 > Bauteile verschwinden unbemerkt, kein Overlap entsteht), aber ein
 > stummes Weglassen ohne Rückmeldung – bei Bedarf später um einen
 > sichtbaren Hinweistext ergänzen. Keine Konsolenfehler in beiden Fällen.
+>
+> **Nachtrag Session 67 (29.09.2026, Teil 6) – Stückliste-vs-Platzierung-
+> Cross-Check + stark erweiterte Prüfroutine, Nutzer-Fund „ÜSS wieder 0%"
+> nicht reproduzierbar:**
+> Nutzer meldete per Screenshot erneut ÜSS=0% trotz Stückliste-Eintrag
+> (Klemmraum 20, LVB gefordert, Wechselstrom, Standschrank 699×1499).
+> **Trotz exaktem Nachstellen aller sichtbaren Einstellungen (inkl.
+> vollständigem `localStorage.clear()`) sowie der Hypothese „Anlage
+> mehrfach ohne Leeren hinzugefügt" (menge=3 getestet) ließ sich der Fehler
+> nicht reproduzieren** – uss platzierte in jedem Versuch korrekt (78–91%).
+> Deutet auf clientseitigen Alt-Zustand (Cache/localStorage) im Nutzer-
+> Browser hin, nicht auf einen weiterhin bestehenden Code-Fehler.
+> **Neues, dauerhaftes Verifikationswerkzeug** `stuecklisteVsPlatzierungCheck
+> (aggZones)` (Modul 4, nahe `buildFuellstand()`): vergleicht die Artikel-
+> menge aus der Stückliste (`belegung` + `resolveBaugruppenBauteile()`) mit
+> den tatsächlich in Zonen/Tür/Automatik-Ergänzungen platzierten Artikeln –
+> deckt genau die Fehlerklasse „Stückliste hat es, Zeichnung nicht" ab.
+> Dafür neue globale `letzteAggZones` (Ergebnis des letzten `calculate()`-
+> Laufs, analog `letzteFelder`) eingeführt. **Erweiterte Prüfroutine**
+> (Nutzer-Vorgabe: alle Modul-3-Design-Varianten inkl. „Leistung/Steuerung
+> getrennt/allein/oben-unten/nebeneinander, mehrere Schränke" + Folgefeld-
+> Abschlusstest) – 8 Konfigurationen durchgetestet, je mit ①/②/④a und dem
+> neuen Cross-Check:
+> - Drehstrom+Schiene ja: `1feld` übereinander/nebeneinander, `getrennt_els`,
+>   `einsp_misch` übereinander/nebeneinander
+> - Wechselstrom: `getrennt_els` (+ Abschlusstest 8× und 25× ④a – 25×
+>   erzeugt korrekt **10 Felder** C+7×D+2×E, Folgefeld-Kaskade robust)
+> - Wandschrank (Wechselstrom)
+> Durchgängig: `fehlendPlatziert: []` (Cross-Check 0 Abweichungen), 0
+> verwaiste Referenzen, kein unerwarteter Overflow, keine Konsolenfehler.
+> **Empfehlung an den Nutzer bei erneutem Auftreten:** kompletten
+> `localStorage` leeren (oder Browser-Profil/Inkognito-Fenster testen) und
+> Modul 1/2 → Modul 3 → Modul 4 einmal komplett frisch durchklicken, bevor
+> erneut gemeldet wird – die bisherigen zwei ähnlichen Fälle waren beide
+> auf clientseitige Altzustände zurückzuführen (Cache bzw. nicht neu
+> durchlaufenes Modul 3).
 
 > **Nachtrag Session 67 (29.09.2026) – Zwei echte Platzierungs-Bugs durch
 > Anlagen-Praxistest gefunden + behoben (Nutzer-Fund: „ASP Standard" zeigte

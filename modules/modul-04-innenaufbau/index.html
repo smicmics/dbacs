@@ -926,6 +926,11 @@ let belegung          = [];  // [{typ:'baugruppe', bg_id, menge, ci}, {typ:'einz
 // Feld-Auswahl (#feld_auf_row) für Türbauteile mit der aktuell bekannten
 // Feld-Sequenz (Anzahl + Feldtyp je Feld).
 let letzteFelder = [];
+// Session 67: ueber alle Felder aggregierte Zonenansicht des letzten
+// calculate()-Laufs (mm_used/mm_total/rows je Zone) - Grundlage fuer den
+// Stueckliste-vs-Platzierung-Cross-Check (siehe stuecklisteVsPlatzierungCheck()
+// weiter unten).
+let letzteAggZones = null;
 // DDC-Auto-Modul-Ratchet (Session 28e): { artikel_nr: hoechste bisher berechnete
 // Menge }. Sinkt nie von selbst, siehe applyDdcWatermark() weiter unten.
 let ddcWatermark       = {};
@@ -2618,6 +2623,10 @@ function calculate() {
     });
     aggZones[zn] = { te_belegt: totalDemandTe[zn] || 0, mm_total, mm_used, channels, rows };
   });
+  // Session 67: ueber Felder aggregierte Zonenansicht auch global verfuegbar
+  // machen (analog letzteFelder/letzteDdcAuto) - Grundlage fuer den
+  // Stueckliste-vs-Platzierung-Cross-Check in der Test-/Verifikationsroutine.
+  letzteAggZones = aggZones;
 
   buildFuellstand(aggZones, zp);
   buildStueckliste(aggZones);
@@ -4316,6 +4325,47 @@ function buildTuerAnsicht(feldIndex, wrap, inner) {
 }
 
 // ── Füllstand-Streifen (kompakt) ──────────────────────────────────────
+// ── Verifikations-Hilfsmittel (Session 67) ─────────────────────────────
+// Vergleicht die Artikel aus der Stückliste (aggregateStueckliste()-Quelle:
+// belegung + resolveBaugruppenBauteile()) mit den Artikeln, die TATSÄCHLICH
+// in einer Zone/Tür/Automatik-Ergänzung platziert wurden. Deckt genau die
+// Fehlerklasse "Bauteil steht in der Stückliste, fehlt aber in der
+// Zeichnung" ab (Nutzer-Fund, mehrfach in Session 67 aufgetreten). Kein
+// UI-Element, rein als Konsolen-/Testwerkzeug gedacht:
+//   stuecklisteVsPlatzierungCheck(letzteAggZones)
+// nach einem calculate()-Lauf aufrufen.
+function stuecklisteVsPlatzierungCheck(aggZones) {
+  aggZones = aggZones || letzteAggZones;
+  const variante = klemmenVariante();
+  const stuecklisteArtikel = new Set();
+  belegung.forEach(item => {
+    if (item.typ === 'einzel') { stuecklisteArtikel.add(item.artikel_nr); return; }
+    const bg = BAUGRUPPEN_DB.find(b => b.id === item.bg_id);
+    if (!bg) return;
+    resolveBaugruppenBauteile(bg, variante).forEach(bt => {
+      const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+      if (eb) stuecklisteArtikel.add(eb.artikel_nr);
+    });
+  });
+  const platziertArtikel = new Set();
+  ALLE_ZONEN.forEach(zn => {
+    ((aggZones && aggZones[zn] && aggZones[zn].rows) || []).forEach(row =>
+      (row.blocks || []).forEach(b => platziertArtikel.add(b.artikel_nr)));
+  });
+  getTuerItems(1).forEach(eb => platziertArtikel.add(eb.artikel_nr));
+  ((letzteDdcAuto && letzteDdcAuto.modules) || []).forEach(m => platziertArtikel.add(m.eb.artikel_nr));
+  (letzteSteuerspannungAuto || []).forEach(m => platziertArtikel.add(m.eb.artikel_nr));
+  (letzteKommAuto || []).forEach(m => platziertArtikel.add(m.eb.artikel_nr));
+  // keine_platzierung_mp-Artikel duerfen in der Zeichnung fehlen (aufgestecktes
+  // Zubehoer/magnetisch montiert, kein eigener Montageplatten-Platzbedarf).
+  const fehlendPlatziert = [...stuecklisteArtikel].filter(a => {
+    if (platziertArtikel.has(a)) return false;
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === a);
+    return !(eb && eb.keine_platzierung_mp);
+  });
+  return { stuecklisteCount: stuecklisteArtikel.size, platziertCount: platziertArtikel.size, fehlendPlatziert };
+}
+
 function buildFuellstand(zones, zp) {
   const map = {klemm_e:'klemme', uss:'uss', evert:'evert', leist:'leist', steuer:'steuer', klemm_l:'klemml', klemm_f:'klemmf', klemm_s:'klemms'};
   Object.entries(map).forEach(([zone, id]) => {
