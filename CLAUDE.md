@@ -16,6 +16,47 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 67 (29.09.2026) – Zwei echte Platzierungs-Bugs durch
+> Anlagen-Praxistest gefunden + behoben (Nutzer-Fund: „ASP Standard" zeigte
+> in der Zeichnung ÜSS/Energieverteilung/Leistung leer, obwohl in der
+> Stückliste vorhanden):**
+> Nutzer-Hinweis, der zum Fund führte: „Baugruppen mit all ihren
+> funktionierenden Setzmechanismen müssen jetzt nacheinander aufgerufen
+> werden, um eine Anlage zu bauen – das müssen wir gut testen." Genau das
+> deckte zwei unabhängige, vorher nie in dieser Kombination getestete Bugs
+> auf (ASP ist die erste Anlage überhaupt):
+> 1. **Bug 1 (Datenfehler, Modul 3):** `TE_USS_WS`/`TE_SICH_WS` (ÜSS-Zonen-
+>    breite Wechselstrom) standen noch auf `2`/`2` TE (72mm) – Restwert aus
+>    einer frühen Session, bevor die echten Session-66-Artikel `952305`
+>    (DEHNguard M TNC 275 FM) und `5SG1812` (Sicherungssockel D03) gewählt
+>    wurden, beide real 3TE/44–54mm, zusammen 98mm. Auf `3`/`3` TE (108mm)
+>    angehoben.
+> 2. **Bug 2 (echter Logikfehler, Modul 4, wichtiger):**
+>    `platziereBaugruppenFuerFeld()` brach die GESAMTE
+>    Baugruppen-Instanz-Warteschlange ab (`break`), sobald EINE Instanz in
+>    EINER ihrer Zonen nicht mehr passte – dadurch wurden auch alle
+>    NACHFOLGENDEN Instanzen für völlig andere, noch freie Zonen (z.B.
+>    Leistung/Energieverteilung) verworfen. Eine zu volle ÜSS-Zone ließ so
+>    den kompletten Rest der Anlage unsichtbar bleiben, obwohl dort reichlich
+>    Platz war. Fix: `break` → `continue` (nur die eine nicht passende
+>    Instanz wird übersprungen/bleibt für ein Folgefeld vorgemerkt, alle
+>    anderen werden weiter versucht; Add-Reihenfolge je Zone bleibt gewahrt,
+>    da `confirmed[zn]` weiter sequenziell wächst). Dieser Bug war nicht
+>    anlagen-spezifisch (jede manuelle Mehrfach-Baugruppen-Auswahl mit
+>    Zonen-Overflow hätte ihn auch ausgelöst), wurde aber erst durch die
+>    Anlagen-Bündelung (6+ Baugruppen gleichzeitig über mehrere Zonen)
+>    praktisch sichtbar.
+> **Browser-Verifikation:** alle 3 Anlagen (①②④a) je in Drehstrom UND
+> Wechselstrom getestet (6 Kombinationen) – alle Zonen mit tatsächlichem
+> Inhalt zeigen jetzt korrekt >0% (vorher bei Wechselstrom durchgängig
+> ÜSS/Energievert./Leistung = 0% trotz gefüllter Stückliste), 0 verwaiste
+> Referenzen, keine Konsolenfehler. Regressionscheck: Drehstrom-Zonenmaße
+> unverändert (126mm ÜSS), Overflow-Erkennung funktioniert weiterhin
+> korrekt (8× ④a gleichzeitig → `steuer`-Zone korrekt als Overflow markiert,
+> nicht wieder blackout). Keine Excel-/Katalogänderung nötig, reiner
+> Code-Fix in `modul-03-architektur/index.html` + `modul-04-innenaufbau/
+> index.html`.
+
 > **Sitzungsstand Session 67 (27.09.2026) – Start des Anlagen-Features
 > (Schritt 1/2 für Automation), neue Baugruppe Schaltschrank-Innenleuchte,
 > Normenlücken-Korrektur an `480_000018`:**

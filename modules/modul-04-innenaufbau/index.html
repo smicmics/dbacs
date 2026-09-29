@@ -3706,7 +3706,19 @@ function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, u
       const result = isBandZone(zn) ? placeInBands(devsTry, bands, klemmraum, 0) : placeInKlemmRow(devsTry, bands, 0);
       if (result.leftoverDevs.length > 0) { fitsAll = false; break; }
     }
-    if (!fitsAll) break;
+    // Session 67, Nutzer-Fund (echter Blackout-Bug): passt eine Instanz in
+    // EINER ihrer Zonen nicht mehr (Zone voll), darf das NICHT die gesamte
+    // restliche Warteschlange abbrechen - das hier vorher stehende `break`
+    // verwarf auch alle NACHFOLGENDEN Instanzen, selbst wenn die in ganz
+    // anderen, noch freien Zonen sassen (z.B. eine zu volle ÜSS-Zone hat
+    // dadurch bisher auch Leistung/Energieverteilung leer bleiben lassen,
+    // obwohl dort noch reichlich Platz war). `continue` ueberspringt nur
+    // DIESE eine Instanz (bleibt unbestaetigt in bgInstanceQueue fuer ein
+    // Folgefeld bzw. die Overflow-Markierung), alle anderen werden weiter
+    // versucht. Innerhalb EINER Zone bleibt die Add-Reihenfolge trotzdem
+    // gewahrt, da `confirmed[zn]` weiterhin sequenziell waechst und eine
+    // spaetere Instanz fuer dieselbe volle Zone im Dry-Run ebenso scheitert.
+    if (!fitsAll) continue;
     zonenHier.forEach(zn => {
       confirmed[zn] = confirmed[zn].concat(inst.zonen[zn]);
       delete inst.zonen[zn];

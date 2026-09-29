@@ -562,9 +562,15 @@ const H_KANAL_H_DEF = 40;  // Horizontaler Kabelkanal – Standardwert (Nutzerei
 const B_KANAL_V_DEF = 40;  // Vertikaler Kabelkanal – Standardwert (Nutzereingabe überschreibt)
 
 // ÜSS + Vorsicherung – netztyp-abhängig, liegt neben Leistungsteil (EMV)
-// Wechselstrom 1~: ÜSS 2-polig Typ 2 (z. B. Dehn DG S 2P 275, 2× 1 TE) + D0-Halter L (2 TE)
-const TE_USS_WS   = 2;   // ÜSS Typ 2, 2-polig
-const TE_SICH_WS  = 2;   // Vorsicherung D0, 1× breiter Halter (L-Leiter), 2 TE
+// Wechselstrom 1~: ÜSS 2-polig Typ 2 + D0-Halter L. Session 67, Nutzer-Fund
+// (Bug: Wechselstrom-ÜSS-Baugruppe 480_000033 ueberlief die Zone komplett
+// unsichtbar): die alten 2+2-TE-Werte stammen aus einer fruehen Session,
+// bevor der echte Session-66-Bestandteil `952305` (DEHNguard M TNC 275 FM,
+// real 3 TE/54mm) und `5SG1812` (Sicherungssockel D03, real 3 TE/44mm)
+// katalogisiert wurden - beide zusammen brauchen 98mm/6TE, nicht 72mm/4TE.
+// Auf die realen Katalogmasse angehoben.
+const TE_USS_WS   = 3;   // ÜSS Typ 2, real 952305 DEHNguard M TNC 275 FM = 3 TE
+const TE_SICH_WS  = 3;   // Vorsicherung D0, real 5SG1812 Sicherungssockel D03 = 3 TE
 // Drehstrom 3~: ÜSS 4-polig Typ 2 (z. B. Dehn DG S 4P 275, 4× 1 TE) + D0-Halter L1/L2/L3 (3× 1 TE)
 const TE_USS_DS   = 4;   // ÜSS Typ 2, 4-polig
 const TE_SICH_DS  = 3;   // Vorsicherungen D0, 3× schmaler Halter (L1/L2/L3, N ohne Sich.), 3 TE
