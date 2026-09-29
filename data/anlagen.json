@@ -225,5 +225,58 @@
     ],
     "kategorie": "ASP-Grundausstattung",
     "geprueft": false
+  },
+  {
+    "id": "480_A00004",
+    "name": "ASP Standard mit Doppeleinspeisung",
+    "gewerk": "480",
+    "beschreibung": "ASP Standard (480_A00001) mit VERDOPPELTER Einspeisegruppe fuer zwei unabhaengige, UNVERRIEGELTE Netzeinspeisungen im selben Feld (Nutzer-Vorgabe Session 67 - kein Netzumschalter/keine Verriegelung vorgesehen, beide Einspeisungen sind galvanisch getrennte, gleichzeitig aktive Kreise). Verdoppelt: Hauptschalter (2x 480_000019), Phasenkontrollleuchten (2x 480_000020), Phasenueberwachung (2x, netztyp-automatisch 034/035), Ueberspannungsschutz (2x 480_000033), Einspeiseklemmen (2x, netztyp-automatisch 037/038). Setzt voraus, dass in Modul 3 der Schalter 'Doppeleinspeisung' auf 'Ja' steht (verdoppelt die ÜSS-/Einspeiseklemmen-Zonenbreite b_uss/b_ek entsprechend) - sonst wuerden beide Klemmensaetze nicht in die Zone passen. NICHT verdoppelt (gemeinsam fuer den ganzen Schrank): Stoerquittiertaster mit Sammelstoerungsleuchte (480_000021, Sammelmeldung fasst beide Einspeisungen zusammen), Schaltschrank-Innenleuchte (480_000036, allgemeine Wartungsbeleuchtung). Automationsstation, Energieversorgung und LVB werden weiterhin automatisch/geteilt ergaenzt (unveraendert). Grundlage fuer Doppeleinspeisung - die Variante 'Einspeisung als eigenes, getrenntes Feld' (fuer Netz+externe USV mit eigenem Energiepfad) ist NICHT Teil dieser Anlage, siehe CLAUDE.md/Memory project_anlagenbaugruppen.md.",
+    "mitglieder": [
+      {
+        "bg_id": "480_000019",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000033",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000020",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000021",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000036",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000034",
+        "menge": 2,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000035",
+        "menge": 2,
+        "netztyp_bindung": "wechselstrom"
+      },
+      {
+        "bg_id": "480_000037",
+        "menge": 2,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000038",
+        "menge": 2,
+        "netztyp_bindung": "wechselstrom"
+      }
+    ],
+    "funktionsbereich": [
+      "automation_anlagen"
+    ],
+    "kategorie": "ASP-Grundausstattung",
+    "geprueft": false
   }
 ]

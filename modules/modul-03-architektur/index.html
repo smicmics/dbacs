@@ -457,6 +457,29 @@ fieldset{
         <div class="lbl">KE-Position<span class="var">ke_pos</span></div>
         <input id="zone_ke_pos" type="text" value="–" disabled>
       </div>
+      <div class="field">
+        <div class="lbl">Doppeleinspeisung<span class="var">zone_doppeleinspeisung</span></div>
+        <select id="zone_doppeleinspeisung" onchange="saveZoneInputs();updateZoneVisibility();calculate()" style="width:130px">
+          <option value="nein">Nein</option>
+          <option value="ja">Ja</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="lbl">Einspeisung 1 – Art<span class="var">zone_einspeisung1_typ</span></div>
+        <select id="zone_einspeisung1_typ" onchange="saveZoneInputs();calculate()" style="width:130px">
+          <option value="av">AV</option>
+          <option value="sv">SV (NEA)</option>
+          <option value="usv">USV</option>
+        </select>
+      </div>
+      <div id="zone_einspeisung2_typ_row" class="field" style="display:none">
+        <div class="lbl">Einspeisung 2 – Art<span class="var">zone_einspeisung2_typ</span></div>
+        <select id="zone_einspeisung2_typ" onchange="saveZoneInputs();calculate()" style="width:130px">
+          <option value="av">AV</option>
+          <option value="sv">SV (NEA)</option>
+          <option value="usv">USV</option>
+        </select>
+      </div>
 
       <hr class="zone-sep">
 
@@ -669,6 +692,9 @@ function saveZoneInputs() {
   localStorage.setItem('m03_n_felder',         gs('n_felder'));
   localStorage.setItem('m03_h_kanal_h',        gs('h_kanal_h_mm'));
   localStorage.setItem('m03_b_kanal_v',        gs('b_kanal_v_mm'));
+  localStorage.setItem('m03_doppeleinspeisung', gs('zone_doppeleinspeisung') || 'nein');
+  localStorage.setItem('m03_einspeisung1_typ', gs('zone_einspeisung1_typ') || 'av');
+  localStorage.setItem('m03_einspeisung2_typ', gs('zone_einspeisung2_typ') || 'av');
 }
 function loadZoneInputs() {
   const modus = localStorage.getItem('m03_zone_modus');
@@ -687,6 +713,12 @@ function loadZoneInputs() {
   if (hKanal !== null) _v('h_kanal_h_mm', hKanal);
   const bKanal = localStorage.getItem('m03_b_kanal_v');
   if (bKanal !== null) _v('b_kanal_v_mm', bKanal);
+  const doppel = localStorage.getItem('m03_doppeleinspeisung') || 'nein';
+  _v('zone_doppeleinspeisung', doppel);
+  const einsp1 = localStorage.getItem('m03_einspeisung1_typ') || 'av';
+  _v('zone_einspeisung1_typ', einsp1);
+  const einsp2 = localStorage.getItem('m03_einspeisung2_typ') || 'av';
+  _v('zone_einspeisung2_typ', einsp2);
   updateZoneVisibility();
 }
 function updateZoneVisibility() {
@@ -696,6 +728,9 @@ function updateZoneVisibility() {
   const showPol     = showSchiene && schiene === 'ja';
   document.getElementById('zone_schiene_row').style.display     = showSchiene ? '' : 'none';
   document.getElementById('zone_schiene_pol_row').style.display = showPol     ? '' : 'none';
+  const doppeleinspeisung = gs('zone_doppeleinspeisung') || 'nein';
+  document.getElementById('zone_einspeisung2_typ_row').style.display =
+    doppeleinspeisung === 'ja' ? '' : 'none';
 }
 
 // ── Berechnung ────────────────────────────────────────────────
@@ -761,15 +796,40 @@ function calculateZones(b, h) {
   const isMehreFelder = modus !== '1feld';
   document.getElementById('zone-feld-section').style.display = isMehreFelder ? '' : 'none';
 
+  // Doppeleinspeisung (Session 67, Nutzer-Vorgabe): zwei unabhängige,
+  // unverriegelte Netzeinspeisungen im GLEICHEN Feld – Hauptschalter/
+  // Phasenleuchten/Phasenüberwachung/UMG werden dafür als eigene Baugruppen-
+  // Instanzen (menge:2) in der Anlagen-Definition verdoppelt (Modul 4/
+  // anlagen_baugruppen), das kann diese Zonenrechnung nicht wissen. Was
+  // Modul 3 beisteuern muss: die ÜSS- und Einspeiseklemmen-ZONENBREITE
+  // (`b_uss`/`b_ek`) verdoppeln, da dort dann zwei komplette Klemmensätze
+  // nebeneinander stehen müssen. Alles andere (Energieverteilung, Leistung,
+  // Steuerung, Klemm_l/f/s) bleibt unverändert – die "geteilte Einspeisung
+  // als eigenes Feld"-Variante (Feldtyp C `repeat:true`) ist bewusst NICHT
+  // Teil dieser Grundlage, siehe CLAUDE.md.
+  const doppeleinspeisung = gs('zone_doppeleinspeisung') || 'nein';
+  const doppelFaktor = doppeleinspeisung === 'ja' ? 2 : 1;
+
+  // Einspeisungsart AV/SV/USV (Nutzer-Vorgabe): reine Klassifikation/
+  // Dokumentation je Einspeisung, OHNE eigenen Einfluss auf die Zonenmaße
+  // hier – AV (allgemeines Netz) und SV (NEA-gestützte Sicherheitsversorgung)
+  // verhalten sich für den Platzbedarf identisch (beide sind ungepufferte
+  // Wechselstromquellen, kein Sonderbauteil), nur USV signalisiert eine
+  // bereits vorgelagerte Batteriepufferung. Ausgewertet wird das erst in
+  // Modul 4 bei der Anlagen-Auswahl (z. B. "hohe Verfügbarkeit" braucht bei
+  // AV/USV- oder SV/USV-Kombination keine eigene interne USV mehr, weil die
+  // Redundanz schon vorgelagert vorhanden ist) – siehe CLAUDE.md. Persistenz
+  // über saveZoneInputs()/loadZoneInputs() (`m03_einspeisung1_typ`/`_2_typ`).
+
   // ÜSS + Vorsicherung: Breite netztyp-abhängig, liegt im Leistungsbereich (EMV)
-  const n_te_uss = netztyp === 'drehstrom'
+  const n_te_uss = (netztyp === 'drehstrom'
     ? TE_USS_DS + TE_SICH_DS   // 7 TE  (4 TE ÜSS + 3 TE D0-Halter)
-    : TE_USS_WS + TE_SICH_WS;  // 4 TE  (2 TE ÜSS + 2 TE D0-Halter)
-  const b_uss    = Math.min(n_te_uss * TE_BREITE_MM, b * 0.4);  // max 40 % der Plattenbreite
+    : TE_USS_WS + TE_SICH_WS) * doppelFaktor;  // 4 TE  (2 TE ÜSS + 2 TE D0-Halter)
+  const b_uss    = Math.min(n_te_uss * TE_BREITE_MM, b * 0.4 * doppelFaktor);  // max 40 % (je Einspeisung) der Plattenbreite
 
   // Einspeiseklemmen → integriert in Klemmenzeile, kein eigener Höhenbedarf
-  const n_te_ek = netztyp === 'drehstrom' ? TE_KLEMME_ES_DS : TE_KLEMME_ES_WS;
-  const b_ek = Math.min(n_te_ek * TE_BREITE_MM, b * 0.25); // max 25 % der Plattenbreite
+  const n_te_ek = (netztyp === 'drehstrom' ? TE_KLEMME_ES_DS : TE_KLEMME_ES_WS) * doppelFaktor;
+  const b_ek = Math.min(n_te_ek * TE_BREITE_MM, b * 0.25 * doppelFaktor); // max 25 % (je Einspeisung) der Plattenbreite
 
   // Mindesthöhen (wie h_ke-Logik: Handling + Bauteil + Handling, aufger. 5 mm)
   const schiene     = gs('zone_schiene')     || 'ja';
@@ -856,6 +916,7 @@ function calculateZones(b, h) {
   localStorage.setItem('m03_zone_modus',     modusRaw);
   localStorage.setItem('m03_zone_anordnung', anordnung);
   localStorage.setItem('m03_zone_netztyp',   netztyp);
+  localStorage.setItem('m03_doppeleinspeisung', doppeleinspeisung);
   localStorage.setItem('m03_zone_ke_pos',    ke_pos);
   localStorage.setItem('m03_n_felder',       n_felder);
   localStorage.setItem('m03_b_uss',    b_uss);
@@ -874,7 +935,7 @@ function calculateZones(b, h) {
   localStorage.setItem('m03_b_ek',      b_ek);
 
   return { b, h, ke_pos, modus, anordnung, netztyp, schiene, schiene_pol, n_felder,
-           h_kanal_h, b_kanal_v, n_kanal_h, useEvKanal,
+           h_kanal_h, b_kanal_v, n_kanal_h, useEvKanal, doppeleinspeisung,
            n_te_uss, b_uss, n_te_ek, b_ek, h_evert, h_leist, h_steuer, h_klemm,
            b_leist, b_steuer, b_inner, h_gesamt, h_diff, passt };
 }

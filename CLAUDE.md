@@ -16,6 +16,57 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 67 (29.09.2026, Teil 7) – Einspeisungsart AV/SV/USV als
+> Modul-3-Grundlage ergänzt (Nutzer-Vorgabe zur Doppeleinspeisungs-
+> Klassifikation):** Nutzer-Feedback zum vorherigen Vorschlag (AV/NEA,
+> AV/USV, NEA/USV als Paarungstypen): AV/NEA verhält sich bauteilseitig
+> identisch zu AV/AV – keine Sonderbehandlung nötig, nur die Unterscheidung
+> „gepuffert (USV) vs. nicht gepuffert (AV/NEA)" ist für die Bauteilauswahl
+> relevant. Daraus abgeleitete, vom Nutzer vorgeschlagene 3-Typen-
+> Klassifikation je Einspeisung: **AV** (Allgemeine Versorgung), **SV**
+> (Sicherheitsversorgung/NEA-gestützt – bauteilseitig identisch zu AV, nur
+> Dokumentationswert) und **USV** (bereits vorgelagert batteriegepuffert).
+> **Umgesetzt in Modul 3:** zwei neue Selects `zone_einspeisung1_typ`
+> (immer sichtbar) und `zone_einspeisung2_typ` (nur sichtbar wenn
+> `zone_doppeleinspeisung='ja'`, per `updateZoneVisibility()` ein-/
+> ausgeblendet), Optionen AV/SV(NEA)/USV, Default `av`, Persistenz
+> `m03_einspeisung1_typ`/`m03_einspeisung2_typ` über `saveZoneInputs()`/
+> `loadZoneInputs()`. **Bewusst ohne Einfluss auf die Zonenmaße** (reine
+> Klassifikation/Dokumentation, ausführlicher Code-Kommentar in
+> `calculateZones()`) – die eigentliche Auswertung (welche Modul-4-Anlage
+> passt) ist noch NICHT implementiert, siehe unten. Browser-verifiziert:
+> Felder rendern, Persistenz über echten `change`-Event-Durchlauf bestätigt
+> (`sv`/`usv` gesetzt → localStorage korrekt → Reload stellt Werte korrekt
+> wieder her), Sichtbarkeits-Toggle bei Doppeleinspeisung nein/ja korrekt,
+> keine Konsolenfehler. Nach dem Test wieder auf Default (`av`/`av`)
+> zurückgesetzt.
+> **Noch offen (nächster Schritt):** die Auswertung in Modul 4 fehlt noch.
+> Kernidee (Nutzer-Aussagen aus dieser und der vorherigen Nachricht
+> zusammengeführt): AV und SV benötigen bauteilseitig **keine** eigene
+> Pufferung – die bestehende Anlage „ASP … hohe Verfügbarkeit" (④a, mit
+> interner USV `2320225`/`2320296`) bleibt die richtige Wahl, wenn KEINE der
+> (ggf. zwei) Einspeisungen bereits USV ist. Ist mindestens eine Einspeisung
+> vom Typ USV, ist die Redundanz bereits vorgelagert vorhanden – die
+> interne USV wäre überflüssige Doppelpufferung. Da der elektrische
+> Anschluss am Schrank dabei aussieht wie eine normale Wechselstromquelle
+> (DBACS bilanziert keine Schaltung, nur Platzbedarf/Bauteile), ist in
+> diesem Fall vermutlich **kein neues Bauteil** nötig, sondern nur eine
+> zusätzliche, klar beschriftete Anlagen-Variante im Modul-4-Dropdown (z. B.
+> „ASP … hohe Verfügbarkeit (externe USV)" = inhaltlich identisch zu
+> ①/②, aber mit erklärendem Namen, damit der Nutzer nicht versehentlich die
+> teurere interne-USV-Variante wählt, wenn die Redundanz schon vorgelagert
+> existiert) – vor Umsetzung mit dem Nutzer bestätigen, da dies eine reine
+> Katalog-/UX-Entscheidung ist, kein technischer Zwang. Die STS-
+> Umschaltung bleibt weiterhin explizit zurückgestellt (eigener Fork bei
+> Bedarf). Die separate „Einspeisung als eigenes Feld"-Variante (Feldtyp-C-
+> `repeat`) bleibt ebenfalls zurückgestellt. Das bereits fertige `480_A00004`
+> („ASP Standard mit Doppeleinspeisung") ist von dieser AV/SV/USV-
+> Klassifikation unberührt – es bleibt die Anlage für den Fall „zwei
+> gleichwertige, ungepufferte Einspeisungen" (AV/AV, AV/SV, SV/SV) und noch
+> nicht Ende-zu-Ende in Modul 4 getestet (siehe Teil 5/6 oben – Grundlage
+> aus Modul 3 wurde bereits verifiziert, die Anlage selbst in Modul 4 noch
+> nicht mit `zone_doppeleinspeisung='ja'` kombiniert platziert).
+
 > **Nachtrag Session 67 (29.09.2026, Teil 2) – Zonen-Korrektur FI/LSS
 > (evert statt leist), Cache-Falle beim lokalen Testen behoben, Einspeise-
 > klemmen-Katalog-Lücke bestätigt:**
