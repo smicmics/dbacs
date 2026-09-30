@@ -16,6 +16,23 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 67 (30.09.2026, Teil 9) – ②/④a zusätzlich auf dem
+> großen Wandschrank (1000×1200) bestätigt, exaktes Lehrbuch-Beispiel für
+> „Ausnahme Wandschrank" + Bugfix-Wirkung gefunden:** Ergänzend zu Teil 8:
+> `480_A00002` (mit Bedienpanel) passt auf 1000×1200/Drehstrom/1feld
+> vollständig (`fehlendPlatziert:[]`, `overflow:[]`) – `480_A00003` (hohe
+> Verfügbarkeit) dagegen NICHT: die zusätzliche USV (`2320225`/`2320296`)
+> passt nicht mehr in die `leist`-Zone dieses Wandschranks, und da
+> Wandschrank strukturell keine Folgefelder kennt, bleiben beide Artikel
+> unplatziert. **Vor dem Teil-8-Fix wäre das lautlos passiert** (Stückliste
+> hätte die USV geführt, Zeichnung nicht, ohne jede Markierung) – jetzt
+> korrekt `overflow:["leist"]` UND `fehlendPlatziert:["2320225","2320296"]`
+> gleichzeitig gemeldet. Genau das vom Nutzer erwartete Verhalten („Alle
+> anderen Anlagen setzen darauf auf und vergrößern lediglich die
+> Schaltanlage um weitere Felder, Ausnahme Wandschrank" – ④a braucht hier
+> de facto einen Standschrank oder einen größeren Wandschrank). Keine
+> weitere Korrektur nötig, reine Bestätigung. Keine Konsolenfehler.
+
 > **Nachtrag Session 67 (29.09.2026, Teil 8) – Echter Overflow-Erkennungs-
 > Bug gefunden + behoben, `480_A00004` Doppeleinspeisung vollständig Ende-
 > zu-Ende verifiziert (Nutzer-Auftrag: „Teste alle ASP-Varianten und
