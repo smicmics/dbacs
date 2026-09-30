@@ -16,6 +16,74 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 67 (30.09.2026, Teil 10) – Doppeleinspeisung-Filterung
+> im Anlagen-Dropdown, 2 fehlende Doppeleinspeisung-Varianten ergänzt,
+> TouchPanel/UMG-Auswahl umplatziert (Nutzer-Fund: „ich kann eine
+> Doppeleinspeisung wählen, obwohl in Modul 3 diese Option nicht angewählt
+> wurde"):**
+> 1. **Neue Spalte `doppeleinspeisung_bindung`** (ja/nein) im Excel-Sheet
+>    `anlagen` (+Export in `xlsx_to_json.py`) – steuert, ob eine Anlage nur
+>    bei Einfach- oder nur bei Doppeleinspeisung im Modul-4-Dropdown
+>    erscheint. `populateAnlagenAuswahl()` filtert jetzt zusätzlich nach
+>    `(a.doppeleinspeisung_bindung==='ja') === (m03_doppeleinspeisung==='ja')`
+>    – beide Listen sind dadurch disjunkt, nicht nur eine Teilmenge
+>    zusätzlich anzeigend (Nutzer-Vorgabe: „bei Auswahl Einfacheinspeisung
+>    stehen auch nur diese Modelle zur Verfügung, bei Mehrfacheinspeisung
+>    nur jene").
+> 2. **2 fehlende Doppeleinspeisung-Varianten ergänzt** (Nutzer-Vorgabe:
+>    „wir können die 3 bisher definierten ASP für Einfacheinspeisung auch für
+>    Doppeleinspeisung auswählen") – bisher gab es nur `480_A00004` (①
+>    verdoppelt). Neu: **`480_A00005`** (② „mit Bedienpanel" verdoppelt) und
+>    **`480_A00006`** (④a „hohe Verfügbarkeit" verdoppelt), jeweils 1:1 aus
+>    dem Einfacheinspeisung-Vorbild dupliziert mit derselben Einspeisegruppe
+>    ×2 (Hauptschalter/ÜSS/Phasenkontrollleuchten/Phasenüberwachung/
+>    Einspeiseklemmen) wie bei `480_A00004`. TouchPanel/UMG-Protokoll
+>    (beide) und – bei ④a – die interne USV (`480_000011`) bleiben bewusst
+>    einfach (unabhängig von der Einspeisezahl). Export: anlagen 4→**6**.
+>    Browser-verifiziert: alle 3 Doppeleinspeisung-Varianten (`A00004`-`006`)
+>    auf dem Standschrank-Referenzfall (Drehstrom/1feld UND Wechselstrom/
+>    getrennt_els) `fehlendPlatziert:[]`/`overflow:[]`, `belegung` zeigt
+>    korrekt `menge:2` nur für die 5 Einspeisegruppen-Mitglieder, Rest
+>    `menge:1`, keine Konsolenfehler.
+> 3. **Layout: TouchPanel-Größe/Messgerät-Protokoll umplatziert** (Nutzer-
+>    Vorgabe: „wir verlieren eine komplette Ansichtsreihe für die
+>    Schaltschrankansicht... verkürze den Balken für Baugruppe/Anlage, dann
+>    geht es auch daneben rechts" – generelles Prinzip: „Ausnutzung der
+>    Platzverhältnisse im Bedienfeld, damit die Schaltschrankansicht nicht
+>    immer kleiner wird"). `#anlage_varianten` stand bisher als eigene volle
+>    Zeile UNTER dem Baugruppe·Anlage-Feld (drückte Einzelbauteil-Auswahl/
+>    Zonen-Füllstand/Schranksicht jeweils eine Zeile nach unten). Fix: neuer
+>    Flex-Wrapper `.bg-anlage-row` – `.bg-add-row` (Anlage-Dropdown+Menge+
+>    Buttons) bekommt `flex:1 1 220px` statt voller Breite,
+>    `#anlage_varianten` sitzt jetzt kompakt DANEBEN auf derselben Zeile
+>    (`flex:0 0 auto`, `.anlage-variante-lbl` auf feste 130px begrenzt).
+>    Kein Zeilenverlust mehr, wenn eine Anlage mit Varianten gewählt wird;
+>    kollabiert sauber auf volle Breite, wenn keine Varianten vorhanden sind
+>    (normale Baugruppe oder Anlage ohne `gruppe`-Mitglieder). Browser-
+>    verifiziert (Screenshot-Vergleich vorher/nachher), TouchPanel-Auswahl
+>    (klein/groß) weiterhin voll funktionsfähig in der neuen Position,
+>    keine Konsolenfehler.
+> 4. **TouchPanel-Auswahl selbst („ich kann bei Standschränken nur das
+>    kleine TouchPanel auswählen") konnte trotz gezielter Nachstellung NICHT
+>    reproduziert werden:** exakt der vom Nutzer gezeigte Standschrank
+>    (Montagebereich 1099×1745, entspricht der 1200×2000-Referenz) mit ②/④a
+>    getestet – `#anlage_variante_touchpanel` enthält beide Optionen
+>    (`480_000015`/`480_000016`), beide sind laut
+>    `touchpanelPasstMitMessgeraetHoehen()`-Rechnung zulässig (benötigt
+>    205mm, verfügbar 220mm auf 2000mm-Türhöhe), Auswahl per echtem
+>    Formular-Input + Klick auf „+" bestätigt: `480_000016` (groß) landet
+>    korrekt in `belegung`. Keine Code-Änderung an der Auswahllogik
+>    vorgenommen (nichts Falsches gefunden) – die Layout-Änderung in Punkt 3
+>    macht die beiden Felder jetzt aber deutlich sichtbarer/eindeutiger als
+>    eigenständige Dropdowns (vorher als eigene, etwas unauffällige Zeile
+>    unter dem Anlagen-Feld). Falls das Problem weiterhin auftritt: bitte
+>    exakte Reihenfolge der Klicks + ob vorher schon ein Messgerät auf
+>    derselben Tür stand (das würde die Rechnung zulässigerweise ändern)
+>    mitteilen.
+> **Weiterhin offen:** die AV/SV/USV-Auswertung in Modul 4 (welche Anlage
+> bei welcher Einspeisungsart-Kombination sinnvoll ist) ist unverändert nur
+> Vorschlag, noch nicht umgesetzt (siehe Teil 7).
+
 > **Nachtrag Session 67 (30.09.2026, Teil 9) – ②/④a zusätzlich auf dem
 > großen Wandschrank (1000×1200) bestätigt, exaktes Lehrbuch-Beispiel für
 > „Ausnahme Wandschrank" + Bugfix-Wirkung gefunden:** Ergänzend zu Teil 8:

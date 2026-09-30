@@ -709,6 +709,14 @@ def export_anlagen(wb):
             entry['funktionsbereich'] = [f.strip() for f in str(rec['funktionsbereich']).split(',')]
         if rec.get('kategorie') is not None:
             entry['kategorie'] = str(rec['kategorie'])
+        # doppeleinspeisung_bindung (Session 67, Nutzer-Vorgabe): entscheidet,
+        # ob eine Anlage nur bei Einfach- ('nein') oder nur bei Doppel-
+        # einspeisung ('ja') im Modul-4-Dropdown erscheint - analog
+        # netztyp_bindung, aber auf Anlagen- statt Mitglieder-Ebene, da hier
+        # die GESAMTE Anlage (nicht nur ein Mitglied) je Fall unterschiedlich
+        # ist. Fehlt die Spalte/der Wert (Altbestand), gilt 'nein' (Einfach-
+        # einspeisung) als sicherer Default.
+        entry['doppeleinspeisung_bindung'] = str(rec.get('doppeleinspeisung_bindung') or 'nein')
         entry['geprueft'] = bool(rec.get('geprueft'))
         rows.append(entry)
 

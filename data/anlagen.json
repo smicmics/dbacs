@@ -50,6 +50,7 @@
       "automation_anlagen"
     ],
     "kategorie": "ASP-Grundausstattung",
+    "doppeleinspeisung_bindung": "nein",
     "geprueft": false
   },
   {
@@ -135,6 +136,7 @@
       "automation_anlagen"
     ],
     "kategorie": "ASP-Grundausstattung",
+    "doppeleinspeisung_bindung": "nein",
     "geprueft": false
   },
   {
@@ -224,6 +226,7 @@
       "automation_anlagen"
     ],
     "kategorie": "ASP-Grundausstattung",
+    "doppeleinspeisung_bindung": "nein",
     "geprueft": false
   },
   {
@@ -277,6 +280,183 @@
       "automation_anlagen"
     ],
     "kategorie": "ASP-Grundausstattung",
+    "doppeleinspeisung_bindung": "ja",
+    "geprueft": false
+  },
+  {
+    "id": "480_A00005",
+    "name": "ASP mit Bedienpanel – größere Anlage, mit Doppeleinspeisung",
+    "gewerk": "480",
+    "beschreibung": "ASP mit Bedienpanel (480_A00002) mit VERDOPPELTER Einspeisegruppe fuer zwei unabhaengige, UNVERRIEGELTE Netzeinspeisungen im selben Feld (gleiches Prinzip wie 480_A00004, siehe dort). Verdoppelt: Hauptschalter (2x 480_000019), Phasenkontrollleuchten (2x 480_000020), Phasenueberwachung (2x, netztyp-automatisch 034/035), Ueberspannungsschutz (2x 480_000033), Einspeiseklemmen (2x, netztyp-automatisch 037/038). NICHT verdoppelt: Stoerquittiertaster mit Sammelstoerungsleuchte (480_000021), Schaltschrank-Innenleuchte (480_000036), TouchPanel-Tuereinbau (Groesse waehlbar) und Messgeraet/Energiezaehler UMG96 Tuereinbau (Bus-Protokoll waehlbar) - beide bleiben je EIN Geraet fuer den ganzen Schrank, unabhaengig von der Einspeisezahl. Setzt voraus, dass in Modul 3 der Schalter 'Doppeleinspeisung' auf 'Ja' steht.",
+    "mitglieder": [
+      {
+        "bg_id": "480_000019",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000033",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000020",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000021",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000036",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000034",
+        "menge": 2,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000035",
+        "menge": 2,
+        "netztyp_bindung": "wechselstrom"
+      },
+      {
+        "bg_id": "480_000015",
+        "menge": 1,
+        "gruppe": "touchpanel",
+        "variante_label": "10,1\" PXM40 (klein)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "480_000016",
+        "menge": 1,
+        "gruppe": "touchpanel",
+        "variante_label": "15,6\" PXM50 (groß)"
+      },
+      {
+        "bg_id": "480_000012",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "480_000013",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "480_000014",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "Modbus TCP/IP"
+      },
+      {
+        "bg_id": "480_000037",
+        "menge": 2,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000038",
+        "menge": 2,
+        "netztyp_bindung": "wechselstrom"
+      }
+    ],
+    "funktionsbereich": [
+      "automation_anlagen"
+    ],
+    "kategorie": "ASP-Grundausstattung",
+    "doppeleinspeisung_bindung": "ja",
+    "geprueft": false
+  },
+  {
+    "id": "480_A00006",
+    "name": "ASP Labor/Rechenzentrum/Krankenhaus – hohe Verfügbarkeit, mit Doppeleinspeisung",
+    "gewerk": "480",
+    "beschreibung": "ASP Labor/Rechenzentrum/Krankenhaus - hohe Verfuegbarkeit (480_A00003) mit VERDOPPELTER Einspeisegruppe fuer zwei unabhaengige, UNVERRIEGELTE Netzeinspeisungen im selben Feld (gleiches Prinzip wie 480_A00004/480_A00005, siehe dort). Verdoppelt: Hauptschalter (2x 480_000019), Phasenkontrollleuchten (2x 480_000020), Phasenueberwachung (2x, netztyp-automatisch 034/035), Ueberspannungsschutz (2x 480_000033), Einspeiseklemmen (2x, netztyp-automatisch 037/038). NICHT verdoppelt: Stoerquittiertaster mit Sammelstoerungsleuchte (480_000021), Schaltschrank-Innenleuchte (480_000036), TouchPanel/UMG96 Tuereinbau (je 1 Geraet, Auswahl unveraendert) UND die Schaltschrank-USV 480_000011 (bleibt einfach - die interne USV puffert die Automationsstation selbst, unabhaengig davon wie viele Netzeinspeisungen ankommen; eine AV/SV/USV-Auswertung, ob diese interne USV bei bestimmten Einspeisungsart-Kombinationen entfallen kann, ist ein separates, noch offenes Thema siehe CLAUDE.md). Setzt voraus, dass in Modul 3 der Schalter 'Doppeleinspeisung' auf 'Ja' steht.",
+    "mitglieder": [
+      {
+        "bg_id": "480_000019",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000033",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000020",
+        "menge": 2
+      },
+      {
+        "bg_id": "480_000021",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000036",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000034",
+        "menge": 2,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000035",
+        "menge": 2,
+        "netztyp_bindung": "wechselstrom"
+      },
+      {
+        "bg_id": "480_000015",
+        "menge": 1,
+        "gruppe": "touchpanel",
+        "variante_label": "10,1\" PXM40 (klein)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "480_000016",
+        "menge": 1,
+        "gruppe": "touchpanel",
+        "variante_label": "15,6\" PXM50 (groß)"
+      },
+      {
+        "bg_id": "480_000012",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "480_000013",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "480_000014",
+        "menge": 1,
+        "gruppe": "umg_protokoll",
+        "variante_label": "Modbus TCP/IP"
+      },
+      {
+        "bg_id": "480_000011",
+        "menge": 1
+      },
+      {
+        "bg_id": "480_000037",
+        "menge": 2,
+        "netztyp_bindung": "drehstrom"
+      },
+      {
+        "bg_id": "480_000038",
+        "menge": 2,
+        "netztyp_bindung": "wechselstrom"
+      }
+    ],
+    "funktionsbereich": [
+      "automation_anlagen"
+    ],
+    "kategorie": "ASP-Grundausstattung",
+    "doppeleinspeisung_bindung": "ja",
     "geprueft": false
   }
 ]

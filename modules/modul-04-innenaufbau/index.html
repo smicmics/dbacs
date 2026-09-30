@@ -294,6 +294,14 @@ legend{
 }
 
 /* ── BG-Auswahl ── */
+/* Nutzer-Vorgabe (Session 67): die Anlagen-Varianten (TouchPanel-Größe/
+   Messgerät-Protokoll) sollen NICHT mehr als eigene volle Zeile unter dem
+   Baugruppe·Anlage-Feld erscheinen ("wir verlieren eine komplette
+   Ansichtsreihe für die Schaltschrankansicht") - stattdessen rückt der
+   bg-add-row schmaler zusammen (flex-basis statt volle Breite), damit
+   #anlage_varianten kompakt DANEBEN auf derselben Zeile Platz hat. */
+.bg-anlage-row{display:flex;gap:10px;align-items:flex-start;margin-top:6px;flex-wrap:wrap;}
+.bg-anlage-row .bg-add-row{flex:1 1 220px;margin-top:0;}
 .bg-add-row{display:flex;gap:6px;margin-top:6px;min-width:0;}
 .bg-add-row input[type=number]{width:55px;flex-shrink:0;}
 .bg-add-row select{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -318,8 +326,8 @@ legend{
 .klemmen-variante-row{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:2px;}
 .ddc-auf-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px;}
 .ddc-auf-row .rowbreak-lbl{gap:4px;}
-#anlage_varianten{flex-wrap:wrap;gap:8px 14px;margin-top:6px;}
-.anlage-variante-lbl{display:flex;flex-direction:column;gap:2px;font-size:10px;color:var(--tx2);}
+#anlage_varianten{flex:0 0 auto;flex-wrap:wrap;gap:6px 10px;margin-top:0;}
+.anlage-variante-lbl{display:flex;flex-direction:column;gap:2px;font-size:10px;color:var(--tx2);width:130px;flex-shrink:0;}
 .anlage-variante-lbl select{font-size:11px;padding:2px 4px;background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;}
 #ddc_protokoll{font-size:10px;padding:1px 4px;background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;}
 .btn-add-sm{background:var(--green);color:#000;}
@@ -678,17 +686,19 @@ fieldset{
 
     <div class="eb-field">
       <label>Baugruppe · Anlage</label>
-      <div class="bg-add-row">
-        <select id="bg_auswahl" style="flex:1" onchange="updateAnlageVariantenUI()">
-          <option value="">Laden …</option>
-        </select>
-        <input id="bg_menge" type="number" value="1" min="1" max="99">
-        <div class="btn-stack">
-          <button class="btn-add-sm" onclick="addBaugruppe()" title="Menge hinzufügen">+</button>
-          <button class="btn-sub-sm" onclick="removeBaugruppeQty()" title="Menge abziehen">&#8722;</button>
+      <div class="bg-anlage-row">
+        <div class="bg-add-row">
+          <select id="bg_auswahl" style="flex:1" onchange="updateAnlageVariantenUI()">
+            <option value="">Laden …</option>
+          </select>
+          <input id="bg_menge" type="number" value="1" min="1" max="99">
+          <div class="btn-stack">
+            <button class="btn-add-sm" onclick="addBaugruppe()" title="Menge hinzufügen">+</button>
+            <button class="btn-sub-sm" onclick="removeBaugruppeQty()" title="Menge abziehen">&#8722;</button>
+          </div>
         </div>
+        <div id="anlage_varianten" style="display:none"></div>
       </div>
-      <div id="anlage_varianten" style="display:none"></div>
     </div>
 
     <div class="eb-field">
@@ -1344,9 +1354,19 @@ function filterBaugruppen(gew) {
 // unterscheiden kann, ohne die IDs selbst zu verwechseln (Anlagen-IDs haben
 // zusaetzlich das Schema "<gewerk>_A00001" statt "<gewerk>_000001").
 function populateAnlagenAuswahl(sel, gew, cur) {
+  // Doppeleinspeisung-Filter (Session 67, Nutzer-Vorgabe): eine Anlage mit
+  // doppeleinspeisung_bindung='ja' (verdoppelte Einspeisegruppe, z.B.
+  // 480_A00004-006) passt nur, wenn in Modul 3 tatsächlich Doppeleinspeisung
+  // aktiv ist (sonst wären die Zonenbreiten b_uss/b_ek nicht verdoppelt und
+  // die Anlage würde nicht passen) - umgekehrt ergibt eine 'nein'-Anlage
+  // (Einfacheinspeisung) bei aktiver Doppeleinspeisung keinen Sinn (die
+  // zusätzliche Zonenbreite bliebe schlicht ungenutzt). Beide Listen sind
+  // dadurch bewusst disjunkt, nicht nur eine Teilmenge zusätzlich anzeigend.
+  const doppelAktiv = (localStorage.getItem('m03_doppeleinspeisung') || 'nein') === 'ja';
   const kategorien = {};
   ANLAGEN_DB
     .filter(a => a.funktionsbereich && a.funktionsbereich.includes(gew))
+    .filter(a => ((a.doppeleinspeisung_bindung || 'nein') === 'ja') === doppelAktiv)
     .forEach(a => { (kategorien[a.kategorie || 'Anlagen'] = kategorien[a.kategorie || 'Anlagen'] || []).push(a); });
   Object.keys(kategorien).sort().forEach(kat => {
     const og = document.createElement('optgroup');
