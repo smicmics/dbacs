@@ -16,6 +16,26 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 67 (30.09.2026, Teil 12) – „Nur kleines TouchPanel
+> wählbar"-Fund aufgeklärt: korrektes Verhalten, kein Bug (knappe 7mm auf
+> 800×1800-Standschrank):** Nutzer-Reproduktion mit exakter Schrankgröße
+> (800×1800 Standschrank) bestätigt den Fund, aber die Ursache ist die
+> bereits bestehende, absichtliche Kollisionsprüfung
+> (`touchpanelPasstMitMessgeraetHoehen()`, Session 64) – kein neuer Bug.
+> Rechnung: verfügbarer Abstand TouchPanel-/Messgerät-Band =
+> `(TUER_BAND_TOUCHPANEL − TUER_BAND_MESSGERAET) × H` = `0,11 × 1800mm` =
+> **198mm**. Das große PXM50 (270mm) braucht mit Messgerät (96mm) + 22mm
+> Mindeststeg **205mm** – **7mm zu knapp**, daher korrekt ausgeblendet. Das
+> kleine PXM40 (198mm) braucht nur 169mm und bleibt wählbar. Auf der bisher
+> für alle TouchPanel-Tests verwendeten Referenzgröße (1200×2000
+> Standschrank, 220mm verfügbar) trat der Fall nie auf. **Nutzer-Entscheidung:
+> so belassen** – die Prüfung schützt korrekt vor einer echten Kollision,
+> 800×1800 ist für das große Bedienpanel schlicht zu kurz. Keine
+> Code-Änderung. Merksatz für künftige TouchPanel-Tests: der verfügbare
+> Abstand hängt linear von der Schrank-Außenhöhe ab – unterhalb von ca.
+> 1863mm (205mm / 0,11) wird das große PXM50 grundsätzlich ausgeblendet,
+> unabhängig vom Schranktyp.
+
 > **Nachtrag Session 67 (30.09.2026, Teil 11) – TouchPanel/UMG-Auswahl
 > vertikal korrekt ausgerichtet (Nutzer-Korrektur zu Teil 10):** die in
 > Teil 10 gebaute Nebeneinander-Platzierung saß eine Zeile zu tief, weil
