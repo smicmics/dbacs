@@ -299,8 +299,21 @@ legend{
    Baugruppe·Anlage-Feld erscheinen ("wir verlieren eine komplette
    Ansichtsreihe für die Schaltschrankansicht") - stattdessen rückt der
    bg-add-row schmaler zusammen (flex-basis statt volle Breite), damit
-   #anlage_varianten kompakt DANEBEN auf derselben Zeile Platz hat. */
-.bg-anlage-row{display:flex;gap:10px;align-items:flex-start;margin-top:6px;flex-wrap:wrap;}
+   #anlage_varianten kompakt DANEBEN auf derselben Zeile Platz hat.
+   Nutzer-Korrektur (2. Anlauf): die Varianten-Felder saßen dabei tiefer als
+   das Anlagen-Feld, weil jedes .anlage-variante-lbl seine eigene Beschriftung
+   ÜBER dem Select trug (Baugruppe·Anlage-Feld hat dagegen nur EINE
+   Beschriftung für das ganze eb-field). Fix: Beschriftungen und Selects in
+   zwei eigene, parallele Zeilen aufgeteilt (#anlage_varianten_labels neben
+   dem "Baugruppe · Anlage"-Label, #anlage_varianten neben dem bg-add-row) -
+   "orientiere dich an der Überschrift und dem Feld für die Anlagenauswahl". */
+.bg-anlage-labels{display:flex;gap:10px;align-items:flex-end;}
+#anlage_varianten_labels{display:none;gap:10px;}
+.anlage-variante-lbltext{
+  font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
+  width:130px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.bg-anlage-row{display:flex;gap:10px;align-items:flex-start;margin-top:3px;flex-wrap:wrap;}
 .bg-anlage-row .bg-add-row{flex:1 1 220px;margin-top:0;}
 .bg-add-row{display:flex;gap:6px;margin-top:6px;min-width:0;}
 .bg-add-row input[type=number]{width:55px;flex-shrink:0;}
@@ -327,8 +340,10 @@ legend{
 .ddc-auf-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px;}
 .ddc-auf-row .rowbreak-lbl{gap:4px;}
 #anlage_varianten{flex:0 0 auto;flex-wrap:wrap;gap:6px 10px;margin-top:0;}
-.anlage-variante-lbl{display:flex;flex-direction:column;gap:2px;font-size:10px;color:var(--tx2);width:130px;flex-shrink:0;}
-.anlage-variante-lbl select{font-size:11px;padding:2px 4px;background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;}
+.anlage-variante-select{
+  width:130px;flex-shrink:0;font-size:11px;padding:2px 4px;
+  background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;
+}
 #ddc_protokoll{font-size:10px;padding:1px 4px;background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;}
 .btn-add-sm{background:var(--green);color:#000;}
 .btn-sub-sm{background:var(--bg3);color:var(--tx2);border:1px solid var(--bords);}
@@ -685,7 +700,10 @@ fieldset{
     </div>
 
     <div class="eb-field">
-      <label>Baugruppe · Anlage</label>
+      <div class="bg-anlage-labels">
+        <label>Baugruppe · Anlage</label>
+        <div id="anlage_varianten_labels" style="display:none"></div>
+      </div>
       <div class="bg-anlage-row">
         <div class="bg-add-row">
           <select id="bg_auswahl" style="flex:1" onchange="updateAnlageVariantenUI()">
@@ -1394,18 +1412,28 @@ function populateAnlagenAuswahl(sel, gew, cur) {
 // Baugruppen-Dropdown, Session 64 Nachtrag 6).
 function updateAnlageVariantenUI() {
   const box = document.getElementById('anlage_varianten');
+  const labelBox = document.getElementById('anlage_varianten_labels');
+  const hide = () => { box.style.display = 'none'; box.innerHTML = ''; labelBox.style.display = 'none'; labelBox.innerHTML = ''; };
   const val = gs('bg_auswahl');
-  if (!val.startsWith('anlage:')) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  if (!val.startsWith('anlage:')) { hide(); return; }
   const anlage = ANLAGEN_DB.find(a => a.id === val.slice(7));
-  if (!anlage) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  if (!anlage) { hide(); return; }
   const gruppen = {};
   (anlage.mitglieder || []).forEach(m => {
     if (!m.gruppe) return;
     (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(m);
   });
   const keys = Object.keys(gruppen);
-  if (!keys.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  if (!keys.length) { hide(); return; }
+  // Beschriftung und Select stehen in zwei getrennten, parallelen Zeilen
+  // (#anlage_varianten_labels neben dem "Baugruppe · Anlage"-Label,
+  // #anlage_varianten neben dem bg-add-row) statt wie zuvor als ein Label,
+  // das Text+Select stapelt – sonst sitzen die Selects eine Zeile tiefer als
+  // das Anlagen-Dropdown (Nutzer-Fund, siehe CSS-Kommentar bei
+  // .bg-anlage-labels).
   box.style.display = 'flex';
+  labelBox.style.display = 'flex';
+  labelBox.innerHTML = keys.map(gr => `<span class="anlage-variante-lbltext">${ANLAGE_GRUPPEN_LABEL[gr] || gr}</span>`).join('');
   box.innerHTML = keys.map(gr => {
     const opts = gruppen[gr]
       .filter(m => {
@@ -1414,8 +1442,7 @@ function updateAnlageVariantenUI() {
       })
       .map(m => `<option value="${m.bg_id}"${m.ist_default ? ' selected' : ''}>${m.variante_label || m.bg_id}</option>`)
       .join('');
-    return `<label class="anlage-variante-lbl">${ANLAGE_GRUPPEN_LABEL[gr] || gr}
-      <select id="anlage_variante_${gr}">${opts}</select></label>`;
+    return `<select id="anlage_variante_${gr}" class="anlage-variante-select">${opts}</select>`;
   }).join('');
 }
 const ANLAGE_GRUPPEN_LABEL = { touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll' };

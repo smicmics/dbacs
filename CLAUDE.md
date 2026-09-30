@@ -16,6 +16,24 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 67 (30.09.2026, Teil 11) – TouchPanel/UMG-Auswahl
+> vertikal korrekt ausgerichtet (Nutzer-Korrektur zu Teil 10):** die in
+> Teil 10 gebaute Nebeneinander-Platzierung saß eine Zeile zu tief, weil
+> jedes `.anlage-variante-lbl` Beschriftung+Select intern stapelte
+> (`flex-direction:column`), während das „Baugruppe · Anlage"-Label nur
+> EINMAL über dem gesamten Feld steht – dadurch begann `#anlage_varianten`
+> eine Textzeile tiefer als der `bg_auswahl`-Select. Fix: Beschriftung und
+> Select in zwei eigene, parallele Container aufgeteilt –
+> `#anlage_varianten_labels` (neben dem „Baugruppe · Anlage"-Label, gleiche
+> Höhe/Schriftstil wie `.eb-field label`) und `#anlage_varianten` (neben dem
+> `bg-add-row`, nur noch nackte `<select class="anlage-variante-select">`
+> ohne eigenes Label). `updateAnlageVariantenUI()` befüllt jetzt beide
+> Container synchron. Browser-verifiziert: TouchPanel-Größe/Messgerät-
+> Protokoll stehen jetzt exakt auf Höhe von „Baugruppe · Anlage" (Label) bzw.
+> dem Anlagen-Dropdown (Select), Funktionalität (Auswahl „groß" landet
+> korrekt in `belegung`) unverändert bestätigt, kollabiert weiterhin sauber
+> bei Baugruppen ohne Varianten, keine Konsolenfehler.
+
 > **Nachtrag Session 67 (30.09.2026, Teil 10) – Doppeleinspeisung-Filterung
 > im Anlagen-Dropdown, 2 fehlende Doppeleinspeisung-Varianten ergänzt,
 > TouchPanel/UMG-Auswahl umplatziert (Nutzer-Fund: „ich kann eine
