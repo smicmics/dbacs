@@ -16,6 +16,90 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 68 (03.10.2026) – Drei kosmetische Korrekturen nach
+> Doppeleinspeisungs-Review (Nutzer-Fund per Screenshot): Zonengrundmaß
+> ÜSS/Einspeiseklemmen korrigiert, Hauptschalter/Phasenleuchten bei
+> Doppeleinspeisung als getrennte Cluster dargestellt, Stückliste-
+> Spaltenbreiten fixiert:**
+> 1. **ÜSS-/Einspeiseklemmen-Zonengrundmaß (Drehstrom) korrigiert**
+>    (`modules/modul-03-architektur/index.html`): Nutzer-Fund „sehr viel
+>    ungenutzter Platz in der Einspeisung bei Doppeleinspeisung, Grundmaß
+>    evtl. falsch". Nachrechnung ergab zwei unabhängige Ursachen:
+>    - `TE_USS_DS` (ÜSS+Sicherung, Drehstrom) stand auf **4 TE**, reserviert
+>      für ein nie katalogisiertes hypothetisches 4-poliges ÜSS-Gerät (z. B.
+>      Dehn DG S 4P 275). Die tatsächlich verwendete Baugruppe `480_000033`
+>      nutzt für BEIDE Netztypen denselben 3-poligen Artikel `952305`
+>      (54mm/3TE) + `5SG1812` (44mm/3TE) = 98mm/6TE – identisch zur bereits
+>      in Session 67 Teil 9 korrigierten Wechselstrom-Zeile. Auf **3 TE**
+>      angeglichen (7TE/126mm → 6TE/108mm Grundmaß, bei Doppeleinspeisung
+>      216mm statt 252mm).
+>    - `TE_KLEMME_ES_DS`/`_WS` (Einspeiseklemmen) waren mit 5TE/3TE nie
+>      gegen eine reale Klemmengröße gerechnet worden (Kommentar im Code:
+>      „Platzhalter, später nach Kabelquerschnitt"). Nachgerechnet gegen den
+>      größtmöglichen in Modul 1/2 wählbaren Kabelquerschnitt (16mm²,
+>      Dropdown `querschnitt_mm2`) → benötigt eine Phoenix Contact UT 16
+>      (12,2mm/Klemme, real vermessen): 5×12,2mm=61mm (Drehstrom) bzw.
+>      3×12,2mm=36,6mm (Wechselstrom). Drehstrom auf die nächstgrößere volle
+>      TE-Stufe reduziert: **5TE(90mm)→4TE(72mm)**, 11mm Marge. Wechselstrom
+>      blieb bei 3TE(54mm) – war bereits die engstmögliche TE-Stufe über dem
+>      Bedarf (17mm Marge), keine Änderung nötig.
+>    - Die real verwendeten Platzhalter-Klemmen selbst (`480_000037`/`038`,
+>      Phoenix UT 2,5, 5,2mm/Klemme) bleiben unverändert („DBACS bilanziert
+>      keine reale Anschlussleistung", Session 67 Teil 5) – das war nie die
+>      Ursache des ungenutzten Platzes, nur das Zonen-Grundmaß war zu groß.
+>    - Freigewordener Platz (36mm bei Doppeleinspeisung für uss, 36mm für
+>      klemm_e) kommt automatisch der Leistungs-Erweiterungsfläche
+>      (`leist_ext`) bzw. den Abgangsklemmen-Zonen (`klemm_l`/`klemm_f`/
+>      `klemm_s`, über `redistributeKlemmBands()`) zugute – keine weitere
+>      Code-Änderung nötig, beide Mechanismen haben die Restfläche schon
+>      vorher automatisch verteilt.
+>    - Browser-verifiziert (1200×2000 Standschrank, Drehstrom/Schiene
+>      3-polig, Doppeleinspeisung ja, `480_A00004`): ÜSS-Füllstand 78%→**91%**,
+>      Einsp.-Kl. 29%→**36%**, `klemm_l`-Kapazität 459mm→**477mm**,
+>      `klemm_f`/`klemm_s` je 230mm→**239mm**, weiterhin `overflow:[]` und
+>      `stuecklisteVsPlatzierungCheck()` 21=21/`fehlendPlatziert:[]`, keine
+>      Konsolenfehler.
+> 2. **Hauptschalter/Phasenkontrollleuchten bei Doppeleinspeisung als
+>    getrennte Cluster** (`modules/modul-04-innenaufbau/index.html`,
+>    `buildTuerAnsicht()`): Nutzer-Fund „Hauptschalter und Phasenleuchten
+>    stehen bei Doppeleinspeisung direkt nebeneinander, in der Praxis bilden
+>    Schalter+Leuchten je Einspeisung aber eine räumlich getrennte Gruppe".
+>    Neue Logik: die (breitere) Phasenkontrollleuchten-Reihe wird in
+>    3er-Gruppen zerlegt (= 1 Gruppe je Einspeisung, eine 3-polige
+>    Einspeisung hat immer genau 3 Phasenleuchten) und als eigene Cluster
+>    mit 16mm Zusatzabstand (`EINSP_GRUPPEN_GAP`) symmetrisch um die
+>    Türmitte verteilt; der schmalere Hauptschalter je Einspeisung übernimmt
+>    denselben X-Mittelpunkt wie seine zugehörige Leuchtengruppe (Referenz
+>    ist die Leuchtenreihe, da breiter als der Schalter – Nutzer-Vorgabe).
+>    Bei nur einer Einspeisung (1 Cluster) bleibt das Verhalten unverändert
+>    identisch zum bisherigen, einfach zentrierten Rendering (Fallback greift
+>    zusätzlich, falls die Anzahl Hauptschalter/Leuchten-Cluster nicht
+>    übereinstimmt, z. B. Hauptschalter ohne zugehörige Leuchten auf der
+>    Tür). Die Zeichenroutine selbst wurde dafür aus der Bandschleife in eine
+>    wiederverwendbare `tuerBauteilSVG()`-Funktion extrahiert (keine
+>    Verhaltensänderung für alle anderen Türbänder). Browser-verifiziert:
+>    bei `480_A00004` liegen beide Hauptschalter exakt mittig unter ihrem
+>    jeweiligen 3er-Leuchten-Cluster (Zentren deckungsgleich auf Pixel genau
+>    nachgerechnet), 16mm Lücke zwischen den beiden Clustern; Regressionstest
+>    Einfacheinspeisung (1 Hauptschalter + 3 Leuchten) weiterhin exakt mittig
+>    zentriert wie vor der Änderung, keine Konsolenfehler.
+> 3. **Stückliste-Spaltenbreiten fixiert** (`modules/modul-04-innenaufbau/
+>    index.html`, CSS + `buildStueckliste()`): Nutzer-Fund „Stückzahl nur
+>    nach horizontalem Scrollen erkennbar, mehrzeilige Bezeichnung zu breit".
+>    `#stueckliste-wrap table` auf `table-layout:fixed` mit festen
+>    Spaltenbreiten (`<colgroup>`: Pos 18px/Hst. 50px/Mge 26px/€-Stk 44px/
+>    Gesamt 48px, Bezeichnung nimmt den Rest) umgestellt – die Bezeichnung
+>    bricht dadurch öfter um (mehr Zeilen), Pos/Hersteller/Menge bleiben
+>    garantiert ohne Scrollen sichtbar. Auf der Standard-Panelbreite (340px
+>    − 28px Padding = 312px) passen bei den gewählten Spaltenbreiten sogar
+>    BEIDE Preisspalten ohne jedes Scrollen (312px Summe exakt getroffen);
+>    nur bei der schmaleren Panel-Variante (300px, <1200px Fensterbreite)
+>    greift `min-width:260px` und erzwingt minimales Scrollen – dort dürfen
+>    laut Nutzer-Vorgabe die Preisspalten im Scrollbereich liegen.
+>    Browser-verifiziert (Desktop-Breite): `#stueckliste-wrap.scrollWidth ===
+>    clientWidth` (297px, kein Scrollbalken), alle 6 Spalten inkl. Mge/Preis/
+>    Gesamt sichtbar.
+
 > **Nachtrag Session 67 (30.09.2026, Teil 12) – „Nur kleines TouchPanel
 > wählbar"-Fund aufgeklärt: korrektes Verhalten, kein Bug (knappe 7mm auf
 > 800×1800-Standschrank):** Nutzer-Reproduktion mit exakter Schrankgröße

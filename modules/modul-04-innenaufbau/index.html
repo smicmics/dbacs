@@ -436,22 +436,41 @@ legend{
 }
 
 /* ── Stückliste ── */
+/* table-layout:fixed + feste Spaltenbreiten (Session 68, Nutzer-Vorgabe):
+   die mehrzeilige Bezeichnung wuchs bisher in die Breite (width:100%,
+   kein table-layout) und schob Menge/Preis-Spalten aus dem sichtbaren
+   Panel-right-Bereich (340px − 28px Padding = 312px) – Kontrolle der
+   Stückzahl brauchte horizontales Scrollen. Fix: Bezeichnung bekommt eine
+   feste, schmalere Restbreite (bricht dafür öfter um), #/Hersteller/Menge
+   bleiben so immer ohne Scrollen sichtbar; die Spaltenbreiten (18+50+26+
+   44+48=186px) + Bezeichnung (312−186=126px) passen auf Desktop-Breite
+   exakt ohne Scrollbalken. Nur bei der schmaleren Panel-Variante (300px,
+   siehe @media unten) greift min-width:260px und erzwingt minimales
+   Scrollen – dort dürfen laut Nutzer-Vorgabe die Preis-Spalten im
+   Scrollbereich liegen. */
+#stueckliste-wrap{overflow-x:auto;}
 #stueckliste-wrap table{
-  width:100%;border-collapse:collapse;font-size:11px;
+  width:100%;min-width:260px;table-layout:fixed;border-collapse:collapse;font-size:11px;
 }
+#stueckliste-wrap col.c-pos{width:18px;}
+#stueckliste-wrap col.c-bez{width:auto;}
+#stueckliste-wrap col.c-hst{width:50px;}
+#stueckliste-wrap col.c-mge{width:26px;}
+#stueckliste-wrap col.c-preis{width:44px;}
+#stueckliste-wrap col.c-gesamt{width:48px;}
 #stueckliste-wrap th{
   font-size:9px;text-transform:uppercase;letter-spacing:.04em;
   color:var(--tx3);border-bottom:1px solid var(--bord);
-  padding:4px 4px 5px;text-align:left;font-weight:600;
+  padding:4px 4px 5px;text-align:left;font-weight:600;white-space:nowrap;
 }
 #stueckliste-wrap td{
   padding:3px 4px;border-bottom:1px solid var(--bord);
-  color:var(--tx);vertical-align:top;
+  color:var(--tx);vertical-align:top;overflow-wrap:break-word;
 }
 #stueckliste-wrap tr:last-child td{border-bottom:none;}
 #stueckliste-wrap .td-num{text-align:right;font-family:var(--mono);font-size:10px;}
 #stueckliste-wrap .td-hst{
-  max-width:88px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .stk-total{
   margin-top:6px;text-align:right;font-size:12px;font-weight:700;color:var(--tx);
@@ -4253,6 +4272,34 @@ function tuerFarbe(eb) {
   return TUER_FARBE_STD;
 }
 
+// Zeichnet ein einzelnes Türbauteil (Rect + Kurzlabel) an der angegebenen
+// Tür-lokalen Position (xMm = linke Kante, yCenterMm = Bandmitte, beides in
+// mm) – aus buildTuerAnsicht() extrahiert (Session 68), damit die
+// Hauptschalter-/Phasenkontrollleuchten-Cluster-Logik dort dieselbe
+// Zeichenroutine wiederverwenden kann statt sie zu duplizieren.
+function tuerBauteilSVG(eb, xMm, yCenterMm, sc, DH) {
+  const minRealW = 3 / sc;
+  const bw = Math.max(eb.b_mm || 22, minRealW), bh = Math.max(eb.h_mm || 22, minRealW);
+  const bx = xMm * sc, bwpx = bw * sc, bhpx = bh * sc;
+  const byRaw = (yCenterMm - bh / 2) * sc;
+  const by = Math.min(Math.max(byRaw, 0), DH - bhpx);
+  const farbe = tuerFarbe(eb);
+  if (eb.bauteil_typ === 'lvb_traegerrahmen') {
+    const inset = Math.max(4, Math.min(bwpx, bhpx) * 0.12);
+    let s = `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="${farbe}" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
+    s += `<rect x="${(bx+inset).toFixed(1)}" y="${(by+inset).toFixed(1)}" width="${(bwpx-2*inset).toFixed(1)}" height="${(bhpx-2*inset).toFixed(1)}" fill="#DCEEF2" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.5" rx="1"><title>${eb.bezeichnung} – Sichthaube</title></rect>`;
+    if (bwpx > 12 && bhpx > 8) {
+      s += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
+    }
+    return s;
+  }
+  let s = `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="${farbe}" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
+  if (bwpx > 12 && bhpx > 8) {
+    s += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
+  }
+  return s;
+}
+
 // Direktbauteile mit zone 'tuer' UND passendem Feld-Index aus der Belegung
 // sammeln (je Menge einzeln aufgelistet). Feld-Index kommt aus dem Batch
 // (Session 48, siehe #feld_auf_row) – Alt-Batches ohne feld (1feld-Modus
@@ -4335,48 +4382,67 @@ function buildTuerAnsicht(feldIndex, wrap, inner) {
   // wurde – bei sehr kleinen/großen Bauteilen im selben Band reichte die
   // reale Lücke dann nicht mehr aus).
   const minRealW = 3 / sc;
+  const gap = 8; // mm Abstand zwischen Bauteilmitten innerhalb einer Reihe/Gruppe
+  const effW = eb => Math.max(eb.b_mm || 22, minRealW);
+  // Vertikale Klemmung an die Türhöhe erfolgt in tuerBauteilSVG() (Session 64
+  // Nachtrag 4, Nutzer-Fund: ein hohes Bauteil wie das PXM50-Touchpanel
+  // [270mm] ragte auf einer kurzen Wandschranktür [800mm] oben über die
+  // Türkante hinaus, weil die Bänder gegen den 2000mm-Standschrank kalibriert
+  // sind) – löst NICHT das eigentliche Kopfhöhen-Problem auf kurzen Türen
+  // (siehe CLAUDE.md Restliste).
+
+  // Hauptschalter + Phasenkontrollleuchten (Session 68, Nutzer-Vorgabe): bei
+  // Doppeleinspeisung bildet je Einspeisung ein eigenes Hauptschalter+
+  // Leuchten-Paar in der Praxis eine räumlich getrennte Baugruppe auf der
+  // Tür, statt einer durchgehend gemischten Reihe. Eine 3-polige Einspeisung
+  // hat genau 3 Phasenkontrollleuchten – die (breitere) Leuchtenreihe wird
+  // daher in 3er-Gruppen zerlegt (= 1 Gruppe je Einspeisung) und als eigene
+  // Cluster mit kleinem Zusatzabstand symmetrisch um die Türmitte verteilt;
+  // der schmalere Hauptschalter je Einspeisung übernimmt denselben
+  // X-Mittelpunkt wie seine zugehörige Leuchtengruppe (Referenzbreite ist die
+  // Leuchtenreihe, da sie breiter ist als der Schalter – Nutzer-Vorgabe). Bei
+  // nur einer Einspeisung (1 Cluster) ändert sich am bisherigen, einfach
+  // zentrierten Verhalten nichts.
+  const EINSP_GRUPPEN_GAP = 16; // mm Zusatzabstand zwischen 2 Einspeisungs-Clustern
+  let phasenClusterCenters = null; // Tür-lokale X-Mitte (mm) je Leuchten-Cluster
+  const phasenList = bands[TUER_BAND_PHASENKONTROLLE];
+  if (phasenList) {
+    const clusters = [];
+    for (let i = 0; i < phasenList.length; i += 3) clusters.push(phasenList.slice(i, i + 3));
+    const clusterW = clusters.map(c => c.reduce((s, eb) => s + effW(eb), 0) + gap * (c.length - 1));
+    const totalW = clusterW.reduce((a, b) => a + b, 0) + EINSP_GRUPPEN_GAP * (clusters.length - 1);
+    const yC = masse.h * (1 - TUER_BAND_PHASENKONTROLLE);
+    phasenClusterCenters = [];
+    let cx = masse.b / 2 - totalW / 2;
+    clusters.forEach((c, ci) => {
+      phasenClusterCenters.push(cx + clusterW[ci] / 2);
+      let x = cx;
+      c.forEach(eb => { svg += tuerBauteilSVG(eb, x, yC, sc, DH); x += effW(eb) + gap; });
+      cx += clusterW[ci] + EINSP_GRUPPEN_GAP;
+    });
+    delete bands[TUER_BAND_PHASENKONTROLLE];
+  }
+  const hsList = bands[TUER_BAND_HAUPTSCHALTER];
+  if (hsList) {
+    const yC = masse.h * (1 - TUER_BAND_HAUPTSCHALTER);
+    if (phasenClusterCenters && phasenClusterCenters.length === hsList.length) {
+      hsList.forEach((eb, i) => { svg += tuerBauteilSVG(eb, phasenClusterCenters[i] - effW(eb) / 2, yC, sc, DH); });
+    } else {
+      // Fallback (z. B. keine Phasenleuchten auf dieser Tür, oder Anzahl
+      // weicht ab): wie bisher eine einzelne, zentrierte Reihe.
+      const totalW = hsList.reduce((s, eb) => s + effW(eb), 0) + gap * (hsList.length - 1);
+      let x = masse.b / 2 - totalW / 2;
+      hsList.forEach(eb => { svg += tuerBauteilSVG(eb, x, yC, sc, DH); x += effW(eb) + gap; });
+    }
+    delete bands[TUER_BAND_HAUPTSCHALTER];
+  }
+
   Object.entries(bands).forEach(([bandStr, list]) => {
     const band = +bandStr;
-    const gap = 8; // mm Abstand zwischen Bauteilmitten innerhalb einer Reihe
-    const effW = eb => Math.max(eb.b_mm || 22, minRealW);
     const totalW = list.reduce((s, eb) => s + effW(eb), 0) + gap * (list.length - 1);
     let x = masse.b / 2 - totalW / 2; // um die Türmitte zentriert (Nutzer-Vorgabe)
     const y = masse.h * (1 - band);   // band=0 unten, SVG-Y wächst nach unten
-    list.forEach(eb => {
-      const bw = effW(eb), bh = Math.max(eb.h_mm || 22, minRealW);
-      const bx = x * sc, bwpx = bw*sc, bhpx = bh*sc;
-      // Vertikal an der Türhöhe geklemmt (Session 64 Nachtrag 4, Nutzer-Fund:
-      // ein hohes Bauteil wie das PXM50-Touchpanel [270mm] ragte auf einer
-      // kurzen Wandschranktür [800mm] bei Band 0,86 oben über die Türkante
-      // hinaus, weil die Bänder gegen den 2000mm-Standschrank kalibriert
-      // sind - eine feste Prozent-Ebene kann auf einer viel kürzeren Tür
-      // schlicht keinen Platz mehr für ein grosses Bauteil bieten). Diese
-      // Klammer verhindert nur das optische Herausragen über die Tür-
-      // Aussenkante, löst aber NICHT das eigentliche Kopfhöhen-Problem auf
-      // kurzen Türen (siehe CLAUDE.md Restliste).
-      const byRaw = (y - (eb.h_mm||22)/2) * sc;
-      const by = Math.min(Math.max(byRaw, 0), DH - bhpx);
-      const farbe = tuerFarbe(eb);
-      if (eb.bauteil_typ === 'lvb_traegerrahmen') {
-        // Romutec-Traegerrahmen (Session 64, Nutzer-Vorgabe): 2 verschachtelte
-        // Rechtecke reichen aus, um den Platzbedarf darzustellen - aussen der
-        // Rahmen selbst, innen die abschliessbare Sichthaube (Fenster).
-        // Einzelne Module/Leerplatten werden bewusst NICHT einzeln gezeichnet
-        // (nur Stueckliste, siehe aggregateStueckliste()).
-        const inset = Math.max(4, Math.min(bwpx, bhpx) * 0.12);
-        svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="${farbe}" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
-        svg += `<rect x="${(bx+inset).toFixed(1)}" y="${(by+inset).toFixed(1)}" width="${(bwpx-2*inset).toFixed(1)}" height="${(bhpx-2*inset).toFixed(1)}" fill="#DCEEF2" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.5" rx="1"><title>${eb.bezeichnung} – Sichthaube</title></rect>`;
-        if (bwpx > 12 && bhpx > 8) {
-          svg += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
-        }
-      } else {
-        svg += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bwpx.toFixed(1)}" height="${bhpx.toFixed(1)}" fill="${farbe}" fill-opacity="0.9" stroke="#2A2A28" stroke-width="0.6" rx="1"><title>${eb.bezeichnung}</title></rect>`;
-        if (bwpx > 12 && bhpx > 8) {
-          svg += `<text x="${(bx+bwpx/2).toFixed(1)}" y="${(by+bhpx/2).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="system-ui,sans-serif" fill="#1A1A18">${kurzLabel(eb)}</text>`;
-        }
-      }
-      x += bw + gap;
-    });
+    list.forEach(eb => { svg += tuerBauteilSVG(eb, x, y, sc, DH); x += effW(eb) + gap; });
   });
 
   svg += '</svg>';
@@ -4861,6 +4927,10 @@ function buildStueckliste(zones) {
   }).join('');
 
   wrap.innerHTML = `<table>
+    <colgroup>
+      <col class="c-pos"><col class="c-bez"><col class="c-hst">
+      <col class="c-mge"><col class="c-preis"><col class="c-gesamt">
+    </colgroup>
     <thead><tr>
       <th>#</th><th>Bezeichnung</th><th>Hst.</th>
       <th style="text-align:right">Mge</th>

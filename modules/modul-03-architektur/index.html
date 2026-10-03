@@ -594,12 +594,31 @@ const B_KANAL_V_DEF = 40;  // Vertikaler Kabelkanal – Standardwert (Nutzereing
 // Auf die realen Katalogmasse angehoben.
 const TE_USS_WS   = 3;   // ÜSS Typ 2, real 952305 DEHNguard M TNC 275 FM = 3 TE
 const TE_SICH_WS  = 3;   // Vorsicherung D0, real 5SG1812 Sicherungssockel D03 = 3 TE
-// Drehstrom 3~: ÜSS 4-polig Typ 2 (z. B. Dehn DG S 4P 275, 4× 1 TE) + D0-Halter L1/L2/L3 (3× 1 TE)
-const TE_USS_DS   = 4;   // ÜSS Typ 2, 4-polig
-const TE_SICH_DS  = 3;   // Vorsicherungen D0, 3× schmaler Halter (L1/L2/L3, N ohne Sich.), 3 TE
-// Einspeiseklemmen: teilen sich die Klemmenzeile, netztyp-abhängig
-const TE_KLEMME_ES_DS = 5;  // Drehstrom:    L1/L2/L3/N/PE
-const TE_KLEMME_ES_WS = 3;  // Wechselstrom: L1/N/PE
+// Drehstrom 3~: Session 68, Nutzer-Fund ("sehr viel ungenutzter Platz bei
+// Doppeleinspeisung") – TE_USS_DS=4 war fuer ein hypothetisches 4-poliges
+// ÜSS-Geraet (z. B. Dehn DG S 4P 275) reserviert, das NIE katalogisiert
+// wurde. Die tatsaechlich verwendete Baugruppe 480_000033 nutzt fuer BEIDE
+// Netztypen denselben 3-poligen Artikel 952305 (54mm/3TE) + 5SG1812
+// (44mm/3TE) = 98mm/6TE (identisch zur bereits korrigierten WS-Zeile oben).
+// Auf die reale Katalog-Baugruppe angeglichen (4→3 TE), 18mm/Einspeisung
+// zurueck an die Leistungs-Erweiterungsflaeche (b_uss liegt im Leistungs-
+// bereich, s. buildLayout()).
+const TE_USS_DS   = 3;   // ÜSS Typ 2, real 952305 DEHNguard M TNC 275 FM = 3 TE (identisch WS, s. o.)
+const TE_SICH_DS  = 3;   // Vorsicherung D0, real 5SG1812 Sicherungssockel D03 = 3 TE (identisch WS)
+// Einspeiseklemmen: teilen sich die Klemmenzeile, netztyp-abhängig.
+// Session 68, Nutzer-Fund ("Einspeiseklemmen genau passend bei groesstem
+// Kabelquerschnitt?"): die real verwendeten Platzhalter-Klemmen (Phoenix
+// UT 2,5, 480_000037/038) sind mit 5,2mm/Klemme viel schmaler als die hier
+// reservierten 18mm/TE – das war nie das Problem. Der ECHTE Massstab ist
+// der groesstmoegliche in Modul 1/2 waehlbare Kabelquerschnitt (16mm²,
+// Dropdown querschnitt_mm2), der eine UT 16 braeuchte (12,2mm/Klemme, real
+// vermessen, 1,5-25mm²): 5×12,2mm=61mm (Drehstrom L1/L2/L3/N/PE), 3×12,2mm
+// =36,6mm (Wechselstrom L/N/PE). Auf die naechstgroessere TE-Stufe
+// aufgerundet: Drehstrom 5TE(90mm)→4TE(72mm, 11mm Marge), Wechselstrom
+// bleibt bei 3TE(54mm, 17mm Marge) – schon vorher die engstmoegliche volle
+// TE-Stufe ueber dem Bedarf, keine Aenderung noetig.
+const TE_KLEMME_ES_DS = 4;  // Drehstrom:    L1/L2/L3/N/PE (worst case UT16: 5×12,2mm=61mm ≤ 4TE/72mm)
+const TE_KLEMME_ES_WS = 3;  // Wechselstrom: L1/N/PE        (worst case UT16: 3×12,2mm=36,6mm ≤ 3TE/54mm)
 
 function ceil5(v) { return Math.ceil(Math.max(0, v) / 5) * 5; }
 
@@ -823,8 +842,8 @@ function calculateZones(b, h) {
 
   // ÜSS + Vorsicherung: Breite netztyp-abhängig, liegt im Leistungsbereich (EMV)
   const n_te_uss = (netztyp === 'drehstrom'
-    ? TE_USS_DS + TE_SICH_DS   // 7 TE  (4 TE ÜSS + 3 TE D0-Halter)
-    : TE_USS_WS + TE_SICH_WS) * doppelFaktor;  // 4 TE  (2 TE ÜSS + 2 TE D0-Halter)
+    ? TE_USS_DS + TE_SICH_DS   // 6 TE  (3 TE ÜSS + 3 TE D0-Halter, reale Baugruppe 480_000033)
+    : TE_USS_WS + TE_SICH_WS) * doppelFaktor;  // 6 TE  (3 TE ÜSS + 3 TE D0-Halter, identisch)
   const b_uss    = Math.min(n_te_uss * TE_BREITE_MM, b * 0.4 * doppelFaktor);  // max 40 % (je Einspeisung) der Plattenbreite
 
   // Einspeiseklemmen → integriert in Klemmenzeile, kein eigener Höhenbedarf
@@ -1574,11 +1593,11 @@ function buildZoneTable(zp) {
   const srcKlemmF  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (1,5 mm², Ventile/Klappen) + ${H_HANDLING} mm Handling`;
   const srcKlemmS  = `${H_HANDLING} mm Handling + ${H_KLEMME_STD} mm Klemme (1 mm²) + ${H_HANDLING} mm Handling`;
   const srcUss = zp.netztyp === 'drehstrom'
-    ? `${TE_USS_DS} TE ÜSS Typ 2 4-pol. + ${TE_SICH_DS} TE D0-Halter L1/L2/L3 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`
+    ? `${TE_USS_DS} TE ÜSS Typ 2 3-pol. + ${TE_SICH_DS} TE D0-Halter L1/L2/L3 = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV), reale Katalog-Baugruppe 480_000033`
     : `${TE_USS_WS} TE ÜSS Typ 2 2-pol. + ${TE_SICH_WS} TE D0-Halter L = ${zp.n_te_uss} TE · ${Math.round(zp.b_uss)} mm – im Leistungsbereich (EMV)`;
   const srcEinspKl = zp.netztyp === 'drehstrom'
-    ? `${TE_KLEMME_ES_DS} TE Einspeiseklemmen L1/L2/L3/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`
-    : `${TE_KLEMME_ES_WS} TE Einspeiseklemmen L1/N/PE – teilen sich die Klemmenzeile (Platzhalter, später nach Kabelquerschnitt)`;
+    ? `${TE_KLEMME_ES_DS} TE Einspeiseklemmen L1/L2/L3/N/PE – bemessen für größtmöglichen Kabelquerschnitt aus Modul 1/2 (UT 16, 16 mm²)`
+    : `${TE_KLEMME_ES_WS} TE Einspeiseklemmen L/N/PE – bemessen für größtmöglichen Kabelquerschnitt aus Modul 1/2 (UT 16, 16 mm²)`;
   let srcEvert;
   if (zp.netztyp === 'drehstrom' && zp.schiene === 'ja') {
     const polLabel = { '3':'3-polig', '4':'4-polig', '5':'5-polig' }[zp.schiene_pol] || '3-polig';
