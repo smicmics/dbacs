@@ -1,0 +1,139 @@
+COUNT 69
+---
+430_000001 | Raumtemperatursensor passiv 0...50°C | kategorie: Raumsensoren
+---
+430_000002 | Raum-CO2-Sensor 0...2000ppm, 24V AC/DC | kategorie: Raumsensoren
+---
+430_000003 | Raum-VOC-Sensor 0...100% VOC, 24V AC/DC | kategorie: Raumsensoren
+---
+430_000004 | Raumfeuchtesensor 0...100% r.F., 24V AC/DC | kategorie: Raumsensoren
+---
+430_000005 | Raumtemperatur- und Feuchtesensor 0...50°C/0...100% r.F., 24V AC/DC | kategorie: Raumsensoren
+---
+430_000008 | Kanaltemperaturfühler 0,4m (Kapillar, Punktmessung) -50...+80°C | kategorie: Luftkanalsensoren
+---
+430_000009 | Kanaltemperaturfühler 2,0m (Kapillar-Mittelwert) -50...+80°C | kategorie: Luftkanalsensoren
+---
+430_000010 | Kanalfeuchtefühler 0...100% r.F., 24V AC/DC | kategorie: Luftkanalsensoren
+---
+430_000011 | Differenzdruckwächter Filterüberwachung 20...300 Pa | kategorie: Luftkanalwächter
+---
+430_000012 | Differenzdruckwächter Ventilatorüberwachung 100...1000 Pa | kategorie: Luftkanalwächter
+---
+430_000013 | Differenzdrucksensor Kanaldruck 0...1000 Pa, 24V AC/DC | kategorie: Luftkanalsensoren
+---
+430_000022 | Differenzdrucksensor Kanaldruck 0...300 Pa, 24V AC/DC | kategorie: Luftkanalsensoren
+---
+430_000014 | Kanalhygrostat 15...95% r.F. | kategorie: Luftkanalwächter
+---
+430_000015 | Kanalrauchmelder 24V AC/DC, VdS/DIBt | kategorie: Luftkanalwächter
+---
+430_000016 | Kanalrauchmelder 230V AC, VdS/DIBt | kategorie: Luftkanalwächter
+---
+430_000017 | Kanal-CO2-Fühler 0...2000ppm, 24V AC/DC | kategorie: Luftkanalsensoren
+---
+430_000018 | Kanal-VOC-Fühler 0...100% VOC, 24V AC/DC | kategorie: Luftkanalsensoren
+---
+430_000019 | Kanal-CO2/VOC-Kombifühler 0...2000ppm/0...100% VOC, 24V AC/DC | kategorie: Luftkanalsensoren
+---
+430_000020 | Luftstromwächter 0,2...10 m/s, 24V AC/DC | kategorie: Luftkanalwächter
+---
+430_000021 | Frostschutzwächter, Kapillare 2m | kategorie: Luftkanalwächter
+---
+430_000023 | Kanalfühler für Feuchte und Temperatur, 0...100% r.F./0...50°C, 24V AC/DC | kategorie: Luftkanalsensoren
+---
+430_000024 | Raumtemperatursensor passiv mit Sollwertversteller ±3K | kategorie: Raumsensoren
+---
+430_000025 | Raum-CO2-, Feuchte- und Temperatursensor 0...2000ppm/0...100%/0...50°C, 24V AC/DC | kategorie: Raumsensoren
+---
+420_000013 | Ventilantrieb 0...10V mit Positionsrückmeldung, 800N, 24V AC/DC | kategorie: Ventilantriebe
+---
+420_000014 | Ventilantrieb Zonenregelung 0...10V mit Positionsrückmeldung, 200N, 24V AC/DC | kategorie: Ventilantriebe
+---
+420_000015 | Ventilantrieb mit Notstellfunktion (Fail Open/Close) 0...10V mit Rückmeldung, 1100N, 24V AC/DC | kategorie: Ventilantriebe
+---
+420_000016 | Ventilantrieb mit Notstellfunktion (Fail Open/Close) 0...10V mit Rückmeldung, 1100N, 230V AC | kategorie: Ventilantriebe
+---
+430_000026 | Umluftkühlgerät (CRAH) Schneider Uniflair HDCV, 20...250 kW, mit Freigabe/Betrieb/Sammelstörung/Warnung/Sollwertführung | kategorie: Umluftkühlgeräte
+---
+420_000022 | Umwaelzpumpe Yonos/Stratos PICO 3...45W, Schalten Ein/Aus, Betrieb, Stoerung, inkl. Rep.-Schalter, 230V AC | kategorie: Umwälzpumpen
+---
+420_000023 | Umwaelzpumpe Stratos MAXO 40W...1,5kW, Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, inkl. Rep.-Schalter, 230V AC | kategorie: Umwälzpumpen
+---
+420_000025 | Umwaelzpumpe Stratos GIGA2.0 0,37...7,5kW (max. 25A 3~), Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Umwälzpumpen
+---
+420_000026 | Umwaelzpumpe Wilo CronoLine-E (max. 25A 3~, analog GIGA2.0 dimensioniert), Schalten Ein/Aus, Betriebs-/Sammelstoermeldung, Sollwertfuehrung 0...10V, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Umwälzpumpen
+---
+420_000027 | Energieventil DN50 Verschraubung, druckunabhaengig mit Energiezaehlung, Notstellfunktion Auf/Zu, Hybrid analog + IP, 24V AC/DC | kategorie: Ventilantriebe
+---
+420_000028 | Energieventil DN100 Flansch, druckunabhaengig mit Energiezaehlung, Notstellfunktion Auf/Zu, Hybrid analog + IP, 24V AC/DC | kategorie: Ventilantriebe
+---
+430_000027 | Umluftkühlgerät (CRAH) Schneider Uniflair HDCV, 20...250 kW, Betrieb/Sammelstörung/Warnung - Nur Monitoring | kategorie: Umluftkühlgeräte
+---
+430_000028 | Ventilator 1-stufig, Kleinventilator bis 1,5 kW, Schalten Ein/Aus, Betrieb, Stoerung, inkl. Rep.-Schalter, 230V AC 1~ | kategorie: Ventilatoren
+---
+430_000029 | Ventilator 1-stufig, Kleinventilator 1,5-3 kW, Schalten Ein/Aus, Betrieb, Stoerung, inkl. Rep.-Schalter, 230V AC 1~ | kategorie: Ventilatoren
+---
+430_000030 | Ventilator Direktanlauf 1-stufig, 1,1-4 kW, Schalten Ein/Aus, Betrieb, Stoerung MSS, Stoerung PTC, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000031 | Ventilator Direktanlauf 1-stufig, 4-7,5 kW, Schalten Ein/Aus, Betrieb, Stoerung MSS, Stoerung PTC, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000032 | Ventilator Stern-Dreieck-Anlaufschaltung, 5,5-11 kW, Schalten Ein/Aus, Betrieb, Stoerung Ueberlast, Stoerung PTC, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000033 | Ventilator Stern-Dreieck-Anlaufschaltung, 11-18,5 kW, Schalten Ein/Aus, Betrieb, Stoerung Ueberlast, Stoerung PTC, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000034 | Ventilator Stern-Dreieck-Anlaufschaltung, 18,5-25 kW, Schalten Ein/Aus, Betrieb, Stoerung Ueberlast, Stoerung PTC, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000035 | Ventilator 2-Touren (Dahlander), 1,5/5,5 kW, Schalten Stufe 1/2 (verriegelt), Betrieb Stufe 1/2, Sammelstoerung Ueberlast, Stoerung PTC, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000036 | Ventilator 2-Touren (Dahlander), 4/17 kW, Schalten Stufe 1/2 (verriegelt), Betrieb Stufe 1/2, Sammelstoerung Ueberlast, Stoerung PTC, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000037 | Ventilator FU-geregelt (FU am Geraet), 1,1-7,5 kW, Freigabe, Sollwertfuehrung 0...10V, Betrieb, Stoerung, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000038 | Ventilator FU-geregelt (FU am Geraet), 7,5-25 kW, Freigabe, Sollwertfuehrung 0...10V, Betrieb, Stoerung, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000039 | EC-Ventilator drehzahlgeregelt, bis 1,5 kW, Freigabe, Sollwertfuehrung 0...10V, Betrieb, Stoerung, inkl. Rep.-Schalter, 230V AC 1~ | kategorie: Ventilatoren
+---
+430_000040 | EC-Ventilator drehzahlgeregelt, bis 4 kW, Freigabe, Sollwertfuehrung 0...10V, Betrieb, Stoerung, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000041 | EC-Ventilator drehzahlgeregelt, 4-11 kW, Freigabe, Sollwertfuehrung 0...10V, Betrieb, Stoerung, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000042 | EC-Ventilator drehzahlgeregelt, 11-24 kW, Freigabe, Sollwertfuehrung 0...10V, Betrieb, Stoerung, inkl. Rep.-Schalter, 400V AC 3~ | kategorie: Ventilatoren
+---
+430_000043 | Modul Modbus RTU (Feldgeraet-Schnittstelle) | kategorie: Kommunikationsmodule
+---
+430_000044 | Modul Modbus TCP/IP (Feldgeraet-Schnittstelle) | kategorie: Kommunikationsmodule
+---
+430_000045 | Luftklappenantrieb GLB146.1E, 10 Nm, nur Endlagenmeldung Auf/Zu, 24V AC/DC | kategorie: Luftklappenantriebe
+---
+430_000046 | Luftklappenantrieb GLB346.1E, 10 Nm, nur Endlagenmeldung Auf/Zu, 230V AC | kategorie: Luftklappenantriebe
+---
+430_000047 | Luftklappenantrieb GLB146.1E, 10 Nm, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 24V AC/DC | kategorie: Luftklappenantriebe
+---
+430_000048 | Luftklappenantrieb GLB346.1E, 10 Nm, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 230V AC mit Koppelrelais | kategorie: Luftklappenantriebe
+---
+430_000049 | Luftklappenantrieb GBB146.1E, 25 Nm, nur Endlagenmeldung Auf/Zu, 24V AC/DC | kategorie: Luftklappenantriebe
+---
+430_000050 | Luftklappenantrieb GBB346.1E, 25 Nm, nur Endlagenmeldung Auf/Zu, 230V AC | kategorie: Luftklappenantriebe
+---
+430_000051 | Luftklappenantrieb GBB146.1E, 25 Nm, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 24V AC/DC | kategorie: Luftklappenantriebe
+---
+430_000052 | Luftklappenantrieb GBB346.1E, 25 Nm, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 230V AC mit Koppelrelais | kategorie: Luftklappenantriebe
+---
+430_000053 | Brandschutzklappe Endlagenschalter Auf, TROX FK2-EU Z02 | kategorie: Brandschutzklappen
+---
+430_000054 | Brandschutzklappe Endlagenschalter Auf/Zu, TROX FK2-EU Z03 | kategorie: Brandschutzklappen
+---
+430_000055 | Motorischer Brandschutzklappenantrieb BFL230-T TR, Groesse 1, 230V AC, TROX FK2-EU Z43 | kategorie: Brandschutzklappen
+---
+430_000056 | Motorischer Brandschutzklappenantrieb BFN230-T TR, Groesse 2+3, 230V AC, TROX FK2-EU Z43 | kategorie: Brandschutzklappen
+---
+430_000057 | Motorischer Brandschutzklappenantrieb BFL24-T-ST TR, Groesse 1, 24V AC/DC, TROX FK2-EU Z45 | kategorie: Brandschutzklappen
+---
+430_000058 | Motorischer Brandschutzklappenantrieb BFN24-T-ST TR, Groesse 2+3, 24V AC/DC, TROX FK2-EU Z45 | kategorie: Brandschutzklappen
+---
+430_000059 | ASi-Bus Brandschutzklappen Grundsystem, Doppelmaster (62 Teilnehmer), TROX TROXNETCOM | kategorie: Brandschutzklappen ASi-Bus
+---
+430_000060 | ASi-Bus BMA-Kopplung und Stoerentriegelung, TROX TNC-Z0094 | kategorie: Brandschutzklappen ASi-Bus
+---
+430_000061 | ASi-Bus Brandschutzklappe hinzufuegen, TROX FK.../FKRS-EU mit AS-EM-Interface | kategorie: Brandschutzklappen ASi-Bus
