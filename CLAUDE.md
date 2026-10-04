@@ -16,6 +16,63 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 68 (04.10.2026, Fortsetzung 3) – Heizung/Kälte/Lüftung-
+> Anlagen: Schritt 1+2 (Fork-Recherche) komplett, Schritt 3 (Zusammensetzen)
+> für „Heizkreise Verteilung" begonnen, NOCH KEINE EXCEL-ÄNDERUNG. Volle
+> Herleitung in Memory `project_anlagenbaugruppen.md` Abschnitt 5, hier nur
+> Kurzfassung + was beim Weiterarbeiten zuerst zu tun ist:**
+> 1. **Schritt 1 (5 Forks)** lieferte 18 Anlagen-Vorschläge über 3 Gewerke
+>    (Heizung/Kälte/Lüftung) + 11 Katalog-Lücken. Rohdaten:
+>    `scratchpad/fork_1..5_*_ergebnis.md`.
+> 2. **Nutzer-Entscheidungen zu Schritt 1:** Außentemperaturfühler = 1x pro
+>    Schrank, zentral in Heizung+Kälte+Lüftung wählbar, Produkt **Siemens
+>    QAC34** (→ echte Bestellnr. `QAC34/101`); zusätzlich Außenfeuchtefühler
+>    nur für Kälte+Lüftung; hydraulische Weiche bleibt Fremdbauteil (Regel 7),
+>    aber Sensoren an der Weiche sollen **4 Positionen** haben (Primär-/
+>    Sekundär-Ein-/Austritt), nicht nur 2; Lüftungs-Baukasten-Ansatz (Fork 5,
+>    6 `gruppe`-Achsen) „i.O. für ersten Ansatz"; Leistungsklasse (Pumpen-
+>    /Ventilgröße) ist reine `bg_id`-Auswahl ohne DP-Unterschied – NICHT bei
+>    Ventilatoren (dort ändert Anlaufart die DP-Zahl).
+> 3. **Schritt 2 (3 Forks)** schloss die 11 Lücken größtenteils mit
+>    konkreten Produkten: QAC34/101 + QFA3100/AQF3100 (Außensensoren,
+>    `scratchpad/fork_schritt2_a_*`), Siemens QBE63-DP1 (Differenzdruck
+>    flüssig), ATAGO CM-800α-EG (Glykolsensor), ALRE JTF (Frostthermostat,
+>    unbestätigte Rohrmontage), Chiller-Schnittstelle nur 2 Hardwarepunkte
+>    sicher frei (Freigabe braucht Koppelrelais nach Regel 15 – **stellt die
+>    bestehende CRAH-Baugruppe `430_000026`/`027` infrage, noch nicht
+>    gegengeprüft**), Kondensatwächter ohne festen Bestellcode
+>    (`scratchpad/fork_schritt2_b_*`); GLB161.1E/GLB361.1E/GBB161.1E
+>    (modulierender Klappenantrieb, 230V/25Nm fehlt), Klingenburg KR
+>    MicroMax 370 (Rotor-WT-Antrieb), Condair RS (Dampfbefeuchter, Fernmelde-
+>    platine optional!), Carel humiFog direct (Sprühbefeuchter)
+>    (`scratchpad/fork_schritt2_c_*`).
+> 4. **Offene Einzelentscheidungen A–E** (dem Nutzer vorgelegt, noch keine
+>    Antwort): A) CRAH-Baugruppe gegen reales Schneider-Datenblatt
+>    nachprüfen? B) Frostthermostat trotz unbestätigter Rohrmontage
+>    aufnehmen? C) Kondensatwächter trotz fehlendem Artikel aufnehmen/
+>    Alternative suchen/zurückstellen? D) Condair RS/Carel-Abweichungen
+>    akzeptieren? E) 230V/25Nm-Klappenantrieb weglassen oder bei Belimo
+>    suchen?
+> 5. **Schritt 3 begonnen für „Heizkreise Verteilung"** (Kategorie-Name):
+>    Nutzer-Vorschlag statt Hydraulik-Vorauslegung – Anlagen werden nach
+>    **Leistungsbezug** (klein=PICO 420_000022/mittel=MAXO 420_000023) UND
+>    **Ausstattungsbezug** (konventionell/mit Busanbindung+Wärmemengenzähler)
+>    benannt und als **vollständig eigenständige Anlagen** angelegt (kein
+>    `gruppe`-Dropdown mehr nötig). Draft-Matrix (7 Anlagen, NICHT final):
+>    Heizkreis Beimischschaltung (klein-konv./mittel-konv./mittel-Bus+WMZ),
+>    Zubringerkreis (klein-konv./mittel-Bus+WMZ+Sensoren), Fußbodenheizkreis
+>    (klein-konv./mittel-Bus+WMZ, mit Federrückl.-Antrieb 420_000015 + STB
+>    420_000011 + TW 420_000010/012). **Bestätigt: bestehende Baugruppen
+>    bleiben unverändert, nur neue `anlagen`/`anlagen_baugruppen`-Zeilen.**
+> 6. **Nächster Schritt beim Fortsetzen:** offene Frage klären, ob
+>    „Bus+WMZ" auch bei „klein" angeboten wird; 3 Arbeitsannahmen bestätigen
+>    lassen (siehe Memory-Abschnitt 5 für den genauen Wortlaut: „statische
+>    Heizung"=Radiator+nur Beimischschaltung, nur klein+mittel-Leistungs-
+>    stufen für Verteilkreise, „TW"=Temperaturwächter) – danach die
+>    Heizkreis-Verteilkreis-Anlagen tatsächlich in Excel eintragen. Kessel-
+>    kreis/Weiche/Puffer (Fork 2) sowie Kälte-/Lüftungs-Anlagen (Fork 4/5)
+>    folgen danach, noch nicht begonnen.
+
 > **Nachtrag Session 68 (04.10.2026, Teil 4) – Phase 5-7 abgeschlossen: alle
 > 5 Fork-Blöcke aus Teil 3 in `ga_komponenten.xlsx` eingetragen, exportiert,
 > Browser-verifiziert. 23 neue Baugruppen, 4 neue Einzelbauteile, 13 neue
