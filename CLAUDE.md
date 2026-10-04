@@ -16,6 +16,93 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 68 (04.10.2026, Teil 3) – Fork-Recherche für fehlende
+> Baugruppen (Absperr-/Lüftungsklappen, Brandschutzklappen, Steuerkoppler
+> BMA/Gaslöschanlage) abgeschlossen, Alt-Bug in 420_000020/021 korrigiert,
+> neue Regel 17, mehrere Nutzer-Entscheidungen – Excel-Eintrag der neuen
+> Baugruppen selbst noch NICHT erfolgt (Phase 5 wartet auf die finale
+> ASi-Brandschutzklappen-Modellierung):**
+> 1. **Echter Bugfix `420_000020`/`420_000021`** (Thermische 230V-
+>    Ventilantriebe mit Koppelrelais, Session 55 – vor Formalisierung von
+>    Regel 12 in Session 56 gebaut): der `dp_bo`-Override für den DDC-
+>    Schaltbefehl saß auf einer eigenen `3209510`-Klemmenzeile statt auf der
+>    `2967073`-Koppelrelais-Zeile, dazu 2 überzählige `klemm_f`-Klemmen für
+>    die (laut Regel 12 klemmenlose) Verbindung DDC-BO→Koppelrelais-Spule.
+>    Gefunden beim Vergleich mit der neuen, Regel-12-konformen Modellierung
+>    aus der Lüftungsklappen-Fork-Recherche (Punkt 3 unten). Fix: Override auf
+>    die `2967073`-Zeile verschoben, die beiden überzähligen Klemmen entfernt
+>    (`klemm_f`-Bedarf je Baugruppe 4→2 Klemmen, BO-Zählung unverändert 1).
+>    Browser-verifiziert: BO weiterhin 2/6 bei beiden Baugruppen zusammen,
+>    `klemm_f` korrekt 4 (2×2) statt vorher 8, `overflow:[]`,
+>    `fehlendPlatziert:[]`, keine Konsolenfehler.
+> 2. **Neue Regel 17** aufgenommen (siehe „Baugruppen-Modellierungsregeln"
+>    oben): Koppelrelais mit durchgeschleifter Steuerspannung für
+>    Doppelfunktion Sicherheitskette+BI – **zwingend ein eigenes Relais je
+>    Feldkontakt**, nie mehrere Feldkontakte in Serie auf ein gemeinsames
+>    Relais (Nutzer-Begründung: sonst keine Einzelmeldung mehr möglich,
+>    welche von mehreren Brandschutzklappen ausgelöst hat – erst 1:1
+>    Feldkontakt↔Relais trennt Steuerspannungs-Durchschleifung und
+>    Einzelmeldung sauber).
+> 3. **5 Fork-Rechercheergebnisse vorliegend, noch nicht in Excel
+>    übernommen** (Rohdaten `scratchpad/fork_1..5_*_ergebnis.md`):
+>    - Absperrklappen Heizung/Kälte (Siemens Acvatix SAL.., nicht GDB wie
+>      ursprünglich vermutet – GDB ist für Kugelhähne, hat keine
+>      Endlagenschalter-Option) – 4 Baugruppen.
+>    - Lüftungsklappen-Antriebe (Siemens Acvatix GLB../GBB.., 10/25 Nm ×
+>      24V/230V × meldend/schaltend) – 8 Baugruppen. Wichtiger Fund (gilt
+>      für beide Klappen-Blöcke): „schaltend" braucht **2× BO**, nicht 1×
+>      (Antriebe haben getrennte Y1/Y2-Fahrbefehlseingänge, keinen
+>      gemeinsamen Wechsel-Ausgang).
+>    - Brandschutzklappen konventionell (TROX FK2-EU, Belimo-OEM-Antriebe)
+>      – 6 Baugruppen, kein neues Koppelrelais nötig (`2967099` deckt die
+>      Doppelfunktion ab).
+>    - Brandschutzklappen ASi-Bus (TROX TROXNETCOM AS-i) – Infrastruktur
+>      statt Baugruppe-je-Klappe: `TNC-A1412` (Controller = Gateway +
+>      „BSK-Zentrale" in einem Gerät, 62 Teilnehmer/Doppelmaster),
+>      `TNC-A1258` (Netzteil, laut Datenblatt ohne eigenen Meldekontakt),
+>      `TNC-Z0094` (Meldemodul, busgespeist), `TNC-HCM2-A` (ab >62 Klappen).
+>      Modellierung als Baugruppen-Aufteilung noch in Diskussion, siehe
+>      unten.
+>    - Steuerkoppler BMA/Gaslöschanlage – Koppler selbst ohne Katalogzeile
+>      (Fremdbauteil, Regel 7). Braucht **neues Bauteil**: einfaches
+>      Koppelrelais reicht nicht (nicht zwangsgeführt/zertifiziert) –
+>      stattdessen Phoenix Contact Sicherheitsrelais `PSR-SCP-24DC/FSP/1X1/
+>      1X2`, Art. **2981978** (SIL 3/Kat. 4, 1 TE). BMA = 1× Relais/1× BI,
+>      Gaslöschanlage = 2× Relais/2× BI (ein FSP-Modul hat nur 1 Eingang).
+> 4. **Nutzer-Entscheidungen zu den offenen Punkten aus Teil 3 der Fork-
+>    Auswertung:**
+>    - Fahrbefehle (Y1/Y2 bei Absperr-/Lüftungsklappen) → **`klemm_f`**
+>      (Klemmleiste Feldgerät), nicht `klemm_l`.
+>    - Doppelmaster (62 Teilnehmer) als **Standardannahme** für den
+>      ASi-Ratchet (nicht Einzelmaster/31).
+>    - ASi-Netzteil-Störmeldung gelöst: das `TNC-A1258` braucht ohnehin ein
+>      vorgeschaltetes LSS (Spannungsversorgung ASi-BSK-Bussystem,
+>      analog Regel 5) – an **dieses LSS** einen Hilfsschalter ergänzen und
+>      als BI melden (Muster wie `5ST3010` an den bestehenden LSS/FI-
+>      Kombinationen), statt eine fehlende Meldefunktion am Netzteil selbst
+>      zu suchen.
+> 5. **Noch offen – Modellierung der ASi-Brandschutzklappenanlage als
+>    Baugruppe(n):** Nutzer-Vorschlag, in 3 unabhängige Baugruppen
+>    aufzuteilen, damit die Stückzahl variabel bleibt:
+>    1. **Grundsystem** – stattet den Schaltschrank komplett für den
+>       Aufbau eines ASi-Bus-Systems aus (Controller, Netzteil+LSS+
+>       Hilfskontakt) + 2 Feldklemmen für den 2-poligen ASi-Bus-Abgang.
+>    2. **BMA-Kopplung + Störentriegelung über ASi** – setzt das
+>       Meldemodul (`TNC-Z0094`) mit 2 kommunikativen Datenpunkten (spielt
+>       sich komplett im Schaltschrank ab).
+>    3. **BSK hinzufügen** – je Instanz +1 kommunikativer Datenpunkt
+>       (Modbus), bis zur Vollauslastung (62 Teilnehmer, Ratchet greift
+>       dann für ein 2. Grundsystem).
+>    Nutzer favorisiert diesen 3-Baugruppen-Weg wegen der Variabilität.
+>    Konsequenz für die spätere Anlagenkonfiguration (noch zu klären): dort
+>    bräuchte es vermutlich 2 neue Eingabefelder (Anzahl BSK, Anzahl
+>    Eingänge) plus den BMA-Koppler, der auf Baugruppenebene ohnehin separat
+>    gesetzt wird. **Nutzer-Nachricht endete nach „1." unvollständig** –
+>    beim nächsten Mal nachfragen, was damit ergänzt werden sollte, bevor
+>    diese Modellierung umgesetzt wird.
+> **Nächster Schritt:** Klärung des Restpunkts aus Teil 5, danach Phase 5
+> (Excel-Eintrag) für alle 5 Fork-Blöcke in einem Zug.
+
 > **Nachtrag Session 68 (04.10.2026, Teil 2) – Beschreibungs-Klarstellung
 > „ASP hohe Verfügbarkeit" + echter Katalogfehler gefunden: 4 schrankinterne
 > Automation-Baugruppen faelschlich als Feldgeraet markiert (Nutzer-Fund bei
@@ -2465,6 +2552,29 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
     (`name`, z. B. „...230V AC mit Netzstecker...") UND in die `beschreibung`,
     damit der Bezug zur zusätzlichen Steckdose in der Feldgeräteliste (Modul 5)
     ohne Rückfrage nachvollziehbar bleibt.
+17. **Koppelrelais mit durchgeschleifter Steuerspannung für Doppelfunktion
+    Sicherheitskette+BI, je Feldkontakt ein eigenes Relais (Session 68,
+    verbindlich):** hat ein Feldgerät nur 1 potentialfreien Meldekontakt, der
+    sowohl in eine hardwareseitige Sicherheitskette (Serienschaltung mehrerer
+    Feldgeräte, führt zur Abschaltung/Verriegelung einer Anlage – z. B.
+    Brandschutzklappen-Endlagenschalter) als auch als DDC-BI eingebunden
+    werden soll, wird die Steuerspannung (Standard 230 V AC, Regel 6) **durch
+    den Feldkontakt hindurchgeführt** (Zuleitung + Rückleitung = 2 Klemmen
+    `klemm_f`, der Feldkontakt liegt in Reihe mit der Koppelrelais-Spule, nicht
+    parallel dazu wie in Regel 6) und erregt damit ein Koppelrelais mit mind.
+    2 Wechslern (z. B. `2967099`) – ein Kontakt speist die Sicherheitskette,
+    der andere den BI (Regel 12, kein Klemmenbedarf für die beiden Kontakte
+    selbst, beide bleiben schrankintern). **Zwingend ein eigenes Koppelrelais
+    je Feldkontakt, nie mehrere Feldkontakte auf ein gemeinsames Relais in
+    Serie** (Nutzer-Vorgabe, Session 68): eine Serienschaltung mehrerer
+    Feldkontakte auf nur einem Relais (das bei JEDER Unterbrechung abfällt)
+    würde zwar ebenfalls die Sicherheitskette korrekt öffnen, aber keine
+    Einzelmeldung mehr zulassen (die DDC könnte nicht unterscheiden, WELCHE
+    Brandschutzklappe gefallen ist) – erst die 1:1-Zuordnung Feldkontakt ↔
+    Koppelrelais trennt Steuerspannungs-Durchschleifung und Einzelmeldung
+    sauber. Ursprung: Fork-Recherche Brandschutzklappen (konventionell, TROX
+    FK2-EU) – gilt aber generisch für jeden Anwendungsfall mit diesem Muster,
+    nicht nur Brandschutzklappen.
 
 ### Referenz: Motorleistungsreihe & Schaltgerätekonzept Drehstrommotoren (Session 56)
 

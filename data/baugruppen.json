@@ -1873,20 +1873,10 @@
     "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos geschlossen (NC), Stellkraft 110N, Anschlussgewinde M30x1,5, Siemens STA321. Ansteuerung über Koppelrelais (24V-AC-Spule, Phoenix Contact PLC-RSC-24UC/21-21, Wechslerkontakt schaltet 230V AC), da DDC-Binärausgänge (TXM1.8T) nur 24V AC direkt schalten. 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für den DDC-Ausgang zur Relaisspule (BO-Landeklemme + G0-Rückleiter) + Koppelrelais in der Leistungsbaugruppe + 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für die geschaltete 230V-AC-Versorgung zum Antrieb (L + N), Datenpunktbedarf 1x BO.",
     "bauteile": [
       {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f",
-        "dp_bo": 1
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f"
-      },
-      {
         "artikel_nr": "2967073",
         "menge": 1,
-        "zone": "leist"
+        "zone": "leist",
+        "dp_bo": 1
       },
       {
         "artikel_nr": "3209510",
@@ -1916,20 +1906,10 @@
     "beschreibung": "Thermischer Ventilantrieb - elektrothermischer Stellantrieb, 2-Punkt Ein/Aus, stromlos offen (NO), Stellkraft 110N, Anschlussgewinde M30x1,5, Siemens STP321.L20. Ansteuerung über Koppelrelais (24V-AC-Spule, Phoenix Contact PLC-RSC-24UC/21-21, Wechslerkontakt schaltet 230V AC), da DDC-Binärausgänge (TXM1.8T) nur 24V AC direkt schalten. 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für den DDC-Ausgang zur Relaisspule (BO-Landeklemme + G0-Rückleiter) + Koppelrelais in der Leistungsbaugruppe + 2 Abgangsklemmen in der Feldgeraete-Klemmleiste für die geschaltete 230V-AC-Versorgung zum Antrieb (L + N), Datenpunktbedarf 1x BO.",
     "bauteile": [
       {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f",
-        "dp_bo": 1
-      },
-      {
-        "artikel_nr": "3209510",
-        "menge": 1,
-        "zone": "klemm_f"
-      },
-      {
         "artikel_nr": "2967073",
         "menge": 1,
-        "zone": "leist"
+        "zone": "leist",
+        "dp_bo": 1
       },
       {
         "artikel_nr": "3209510",
