@@ -16,6 +16,49 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 68 (04.10.2026, Teil 2) – Beschreibungs-Klarstellung
+> „ASP hohe Verfügbarkeit" + echter Katalogfehler gefunden: 4 schrankinterne
+> Automation-Baugruppen faelschlich als Feldgeraet markiert (Nutzer-Fund bei
+> Stückliste-Kontrolle):**
+> 1. **`480_A00003`/`480_A00006` Beschreibung ergänzt** (`data/anlagen.json`
+>    via `ga_komponenten.xlsx`/Sheet `anlagen`): Nutzer-Vorgabe – der
+>    Unterschied zu „ASP mit Bedienpanel – größere Anlage" (`480_A00002`/
+>    `480_A00005`, ohne USV) war aus der Beschreibung allein nicht klar
+>    genug erkennbar. Vorangestellter Satz: „Zentraler Unterschied zu 'ASP
+>    mit Bedienpanel...': zusätzliche Schaltschrank-USV (480_000011), die
+>    AUSSCHLIESSLICH die Automationsstation (DDC) selbst bei Netzausfall
+>    kurzzeitig puffert (nicht die gesamte Anlage/angeschlossene
+>    Feldgeräte)." Reiner Text-Zusatz, keine Funktionsänderung.
+> 2. **Echter Bugfix – `betriebsmittel`-Feld bei 4 schrankinternen
+>    Automation-Baugruppen entfernt** (Nutzer-Fund: „Das TouchPanel ist kein
+>    Feldgerät, sondern Bestandteil der Stückliste für den Schaltschrank.
+>    Siehe Modul 5 Feldgeräte"): `aggregateFeldgeraete()`/`sumFeldgeraete()`
+>    zählen JEDE Baugruppe mit gesetztem `bg.betriebsmittel` als externes
+>    Feldgerät – unabhängig davon, ob sie tatsächlich außerhalb des
+>    Schranks installiert wird. Katalog-Scan (alle `betriebsmittel`-Treffer
+>    in `baugruppen.json` durchgesehen) deckte auf, dass **4 Baugruppen**
+>    fälschlich markiert waren, obwohl sie laut eigener Zonen-Zuordnung
+>    (`zone:'tuer'`/`'steuer'`/`'leist'`, `keine_platzierung_mp`) eindeutig
+>    schrankintern sind: `480_000015`/`480_000016` (TouchPanel PXM40/50,
+>    Türeinbau), `480_000017` (Ethernet-Switch, Regel 12 schrankintern laut
+>    eigener Session-63-Doku), `480_000018` (Schaltschrank**steckdose**,
+>    der Name sagt es bereits). Zum Vergleich: die strukturell identischen
+>    `480_000012`–`014` (UMG Türeinbau) und `480_000036` (Innenleuchte)
+>    hatten `betriebsmittel` korrekt NIE gesetzt – das bestätigt, dass die 4
+>    betroffenen Baugruppen vom etablierten Muster abwichen, kein
+>    Grundsatzproblem der Systematik. Fix: `betriebsmittel`-Zellen für alle
+>    4 IDs in `ga_komponenten.xlsx`/Sheet `baugruppen` geleert, `xlsx_to_json.py`
+>    neu exportiert (baugruppen 184, einzelbauteile 221, feldgeraete 96,
+>    anlagen 6 – Zahlen nur durch Punkt 1 oben an `anlagen.json` betroffen,
+>    keine Zeilen hinzu-/weggefallen). Kein Backup nötig (reine Feldänderung,
+>    kein Strukturwechsel). **Browser-Verifikation:** alle 4 Baugruppen in
+>    Modul 4 platziert – `sumFeldgeraete()` jetzt `0` (vorher hätte es sie
+>    mitgezählt), Modul 5 zeigt korrekt „Keine Feldgeräte"; Schaltschrank-
+>    Stückliste (Modul 4, `aggregateStueckliste()`) führt alle 4 weiterhin
+>    korrekt (TouchPanel-Gehäuse `zone:tuer`, Web-Schnittstelle `zone:steuer`,
+>    Switch `zone:steuer`, Steckdose `zone:leist`), `overflow:[]`,
+>    `fehlendPlatziert:[]`, keine Konsolenfehler.
+
 > **Nachtrag Session 68 (03.10.2026) – Drei kosmetische Korrekturen nach
 > Doppeleinspeisungs-Review (Nutzer-Fund per Screenshot): Zonengrundmaß
 > ÜSS/Einspeiseklemmen korrigiert, Hauptschalter/Phasenleuchten bei

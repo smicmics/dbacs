@@ -6950,7 +6950,6 @@
     "funktionsbereich": [
       "automation"
     ],
-    "betriebsmittel": "Desigo Touch Panel PXM40 10.1\" + PXG3.W100 (Siemens)",
     "kategorie": "Bedien-/Anzeigegeraete",
     "geprueft": false
   },
@@ -6974,7 +6973,6 @@
     "funktionsbereich": [
       "automation"
     ],
-    "betriebsmittel": "Desigo Touch Panel PXM50 15.6\" + PXG3.W100 (Siemens)",
     "kategorie": "Bedien-/Anzeigegeraete",
     "geprueft": false
   },
@@ -6994,7 +6992,6 @@
     "funktionsbereich": [
       "automation"
     ],
-    "betriebsmittel": "FL SWITCH SFN 5TX-DC (Phoenix Contact)",
     "automationsanbindung": true,
     "kategorie": "Netzwerkeinrichtung",
     "geprueft": false
@@ -7035,7 +7032,6 @@
     "funktionsbereich": [
       "automation"
     ],
-    "betriebsmittel": "Schaltschranksteckdose EO-CF/PT (Phoenix Contact)",
     "automationsanbindung": true,
     "kategorie": "Steckdose/Zubehör",
     "geprueft": false
