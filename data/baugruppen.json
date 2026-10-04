@@ -7477,5 +7477,1167 @@
     ],
     "kategorie": "Einspeisung",
     "geprueft": false
+  },
+  {
+    "id": "420_000053",
+    "name": "Absperrklappenantrieb SAL31.00T10, nur Endlagenmeldung Auf/Zu, 230V AC",
+    "gewerk": "420",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix SAL31.00T10 (Butterfly-/Absperrklappen-Drehantrieb, 10Nm, 3-Punkt), Fahrbefehl wird extern/durch Fremdanlage geschaltet (nicht Teil dieser Baugruppe). Nur die 2 Endlagen-Hilfsschalter ASC10.51 (Zubehoer, 2x) werden als BI ausgewertet. Keine eigene Steuerspannung noetig (potentialfreie Kontakte). Fork 1, siehe scratchpad/fork_1_absperrklappen_heizung_kaelte_ergebnis.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Absperrklappenantrieb SAL31.00T10 (Siemens Acvatix), nur Endlagenmeldung",
+    "feldgeraet_artikel_nr": "SAL31.00T10",
+    "automationsanbindung": true,
+    "kategorie": "Absperrklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000054",
+    "name": "Absperrklappenantrieb SAL81.00T10, nur Endlagenmeldung Auf/Zu, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "[Fork-Recherche 10/2026] Wie 420_000053, 24V-Antriebsvariante - elektrisch identisch (nur die 2 Endlagen-Hilfsschalter ASC10.51 werden ausgewertet), da die Hilfsschalter-Kontaktdaten unabhaengig von der Antriebsspannung sind. Unterschied ist nur der referenzierte Feldgeraete-Artikel/Preis.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Absperrklappenantrieb SAL81.00T10 (Siemens Acvatix), nur Endlagenmeldung",
+    "feldgeraet_artikel_nr": "SAL81.00T10",
+    "automationsanbindung": true,
+    "kategorie": "Absperrklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000055",
+    "name": "Absperrklappenantrieb SAL81.00T10, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 24V AC/DC",
+    "gewerk": "420",
+    "beschreibung": "[Fork-Recherche 10/2026] Echter 3-Punkt-Antrieb mit getrennten Fahrbefehlseingaengen Y1(Auf)/Y2(Zu) - 2x BO, nicht 1x (Originaldatenblatt: \"3-position rotary actuators must have their own specific controller\"). 24V direkt von TXM1.6R ansteuerbar, kein Koppelrelais noetig. Y1/Y2 in klemm_f (Analogie Regel 9, Nutzer-Entscheidung Session 68).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Absperrklappenantrieb SAL81.00T10 (Siemens Acvatix), DDC-Ansteuerung mit Rueckmeldung",
+    "feldgeraet_artikel_nr": "SAL81.00T10",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Absperrklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "420_000056",
+    "name": "Absperrklappenantrieb SAL31.00T10, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 230V AC mit Koppelrelais",
+    "gewerk": "420",
+    "beschreibung": "[Fork-Recherche 10/2026] Wie 420_000055, 230V-Antriebsvariante. TXM1.8T liefert nur 24V AC, Y1/Y2 brauchen 230V -> je ein eigenes Koppelrelais 2967073 zwischen DDC-BO und Y1 bzw. Y2 (Regel 10). DP-Override sitzt auf der Koppelrelais-Zeile (Regel 12), nicht auf einer Klemme - identisches Muster wie die am selben Tag korrigierten Baugruppen 420_000020/021.",
+    "bauteile": [
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Absperrklappenantrieb SAL31.00T10 (Siemens Acvatix), DDC-Ansteuerung mit Rueckmeldung",
+    "feldgeraet_artikel_nr": "SAL31.00T10",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "230vac",
+    "kategorie": "Absperrklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000045",
+    "name": "Luftklappenantrieb GLB146.1E, 10 Nm, nur Endlagenmeldung Auf/Zu, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix GLB146.1E (10Nm, Luftklappen-Drehantrieb, 2 integrierte Hilfsschalter). Fahrbefehl extern/durch Fremdanlage geschaltet, nicht Teil dieser Baugruppe - nur die 2 werkseitig eingebauten Hilfsschalter werden als BI ausgewertet (elektrisch identisch zwischen 24V- und 230V-Antriebsvariante, nur Feldgeraete-Artikel/Preis unterscheiden sich). Fork 2, siehe scratchpad/fork_2_lueftungsklappen_antriebe_ergebnis.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GLB146.1E (Siemens Acvatix), nur Endlagenmeldung",
+    "feldgeraet_artikel_nr": "GLB146.1E",
+    "automationsanbindung": true,
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000046",
+    "name": "Luftklappenantrieb GLB346.1E, 10 Nm, nur Endlagenmeldung Auf/Zu, 230V AC",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix GLB346.1E (10Nm, Luftklappen-Drehantrieb, 2 integrierte Hilfsschalter). Fahrbefehl extern/durch Fremdanlage geschaltet, nicht Teil dieser Baugruppe - nur die 2 werkseitig eingebauten Hilfsschalter werden als BI ausgewertet (elektrisch identisch zwischen 24V- und 230V-Antriebsvariante, nur Feldgeraete-Artikel/Preis unterscheiden sich). Fork 2, siehe scratchpad/fork_2_lueftungsklappen_antriebe_ergebnis.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GLB346.1E (Siemens Acvatix), nur Endlagenmeldung",
+    "feldgeraet_artikel_nr": "GLB346.1E",
+    "automationsanbindung": true,
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000047",
+    "name": "Luftklappenantrieb GLB146.1E, 10 Nm, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix GLB146.1E (10Nm). Getrennte Fahrbefehlseingaenge Y1(Auf)/Y2(Zu) - 2x BO, nicht 1x (kein gemeinsamer Wechsel-Ausgang). 24V direkt von TXM1.6R ansteuerbar, kein Koppelrelais noetig.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GLB146.1E (Siemens Acvatix), DDC-Ansteuerung mit Rueckmeldung",
+    "feldgeraet_artikel_nr": "GLB146.1E",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000048",
+    "name": "Luftklappenantrieb GLB346.1E, 10 Nm, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 230V AC mit Koppelrelais",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix GLB346.1E (10Nm). Getrennte Fahrbefehlseingaenge Y1(Auf)/Y2(Zu) - 2x BO, nicht 1x (kein gemeinsamer Wechsel-Ausgang). TXM1.8T liefert nur 24V AC, Y1/Y2 brauchen 230V -> je ein eigenes Koppelrelais 2967073 (Regel 10), DP-Override auf der Koppelrelais-Zeile (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GLB346.1E (Siemens Acvatix), DDC-Ansteuerung mit Rueckmeldung",
+    "feldgeraet_artikel_nr": "GLB346.1E",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "230vac",
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000049",
+    "name": "Luftklappenantrieb GBB146.1E, 25 Nm, nur Endlagenmeldung Auf/Zu, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix GBB146.1E (25Nm, Luftklappen-Drehantrieb, 2 integrierte Hilfsschalter). Fahrbefehl extern/durch Fremdanlage geschaltet, nicht Teil dieser Baugruppe - nur die 2 werkseitig eingebauten Hilfsschalter werden als BI ausgewertet (elektrisch identisch zwischen 24V- und 230V-Antriebsvariante, nur Feldgeraete-Artikel/Preis unterscheiden sich). Fork 2, siehe scratchpad/fork_2_lueftungsklappen_antriebe_ergebnis.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GBB146.1E (Siemens Acvatix), nur Endlagenmeldung",
+    "feldgeraet_artikel_nr": "GBB146.1E",
+    "automationsanbindung": true,
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000050",
+    "name": "Luftklappenantrieb GBB346.1E, 25 Nm, nur Endlagenmeldung Auf/Zu, 230V AC",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix GBB346.1E (25Nm, Luftklappen-Drehantrieb, 2 integrierte Hilfsschalter). Fahrbefehl extern/durch Fremdanlage geschaltet, nicht Teil dieser Baugruppe - nur die 2 werkseitig eingebauten Hilfsschalter werden als BI ausgewertet (elektrisch identisch zwischen 24V- und 230V-Antriebsvariante, nur Feldgeraete-Artikel/Preis unterscheiden sich). Fork 2, siehe scratchpad/fork_2_lueftungsklappen_antriebe_ergebnis.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GBB346.1E (Siemens Acvatix), nur Endlagenmeldung",
+    "feldgeraet_artikel_nr": "GBB346.1E",
+    "automationsanbindung": true,
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000051",
+    "name": "Luftklappenantrieb GBB146.1E, 25 Nm, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix GBB146.1E (25Nm). Getrennte Fahrbefehlseingaenge Y1(Auf)/Y2(Zu) - 2x BO, nicht 1x (kein gemeinsamer Wechsel-Ausgang). 24V direkt von TXM1.6R ansteuerbar, kein Koppelrelais noetig.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GBB146.1E (Siemens Acvatix), DDC-Ansteuerung mit Rueckmeldung",
+    "feldgeraet_artikel_nr": "GBB146.1E",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "24vac",
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000052",
+    "name": "Luftklappenantrieb GBB346.1E, 25 Nm, DDC-Ansteuerung Auf/Zu mit Rueckmeldung, 230V AC mit Koppelrelais",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Siemens Acvatix GBB346.1E (25Nm). Getrennte Fahrbefehlseingaenge Y1(Auf)/Y2(Zu) - 2x BO, nicht 1x (kein gemeinsamer Wechsel-Ausgang). TXM1.8T liefert nur 24V AC, Y1/Y2 brauchen 230V -> je ein eigenes Koppelrelais 2967073 (Regel 10), DP-Override auf der Koppelrelais-Zeile (Regel 12).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GBB346.1E (Siemens Acvatix), DDC-Ansteuerung mit Rueckmeldung",
+    "feldgeraet_artikel_nr": "GBB346.1E",
+    "automationsanbindung": true,
+    "benoetigt_steuerspannung": "230vac",
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000053",
+    "name": "Brandschutzklappe Endlagenschalter Auf, TROX FK2-EU Z02",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] TROX FK2-EU, Anbauteil Z02 (1 potentialfreier Endlagenschalter \"Auf\"). Regel 17: Steuerspannung 230V wird durch den Feldkontakt gefuehrt (Ruhestromprinzip - Klappe offen = Kontakt zu, faellt die Klappe oeffnet der Kontakt), erregt ein Koppelrelais 2967099 (2 Wechsler) - ein Kontakt in die Sicherheitskette (hardwareseitige Luefterabschaltung, andere Baugruppe), der andere als BI. Fork 3, siehe scratchpad/fork_3_brandschutzklappen_konventionell_ergebnis.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Brandschutzklappe TROX FK2-EU mit Endlagenschalter Auf (Anbauteil Z02)",
+    "feldgeraet_artikel_nr": "M536AT5",
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen",
+    "geprueft": false
+  },
+  {
+    "id": "430_000054",
+    "name": "Brandschutzklappe Endlagenschalter Auf/Zu, TROX FK2-EU Z03",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Wie 430_000053, zusaetzlich Endlagenschalter \"Zu\" - je Endlagenschalter ein eigenes Koppelrelais 2967099 (Regel 17, kein gemeinsames Relais fuer beide Kontakte, sonst keine Einzelmeldung).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Brandschutzklappe TROX FK2-EU mit Endlagenschalter Auf/Zu (Anbauteil Z03)",
+    "feldgeraet_artikel_nr": "M536AT5",
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen",
+    "geprueft": false
+  },
+  {
+    "id": "430_000055",
+    "name": "Motorischer Brandschutzklappenantrieb BFL230-T TR, Groesse 1, 230V AC, TROX FK2-EU Z43",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] TROX FK2-EU mit Federrueckzugantrieb BFL230-T TR (Groesse 1, Belimo-OEM), Anbauteil Z43. 2 integrierte, potentialfreie Endschalter (Auf+Zu) nach demselben Regel-17-Muster wie Z03 (je ein eigenes Koppelrelais 2967099). Zusaetzlich DDC-Schaltbefehl \"Auf\" ueber Koppelrelais 2967073 (Regel 10, TXM liefert nur 24V AC). Schutzklasse II bei BEIDEN Spannungsvarianten (Regel 11: PE-Klemme bleibt Teil der Klemmleiste, nur unbelegt - keine Ausnahme \"kein PE\" wie urspruenglich vermutet). Entriegelung mechanisch per Handkurbel + automatisch bei Wiederanliegen der Versorgung (ein separater Entriegelungstaster am Schaltschrank ist keine Antriebsfunktion, noch nicht modelliert).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Motorischer Brandschutzklappenantrieb BFL230-T TR (TROX FK2-EU, Belimo-OEM, Anbauteil Z43)",
+    "feldgeraet_artikel_nr": "BFL230-T TR",
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen",
+    "geprueft": false
+  },
+  {
+    "id": "430_000056",
+    "name": "Motorischer Brandschutzklappenantrieb BFN230-T TR, Groesse 2+3, 230V AC, TROX FK2-EU Z43",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] TROX FK2-EU mit Federrueckzugantrieb BFN230-T TR (Groesse 2+3, Belimo-OEM), Anbauteil Z43. 2 integrierte, potentialfreie Endschalter (Auf+Zu) nach demselben Regel-17-Muster wie Z03 (je ein eigenes Koppelrelais 2967099). Zusaetzlich DDC-Schaltbefehl \"Auf\" ueber Koppelrelais 2967073 (Regel 10, TXM liefert nur 24V AC). Schutzklasse II bei BEIDEN Spannungsvarianten (Regel 11: PE-Klemme bleibt Teil der Klemmleiste, nur unbelegt - keine Ausnahme \"kein PE\" wie urspruenglich vermutet). Entriegelung mechanisch per Handkurbel + automatisch bei Wiederanliegen der Versorgung (ein separater Entriegelungstaster am Schaltschrank ist keine Antriebsfunktion, noch nicht modelliert).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Motorischer Brandschutzklappenantrieb BFN230-T TR (TROX FK2-EU, Belimo-OEM, Anbauteil Z43)",
+    "feldgeraet_artikel_nr": "BFN230-T TR",
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen",
+    "geprueft": false
+  },
+  {
+    "id": "430_000057",
+    "name": "Motorischer Brandschutzklappenantrieb BFL24-T-ST TR, Groesse 1, 24V AC/DC, TROX FK2-EU Z45",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] TROX FK2-EU mit Federrueckzugantrieb BFL24-T-ST TR (Groesse 1, Belimo-OEM), Anbauteil Z45. 2 integrierte, potentialfreie Endschalter (Auf+Zu) nach demselben Regel-17-Muster wie Z03 (je ein eigenes Koppelrelais 2967099). Zusaetzlich DDC-Schaltbefehl \"Auf\" ueber Koppelrelais 2967073 (Regel 10, TXM liefert nur 24V AC). Schutzklasse II bei BEIDEN Spannungsvarianten (Regel 11: PE-Klemme bleibt Teil der Klemmleiste, nur unbelegt - keine Ausnahme \"kein PE\" wie urspruenglich vermutet). Entriegelung mechanisch per Handkurbel + automatisch bei Wiederanliegen der Versorgung (ein separater Entriegelungstaster am Schaltschrank ist keine Antriebsfunktion, noch nicht modelliert).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Motorischer Brandschutzklappenantrieb BFL24-T-ST TR (TROX FK2-EU, Belimo-OEM, Anbauteil Z45)",
+    "feldgeraet_artikel_nr": "BFL24-T-ST TR",
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen",
+    "geprueft": false
+  },
+  {
+    "id": "430_000058",
+    "name": "Motorischer Brandschutzklappenantrieb BFN24-T-ST TR, Groesse 2+3, 24V AC/DC, TROX FK2-EU Z45",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] TROX FK2-EU mit Federrueckzugantrieb BFN24-T-ST TR (Groesse 2+3, Belimo-OEM), Anbauteil Z45. 2 integrierte, potentialfreie Endschalter (Auf+Zu) nach demselben Regel-17-Muster wie Z03 (je ein eigenes Koppelrelais 2967099). Zusaetzlich DDC-Schaltbefehl \"Auf\" ueber Koppelrelais 2967073 (Regel 10, TXM liefert nur 24V AC). Schutzklasse II bei BEIDEN Spannungsvarianten (Regel 11: PE-Klemme bleibt Teil der Klemmleiste, nur unbelegt - keine Ausnahme \"kein PE\" wie urspruenglich vermutet). Entriegelung mechanisch per Handkurbel + automatisch bei Wiederanliegen der Versorgung (ein separater Entriegelungstaster am Schaltschrank ist keine Antriebsfunktion, noch nicht modelliert).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967099",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Motorischer Brandschutzklappenantrieb BFN24-T-ST TR (TROX FK2-EU, Belimo-OEM, Anbauteil Z45)",
+    "feldgeraet_artikel_nr": "BFN24-T-ST TR",
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen",
+    "geprueft": false
+  },
+  {
+    "id": "430_000059",
+    "name": "ASi-Bus Brandschutzklappen Grundsystem, Doppelmaster (62 Teilnehmer), TROX TROXNETCOM",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Einmalig je Schaltschrank zu setzende Grundausstattung fuer ein TROX TROXNETCOM-AS-i-Brandschutzklappensystem: 1x Controller TNC-A1412 (= Gateway [Modbus TCP Slave/Server] + \"BSK-Zentrale\" in einem Geraet) + 2x Netzteil TNC-A1258 (Doppelmaster-Standard, Nutzer-Vorgabe Session 68 - je Masterschnittstelle ein eigenes Netzteil, zusammen 62 AS-i-Teilnehmer/2x31) je mit eigenem vorgeschaltetem LSS + Hilfsschalter-BI (TNC-A1258 hat laut Datenblatt KEINE eigene Meldekontakte, nur Status-LED - Stoermeldung daher ueber das vorgeschaltete LSS, Nutzer-Vorgabe Session 68) + 2 Feldklemmen fuer den 2-poligen AS-i-Busabgang. Weitere Teilnehmer (Meldemodul 430_000060, Brandschutzklappen 430_000061) werden als eigene Baugruppen ergaenzt, nicht automatisch nachgezogen - bei Erreichen der 62-Teilnehmer-Grenze ein zweites Grundsystem hinzufuegen. Fork 4, siehe scratchpad/fork_4_brandschutzklappen_asi_bus_ergebnis.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "TNC-A1412",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 2,
+        "zone": "evert",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "TNC-A1258",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "TNC-A1258",
+        "menge": 1,
+        "zone": "leist"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen ASi-Bus",
+    "geprueft": false
+  },
+  {
+    "id": "430_000060",
+    "name": "ASi-Bus BMA-Kopplung und Stoerentriegelung, TROX TNC-Z0094",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Optional, einmalig je Schaltschrank: Meldemodul TNC-Z0094 (4 DI + 4 Relais-Wechsler, busgespeist, zaehlt selbst als 1 AS-i-Teilnehmer). Nimmt den externen BMA-Kopplerkontakt (Brandalarm) sowie die Stoerentriegelung auf - spielt sich komplett im Schaltschrank/AS-i-System ab (Nutzer-Vorgabe Session 68), daher 2 rein kommunikative Datenpunkte (1x BI Brandalarm + 1x BO Stoerentriegelung) statt physischer Klemmen. Setzt Grundsystem (430_000059) voraus.",
+    "bauteile": [
+      {
+        "artikel_nr": "TNC-Z0094",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 1,
+        "dp_fb_bo": 1,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen ASi-Bus",
+    "geprueft": false
+  },
+  {
+    "id": "430_000061",
+    "name": "ASi-Bus Brandschutzklappe hinzufuegen, TROX FK.../FKRS-EU mit AS-EM-Interface",
+    "gewerk": "430",
+    "beschreibung": "[Fork-Recherche 10/2026] Je Instanz 1 weitere AS-i-faehige Brandschutzklappe (Standard-TROX-Klappe + AS-EM-Feldmodul, Bestellcode-Zusatz ZA07) - rein kommunikativer Mehrbedarf am Grundsystem (430_000059), kein zusaetzliches Schaltschrank-Bauteil. 2x dp_fb_bi (Klappenstellung Auf/Zu) je Instanz - Platzhalter-Annahme analog zur konventionellen Endlagenmeldung (2 BI), da die exakte TROX-Modbus-Registerbelegung je Klappe nicht oeffentlich dokumentiert ist (offener Punkt, vor Projekteinsatz mit TROX-Punkteliste abgleichen). Menge in Modul 4 = Anzahl Brandschutzklappen am System; bei Erreichen von 62 Teilnehmern (inkl. 1 fuer das optionale Meldemodul 430_000060) ein zweites Grundsystem ergaenzen.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Brandschutzklappe mit AS-i-Interface (TROX, Bestellcode-Zusatz ZA07, z.B. FKRS-EU/.../Z45-ZA07)",
+    "feldgeraet_artikel_nr": "A00000018487",
+    "automationsanbindung": true,
+    "kategorie": "Brandschutzklappen ASi-Bus",
+    "geprueft": false
+  },
+  {
+    "id": "450_000001",
+    "name": "Steuerkoppler Brandmeldeanlage (BMA) mit Sicherheitsrelais",
+    "gewerk": "450",
+    "beschreibung": "[Fork-Recherche 10/2026] Der Steuerkoppler selbst ist ein zugelassenes Fremdbauteil der Brandmeldeanlage (nicht Teil der DBACS-Lieferung, Regel 7 - keine eigene Katalogzeile/kein Preis). Sein potentialfreier Oeffnerkontakt wird ueber eine 24V-DC-Meldeschleife (2 Klemmen, wie ein Feldgeraet) in den Schaltschrank gefuehrt und erregt ein zwangsgefuehrtes Sicherheitsrelais PSR-SCP-24DC/FSP/1X1/1X2 (SIL3/Kat.4, Art. 2981978) - ein einfaches Koppelrelais reicht hier NICHT (keine Zwangsfuehrung/Zertifizierung). Freigabestrompfad (1x Schliesser) bindet in die Sicherheitskette ein (z.B. ASi-Lueftungssteuerung, siehe 430_000059ff.), Meldekontakt (1x Oeffner) liefert den BI \"Brandalarm\". Beide Kontakte bleiben schrankintern (Regel 12), da die Sicherheitskette laut Fachvorgabe in derselben Schaltschranksteuerung liegt. Fork 5, siehe scratchpad/fork_5_steuerkoppler_bma_gasloeschanlage_ergebnis.md.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2981978",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "sicherheit"
+    ],
+    "betriebsmittel": "Steuerkoppler Brandmeldeanlage (bauseitig, zugelassenes BMA-Bauteil, z.B. esserbus-FCT/IQ8TAL-Klasse)",
+    "automationsanbindung": true,
+    "kategorie": "Steuerkoppler",
+    "geprueft": false
+  },
+  {
+    "id": "450_000002",
+    "name": "Steuerkoppler Gasloeschanlage mit Sicherheitsrelais (Voralarm + Ausloesung)",
+    "gewerk": "450",
+    "beschreibung": "[Fork-Recherche 10/2026] Identische Anschlusslogik wie 450_000001 (Steuerkoppler BMA), aber 2 unabhaengige Meldeschleifen (Voralarm Loeschanlage + Ausloesung Loeschanlage) - da das FSP-Sicherheitsrelais nur 1 Eingang/Meldekontakt je Geraet hat (auch die 2X1-Variante hat 2 Freigabestrompfade, aber weiterhin nur 1 Eingang), sind 2 separate Relais noetig statt eines Mehrkontakt-Relais.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2981978",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2981978",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "sicherheit"
+    ],
+    "betriebsmittel": "Steuerkoppler Gasloeschanlage (bauseitig, zugelassenes Bauteil der Loeschanlage)",
+    "automationsanbindung": true,
+    "kategorie": "Steuerkoppler",
+    "geprueft": false
   }
 ]

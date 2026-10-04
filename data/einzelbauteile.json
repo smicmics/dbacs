@@ -3446,5 +3446,62 @@
     ],
     "keine_platzierung_mp": true,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "TNC-A1412",
+    "bezeichnung": "TROXNETCOM AS-i Controller, Gateway (Modbus TCP Slave/Server) + BSK-Zentrale in einem Geraet, 62 Teilnehmer bei Doppelmaster (2x31)",
+    "hersteller": "TROX",
+    "bauteil_typ": "kommunikationsmodul",
+    "b_mm": 50.0,
+    "te_breite": 3,
+    "h_mm": 93.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "Kommunikationsmodule",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "TNC-A1258",
+    "bezeichnung": "TROXNETCOM AS-i Netzteil, 115/230V AC auf 30,5V DC/8A, integrierte Datenentkopplung",
+    "hersteller": "TROX",
+    "bauteil_typ": "netzteil",
+    "b_mm": 72.0,
+    "te_breite": 4,
+    "h_mm": 130.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Netzversorgung/Transformatoren",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "TNC-Z0094",
+    "bezeichnung": "TROXNETCOM AS-i Meldemodul, 4 digitale Eingaenge + 4 Relais-Wechslerausgaenge, busgespeist",
+    "hersteller": "TROX",
+    "bauteil_typ": "meldemodul",
+    "b_mm": 50.0,
+    "te_breite": 3,
+    "h_mm": 93.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "Kommunikationsmodule",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2981978",
+    "bezeichnung": "PSR-SCP-24DC/FSP/1X1/1X2 Sicherheitsrelais, SIL 3/Kat. 4, zwangsgefuehrt (EN 50205), 1 Freigabestrompfad + 1 Meldekontakt",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "sicherheitsrelais",
+    "b_mm": 17.5,
+    "te_breite": 1,
+    "h_mm": 99.0,
+    "zone": [
+      "leist"
+    ],
+    "kategorie": "Sicherheitsrelais",
+    "benoetigt_steuerspannung": "24vdc",
+    "geprueft": false
   }
 ]

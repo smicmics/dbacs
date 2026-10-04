@@ -841,5 +841,119 @@
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "SAL31.00T10",
+    "bezeichnung": "Absperrklappenantrieb, elektromotorisch, 10 Nm, 3-Punkt, AC 230V (Siemens Acvatix)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "preis_eur": 259.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal/Originaldatenblatt CE1N4502en: 160x124x153mm, Schutzklasse II, IP54. Preis SIPATEC-Distributor (10/2026), kein Siemens-Listenpreis (HIT-Portal zeigt Preise nur eingeloggt).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "SAL81.00T10",
+    "bezeichnung": "Absperrklappenantrieb, elektromotorisch, 10 Nm, 3-Punkt, AC/DC 24V (Siemens Acvatix)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "preis_eur": 259.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal/Originaldatenblatt CE1N4502en: 160x124x153mm, Schutzklasse III (SELV), IP54. Preis SIPATEC-Distributor (10/2026), kein Siemens-Listenpreis.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "ASC10.51",
+    "bezeichnung": "Hilfsschalter fuer SAL..-Antriebe, 1 Wechsler, einstellbarer Schaltpunkt, AC 24...250V/6(3)A",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt (Schaltspannung 250V, Schaltstrom 6(3)A). Je Antrieb 2x noetig (1x Auf-Endlage, 1x Zu-Endlage), als Zubehoer an SAL31.00T10/SAL81.00T10 gehaengt. Kein verlaesslicher Preis gefunden (Distributor-Streubreite 35-65 EUR).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GLB146.1E",
+    "bezeichnung": "Luftklappenantrieb, elektromotorisch, 10 Nm, 2 Hilfsschalter, AC/DC 24V (Siemens Acvatix OpenAir)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "preis_eur": 120.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt: 68x137x59,5mm, IP54, Schutzklasse III. Preis Distributor Bolasystems (10/2026).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GLB346.1E",
+    "bezeichnung": "Luftklappenantrieb, elektromotorisch, 10 Nm, 2 Hilfsschalter, AC 230V (Siemens Acvatix OpenAir)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt: 68x137x59,5mm, IP54, Schutzklasse II. Kein eindeutiger Einzelpreis (Distributor-Streubreite 107-149 EUR je nach Quelle, 10/2026) - bewusst ohne preis_stueck_eur.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GBB146.1E",
+    "bezeichnung": "Luftklappenantrieb, elektromotorisch, 25 Nm, 2 Hilfsschalter, AC/DC 24V (Siemens Acvatix OpenAir)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt: 100x300x67,5mm (loest den in der Fork-Recherche gefundenen Distributor-Widerspruch 300x100x70,5mm vs. 100x313x71mm amtlich auf), IP54, Schutzklasse III. Kein eindeutiger Einzelpreis (Distributor-Streubreite 163-210 EUR, 10/2026) - bewusst ohne preis_stueck_eur.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GBB346.1E",
+    "bezeichnung": "Luftklappenantrieb, elektromotorisch, 25 Nm, 2 Hilfsschalter, AC 230V (Siemens Acvatix OpenAir)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "preis_eur": 163.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt: 100x300x67,5mm, IP54, Schutzklasse II. Preis Distributor Sipatec (10/2026).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "M536AT5",
+    "bezeichnung": "Endlagenschalter fuer TROX FK2-EU Brandschutzklappe (Anbauteil Z01/Z02/Z03), potentialfrei",
+    "hersteller": "TROX",
+    "kategorie": "Brandschutzklappen",
+    "preis_eur": 26.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] TROX Ersatzteilpreisliste Brandschutzklappen 2026-07 (gueltig ab 01.01.2026). Ersatzteilpreis, kein Neugeraete-Listenpreis (liegt erfahrungsgemaess ueber dem Einbaupreis). Kein fester Gesamtartikel fuer die komplette Klappe (projektspezifischer Bestellschluessel nach BxH) - dieser Endschalter-Typcode dient als repraesentatives Element fuer die Feldgeraeteliste.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "BFL230-T TR",
+    "bezeichnung": "Federrueckzugantrieb fuer TROX FK2-EU Brandschutzklappe, Groesse 1, 2 Endschalter, AC 230V (Belimo-OEM)",
+    "hersteller": "TROX",
+    "kategorie": "Brandschutzklappen",
+    "preis_eur": 426.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] TROX Ersatzteilpreisliste 2026-07 + Montage-/Betriebsanleitung OM_2020_11. Schutzklasse II, IP54, 2 Wechsler potentialfrei, Entriegelung mechanisch (Handkurbel) + automatisch bei Wiederanliegen der Versorgung. Ersatzteilpreis, kein Neugeraete-Listenpreis.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "BFN230-T TR",
+    "bezeichnung": "Federrueckzugantrieb fuer TROX FK2-EU Brandschutzklappe, Groesse 2+3, 2 Endschalter, AC 230V (Belimo-OEM)",
+    "hersteller": "TROX",
+    "kategorie": "Brandschutzklappen",
+    "preis_eur": 494.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] wie BFL230-T TR, groessere Baureihe. TROX Ersatzteilpreisliste 2026-07, Ersatzteilpreis.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "BFL24-T-ST TR",
+    "bezeichnung": "Federrueckzugantrieb fuer TROX FK2-EU Brandschutzklappe, Groesse 1, 2 Endschalter, AC/DC 24V (Belimo-OEM)",
+    "hersteller": "TROX",
+    "kategorie": "Brandschutzklappen",
+    "preis_eur": 395.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] wie BFL230-T TR, 24V-Variante. TROX Ersatzteilpreisliste 2026-07, Ersatzteilpreis.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "BFN24-T-ST TR",
+    "bezeichnung": "Federrueckzugantrieb fuer TROX FK2-EU Brandschutzklappe, Groesse 2+3, 2 Endschalter, AC/DC 24V (Belimo-OEM)",
+    "hersteller": "TROX",
+    "kategorie": "Brandschutzklappen",
+    "preis_eur": 492.0,
+    "quelle_hinweis": "[Fork-Recherche 10/2026] wie BFN230-T TR, 24V-Variante. TROX Ersatzteilpreisliste 2026-07, Ersatzteilpreis.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "A00000018487",
+    "bezeichnung": "AS-EM Motormodul fuer TROX-Brandschutz-/Entrauchungsklappen, integrierter AS-i-Slave (Bestellcode-Zusatz ZA07)",
+    "hersteller": "TROX",
+    "kategorie": "Brandschutzklappen",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Produktdatenblatt AS-EM PD-10/2024. Sitzt direkt an/auf der Klappe im Feld, kein Schaltschrank-Platzbedarf. Macht aus einer Standard-TROX-Klappe (FK-EU/FK2-EU/FKRS-EU/FKR-EU) einen AS-i-Teilnehmer; exakte Gesamt-Bestellnummer der Klappe (vermutlich <Baureihe>/.../Z45-ZA07) nicht an einem Distributor-Shop verifiziert. Kein oeffentlicher Preis gefunden.",
+    "kommunikative_datenpunkte": "Klappenstellung Auf/Zu via AS-i-Bus -> TNC-A1412-Controller (Modbus TCP)",
+    "geprueft": false
   }
 ]

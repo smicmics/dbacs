@@ -16,12 +16,91 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 68 (04.10.2026, Teil 4) – Phase 5-7 abgeschlossen: alle
+> 5 Fork-Blöcke aus Teil 3 in `ga_komponenten.xlsx` eingetragen, exportiert,
+> Browser-verifiziert. 23 neue Baugruppen, 4 neue Einzelbauteile, 13 neue
+> Feldgeräte. Export: einzelbauteile 221→**225**, baugruppen 184→**207**,
+> feldgeraete 96→**109**.**
+> 1. **Block 1 – Absperrklappen Heizung/Kälte** `420_000053`–`056` (Siemens
+>    Acvatix SAL31.00T10/SAL81.00T10 + Zubehör ASC10.51, `funktionsbereich:
+>    [heizung,kaelte]`). Y1/Y2-Fahrbefehle in `klemm_f` (Nutzer-Entscheidung).
+>    230V-Variante nutzt 2× Koppelrelais `2967073` mit Override auf der
+>    Koppelrelais-Zeile (Regel 12, NICHT wie im ursprünglichen Fork-1-
+>    Vorschlag auf einer Klemme).
+> 2. **Block 2 – Lüftungsklappen-Antriebe** `430_000045`–`052` (Siemens
+>    Acvatix GLB146.1E/GLB346.1E 10Nm + GBB146.1E/GBB346.1E 25Nm, je
+>    meldend/schaltend). Gleiche Regel-12-Korrektur wie Block 1 bei den
+>    230V-Koppelrelais-Varianten (Fork 2 hatte das bereits richtig
+>    vorgeschlagen).
+> 3. **Block 3 – Brandschutzklappen konventionell** `430_000053`–`058`
+>    (TROX FK2-EU, Z02/Z03/Z43/Z45, Belimo-OEM-Antriebe BFL/BFN) – erste
+>    produktive Anwendung der neuen **Regel 17** (Koppelrelais mit
+>    durchgeschleifter Steuerspannung, 1 Relais je Endlagenschalter). PE-
+>    Klemme bleibt bei den Antrieben Teil der Klemmleiste (Schutzklasse II,
+>    Regel 11), nur unbelegt. Entriegelungstaster am Schaltschrank bewusst
+>    NICHT modelliert (keine TROX-Antriebsfunktion, eigener Folgeschritt).
+> 4. **Block 4 – ASi-Bus-Brandschutzklappen** `430_000059`–`061`, nach
+>    Nutzer-Vorgabe als **3 unabhängig wählbare Baugruppen** statt
+>    automatischem Ratchet umgesetzt (volle Flexibilität, Nutzer verwaltet
+>    die 62-Teilnehmer-Grenze selbst):
+>    - `430_000059` „Grundsystem" (einmalig): 1× Controller `TNC-A1412` +
+>      2× Netzteil `TNC-A1258` (Doppelmaster-Standard) je mit eigenem
+>      LSS+Hilfsschalter-BI (Netzteil hat laut Datenblatt keine eigene
+>      Störmeldung – Nutzer-Lösung: Hilfskontakt am ohnehin nötigen
+>      vorgeschalteten LSS) + 2 Feldklemmen für den AS-i-Busabgang. 2× BI.
+>    - `430_000060` „BMA-Kopplung + Störentriegelung" (optional, einmalig):
+>      Meldemodul `TNC-Z0094` + 2 rein kommunikative DP (`KOMM-FB`,
+>      `dp_fb_bi:1`+`dp_fb_bo:1`, `modbus_tcp`) – „spielt sich komplett im
+>      Schaltschrank ab" (Nutzer-Vorgabe), keine physischen Klemmen.
+>    - `430_000061` „BSK hinzufügen" (beliebig oft, menge = Klappenzahl):
+>      rein kommunikativer Mehrbedarf, `KOMM-FB` mit `dp_fb_bi:2` je
+>      Instanz (Platzhalter-Annahme Auf/Zu analog zur konventionellen
+>      Endlagenmeldung, da die exakte TROX-Modbus-Registerbelegung je
+>      Klappe nicht öffentlich dokumentiert ist – **offener Punkt**, vor
+>      Projekteinsatz mit TROX-Punkteliste abgleichen). Referenziert
+>      `A00000018487` (AS-EM-Feldmodul) als Feldgerät.
+>    Der bestehende Kommunikationsbauteil-Ratchet (Session 58) hat beim
+>    Browser-Test korrekt automatisch einen Ethernet-Switch `2891021`
+>    ergänzt, da die `modbus_tcp`-Datenpunkte aus Block 4 mitzählen – keine
+>    Sonderbehandlung nötig, bestehender Mechanismus greift nahtlos.
+> 5. **Block 5 – Steuerkoppler** `450_000001`/`002` (BMA/Gaslöschanlage,
+>    Sicherheitsrelais `2981978`, SIL3/Kat.4, da ein einfaches Koppelrelais
+>    nicht zwangsgeführt/zertifiziert ist). Koppler selbst bewusst ohne
+>    Katalogzeile (Fremdbauteil, Regel 7).
+> **Neue Einzelbauteile:** `TNC-A1412`, `TNC-A1258`, `TNC-Z0094`, `2981978`.
+> **Wichtige Einschränkung:** Abmessungen von `TNC-A1412`/`TNC-A1258` sind
+> NICHT aus dem Originaldatenblatt belegt (nur Masszeichnung als Grafik,
+> kein Zahlenwert extrahierbar) – Platzhalter-Schätzungen (`TNC-A1412`
+> von der baugleichen, real vermessenen Produktfamilie `TNC-Z0094`
+> übernommen; `TNC-A1258` grobe Schätzung vergleichbarer 8A-Netzteile),
+> klar im `quelle_hinweis` markiert. Vor echtem Projekteinsatz an
+> Originalzeichnung/Bemusterung verifizieren.
+> **Kleiner Bug behoben:** doppeltes „Kommunikativ ausgelesen:"-Präfix bei
+> `A00000018487` (Modul 5 ergänzt das Präfix bereits selbst) – in der
+> Excel-Quelle korrigiert.
+> **Browser-Verifikation** (9 Baugruppen gleichzeitig platziert, Standschrank
+> 1200×2000): BI 13/32, BO 5/12 physikalisch – exakt wie von Hand
+> vorausberechnet; Komm. Modbus TCP/IP BI 11/BO 1 – exakt wie vorausberechnet;
+> Feldgeräte gesamt 11 – exakt wie vorausberechnet; `overflow:[]`,
+> `fehlendPlatziert:[]`; vollständiger Katalog-Scan (Regel 7, alle 207
+> Baugruppen) zeigt 0 neue verwaiste Referenzen (nur die 16 bereits
+> dokumentierten Alt-Lücken, siehe „Offene Punkte" unten); Modul 5 aggregiert
+> alle Feldgeräte korrekt inkl. Mengen-Summierung über mehrere Baugruppen
+> hinweg (z. B. SAL31.00T10 2× aus zwei verschiedenen Baugruppen); keine
+> Konsolenfehler in Modul 4 oder 5.
+> **Restliste:** Preise fehlen für `ASC10.51`, `GLB346.1E`, `GBB146.1E`,
+> `TNC-A1412`, `TNC-A1258`, `TNC-Z0094`, `2981978`, `A00000018487`
+> (keine eindeutige/datierte Quelle gefunden, siehe Einzelbauteil-/
+> Feldgeräte-`quelle_hinweis`); exakte AS-i-Modbus-Registerbelegung je
+> Brandschutzklappe unbestätigt (Platzhalter 2× BI); Entriegelungstaster
+> Sicherheitskette am Schaltschrank noch nicht modelliert; `TNC-A1412`/
+> `TNC-A1258`-Abmessungen unverifiziert (s. o.).
+
 > **Nachtrag Session 68 (04.10.2026, Teil 3) – Fork-Recherche für fehlende
 > Baugruppen (Absperr-/Lüftungsklappen, Brandschutzklappen, Steuerkoppler
 > BMA/Gaslöschanlage) abgeschlossen, Alt-Bug in 420_000020/021 korrigiert,
-> neue Regel 17, mehrere Nutzer-Entscheidungen – Excel-Eintrag der neuen
-> Baugruppen selbst noch NICHT erfolgt (Phase 5 wartet auf die finale
-> ASi-Brandschutzklappen-Modellierung):**
+> neue Regel 17, mehrere Nutzer-Entscheidungen. Excel-Eintrag selbst erfolgte
+> direkt im Anschluss, siehe Teil 4 oben:**
 > 1. **Echter Bugfix `420_000020`/`420_000021`** (Thermische 230V-
 >    Ventilantriebe mit Koppelrelais, Session 55 – vor Formalisierung von
 >    Regel 12 in Session 56 gebaut): der `dp_bo`-Override für den DDC-
@@ -97,11 +176,12 @@
 >    Konsequenz für die spätere Anlagenkonfiguration (noch zu klären): dort
 >    bräuchte es vermutlich 2 neue Eingabefelder (Anzahl BSK, Anzahl
 >    Eingänge) plus den BMA-Koppler, der auf Baugruppenebene ohnehin separat
->    gesetzt wird. **Nutzer-Nachricht endete nach „1." unvollständig** –
->    beim nächsten Mal nachfragen, was damit ergänzt werden sollte, bevor
->    diese Modellierung umgesetzt wird.
-> **Nächster Schritt:** Klärung des Restpunkts aus Teil 5, danach Phase 5
-> (Excel-Eintrag) für alle 5 Fork-Blöcke in einem Zug.
+>    gesetzt wird. **Nutzer-Nachricht endete nach „1." unvollständig** – auf
+>    Nachfrage als Tippfehler bestätigt, keine weitere Ergänzung. Die 2
+>    Anlagen-Eingabefelder (Anzahl BSK, Anzahl Eingänge) für die spätere
+>    Anlagenkonfiguration sind noch NICHT umgesetzt, nur die 3 Baugruppen
+>    selbst (siehe Teil 4).
+> **Umsetzung erfolgte direkt im Anschluss, siehe Teil 4 oben.**
 
 > **Nachtrag Session 68 (04.10.2026, Teil 2) – Beschreibungs-Klarstellung
 > „ASP hohe Verfügbarkeit" + echter Katalogfehler gefunden: 4 schrankinterne
