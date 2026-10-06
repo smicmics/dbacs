@@ -1399,11 +1399,19 @@ function populateAnlagenAuswahl(sel, gew, cur) {
   // (Einfacheinspeisung) bei aktiver Doppeleinspeisung keinen Sinn (die
   // zusätzliche Zonenbreite bliebe schlicht ungenutzt). Beide Listen sind
   // dadurch bewusst disjunkt, nicht nur eine Teilmenge zusätzlich anzeigend.
+  // WICHTIG (Bugfix Session 69, Nutzer-Fund): der Filter darf nur innerhalb
+  // eines Gewerke-Tabs greifen, der ÜBERHAUPT eine doppeleinspeisung_bindung
+  // ='ja'-Variante anbietet (bisher nur automation_anlagen/ASP) - sonst
+  // verschwindet bei aktiver Doppeleinspeisung JEDE Anlage in JEDEM anderen
+  // Gewerke-Tab (z.B. Heizkreise Verteilung), obwohl diese mit der
+  // Einspeisungsart gar nichts zu tun haben (alle tragen einfach den
+  // Default 'nein', ohne je eine 'ja'-Gegenvariante zu haben).
   const doppelAktiv = (localStorage.getItem('m03_doppeleinspeisung') || 'nein') === 'ja';
   const kategorien = {};
-  ANLAGEN_DB
-    .filter(a => a.funktionsbereich && a.funktionsbereich.includes(gew))
-    .filter(a => ((a.doppeleinspeisung_bindung || 'nein') === 'ja') === doppelAktiv)
+  const gewAnlagen = ANLAGEN_DB.filter(a => a.funktionsbereich && a.funktionsbereich.includes(gew));
+  const hatDoppelVarianten = gewAnlagen.some(a => (a.doppeleinspeisung_bindung || 'nein') === 'ja');
+  gewAnlagen
+    .filter(a => !hatDoppelVarianten || ((a.doppeleinspeisung_bindung || 'nein') === 'ja') === doppelAktiv)
     .forEach(a => { (kategorien[a.kategorie || 'Anlagen'] = kategorien[a.kategorie || 'Anlagen'] || []).push(a); });
   Object.keys(kategorien).sort().forEach(kat => {
     const og = document.createElement('optgroup');
