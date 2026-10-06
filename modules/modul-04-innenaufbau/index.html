@@ -822,7 +822,7 @@ fieldset{
 
   <!-- ── Linkes Panel ── -->
   <div class="panel-in">
-    <h2>Belegung</h2>
+    <div class="ddc-auto-hdr" style="margin-top:0"><h2 style="margin:0">Belegung</h2><button class="btn-ddc-reset" onclick="resetSchrankKomplett()" title="Löscht die gesamte Belegung (alle Baugruppen/Einzelbauteile) UND setzt die automatisch ergänzten Module zurück – Schrank wird komplett leer. Praktisch für wiederholtes Testen (Session 69, Nutzer-Vorgabe).">↺ Schrank leeren</button></div>
     <div id="belegung-liste">
       <p class="hint-text">Noch keine Baugruppen hinzugefügt.</p>
     </div>
@@ -3066,6 +3066,20 @@ function resetDdcWatermark() {
   lvbRomutecWatermark = 0;
   localStorage.removeItem('m04_lvb_romutec_watermark');
   calculate();
+}
+
+// Kompletter Schrank-Reset (Session 69, Nutzer-Vorgabe): löscht zusätzlich
+// zum Watermark-Reset oben auch die gesamte Belegung – praktischer
+// Sammel-Knopf für den bisher manuell wiederholten Testablauf "Belegung
+// löschen + Auto-Ergänzung zurücksetzen, um einen leeren Schrank zu
+// erhalten". Kein confirm()-Dialog (bewusst, analog zum bestehenden
+// "↺ Zurücksetzen"-Knopf) - für häufiges Testen soll der Klick nicht
+// jedes Mal eine Rückfrage auslösen.
+function resetSchrankKomplett() {
+  belegung = [];
+  saveBelegung();
+  renderBelegung();
+  resetDdcWatermark(); // leert auch Steuerspannungs-/Komm-/Romutec-Watermark, ruft calculate()
 }
 
 // ── Klemmenauswahl Feldgeräte/Sensoren: Baugruppen-Bauteilliste auflösen ──
