@@ -614,6 +614,14 @@
         "gruppe": "wmz",
         "variante_label": "Mit Waermemengenzaehler DN15-25 Kompakt (M-Bus)",
         "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
       }
     ],
     "funktionsbereich": [
@@ -653,6 +661,14 @@
         "gruppe": "wmz",
         "variante_label": "Mit Waermemengenzaehler DN50 (M-Bus)",
         "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
       }
     ],
     "funktionsbereich": [
@@ -692,6 +708,14 @@
         "gruppe": "wmz",
         "variante_label": "Mit Waermemengenzaehler DN50 (M-Bus)",
         "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
       }
     ],
     "funktionsbereich": [
@@ -729,6 +753,10 @@
         "gruppe": "wmz",
         "variante_label": "Mit Waermemengenzaehler DN15-25 Kompakt (M-Bus)",
         "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
       }
     ],
     "funktionsbereich": [
@@ -780,6 +808,10 @@
         "gruppe": "wmz",
         "variante_label": "Mit Waermemengenzaehler DN50 (M-Bus)",
         "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
       }
     ],
     "funktionsbereich": [
