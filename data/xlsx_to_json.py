@@ -686,6 +686,15 @@ def export_anlagen(wb):
         # Auswahl, automatisch aufgeloest in addAnlage() (Modul 4).
         if rec.get('netztyp_bindung') is not None:
             m['netztyp_bindung'] = str(rec['netztyp_bindung'])
+        # gruppe_optional (Session 68, Heizkreise Verteilung): markiert eine
+        # oder mehrere Zeilen einer `gruppe` als nicht zwingend - Modul 4
+        # ergaenzt dem <select> dieser Gruppe zusaetzlich eine synthetische
+        # "Ohne"-Option (leerer Wert, matcht keine bg_id), Default-Auswahl,
+        # solange kein Mitglied `ist_default` traegt. Fuer Gruppen ohne
+        # dieses Flag bleibt das Verhalten unveraendert (immer eine echte
+        # Variante gewaehlt, wie bisher bei TouchPanel-Groesse/UMG-Protokoll).
+        if rec.get('gruppe_optional'):
+            m['gruppe_optional'] = True
         mitglieder_je_anlage.setdefault(str(anlage_id), []).append(m)
 
     ws = wb[SHEET]

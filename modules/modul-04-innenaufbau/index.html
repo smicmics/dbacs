@@ -1454,7 +1454,22 @@ function updateAnlageVariantenUI() {
   labelBox.style.display = 'flex';
   labelBox.innerHTML = keys.map(gr => `<span class="anlage-variante-lbltext">${ANLAGE_GRUPPEN_LABEL[gr] || gr}</span>`).join('');
   box.innerHTML = keys.map(gr => {
-    const opts = gruppen[gr]
+    const mitglieder = gruppen[gr];
+    // gruppe_optional (Session 68, Heizkreise Verteilung): traegt mind. ein
+    // Mitglied dieser Gruppe das Flag, ist die Gruppe nicht zwingend -
+    // zusaetzlich eine synthetische "Ohne"-Option (leerer Wert) anbieten,
+    // die in addAnlage() gegen keine bg_id matcht und damit schlicht nichts
+    // beitraegt. Default-Auswahl faellt auf "Ohne", solange kein Mitglied
+    // `ist_default` traegt (z.B. Busanbindung/WMZ sind beide standardmaessig
+    // abgewaehlt). Gruppen ohne dieses Flag verhalten sich unveraendert wie
+    // bisher (TouchPanel-Groesse/UMG-Protokoll - immer eine echte Variante).
+    const optional = mitglieder.some(m => m.gruppe_optional);
+    const hatDefault = mitglieder.some(m => m.ist_default);
+    let opts = '';
+    if (optional) {
+      opts += `<option value=""${hatDefault ? '' : ' selected'}>${ANLAGE_GRUPPE_OHNE_LABEL[gr] || 'Ohne'}</option>`;
+    }
+    opts += mitglieder
       .filter(m => {
         const bg = BAUGRUPPEN_DB.find(b => b.id === m.bg_id);
         return bg ? tuerTouchpanelPasstAufTuerInAnlage(bg, anlage) : true;
@@ -1464,7 +1479,10 @@ function updateAnlageVariantenUI() {
     return `<select id="anlage_variante_${gr}" class="anlage-variante-select">${opts}</select>`;
   }).join('');
 }
-const ANLAGE_GRUPPEN_LABEL = { touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll' };
+const ANLAGE_GRUPPEN_LABEL = { touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll', bus: 'Busanbindung', wmz: 'Wärmemengenzähler' };
+// Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
+// (Session 68) - Default-Fallback ist das generische Wort "Ohne".
+const ANLAGE_GRUPPE_OHNE_LABEL = { bus: 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)', wmz: 'Ohne Wärmemengenzähler' };
 
 // ── Belegung ─────────────────────────────────────────────────────────
 function addBaugruppe() {
