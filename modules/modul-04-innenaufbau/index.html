@@ -5007,6 +5007,294 @@ function printErgebnis() {
   document.head.removeChild(s);
 }
 
+// ── Selbsttest: korrekter Einsatz von Baugruppen/Anlagen (Session 69) ──
+// Automatisiert, was bisher nach jeder Baugruppen-/Anlagen-Neuanlage von
+// Hand geprüft wurde (Herleitungstabelle + Browser-Platzierung, siehe
+// CLAUDE.md "Baugruppen-Modellierungsregeln" + Memory
+// feedback_baugruppen_herleitung.md). Nutzer-Vorgabe Session 69: "Die Menge
+// an Bauteilen ... ist für den Menschen nur aufwändig nachvollziehbar. Das
+// geht über den Rechner viel einfacher und schneller." Prüft: korrekten
+// Bauteil-Einsatz (Katalog-Referenzen, Regel 7), Platzbedarf je Zone
+// (nachvollziehbar bis auf den einzelnen Artikel = "Aufbau der Schaltungen
+// und Zusammensetzung der Bauteile"), Positionierung (fehlendPlatziert/
+// Overflow im Referenzschrank), Datenpunkt-/Klemmen-Reserve (unabhängig von
+// computeDdcAutoModules() nachgerechnet, damit ein Fehler wie die Session-
+// 69-Falsy-0-Reserve-Bug auch künftig auffällt). Nicht-destruktiv: sichert
+// vor dem Testlauf Belegung + Zonenwerte (m01-m04) und stellt sie danach
+// wieder her - sicher nutzbar auch bei einem laufenden echten Projekt.
+//
+// Aufruf in der Browser-Konsole (F12):
+//   testBaugruppe('420_000023')   - eine Baugruppe (optional 2. Arg: Menge)
+//   testAnlage('420_A00002')      - eine Anlage, alle Options-Kombinationen
+//   testKatalogScan()             - nur Referenz-Integrität (Regel 7), sehr schnell
+//   testAlles()                   - kompletter Katalog (kann 1-2 Minuten dauern)
+
+// Referenzschrank: Standschrank 1200x2000mm, Drehstrom 3~, Schienensystem
+// 3-polig, 1 Feld, L/S übereinander, KE unten - der in der Projekthistorie
+// durchgängig genutzte Referenzfall (reale Modul-1/2/3-Ausgabe für diese
+// Konfiguration, nicht neu hergeleitet - siehe CLAUDE.md Sessions passim).
+const REFERENZSCHRANK_TEST = {
+  m01_B:'1200', m01_H:'2000', m02_B:'1200', m02_H:'2000',
+  m02_b_mplatte_mbereich_standschrank_mm:'1099', m02_h_mplatte_mbereich_standschrank_mm:'1745',
+  m03_b_ek:'72', m03_b_kanal_v:'40', m03_b_leist:'1019', m03_b_steuer:'1019',
+  m03_b_uss:'108', m03_doppeleinspeisung:'nein', m03_h_evert:'300', m03_h_kanal_h:'40',
+  m03_h_klemm:'95', m03_h_leist:'615', m03_h_steuer:'615', m03_n_felder:'3', m03_n_te:'61',
+  m03_zone_anordnung:'uebereinander', m03_zone_ke_pos:'unten', m03_zone_modus:'1feld',
+  m03_zone_netztyp:'drehstrom', m03_zone_schiene:'ja', m03_zone_schiene_pol:'3',
+};
+const TEST_RESERVE_PCTS = [0, 20, 50];
+const _TEST_KEYS = Object.keys(REFERENZSCHRANK_TEST).concat(['m04_schrank_typ']);
+
+function _testSnapshot() {
+  return { belegung: JSON.parse(JSON.stringify(belegung)),
+           ls: Object.fromEntries(_TEST_KEYS.map(k => [k, localStorage.getItem(k)])),
+           reserve_pct: gs('reserve_pct'), ddc_reserve_pct: gs('ddc_reserve_pct'),
+           lvb_anforderung: gs('lvb_anforderung'), lvb_realisierung: gs('lvb_realisierung') };
+}
+function _testRestore(snap) {
+  belegung = snap.belegung;
+  _TEST_KEYS.forEach(k => { if (snap.ls[k] === null) localStorage.removeItem(k); else localStorage.setItem(k, snap.ls[k]); });
+  saveBelegung();
+  _v('schrank_typ', localStorage.getItem('m04_schrank_typ') || 'standschrank');
+  _v('reserve_pct', snap.reserve_pct); _v('ddc_reserve_pct', snap.ddc_reserve_pct);
+  _v('lvb_anforderung', snap.lvb_anforderung); _v('lvb_realisierung', snap.lvb_realisierung);
+  syncLvbRealisierungState();
+  resetDdcWatermark(); // ruft calculate() bereits auf
+}
+// doppel=true: fuer Anlagen mit doppeleinspeisung_bindung='ja' (z.B.
+// 480_A00004-006) - sonst filtert populateAnlagenAuswahl() sie aus dem
+// Dropdown heraus (sel.value auf eine nicht vorhandene Option bleibt leer,
+// addAnlage() liefe ins Leere). b_uss/b_ek entsprechend verdoppelt (Modul-3-
+// Verhalten bei aktiver Doppeleinspeisung, Session 67/68), restliche Zonen-
+// Grundmasse bleiben unveraendert (reine Breiten-Subzuteilung innerhalb der
+// bestehenden Leistungs-/Klemmenzonen, keine eigene Aussenzone).
+function _testSetupReferenzschrank(doppel) {
+  belegung = [];
+  Object.entries(REFERENZSCHRANK_TEST).forEach(([k,v]) => localStorage.setItem(k, v));
+  if (doppel) {
+    localStorage.setItem('m03_doppeleinspeisung', 'ja');
+    localStorage.setItem('m03_b_uss', String(+REFERENZSCHRANK_TEST.m03_b_uss * 2));
+    localStorage.setItem('m03_b_ek', String(+REFERENZSCHRANK_TEST.m03_b_ek * 2));
+  }
+  localStorage.setItem('m04_schrank_typ', 'standschrank');
+  _v('schrank_typ', 'standschrank');
+  _v('lvb_anforderung', 'ohne');
+  resetDdcWatermark();
+}
+
+// Vollständiger Katalog-Scan (Regel 7): alle baugruppen_bauteile- und
+// anlagen_baugruppen-Referenzen gegen den Katalog prüfen.
+function testKatalogScan() {
+  const fehlend = [];
+  BAUGRUPPEN_DB.forEach(bg => (bg.bauteile||[]).forEach(bt => {
+    if (!EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr)) fehlend.push('Baugruppe ' + bg.id + ' -> Artikel ' + bt.artikel_nr + ' (fehlt im Katalog)');
+  }));
+  ANLAGEN_DB.forEach(a => (a.mitglieder||[]).forEach(m => {
+    if (!BAUGRUPPEN_DB.find(b => b.id === m.bg_id)) fehlend.push('Anlage ' + a.id + ' -> Baugruppe ' + m.bg_id + ' (fehlt im Katalog)');
+  }));
+  const pass = fehlend.length === 0;
+  console.log((pass ? '✓' : '✗') + ' Katalog-Scan: ' + fehlend.length + ' verwaiste Referenzen (' + BAUGRUPPEN_DB.length + ' Baugruppen, ' + ANLAGEN_DB.length + ' Anlagen geprüft)');
+  fehlend.forEach(f => console.warn('  ' + f));
+  return { pass, fehlend };
+}
+
+// Platzbedarf+Zusammensetzung je Zone aus der Stückliste ableiten - macht
+// den Platzbedarf bis auf den einzelnen Artikel nachvollziehbar.
+function _testZonenZusammensetzung(stueckliste) {
+  const zonen = {};
+  stueckliste.forEach(e => {
+    if (e.keine_platzierung_mp) return; // kein Platzbedarf auf der Montageplatte
+    const z = e.zone;
+    if (!zonen[z]) zonen[z] = { gesamt_mm: 0, artikel: [] };
+    const beitrag = (e.b_mm || 0) * e.menge;
+    zonen[z].gesamt_mm += beitrag;
+    zonen[z].artikel.push({ artikel_nr: e.artikel_nr, bezeichnung: e.bezeichnung, menge: e.menge, b_mm: e.b_mm, beitrag_mm: beitrag });
+  });
+  return zonen;
+}
+
+// Datenpunkt-Soll (physisch je Typ + kommunikativ je Protokoll) direkt aus
+// der aufgelösten Bauteilliste berechnet - unabhängig von buildQueues().
+function _testDpSoll(bauteile) {
+  const dp = { dp_ai:0, dp_ao:0, dp_bi:0, dp_bo:0 };
+  const komm = {};
+  bauteile.forEach(bt => {
+    const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
+    ['dp_ai','dp_ao','dp_bi','dp_bo'].forEach(t => {
+      const v = (bt[t] != null ? bt[t] : (eb && eb[t])) || 0;
+      dp[t] += v * (bt.menge || 1);
+    });
+    if (bt.feldbus_protokoll) {
+      const k = komm[bt.feldbus_protokoll] = komm[bt.feldbus_protokoll] || { dp_fb_ai:0, dp_fb_ao:0, dp_fb_bi:0, dp_fb_bo:0 };
+      ['dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo'].forEach(t => { k[t] += (bt[t]||0) * (bt.menge||1); });
+    }
+  });
+  return { dp, komm };
+}
+
+// Reserve-Konsistenz: Soll-Modulzahl unabhängig aus der Formel berechnet
+// (Bedarf / (1-Reserve%), aufgerundet auf Modulgröße) gegen die tatsächlich
+// von der Engine ergänzten Module geprüft - je Reserve-Prozentsatz aus
+// TEST_RESERVE_PCTS. Fängt Klassen wie den Session-69-Falsy-0-Bug ab, da
+// hier bewusst NICHT über g()/gs() gelesen, sondern der Wert direkt gesetzt
+// und unabhängig nachgerechnet wird.
+function _testReserveFuerBaugruppe(bgId, menge, physDemandBase) {
+  const ergebnisse = [];
+  TEST_RESERVE_PCTS.forEach(rp => {
+    belegung = []; resetDdcWatermark();
+    _v('ddc_reserve_pct', rp); _v('reserve_pct', rp);
+    addBaugruppeById(bgId, menge);
+    saveBelegung(); calculate();
+    const st = aggregateStueckliste();
+    const ddcModule = st.filter(s => s.bauteil_typ === 'ddc_io');
+    const keep = 1 - rp/100;
+    const checks = [];
+    ['dp_ai','dp_ao'].some(() => true); // Analog-Pool gemeinsam
+    const analogDemand = physDemandBase.dp_ai + physDemandBase.dp_ao;
+    if (analogDemand > 0) {
+      const erwartetMenge = Math.ceil((analogDemand/keep) / 8);
+      const actualMenge = ddcModule.filter(m => m.artikel_nr === 'TXM1.8U' || m.artikel_nr === 'TXM1.8U-ML').reduce((s,m)=>s+m.menge,0);
+      checks.push({ typ:'analog(AI+AO)', rp, erwartetMenge, actualMenge, ok: erwartetMenge === actualMenge });
+    }
+    ['dp_bi','dp_bo'].forEach(t => {
+      const demand = physDemandBase[t];
+      if (demand <= 0) return;
+      const candidates = EINZELBAUTEILE_DB.filter(e => e.bauteil_typ === 'ddc_io' && (e[t]||0) > 0);
+      const pool = Math.max(...candidates.map(c => c[t]));
+      const erwartetMenge = Math.ceil((demand/keep) / pool);
+      const actualMenge = ddcModule.filter(m => (EINZELBAUTEILE_DB.find(e=>e.artikel_nr===m.artikel_nr)||{})[t] > 0).reduce((s,m)=>s+m.menge,0);
+      checks.push({ typ:t, rp, erwartetMenge, actualMenge, ok: erwartetMenge === actualMenge });
+    });
+    ergebnisse.push(...checks);
+  });
+  return ergebnisse;
+}
+
+// Prüft EINE Baugruppe (menge Instanzen, Default 1) im Referenzschrank:
+// Platzbedarf/Zusammensetzung, Positionierung, Katalog-Referenzen, Reserve.
+function testBaugruppe(bgId, menge) {
+  menge = menge || 1;
+  const bg = BAUGRUPPEN_DB.find(b => b.id === bgId);
+  if (!bg) { console.error('✗', bgId, 'nicht im Katalog gefunden'); return { pass:false, bgId, fehler:'nicht gefunden' }; }
+  const snap = _testSnapshot();
+
+  const refs = bg.bauteile.filter(bt => !EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr)).map(bt => bt.artikel_nr);
+
+  _testSetupReferenzschrank();
+  addBaugruppeById(bgId, menge);
+  saveBelegung(); calculate();
+
+  const bauteileSkaliert = resolveBaugruppenBauteile(bg, klemmenVariante()).map(bt => ({...bt, menge: bt.menge * menge}));
+  const soll = _testDpSoll(bauteileSkaliert);
+  const stueckliste = aggregateStueckliste();
+  const check = stuecklisteVsPlatzierungCheck(letzteAggZones);
+  const zonen = _testZonenZusammensetzung(stueckliste);
+  const overflow = Object.entries(letzteAggZones).filter(([k,v]) => v.overflow).map(([k]) => k);
+
+  const reserveErgebnisse = _testReserveFuerBaugruppe(bgId, menge, soll.dp);
+  const reserveFail = reserveErgebnisse.filter(r => !r.ok);
+
+  const pass = check.fehlendPlatziert.length === 0 && overflow.length === 0 && refs.length === 0 && reserveFail.length === 0;
+
+  console.log((pass ? '✓ PASS' : '✗ FAIL') + ' — ' + bgId + ' "' + bg.name + '" (Menge ' + menge + ')');
+  console.log('  Datenpunkte physisch:', JSON.stringify(soll.dp) + (Object.keys(soll.komm).length ? '  kommunikativ: ' + JSON.stringify(soll.komm) : ''));
+  console.log('  Platzbedarf je Zone (Artikel-für-Artikel):');
+  Object.entries(zonen).forEach(([z, zd]) => {
+    console.log('    ' + z + ': ' + zd.gesamt_mm.toFixed(1) + ' mm aus ' + zd.artikel.length + ' Positionen');
+    zd.artikel.forEach(a => console.log('      ' + a.menge + '× ' + a.artikel_nr + ' (' + a.bezeichnung + ') à ' + a.b_mm + 'mm = ' + a.beitrag_mm.toFixed(1) + 'mm'));
+  });
+  if (refs.length) console.warn('  ✗ verwaiste Artikelreferenzen:', refs);
+  if (check.fehlendPlatziert.length) console.warn('  ✗ nicht platziert:', check.fehlendPlatziert);
+  if (overflow.length) console.warn('  ✗ Overflow in Zonen:', overflow);
+  if (reserveFail.length) console.warn('  ✗ Reserve-Abweichung:', reserveFail);
+
+  _testRestore(snap);
+  return { pass, bgId, name: bg.name, soll, zonen, fehlendPlatziert: check.fehlendPlatziert, overflow, verwaisteReferenzen: refs, reserve: reserveErgebnisse };
+}
+
+// Prüft EINE Anlage über ALLE möglichen Options-Kombinationen (gruppe-
+// Dropdowns, inkl. "Ohne" bei gruppe_optional) - zeigt je Kombination, ob
+// genau die dazu passenden Baugruppen eingesetzt werden.
+function testAnlage(anlageId, menge) {
+  menge = menge || 1;
+  const anlage = ANLAGEN_DB.find(a => a.id === anlageId);
+  if (!anlage) { console.error('✗', anlageId, 'nicht im Katalog gefunden'); return { pass:false, anlageId, fehler:'nicht gefunden' }; }
+
+  const refsAnlage = (anlage.mitglieder||[]).filter(m => !BAUGRUPPEN_DB.find(b => b.id === m.bg_id)).map(m => m.bg_id);
+
+  const gruppen = {};
+  (anlage.mitglieder||[]).forEach(m => { if (m.gruppe) (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(m); });
+  const gruppenKeys = Object.keys(gruppen);
+  let kombis = [{}];
+  gruppenKeys.forEach(gr => {
+    const optionen = gruppen[gr].map(m => m.bg_id);
+    if (gruppen[gr].some(m => m.gruppe_optional)) optionen.unshift(null);
+    const neu = [];
+    kombis.forEach(k => optionen.forEach(opt => neu.push({...k, [gr]: opt})));
+    kombis = neu;
+  });
+
+  const ergebnisse = [];
+  kombis.forEach(kombi => {
+    const snap = _testSnapshot();
+    _testSetupReferenzschrank((anlage.doppeleinspeisung_bindung || 'nein') === 'ja');
+    setGewerk((anlage.funktionsbereich && anlage.funktionsbereich[0]) || 'automation_anlagen');
+    const sel = document.getElementById('bg_auswahl');
+    sel.value = 'anlage:' + anlageId;
+    updateAnlageVariantenUI();
+    gruppenKeys.forEach(gr => {
+      const el = document.getElementById('anlage_variante_' + gr);
+      if (el) el.value = kombi[gr] || '';
+    });
+    _v('bg_menge', menge);
+    addBaugruppe();
+    calculate();
+
+    const check = stuecklisteVsPlatzierungCheck(letzteAggZones);
+    const overflow = Object.entries(letzteAggZones).filter(([k,v]) => v.overflow).map(([k]) => k);
+    const eingesetzteBgIds = belegung.map(b => b.bg_id);
+    const erwarteteBgIds = (anlage.mitglieder||[])
+      .filter(m => !m.netztyp_bindung || m.netztyp_bindung === (localStorage.getItem('m03_zone_netztyp')||'drehstrom'))
+      .filter(m => !m.gruppe || kombi[m.gruppe] === m.bg_id)
+      .map(m => m.bg_id);
+    const bgEinsatzKorrekt = erwarteteBgIds.every(id => eingesetzteBgIds.includes(id))
+      && eingesetzteBgIds.every(id => erwarteteBgIds.includes(id));
+    const pass = check.fehlendPlatziert.length === 0 && overflow.length === 0 && bgEinsatzKorrekt;
+
+    const kombiLabel = gruppenKeys.length ? gruppenKeys.map(gr => gr + '=' + (kombi[gr] || 'Ohne')).join(', ') : '(keine Varianten)';
+    console.log((pass ? '✓ PASS' : '✗ FAIL') + ' — ' + anlageId + ' [' + kombiLabel + ']');
+    if (!bgEinsatzKorrekt) console.warn('    erwartete bg_ids:', erwarteteBgIds, ' tatsächlich:', eingesetzteBgIds);
+    if (check.fehlendPlatziert.length) console.warn('    nicht platziert:', check.fehlendPlatziert);
+    if (overflow.length) console.warn('    Overflow:', overflow);
+
+    ergebnisse.push({ kombi: kombiLabel, pass, eingesetzteBgIds, fehlendPlatziert: check.fehlendPlatziert, overflow });
+    _testRestore(snap);
+  });
+
+  const pass = refsAnlage.length === 0 && ergebnisse.every(e => e.pass);
+  console.log((pass ? '✓ GESAMT PASS' : '✗ GESAMT FAIL') + ' — ' + anlageId + ' (' + ergebnisse.length + ' Kombination(en) geprüft)');
+  if (refsAnlage.length) console.warn('  verwaiste bg_id-Referenzen:', refsAnlage);
+  return { pass, anlageId, name: anlage.name, verwaisteReferenzen: refsAnlage, kombinationen: ergebnisse };
+}
+
+// Kompletter Katalog: alle Baugruppen + alle Anlagen (alle Kombinationen).
+// Kann je nach Katalogumfang 1-2 Minuten dauern.
+function testAlles() {
+  console.log('=== Vollständiger Katalog-Selbsttest ===');
+  const scan = testKatalogScan();
+  const bgErgebnisse = BAUGRUPPEN_DB.map(bg => testBaugruppe(bg.id));
+  const anlErgebnisse = ANLAGEN_DB.map(a => testAnlage(a.id));
+  const bgFail = bgErgebnisse.filter(r => !r.pass);
+  const anlFail = anlErgebnisse.filter(r => !r.pass);
+  console.log('=== Zusammenfassung ===');
+  console.log('Katalog-Scan:', scan.pass ? 'OK' : (scan.fehlend.length + ' Fehler'));
+  console.log('Baugruppen:', (BAUGRUPPEN_DB.length - bgFail.length) + '/' + BAUGRUPPEN_DB.length + ' bestanden');
+  console.log('Anlagen:', (ANLAGEN_DB.length - anlFail.length) + '/' + ANLAGEN_DB.length + ' bestanden');
+  if (bgFail.length) console.warn('Fehlgeschlagene Baugruppen:', bgFail.map(r => r.bgId));
+  if (anlFail.length) console.warn('Fehlgeschlagene Anlagen:', anlFail.map(r => r.anlageId));
+  return { scan, bgErgebnisse, anlErgebnisse, pass: scan.pass && !bgFail.length && !anlFail.length };
+}
+
 // ── Start ────────────────────────────────────────────────────────────
 loadData();
 
