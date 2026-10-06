@@ -998,5 +998,121 @@
     "kategorie": "Wärmeerzeuger",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "420_A00016",
+    "name": "Geregelter Wärmetauscher mit Umwälzpumpe primär+sekundär (Primär: Regelventil, Umwälzpumpe, VL/RL-Temperatur, Druckwächter Min für MAG; Sekundär: Umwälzpumpe, VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Erweiterung von \"Geregelter Waermetauscher\" (420_A00012) um je eine Umwaelzpumpe auf Primaer- UND Sekundaerseite (Nutzer-Vorgabe Session 69) - deckt den Fall ab, dass der Waermetauscher nicht an einen bereits anderweitig gepumpten Kreis angeschlossen wird, sondern beide Seiten eigene Pumpen brauchen. Pumpenleistung ueber Dropdown waehlbar (Pflichtfeld, keine 'Ohne'-Option - die Pumpen sind fester Bestandteil dieses Modells): klein (Wilo Yonos/Stratos PICO, 3...45 W) / mittel (Wilo Stratos MAXO, 40 W...1,5 kW, Default) / gross (Wilo Stratos GIGA2.0, 0,37...7,5 kW, 400V 3~) - jede Stufe setzt dieselbe Pumpengroesse auf BEIDEN Seiten ein (menge:2 derselben Baugruppe), da DBACS primaer-/sekundaerseitig keine unterschiedlichen Pumpengroessen-Varianten vorsieht und eine symmetrische Auslegung die ueblichere Praxis ist. Unveraendert aus dem Basismodell uebernommen: Regelventil 0...10V mit Ruecklaufmeldung (420_000013, 800N, Primaer) + Vorlauf-/Ruecklauf-Temperaturfuehler primaer UND sekundaer (430_000006+430_000007 je menge:2) + Druckwaechter Min fuer das primaerseitige MAG (420_000002, 1xBI). Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000031, 7 Werte komm. M-Bus, kein Schaltschrankplatz, Pegelwandler automatisch - DN50 als Annahme fuer die typische Groessenordnung eines Waermetauscher-Anschlusses, bei kleineren Anlagen ggf. auf DN15-25 420_000029 wechseln). Physischer Datenpunktbedarf (bei Pumpenstufe mittel/gross, identisch da MAXO/GIGA2.0 dasselbe DP-Schema haben): 2x(1xBO+1xAO+3xBI) Pumpen + 1xAO+1xAI Ventil + 4xAI Temperatur + 1xBI Druckwaechter = 2xBO + 2xAO + 5xAI + 7xBI; bei Pumpenstufe klein (PICO, 2x+2xBI je Pumpe statt 1xAO+3xBI): 2xBO + 1xAO + 5xAI + 5xBI. Automations-station/Energieversorgung/Pegelwandler weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000013",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "klein (Wilo Yonos/Stratos PICO, 3...45 W, je Seite)"
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "mittel (Wilo Stratos MAXO, 40 W...1,5 kW, je Seite)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "groß (Wilo Stratos GIGA2.0, 0,37...7,5 kW, 400V 3~, je Seite)"
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Wärmemengenzähler DN50 (M-Bus)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Wärmeübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00017",
+    "name": "Fernwärmeübergabestation mit Umwälzpumpe primär+sekundär (Primär: Regelventil Federrückl. stromlos zu, Umwälzpumpe, VL/RL-Temperatur, Druckwächter Min für MAG; Sekundär: Umwälzpumpe, VL/RL-Temperatur, TW+STB)",
+    "gewerk": "420",
+    "beschreibung": "Erweiterung von \"Fernwaermeuebergabestation\" (420_A00015) um je eine Umwaelzpumpe auf Primaer- UND Sekundaerseite (Nutzer-Vorgabe Session 69), analog zu 420_A00016. Pumpenleistung ueber Dropdown waehlbar (Pflichtfeld, keine 'Ohne'-Option - die Pumpen sind fester Bestandteil dieses Modells): klein (Wilo Yonos/Stratos PICO, 3...45 W) / mittel (Wilo Stratos MAXO, 40 W...1,5 kW, Default) / gross (Wilo Stratos GIGA2.0, 0,37...7,5 kW, 400V 3~) - jede Stufe setzt dieselbe Pumpengroesse auf BEIDEN Seiten ein (menge:2 derselben Baugruppe), da DBACS primaer-/sekundaerseitig keine unterschiedlichen Pumpengroessen-Varianten vorsieht und eine symmetrische Auslegung die ueblichere Praxis ist. Unveraendert aus dem Basismodell uebernommen: Regelventil mit Notstellfunktion Federruecklauf stromlos zu (420_000015, 1100N, Primaer) + Vorlauf-/Ruecklauf-Temperaturfuehler primaer UND sekundaer (430_000006+430_000007 je menge:2) + Druckwaechter Min fuer das MAG (420_000002, 1xBI) + Doppelthermostat STB+TW auf der Sekundaerseite (420_000012, 2xBI). Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000031, 7 Werte komm. M-Bus, kein Schaltschrankplatz, Pegelwandler automatisch - DN50 als Annahme fuer die typische Groessenordnung eines Waermetauscher-Anschlusses, bei kleineren Anlagen ggf. auf DN15-25 420_000029 wechseln). Physischer Datenpunktbedarf (bei Pumpenstufe mittel/gross): 2xBO + 2xAO + 5xAI + 9xBI (7xBI wie bei 420_A00016 + 2xBI STB/TW); bei Pumpenstufe klein: 2xBO + 1xAO + 5xAI + 7xBI. Automationsstation/Energieversorgung/Pegelwandler weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000015",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000012",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "klein (Wilo Yonos/Stratos PICO, 3...45 W, je Seite)"
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "mittel (Wilo Stratos MAXO, 40 W...1,5 kW, je Seite)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "groß (Wilo Stratos GIGA2.0, 0,37...7,5 kW, 400V 3~, je Seite)"
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Wärmemengenzähler DN50 (M-Bus)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Wärmeerzeuger",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]
