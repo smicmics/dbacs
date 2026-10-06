@@ -845,7 +845,7 @@
   },
   {
     "id": "420_A00010",
-    "name": "Heizungsverteiler-/Sammlerüberwachung, mit Druck- und Nachspeiseüberwachung (Konfiguration 1)",
+    "name": "Heizungsverteiler-/Sammler, Konfiguration 1 (VL/RL-Temperatur, VL/RL-Druck, Nachspeisung M-Bus)",
     "gewerk": "420",
     "beschreibung": "Ueberwachung eines Heizungsverteilers/-sammlers (Haupt-Verteilerbalken, nicht der einzelne Heizkreis - siehe dafuer die Heizkreise-Verteilung-Anlagen 420_A00001-008). Konfiguration 1 (vollstaendig): Vorlauf-/Ruecklauf-Temperaturfuehler (430_000006 100mm + 430_000007 150mm, je 1xAI) + Vorlauf-/Ruecklauf-Druckmessung (2x 420_000003, Siemens QBE2003-P4, 0-4 bar - Annahme: typischer Betriebsdruck geschlossener Heizungsanlagen liegt im unteren bar-Bereich, bei Bedarf projekt-spezifisch auf die 0-10-bar-Variante 420_000004 wechseln; beide Druck-messstellen nutzen dieselbe Baugruppe, da DBACS keine beidseitige Variante kennt - Menge 2 statt 2 verschiedener bg_ids wie bei den Temperaturfuehlern) + Nachspeisearmatur mit integriertem M-Bus-Wasser-zaehler (410_000001, Reflex Fillset Compact Twist M-Bus, rein mechanisch-hydraulisch, 1 Wert komm. M-Bus, kein Schaltschrankplatz, Pegelwandler automatisch ergaenzt). Physischer Datenpunktbedarf gesamt: 4x AI (2x Temperatur + 2x Druck). Automationsstation/Energieversorgung/Pegelwandler weiterhin automatisch ueber die bestehenden Ratchets. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
     "mitglieder": [
@@ -869,13 +869,13 @@
     "funktionsbereich": [
       "heizung_anlagen"
     ],
-    "kategorie": "Heizungsverteiler- und Sammler",
+    "kategorie": "Heizungsverteiler-/Sammler",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
   },
   {
     "id": "420_A00011",
-    "name": "Heizungsverteiler-/Sammlerüberwachung, Basis (Konfiguration 2)",
+    "name": "Heizungsverteiler-/Sammler, Konfiguration 2 (VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Ueberwachung eines Heizungsverteilers/-sammlers, Konfiguration 2 (Basis - nur Temperatur, ohne Druck/Nachspeisung): Vorlauf-/Ruecklauf-Temperaturfuehler (430_000006 100mm + 430_000007 150mm, je 1xAI). Physischer Datenpunktbedarf gesamt: 2x AI. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
     "mitglieder": [
@@ -891,7 +891,7 @@
     "funktionsbereich": [
       "heizung_anlagen"
     ],
-    "kategorie": "Heizungsverteiler- und Sammler",
+    "kategorie": "Heizungsverteiler-/Sammler",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
   }
