@@ -461,7 +461,7 @@
   },
   {
     "id": "420_A00001",
-    "name": "Heizkreis Beimischschaltung, klein (Wilo Yonos/Stratos PICO, 3...45 W)",
+    "name": "Heizkreis Beimischschaltung, klein (Pumpe PICO 3...45 W, Regelventil 200N, VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Heizkreis mit 3-Wege-Beimischventil, Leistungsstufe klein (Umwaelzpumpe Wilo Yonos/Stratos PICO, 420_000022, 3...45 W, 230V 1~, keine Busoption - PICO hat keinen CIF-Steckplatz). Fester Bestandteil: Pumpe (1xBO+2xBI) + Ventilantrieb Zonenregelung 200N 0...10V mit Ruecklaufmeldung (420_000014, 1xAO+1xAI, Annahme: kleinere Baugroesse fuer kleine Beimischkreise passend, Siemens SSB161.05HF) + Vorlauf-/Ruecklauffuehler (430_000006 100mm + 430_000007 150mm, je 1xAI) fuer die DDC-Regelschleife, unabhaengig von einem optionalen WMZ (WMZ liest nur zyklisch ueber M-Bus, zu langsam fuer die Ventil-Regelschleife). Physischer Datenpunktbedarf gesamt: 1xBO + 2xBI + 1xAO + 3xAI. Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN15-25 Kompakt M-Bus busgespeist (420_000029, 7 Werte komm. M-Bus, kein Schaltschrankplatz, Pegelwandler automatisch). Automationsstation/Energieversorgung/LVB weiterhin automatisch ueber die bestehenden Ratchets, nicht Teil dieser Anlagen-Definition. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -498,7 +498,7 @@
   },
   {
     "id": "420_A00002",
-    "name": "Heizkreis Beimischschaltung, mittel (Wilo Stratos MAXO, 40 W...1,5 kW)",
+    "name": "Heizkreis Beimischschaltung, mittel (Pumpe MAXO 40 W...1,5 kW, Regelventil 800N, VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Heizkreis mit 3-Wege-Beimischventil, Leistungsstufe mittel (Umwaelzpumpe Wilo Stratos MAXO, 420_000023, 40 W...1,5 kW, 230V 1~, vollintegrierte Elektronik - kein Schuetz/PKZM noetig, DDC-BO geht direkt auf den geraeteeigenen Digitaleingang DI1 'Extern AUS'). Fester Bestandteil: Pumpe (1xBO+1xAO+3xBI) + Ventilantrieb 800N 0...10V mit Ruecklaufmeldung (420_000013, 1xAO+1xAI, Siemens SAX61.03) + Vorlauf-/Ruecklauffuehler (430_000006+430_000007, je 1xAI) fuer die DDC-Regelschleife. Physischer Datenpunktbedarf gesamt: 1xBO + 3xBI + 2xAO + 3xAI. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000031, naechstgroessere Baugroesse statt DN15-25 - Nutzer-Vorgabe Session 68, 7 Werte komm. M-Bus, kein Schaltschrankplatz). Automationsstation/Energieversorgung/LVB/Ethernet-Switch (bei Ethernet-Busvariante) weiterhin automatisch ueber die bestehenden Ratchets. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -549,7 +549,7 @@
   },
   {
     "id": "420_A00003",
-    "name": "Heizkreis Beimischschaltung, groß (Wilo Stratos GIGA2.0, 0,37...7,5 kW, 400V 3~)",
+    "name": "Heizkreis Beimischschaltung, groß (Pumpe GIGA2.0 0,37...7,5 kW 400V 3~, Regelventil 800N, VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Heizkreis mit 3-Wege-Beimischventil, Leistungsstufe gross (Umwaelzpumpe Wilo Stratos GIGA2.0, 420_000025, 0,37...7,5 kW, 400V 3~, integrierter Frequenzumrichter + Motor-Vollschutz, kein externes Schuetz/MSS noetig, identisches DP-Schema wie MAXO). Fester Bestandteil: Pumpe (1xBO+1xAO+3xBI) + Ventilantrieb 800N 0...10V mit Ruecklaufmeldung (420_000013, 1xAO+1xAI, groesster katalogisierter Ventilantrieb - bei Bedarf projektspezifisch pruefen ob ausreichend) + Vorlauf-/Ruecklauffuehler (430_000006+430_000007, je 1xAI). Physischer Datenpunktbedarf gesamt: 1xBO + 3xBI + 2xAO + 3xAI. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000031, 7 Werte komm. M-Bus). Automationsstation/Energieversorgung/LVB/Ethernet-Switch weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -600,7 +600,7 @@
   },
   {
     "id": "420_A00004",
-    "name": "Heizkreis Zubringerkreis, ungeregelt, klein (Wilo Yonos/Stratos PICO, 3...45 W)",
+    "name": "Heizkreis Zubringerkreis, ungeregelt, klein (Pumpe PICO 3...45 W, VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Zubringerkreis (reiner Transportkreis ohne eigenes Mischventil, verbindet z.B. Kesselkreis/Verteiler mit einem Unterverteiler), Leistungsstufe klein (Umwaelzpumpe Wilo Yonos/Stratos PICO, 420_000022, 3...45 W, 230V 1~, keine Busoption). Fester Bestandteil: nur die Pumpe (1xBO+2xBI) - bewusst OHNE eigenen Vorlauf-/Ruecklauf-fuehler, da ein Zubringerkreis keine eigene Regelschleife hat; falls Messwerte benoetigt werden, liefert der optionale WMZ diese bereits mit (VL/RL-Temperatur sind Teil der 7 M-Bus-Werte). Physischer Datenpunktbedarf: 1xBO + 2xBI. Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN15-25 Kompakt M-Bus busgespeist (420_000029, 7 Werte komm. M-Bus). Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -633,7 +633,7 @@
   },
   {
     "id": "420_A00005",
-    "name": "Heizkreis Zubringerkreis, ungeregelt, mittel (Wilo Stratos MAXO, 40 W...1,5 kW)",
+    "name": "Heizkreis Zubringerkreis, ungeregelt, mittel (Pumpe MAXO 40 W...1,5 kW, VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Zubringerkreis, Leistungsstufe mittel (Umwaelzpumpe Wilo Stratos MAXO, 420_000023, 40 W...1,5 kW, 230V 1~, vollintegrierte Elektronik, kein Schuetz/PKZM noetig). Fester Bestandteil: nur die Pumpe (1xBO+1xAO+3xBI) - kein eigener Fuehler, siehe Begruendung bei der kleinen Stufe (420_A00004). Physischer Datenpunktbedarf: 1xBO + 3xBI + 1xAO. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000031, naechstgroessere Baugroesse - Nutzer-Vorgabe Session 68). Automationsstation/Energieversorgung/LVB/Ethernet-Switch weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -680,7 +680,7 @@
   },
   {
     "id": "420_A00006",
-    "name": "Heizkreis Zubringerkreis, ungeregelt, groß (Wilo Stratos GIGA2.0, 0,37...7,5 kW, 400V 3~)",
+    "name": "Heizkreis Zubringerkreis, ungeregelt, groß (Pumpe GIGA2.0 0,37...7,5 kW 400V 3~, VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Zubringerkreis, Leistungsstufe gross (Umwaelzpumpe Wilo Stratos GIGA2.0, 420_000025, 0,37...7,5 kW, 400V 3~, integrierter FU + Motor-Vollschutz, kein externes Schuetz/MSS noetig). Fester Bestandteil: nur die Pumpe (1xBO+1xAO+3xBI) - kein eigener Fuehler, siehe Begruendung bei der kleinen Stufe (420_A00004). Physischer Datenpunktbedarf: 1xBO + 3xBI + 1xAO. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000031). Automationsstation/Energieversorgung/LVB/Ethernet-Switch weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -727,7 +727,7 @@
   },
   {
     "id": "420_A00007",
-    "name": "Fußbodenheizkreis-Zubringer zum Verteiler (Beimischschaltung), klein (Wilo Yonos/Stratos PICO, 3...45 W)",
+    "name": "Fußbodenheizkreis-Zubringer zum Verteiler, klein (Pumpe PICO 3...45 W, Federrückl.-Ventil 1100N, STB+TW, VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Zubringerkreis vom Heizungsverteiler zu EINEM Fussbodenheizungs-verteiler (NICHT die einzelnen Raum-Regelkreise am Verteiler selbst - dafuer siehe eigene Anlage 'Regelkreis Fussbodenheizungsverteiler', 420_A00009). Leistungsstufe klein (Umwaelzpumpe Wilo Yonos/Stratos PICO, 420_000022, 3...45 W, 230V 1~, keine Busoption). Fester Bestandteil: Pumpe (1xBO+2xBI) + Ventilantrieb mit Notstellfunktion Fail Open/Close 1100N 0...10V (420_000015, Siemens SQV91P30, 24V AC/DC, 1xAO+1xAI - faehrt bei Spannungsausfall selbsttaetig in die sichere Stellung, z.B. Frost-/Uebertemperaturschutz fuer den nachgeschalteten Estrich-Kreis) + Doppelthermostat Temperaturwaechter mit Sicherheitstemperaturbegrenzer (420_000012, 30...110°C, 2xBI getrennt STB-Alarm/TW-Meldung) + Vorlauffuehler (430_000006, 1xAI) fuer DDC-Monitoring der Verteiler-Vorlauftemperatur. Physischer Datenpunktbedarf gesamt: 1xBO + 4xBI + 1xAO + 1xAI. Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN15-25 Kompakt M-Bus busgespeist (420_000029, 7 Werte komm. M-Bus). Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -768,7 +768,7 @@
   },
   {
     "id": "420_A00008",
-    "name": "Fußbodenheizkreis-Zubringer zum Verteiler (Beimischschaltung), mittel (Wilo Stratos MAXO, 40 W...1,5 kW)",
+    "name": "Fußbodenheizkreis-Zubringer zum Verteiler, mittel (Pumpe MAXO 40 W...1,5 kW, Federrückl.-Ventil 1100N, STB+TW, VL/RL-Temperatur)",
     "gewerk": "420",
     "beschreibung": "Zubringerkreis vom Heizungsverteiler zu EINEM Fussbodenheizungs-verteiler, Leistungsstufe mittel (Umwaelzpumpe Wilo Stratos MAXO, 420_000023, 40 W...1,5 kW, 230V 1~, vollintegrierte Elektronik, kein Schuetz/PKZM noetig). Fester Bestandteil: Pumpe (1xBO+1xAO+3xBI) + Ventilantrieb mit Notstellfunktion Fail Open/Close 1100N 0...10V (420_000015, 24V AC/DC, 1xAO+1xAI) + Doppelthermostat STB+TW (420_000012, 2xBI) + Vorlauffuehler (430_000006, 1xAI). Physischer Datenpunktbedarf gesamt: 1xBO + 5xBI + 2xAO + 2xAI. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Waermemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000031). Automationsstation/Energieversorgung/LVB/Ethernet-Switch weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -823,7 +823,7 @@
   },
   {
     "id": "420_A00009",
-    "name": "Regelkreis Fußbodenheizungsverteiler (je Raumkreis)",
+    "name": "Regelkreis Fußbodenheizungsverteiler, je Raumkreis (Raumtemperatursensor, Kleinventilantrieb 0...10V)",
     "gewerk": "420",
     "beschreibung": "EIN DDC-geregelter Raum-/Heizkreis am Fussbodenheizungsverteiler (nicht der Zubringerkreis zum Verteiler selbst - dafuer siehe 'Fußbodenheizkreis-Zubringer zum Verteiler', 420_A00007/008). Menge beim Hinzufuegen frei waehlbar = Anzahl Heizkreise am Verteiler. Fester Bestandteil je Kreis: Raumtemperatursensor passiv 0...50°C (430_000001, 1xAI) + Kleinventilantrieb 0...10V mit Stellungs-rueckmeldung fuer Heizkreisverteiler-Ventile, M30x1,5 (420_000017, Oventrop Aktor M ST L, 24V AC/DC, 1xAO+1xAI - modulierende statt thermischer 2-Punkt-Regelung, Nutzer-Vorgabe Session 68). Physischer Datenpunktbedarf je Kreis: 2xAI + 1xAO. Keine Bus-/WMZ-Dropdowns - zu granular auf Einzelkreis-Ebene, eine WMZ-Messung sitzt sinnvollerweise am Zubringerkreis zum Verteiler, nicht je Einzelkreis. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
     "mitglieder": [
@@ -962,6 +962,40 @@
       "heizung_anlagen"
     ],
     "kategorie": "Wärmeübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00015",
+    "name": "Fernwärmeübergabestation (Primär: Regelventil Federrückl. stromlos zu, VL/RL-Temperatur, Druckwächter Min für MAG; Sekundär: VL/RL-Temperatur, TW+STB)",
+    "gewerk": "420",
+    "beschreibung": "Fernwaerme-Hausuebergabestation (indirekter Anschluss ueber Waermetauscher an das Fernwaermenetz). Ausstattung wie \"Geregelter Waermetauscher\" (420_A00012), mit 2 Erweiterungen (Nutzer-Vorgabe): (1) das primaerseitige Regelventil ist zwingend ein Federruecklauf-Antrieb, stromlos ZU (Fail Close) - andere Baugruppe als beim generischen Waermetauscher, da ein unkontrolliertes Offenbleiben bei Spannungsausfall am Fernwaermenetz (hoher Vorlaufdruck/-temperatur, Netzbetreiber-Anforderung) vermieden werden muss: 420_000015 (Siemens SQV91P30, 1100N, 24V AC/DC, konfiguriert auf Fail Close statt Fail Open) statt des einfachen 420_000013 ohne Notstellfunktion. (2) zusaetzlich ein Doppelthermostat STB+TW auf der Sekundaerseite (420_000012, 30-110°C, 2x BI getrennt STB-Alarm/TW-Meldung) - schuetzt die gebaeudeseitige Heizungsanlage vor Uebertemperatur aus dem Fernwaermenetz. Unveraendert aus dem Waermetauscher-Muster uebernommen: Vorlauf-/Ruecklauf-Temperaturfuehler primaer UND sekundaer (430_000006+430_000007 je menge:2) + Druckwaechter Min fuer das MAG (420_000002, 1xBI). Physischer Datenpunktbedarf gesamt: 1xAO (Regelventil Stellsignal) + 5xAI (1x Ventil-Ruecklaufmeldung + 4x Temperatur) + 3xBI (1x Druckwaechter + 2x STB/TW). Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000015",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000012",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 2
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Wärmeerzeuger",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
   }
