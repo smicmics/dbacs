@@ -894,5 +894,75 @@
     "kategorie": "Heizungsverteiler-/Sammler",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "420_A00012",
+    "name": "Geregelter Wärmetauscher (Primär: Regelventil, VL/RL-Temperatur, Druckwächter Min für MAG; Sekundär: VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Indirekter Waermetauscher (Platten- oder Roehrenbuendel-WT) mit primaer-seitiger Regelung ueber ein Regelventil. Primaerseite: Regelventil 0...10V mit Ruecklaufmeldung (420_000013, Siemens SAX61.03, 800N - Annahme: mittlere/groessere Baugroesse als Referenz, projektspezifisch gegen die tatsaechliche Leistung/Durchfluss pruefen) + Vorlauf-/Ruecklauf-Temperaturfuehler primaer (430_000006 100mm + 430_000007 150mm, je 1xAI) + Druckwaechter Min fuer das primaerseitige MAG (Membran-Ausdehnungsgefaess), potentialfrei (420_000002, 1xBI - Mindestdrucksicherung analog zu den bereits katalogisierten Sicherheitsdruckbegrenzer-Baugruppen). Sekundaerseite: Vorlauf-/Ruecklauf-Temperaturfuehler sekundaer (nochmals 430_000006+430_000007, gleiche Baugruppen wie primaer wiederverwendet, da DBACS keine separaten primaer-/sekundaer-Varianten kennt - macht insgesamt menge:2 je Fuehler-Baugruppe). Physischer Datenpunktbedarf gesamt: 1xAO + 5xAI (4x Temperatur + Ruecklaufmeldung Ventil bereits in den 5xAI enthalten? nein: 1xAO Stellsignal + 1xAI Ventil-Ruecklaufmeldung + 4xAI Temperatur = 5xAI gesamt) + 1xBI. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000013",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 2
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Wärmeübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00013",
+    "name": "Hydraulische Weiche (Primär: VL/RL-Sensor; Sekundär: VL/RL-Sensor)",
+    "gewerk": "420",
+    "beschreibung": "Hydraulische Weiche (Entkopplung Erzeuger-/Verbraucherkreis) - die Weiche selbst ist bewusst KEINE eigene Katalogzeile (Fremdbauteil, Regel 7, rein hydraulisches Bauteil ohne elektrischen Anschluss). Diese Anlage bildet ausschliesslich die 4 ueblichen Messstellen ab (Primaer-Eintritt/-Austritt, Sekundaer-Eintritt/-Austritt - Nutzer-Vorgabe aus der Fork-Recherche, siehe Memory project_anlagenbaugruppen.md Abschnitt 5): Vorlauf-/Ruecklauf-Temperaturfuehler primaer + nochmals Vorlauf-/Ruecklauf-Temperatur-fuehler sekundaer (je 2x 430_000006 100mm + 2x 430_000007 150mm, gleiche Baugruppen fuer primaer UND sekundaer wiederverwendet, da DBACS keine separate Variante kennt). Physischer Datenpunktbedarf gesamt: 4x AI. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 2
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Wärmeübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00014",
+    "name": "Pufferspeicher (3× Speichersensor)",
+    "gewerk": "420",
+    "beschreibung": "Pufferspeicher (Schichtenspeicher) mit 3 Speicherfuehlern zur Temperaturschichtung (oben/mitte/unten). Alle 3 Fuehler identisch (430_000006, Siemens QAE2120.010 Tauchtemperaturfuehler passiv, je 1xAI) - DBACS kennt nur 2 Baulaengen dieser Baureihe (100mm/150mm, beide bereits fuer Vorlauf/Ruecklauf an anderer Stelle verwendet), fuer 3 gleichwertige Speicherpositionen ohne VL/RL-Unterscheidung ist die einheitliche 100mm-Variante 3x die naheliegendste Abbildung. Physischer Datenpunktbedarf gesamt: 3x AI. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 3
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Wärmeübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]
