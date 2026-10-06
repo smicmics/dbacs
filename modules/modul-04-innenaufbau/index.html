@@ -1016,6 +1016,14 @@ let letzteLvbRomutec = null;
 
 // ── DOM-Helfer ───────────────────────────────────────────────────────
 const g  = id => +document.getElementById(id).value;
+// Wie g(id), aber mit explizitem Default NUR bei wirklich leerem Feld – g(id)
+// liefert bei leerem Eingabefeld ebenfalls 0 (+''===0), nicht unterscheidbar
+// von einer bewusst eingegebenen 0. `g(id) || default` behandelt daher eine
+// absichtliche 0-Eingabe fälschlich wie "leer" (0 ist falsy in JS) und
+// ersetzt sie durch den Default – betraf bisher klemmraum_mm/reserve_pct/
+// ddc_reserve_pct: eine bewusst auf 0% gesetzte Reserve wurde dadurch still
+// durch 20% ersetzt (Nutzer-Fund Session 69, per Testroutine verifiziert).
+const gOrDefault = (id, def) => { const v = document.getElementById(id).value; return v === '' ? def : +v; };
 const gs = id =>  document.getElementById(id).value;
 const _v = (id, v) => { document.getElementById(id).value = v; };
 
@@ -2615,8 +2623,8 @@ function schrumpfWrapAufInhalt(wrap) {
 // calculate() ist nur noch der DOM-Rendering-Wrapper darüber (Feld-Reihe +
 // Türen-Reihe befüllen, Füllstand/Stückliste über alle Felder aggregieren).
 function calculate() {
-  const klemmraum = Math.max(5, g('klemmraum_mm') || 20);
-  const reservePct = Math.min(0.5, Math.max(0, (g('reserve_pct') || 20) / 100));
+  const klemmraum = Math.max(5, gOrDefault('klemmraum_mm', 20));
+  const reservePct = Math.min(0.5, Math.max(0, gOrDefault('reserve_pct', 20) / 100));
   const zp = buildZp();
   buildLegend();
 
@@ -2638,7 +2646,7 @@ function calculate() {
     return;
   }
 
-  const ddcReservePct = Math.min(0.5, Math.max(0, (g('ddc_reserve_pct') || 20) / 100));
+  const ddcReservePct = Math.min(0.5, Math.max(0, gOrDefault('ddc_reserve_pct', 20) / 100));
   const { felder, reserveShortfall, ddcAuto, ddcSummary, totalDemandTe, steuerspannungAuto, kommAuto } = calculateFelder(klemmraum, reservePct, ddcReservePct);
   letzteFelder = felder;
   letzteSteuerspannungAuto = steuerspannungAuto;
