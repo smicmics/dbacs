@@ -1,6 +1,27 @@
 # DBACS – Revisionsstand
 
-**Stand:** 27. September 2026 – Session 67 (Modul 4 Katalog,
+**Stand:** 06. Oktober 2026 – Session 69 (Modul 4 Katalog,
+`data/ga_komponenten.xlsx` + `modules/modul-04-innenaufbau/index.html`):
+„Heizkreise Verteilung" fertiggestellt und erweitert – inzwischen 23
+Anlagen gesamt: Heizkreise Verteilung (9), Heizungsverteiler-/Sammler (2),
+Wärmeübertrager (3: Wärmetauscher/Weiche/Puffer, 1 Pumpen-Variante),
+Wärmeerzeuger (2: Fernwärmeübergabestation, 1 Pumpen-Variante). Neue
+generische `gruppe_optional`-Mechanik (Ohne/Mit-Dropdowns in Anlagen, z. B.
+Busanbindung/WMZ). Neue, direkt in Modul 4 eingebaute Testroutine
+(`testBaugruppe`/`testAnlage`/`testAlles`, Browser-Konsole) – prüft
+Platzbedarf, Katalog-Referenzen, Positionierung und Reserve-Konsistenz
+automatisiert; fand dabei 2 echte Bugs (Doppeleinspeisung-Filter blendete
+fälschlich alle Nicht-Automation-Anlagen aus; `0`-Reserve-Eingabe wurde
+durch Falsy-Check fälschlich auf 20% zurückgesetzt), beide behoben. Neuer
+„↺ Schrank leeren"-Button in Modul 4. Namensregel „Ausstattung muss im
+Namen erkennbar sein" eingeführt und rückwirkend angewendet. Vollständig
+Browser-verifiziert (207/207 Baugruppen, 23/23 Anlagen, 0 Fehler), alles
+committet + gepusht. **Nächster Schritt:** Kesselkreis (Fork 2) fehlt noch,
+danach Kälte-/Lüftungs-Anlagen (Fork 4/5, Recherche bereits fertig).
+Details: `CLAUDE.md` → „Offene Punkte" + Memory `project_anlagenbaugruppen.md`
+Abschnitt 5–10 + „SITZUNGSENDE Session 69".
+
+Vorheriger Stand – Session 67 (Modul 4 Katalog,
 `data/ga_komponenten.xlsx`): Start des Anlagen-Features (Schritt 1+2 für die
 Automation-Anlagen ①/②/④a/④b, Details `CLAUDE.md` → „Offene Punkte"). Neue
 Baugruppe `480_000036` „Schaltschrank-Innenleuchte mit Servicesteckdose, FI

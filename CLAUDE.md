@@ -16,6 +16,93 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 69 (06.10.2026) – „Heizkreise Verteilung" fertig +
+> erweitert auf Wärmeübertrager/Wärmeerzeuger, neue Testroutine in Modul 4,
+> 2 echte Bugs gefunden+behoben. Volle Herleitung in Memory
+> `project_anlagenbaugruppen.md` Abschnitt 6–10 + Abschnitt „SITZUNGSENDE
+> Session 69", hier nur die Kurzfassung:**
+> 1. **9 Anlagen „Heizkreise Verteilung"** fertiggestellt (`420_A00001`–
+>    `009`): Heizkreis Beimischschaltung / Zubringerkreis, ungeregelt /
+>    Fußbodenheizkreis-Zubringer zum Verteiler je klein (Wilo PICO)/mittel
+>    (MAXO)/groß (GIGA2.0) + Regelkreis Fußbodenheizungsverteiler (je
+>    Raumkreis, Oventrop Kleinventilantrieb). VL/RL-Fühler-Lücke bei allen
+>    nachträglich geschlossen (Zubringerkreis hatte zunächst gar keinen
+>    Fühler, Annahme „WMZ liefert die Werte mit" galt nur für den
+>    WMZ-gewählten Fall).
+> 2. **Neue generische `gruppe_optional`-Mechanik** (Excel-Spalte in
+>    `anlagen_baugruppen`, Export in `xlsx_to_json.py`, UI-Logik in
+>    `updateAnlageVariantenUI()`/`modul-04-innenaufbau/index.html`): ein
+>    `gruppe`-Dropdown kann jetzt zusätzlich eine „Ohne"-Option anbieten
+>    (leerer Wert, matcht keine `bg_id`, `addAnlage()` brauchte dafür keine
+>    Änderung). Reduziert eine sonst kombinatorisch explodierende
+>    Anlagenzahl (36→9 bei den Heizkreisen) auf echte Dropdown-Auswahl
+>    (Busanbindung Modbus RTU/Ethernet, Wärmemengenzähler) statt
+>    Dutzender Einzel-Anlagen. Wiederverwendbar für künftige Anlagen.
+> 3. **12 weitere Anlagen** in neuen Kategorien: „Heizungsverteiler-/
+>    Sammler" (2: vollständig mit Druck+Nachspeisung / Basis nur
+>    Temperatur), „Wärmeübertrager" (3: Geregelter Wärmetauscher,
+>    Hydraulische Weiche – nur die 4 Messstellen, Weiche selbst bleibt
+>    Fremdbauteil Regel 7 –, Pufferspeicher mit 3 Speichersensoren),
+>    „Wärmeerzeuger" (1: Fernwärmeübergabestation, Regelventil zwingend
+>    Federrücklauf stromlos zu statt einfachem Ventil). Je 1 zusätzliche
+>    Pumpen-Variante für Wärmetauscher UND Fernwärmeübergabe (neue Gruppe
+>    `pumpenleistung`, Pflichtfeld klein/mittel/groß, `menge:2` derselben
+>    Pumpen-Baugruppe für primär+sekundär symmetrisch) + optionaler WMZ.
+>    Gesamt jetzt **23 Anlagen**.
+> 4. **Neue Namensregel** (siehe Memory `feedback_anlagen_namensregel.md`,
+>    verbindlich für alle künftigen Anlagen): der `name` muss die fest
+>    enthaltene Ausstattung erkennen lassen (z. B. „Heizkreis
+>    Beimischschaltung, klein (Pumpe PICO 3...45 W, Regelventil 200N,
+>    VL/RL-Temperatur)"), keine reinen Konfigurationsnummern. Rückwirkend
+>    auf alle 9 Heizkreis-Anlagen angewendet.
+> 5. **Neue Selbsttest-Routine direkt in `modules/modul-04-innenaufbau/
+>    index.html`** (Browser-Konsole, siehe Memory
+>    `project_dbacs_testroutine.md` für Details): `testBaugruppe(bgId)` /
+>    `testAnlage(anlageId)` / `testKatalogScan()` / `testAlles()` – prüfen
+>    Platzbedarf (Artikel-für-Artikel je Zone, nicht nur Summen),
+>    Katalog-Referenzen (Regel 7), tatsächliche Positionierung im
+>    Referenzschrank (`fehlendPlatziert`/Overflow) und Reserve-Konsistenz
+>    (Soll-Modulzahl unabhängig aus der Formel gerechnet) – nicht-
+>    destruktiv (sichert/stellt Belegung+Zonenwerte automatisch wieder
+>    her). Nutzer-Vorgabe: „Die Menge an Bauteilen ist für den Menschen
+>    nur aufwändig nachvollziehbar, das geht über den Rechner viel
+>    einfacher und schneller." Ersetzt ab sofort die von Hand geschriebene
+>    Herleitungstabelle nach jeder Baugruppen-/Anlagen-Neuanlage.
+>    **Betriebshinweis:** bei >~20 Anlagen kann ein einzelner
+>    `testAlles()`-Aufruf in einen Tool-Timeout laufen – dann
+>    `testKatalogScan()`+Baugruppen-Schleife und Anlagen-Schleife in 2
+>    getrennten Aufrufen fahren.
+> 6. **2 echte Bugs gefunden (durch die neue Testroutine) + behoben:**
+>    (a) der Doppeleinspeisung-Dropdown-Filter in `populateAnlagenAuswahl()`
+>    blendete bei `m03_doppeleinspeisung='ja'` fälschlich ALLE Anlagen in
+>    JEDEM Nicht-Automation-Gewerk aus (nicht nur die eigentlich gemeinten
+>    ASP-Doppeleinspeisung-Varianten) – Fix: Filter greift jetzt nur noch
+>    in Gewerke-Tabs, die überhaupt eine `doppeleinspeisung_bindung='ja'`-
+>    Variante anbieten. (b) `g(id) || 20`-Muster (3 Stellen: `reserve_pct`,
+>    `ddc_reserve_pct`, `klemmraum_mm`) behandelte eine bewusst
+>    eingegebene **0** wie ein leeres Feld (0 ist falsy in JS) und
+>    ersetzte sie fälschlich durch den Default 20 – eine explizit auf 0%
+>    gesetzte Reserve wurde also leise mit 20% gerechnet. Fix: neue
+>    `gOrDefault(id, def)`-Funktion, die nur bei wirklich leerem Feld
+>    (`value===''`) auf den Default zurückfällt.
+> 7. **Neuer „↺ Schrank leeren"-Button** direkt neben der „Belegung"-
+>    Überschrift in Modul 4 (`resetSchrankKomplett()`) – löscht Belegung
+>    UND automatisch ergänzte Module in einem Klick (bisher musste der
+>    Nutzer das für Testzwecke manuell wiederholt tun).
+> **Vollständig Browser-verifiziert** (Standschrank 1200×2000, Drehstrom/
+> Schiene 3-polig/1feld, via `testAlles()`/Einzelaufrufe): 207/207
+> Baugruppen, 23/23 Anlagen bestanden, 0 verwaiste Referenzen, keine
+> Konsolenfehler. Alles committet + nach GitHub gepusht.
+> **Nächster Schritt:** Kesselkreis selbst (Fork 2 „Heizung erzeugerseitig")
+> fehlt noch – Weiche/Puffer/Wärmetauscher/Fernwärmeübergabe sind die
+> „Erzeugerseite drumherum" bereits fertig. Danach Kälte-Anlagen (Fork 4,
+> 7 Kreistypen) und Lüftungs-/RLT-Anlagen (Fork 5, Baukasten-Ansatz) –
+> Schritt 1+2 (Recherche) für beide bereits komplett, Schritt 3 noch nicht
+> begonnen. Offene Einzelentscheidungen A–E aus Schritt 2 (Chiller-
+> Schnittstelle/CRAH-Nachprüfung, Frostthermostat-Rohrmontage, Kondensat-
+> wächter ohne Artikel, Condair/Carel-Fabrikatabweichung, 230V/25Nm-
+> Klappenantrieb) weiterhin offen.
+
 > **Nachtrag Session 68 (04.10.2026, Fortsetzung 3) – Heizung/Kälte/Lüftung-
 > Anlagen: Schritt 1+2 (Fork-Recherche) komplett, Schritt 3 (Zusammensetzen)
 > für „Heizkreise Verteilung" begonnen, NOCH KEINE EXCEL-ÄNDERUNG. Volle
