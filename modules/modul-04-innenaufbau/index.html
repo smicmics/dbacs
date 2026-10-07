@@ -2265,6 +2265,48 @@ function getEffektiveZoneModus() {
   return typ === 'wandschrank' ? '1feld' : raw;
 }
 
+// ── Lückenlos übereinanderliegende Bänder DERSELBEN Zone zusammenlegen
+// (Session 70 Teil 5, Nutzer-Fund: in buildLayout() folgt z.B. 'leist_ext'
+// (die hohe Resthöhe der Leistungszone, volle Innenbreite) direkt – ohne
+// Kanal dazwischen – auf die mit ÜSS geteilte 'leist'-Zeile (fest auf
+// h_klemm=95mm, dadurch schmaler, da ÜSS links Platz beansprucht). Beide
+// zusammen sind EINE durchgehende Fläche, wurden aber bisher als 2 völlig
+// getrennte Bänder an placeInBands() übergeben – reichte eine weitere
+// Hutschienenreihe weder in den Rest des einen NOCH in das andere Band
+// allein, wurde sie verworfen, obwohl beide Restflächen ZUSAMMEN genug
+// Höhe geboten hätten (Nutzer: "die kleine Leistungszone über der
+// Klemmreihe... wäre zusammen mit der großen in der Lage, weitere
+// BSK-Gruppen aufzunehmen"). Zwei Bänder werden nur zusammengelegt, wenn
+// sie exakt aneinander anschließen (band[i+1].y_mm === band[i].y_mm +
+// band[i].h_mm, kein Kanal/keine dritte Zone dazwischen) – die kombinierte
+// Breite ist der ÜBERSCHNEIDUNGSBEREICH (x-Intersection) beider Bänder:
+// ein durchgehender Gerätestapel über die volle kombinierte Höhe darf nur
+// die Breite nutzen, die an JEDER Stelle sicher frei ist (z. B. nicht in
+// den Bereich hineinragen, den im schmaleren Band eine Nachbarzone wie ÜSS
+// belegt) – die breitere Zeile verschenkt dadurch etwas Randbreite, bleibt
+// aber garantiert kollisionsfrei. Löst nebenbei die in assignDevicesToRows()/
+// placeInBands() dokumentierte Vereinfachung "TE-Passt-Prüfung nutzt nur die
+// Breite des ERSTEN Bandes" sauber auf, da bands[0] nach dem Zusammenlegen
+// bereits die schmalste sicher nutzbare Breite trägt.
+function mergeContiguousBands(list) {
+  if (list.length < 2) return list;
+  const out = [list[0]];
+  for (let i = 1; i < list.length; i++) {
+    const prev = out[out.length - 1];
+    const cur = list[i];
+    if (Math.abs(cur.y_mm - (prev.y_mm + prev.h_mm)) < 0.01) {
+      const x0 = Math.max(prev.x_mm, cur.x_mm);
+      const x1 = Math.min(prev.x_mm + prev.w_mm, cur.x_mm + cur.w_mm);
+      if (x1 - x0 > 0.01) {
+        out[out.length - 1] = { x_mm: x0, y_mm: prev.y_mm, w_mm: x1 - x0, h_mm: prev.h_mm + cur.h_mm };
+        continue;
+      }
+    }
+    out.push(cur);
+  }
+  return out;
+}
+
 // ── Platzierungs-Bänder je Zone aus dem Layout ableiten ───────────────
 // Jede M3-Unterzone (klemm_e/klemm_l/klemm_f/klemm_s/uss/evert/leist/steuer)
 // bekommt ihr eigenes Band – keine Zusammenfassung mehr (behebt den
@@ -2288,6 +2330,13 @@ function getZoneBands(zp, feldtyp) {
     });
     y += row.h_mm;
   });
+  // Zusammenlegen NUR für Zonen, die tatsächlich über placeInBands() (Reihen-/
+  // Kanal-Modell) laufen – klemm_e/uss/klemm_l/klemm_f/klemm_s sowie evert MIT
+  // Schienensystem nutzen placeInKlemmRow(), dort ist jedes Band eine
+  // eigenständige, unabhängige Hutschienenreihe (Breiten-Pool je Band) und
+  // darf nicht zu einer Höhen-Fläche verschmolzen werden.
+  REIHEN_ZONEN.forEach(zn => { bands[zn] = mergeContiguousBands(bands[zn]); });
+  if (!zp.useEvKanal) bands.evert = mergeContiguousBands(bands.evert);
   return { svgRows, totalH: y, bands };
 }
 
