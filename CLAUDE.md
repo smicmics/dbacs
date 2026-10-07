@@ -16,6 +16,51 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 70 Teil 8 (07.10.2026) – Neuer `zone_modus`
+> „Einspeisung+Leistung gemischt, Steuerung getrennt" (Modul 3 + Modul 4),
+> Nutzer-Vorgabe – fehlende Feldaufteilungs-Variante ergänzt:**
+> Spiegelbild zum bestehenden `einsp_misch` (dort: Einspeisung getrennt,
+> Leistung+Steuerung gemischt). Neuer Wert `einsp_leist_misch` im
+> `#zone_modus`-Dropdown (Modul 3). 2 neue Feldtypen (identisch in beiden
+> Modulen dupliziert, wie der gesamte FELDTYP-Mechanismus):
+> - **F** (Erstfeld, `repeat:false` wie C – nur eine Netzeinspeisung):
+>   `['klemm_e','uss','evert','leist','leist_ext','klemm_l','klemm_f']` –
+>   Einspeisung UND Leistung in einem Feld, OHNE `steuer`/`klemm_s`.
+> - **G** (Folge-Leistungsfeld bei Überlauf, `repeat:true`, ohne
+>   Einspeisung): `['evert','leist','leist_ext','klemm_l','klemm_f']`.
+> - `FELDPLAN.einsp_leist_misch = [{ft:'F',repeat:false},{ft:'G',repeat:true},
+>   {ft:'E',repeat:true}]` – Feld 2 nutzt das bereits bestehende Typ E
+>   (Steuerung, aus `getrennt_els`) unverändert wieder; weitere Leistungs-
+>   (G) bzw. Steuerungsfelder (E) entstehen demand-getrieben über den
+>   bereits bestehenden Mehrphasen-Mechanismus in `calculateFelder()` –
+>   keine Änderung an der Kernlogik nötig.
+> - `FELDTYP_GROW_TARGET.F = FELDTYP_GROW_TARGET.G = 'leist'`: entfällt die
+>   komplette Steuer-Zeile (+ der dann unnötige Zonentrennkanal `kanal_ls`,
+>   von `kanalNochNoetig()` automatisch erkannt, da `steuer` nicht mehr im
+>   Feldtyp vorkommt), wächst die GROSSE Leistungszone (`leist_ext`)
+>   automatisch um deren Höhe – exakt die Nutzer-Vorgabe "aus Leistung UND
+>   Steuerung UND dem kleinen Leistungsfeld wird ein großes Leistungsfeld
+>   UND das kleine Leistungsfeld [bleibt unverändert]". Die kleine, mit ÜSS
+>   geteilte Leistungszeile (`leist`, fest auf `h_klemm`) bleibt unberührt.
+>   Klemmzeile: `klemm_s` entfällt, seine Breite verteilt sich proportional
+>   auf `klemm_l`+`klemm_f` (Nutzer-Begründung: "Rückmeldeleitungen auf
+>   Leistungsbauteile wie Relais") – alles über den bereits bestehenden,
+>   vollständig generischen `buildLayoutForFeldtyp()`-Transformationsmechanismus
+>   (Session 48), ohne jede Änderung an dessen Kernlogik – nur Daten-
+>   deklarationen (Zonenmengen, Wachstumsziel, Label, Feldplan) ergänzt.
+> **Browser-Verifikation:** 50×-BSK-Testfall (Standschrank 699×1545mm,
+> Reserve 0%, Doppelstock, neuer Modus) – Feld 1 (Typ F) nimmt jetzt
+> **alle 50 Instanzen auf einmal** auf (`leist` 1070mm Gesamthöhe statt
+> 515mm, `klemm_f` 260/260mm = 100%, kein Overflow), Feld 2 (Typ E) enthält
+> CPU/TX-I/O-Module (`steuer` 519mm belegt) – Steuerspannungs-Trafo bleibt
+> bewusst in Feld 1 bei den anderen 24V-AC-Verbrauchern (Typ E hat gar
+> keine `leist`-Zone, ein Trafo kann dort strukturell nie stehen – entspricht
+> der bereits etablierten Cross-Field-Verdrahtung wie bei `getrennt_els`).
+> Vollständiger Katalog-Regressionstest (bestehender, von diesem neuen Modus
+> unabhängiger Referenzschrank-Testaufbau): `testKatalogScan()` 0 verwaist,
+> `testBaugruppe()` 215/215 bestanden, `testAnlage()` 31/31 bestanden, keine
+> Konsolenfehler.
+
 > **Nachtrag Session 70 Teil 7 (07.10.2026) – Letzte Hutschienenreihe einer
 > Zone braucht keinen eigenen Verdrahtungskanal mehr, wenn direkt im
 > Anschluss bereits ein Zonentrennkanal existiert (Nutzer-Fund per

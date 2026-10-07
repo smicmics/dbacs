@@ -422,6 +422,7 @@ fieldset{
           <option value="je_feld">Mehrere Felder</option>
           <option value="getrennt_els">Mehrere Felder · Einspeisung/Leistung/Steuerung getrennt</option>
           <option value="einsp_misch">Mehrere Felder · Einspeisung getrennt, Leistung+Steuerung gemischt</option>
+          <option value="einsp_leist_misch">Mehrere Felder · Einspeisung+Leistung gemischt, Steuerung getrennt</option>
         </select>
       </div>
       <div class="field">
@@ -1153,6 +1154,18 @@ const FELDTYP_ZONEN = {
   C: ['klemm_e','uss','evert'],
   D: ['leist','leist_ext','klemm_l','evert'],
   E: ['steuer','klemm_f','klemm_s','evert'],
+  // F/G (Session 70 Teil 8, Nutzer-Vorgabe "Einspeisung+Leistung gemischt,
+  // Steuerung getrennt"): Spiegelbild zu C/B bei einsp_misch – hier teilen
+  // sich Einspeisung UND Leistung ein Feld, Steuerung bekommt ein eigenes
+  // (Typ E, bereits vorhanden). F = Erstfeld MIT Einspeisung (klemm_e/uss),
+  // G = reines Folge-Leistungsfeld OHNE Einspeisung bei Bedarf (Überlauf).
+  // Beide enthalten klemm_f NEBEN klemm_l (anders als Typ D) – Nutzer-
+  // Begründung: "Rückmeldeleitungen auf Leistungsbauteile wie Relais"
+  // laufen auch hier über klemm_f, auch ohne eigene Steuerzone im selben
+  // Feld (Feldbus-/Querverdrahtung ins Steuerfeld, analog zum bereits
+  // etablierten getrennt_els-Muster).
+  F: ['klemm_e','uss','evert','leist','leist_ext','klemm_l','klemm_f'],
+  G: ['evert','leist','leist_ext','klemm_l','klemm_f'],
 };
 
 // zone_modus → Feldsequenz. '*' (repeat:true) = Phase erweitert sich in
@@ -1167,10 +1180,18 @@ const FELDPLAN = {
   // mehr zu Typ C, überlaufen also unabhängig davon über Typ D/E weiter).
   'getrennt_els': [{ ft:'C', repeat:false }, { ft:'D', repeat:true }, { ft:'E', repeat:true }],
   'einsp_misch':  [{ ft:'C', repeat:false }, { ft:'B', repeat:true }],
+  // F (Einspeisung+Leistung) ebenfalls repeat:false – dieselbe "nur eine
+  // Netzeinspeisung"-Regel wie bei C. Überlauf verteilt sich unabhängig
+  // voneinander auf weitere reine Leistungsfelder (G) und/oder weitere
+  // Steuerungsfelder (E) – exakt die vom Nutzer verlangte "Leistungsfeld
+  // bei Bedarf UND Steuerfeld bei Bedarf"-Logik, bereits vom bestehenden
+  // Mehrphasen-Mechanismus in calculateFelder() abgedeckt.
+  'einsp_leist_misch': [{ ft:'F', repeat:false }, { ft:'G', repeat:true }, { ft:'E', repeat:true }],
 };
 
 const FELDTYP_LABEL = {
   A: 'Vollfeld', B: 'Folgefeld', C: 'Einspeisung', D: 'Leistung', E: 'Steuerung',
+  F: 'Einspeisung+Leistung', G: 'Leistung',
 };
 
 // Reine Sidebar-Vorschau-Hilfe: FELDPLAN[modus] auf n Felder "aufblasen" –
@@ -1209,7 +1230,7 @@ function redistributeRowZones(zones, dropIds, growIds) {
 // Zeilen (z.B. bei Typ C die komplette Leistungs-/Steuerzeile) übernimmt.
 // B braucht keins (dort entfallen nie ganze Zeilen, nur Sub-Zonen innerhalb
 // einer Zeile – siehe buildLayoutForFeldtyp()).
-const FELDTYP_GROW_TARGET = { B: null, C: 'evert', D: 'leist', E: 'steuer' };
+const FELDTYP_GROW_TARGET = { B: null, C: 'evert', D: 'leist', E: 'steuer', F: 'leist', G: 'leist' };
 // Label je Wachstumsziel – nur für den Fall gebraucht, dass freiwerdende
 // Breite (nicht ganze Zeilenhöhe) innerhalb derselben Zeile direkt als
 // Wachstumsziel-Zone eingefügt wird (siehe buildLayoutForFeldtyp()).

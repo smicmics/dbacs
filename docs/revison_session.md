@@ -1,6 +1,20 @@
 # DBACS – Revisionsstand
 
-**Stand:** 07. Oktober 2026 – Session 70 Teil 7 (Modul 4,
+**Stand:** 07. Oktober 2026 – Session 70 Teil 8 (Modul 3 +
+`modules/modul-04-innenaufbau/index.html`): neuer `zone_modus`
+„Einspeisung+Leistung gemischt, Steuerung getrennt" (`einsp_leist_misch`) –
+Spiegelbild zum bestehenden `einsp_misch`. 2 neue Feldtypen F (Erstfeld:
+Einspeisung+Leistung, kein steuer/klemm_s) und G (Folge-Leistungsfeld bei
+Überlauf, ohne Einspeisung); Feld 2+ nutzt das bestehende Typ E
+(Steuerung) unverändert. Komplett über den bereits bestehenden generischen
+`buildLayoutForFeldtyp()`-Mechanismus (Session 48) umgesetzt – nur
+Zonenmengen/Wachstumsziel/Label/Feldplan ergänzt, keine Kernlogik-
+Änderung. Verifiziert: 50×-BSK-Testfall passt jetzt komplett (alle 50
+Instanzen) in Feld 1, Feld 2 enthält CPU/DDC; 215/215 Baugruppen, 31/31
+Anlagen, `testKatalogScan()` sauber. Details: `CLAUDE.md` → „Offene
+Punkte" Nachtrag Session 70 Teil 8.
+
+Vorheriger Stand – Session 70 Teil 7 (Modul 4,
 `modules/modul-04-innenaufbau/index.html`): letzte Hutschienenreihe einer
 Zone (z. B. DDC-Module in `steuer`) braucht keinen eigenen 40mm-
 Verdrahtungskanal mehr, wenn direkt im Anschluss an die Zone bereits ein
