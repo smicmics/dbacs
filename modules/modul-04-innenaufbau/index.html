@@ -2265,48 +2265,6 @@ function getEffektiveZoneModus() {
   return typ === 'wandschrank' ? '1feld' : raw;
 }
 
-// ── Lückenlos übereinanderliegende Bänder DERSELBEN Zone zusammenlegen
-// (Session 70 Teil 5, Nutzer-Fund: in buildLayout() folgt z.B. 'leist_ext'
-// (die hohe Resthöhe der Leistungszone, volle Innenbreite) direkt – ohne
-// Kanal dazwischen – auf die mit ÜSS geteilte 'leist'-Zeile (fest auf
-// h_klemm=95mm, dadurch schmaler, da ÜSS links Platz beansprucht). Beide
-// zusammen sind EINE durchgehende Fläche, wurden aber bisher als 2 völlig
-// getrennte Bänder an placeInBands() übergeben – reichte eine weitere
-// Hutschienenreihe weder in den Rest des einen NOCH in das andere Band
-// allein, wurde sie verworfen, obwohl beide Restflächen ZUSAMMEN genug
-// Höhe geboten hätten (Nutzer: "die kleine Leistungszone über der
-// Klemmreihe... wäre zusammen mit der großen in der Lage, weitere
-// BSK-Gruppen aufzunehmen"). Zwei Bänder werden nur zusammengelegt, wenn
-// sie exakt aneinander anschließen (band[i+1].y_mm === band[i].y_mm +
-// band[i].h_mm, kein Kanal/keine dritte Zone dazwischen) – die kombinierte
-// Breite ist der ÜBERSCHNEIDUNGSBEREICH (x-Intersection) beider Bänder:
-// ein durchgehender Gerätestapel über die volle kombinierte Höhe darf nur
-// die Breite nutzen, die an JEDER Stelle sicher frei ist (z. B. nicht in
-// den Bereich hineinragen, den im schmaleren Band eine Nachbarzone wie ÜSS
-// belegt) – die breitere Zeile verschenkt dadurch etwas Randbreite, bleibt
-// aber garantiert kollisionsfrei. Löst nebenbei die in assignDevicesToRows()/
-// placeInBands() dokumentierte Vereinfachung "TE-Passt-Prüfung nutzt nur die
-// Breite des ERSTEN Bandes" sauber auf, da bands[0] nach dem Zusammenlegen
-// bereits die schmalste sicher nutzbare Breite trägt.
-function mergeContiguousBands(list) {
-  if (list.length < 2) return list;
-  const out = [list[0]];
-  for (let i = 1; i < list.length; i++) {
-    const prev = out[out.length - 1];
-    const cur = list[i];
-    if (Math.abs(cur.y_mm - (prev.y_mm + prev.h_mm)) < 0.01) {
-      const x0 = Math.max(prev.x_mm, cur.x_mm);
-      const x1 = Math.min(prev.x_mm + prev.w_mm, cur.x_mm + cur.w_mm);
-      if (x1 - x0 > 0.01) {
-        out[out.length - 1] = { x_mm: x0, y_mm: prev.y_mm, w_mm: x1 - x0, h_mm: prev.h_mm + cur.h_mm };
-        continue;
-      }
-    }
-    out.push(cur);
-  }
-  return out;
-}
-
 // ── Platzierungs-Bänder je Zone aus dem Layout ableiten ───────────────
 // Jede M3-Unterzone (klemm_e/klemm_l/klemm_f/klemm_s/uss/evert/leist/steuer)
 // bekommt ihr eigenes Band – keine Zusammenfassung mehr (behebt den
@@ -2330,14 +2288,31 @@ function getZoneBands(zp, feldtyp) {
     });
     y += row.h_mm;
   });
-  // Zusammenlegen NUR für Zonen, die tatsächlich über placeInBands() (Reihen-/
-  // Kanal-Modell) laufen – klemm_e/uss/klemm_l/klemm_f/klemm_s sowie evert MIT
-  // Schienensystem nutzen placeInKlemmRow(), dort ist jedes Band eine
-  // eigenständige, unabhängige Hutschienenreihe (Breiten-Pool je Band) und
-  // darf nicht zu einer Höhen-Fläche verschmolzen werden.
-  REIHEN_ZONEN.forEach(zn => { bands[zn] = mergeContiguousBands(bands[zn]); });
-  if (!zp.useEvKanal) bands.evert = mergeContiguousBands(bands.evert);
   return { svgRows, totalH: y, bands };
+}
+
+// ── Zwei Bänder derselben Zone: liegen sie lückenlos übereinander, und
+// welche Breite ist über die GESAMTE kombinierte Höhe sicher nutzbar? ────
+// (Session 70 Teil 6) `bandsContiguous`: kein Kanal/keine dritte Zone
+// zwischen beiden (band2.y_mm === band1.y_mm + band1.h_mm). `intersectBandW`:
+// die ÜBERSCHNEIDUNGSBREITE (x-Intersection) – ein Gerätestapel, der über
+// die Grenze beider Bänder hinausragt, darf nur die Breite nutzen, die an
+// JEDER Stelle sicher frei ist (z. B. nicht in den Bereich hineinragen, den
+// im schmaleren Band eine Nachbarzone wie ÜSS belegt). Ein ERSTER Ansatz
+// (verschmolz beide Bänder pauschal VOR der Platzierung) wurde verworfen –
+// Nutzer-Fund per Screenshot: dadurch rückten ALLE Hutschienenreihen auf die
+// schmalere Breite ein, auch die, die nie in den schmaleren Bereich
+// hineinragen – unnötig verschenkter Platz. Siehe placeInBands() unten:
+// nur die EINE Reihe, die tatsächlich über die Bandgrenze hinausragt,
+// bekommt die schmalere Breite; alle anderen behalten die volle, eigene
+// Breite ihres jeweiligen Bandes.
+function bandsContiguous(a, b) {
+  return !!a && !!b && Math.abs(b.y_mm - (a.y_mm + a.h_mm)) < 0.01;
+}
+function intersectBandW(a, b) {
+  const x0 = Math.max(a.x_mm, b.x_mm);
+  const x1 = Math.min(a.x_mm + a.w_mm, b.x_mm + b.w_mm);
+  return x1 - x0 > 0.01 ? { x_mm: x0, w_mm: x1 - x0 } : null;
 }
 
 // ── Bauteile in die vorgegebenen Bänder platzieren (Session 28g) ──────
@@ -2451,24 +2426,58 @@ function placeInBands(devs, bands, klemmraum, startIdx = 0) {
       if (bandTePerRow <= 0) { mm_used += y_local; y_local = 0; bi++; continue; }
 
       const kanalHier = kanalPending ? H_KANAL : 0;
-      if (y_local + kanalHier + h_row > band.h_mm) {
-        mm_used += y_local; y_local = 0; bi++; continue;
+      const benoetigt = kanalHier + h_row;
+      const rest = band.h_mm - y_local;
+
+      if (benoetigt <= rest) {
+        // Passt vollständig in dieses Band – dessen EIGENE (ggf. breitere) Breite nutzen.
+        if (kanalHier) {
+          channels.push({ x_mm: band.x_mm, y_mm: band.y_mm + y_local, w_mm: band.w_mm, h_mm: H_KANAL });
+          y_local += H_KANAL;
+        }
+        let col = 0;
+        const blocks = rowAbs.blocks.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title, artikel_nr:d.artikel_nr, idx:++placedCount}; col += d.te; return bl; });
+        rows.push({ mode:'row', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm + y_local, h_mm: h_row, klemmraum, blocks });
+        y_local += h_row;
+        kanalPending = true; // die nächste Reihe (dieses oder das nächste Band) braucht wieder einen Kanal darüber
+        last = { bandIdx: bi, yLocal: y_local, h_row };
+        placed = true;
+        placedRows++;
+        break;
       }
 
-      if (kanalHier) {
-        channels.push({ x_mm: band.x_mm, y_mm: band.y_mm + y_local, w_mm: band.w_mm, h_mm: H_KANAL });
-        y_local += H_KANAL;
+      // Passt allein nicht mehr – schließt das NÄCHSTE Band lückenlos an
+      // (kein Kanal/keine dritte Zone dazwischen, bandsContiguous()) und
+      // reicht der kombinierte Rest (hier + volles nächstes Band), bekommt
+      // NUR DIESE EINE Reihe die schmalere Schnittmengenbreite beider
+      // Bänder (Session 70 Teil 6, Nutzer-Vorgabe: "Prüfung ob noch eine
+      // Zone anschließt... so wird der Platzbedarf optimiert" – verhindert,
+      // dass z. B. die mit ÜSS geteilte, nur h_klemm=95mm hohe Restzeile der
+      // Leistungszone komplett ungenutzt bleibt, nur weil eine einzelne
+      // Reihe knapp nicht mehr hineinpasst). Bereits platzierte UND alle
+      // nachfolgenden Reihen behalten die volle, eigene Breite ihres
+      // jeweiligen Bandes – kein pauschales Verschmälern der ganzen Zone
+      // (verworfener erster Ansatz, siehe Kommentar bei bandsContiguous()).
+      const next = bands[bi + 1];
+      if (bandsContiguous(band, next) && rest + next.h_mm >= benoetigt) {
+        const sect = intersectBandW(band, next);
+        if (sect && Math.floor(sect.w_mm / TE_MM) >= rowAbs.w_used) {
+          if (kanalHier) channels.push({ x_mm: sect.x_mm, y_mm: band.y_mm + y_local, w_mm: sect.w_mm, h_mm: H_KANAL });
+          let col = 0;
+          const blocks = rowAbs.blocks.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title, artikel_nr:d.artikel_nr, idx:++placedCount}; col += d.te; return bl; });
+          rows.push({ mode:'row', x_mm: sect.x_mm, w_mm: sect.w_mm, y_mm: band.y_mm + y_local + kanalHier, h_mm: h_row, klemmraum, blocks });
+          mm_used += band.h_mm; // dieses Band gilt jetzt als vollständig verbraucht
+          bi++;
+          y_local = benoetigt - rest; // Überhang, bereits im nächsten Band verbraucht
+          kanalPending = true;
+          last = { bandIdx: bi, yLocal: y_local, h_row };
+          placed = true;
+          placedRows++;
+          break;
+        }
       }
 
-      let col = 0;
-      const blocks = rowAbs.blocks.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title, artikel_nr:d.artikel_nr, idx:++placedCount}; col += d.te; return bl; });
-      rows.push({ mode:'row', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm + y_local, h_mm: h_row, klemmraum, blocks });
-      y_local += h_row;
-      kanalPending = true; // die nächste Reihe (dieses oder das nächste Band) braucht wieder einen Kanal darüber
-      last = { bandIdx: bi, yLocal: y_local, h_row };
-      placed = true;
-      placedRows++;
-      break;
+      mm_used += y_local; y_local = 0; bi++; continue;
     }
     if (!placed) break; // alle Bänder erschöpft – restliche Reihen bleiben unplatziert (Overflow)
   }

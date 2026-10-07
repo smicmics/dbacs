@@ -16,7 +16,53 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
-> **Nachtrag Session 70 Teil 5 (07.10.2026) – Lückenlos übereinanderliegende
+> **Nachtrag Session 70 Teil 6 (07.10.2026) – Teil-5-Ansatz korrigiert:
+> nur die TATSÄCHLICH grenzüberschreitende Hutschienenreihe wird schmaler,
+> nicht mehr die ganze Zone (Nutzer-Fund per Screenshot: "Alle Hutschienen
+> wurden nach rechts versetzt bis zum Beginn der kleinen Leistungszone...
+> zu viel Platz verschenkt"):**
+> Teil 5 hatte `getZoneBands()` lückenlos übereinanderliegende Bänder
+> DERSELBEN Zone (z.B. `leist_ext` + die mit ÜSS geteilte `leist`-Zeile)
+> PAUSCHAL zu einem einzigen, auf die schmalere Schnittmengenbreite
+> verengten Band zusammengelegt – das machte zwar mehr Kapazität nutzbar
+> (18→24 Instanzen am 50×-BSK-Testfall), rückte aber JEDE Hutschienenreihe
+> der Zone auf die schmalere Breite ein, auch die, die nie in den
+> schmaleren Bereich hineinragen (sichtbar im Schrankbild: alle Reihen
+> bündig auf Höhe des ÜSS-Zeilenanfangs, obwohl der größte Teil der Zone
+> deutlich breiter ist) – unnötig verschenkter Platz, vom Nutzer per
+> Screenshot direkt erkannt.
+> **Korrigierter Ansatz** (Nutzer-Vorgabe: "die Platzierung... geht immer so
+> wie bisher und bis es nicht mehr passt. bevor der nächste Schaltschrank
+> erstellt wird erfolgt eine Prüfung ob noch eine Zone anschließt. wenn ja,
+> wird am Anfang nur dieser Zone die Hutschiene gesetzt"): `getZoneBands()`
+> gibt die Bänder wieder UNVERÄNDERT/getrennt zurück (kein Vor-Zusammenlegen
+> mehr, `mergeContiguousBands()` entfernt). Stattdessen direkt in
+> `placeInBands()`: jede Reihe wird zuerst normal gegen das AKTUELLE Band mit
+> dessen EIGENER (oft breiterer) Breite geprüft – passt sie dort, bleibt
+> alles wie bisher, keine Einengung. Passt sie NICHT mehr allein in den Rest
+> des aktuellen Bandes, wird NUR FÜR DIESE EINE REIHE geprüft, ob das
+> nächste Band lückenlos anschließt (`bandsContiguous()`) und der
+> KOMBINIERTE Rest (aktuelles Restband + volles nächstes Band) reicht – wenn
+> ja, bekommt NUR diese eine, grenzüberschreitende Reihe die schmalere
+> Schnittmengenbreite (`intersectBandW()`, inkl. Sicherheitsprüfung, dass die
+> tatsächliche Geräte-TE-Zahl der Reihe dort überhaupt noch passt), alle
+> bereits platzierten UND alle nachfolgenden Reihen behalten die volle,
+> eigene Breite ihres jeweiligen Bandes.
+> **Browser-Verifikation:** 50×-BSK-Testfall (Standschrank 699×1545mm,
+> Reserve 0%, Doppelstock, `zone_modus='je_feld'`) – Feld 1 nimmt jetzt
+> **28 statt 24 (Teil 5) bzw. 18 (vor jeder Korrektur) Instanzen** auf
+> (`leist` 87% belegt) – BESSER als der verworfene Teil-5-Ansatz, weil Reihe
+> 1+2 (138mm/115mm hoch) weiterhin die volle 619mm-Breite nutzen (24/34
+> Geräte je Reihe statt künstlich auf 28 TE begrenzt) und nur Reihe 3
+> (115mm) auf die schmalere 511mm-Schnittmenge eingeht – per
+> `letzteFelder[0].zones.leist.rows` direkt nachgewiesen: Reihe 1/2
+> `x_mm:40, w_mm:619` (unverändert voll), Reihe 3 `x_mm:148, w_mm:511`
+> (nur diese schmaler). Vollständiger Katalog-Regressionstest:
+> `testKatalogScan()` 0 verwaist, `testBaugruppe()` 215/215 bestanden,
+> `testAnlage()` 31/31 bestanden, keine Konsolenfehler.
+
+> **Nachtrag Session 70 Teil 5 (07.10.2026, ÜBERHOLT – siehe Teil 6 oben) –
+> Lückenlos übereinanderliegende
 > Bänder derselben Zone werden jetzt zusammengelegt statt Restkapazität zu
 > verschenken (Nutzer-Fund beim Nachfragen zur BSK-Feldaufteilung: "die
 > kleine Leistungszone über der Klemmreihe... wäre zusammen mit der großen
