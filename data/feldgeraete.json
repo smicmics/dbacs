@@ -955,5 +955,23 @@
     "quelle_hinweis": "[Fork-Recherche 10/2026] Produktdatenblatt AS-EM PD-10/2024. Sitzt direkt an/auf der Klappe im Feld, kein Schaltschrank-Platzbedarf. Macht aus einer Standard-TROX-Klappe (FK-EU/FK2-EU/FKRS-EU/FKR-EU) einen AS-i-Teilnehmer; exakte Gesamt-Bestellnummer der Klappe (vermutlich <Baureihe>/.../Z45-ZA07) nicht an einem Distributor-Shop verifiziert. Kein oeffentlicher Preis gefunden.",
     "kommunikative_datenpunkte": "Klappenstellung Auf/Zu via AS-i-Bus -> TNC-A1412-Controller (Modbus TCP)",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "WP-LW-250",
+    "bezeichnung": "Luft-Wasser-Waermepumpe bis 250 kW (generischer Platzhalter, herstelleruebergreifend)",
+    "hersteller": "generisch (z.B. Viessmann/Buderus/Carrier/Skadec/Mitsubishi Electric)",
+    "kategorie": "Waermepumpen",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Kein konkretes Fabrikat/Produkt - Luft-Wasser-Waermepumpen aller 4 geprueften Hersteller unterscheiden sich stark in Reglerplattform/Registerliste, fuer Platzbestimmung und Bauteilliste reicht ein generischer Platzhalter (Nutzer-bestaetigt). Kein oeffentlicher Listenpreis ermittelbar. [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "kommunikative_datenpunkte": "Je nach Anlage ueber Modbus RTU ausgelesen: Hochdruck-/Niederdruckwaechter, Abtaubetrieb (L-W) bzw. Frostschutzwaechter Sole (W-W), Aussentemperatur, VL-/RL-Temperatur intern, aktueller Sollwert Vorlauftemperatur, elektrische Leistung, Volumenstrom, Waermeleistung, bei reversiblen Anlagen zusaetzlich Kaelteleistung, je nach Pumpenkonzept zusaetzlich Pumpe sekundaer/primaer Betrieb/Stoerung.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "WP-WW-250",
+    "bezeichnung": "Wasser-Wasser-Waermepumpe bis 250 kW (generischer Platzhalter, herstelleruebergreifend)",
+    "hersteller": "generisch (z.B. Viessmann/Buderus/Carrier/Skadec/Mitsubishi Electric)",
+    "kategorie": "Waermepumpen",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Kein konkretes Fabrikat/Produkt - Wasser-Wasser-Waermepumpen aller 4 geprueften Hersteller unterscheiden sich stark in Reglerplattform/Registerliste, fuer Platzbestimmung und Bauteilliste reicht ein generischer Platzhalter (Nutzer-bestaetigt). Kein oeffentlicher Listenpreis ermittelbar. [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "kommunikative_datenpunkte": "Je nach Anlage ueber Modbus RTU ausgelesen: Hochdruck-/Niederdruckwaechter, Abtaubetrieb (L-W) bzw. Frostschutzwaechter Sole (W-W), Aussentemperatur, VL-/RL-Temperatur intern, aktueller Sollwert Vorlauftemperatur, elektrische Leistung, Volumenstrom, Waermeleistung, bei reversiblen Anlagen zusaetzlich Kaelteleistung, je nach Pumpenkonzept zusaetzlich Pumpe sekundaer/primaer Betrieb/Stoerung.",
+    "geprueft": false
   }
 ]

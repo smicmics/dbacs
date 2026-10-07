@@ -1114,5 +1114,1077 @@
     "kategorie": "Wärmeerzeuger",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "420_A00018",
+    "name": "Luft-Wasser-Waermepumpe Heizen, interne Sekundaerpumpe",
+    "gewerk": "420",
+    "beschreibung": "Kombiniert die DDC-Kernbaugruppe 420_000057 mit VL-/RL-Temperatur sekundaerseitig je 1x Tauchfuehler passiv (430_000006, Siemens QAE2120.010 Pt1000, menge:2). Sekundaerpumpe ist im Geraet integriert (kein eigenes Katalogbauteil), Status wird kommunikativ ausgelesen. Optional per Dropdown 'waermemengenzaehler' (Ohne/volle DN-/Protokoll-Auswahl, kein ist_default -> Default Ohne): Waermemengenzaehler DN15-25/50/100. Zusaetzlich optional 'elektrozaehler' (Modbus RTU/M-Bus/Modbus TCP). Physischer Datenpunktbedarf gesamt: 2x BI + 1x BO + 2x AO + 2x AI (Tauchfuehler VL/RL). Kommunikativ (Modbus RTU): 5x BI + 7x AI. Automationsstation/Energieversorgung weiterhin automatisch (Ratchet). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000057",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000030",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000032",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000033",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000035",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000036",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus TCP/IP",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Waermepumpen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00019",
+    "name": "Luft-Wasser-Waermepumpe Heizen, externe Sekundaerpumpe (Pumpengroesse mittel/gross waehlbar)",
+    "gewerk": "420",
+    "beschreibung": "Kombiniert die DDC-Kernbaugruppe 420_000058 mit VL-/RL-Temperatur sekundaerseitig je 1x Tauchfuehler passiv (430_000006, Siemens QAE2120.010 Pt1000, menge:2). Sekundaerpumpe ueber Pflicht-Dropdown 'pumpenleistung' waehlbar (mittel=420_000023 Stratos MAXO/Default, gross=420_000025 Stratos GIGA2.0, beide inkl. Rep.-Schalter - kein Zusatzbauteil noetig). Optional per Dropdown 'waermemengenzaehler' (Ohne/volle DN-/Protokoll-Auswahl, kein ist_default -> Default Ohne): Waermemengenzaehler DN15-25/50/100. Zusaetzlich optional 'elektrozaehler' (Modbus RTU/M-Bus/Modbus TCP). Physischer Datenpunktbedarf gesamt: 2x BI + 1x BO + 2x AO + 2x AI (Tauchfuehler VL/RL). Kommunikativ (Modbus RTU): 3x BI + 7x AI. Automationsstation/Energieversorgung weiterhin automatisch (Ratchet). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000058",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "pumpenleistung",
+        "variante_label": "mittel (Wilo Stratos MAXO, 40 W...1,5 kW, inkl. Rep.-Schalter)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "pumpenleistung",
+        "variante_label": "gross (Wilo Stratos GIGA2.0, 0,37...7,5 kW, inkl. Rep.-Schalter, 400V 3~)"
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000030",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000032",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000033",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000035",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000036",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus TCP/IP",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Waermepumpen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00020",
+    "name": "Luft-Wasser-Waermepumpe reversibel Heizen/Kuehlen, interne Sekundaerpumpe",
+    "gewerk": "420",
+    "beschreibung": "Kombiniert die DDC-Kernbaugruppe 420_000059 mit VL-/RL-Temperatur sekundaerseitig je 1x Tauchfuehler passiv (430_000006, Siemens QAE2120.010 Pt1000, menge:2). Sekundaerpumpe ist im Geraet integriert (kein eigenes Katalogbauteil), Status wird kommunikativ ausgelesen. Optional per Dropdown 'waermemengenzaehler' (Ohne/volle DN-/Protokoll-Auswahl, kein ist_default -> Default Ohne): Waerme- oder Kaeltemengenzaehler DN15-25/50/100. Zusaetzlich optional 'elektrozaehler' (Modbus RTU/M-Bus/Modbus TCP). Physischer Datenpunktbedarf gesamt: 2x BI + 2x BO + 2x AO + 2x AI (Tauchfuehler VL/RL). Kommunikativ (Modbus RTU): 5x BI + 8x AI. Automationsstation/Energieversorgung weiterhin automatisch (Ratchet). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000059",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000030",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000032",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000033",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000035",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000036",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000037",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000038",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN15-25 Kompakt, M-Bus mit 24V-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000040",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000041",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000042",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000043",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000044",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus TCP/IP",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen",
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Waermepumpen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00021",
+    "name": "Luft-Wasser-Waermepumpe reversibel Heizen/Kuehlen, externe Sekundaerpumpe (Pumpengroesse mittel/gross waehlbar)",
+    "gewerk": "420",
+    "beschreibung": "Kombiniert die DDC-Kernbaugruppe 420_000060 mit VL-/RL-Temperatur sekundaerseitig je 1x Tauchfuehler passiv (430_000006, Siemens QAE2120.010 Pt1000, menge:2). Sekundaerpumpe ueber Pflicht-Dropdown 'pumpenleistung' waehlbar (mittel=420_000023 Stratos MAXO/Default, gross=420_000025 Stratos GIGA2.0, beide inkl. Rep.-Schalter - kein Zusatzbauteil noetig). Optional per Dropdown 'waermemengenzaehler' (Ohne/volle DN-/Protokoll-Auswahl, kein ist_default -> Default Ohne): Waerme- oder Kaeltemengenzaehler DN15-25/50/100. Zusaetzlich optional 'elektrozaehler' (Modbus RTU/M-Bus/Modbus TCP). Physischer Datenpunktbedarf gesamt: 2x BI + 2x BO + 2x AO + 2x AI (Tauchfuehler VL/RL). Kommunikativ (Modbus RTU): 3x BI + 8x AI. Automationsstation/Energieversorgung weiterhin automatisch (Ratchet). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000060",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "pumpenleistung",
+        "variante_label": "mittel (Wilo Stratos MAXO, 40 W...1,5 kW, inkl. Rep.-Schalter)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "pumpenleistung",
+        "variante_label": "gross (Wilo Stratos GIGA2.0, 0,37...7,5 kW, inkl. Rep.-Schalter, 400V 3~)"
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000030",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000032",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000033",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000035",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000036",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000037",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000038",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN15-25 Kompakt, M-Bus mit 24V-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000040",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000041",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000042",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000043",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000044",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus TCP/IP",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen",
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Waermepumpen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00022",
+    "name": "Wasser-Wasser-Waermepumpe Heizen, interne Pumpen",
+    "gewerk": "420",
+    "beschreibung": "Kombiniert die DDC-Kernbaugruppe 420_000061 mit VL-/RL-Temperatur sekundaerseitig je 1x Tauchfuehler passiv (430_000006, Siemens QAE2120.010 Pt1000, menge:2). Sekundaerpumpe ist im Geraet integriert (kein eigenes Katalogbauteil), Status wird kommunikativ ausgelesen. Optional per Dropdown 'waermemengenzaehler' (Ohne/volle DN-/Protokoll-Auswahl, kein ist_default -> Default Ohne): Waermemengenzaehler DN15-25/50/100. Zusaetzlich optional 'elektrozaehler' (Modbus RTU/M-Bus/Modbus TCP). Physischer Datenpunktbedarf gesamt: 2x BI + 1x BO + 2x AO + 2x AI (Tauchfuehler VL/RL). Kommunikativ (Modbus RTU): 7x BI + 7x AI. Automationsstation/Energieversorgung weiterhin automatisch (Ratchet). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000061",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000030",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000032",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000033",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000035",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000036",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus TCP/IP",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Waermepumpen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00023",
+    "name": "Wasser-Wasser-Waermepumpe Heizen, externe Sekundaerpumpe (Pumpengroesse mittel/gross waehlbar)",
+    "gewerk": "420",
+    "beschreibung": "Kombiniert die DDC-Kernbaugruppe 420_000062 mit VL-/RL-Temperatur sekundaerseitig je 1x Tauchfuehler passiv (430_000006, Siemens QAE2120.010 Pt1000, menge:2). Sekundaerpumpe ueber Pflicht-Dropdown 'pumpenleistung' waehlbar (mittel=420_000023 Stratos MAXO/Default, gross=420_000025 Stratos GIGA2.0, beide inkl. Rep.-Schalter - kein Zusatzbauteil noetig). Optional per Dropdown 'waermemengenzaehler' (Ohne/volle DN-/Protokoll-Auswahl, kein ist_default -> Default Ohne): Waermemengenzaehler DN15-25/50/100. Zusaetzlich optional 'elektrozaehler' (Modbus RTU/M-Bus/Modbus TCP). Physischer Datenpunktbedarf gesamt: 2x BI + 1x BO + 2x AO + 2x AI (Tauchfuehler VL/RL). Kommunikativ (Modbus RTU): 5x BI + 7x AI. Automationsstation/Energieversorgung weiterhin automatisch (Ratchet). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000062",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "pumpenleistung",
+        "variante_label": "mittel (Wilo Stratos MAXO, 40 W...1,5 kW, inkl. Rep.-Schalter)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "pumpenleistung",
+        "variante_label": "gross (Wilo Stratos GIGA2.0, 0,37...7,5 kW, inkl. Rep.-Schalter, 400V 3~)"
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000030",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000032",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000033",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000035",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000036",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus TCP/IP",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen"
+    ],
+    "kategorie": "Waermepumpen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00024",
+    "name": "Wasser-Wasser-Waermepumpe reversibel Heizen/Kuehlen, interne Pumpen",
+    "gewerk": "420",
+    "beschreibung": "Kombiniert die DDC-Kernbaugruppe 420_000063 mit VL-/RL-Temperatur sekundaerseitig je 1x Tauchfuehler passiv (430_000006, Siemens QAE2120.010 Pt1000, menge:2). Sekundaerpumpe ist im Geraet integriert (kein eigenes Katalogbauteil), Status wird kommunikativ ausgelesen. Optional per Dropdown 'waermemengenzaehler' (Ohne/volle DN-/Protokoll-Auswahl, kein ist_default -> Default Ohne): Waerme- oder Kaeltemengenzaehler DN15-25/50/100. Zusaetzlich optional 'elektrozaehler' (Modbus RTU/M-Bus/Modbus TCP). Physischer Datenpunktbedarf gesamt: 2x BI + 2x BO + 2x AO + 2x AI (Tauchfuehler VL/RL). Kommunikativ (Modbus RTU): 7x BI + 8x AI. Automationsstation/Energieversorgung weiterhin automatisch (Ratchet). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000063",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000030",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000032",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000033",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000035",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000036",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000037",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000038",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN15-25 Kompakt, M-Bus mit 24V-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000040",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000041",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000042",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000043",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000044",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus TCP/IP",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen",
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Waermepumpen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00025",
+    "name": "Wasser-Wasser-Waermepumpe reversibel Heizen/Kuehlen, externe Sekundaerpumpe (Pumpengroesse mittel/gross waehlbar)",
+    "gewerk": "420",
+    "beschreibung": "Kombiniert die DDC-Kernbaugruppe 420_000064 mit VL-/RL-Temperatur sekundaerseitig je 1x Tauchfuehler passiv (430_000006, Siemens QAE2120.010 Pt1000, menge:2). Sekundaerpumpe ueber Pflicht-Dropdown 'pumpenleistung' waehlbar (mittel=420_000023 Stratos MAXO/Default, gross=420_000025 Stratos GIGA2.0, beide inkl. Rep.-Schalter - kein Zusatzbauteil noetig). Optional per Dropdown 'waermemengenzaehler' (Ohne/volle DN-/Protokoll-Auswahl, kein ist_default -> Default Ohne): Waerme- oder Kaeltemengenzaehler DN15-25/50/100. Zusaetzlich optional 'elektrozaehler' (Modbus RTU/M-Bus/Modbus TCP). Physischer Datenpunktbedarf gesamt: 2x BI + 2x BO + 2x AO + 2x AI (Tauchfuehler VL/RL). Kommunikativ (Modbus RTU): 5x BI + 8x AI. Automationsstation/Energieversorgung weiterhin automatisch (Ratchet). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000064",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "pumpenleistung",
+        "variante_label": "mittel (Wilo Stratos MAXO, 40 W...1,5 kW, inkl. Rep.-Schalter)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "pumpenleistung",
+        "variante_label": "gross (Wilo Stratos GIGA2.0, 0,37...7,5 kW, inkl. Rep.-Schalter, 400V 3~)"
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000030",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN15-25 Kompakt, M-Bus mit 24V-Versorgung (erhoehte Ausleserate)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000032",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000033",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000035",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000036",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000037",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN15-25 Kompakt, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000038",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN15-25 Kompakt, M-Bus mit 24V-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000040",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000041",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN50, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000042",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, M-Bus busgespeist",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000043",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, M-Bus mit 24V-Versorgung, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000044",
+        "menge": 1,
+        "gruppe": "waermemengenzaehler",
+        "variante_label": "Kaelte DN100, Dual M-Bus + Modbus RTU, Rechenwerk getrennte DC-Versorgung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "elektrozaehler",
+        "variante_label": "Modbus TCP/IP",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "heizung_anlagen",
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Waermepumpen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]

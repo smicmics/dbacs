@@ -1,6 +1,26 @@
 # DBACS – Revisionsstand
 
-**Stand:** 06. Oktober 2026 – Session 69 (Modul 4 Katalog,
+**Stand:** 07. Oktober 2026 – Session 70 (Modul 4 Katalog,
+`data/ga_komponenten.xlsx`): Wärmepumpen/Kältemaschinen bis 250 kW –
+5-Fork-Recherche (Viessmann/Buderus/Carrier/Skadec+Mitsubishi/generische
+Normen+Sensorik, Kernbefund: keine öffentliche Modbus-Registerliste bei
+den 4 Herstellern, nur Mitsubishi A1M+ liefert eine belastbare komplette
+Punkteliste; AMEV „Technisches Monitoring 2020" als beste Normengrundlage
+für Wärmepumpen-GLT-Punkte) + 8 neue Anlagen „Wärmepumpe bis 250 kW"
+(`420_A00018`–`025`, Luft-Wasser/Wasser-Wasser × monovalent/reversibel ×
+interne/externe Sekundärpumpe) mit Nutzer-vorgegebener physischer +
+kommunikativer Datenpunktliste (Modbus RTU, 2 Buskabel-Klemmen zusätzlich
+zu den DP). 8 neue DDC-Kern-Baugruppen `420_000057`–`064` + 2 generische
+Feldgeräte-Platzhalter `WP-LW-250`/`WP-WW-250`. Export: baugruppen
+207→215, feldgeraete 109→111, anlagen 23→31. Vollständig Browser-
+verifiziert (`testAnlage()` über alle Optionsfeld-Kombinationen, 0
+Fehler, 0 Overflow, 0 verwaiste Referenzen), alles committet + gepusht.
+**Nächster Schritt:** Kesselkreis (Fork 2) weiterhin offen, danach Kälte-/
+Lüftungs-Anlagen. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session
+70 + `scratchpad/waermepumpen_datenpunkte_synthese.md` +
+`scratchpad/waermepumpen_anlagen_freigabe_vorlage.md`.
+
+Vorheriger Stand – Session 69 (06.10.2026, Modul 4 Katalog,
 `data/ga_komponenten.xlsx` + `modules/modul-04-innenaufbau/index.html`):
 „Heizkreise Verteilung" fertiggestellt und erweitert – inzwischen 23
 Anlagen gesamt: Heizkreise Verteilung (9), Heizungsverteiler-/Sammler (2),

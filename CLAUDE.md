@@ -16,6 +16,94 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 70 (07.10.2026) – Wärmepumpen/Kältemaschinen bis
+> 250 kW: Fork-Recherche (5 Forks: Viessmann/Buderus/Carrier/Skadec+
+> Mitsubishi/generische Normen+Sensorik) + 8 neue Anlagen „Wärmepumpe bis
+> 250 kW" fertig umgesetzt. Volle Herleitung in
+> `scratchpad/waermepumpen_datenpunkte_synthese.md` +
+> `scratchpad/waermepumpen_anlagen_freigabe_vorlage.md`, hier nur
+> Kurzfassung:**
+> 1. **Recherche-Ergebnis (Kernbefund):** keiner der 4 geprüften Hersteller
+>    (Viessmann Vitocal, Buderus Logatherm, Carrier AquaSnap/30RQM/30WG,
+>    „Scadec" = SKADEC SH-Baureihe) veröffentlicht eine vollständige Modbus-
+>    Registerliste – alle verweisen auf eine projekt-/anfragespezifische
+>    Datenpunktliste. Nur Mitsubishi Electric liefert über das generische
+>    BEMS-Interface **MELCOBEMS MINI (A1M+)** eine öffentlich belegte
+>    Komplettliste (4 schreibende + 7 lesende Punkte, ca. 11 gesamt).
+>    Physische Klemmen sind bei Viessmann/Buderus/Carrier dagegen gut aus
+>    Original-Planungsunterlagen belegt. **AMEV „Technisches Monitoring
+>    2020"** (frei verfügbar) liefert eine echte offizielle GLT-Prüfgrößen-
+>    tabelle für Wärmepumpen ≥50 kWth (keine eigene Tabelle für
+>    Kälteanlagen) – VDMA 24247 ist dagegen **keine** GLT-Punkteliste,
+>    sondern reine Energieeffizienz-Kennzahlen-Normenreihe (Vorab-Annahme
+>    der Aufgabenstellung korrigiert).
+> 2. **Physische + kommunikative Datenpunktliste final vom Nutzer
+>    vorgegeben** (nicht aus der Recherche übernommen): physisch immer
+>    AI VL-/RL-Temperatur sekundärseitig (Tauchfühler passiv, nutzt
+>    bestehende Baugruppe `430_000006`), BI Betriebsmeldung, BI
+>    Sammelstörmeldung, BO Freigabe/Sperre, BO Umschalten Heizen/Kühlen (nur
+>    reversibel), AO Sollwertvorgabe 0…10V, AO Sollwertverstellung/
+>    Leistungsbegrenzung – alle potentialfrei auf `klemm_f` (Regel 1).
+>    Kommunikativ (Modbus RTU, auf der Buskabel-Klemmenzeile): Hochdruck-/
+>    Niederdruckwächter, Abtaubetrieb (L-W)/Frostschutzwächter Sole (W-W),
+>    Außentemperatur (**immer, auch Wasser-Wasser** – dient der Heizkurve
+>    der internen Regelung, Nutzer-Bestätigung), VL-/RL-Temperatur intern,
+>    aktueller Sollwert, elektrische Leistung, Volumenstrom, Wärmeleistung,
+>    bei reversiblen Anlagen zusätzlich Kälteleistung, je nach Pumpenkonzept
+>    zusätzlich Pumpe sekundär Betrieb/Störung (nur „interne Pumpe") bzw.
+>    Pumpe primär Betrieb/Störung (**nur Wasser-Wasser, immer** – Nutzer-
+>    Korrektur: „Quellenpumpe" und „Primärpumpe" sind dasselbe Bauteil,
+>    keine 2 Pumpen auf der Primärseite).
+> 3. **Nutzer-Korrektur Klemmenbedarf:** eine Modbus-RTU-Anbindung braucht
+>    trotz „kein Schaltschrankplatz für die Datenpunkte selbst" mindestens
+>    **2 zusätzliche `klemm_f`-Klemmen** für das RS485-Buskabel (A/B) – als
+>    generischer, herstellerübergreifender Default angenommen (Modbus TCP
+>    würde stattdessen den bestehenden Kommunikationsbauteil-Ratchet
+>    nutzen, hier nicht gewählt).
+> 4. **8 neue Anlagen** `420_A00018`–`420_A00025` (Kategorie „Waermepumpen",
+>    `funktionsbereich` `heizung_anlagen` bzw. zusätzlich `kaelte_anlagen`
+>    bei reversiblen Varianten) + **8 neue DDC-Kern-Baugruppen**
+>    `420_000057`–`420_000064` (eine je Kombination Typ×Reversibel×
+>    Pumpenkonzept) + **2 neue Feldgeräte-Platzhalter** `WP-LW-250`/
+>    `WP-WW-250` (generisch, herstellerübergreifend – Nutzer-bestätigt
+>    ausreichend für Platz-/Stücklistenbestimmung, kein Stromlaufplan-
+>    Anspruch). Jede Anlage bündelt: 2× Tauchfühler `430_000006` (VL+RL),
+>    1× DDC-Kern-Baugruppe, bei externer Sekundärpumpe zusätzlich Pflicht-
+>    Dropdown `gruppe:'pumpenleistung'` (mittel=`420_000023` Stratos MAXO/
+>    Default, groß=`420_000025` Stratos GIGA2.0 – beide bereits „inkl.
+>    Rep.-Schalter", kein Zusatzbauteil nötig), sowie 2 optionale Dropdowns
+>    (`gruppe_optional`, volle Auswahl statt Ohne/Ja-Schalter, Nutzer-
+>    Vorgabe „nimm das Dropdown-Feld"): „Externer Wärmemengenzähler"
+>    (nicht-reversibel: 8 Varianten `420_000029`–`036`; reversibel:
+>    zusätzlich 8 Kälte-Pendants `420_000037`–`044`) und „Externer
+>    Elektroenergiezähler" (3 Varianten `440_000001`–`003`).
+> 5. **Namensregel angewendet:** jeder Anlagen-Name lässt „Wärmepumpe" +
+>    grobe Ausstattung erkennen (z. B. „Wasser-Wasser-Waermepumpe
+>    reversibel Heizen/Kuehlen, externe Sekundaerpumpe (Pumpengroesse
+>    mittel/gross waehlbar)"), keine abgekürzten Jargon-Labels.
+> **Export:** baugruppen 207→**215**, feldgeraete 109→**111**, anlagen
+> 23→**31**, einzelbauteile unverändert 225 (keine neuen Schrankbauteile,
+> nur Referenzen auf bereits vorhandene Klemmen/Baugruppen). Backup:
+> `ga_komponenten_vor-waermepumpen-anlagen_20261007_135611.xlsx`.
+> **Browser-Verifikation:** alle 8 Anlagen per `testAnlage()` über JEDE
+> Kombination der Optionsfelder getestet (36–136 Kombinationen je Anlage,
+> abhängig von reversibel/nicht) – durchgängig `pass:true`, 0 `overflow`,
+> 0 `fehlendPlatziert`, 0 verwaiste Referenzen; `testKatalogScan()`
+> katalogweit ebenfalls 0 Treffer. Live-Test der komplexesten Variante
+> (`420_A00025`, Wasser-Wasser reversibel extern, Standschrank 1200×2000)
+> bestätigt Statistik exakt wie von Hand berechnet (physisch 2 AI/3 AO/5
+> BI/3 BO = 13 gesamt; kommunikativ 7 AI M-Bus + 8 AI/5 BI Modbus RTU + 17
+> AI Modbus TCP = 37 gesamt), keine Konsolenfehler.
+> **Nächster Schritt:** Kesselkreis (Fork 2 „Heizung erzeugerseitig")
+> sowie Kälte-/Lüftungs-Anlagen (Fork 4/5) weiterhin offen (siehe Session-
+> 69-Nachtrag unten). Offene Punkte aus der Wärmepumpen-Recherche selbst:
+> keine öffentliche Modbus-Registerliste bei Viessmann/Buderus/Carrier/
+> Skadec (nur auf Anfrage erhältlich); keine eigene AMEV-Prüfumfangstabelle
+> für Kältemaschinen (nur Wärmepumpe) – falls eine reine „Kältemaschine
+> bis 250kW"-Anlage ohne Wärmepumpenfunktion künftig gebraucht wird, siehe
+> `scratchpad/waermepumpen_datenpunkte_synthese.md` Abschnitt 3 für ASHRAE-
+> Guideline-13-Alternative.
+
 > **Nachtrag Session 69 (06.10.2026) – „Heizkreise Verteilung" fertig +
 > erweitert auf Wärmeübertrager/Wärmeerzeuger, neue Testroutine in Modul 4,
 > 2 echte Bugs gefunden+behoben. Volle Herleitung in Memory

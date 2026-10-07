@@ -8639,5 +8639,725 @@
     "automationsanbindung": true,
     "kategorie": "Steuerkoppler",
     "geprueft": false
+  },
+  {
+    "id": "420_000057",
+    "name": "Waermepumpe Luft-Wasser, Heizen, Betriebs-/Stoermeldung, Freigabe, Sollwertvorgabe/-verstellung 0...10V, Modbus-RTU-Anbindung (interne Sekundaerpumpe)",
+    "gewerk": "420",
+    "beschreibung": "Generischer, herstelleruebergreifender DDC-Kern fuer eine Luft-Wasser-Waermepumpe bis 250 kW (monovalent Heizen), interne Sekundaerpumpe. Physische Klemmen (je 2x 3209510 klemm_f, 1 Ader mit DDC-Override): Betriebsmeldung (BI), Sammelstoermeldung (BI), Freigabe/Sperre (BO), Sollwertvorgabe 0...10V (AO), Sollwertverstellung/Leistungsbegrenzung 0...10V (AO). Zusaetzlich 2x 3209510 klemm_f fuer das Modbus-RTU-Buskabel (RS485 A/B) - auf der ersten Ader sitzt der komplette dp_fb-Sammel-Override fuer die kommunikativen Punkte (Hochdruck-/Niederdruckwaechter, Abtaubetrieb/Frostschutz Sole, Aussentemperatur, VL/RL-Temperatur intern, aktueller Sollwert, elektrische Leistung, Volumenstrom, Waermeleistung, Pumpe sekundaer Betrieb/Stoerung). Physischer Datenpunktbedarf: 2x BI + 1x BO + 2x AO. Kommunikativ (Modbus RTU): 5x BI + 7x AI. Referenziert als feldgeraet_artikel_nr einen generischen Platzhalter (WP-LW-250/WP-WW-250, Nutzer-bestaetigt ausreichend fuer Platz-/Stuecklistenbestimmung). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "dp_fb_bi": 5,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Luft-Wasser-Waermepumpe bis 250 kW (herstelleruebergreifend)",
+    "feldgeraet_artikel_nr": "WP-LW-250",
+    "automationsanbindung": true,
+    "kategorie": "Waermepumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000058",
+    "name": "Waermepumpe Luft-Wasser, Heizen, Betriebs-/Stoermeldung, Freigabe, Sollwertvorgabe/-verstellung 0...10V, Modbus-RTU-Anbindung (externe Sekundaerpumpe)",
+    "gewerk": "420",
+    "beschreibung": "Generischer, herstelleruebergreifender DDC-Kern fuer eine Luft-Wasser-Waermepumpe bis 250 kW (monovalent Heizen), externe Sekundaerpumpe. Physische Klemmen (je 2x 3209510 klemm_f, 1 Ader mit DDC-Override): Betriebsmeldung (BI), Sammelstoermeldung (BI), Freigabe/Sperre (BO), Sollwertvorgabe 0...10V (AO), Sollwertverstellung/Leistungsbegrenzung 0...10V (AO). Zusaetzlich 2x 3209510 klemm_f fuer das Modbus-RTU-Buskabel (RS485 A/B) - auf der ersten Ader sitzt der komplette dp_fb-Sammel-Override fuer die kommunikativen Punkte (Hochdruck-/Niederdruckwaechter, Abtaubetrieb/Frostschutz Sole, Aussentemperatur, VL/RL-Temperatur intern, aktueller Sollwert, elektrische Leistung, Volumenstrom, Waermeleistung). Physischer Datenpunktbedarf: 2x BI + 1x BO + 2x AO. Kommunikativ (Modbus RTU): 3x BI + 7x AI. Referenziert als feldgeraet_artikel_nr einen generischen Platzhalter (WP-LW-250/WP-WW-250, Nutzer-bestaetigt ausreichend fuer Platz-/Stuecklistenbestimmung). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "dp_fb_bi": 3,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Luft-Wasser-Waermepumpe bis 250 kW (herstelleruebergreifend)",
+    "feldgeraet_artikel_nr": "WP-LW-250",
+    "automationsanbindung": true,
+    "kategorie": "Waermepumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000059",
+    "name": "Waermepumpe Luft-Wasser, reversibel Heizen/Kuehlen, Betriebs-/Stoermeldung, Freigabe, Umschaltung Heizen/Kuehlen, Sollwertvorgabe/-verstellung 0...10V, Modbus-RTU-Anbindung (interne Sekundaerpumpe)",
+    "gewerk": "420",
+    "beschreibung": "Generischer, herstelleruebergreifender DDC-Kern fuer eine Luft-Wasser-Waermepumpe bis 250 kW (reversibel Heizen/Kuehlen), interne Sekundaerpumpe. Physische Klemmen (je 2x 3209510 klemm_f, 1 Ader mit DDC-Override): Betriebsmeldung (BI), Sammelstoermeldung (BI), Freigabe/Sperre (BO), Umschalten Heizen/Kuehlen (BO), Sollwertvorgabe 0...10V (AO), Sollwertverstellung/Leistungsbegrenzung 0...10V (AO). Zusaetzlich 2x 3209510 klemm_f fuer das Modbus-RTU-Buskabel (RS485 A/B) - auf der ersten Ader sitzt der komplette dp_fb-Sammel-Override fuer die kommunikativen Punkte (Hochdruck-/Niederdruckwaechter, Abtaubetrieb/Frostschutz Sole, Aussentemperatur, VL/RL-Temperatur intern, aktueller Sollwert, elektrische Leistung, Volumenstrom, Waermeleistung, Kaelteleistung, Pumpe sekundaer Betrieb/Stoerung). Physischer Datenpunktbedarf: 2x BI + 2x BO + 2x AO. Kommunikativ (Modbus RTU): 5x BI + 8x AI. Referenziert als feldgeraet_artikel_nr einen generischen Platzhalter (WP-LW-250/WP-WW-250, Nutzer-bestaetigt ausreichend fuer Platz-/Stuecklistenbestimmung). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 8,
+        "dp_fb_bi": 5,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Luft-Wasser-Waermepumpe bis 250 kW (herstelleruebergreifend)",
+    "feldgeraet_artikel_nr": "WP-LW-250",
+    "automationsanbindung": true,
+    "kategorie": "Waermepumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000060",
+    "name": "Waermepumpe Luft-Wasser, reversibel Heizen/Kuehlen, Betriebs-/Stoermeldung, Freigabe, Umschaltung Heizen/Kuehlen, Sollwertvorgabe/-verstellung 0...10V, Modbus-RTU-Anbindung (externe Sekundaerpumpe)",
+    "gewerk": "420",
+    "beschreibung": "Generischer, herstelleruebergreifender DDC-Kern fuer eine Luft-Wasser-Waermepumpe bis 250 kW (reversibel Heizen/Kuehlen), externe Sekundaerpumpe. Physische Klemmen (je 2x 3209510 klemm_f, 1 Ader mit DDC-Override): Betriebsmeldung (BI), Sammelstoermeldung (BI), Freigabe/Sperre (BO), Umschalten Heizen/Kuehlen (BO), Sollwertvorgabe 0...10V (AO), Sollwertverstellung/Leistungsbegrenzung 0...10V (AO). Zusaetzlich 2x 3209510 klemm_f fuer das Modbus-RTU-Buskabel (RS485 A/B) - auf der ersten Ader sitzt der komplette dp_fb-Sammel-Override fuer die kommunikativen Punkte (Hochdruck-/Niederdruckwaechter, Abtaubetrieb/Frostschutz Sole, Aussentemperatur, VL/RL-Temperatur intern, aktueller Sollwert, elektrische Leistung, Volumenstrom, Waermeleistung, Kaelteleistung). Physischer Datenpunktbedarf: 2x BI + 2x BO + 2x AO. Kommunikativ (Modbus RTU): 3x BI + 8x AI. Referenziert als feldgeraet_artikel_nr einen generischen Platzhalter (WP-LW-250/WP-WW-250, Nutzer-bestaetigt ausreichend fuer Platz-/Stuecklistenbestimmung). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 8,
+        "dp_fb_bi": 3,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Luft-Wasser-Waermepumpe bis 250 kW (herstelleruebergreifend)",
+    "feldgeraet_artikel_nr": "WP-LW-250",
+    "automationsanbindung": true,
+    "kategorie": "Waermepumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000061",
+    "name": "Waermepumpe Wasser-Wasser, Heizen, Betriebs-/Stoermeldung, Freigabe, Sollwertvorgabe/-verstellung 0...10V, Modbus-RTU-Anbindung (interne Sekundaerpumpe)",
+    "gewerk": "420",
+    "beschreibung": "Generischer, herstelleruebergreifender DDC-Kern fuer eine Wasser-Wasser-Waermepumpe bis 250 kW (monovalent Heizen), interne Sekundaerpumpe. Physische Klemmen (je 2x 3209510 klemm_f, 1 Ader mit DDC-Override): Betriebsmeldung (BI), Sammelstoermeldung (BI), Freigabe/Sperre (BO), Sollwertvorgabe 0...10V (AO), Sollwertverstellung/Leistungsbegrenzung 0...10V (AO). Zusaetzlich 2x 3209510 klemm_f fuer das Modbus-RTU-Buskabel (RS485 A/B) - auf der ersten Ader sitzt der komplette dp_fb-Sammel-Override fuer die kommunikativen Punkte (Hochdruck-/Niederdruckwaechter, Abtaubetrieb/Frostschutz Sole, Aussentemperatur, VL/RL-Temperatur intern, aktueller Sollwert, elektrische Leistung, Volumenstrom, Waermeleistung, Pumpe sekundaer Betrieb/Stoerung, Pumpe primaer Betrieb/Stoerung). Physischer Datenpunktbedarf: 2x BI + 1x BO + 2x AO. Kommunikativ (Modbus RTU): 7x BI + 7x AI. Primaerpumpe (= Quellenpumpe, ein Bauteil fuer den primaeren Medientransport, Nutzer-Korrektur) wird bei Wasser-Wasser immer kommunikativ mitgefuehrt, unabhaengig von der Sekundaerpumpen-Wahl. Referenziert als feldgeraet_artikel_nr einen generischen Platzhalter (WP-LW-250/WP-WW-250, Nutzer-bestaetigt ausreichend fuer Platz-/Stuecklistenbestimmung). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "dp_fb_bi": 7,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Wasser-Wasser-Waermepumpe bis 250 kW (herstelleruebergreifend)",
+    "feldgeraet_artikel_nr": "WP-WW-250",
+    "automationsanbindung": true,
+    "kategorie": "Waermepumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000062",
+    "name": "Waermepumpe Wasser-Wasser, Heizen, Betriebs-/Stoermeldung, Freigabe, Sollwertvorgabe/-verstellung 0...10V, Modbus-RTU-Anbindung (externe Sekundaerpumpe)",
+    "gewerk": "420",
+    "beschreibung": "Generischer, herstelleruebergreifender DDC-Kern fuer eine Wasser-Wasser-Waermepumpe bis 250 kW (monovalent Heizen), externe Sekundaerpumpe. Physische Klemmen (je 2x 3209510 klemm_f, 1 Ader mit DDC-Override): Betriebsmeldung (BI), Sammelstoermeldung (BI), Freigabe/Sperre (BO), Sollwertvorgabe 0...10V (AO), Sollwertverstellung/Leistungsbegrenzung 0...10V (AO). Zusaetzlich 2x 3209510 klemm_f fuer das Modbus-RTU-Buskabel (RS485 A/B) - auf der ersten Ader sitzt der komplette dp_fb-Sammel-Override fuer die kommunikativen Punkte (Hochdruck-/Niederdruckwaechter, Abtaubetrieb/Frostschutz Sole, Aussentemperatur, VL/RL-Temperatur intern, aktueller Sollwert, elektrische Leistung, Volumenstrom, Waermeleistung, Pumpe primaer Betrieb/Stoerung). Physischer Datenpunktbedarf: 2x BI + 1x BO + 2x AO. Kommunikativ (Modbus RTU): 5x BI + 7x AI. Primaerpumpe (= Quellenpumpe, ein Bauteil fuer den primaeren Medientransport, Nutzer-Korrektur) wird bei Wasser-Wasser immer kommunikativ mitgefuehrt, unabhaengig von der Sekundaerpumpen-Wahl. Referenziert als feldgeraet_artikel_nr einen generischen Platzhalter (WP-LW-250/WP-WW-250, Nutzer-bestaetigt ausreichend fuer Platz-/Stuecklistenbestimmung). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "dp_fb_bi": 5,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung"
+    ],
+    "betriebsmittel": "Wasser-Wasser-Waermepumpe bis 250 kW (herstelleruebergreifend)",
+    "feldgeraet_artikel_nr": "WP-WW-250",
+    "automationsanbindung": true,
+    "kategorie": "Waermepumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000063",
+    "name": "Waermepumpe Wasser-Wasser, reversibel Heizen/Kuehlen, Betriebs-/Stoermeldung, Freigabe, Umschaltung Heizen/Kuehlen, Sollwertvorgabe/-verstellung 0...10V, Modbus-RTU-Anbindung (interne Sekundaerpumpe)",
+    "gewerk": "420",
+    "beschreibung": "Generischer, herstelleruebergreifender DDC-Kern fuer eine Wasser-Wasser-Waermepumpe bis 250 kW (reversibel Heizen/Kuehlen), interne Sekundaerpumpe. Physische Klemmen (je 2x 3209510 klemm_f, 1 Ader mit DDC-Override): Betriebsmeldung (BI), Sammelstoermeldung (BI), Freigabe/Sperre (BO), Umschalten Heizen/Kuehlen (BO), Sollwertvorgabe 0...10V (AO), Sollwertverstellung/Leistungsbegrenzung 0...10V (AO). Zusaetzlich 2x 3209510 klemm_f fuer das Modbus-RTU-Buskabel (RS485 A/B) - auf der ersten Ader sitzt der komplette dp_fb-Sammel-Override fuer die kommunikativen Punkte (Hochdruck-/Niederdruckwaechter, Abtaubetrieb/Frostschutz Sole, Aussentemperatur, VL/RL-Temperatur intern, aktueller Sollwert, elektrische Leistung, Volumenstrom, Waermeleistung, Kaelteleistung, Pumpe sekundaer Betrieb/Stoerung, Pumpe primaer Betrieb/Stoerung). Physischer Datenpunktbedarf: 2x BI + 2x BO + 2x AO. Kommunikativ (Modbus RTU): 7x BI + 8x AI. Primaerpumpe (= Quellenpumpe, ein Bauteil fuer den primaeren Medientransport, Nutzer-Korrektur) wird bei Wasser-Wasser immer kommunikativ mitgefuehrt, unabhaengig von der Sekundaerpumpen-Wahl. Referenziert als feldgeraet_artikel_nr einen generischen Platzhalter (WP-LW-250/WP-WW-250, Nutzer-bestaetigt ausreichend fuer Platz-/Stuecklistenbestimmung). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 8,
+        "dp_fb_bi": 7,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Wasser-Wasser-Waermepumpe bis 250 kW (herstelleruebergreifend)",
+    "feldgeraet_artikel_nr": "WP-WW-250",
+    "automationsanbindung": true,
+    "kategorie": "Waermepumpen",
+    "geprueft": false
+  },
+  {
+    "id": "420_000064",
+    "name": "Waermepumpe Wasser-Wasser, reversibel Heizen/Kuehlen, Betriebs-/Stoermeldung, Freigabe, Umschaltung Heizen/Kuehlen, Sollwertvorgabe/-verstellung 0...10V, Modbus-RTU-Anbindung (externe Sekundaerpumpe)",
+    "gewerk": "420",
+    "beschreibung": "Generischer, herstelleruebergreifender DDC-Kern fuer eine Wasser-Wasser-Waermepumpe bis 250 kW (reversibel Heizen/Kuehlen), externe Sekundaerpumpe. Physische Klemmen (je 2x 3209510 klemm_f, 1 Ader mit DDC-Override): Betriebsmeldung (BI), Sammelstoermeldung (BI), Freigabe/Sperre (BO), Umschalten Heizen/Kuehlen (BO), Sollwertvorgabe 0...10V (AO), Sollwertverstellung/Leistungsbegrenzung 0...10V (AO). Zusaetzlich 2x 3209510 klemm_f fuer das Modbus-RTU-Buskabel (RS485 A/B) - auf der ersten Ader sitzt der komplette dp_fb-Sammel-Override fuer die kommunikativen Punkte (Hochdruck-/Niederdruckwaechter, Abtaubetrieb/Frostschutz Sole, Aussentemperatur, VL/RL-Temperatur intern, aktueller Sollwert, elektrische Leistung, Volumenstrom, Waermeleistung, Kaelteleistung, Pumpe primaer Betrieb/Stoerung). Physischer Datenpunktbedarf: 2x BI + 2x BO + 2x AO. Kommunikativ (Modbus RTU): 5x BI + 8x AI. Primaerpumpe (= Quellenpumpe, ein Bauteil fuer den primaeren Medientransport, Nutzer-Korrektur) wird bei Wasser-Wasser immer kommunikativ mitgefuehrt, unabhaengig von der Sekundaerpumpen-Wahl. Referenziert als feldgeraet_artikel_nr einen generischen Platzhalter (WP-LW-250/WP-WW-250, Nutzer-bestaetigt ausreichend fuer Platz-/Stuecklistenbestimmung). [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 8,
+        "dp_fb_bi": 5,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte"
+    ],
+    "betriebsmittel": "Wasser-Wasser-Waermepumpe bis 250 kW (herstelleruebergreifend)",
+    "feldgeraet_artikel_nr": "WP-WW-250",
+    "automationsanbindung": true,
+    "kategorie": "Waermepumpen",
+    "geprueft": false
   }
 ]
