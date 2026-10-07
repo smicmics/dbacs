@@ -16,6 +16,37 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 70 Teil 7 (07.10.2026) – Letzte Hutschienenreihe einer
+> Zone braucht keinen eigenen Verdrahtungskanal mehr, wenn direkt im
+> Anschluss bereits ein Zonentrennkanal existiert (Nutzer-Fund per
+> Screenshot: DDC-Modulreihe in `steuer` passte optisch noch – Rest nach 3
+> TXM-Reihen 135mm, eine 4. Reihe braucht nur 118mm Gerätehöhe –, scheiterte
+> aber an den zusätzlichen 40mm des vorangestellten Verdrahtungskanals,
+> obwohl direkt im Anschluss an die Zone ohnehin schon der Zonentrennkanal
+> zu `leist` (`kanal_ls`) folgt):**
+> **Fix:** `getZoneBands()` markiert jedes Band jetzt mit
+> `followedByKanal` – true, wenn direkt NACH der zugehörigen Layout-Zeile
+> (aus `buildLayoutForFeldtyp()`) bereits eine reine Struktur-Kanalzeile
+> folgt (z. B. `kanal_ls`). `placeInBands()` bekommt einen neuen
+> Fallback-Zweig: passt die aktuelle Reihe OHNE ihren eigenen 40mm-
+> Verdrahtungskanal in den Rest des Bandes UND ist das Band als
+> `followedByKanal` markiert, wird sie ohne vorangestellten Kanal platziert
+> – der bereits vorhandene Zonentrennkanal übernimmt die Zugänglichkeit für
+> diese letzte Reihe. Greift NUR für die tatsächlich letzte, grenzende
+> Reihe (durch die Bedingung selbst sichergestellt: die normale Prüfung mit
+> Kanal ist vorher bereits gescheitert, sonst würde der normale Zweig
+> greifen) – alle vorherigen Reihen bleiben unverändert mit regulärem
+> Zwischenraum-Kanal.
+> **Browser-Verifikation:** isolierter Funktionstest von `placeInBands()`
+> (synthetisches Band, 28 Geräte à 7 je Reihe, 135mm Rest nach 3 Reihen) –
+> MIT `followedByKanal:true` passen alle 4 Reihen (0 Overflow, 4. Reihe
+> ohne Zwischen-Kanal direkt an Reihe 3 anschließend); MIT
+> `followedByKanal:false` (Regressions-Gegenprobe) bleibt die 4. Reihe
+> korrekt unplatziert (Overflow, wie vor dem Fix) – Flag greift also
+> gezielt nur im vorgesehenen Fall. Vollständiger Katalog-
+> Regressionstest: `testKatalogScan()` 0 verwaist, `testBaugruppe()`
+> 215/215 bestanden, `testAnlage()` 31/31 bestanden, keine Konsolenfehler.
+
 > **Nachtrag Session 70 Teil 6 (07.10.2026) – Teil-5-Ansatz korrigiert:
 > nur die TATSÄCHLICH grenzüberschreitende Hutschienenreihe wird schmaler,
 > nicht mehr die ganze Zone (Nutzer-Fund per Screenshot: "Alle Hutschienen

@@ -1,6 +1,21 @@
 # DBACS – Revisionsstand
 
-**Stand:** 07. Oktober 2026 – Session 70 Teil 6 (Modul 4,
+**Stand:** 07. Oktober 2026 – Session 70 Teil 7 (Modul 4,
+`modules/modul-04-innenaufbau/index.html`): letzte Hutschienenreihe einer
+Zone (z. B. DDC-Module in `steuer`) braucht keinen eigenen 40mm-
+Verdrahtungskanal mehr, wenn direkt im Anschluss an die Zone bereits ein
+Zonentrennkanal existiert (Nutzer-Fund per Screenshot: eine Reihe passte
+von der Gerätehöhe her noch, scheiterte aber am zusätzlichen
+Zwischen-Kanal, obwohl direkt danach ohnehin schon ein Kanal zur
+Nachbarzone folgt). Neues `followedByKanal`-Flag je Band
+(`getZoneBands()`) + neuer Fallback-Zweig in `placeInBands()`. Isoliert
+funktional verifiziert (mit Flag: alle Reihen passen; ohne Flag:
+Regressions-Gegenprobe bleibt korrekt bei Overflow) + vollständiger
+Katalog-Regressionstest: 215/215 Baugruppen, 31/31 Anlagen,
+`testKatalogScan()` sauber. Details: `CLAUDE.md` → „Offene Punkte"
+Nachtrag Session 70 Teil 7.
+
+Vorheriger Stand – Session 70 Teil 6 (Modul 4,
 `modules/modul-04-innenaufbau/index.html`): Teil-5-Ansatz korrigiert
 (Nutzer-Fund per Screenshot: pauschales Zusammenlegen lückenlos
 übereinanderliegender Bänder rückte ALLE Hutschienenreihen einer Zone auf

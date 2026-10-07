@@ -2276,15 +2276,25 @@ function getZoneBands(zp, feldtyp) {
   const bands   = { klemm_e:[], uss:[], evert:[], leist:[], steuer:[], klemm_l:[], klemm_f:[], klemm_s:[] };
   const svgRows = [];
   let y = 0;
-  rows.forEach(row => {
+  // Reine Struktur-Kanalzeile (genau eine Zone, deren id mit 'kanal_'
+  // beginnt) – gleiche Erkennung wie an anderer Stelle (buildLayoutForFeldtyp).
+  const isKanalRow = r => !!r && r.zones.length === 1 && r.zones[0].id.startsWith('kanal_');
+  rows.forEach((row, ri) => {
     const zonesOut = row.zones.map(z => ({
       id: z.id, x_mm: z.x*b, w_mm: z.w*b, col: z.col, lbl: z.lbl, noStroke: !!z.noStroke
     }));
     svgRows.push({ y_mm: y, h_mm: row.h_mm, zones: zonesOut });
 
+    // followedByKanal (Session 70 Teil 7): schließt DIREKT nach dieser
+    // Zeile bereits eine strukturbedingte Kanalzeile an (z. B. der
+    // Zonentrennkanal zwischen 'steuer' und 'leist')? Nur dann darf
+    // placeInBands() die letzte Hutschienenreihe eines Bandes OHNE eigenen
+    // vorangestellten Verdrahtungskanal platzieren (siehe dort) – der
+    // bereits vorhandene Zonentrennkanal übernimmt die Zugänglichkeit.
+    const followedByKanal = isKanalRow(rows[ri + 1]);
     zonesOut.forEach(z => {
       const target = z.id === 'leist_ext' ? 'leist' : z.id;
-      if (bands[target]) bands[target].push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm });
+      if (bands[target]) bands[target].push({ x_mm:z.x_mm, y_mm:y, w_mm:z.w_mm, h_mm: row.h_mm, followedByKanal });
     });
     y += row.h_mm;
   });
@@ -2475,6 +2485,30 @@ function placeInBands(devs, bands, klemmraum, startIdx = 0) {
           placedRows++;
           break;
         }
+      }
+
+      // Letzte Reihe eines Bandes, das direkt an einen bereits vorhandenen
+      // Zonentrennkanal grenzt (Session 70 Teil 7, Nutzer-Fund per
+      // Screenshot: DDC-Modulreihe passte optisch noch, scheiterte aber
+      // am vorangestellten Verdrahtungskanal, obwohl direkt im Anschluss an
+      // die Zone ohnehin schon ein Kanal folgt – "bei Auslösung eines
+      // Zeilenwechsels prüfen, ob darunter am Rand der Zone bereits ein
+      // Kabelkanal existiert... wenn ja, dann keinen setzen"): passt die
+      // Reihe OHNE den eigenen 40mm-Kanal in den Rest, UND endet dieses
+      // Band direkt an einer Struktur-Kanalzeile (`band.followedByKanal`,
+      // siehe getZoneBands()), übernimmt dieser bereits vorhandene
+      // Zonentrennkanal die Zugänglichkeit – ein zusätzlicher Kanal
+      // zwischen der vorherigen Reihe und dieser letzten Reihe entfällt.
+      if (kanalHier > 0 && band.followedByKanal && h_row <= rest) {
+        let col = 0;
+        const blocks = rowAbs.blocks.map(d => { const bl = {col, te:d.te, h_mm:d.h_mm, farbe:d.farbe, lbl:d.lbl, title:d.title, artikel_nr:d.artikel_nr, idx:++placedCount}; col += d.te; return bl; });
+        rows.push({ mode:'row', x_mm: band.x_mm, w_mm: band.w_mm, y_mm: band.y_mm + y_local, h_mm: h_row, klemmraum, blocks });
+        y_local += h_row;
+        kanalPending = true;
+        last = { bandIdx: bi, yLocal: y_local, h_row };
+        placed = true;
+        placedRows++;
+        break;
       }
 
       mm_used += y_local; y_local = 0; bi++; continue;
