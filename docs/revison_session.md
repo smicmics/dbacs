@@ -1,6 +1,33 @@
 # DBACS – Revisionsstand
 
-**Stand:** 07. Oktober 2026 – Session 70 Teil 2 (Modul 4,
+**Stand:** 07. Oktober 2026 – Session 70 Teil 4 (Modul 4 Katalog,
+`data/ga_komponenten.xlsx`): neue Phoenix-Contact-Klemme `3210596` (PTTB
+2,5-PE, Doppelstock-PE-Variante, dimensionsgleich zu `3210567`) ergänzt und
+als `doppelstock_variante_artikel_nr` an `3209536` (Standard-PE-Klemme)
+gehängt – löst die offene Frage, ob eine Doppelstockklemme neben einer
+Standard-PE-Klemme montiert werden darf (keine Mischmontage mehr nötig,
+beide Typen bleiben in derselben Baureihe). Export einzelbauteile
+225→226. Verifiziert: 50×-BSK-Testfall liefert jetzt 25× `3210596` bei
+Doppelstock statt 50× unpaariger `3209536`; 215/215 Baugruppen, 31/31
+Anlagen, `testKatalogScan()` sauber. Details: `CLAUDE.md` → „Offene
+Punkte" Nachtrag Session 70 Teil 4.
+
+Vorheriger Stand – Session 70 Teil 3 (Modul 4,
+`modules/modul-04-innenaufbau/index.html`): Steuerspannungs-Trafo+LSS
+landete bei Mehrfeld-Schränken im falschen Feld, getrennt von der CPU, die
+er versorgt (Nutzer-Fund: „Energieverteilung und Trafos gehören in Feld
+1"). Root Cause: die automatisch ergänzte Steuerspannungs-Baugruppe wurde
+in `bgInstanceQueue` ans Ende angehängt statt an den Anfang – andere
+Baugruppen (z. B. 50× Brandschutzklappenantrieb) belegten dadurch in Feld 1
+bereits die `leist`-Zone, bevor der Trafo (atomar mit der LSS in `evert`,
+Baugruppen-Zusammenhalt) sein Platzgesuch stellen konnte, und rutschte
+komplett – inkl. der LSS, obwohl `evert` in Feld 1 noch leer war – ins
+nächste Feld. Fix: `unshift()` statt `push()`, die Steuerspannungs-Instanz
+reserviert sich jetzt als Erste Platz in Feld 1. Regressionsgetestet:
+215/215 Baugruppen, 31/31 Anlagen, `testKatalogScan()` sauber. Details:
+`CLAUDE.md` → „Offene Punkte" Nachtrag Session 70 Teil 3.
+
+Vorheriger Stand – Session 70 Teil 2 (Modul 4,
 `modules/modul-04-innenaufbau/index.html`): Klemmleisten-Umverteilung
 (`redistributeKlemmBands()`) von Defizit- auf Bedarfs-proportionale
 Verteilung umgestellt (löst „klemm_f/klemm_l limitieren, obwohl leist/

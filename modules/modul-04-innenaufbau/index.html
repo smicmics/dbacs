@@ -3793,7 +3793,21 @@ function buildQueues(ddcReservePct) {
       if (!entry) { entry = {eb, zone, menge: 0}; steuerspannungAuto.push(entry); }
       entry.menge += bt.menge;
     });
-    if (Object.keys(zonen).length) bgInstanceQueue.push({bg_id: bg.id, ci: 0, zonen, auto: true});
+    // unshift statt push (Nutzer-Fund Session 70 Teil 3): diese Instanz
+    // sitzt sonst HINTER allen manuell/aus Anlagen gesetzten Baugruppen in
+    // bgInstanceQueue und wird in platziereBaugruppenFuerFeld() erst
+    // zuletzt je Feld versucht - ist z.B. die leist-Zone von Feld 1 durch
+    // viele andere Instanzen (die zuerst dran waren) bereits bis auf den
+    // letzten mm gefuellt, scheitert der Trafo dort (Baugruppen-
+    // Zusammenhalt ist atomar: evert+leist muessen zusammen passen) und die
+    // GESAMTE Instanz (auch die evert-Sicherungen, obwohl evert in Feld 1
+    // noch komplett leer waere) rutscht unnoetig ins naechste Feld - weit
+    // weg von der CPU, die sie eigentlich versorgt (die CPU selbst laeuft
+    // nicht ueber bgInstanceQueue, sondern wird direkt und zuerst in
+    // queues.steuer geschrieben, landet daher zuverlaessig in Feld 1).
+    // unshift reserviert der Steuerspannungsversorgung als Erstes Platz in
+    // Feld 1, bevor andere Baugruppen die Zonen vollpacken.
+    if (Object.keys(zonen).length) bgInstanceQueue.unshift({bg_id: bg.id, ci: 0, zonen, auto: true});
   });
   if (steuerspannungWatermarkChanged) localStorage.setItem('m04_steuerspannung_watermark', JSON.stringify(steuerspannungWatermark));
 

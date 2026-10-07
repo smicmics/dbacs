@@ -881,6 +881,7 @@
       "klemm_s"
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
+    "doppelstock_variante_artikel_nr": "3210596",
     "preis_eur": 2.1,
     "geprueft": false
   },
@@ -3502,6 +3503,22 @@
     ],
     "kategorie": "Sicherheitsrelais",
     "benoetigt_steuerspannung": "24vdc",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "3210596",
+    "bezeichnung": "PTTB 2,5-PE Doppelstock-PE-Klemme, Push-in, 0,14-4 mm², 2 Ebenen, grün-gelb (PE)",
+    "hersteller": "Phoenix Contact",
+    "bauteil_typ": "klemme",
+    "b_mm": 5.2,
+    "te_breite": 1,
+    "h_mm": 45.8,
+    "zone": [
+      "klemm_l",
+      "klemm_f",
+      "klemm_s"
+    ],
+    "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
   }
 ]

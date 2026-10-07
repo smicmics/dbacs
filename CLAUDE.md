@@ -16,6 +16,72 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 70 Teil 4 (07.10.2026) – Doppelstock-PE-Klemme
+> `3210596` ergänzt, löst die offene Mischmontage-Frage aus Teil 1/Phase F
+> dieser Sitzung:** Nutzer wusste nicht, ob eine Doppelstockklemme
+> (`3210567`) direkt neben einer Standard-PE-Klemme (`3209536`) montiert
+> werden darf (abweichende Bauhöhe, Hersteller-Recherche fand keine
+> explizite Freigabe/Ablehnung für Mischmontage) – Vorgabe: wenn nicht
+> eindeutig bestätigt, müsste Leistung (`klemm_l`) für Doppelstock gesperrt
+> werden. Alternative (vom Nutzer gewählt): **Phoenix Contact PTTB 2,5-PE
+> (`3210596`)** als eigene PE-Variante der PTTB-2,5-Doppelstock-Baureihe neu
+> katalogisiert – dimensionsgleich zu `3210567` (b_mm/h_mm identisch), löst
+> die Mischmontage-Frage auf, da L/N UND PE bei aktiver Doppelstock-Option
+> jetzt beide innerhalb derselben Baureihe/Bauhöhe bleiben, keine
+> Standardklemme mehr danebensteht. `3209536.doppelstock_variante_
+> artikel_nr` auf `3210596` gesetzt (vorher nicht vorhanden – PE blieb bei
+> Doppelstock bisher IMMER unpaarig, siehe Session 70 Teil 2). **Kein
+> Herstellerlistenpreis gefunden**, als offener Punkt im `quelle_hinweis`
+> vermerkt. Export einzelbauteile 225→**226**. Backup:
+> `ga_komponenten_vor-doppelstock-pe_20261007_212448.xlsx`.
+> **Browser-Verifikation:** 50× `430_000056` (BSK, L/N/PE-Motoranschluss)
+> – Doppelstock/DS-Trenn liefern jetzt korrekt **25× `3210596`** (vorher
+> 50× `3209536` unpaarig), Standard/Trenn weiterhin unverändert 50×
+> `3209536`; vollständiger Katalog-Regressionstest danach erneut
+> durchlaufen: `testKatalogScan()` 0 verwaist, `testBaugruppe()` 215/215
+> bestanden, `testAnlage()` 31/31 bestanden, keine Konsolenfehler.
+
+> **Nachtrag Session 70 Teil 3 (07.10.2026) – Steuerspannungs-Trafo+LSS
+> landete im falschen Feld, obwohl die CPU/DDC daneben im richtigen Feld
+> saß (Nutzer-Fund: „Energieverteilung und Trafos... gehören in Feld 1").
+> Reproduziert am 50×-BSK-Testfall (Reserve 0%, Doppelstock, Standschrank
+> 699×1745, `zone_modus='je_feld'`): Feld 1 hatte `evert` komplett leer
+> (0/300mm) und `steuer` zu 100% mit der CPU belegt, während die
+> automatisch ergänzte Steuerspannungs-Baugruppe (Trafo in `leist` + LSS in
+> `evert`) komplett in Feld 2 landete – obwohl Feld 2 gar keine CPU
+> enthielt, die sie hätte versorgen müssen.
+> **Root Cause:** die Steuerspannungs-Baugruppe läuft (anders als die
+> CPU/TXM-Module, die direkt in `queues.steuer` geschrieben werden und
+> dadurch zuverlässig als Erstes in Feld 1 landen) über `bgInstanceQueue`
+> und wurde dort bisher ganz ANS ENDE angehängt (`push()`, nach allen
+> Baugruppen aus der Belegung). `platziereBaugruppenFuerFeld()` versucht
+> pro Feld JEDE Instanz in `bgInstanceQueue`-Reihenfolge – reserviert also
+> zuerst für die 50 BSK-Instanzen Platz in `leist` (Koppelrelais), und erst
+> danach für die Steuerspannungs-Instanz. Baugruppen-Zusammenhalt (Session
+> 49) ist atomar: `evert` (LSS) UND `leist` (Trafo) müssen GEMEINSAM in
+> einem Feld passen. War `leist` in Feld 1 durch die zuerst bedienten
+> BSK-Instanzen bereits so voll, dass die 2 Trafo-Geräte nicht mehr
+> hineinpassten, scheiterte die GESAMTE Instanz dort – auch der
+> `evert`-Teil (LSS), obwohl `evert` in Feld 1 noch komplett leer war – und
+> rutschte komplett ins nächste Feld, wo wieder frischer `leist`-Platz war.
+> **Fix:** die Steuerspannungs-Instanz wird jetzt per `unshift()` statt
+> `push()` an den ANFANG von `bgInstanceQueue` gestellt (`buildQueues()`,
+> `modules/modul-04-innenaufbau/index.html`) – sie bekommt dadurch als
+> Erste Gelegenheit, sich in Feld 1 (wo auch die CPU sitzt) einzureservieren,
+> bevor andere Baugruppen `leist`/`evert` dort vollpacken. Die übrigen
+> Baugruppen packen sich danach um die bereits reservierten Trafo/LSS-
+> Geräte herum – minimal weniger Restkapazität in Feld 1 für sie, aber
+> korrekt co-lokalisiert mit der CPU, die sie versorgt.
+> **Browser-Verifikation:** derselbe 50×-BSK-Testfall zeigt jetzt Feld 1
+> `evert` 161/300mm (4× LSS) + `leist` inkl. beider Trafos (`4AM4042-
+> 5AN00-0EA0`/`-5AT10-0FA0`) neben der CPU (`steuer` weiterhin 479mm/100%),
+> Feld 2 `evert` korrekt 0/300mm (leer) und `leist` nur noch die
+> Koppelrelais – `overflow:[]` in beiden Feldern. Vollständiger Katalog-
+> Regressionstest nach dem Fix: `testKatalogScan()` 0 verwaist,
+> `testBaugruppe()` 215/215 bestanden, `testAnlage()` 31/31 bestanden
+> (inkl. aller Wärmepumpen-Anlagen mit bis zu 136 Options-Kombinationen),
+> keine Konsolenfehler.
+
 > **Nachtrag Session 70 Teil 2 (07.10.2026) – Klemmleisten-Umverteilung
 > + 2 echte Doppelstock-Bugs gefunden+behoben, ausgiebig katalogweit
 > getestet. Auslöser: Nutzer-Test mit 50× Brandschutzklappenantrieb
