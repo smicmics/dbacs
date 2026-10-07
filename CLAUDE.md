@@ -16,6 +16,47 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 70 Teil 5 (07.10.2026) – Lückenlos übereinanderliegende
+> Bänder derselben Zone werden jetzt zusammengelegt statt Restkapazität zu
+> verschenken (Nutzer-Fund beim Nachfragen zur BSK-Feldaufteilung: "die
+> kleine Leistungszone über der Klemmreihe... wäre zusammen mit der großen
+> in der Lage, weitere BSK-Gruppen aufzunehmen. Es passiert aber nicht,
+> weil die große Zone allein ausschlaggebend ist"):**
+> **Root Cause:** `buildLayout()` erzeugt für die `leist`-Zone bei
+> `ke_pos='unten'` zwei direkt aufeinanderfolgende Zeilen OHNE Kanal
+> dazwischen: `leist_ext` (Hauptteil der berechneten Höhe, volle
+> Innenbreite) und die mit ÜSS geteilte `leist`-Zeile (fest auf
+> `h_klemm`=95mm, schmaler, da ÜSS links Platz beansprucht). `getZoneBands()`
+> gab daraus bisher 2 völlig unabhängige Bänder an `placeInBands()` weiter –
+> reichte eine neue Hutschienenreihe weder in den Rest des einen NOCH in das
+> andere Band allein, wurde sie verworfen, obwohl beide Restflächen
+> ZUSAMMEN genug Höhe geboten hätten (am 50×-BSK-Testfall: 127mm Rest im
+> großen Band + 95mm im kleinen Band = 222mm, eine weitere Reihe hätte nur
+> 155mm gebraucht).
+> **Fix:** neue Funktion `mergeContiguousBands()` (`modules/modul-04-
+> innenaufbau/index.html`) legt in `getZoneBands()` lückenlos
+> übereinanderliegende Bänder DERSELBEN Zone zu einem zusammen – Breite ist
+> dabei der ÜBERSCHNEIDUNGSBEREICH (x-Intersection) beider Bänder (ein
+> durchgehender Gerätestapel darf nur die Breite nutzen, die über die
+> GESAMTE kombinierte Höhe sicher frei ist, z.B. nicht in den Bereich
+> hineinragen, den im schmaleren Band eine Nachbarzone wie ÜSS belegt – die
+> breitere Zeile verschenkt dadurch etwas Randbreite, bleibt aber garantiert
+> kollisionsfrei). Nur angewendet auf Zonen, die tatsächlich über
+> `placeInBands()` (Reihen-/Kanal-Modell) laufen: `leist`/`steuer` immer,
+> `evert` nur ohne Schienensystem – `klemm_e/uss/klemm_l/klemm_f/klemm_s`
+> sowie `evert` MIT Schienensystem nutzen `placeInKlemmRow()`, dort ist
+> jedes Band eine eigenständige Hutschienenreihe und darf nicht verschmolzen
+> werden. Löst nebenbei die seit Session 48 bekannte Einschränkung
+> "TE-Passt-Prüfung nutzt nur die Breite des ERSTEN Bandes" sauber auf, da
+> `bands[0]` nach dem Zusammenlegen bereits die schmalste sicher nutzbare
+> Breite trägt.
+> **Browser-Verifikation:** 50×-BSK-Testfall (Reserve 0%, Doppelstock,
+> Standschrank 699×1699mm) – Feld 1 nimmt jetzt **24 statt 18 Instanzen**
+> auf (`leist`-Füllstand 57%→87%), Feld 2 entsprechend weniger (26 statt
+> 32) – die zuvor gestrandete Kapazität wird jetzt genutzt. Vollständiger
+> Katalog-Regressionstest: `testKatalogScan()` 0 verwaist, `testBaugruppe()`
+> 215/215 bestanden, `testAnlage()` 31/31 bestanden, keine Konsolenfehler.
+
 > **Nachtrag Session 70 Teil 4 (07.10.2026) – Doppelstock-PE-Klemme
 > `3210596` ergänzt, löst die offene Mischmontage-Frage aus Teil 1/Phase F
 > dieser Sitzung:** Nutzer wusste nicht, ob eine Doppelstockklemme

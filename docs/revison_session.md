@@ -1,6 +1,18 @@
 # DBACS – Revisionsstand
 
-**Stand:** 07. Oktober 2026 – Session 70 Teil 4 (Modul 4 Katalog,
+**Stand:** 07. Oktober 2026 – Session 70 Teil 5 (Modul 4,
+`modules/modul-04-innenaufbau/index.html`): lückenlos übereinanderliegende
+Bänder derselben Zone (z. B. `leist_ext` direkt über der mit ÜSS geteilten
+`leist`-Zeile) werden jetzt zu einem Band zusammengelegt
+(`mergeContiguousBands()`), statt Restkapazität ungenutzt zu lassen, wenn
+eine neue Hutschienenreihe weder in den Rest des einen noch in das andere
+Band allein passte. Nur für `leist`/`steuer`/`evert`-ohne-Schiene (reines
+`placeInBands()`-Reihenmodell). Verifiziert: 50×-BSK-Testfall nimmt jetzt
+24 statt 18 Instanzen in Feld 1 auf; 215/215 Baugruppen, 31/31 Anlagen,
+`testKatalogScan()` sauber. Details: `CLAUDE.md` → „Offene Punkte"
+Nachtrag Session 70 Teil 5.
+
+Vorheriger Stand – Session 70 Teil 4 (Modul 4 Katalog,
 `data/ga_komponenten.xlsx`): neue Phoenix-Contact-Klemme `3210596` (PTTB
 2,5-PE, Doppelstock-PE-Variante, dimensionsgleich zu `3210567`) ergänzt und
 als `doppelstock_variante_artikel_nr` an `3209536` (Standard-PE-Klemme)
