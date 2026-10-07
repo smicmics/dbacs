@@ -2501,13 +2501,73 @@ function redistributeKlemmBands(bandsAll, queues, reservePct, keys, bgInstanceQu
   if (totalDeficit === 0) {
     // Niemand gefährdet – M3-Originalbreiten unverändert lassen.
     KEYS.forEach(k => { newWidth[k] = origWidth[k]; });
-  } else {
-    const takeRatio = totalSurplus > 0 ? Math.min(1, totalSurplus / totalDeficit) : 0;
-    const takenTotal = totalDeficit * takeRatio;
+  } else if (totalSurplus >= totalDeficit) {
+    // Genug Überschuss für ALLE Defizit-Zonen gleichzeitig – jede erreicht
+    // exakt ihre eigene Reserve-Zielbreite (requiredWidth), unabhängig von
+    // der Gewichtung (keine Konkurrenz um knappen Überschuss, daher spielt
+    // die Verteilungsformel hier keine Rolle).
     KEYS.forEach(k => {
       newWidth[k] = origWidth[k];
-      if (deficit[k] > 0) newWidth[k] += deficit[k] * takeRatio;
-      if (surplus[k] > 0) newWidth[k] -= takenTotal * (surplus[k] / totalSurplus);
+      if (deficit[k] > 0) newWidth[k] = requiredWidth[k];
+      if (surplus[k] > 0) newWidth[k] -= totalDeficit * (surplus[k] / totalSurplus);
+    });
+  } else {
+    // Shortfall (totalSurplus < totalDeficit): der verfügbare Überschuss
+    // reicht nicht für alle Defizit-Zonen gleichzeitig. Statt wie zuvor nur
+    // den knappen Überschuss auf die ungleiche M3-Grundaufteilung
+    // draufzusatteln, wird der GESAMTE Pool der Defizit-Zonen (ihre
+    // Summe aus origWidth + abgegebener Überschuss) NACH BEDARF (demandMM)
+    // neu verteilt (Session 70, Nutzer-Fund) – mehrere Klemmleisten-Zonen
+    // (typ. klemm_f + klemm_l) werden oft von DENSELBEN Baugruppen-
+    // Instanzen gespeist (gekoppelter Bedarf, z. B. 4× klemm_f- + 3×
+    // klemm_l-Klemmen je Brandschutzklappen-Antrieb, da Endlage-Auf und
+    // Endlage-Zu zwei physisch getrennte Signalpaare sind) – ihr Bedarf
+    // wächst im FESTEN Verhältnis der Instanzenzahl. Die alte Verteilung
+    // (nur Überschuss, proportional zum absoluten mm-Defizit, addiert auf
+    // die oft sehr ungleiche M3-Grundbreite) ließ die ungleiche
+    // Grundaufteilung unangetastet und bevorzugte dadurch tendenziell die
+    // Zone mit der größeren M3-Grundbreite – unabhängig vom tatsächlichen
+    // Bedarfsverhältnis. Verteilung des GESAMTEN Defizit-Pools proportional
+    // zu demandMM trifft bei gekoppeltem Bedarf exakt das Verhältnis, das
+    // die Anzahl gemeinsam platzierbarer Instanzen maximiert (demand_f/
+    // demand_l ist bei N gekoppelten Instanzen IMMER = Platzbedarf_f_je_
+    // Instanz/Platzbedarf_l_je_Instanz, unabhängig von N).
+    //
+    // Sicherung gegen Regression bei UNABHÄNGIGEM (nicht gekoppeltem)
+    // Bedarf: jede Defizit-Zone bekommt zuerst garantiert ihren ROHEN
+    // (reserve-freien) Platzbedarf (demandMM) gesichert, bevor der Rest
+    // des Pools anteilig nach Bedarf auf die Reserve-Zielbreite verteilt
+    // wird – eine Zone, die rein rechnerisch knapp über 80% ausgelastet
+    // ist (reserve-technisch „im Defizit", aber physisch längst passend),
+    // kann dadurch nie unter ihren tatsächlichen Platzbedarf gedrückt
+    // werden, nur weil eine andere Zone einen größeren Bedarf hat. Nur im
+    // echten Katastrophenfall (selbst die rohen Bedarfe aller Defizit-
+    // Zonen zusammen passen nicht in den Pool) greift die reine
+    // Bedarfsproportion ohne Untergrenze – der daraus resultierende
+    // physische Restüberlauf wird ohnehin von placeInKlemmRow() als
+    // harter Overflow erkannt, unabhängig von der Verteilungsformel hier.
+    const deficitKeys = KEYS.filter(k => deficit[k] > 0);
+    const deficitDemandTotal = deficitKeys.reduce((s, k) => s + demandMM[k], 0);
+    const poolForDeficitZones = deficitKeys.reduce((s, k) => s + origWidth[k], 0) + totalSurplus;
+    const rawFloorTotal = deficitKeys.reduce((s, k) => s + demandMM[k], 0);
+    KEYS.forEach(k => {
+      newWidth[k] = origWidth[k];
+      if (deficit[k] > 0) {
+        if (deficitDemandTotal <= 0) {
+          newWidth[k] = poolForDeficitZones / deficitKeys.length;
+        } else if (rawFloorTotal <= poolForDeficitZones) {
+          // Normalfall: jede Zone bekommt mind. ihren rohen Bedarf, der
+          // restliche Pool wird anteilig nach Bedarf auf die Reserve
+          // verteilt.
+          const extra = poolForDeficitZones - rawFloorTotal;
+          newWidth[k] = demandMM[k] + extra * (demandMM[k] / deficitDemandTotal);
+        } else {
+          // Katastrophenfall: selbst die rohen Bedarfe passen nicht in
+          // den Pool – reine Bedarfsproportion ohne Untergrenze.
+          newWidth[k] = poolForDeficitZones * (demandMM[k] / deficitDemandTotal);
+        }
+      }
+      if (surplus[k] > 0) newWidth[k] -= surplus[k]; // Shortfall: gesamter Überschuss wird abgegeben
     });
   }
 
@@ -3151,17 +3211,52 @@ function resolveBaugruppenBauteile(bg, variante) {
       return ziel === eb ? bt : {...bt, artikel_nr: ziel.artikel_nr};
     }));
   }
+  // Session 70, Nutzer-Fund: die ursprüngliche Logik ging von GENAU einem
+  // Signal+Referenz-Paar je (Zone, Artikel) pro Baugruppe aus ("zweites
+  // Vorkommen entfällt") – bei Baugruppen mit MEHREREN getrennten
+  // Meldungen im selben Zone/Artikel (z. B. Brandschutzklappenantrieb mit
+  // 2 unabhängigen Endlagenmeldungen Auf+Zu, macht 4 statt 2 klemm_f-
+  // Zeilen) verwarf das 3 von 4 physischen Klemmen, nicht nur die
+  // tatsächlich überzählige. Jetzt PAARWEISE: 1./2. Vorkommen = 1.
+  // Doppelstockklemme (1. behält Override, 2. entfällt), 3./4. Vorkommen =
+  // eine WEITERE eigene Doppelstockklemme usw. – bei ungerader Anzahl
+  // bekommt das letzte, unpaarige Vorkommen ebenfalls eine eigene (nur zur
+  // Hälfte genutzte) Doppelstockklemme, analog zur bereits bestehenden
+  // Behandlung ungerader Instanzenzahlen auf Baugruppen-Instanz-Ebene
+  // (siehe buildQueues()).
+  // Session 70, Nutzer-Fund #2: nicht jede Klemme hat überhaupt eine
+  // Doppelstock-Variante (z. B. Schutzleiterklemme 3209536 – PE wird aus
+  // Sicherheits-/Normgründen nicht auf eine gemeinsame 2-Ebenen-Klemme
+  // gelegt). Für solche Artikel darf die äußere "2 Instanzen teilen sich
+  // ein Gerät"-Paarung (buildQueues(), geraetPlatzieren) NICHT greifen,
+  // sonst bekäme nur jede 2. Instanz überhaupt eine physische PE-Klemme.
+  // `_dsPairable` markiert deshalb je Zeile, ob eine echte Doppelstock-
+  // Umstellung stattgefunden hat (zwischenEb.doppelstock_variante_artikel_nr
+  // vorhanden) – nur dann gilt die Instanzen-Paarung in buildQueues().
   const out = [];
-  const seen = {};
+  const countByKey = {};
   bg.bauteile.forEach(bt => {
     const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
     if (!eb) { out.push(bt); return; }
     const ziel = resolveKlemmeArtikel(eb, variante);
     if (ziel === eb) { out.push(bt); return; } // keine passende Variante bekannt – unverändert lassen
+    const zwischenEb = (variante === 'doppelstock_trenn')
+      ? (EINZELBAUTEILE_DB.find(e => e.artikel_nr === eb.trennklemme_variante_artikel_nr) || eb)
+      : eb;
+    const pairable = !!zwischenEb.doppelstock_variante_artikel_nr;
+    if (!pairable) {
+      // Keine Doppelstock-Variante vorhanden (z. B. PE) – Artikel wechselt
+      // ggf. durch Trennklemme, aber jede Zeile bleibt eigenständig, keine
+      // Zusammenlegung über Zeilen oder Instanzen hinweg.
+      out.push({...bt, artikel_nr: ziel.artikel_nr, _dsPairable: false});
+      return;
+    }
     const key = (bt.zone || eb.zone[0]) + '|' + bt.artikel_nr;
-    if (seen[key]) return; // zweites Vorkommen: entfällt, bereits durch die Doppelstockklemme des ersten abgedeckt
-    seen[key] = true;
-    out.push({...bt, artikel_nr: ziel.artikel_nr});
+    const n = countByKey[key] = (countByKey[key] || 0) + 1;
+    if (n % 2 === 1) {
+      out.push({...bt, artikel_nr: ziel.artikel_nr, _dsPairable: true}); // ungerades Vorkommen: neue Doppelstockklemme
+    }
+    // gerades Vorkommen: entfällt, teilt sich die zuletzt angelegte Klemme (2. Ebene)
   });
   return applyNetztypResolution(out);
 }
@@ -3339,8 +3434,14 @@ function buildQueues(ddcReservePct) {
       const subInstanzen = Math.min(schrittweite, item.menge - inst);
       const zonen = {};
       for (let sub = 0; sub < subInstanzen; sub++) {
-        const geraetPlatzieren = sub === 0; // nur die erste Sub-Instanz legt das physische Gerät an
         resolveBaugruppenBauteile(bg, variante).forEach(bt => {
+          // geraetPlatzieren: die äußere "2 Instanzen teilen sich ein
+          // Gerät"-Paarung gilt NUR für Zeilen, die resolveBaugruppenBauteile()
+          // tatsächlich als doppelstock-paarbar markiert hat (bt._dsPairable).
+          // Artikel ohne Doppelstock-Variante (z. B. PE-Schutzleiterklemme,
+          // Session 70 Nutzer-Fund #2) bekommen bei JEDER Sub-Instanz ihr
+          // eigenes physisches Gerät, unabhängig von `sub`.
+          const geraetPlatzieren = sub === 0 || !bt._dsPairable;
           const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
           if(!eb || eb.te_breite <= 0) return;
           if (eb.benoetigt_steuerspannung) neededSteuerspannung.add(eb.benoetigt_steuerspannung);
@@ -4845,15 +4946,17 @@ function aggregateStueckliste() {
     // Doppelstockklemmen fassen 2 Baugruppen-Instanzen auf einer physischen
     // Klemme zusammen (siehe buildQueues()) - die Stueckzahl muss das
     // widerspiegeln, sonst zeigt die Stueckliste doppelt so viele Klemmen
-    // wie tatsaechlich platziert werden. Vereinfachung (bewusst, aktuell
-    // unkritisch): gilt fuer die GESAMTE Baugruppe - passt fuer alle 6
-    // DDC-Reserve-Baugruppen (ausschliesslich 2 Klemmen je Instanz, sonst
-    // nichts); eine kuenftige Baugruppe mit zusaetzlichen NICHT-Klemmen-
-    // Bauteilen bräuchte hier eine bauteilweise statt baugruppenweite
-    // Unterscheidung.
+    // wie tatsaechlich platziert werden. Session 70, Nutzer-Fund #2: die
+    // Halbierung darf NICHT fuer die gesamte Baugruppe gelten (vorherige,
+    // bewusst als Vereinfachung markierte Fassung) - Bauteile OHNE
+    // Doppelstock-Variante (z.B. PE-Schutzleiterklemme, oder gar keine
+    // Klemme wie ein Koppelrelais in `leist`) wuerden sonst ebenfalls
+    // faelschlich halbiert, obwohl jede Instanz weiterhin ihr eigenes
+    // physisches Exemplar braucht. Jetzt bauteilweise ueber bt._dsPairable
+    // (von resolveBaugruppenBauteile() gesetzt) entschieden, konsistent zu
+    // derselben Unterscheidung in buildQueues().
     const variante = klemmenVariante();
     const istDoppelstock = variante === 'doppelstock' || variante === 'doppelstock_trenn';
-    const geraeteAnzahl = istDoppelstock ? Math.ceil(item.menge / 2) : item.menge;
     resolveBaugruppenBauteile(bg, variante).forEach(bt => {
       const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
       if(!eb) return;
@@ -4861,6 +4964,7 @@ function aggregateStueckliste() {
       // kein physisches Bauteil - traegt nur dp_fb_*, gehoert nicht in die
       // Stueckliste.
       if(eb.artikel_nr === 'KOMM-FB') return;
+      const geraeteAnzahl = (istDoppelstock && bt._dsPairable) ? Math.ceil(item.menge / 2) : item.menge;
       add(bt.artikel_nr, bt.zone || eb.zone[0], bt.menge * geraeteAnzahl);
     });
   });

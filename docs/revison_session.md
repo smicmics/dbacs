@@ -1,6 +1,21 @@
 # DBACS – Revisionsstand
 
-**Stand:** 07. Oktober 2026 – Session 70 (Modul 4 Katalog,
+**Stand:** 07. Oktober 2026 – Session 70 Teil 2 (Modul 4,
+`modules/modul-04-innenaufbau/index.html`): Klemmleisten-Umverteilung
+(`redistributeKlemmBands()`) von Defizit- auf Bedarfs-proportionale
+Verteilung umgestellt (löst „klemm_f/klemm_l limitieren, obwohl leist/
+steuer noch Platz haben" bei vielen gleichartigen Baugruppen-Instanzen) +
+2 echte Doppelstock-Bugs gefunden und behoben (`resolveBaugruppenBauteile()`
+verwarf bei >2 gleichartigen Zeilen je Baugruppe zu viele Klemmen statt
+paarweise zu gruppieren; `buildQueues()`/`aggregateStueckliste()` halbierten
+pauschal die GESAMTE Baugruppe statt nur tatsächlich doppelstockfähige
+Artikel – z. B. Schutzleiterklemmen/Koppelrelais wurden fälschlich
+halbiert). Vollständig regressionsgetestet: 215/215 Baugruppen, 31/31
+Anlagen, `testKatalogScan()` sauber, 4 Klemmenvarianten × 50er-Stresstest
+verifiziert. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 70
+Teil 2.
+
+Vorheriger Stand – Session 70 Teil 1 (Modul 4 Katalog,
 `data/ga_komponenten.xlsx`): Wärmepumpen/Kältemaschinen bis 250 kW –
 5-Fork-Recherche (Viessmann/Buderus/Carrier/Skadec+Mitsubishi/generische
 Normen+Sensorik, Kernbefund: keine öffentliche Modbus-Registerliste bei

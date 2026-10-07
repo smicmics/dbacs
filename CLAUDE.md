@@ -16,6 +16,83 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 70 Teil 2 (07.10.2026) – Klemmleisten-Umverteilung
+> + 2 echte Doppelstock-Bugs gefunden+behoben, ausgiebig katalogweit
+> getestet. Auslöser: Nutzer-Test mit 50× Brandschutzklappenantrieb
+> (`430_000056`) zeigte `klemm_f`/`klemm_l` als limitierenden Faktor,
+> obwohl `leist`/`steuer`/`evert` noch viel Platz hatten:**
+> 1. **`redistributeKlemmBands()` korrigiert** (`modules/modul-04-
+>    innenaufbau/index.html`): verteilte den knappen Überschuss bisher
+>    proportional zum absoluten mm-**Defizit** jeder Klemmleisten-Zone
+>    (`klemm_l`/`klemm_f`/`klemm_s`) – bei Zonen, die von DENSELBEN
+>    Baugruppen-Instanzen gespeist werden (gekoppelter Bedarf, z. B. 4×
+>    `klemm_f`- + 3× `klemm_l`-Klemmen je BSK-Antrieb), bevorzugte das
+>    systematisch die Zone mit dem größeren Defizit und ließ die
+>    gekoppelte Partnerzone mit Breite zurück, die mangels passender
+>    Instanzen nie gefüllt werden konnte (Baugruppen-Zusammenhalt).
+>    Neue Logik verteilt im Shortfall-Fall den **gesamten** Pool der
+>    Defizit-Zonen proportional zum tatsächlichen **Bedarf** (`demandMM`),
+>    mit Sicherung, dass keine Zone unter ihren rohen (reserve-freien)
+>    Platzbedarf gedrückt wird (Katastrophenfall-Fallback ohne
+>    Untergrenze, falls selbst die rohen Bedarfe nicht in den Pool
+>    passen). Ergebnis am Testfall (1099×1745-Standschrank, 20% Reserve):
+>    vorher 20 von 50 BSK-Instanzen passten ins erste Feld, danach 28 –
+>    `klemm_f`/`klemm_l` werden jetzt gleichzeitig limitierend statt
+>    einer die andere auszubremsen.
+> 2. **Doppelstock-Bug #1 – `resolveBaugruppenBauteile()`:** die
+>    ursprüngliche Logik ging von GENAU 2 gleichartigen Zeilen (1
+>    Signal+Referenz-Paar) je Baugruppe aus und verwarf bei einem
+>    dritten/vierten Vorkommen (`seen[key]`) einfach ALLES weitere – bei
+>    `430_000056` mit 4 `klemm_f`-Zeilen (2 getrennte Meldungen: Endlage
+>    Auf + Endlage Zu, an unterschiedlichen Stellen der Klappe) gingen so
+>    3 von 4 Klemmen verloren (Stückliste zeigte nur 25 statt 200 nötige
+>    `klemm_f`-Positionen für 50 Instanzen). Betraf jede Baugruppe mit
+>    mehr als einem Signal+Referenz-Paar im selben Zone/Artikel, nicht
+>    nur BSK. Fix: PAARWEISE statt „erstes gewinnt" – 1./2. Vorkommen = 1.
+>    Doppelstockklemme, 3./4. Vorkommen = eine WEITERE eigene
+>    Doppelstockklemme usw.
+> 3. **Doppelstock-Bug #2 – äußere Instanzen-Paarung in `buildQueues()`
+>    UND `aggregateStueckliste()`:** beide behandelten im Doppelstock-
+>    Modus pauschal die GANZE Baugruppe als paarbar (`sub===0`-Platzier-
+>    Logik bzw. `Math.ceil(item.menge/2)` auf ALLE Bauteile) – Artikel
+>    OHNE eigene Doppelstock-Variante (z. B. Schutzleiterklemme
+>    `3209536`, die laut Katalog keine `doppelstock_variante_artikel_nr`
+>    hat – Nutzer-Nachfrage „gibt's eine Kombiklemme für L/N/PE?"
+>    bestätigt: nein, nur Einzelklemmen je Leiter) wurden dadurch
+>    FÄLSCHLICH halbiert, bei `leist`-Zone-Bauteilen (Koppelrelais
+>    `2967099`/`2967073`, gar keine Klemmen) wäre das sogar in der
+>    Stückliste falsch gewesen. Fix: neues Flag `bt._dsPairable` (von
+>    `resolveBaugruppenBauteile()` gesetzt, true nur wenn der Artikel
+>    tatsächlich eine Doppelstock-Variante hat) – Instanzen-Paarung
+>    (`geraetPlatzieren`/`geraeteAnzahl`) greift jetzt bauteilweise statt
+>    baugruppenweit.
+> **Referenz-Fakt (Nutzer-Nachfrage, in Code-Kommentar übernommen):**
+> eine Doppelstockklemme hat 2 Ebenen zu je 2 Anschlüssen = 4 Adern
+> gesamt = Platz für 2 vollständige Signal+Referenz-Paare.
+> **Browser-Verifikation:** 50× `430_000056` über alle 4 Klemmenvarianten
+> (Standard/Doppelstock/Trennklemme/DS-Trennklemme) getestet – `leist`
+> (Koppelrelais) bei JEDER Variante unverändert 100/50/1/1 in der
+> Stückliste; `klemm_f`/`klemm_l` bei Standard/Trenn identisch
+> (200/100+50 Klemmen, nur anderer Artikel bei Trenn); bei Doppelstock/
+> DS-Trenn korrekt 50/(25+50) – PE bleibt unpaarig bei 50, L/N korrekt
+> gepaart bei 25 –, dabei passen jetzt ALLE 50 Instanzen ohne Overflow in
+> 1 Feld. Regressionstest klassischer 2-Zeilen-Fall (`480_000001`
+> Binäreingang, menge 10/11): Doppelstock liefert weiterhin exakt 5 bzw.
+> 6 Klemmen (ungerade Anzahl: letzte halbgenutzt), BI-Zählung unverändert
+> – kein Verhaltensunterschied zum Stand vor dem Fix. **Vollständiger
+> Katalog-Regressionstest** (Standard-Klemmenvariante, da nur die
+> betrifft alle bestehenden Anlagen standardmäßig): `testKatalogScan()`
+> 0 verwaist, `testBaugruppe()` 215/215 bestanden, `testAnlage()` 31/31
+> bestanden (inkl. aller 8 neuen Wärmepumpen-Anlagen mit bis zu 136
+> Options-Kombinationen), keine Konsolenfehler.
+> **Noch offen (zurückgestellt, Nutzer-Vorgabe „das muss ich probieren,
+> bevor wir die Architektur der Klemmen anpacken"):** die grundsätzliche
+> Frage, ob `klemm_f`/`klemm_l`/`klemm_s` bei Bedarf mehrreihig werden
+> sollen (zusätzliche Hutschienenreihen aus freier `leist`/`steuer`-Höhe
+> ziehen) – mit den jetzt behobenen Bugs kann der Nutzer Doppelstock-
+> klemmen zunächst gezielt manuell einsetzen, wo er Engpässe bemerkt,
+> statt die Architektur zu erweitern.
+
 > **Nachtrag Session 70 (07.10.2026) – Wärmepumpen/Kältemaschinen bis
 > 250 kW: Fork-Recherche (5 Forks: Viessmann/Buderus/Carrier/Skadec+
 > Mitsubishi/generische Normen+Sensorik) + 8 neue Anlagen „Wärmepumpe bis
