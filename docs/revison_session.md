@@ -1,6 +1,16 @@
 # DBACS – Revisionsstand
 
-**Stand:** 07. Oktober 2026 – Session 70 Teil 8 (Modul 3 +
+**Stand:** 08. Oktober 2026 – Session 70 Teil 9 (Modul 4, Verifikation):
+neuer `zone_modus` „einsp_leist_misch" (Teil 8) rechnergestützt gegen den
+gesamten Katalog geprüft statt nur den einen BSK-Testfall – alle 215
+Baugruppen einzeln 0 Fehler, 2 Mengen-Stresstests (300×/500×) bestätigen
+die Mehrfeld-Kaskade (F→G→G→E→E bzw. F→G→E) sauber demand-getrieben ohne
+Overflow. Optische Kontrolle + DOM-Abgleich bestätigt Feld-Zonen exakt
+deckungsgleich mit `FELDTYP_ZONEN.F`/`.E`. Standard-Regressionstest erneut
+bestanden (215/215 Baugruppen, 31/31 Anlagen, `testKatalogScan()` sauber).
+Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 70 Teil 9.
+
+Vorheriger Stand – Session 70 Teil 8 (Modul 3 +
 `modules/modul-04-innenaufbau/index.html`): neuer `zone_modus`
 „Einspeisung+Leistung gemischt, Steuerung getrennt" (`einsp_leist_misch`) –
 Spiegelbild zum bestehenden `einsp_misch`. 2 neue Feldtypen F (Erstfeld:

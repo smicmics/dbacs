@@ -16,6 +16,33 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 70 Teil 9 (08.10.2026) – Breite Verifikation des neuen
+> `zone_modus` „einsp_leist_misch" (Teil 8) gegen den gesamten Katalog,
+> Nutzer-Auftrag: „Nutze die bereits vereinbarten Testroutinen... rechner-
+> gestützte Tests statt Handkontrolle":**
+> Neue Hilfsfunktion `testBaugruppeUnterModus(bgId, modus, menge)`
+> (Browser-Konsole, analog `testBaugruppe()`, aber mit erzwungenem
+> `m03_zone_modus` statt dem festen `1feld`-Referenzaufbau) – **alle 215
+> Baugruppen einzeln (Menge 1) unter `einsp_leist_misch` getestet: 0
+> Fehler** (kein `fehlendPlatziert`, kein `overflow`). Zusätzlich 2
+> Stresstests mit hoher Menge zur gezielten Prüfung der Mehrfeld-Kaskade:
+> 300× `430_000056` (BSK) → Feldfolge **F,G,G,E,E** (2× zusätzliches
+> Leistungsfeld, 2× zusätzliches Steuerungsfeld, unabhängig voneinander
+> demand-getrieben), 500× `480_000001` (Automations-Reserve) → **F,G,E** –
+> beide 0 Fehler. Bestätigt: die in Teil 8 nur mit einem Baugruppentyp
+> (50× BSK) verifizierte Feldtyp-Logik hält auch katalogweit und über
+> mehrstufige Überlauf-Kaskaden. Zusätzlich optische Kontrolle (Browser-
+> Screenshot, 50×-BSK-Testfall): Feld 1 (Typ F) zeigt Einspeiseklemmen-
+> Header, große + kleine Leistungszone, Abgangsklemmen unten; Feld 2 (Typ
+> E) zeigt Steuerbaugruppe (CPU+TX-I/O-Module) + Energieverteilung; direkte
+> DOM-Abfrage bestätigt `letzteFelder[0].zones` exakt `{leist,klemm_e,uss,
+> klemm_l,klemm_f,evert}` und `letzteFelder[1].zones` exakt `{steuer,
+> klemm_f,klemm_s,evert}` – deckungsgleich mit `FELDTYP_ZONEN.F`/`.E`,
+> Legende/Farben korrekt, keine Überlappungen. Vollständiger
+> Standard-Regressionstest (fester `1feld`-Referenzaufbau, unabhängig vom
+> neuen Modus) erneut bestanden: `testKatalogScan()` 0 verwaist,
+> `testBaugruppe()` 215/215, `testAnlage()` 31/31, keine Konsolenfehler.
+
 > **Nachtrag Session 70 Teil 8 (07.10.2026) – Neuer `zone_modus`
 > „Einspeisung+Leistung gemischt, Steuerung getrennt" (Modul 3 + Modul 4),
 > Nutzer-Vorgabe – fehlende Feldaufteilungs-Variante ergänzt:**
