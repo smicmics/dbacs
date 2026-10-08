@@ -1,6 +1,20 @@
 # DBACS – Revisionsstand
 
-**Stand:** 08. Oktober 2026 – Session 70 Teil 9 (Modul 4, Verifikation):
+**Stand:** 08. Oktober 2026 – Session 71 (Modul 4 Katalog,
+`data/ga_komponenten.xlsx`): Anlagengruppe Kälte – 12 neue Anlagen durch
+Duplikation bestehender Heizungs-Anlagen (Kältekreis Verteilung,
+Kälteverteiler-/Sammler, Kälteübertrager), zugrundeliegende Baugruppen
+unverändert wiederverwendet, nur Namen/Kategorie/Kältemengenzähler-
+Referenzen angepasst. Fußbodenheizkreise und Wärmeerzeuger (Fernwärme)
+bewusst nicht dupliziert (kein Kälte-Pendant). Export anlagen 31→43.
+Vollständig regressionsgetestet: alle 12 neuen Anlagen einzeln
+`testAnlage()`-geprüft, 215/215 Baugruppen, 43/43 Anlagen gesamt,
+`testKatalogScan()` sauber. Parallel: Fork-Recherche für Kältemaschinen/
+Rückkühlwerke (≥250kW) sowie Glykol-/Gaswarnanlage gestartet, Ergebnisse
+stehen noch aus. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag
+Session 71.
+
+Vorheriger Stand – Session 70 Teil 9 (Modul 4, Verifikation):
 neuer `zone_modus` „einsp_leist_misch" (Teil 8) rechnergestützt gegen den
 gesamten Katalog geprüft statt nur den einen BSK-Testfall – alle 215
 Baugruppen einzeln 0 Fehler, 2 Mengen-Stresstests (300×/500×) bestätigen

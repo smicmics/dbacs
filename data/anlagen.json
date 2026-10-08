@@ -2186,5 +2186,449 @@
     "kategorie": "Waermepumpen",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "420_A00026",
+    "name": "Kältekreis Beimisch-/Drosselschaltung, klein (Pumpe PICO 3...45 W, Regelventil 200N, VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Kältekreis mit 3-Wege-Beimisch-/Drosselventil, Leistungsstufe klein (Umwaelzpumpe Wilo Yonos/Stratos PICO, 420_000022, 3...45 W, 230V 1~, keine Busoption - PICO hat keinen CIF-Steckplatz). Fester Bestandteil: Pumpe (1xBO+2xBI) + Ventilantrieb Zonenregelung 200N 0...10V mit Ruecklaufmeldung (420_000014, 1xAO+1xAI, Annahme: kleinere Baugroesse fuer kleine Beimischkreise passend, Siemens SSB161.05HF) + Vorlauf-/Ruecklauffuehler (430_000006 100mm + 430_000007 150mm, je 1xAI) fuer die DDC-Regelschleife, unabhaengig von einem optionalen WMZ (WMZ liest nur zyklisch ueber M-Bus, zu langsam fuer die Ventil-Regelschleife). Physischer Datenpunktbedarf gesamt: 1xBO + 2xBI + 1xAO + 3xAI. Optional per Dropdown 'Kaeltemengenzaehler': Ohne (Default) oder mit WMZ DN15-25 Kompakt M-Bus busgespeist (420_000037, 7 Werte komm. M-Bus, kein Schaltschrankplatz, Pegelwandler automatisch). Automationsstation/Energieversorgung/LVB weiterhin automatisch ueber die bestehenden Ratchets, nicht Teil dieser Anlagen-Definition. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000022",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000014",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000037",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kaeltemengenzaehler DN15-25 Kompakt (M-Bus)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kältekreis Verteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00027",
+    "name": "Kältekreis Beimisch-/Drosselschaltung, mittel (Pumpe MAXO 40 W...1,5 kW, Regelventil 800N, VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Kältekreis mit 3-Wege-Beimisch-/Drosselventil, Leistungsstufe mittel (Umwaelzpumpe Wilo Stratos MAXO, 420_000023, 40 W...1,5 kW, 230V 1~, vollintegrierte Elektronik - kein Schuetz/PKZM noetig, DDC-BO geht direkt auf den geraeteeigenen Digitaleingang DI1 'Extern AUS'). Fester Bestandteil: Pumpe (1xBO+1xAO+3xBI) + Ventilantrieb 800N 0...10V mit Ruecklaufmeldung (420_000013, 1xAO+1xAI, Siemens SAX61.03) + Vorlauf-/Ruecklauffuehler (430_000006+430_000007, je 1xAI) fuer die DDC-Regelschleife. Physischer Datenpunktbedarf gesamt: 1xBO + 3xBI + 2xAO + 3xAI. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Kaeltemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000039, naechstgroessere Baugroesse statt DN15-25 - Nutzer-Vorgabe Session 68, 7 Werte komm. M-Bus, kein Schaltschrankplatz). Automationsstation/Energieversorgung/LVB/Ethernet-Switch (bei Ethernet-Busvariante) weiterhin automatisch ueber die bestehenden Ratchets. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000023",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000051",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Mit Busanbindung Modbus RTU (Wilo CIF)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000052",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Mit Busanbindung Ethernet Modbus TCP/BACnet-IP (Wilo CIF)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kaeltemengenzaehler DN50 (M-Bus)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kältekreis Verteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00028",
+    "name": "Kältekreis Beimisch-/Drosselschaltung, groß (Pumpe GIGA2.0 0,37...7,5 kW 400V 3~, Regelventil 800N, VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Kältekreis mit 3-Wege-Beimisch-/Drosselventil, Leistungsstufe gross (Umwaelzpumpe Wilo Stratos GIGA2.0, 420_000025, 0,37...7,5 kW, 400V 3~, integrierter Frequenzumrichter + Motor-Vollschutz, kein externes Schuetz/MSS noetig, identisches DP-Schema wie MAXO). Fester Bestandteil: Pumpe (1xBO+1xAO+3xBI) + Ventilantrieb 800N 0...10V mit Ruecklaufmeldung (420_000013, 1xAO+1xAI, groesster katalogisierter Ventilantrieb - bei Bedarf projektspezifisch pruefen ob ausreichend) + Vorlauf-/Ruecklauffuehler (430_000006+430_000007, je 1xAI). Physischer Datenpunktbedarf gesamt: 1xBO + 3xBI + 2xAO + 3xAI. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Kaeltemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000039, 7 Werte komm. M-Bus). Automationsstation/Energieversorgung/LVB/Ethernet-Switch weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000025",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000051",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Mit Busanbindung Modbus RTU (Wilo CIF)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000052",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Mit Busanbindung Ethernet Modbus TCP/BACnet-IP (Wilo CIF)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kaeltemengenzaehler DN50 (M-Bus)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kältekreis Verteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00029",
+    "name": "Kältekreis Zubringerkreis, ungeregelt, klein (Pumpe PICO 3...45 W, VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Zubringerkreis (reiner Transportkreis ohne eigenes Mischventil, verbindet z.B. Kesselkreis/Verteiler mit einem Unterverteiler), Leistungsstufe klein (Umwaelzpumpe Wilo Yonos/Stratos PICO, 420_000022, 3...45 W, 230V 1~, keine Busoption). Fester Bestandteil: nur die Pumpe (1xBO+2xBI) - bewusst OHNE eigenen Vorlauf-/Ruecklauf-fuehler, da ein Zubringerkreis keine eigene Regelschleife hat; falls Messwerte benoetigt werden, liefert der optionale WMZ diese bereits mit (VL/RL-Temperatur sind Teil der 7 M-Bus-Werte). Physischer Datenpunktbedarf: 1xBO + 2xBI. Optional per Dropdown 'Kaeltemengenzaehler': Ohne (Default) oder mit WMZ DN15-25 Kompakt M-Bus busgespeist (420_000037, 7 Werte komm. M-Bus). Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000022",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000037",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kaeltemengenzaehler DN15-25 Kompakt (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kältekreis Verteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00030",
+    "name": "Kältekreis Zubringerkreis, ungeregelt, mittel (Pumpe MAXO 40 W...1,5 kW, VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Zubringerkreis, Leistungsstufe mittel (Umwaelzpumpe Wilo Stratos MAXO, 420_000023, 40 W...1,5 kW, 230V 1~, vollintegrierte Elektronik, kein Schuetz/PKZM noetig). Fester Bestandteil: nur die Pumpe (1xBO+1xAO+3xBI) - kein eigener Fuehler, siehe Begruendung bei der kleinen Stufe (420_A00029). Physischer Datenpunktbedarf: 1xBO + 3xBI + 1xAO. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Kaeltemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000039, naechstgroessere Baugroesse - Nutzer-Vorgabe Session 68). Automationsstation/Energieversorgung/LVB/Ethernet-Switch weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000023",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000051",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Mit Busanbindung Modbus RTU (Wilo CIF)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000052",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Mit Busanbindung Ethernet Modbus TCP/BACnet-IP (Wilo CIF)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kaeltemengenzaehler DN50 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kältekreis Verteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00031",
+    "name": "Kältekreis Zubringerkreis, ungeregelt, groß (Pumpe GIGA2.0 0,37...7,5 kW 400V 3~, VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Zubringerkreis, Leistungsstufe gross (Umwaelzpumpe Wilo Stratos GIGA2.0, 420_000025, 0,37...7,5 kW, 400V 3~, integrierter FU + Motor-Vollschutz, kein externes Schuetz/MSS noetig). Fester Bestandteil: nur die Pumpe (1xBO+1xAO+3xBI) - kein eigener Fuehler, siehe Begruendung bei der kleinen Stufe (420_A00029). Physischer Datenpunktbedarf: 1xBO + 3xBI + 1xAO. Busanbindung optional ueber Dropdown: Default 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)' (keine Zusatzbaugruppe, die Pumpen-Grundbaugruppe bleibt immer Bestandteil) oder zusaetzlich ein Wilo-CIF-Kommunikationsmodul (420_000051 Modbus RTU / 420_000052 Ethernet Modbus TCP-BACnet-IP, je als eigene Option, kein Hartverdrahtungs-Signal entfaellt dadurch). Optional per Dropdown 'Kaeltemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000039). Automationsstation/Energieversorgung/LVB/Ethernet-Switch weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 68).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000025",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000051",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Mit Busanbindung Modbus RTU (Wilo CIF)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000052",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Mit Busanbindung Ethernet Modbus TCP/BACnet-IP (Wilo CIF)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kaeltemengenzaehler DN50 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kältekreis Verteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00032",
+    "name": "Kälteverteiler-/Sammler (VL/RL-Temperatur, VL/RL-Druck, Nachspeisung M-Bus)",
+    "gewerk": "420",
+    "beschreibung": "Ueberwachung eines Kälteverteilers/-sammlers (Haupt-Verteilerbalken, nicht der einzelne Heizkreis - siehe dafuer die Kältekreis-Verteilung-Anlagen 420_A00026-008). Konfiguration 1 (vollstaendig): Vorlauf-/Ruecklauf-Temperaturfuehler (430_000006 100mm + 430_000007 150mm, je 1xAI) + Vorlauf-/Ruecklauf-Druckmessung (2x 420_000003, Siemens QBE2003-P4, 0-4 bar - Annahme: typischer Betriebsdruck geschlossener Heizungsanlagen liegt im unteren bar-Bereich, bei Bedarf projekt-spezifisch auf die 0-10-bar-Variante 420_000004 wechseln; beide Druck-messstellen nutzen dieselbe Baugruppe, da DBACS keine beidseitige Variante kennt - Menge 2 statt 2 verschiedener bg_ids wie bei den Temperaturfuehlern) + Nachspeisearmatur mit integriertem M-Bus-Wasser-zaehler (410_000001, Reflex Fillset Compact Twist M-Bus, rein mechanisch-hydraulisch, 1 Wert komm. M-Bus, kein Schaltschrankplatz, Pegelwandler automatisch ergaenzt). Physischer Datenpunktbedarf gesamt: 4x AI (2x Temperatur + 2x Druck). Automationsstation/Energieversorgung/Pegelwandler weiterhin automatisch ueber die bestehenden Ratchets. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000003",
+        "menge": 2
+      },
+      {
+        "bg_id": "410_000001",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kälteverteiler-/Sammler",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00033",
+    "name": "Kälteverteiler-/Sammler (VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Ueberwachung eines Kälteverteilers/-sammlers, Konfiguration 2 (Basis - nur Temperatur, ohne Druck/Nachspeisung): Vorlauf-/Ruecklauf-Temperaturfuehler (430_000006 100mm + 430_000007 150mm, je 1xAI). Physischer Datenpunktbedarf gesamt: 2x AI. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kälteverteiler-/Sammler",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00034",
+    "name": "Geregelter Kälteübertrager (Primär: Regelventil, VL/RL-Temperatur, Druckwächter Min für MAG; Sekundär: VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Indirekter Kälteübertrager (Platten- oder Roehrenbuendel-WT) mit primaer-seitiger Regelung ueber ein Regelventil. Primaerseite: Regelventil 0...10V mit Ruecklaufmeldung (420_000013, Siemens SAX61.03, 800N - Annahme: mittlere/groessere Baugroesse als Referenz, projektspezifisch gegen die tatsaechliche Leistung/Durchfluss pruefen) + Vorlauf-/Ruecklauf-Temperaturfuehler primaer (430_000006 100mm + 430_000007 150mm, je 1xAI) + Druckwaechter Min fuer das primaerseitige MAG (Membran-Ausdehnungsgefaess), potentialfrei (420_000002, 1xBI - Mindestdrucksicherung analog zu den bereits katalogisierten Sicherheitsdruckbegrenzer-Baugruppen). Sekundaerseite: Vorlauf-/Ruecklauf-Temperaturfuehler sekundaer (nochmals 430_000006+430_000007, gleiche Baugruppen wie primaer wiederverwendet, da DBACS keine separaten primaer-/sekundaer-Varianten kennt - macht insgesamt menge:2 je Fuehler-Baugruppe). Physischer Datenpunktbedarf gesamt: 1xAO + 5xAI (4x Temperatur + Ruecklaufmeldung Ventil bereits in den 5xAI enthalten? nein: 1xAO Stellsignal + 1xAI Ventil-Ruecklaufmeldung + 4xAI Temperatur = 5xAI gesamt) + 1xBI. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000013",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 2
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kälteübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00035",
+    "name": "Hydraulische Weiche (Primär: VL/RL-Sensor; Sekundär: VL/RL-Sensor)",
+    "gewerk": "420",
+    "beschreibung": "Hydraulische Weiche (Entkopplung Erzeuger-/Verbraucherkreis) - die Weiche selbst ist bewusst KEINE eigene Katalogzeile (Fremdbauteil, Regel 7, rein hydraulisches Bauteil ohne elektrischen Anschluss). Diese Anlage bildet ausschliesslich die 4 ueblichen Messstellen ab (Primaer-Eintritt/-Austritt, Sekundaer-Eintritt/-Austritt - Nutzer-Vorgabe aus der Fork-Recherche, siehe Memory project_anlagenbaugruppen.md Abschnitt 5): Vorlauf-/Ruecklauf-Temperaturfuehler primaer + nochmals Vorlauf-/Ruecklauf-Temperatur-fuehler sekundaer (je 2x 430_000006 100mm + 2x 430_000007 150mm, gleiche Baugruppen fuer primaer UND sekundaer wiederverwendet, da DBACS keine separate Variante kennt). Physischer Datenpunktbedarf gesamt: 4x AI. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 2
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kälteübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00036",
+    "name": "Kältespeicher (3× Speichersensor)",
+    "gewerk": "420",
+    "beschreibung": "Kältespeicher (Schichtenspeicher) mit 3 Speicherfuehlern zur Temperaturschichtung (oben/mitte/unten). Alle 3 Fuehler identisch (430_000006, Siemens QAE2120.010 Tauchtemperaturfuehler passiv, je 1xAI) - DBACS kennt nur 2 Baulaengen dieser Baureihe (100mm/150mm, beide bereits fuer Vorlauf/Ruecklauf an anderer Stelle verwendet), fuer 3 gleichwertige Speicherpositionen ohne VL/RL-Unterscheidung ist die einheitliche 100mm-Variante 3x die naheliegendste Abbildung. Physischer Datenpunktbedarf gesamt: 3x AI. Automationsstation/Energieversorgung weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 3
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kälteübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00037",
+    "name": "Geregelter Kälteübertrager mit Umwälzpumpe primär+sekundär (Primär: Regelventil, Umwälzpumpe, VL/RL-Temperatur, Druckwächter Min für MAG; Sekundär: Umwälzpumpe, VL/RL-Temperatur)",
+    "gewerk": "420",
+    "beschreibung": "Erweiterung von \"Geregelter Kälteübertrager\" (420_A00034) um je eine Umwaelzpumpe auf Primaer- UND Sekundaerseite (Nutzer-Vorgabe Session 69) - deckt den Fall ab, dass der Kälteübertrager nicht an einen bereits anderweitig gepumpten Kreis angeschlossen wird, sondern beide Seiten eigene Pumpen brauchen. Pumpenleistung ueber Dropdown waehlbar (Pflichtfeld, keine 'Ohne'-Option - die Pumpen sind fester Bestandteil dieses Modells): klein (Wilo Yonos/Stratos PICO, 3...45 W) / mittel (Wilo Stratos MAXO, 40 W...1,5 kW, Default) / gross (Wilo Stratos GIGA2.0, 0,37...7,5 kW, 400V 3~) - jede Stufe setzt dieselbe Pumpengroesse auf BEIDEN Seiten ein (menge:2 derselben Baugruppe), da DBACS primaer-/sekundaerseitig keine unterschiedlichen Pumpengroessen-Varianten vorsieht und eine symmetrische Auslegung die ueblichere Praxis ist. Unveraendert aus dem Basismodell uebernommen: Regelventil 0...10V mit Ruecklaufmeldung (420_000013, 800N, Primaer) + Vorlauf-/Ruecklauf-Temperaturfuehler primaer UND sekundaer (430_000006+430_000007 je menge:2) + Druckwaechter Min fuer das primaerseitige MAG (420_000002, 1xBI). Optional per Dropdown 'Kaeltemengenzaehler': Ohne (Default) oder mit WMZ DN50 M-Bus busgespeist (420_000039, 7 Werte komm. M-Bus, kein Schaltschrankplatz, Pegelwandler automatisch - DN50 als Annahme fuer die typische Groessenordnung eines Kälteübertrager-Anschlusses, bei kleineren Anlagen ggf. auf DN15-25 420_000037 wechseln). Physischer Datenpunktbedarf (bei Pumpenstufe mittel/gross, identisch da MAXO/GIGA2.0 dasselbe DP-Schema haben): 2x(1xBO+1xAO+3xBI) Pumpen + 1xAO+1xAI Ventil + 4xAI Temperatur + 1xBI Druckwaechter = 2xBO + 2xAO + 5xAI + 7xBI; bei Pumpenstufe klein (PICO, 2x+2xBI je Pumpe statt 1xAO+3xBI): 2xBO + 1xAO + 5xAI + 5xBI. Automations-station/Energieversorgung/Pegelwandler weiterhin automatisch. Bestehende Baugruppen bleiben unveraendert, nur neue anlagen/anlagen_baugruppen-Zeilen (Session 69).",
+    "mitglieder": [
+      {
+        "bg_id": "420_000013",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "klein (Wilo Yonos/Stratos PICO, 3...45 W, je Seite)"
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "mittel (Wilo Stratos MAXO, 40 W...1,5 kW, je Seite)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 2,
+        "gruppe": "pumpenleistung",
+        "variante_label": "groß (Wilo Stratos GIGA2.0, 0,37...7,5 kW, 400V 3~, je Seite)"
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kältemengenzähler DN50 (M-Bus)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kälteübertrager",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]

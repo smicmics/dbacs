@@ -16,6 +16,62 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 71 (08.10.2026) – Anlagengruppe Kälte: 12 neue Anlagen
+> durch Duplikation der bestehenden Heizungs-Anlagen (Nutzer-Vorgabe: "fast
+> die ganze Anlagengruppe kann mit einer Namensumbenennung dupliziert
+> werden"):**
+> **Dupliziert** (12 von 17 Heizungs-Anlagen, zugrundeliegende Baugruppen
+> unverändert wiederverwendet – Pumpen/Ventile/Fühler sind medienunabhängig
+> modelliert, DBACS bilanziert keine reale Hydraulik):
+> - **„Heizkreise Verteilung" → „Kältekreis Verteilung"** (`420_A00026`–`031`):
+>   Beimischschaltung → **Beimisch-/Drosselschaltung** (klein/mittel/groß)
+>   + Zubringerkreis ungeregelt (klein/mittel/groß). **Fußbodenheizkreise
+>   (`420_A00007`–`009`) bewusst NICHT übernommen** (Nutzer-Vorgabe „entfallen
+>   komplett" – Flächenkühlung hat andere Randbedingungen, kein 1:1-Pendant).
+> - **„Heizungsverteiler-/Sammler" → „Kälteverteiler-/Sammler"**
+>   (`420_A00032`/`033`): beide Konfigurationen (vollständig/Basis) übernommen.
+> - **„Wärmeübertrager" → „Kälteübertrager"** (`420_A00034`–`037`): Geregelter
+>   Kälteübertrager, Hydraulische Weiche, Kältespeicher (vormals
+>   „Pufferspeicher"), Geregelter Kälteübertrager mit Umwälzpumpe primär+
+>   sekundär.
+> - **„Wärmeerzeuger" → „Kälteerzeuger": bewusst KEINE Duplikate.**
+>   Nutzer-Vorgabe „nur die reversible Wärmepumpe wird aufgenommen" – die
+>   einzigen bisherigen Wärmeerzeuger-Anlagen (`420_A00015`/`017`
+>   Fernwärmeübergabestation) haben kein Kälte-Pendant (kein Fernkälte-Netz
+>   modelliert); die tatsächliche Kälteerzeugung wird stattdessen von den
+>   bereits existierenden reversiblen Wärmepumpen-Anlagen abgedeckt (`420_A00020`/
+>   `021`/`024`/`025`, bereits seit Session 70 Teil 1 doppelt mit
+>   `funktionsbereich:[heizung_anlagen,kaelte_anlagen]` getaggt) – echte
+>   Kältemaschinen/Kälteerzeuger folgen erst aus der parallel gestarteten
+>   Fork-Recherche (siehe unten).
+> - **Externer Kältemengenzähler statt Wärmemengenzähler:** die optionalen
+>   WMZ-Dropdown-Mitglieder wurden 1:1 auf die bereits seit der Wärmepumpen-
+>   Session vorhandenen Kälte-Pendants umgemappt (`420_000029`→`037`,
+>   `420_000031`→`039`, gleiches DN/Protokoll-Schema).
+> - Alle übrigen referenzierten Baugruppen (Pumpen `420_000022/023/025`,
+>   Regelventile `420_000013/014`, Tauchfühler `430_000006/007`,
+>   Druckwächter `420_000002/003`, Nachspeisearmatur `410_000001`, Wilo-
+>   CIF-Kommunikationsmodule `420_000051/052`) unverändert übernommen.
+> **Export:** anlagen 31→**43**. Backup:
+> `ga_komponenten_vor-kaelte-anlagen-duplikate_20261008_071236.xlsx`.
+> **Browser-Verifikation:** alle 12 neuen Anlagen einzeln per `testAnlage()`
+> über sämtliche Optionskombinationen getestet (inkl. WMZ-/Bus-Dropdowns) –
+> durchgängig `pass:true`, 0 Overflow, 0 fehlendPlatziert; stichprobenartig
+> `420_A00026` geprüft – Mitglieder zeigen korrekt `420_000037`
+> („Kaeltemengenzaehler") statt `420_000029`, `funktionsbereich:
+> ['kaelte_anlagen']`. Vollständiger Katalog-Regressionstest:
+> `testKatalogScan()` 0 verwaist, `testBaugruppe()` 215/215 bestanden,
+> `testAnlage()` **43/43** bestanden (alle inkl. der 12 neuen), keine
+> Konsolenfehler.
+> **Nächster Schritt (parallel gestartete Fork-Recherche, noch NICHT in
+> Excel übernommen):** Kältemaschinen + Rückkühlwerke (≥250kW
+> Kälteleistung, inkl. adiabatischer Kühlung/Feuchtelanzen-Varianten,
+> physische+kommunikative Datenpunkte über Modbus, analog zur Wärmepumpen-
+> Recherche Session 70 Teil 1) sowie separat Glykolwarnanlage
+> (Rückkühlwerk) + Gaswarnanlage (Butan-Kältemaschinen) – Ergebnisse folgen
+> als Freigabe-Vorlage vor jedem Excel-Eintrag (harter Stopp, wie beim
+> bisherigen `dbacs-recherche`-Workflow).
+
 > **Nachtrag Session 70 Teil 9 (08.10.2026) – Breite Verifikation des neuen
 > `zone_modus` „einsp_leist_misch" (Teil 8) gegen den gesamten Katalog,
 > Nutzer-Auftrag: „Nutze die bereits vereinbarten Testroutinen... rechner-
