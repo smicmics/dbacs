@@ -16,6 +16,124 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 72 (09.10.2026) – Fork-Recherche Kältemaschinen/
+> Rückkühlwerke/Glykol-/Gaswarnanlage (Session 71) nach Nutzer-Feedback
+> finalisiert und in `ga_komponenten.xlsx` eingetragen. 3 neue Anlagen, 19
+> neue Baugruppen, 5 neue Feldgeräte. Nutzer-Korrekturen ggü. der
+> Freigabe-Vorlage (alle am 09.10.2026):**
+> 1. **Kältemaschine (`420_A00038`):** Economizer-/„Freie Kühlung"-Punkt
+>    ENTFERNT (kein belastbarer herstellerübergreifender Datenpunkt
+>    gefunden, Nutzer-Vorgabe „kannst Du den Economizer raus nehmen").
+>    Kern-Baugruppe `420_000065` (2× Tauchfühler VL/RL + 4 physische
+>    Reserve-Punkte + 2 Buskabel-Klemmen) + Pflicht-Dropdown Busauswertung
+>    RTU (`420_000066`) / TCP (`420_000067`, zieht Ethernet-Switch-Ratchet).
+> 2. **Rückkühlwerk trocken (`420_A00039`) + adiabatisch (`420_A00040`):**
+>    **Eintrittstemperatur** (RL, von der Kältemaschine kommend) zusätzlich
+>    PHYSISCH aufgenommen (2. Tauchfühler `430_000006`, Nutzer-Vorgabe
+>    „den RL-Temperatursensor physikalisch mit aufnehmen") – Kern-Baugruppen
+>    `420_000068`/`071` haben jetzt 2× Tauchfühler (Austritt+Eintritt) statt
+>    1×. **„Betriebsmeldung Ventilator" → „Betriebsmeldung Ventilatoren"**
+>    umbenannt und als reine SAMMELMELDUNG für alle installierten
+>    Ventilatoren deklariert (Nutzer-Vorgabe) – Einzelmeldungen je
+>    Ventilator laufen seither ausschließlich kommunikativ (siehe Punkt 3).
+>    Wärmeleistung NEU als kommunikativer Punkt für die GESAMTE Maschine
+>    ergänzt, elektrische Leistungsaufnahme von „je Ventilator" auf „gesamte
+>    Maschine" umgestellt (Nutzer-Vorgabe „Wärmeleistung und elektrische
+>    Leistung soll für die ganze Maschine gelten") – beide auf den Kern-
+>    Busauswertung-Baugruppen `420_000069`/`070` (trocken) bzw. `072`/`073`
+>    (adiabatisch, dort zusätzlich Spülzeit-Zähler AI + manueller
+>    Spülzyklus BO).
+> 3. **Neue Funktion „Anzahl Ventilatoren/Reihen" ohne neues UI-Feature:**
+>    statt eines dedizierten Abfrage-Dialogs (Nutzer-Vorschlag „die Anzahl
+>    der Ventilatoren und der Ventilatorreihen abfragt") wurden 2 (bzw. 3
+>    bei adiabatisch) eigenständige, **frei mehrfach hinzufügbare**
+>    Baugruppen angelegt – nutzt den bereits bestehenden Mengen-Mechanismus
+>    in Modul 4 (identisches Muster wie die ASi-Bus-Brandschutzklappen
+>    „BSK hinzufügen", Session 68 Block 4), keine neue Architektur nötig:
+>    - `420_000074`/`075` „Lüfterdrehzahl-Sollwert je Bank/Reihe" (RTU/TCP,
+>      1× AO je Instanz) – Nutzer-Vorgabe „Lüfterdrehzahl gilt pro Bank
+>      (Reihe)": so oft hinzufügen wie Lüfterbänke vorhanden sind.
+>    - `420_000076`/`077` „Lüfter-Einzelmeldung Betrieb/Störung je
+>      Ventilator" (RTU/TCP, 2× BI je Instanz) – so oft hinzufügen wie
+>      Einzelventilatoren vorhanden sind (z. B. 10× oder 20×). Erschlägt
+>      damit auch sehr große Rückkühlwerke (Rechenzentren) rein über die
+>      Mengeneingabe.
+>    - `420_000078`/`079` „Magnetventil Befeuchtung je Bank, Auf/Zu" (nur
+>      adiabatisch, RTU/TCP, 1× BI je Instanz) – Nutzer-Vorgabe „für die
+>      Befeuchtung ist i.d.R. keine Pumpe dabei, das wird pro Bank über ein
+>      Magnetventil gesteuert".
+>    Alle 6 Baugruppen nutzen den virtuellen `KOMM-FB`-Träger (kein eigenes
+>    Schaltschrank-Bauteil, Session 68 Block 4-Muster) – kein zusätzlicher
+>    Klemmenbedarf, da der Bus bereits über die 2 Buskabel-Klemmen der
+>    Kern-Baugruppe geführt ist.
+> 4. **Glykolwarnanlage als eigenständige Baugruppe statt eigener Anlage**
+>    (`420_000080`, Nutzer-Vorgabe „baue für die Glykolüberwachung eine
+>    eigene Baugruppe auf... so kann eine Leckageanlage überall aufgerufen
+>    werden, z. B. bei steigender Anzahl Rückkühlwerke") – als **Standard-
+>    Mitglied** in beiden Rückkühlwerk-Anlagen gebündelt (`menge:1` fest in
+>    `anlagen_baugruppen`), zusätzlich jederzeit eigenständig mehrfach
+>    hinzufügbar. Versorgung jetzt **230V AC über einen eigenen Abgang**
+>    (Nutzer-Vorgabe, zuvor „unbestätigt"): FI `5SV3321-4` (2-polig/1P+N,
+>    16A/30mA) + LSS `5SL6116-6` (B16A) + 2× Hilfsschalter `5ST3010` in
+>    Ruhestromkette (1× BI Störung FI/LSS, Regel 12, keine eigene Klemme) –
+>    identisches Muster wie `480_000018`/`480_000036` (Session 67). Speist
+>    GUS-Steuermodul (`GUS-GLF`) UND GHS-Ventilantrieb (`GHS-VENTIL`,
+>    Pflichtzubehör über `zubehoer_feldgeraet_artikel_nr`) gemeinsam – beide
+>    bleiben externes Betriebsmittel, Sensor+Ventil sind jetzt „Bestandteil
+>    der Baugruppe, die aus dem externen Gerät gespeist wird" (Nutzer-
+>    Formulierung). 5× BI Feldkontakte unverändert (Leckage-Alarm,
+>    Alarm-/Betriebsmeldekontakt Ablaufventil, Stellungsrückmeldung GHS
+>    Auf/Zu) → 6× BI Baugruppen-Summe.
+> 5. **Gaswarnanlage-Schnittstelle als eigenständige Baugruppe**
+>    (`450_000003`, Gewerk 450, analog `450_000001`/`002` BMA/Gaslösch-
+>    anlage – bei mehreren unabhängigen Hauptalarm-Ausgängen je Sensorzone
+>    mehrfach hinzufügen) statt Anlagen-Wrapper, da sie nur 1 Baugruppe
+>    bündelt. Optionale Modbus-Detailüberwachung über `450_000004`/`005`
+>    (RTU/TCP, je Messzone, KOMM-FB).
+> **Architektur-Fund beim Schreiben (kein Katalogfehler, Modellierungs-
+> fehler meinerseits, sofort korrigiert):** `430_000006`/`430_000007`
+> (Tauchfühler 100mm/150mm) sind selbst BAUGRUPPEN (bündeln 2×
+> `3209510`-Klemme + eigenes Feldgerät QAE2120.010/.015), keine
+> `einzelbauteile`-Artikelnummern – dürfen daher nicht als
+> `baugruppen_bauteile`-Zeile innerhalb einer anderen Baugruppe referenziert
+> werden, sondern müssen als eigener `bg_id`-Eintrag in `anlagen_baugruppen`
+> stehen (identisches Muster wie bei den bestehenden Wärmepumpen-/Kälte-
+> Anlagen, z. B. `420_A00026`). Fehlerhafte Zeilen in `420_000065`/`068`/
+> `071` sofort entfernt, korrekt als Anlagen-Mitglieder nachgetragen –
+> `testKatalogScan()` deckte den Fehler beim ersten Durchlauf zuverlässig
+> auf („fehlt im Katalog").
+> **Export:** baugruppen 215→**234**, feldgeräte 111→**116**, anlagen
+> 43→**46**, einzelbauteile unverändert 226 (keine neuen Schrankbauteile –
+> FI/LSS/Hilfsschalter/Klemmen/Sicherheitsrelais alle bereits katalogisiert).
+> Backup: `ga_komponenten_vor-kaelteanlagen-finalisierung_20261009_074614.xlsx`.
+> **Browser-Verifikation:** `testKatalogScan()` 0 verwaist (nach der
+> Tauchfühler-Korrektur); `testBaugruppe()` **234/234** bestanden;
+> `testAnlage()` **46/46** bestanden (in 4 Batches wegen des bekannten
+> `javascript_tool`-Timeout-Gotchas bei langen Schleifen); zusätzlicher
+> End-to-End-Integrationstest (Rückkühlwerk trocken + Glykolwarnanlage als
+> Standardmitglied + manuell 2× Lüfterdrehzahl-Baugruppe + 20×
+> Lüfter-Einzelmeldung-Baugruppe) zeigt korrekt `dp_fb_ao:2`/`dp_fb_bi:40`,
+> `fehlendPlatziert:[]`, `overflow:[]`. **Browser-Kaltstart-Hinweis (kein
+> Projekt-Bug):** `_testSetupReferenzschrank()` setzt `#schrank_typ` per
+> `_v()` (reines `.value=`, kein Event) – bei einem wirklich frischen
+> Seitenaufruf (keine vorherige Interaktion) feuert der zugehörige
+> `change`-Handler dadurch nie, `buildZp()` liefert `b`/`h` undefined und
+> `calculate()` bricht in den „Bitte Schrank-Typ wählen"-Zweig ab
+> (`letzteAggZones` bleibt `null`). Fix für künftige Kaltstart-Testläufe:
+> nach `_testSetupReferenzschrank()` einmalig
+> `document.getElementById('schrank_typ').dispatchEvent(new
+> Event('change',{bubbles:true}))` auslösen.
+> **Zusammenfassung offener Punkte (aus der Freigabe-Vorlage weiterhin
+> unverändert gültig):** York/JCI/Mitsubishi/Dunham-Bush (Kältemaschinen)
+> und Güntner/Jaeggi/EWK/Klingenburg (Rückkühler) ohne öffentliche
+> Registerliste; Wasserqualitäts-/Pumpendatenpunkt adiabatischer Rückkühler
+> herstellerübergreifend unbelegt; Freie Kühlung ohne Chiller-Economizer
+> kein Datenpunkt gefunden; ob die Danfoss-Reglereinheit mehrere
+> Hauptalarm-Ausgänge je Zone oder nur einen Sammelalarm liefert nicht
+> abschließend geklärt; keine normative Zeitvorgabe für den
+> Gaswarnanlagen-Abschaltpfad gefunden (nur 30s-Alarmierungspflicht aus
+> EN 378).
+
 > **Nachtrag Session 71 (08.10.2026) – Anlagengruppe Kälte: 12 neue Anlagen
 > durch Duplikation der bestehenden Heizungs-Anlagen (Nutzer-Vorgabe: "fast
 > die ganze Anlagengruppe kann mit einer Namensumbenennung dupliziert

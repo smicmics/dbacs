@@ -973,5 +973,50 @@
     "quelle_hinweis": "[Fork-Recherche 10/2026] Kein konkretes Fabrikat/Produkt - Wasser-Wasser-Waermepumpen aller 4 geprueften Hersteller unterscheiden sich stark in Reglerplattform/Registerliste, fuer Platzbestimmung und Bauteilliste reicht ein generischer Platzhalter (Nutzer-bestaetigt). Kein oeffentlicher Listenpreis ermittelbar. [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
     "kommunikative_datenpunkte": "Je nach Anlage ueber Modbus RTU ausgelesen: Hochdruck-/Niederdruckwaechter, Abtaubetrieb (L-W) bzw. Frostschutzwaechter Sole (W-W), Aussentemperatur, VL-/RL-Temperatur intern, aktueller Sollwert Vorlauftemperatur, elektrische Leistung, Volumenstrom, Waermeleistung, bei reversiblen Anlagen zusaetzlich Kaelteleistung, je nach Pumpenkonzept zusaetzlich Pumpe sekundaer/primaer Betrieb/Stoerung.",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "KM-GENERIC-250",
+    "bezeichnung": "Kältemaschine (Kompressions-Kälteerzeuger) ≥250kW, generischer Datenpunktsatz",
+    "hersteller": "-",
+    "kategorie": "Kälteerzeuger",
+    "quelle_hinweis": "Generischer Platzhalter (kein Stromlaufplan-Anspruch), analog WP-LW-250 (Session 70) - kein Hersteller (Trane/Daikin/EVAPCO/York/JCI/Mitsubishi, Fork-Recherche 10/2026) liefert eine oeffentliche Komplett-Registerliste.",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP: Hochdruck-/Niederdruckwächter, Kältemittel-Leckagemelder, VL/RL-Temperatur primär, aktueller Sollwert, elektrische Leistung, Energieverbrauch, übertragene Kälteleistung (je 420_000066/067)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "RK-TROCKEN-250",
+    "bezeichnung": "Rückkühlwerk trocken ≥250kW (EVAPCO eco-Air™), EC-Lüfter",
+    "hersteller": "EVAPCO",
+    "kategorie": "Rückkühlwerk",
+    "quelle_hinweis": "Generischer Platzhalter auf Basis EVAPCO eco-Air COMM20EC-Datenblatt (Fork-Recherche 10/2026).",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP: Außenlufttemperatur, Wärmeleistung, elektrische Leistung Gesamt (420_000069/070); je Bank Lüfterdrehzahl-Sollwert (420_000074/075); je Ventilator Betrieb/Störung (420_000076/077)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "RK-ADIAB-250",
+    "bezeichnung": "Rückkühlwerk adiabatisch ≥250kW mit Feuchtelanzen-Vorkühlung (EVAPCO eco-Air™)",
+    "hersteller": "EVAPCO",
+    "kategorie": "Rückkühlwerk",
+    "quelle_hinweis": "Generischer Platzhalter, EVAPCO eco-Air mit Pad-Befeuchtungssystem (Fork-Recherche 10/2026). Keine Pumpe - Befeuchtung je Bank über Magnetventil (420_000078/079).",
+    "kommunikative_datenpunkte": "Wie RK-TROCKEN-250, zusätzlich Spülzeit-/Trockenzeit-Zähler + manueller Spülzyklus (420_000072/073); je Bank Magnetventil Auf/Zu (420_000078/079)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GUS-GLF",
+    "bezeichnung": "GUS Glykolprotektor GLF (Steuermodul + Leitfähigkeitssensor)",
+    "hersteller": "GUS",
+    "kategorie": "Leckageüberwachung",
+    "quelle_hinweis": "Fork-Recherche 10/2026. Versorgungsspannung 230V AC (Nutzer-Bestätigung 09.10.2026, zuvor als unbestätigt markiert).",
+    "zubehoer_feldgeraet_artikel_nr": "GHS-VENTIL",
+    "zubehoer_menge": 1,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GHS-VENTIL",
+    "bezeichnung": "GHS-Ventilantrieb (Kugelhahn, 24…240V AC/DC, Fail-Safe)",
+    "hersteller": "-",
+    "kategorie": "Leckageüberwachung",
+    "quelle_hinweis": "Fork-Recherche 10/2026, Pflichtzubehör zu GUS-GLF (gemeinsam gespeist über Baugruppe 420_000080).",
+    "geprueft": false
   }
 ]

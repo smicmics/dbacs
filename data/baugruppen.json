@@ -9359,5 +9359,534 @@
     "automationsanbindung": true,
     "kategorie": "Waermepumpen",
     "geprueft": false
+  },
+  {
+    "id": "420_000065",
+    "name": "Kältemaschine ≥250kW: Kern-Baugruppe (2× Tauchfühler + physische Reserve-DP + 2 Buskabel-Klemmen)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026] Physische Grundausstattung fuer eine Kaeltemaschine (Kompressions-Kaelteerzeuger) ab 250kW: 2x Tauchfuehler passiv sekundaerseitig (VL 100mm + RL 150mm, 430_000006/007) + 4 physische Reserve-Punkte (Betriebsmeldung BI, Sammelstoermeldung BI, Freigabe/Sperre BO, Sollwertvorgabe 0...10V AO) auf Klemmen klemm_f + 2 Buskabel-Klemmen fuer Modbus (A/B). Die kommunikative Detailueberwachung (Druecke, interne Temperaturen, Leistung) sitzt in den getrennt waehlbaren Busauswertung-Baugruppen 420_000066 (RTU) / 420_000067 (TCP) - Dropdown-Pflichtauswahl in der Anlage. Economizer/Freie-Kuehlung-Punkt auf Nutzer-Wunsch ENTFERNT (kein belastbarer herstelleruebergreifender Datenpunkt). Generisches Feldgeraet KM-GENERIC-250 (kein Stromlaufplan-Anspruch, analog WP-LW-250 Session 70).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "feldgeraet_artikel_nr": "KM-GENERIC-250",
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000066",
+    "name": "Kältemaschine: Busauswertung Modbus RTU (generischer Datenpunktsatz)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Rein kommunikativer Mehrbedarf auf den 2 Buskabel-Klemmen der Kern-Baugruppe 420_000065: 6x AI (Vorlauf/Ruecklauf primaer, aktueller Sollwert, elektrische Leistung, Energieverbrauch, uebertragene Kaelteleistung) + 3x BI (Hochdruck-/Niederdruckwaechter, Kaeltemittel-Leckagemelder). Kein zusaetzliches Schaltschrank-Bauteil (KOMM-FB virtueller Traeger). Modbus RTU direkt an CPU-Port.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 6,
+        "dp_fb_bi": 3,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000067",
+    "name": "Kältemaschine: Busauswertung Modbus TCP (generischer Datenpunktsatz)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Wie 420_000066, aber Modbus TCP - zieht bei Bedarf den Ethernet-Switch-Ratchet (2891021) automatisch nach.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 6,
+        "dp_fb_bi": 3,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000068",
+    "name": "Rückkühlwerk trocken ≥250kW: Kern-Baugruppe (2× Tauchfühler Austritt/Eintritt + Reserve-DP + Busklemmen)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026] 2x Tauchfuehler passiv 100mm (430_000006): Austrittstemperatur (VL, Richtung Kaeltemaschine) + NEU Eintrittstemperatur (RL, von der Kaeltemaschine kommend, auf Nutzer-Wunsch ergaenzt). 1x BI \"Betriebsmeldung Ventilatoren\" als SAMMELMELDUNG fuer alle installierten Ventilatoren (Einzelmeldungen je Ventilator laufen separat kommunikativ, siehe 420_000076/077) + 1x BO Freigabe (Enable Unit) + 2 Buskabel-Klemmen. Generisches Feldgeraet RK-TROCKEN-250 (EVAPCO eco-Air, EC-Luefter).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "feldgeraet_artikel_nr": "RK-TROCKEN-250",
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk",
+    "geprueft": false
+  },
+  {
+    "id": "420_000069",
+    "name": "Rückkühlwerk trocken: Busauswertung Modbus RTU (Außentemp., Wärme-/elektr. Leistung Gesamtmaschine)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] 3x AI fuer die GESAMTE Maschine (nicht je Ventilator/Bank): Aussenlufttemperatur, Waermeleistung (NEU, Nutzer-Wunsch), elektrische Leistungsaufnahme Gesamt. Lueftereinzelwerte (Drehzahl je Bank, Betrieb/Stoerung je Ventilator) laufen ueber die getrennt, frei mehrfach hinzufuegbaren Baugruppen 420_000074ff. Modbus RTU direkt an CPU-Port.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk",
+    "geprueft": false
+  },
+  {
+    "id": "420_000070",
+    "name": "Rückkühlwerk trocken: Busauswertung Modbus TCP (Außentemp., Wärme-/elektr. Leistung Gesamtmaschine)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Wie 420_000069, Modbus TCP, zieht Ethernet-Switch-Ratchet bei Bedarf nach.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk",
+    "geprueft": false
+  },
+  {
+    "id": "420_000071",
+    "name": "Rückkühlwerk adiabatisch ≥250kW: Kern-Baugruppe (2× Tauchfühler Austritt/Eintritt + Reserve-DP + Busklemmen)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Baugleich zu 420_000068 (trocken), aber mit generischem Feldgeraet RK-ADIAB-250 (EVAPCO eco-Air mit Feuchtelanzen-Vorkuehlung). Keine Pumpe fuer die Befeuchtung vorhanden - Befeuchtungs-Magnetventile werden pro Bank/Reihe ueber 420_000078/079 Auf/Zu gemeldet (Nutzer-Vorgabe 09.10.2026).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "feldgeraet_artikel_nr": "RK-ADIAB-250",
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk",
+    "geprueft": false
+  },
+  {
+    "id": "420_000072",
+    "name": "Rückkühlwerk adiabatisch: Busauswertung Modbus RTU (Gesamtmaschine + Spülzyklus)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Wie 420_000069 (3x AI Gesamtmaschine), zusaetzlich 1x AI Spuelzeit-/Trockenzeit-Zaehler (Wartungs-/Legionellenprophylaxe-Dokumentation) + 1x BO Manueller Spuel-/Reinigungszyklus (Wartungssteuerung von der GLT aus). Modbus RTU direkt an CPU-Port.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 4,
+        "dp_fb_bo": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk",
+    "geprueft": false
+  },
+  {
+    "id": "420_000073",
+    "name": "Rückkühlwerk adiabatisch: Busauswertung Modbus TCP (Gesamtmaschine + Spülzyklus)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Wie 420_000072, Modbus TCP, zieht Ethernet-Switch-Ratchet bei Bedarf nach.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 4,
+        "dp_fb_bo": 1,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk",
+    "geprueft": false
+  },
+  {
+    "id": "420_000074",
+    "name": "Rückkühlwerk: Lüfterdrehzahl-Sollwert je Bank/Reihe (Modbus RTU)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Vorgabe 09.10.2026] Rein kommunikativer Mehrbedarf, 1x AO je Instanz - das Stellsignal fuer die Luefterdrehzahl gilt gemeinsam fuer alle Ventilatoren EINER Bank/Reihe, nicht fuer die ganze Maschine und nicht je Einzelventilator. In Modul 4 so oft hinzufuegen wie Luefterbaenke/-reihen vorhanden sind (z.B. 1x bei 1 Reihe, 2x bei 2 Reihen) - deckt damit auch sehr grosse Rueckkuehlwerke (z.B. Rechenzentren) ueber die freie Mengeneingabe ab, ohne die Baugruppe je Groesse zu vervielfachen. Kein zusaetzliches Schaltschrank-Bauteil.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ao": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk-Zubehör",
+    "geprueft": false
+  },
+  {
+    "id": "420_000075",
+    "name": "Rückkühlwerk: Lüfterdrehzahl-Sollwert je Bank/Reihe (Modbus TCP)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Wie 420_000074, Modbus TCP.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ao": 1,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk-Zubehör",
+    "geprueft": false
+  },
+  {
+    "id": "420_000076",
+    "name": "Rückkühlwerk: Lüfter-Einzelmeldung Betrieb/Störung je Ventilator (Modbus RTU)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Vorgabe 09.10.2026] Rein kommunikativer Mehrbedarf, 2x BI je Instanz (1x Betrieb + 1x Stoerung) - je EINZELVENTILATOR, waehrend die physische Betriebsmeldung auf der Kern-Baugruppe (420_000068/071) eine reine Sammelmeldung aller Ventilatoren ist. In Modul 4 so oft hinzufuegen wie Einzelventilatoren vorhanden sind (z.B. 10x oder 20x) - Mengeneingabe erschlaegt beliebig grosse Luefterfelder ohne neue Katalogzeilen. Kein zusaetzliches Schaltschrank-Bauteil.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk-Zubehör",
+    "geprueft": false
+  },
+  {
+    "id": "420_000077",
+    "name": "Rückkühlwerk: Lüfter-Einzelmeldung Betrieb/Störung je Ventilator (Modbus TCP)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Wie 420_000076, Modbus TCP.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk-Zubehör",
+    "geprueft": false
+  },
+  {
+    "id": "420_000078",
+    "name": "Rückkühlwerk adiabatisch: Magnetventil Befeuchtung je Bank, Auf/Zu (Modbus RTU)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Vorgabe 09.10.2026] Rein kommunikativer Mehrbedarf, 1x BI (Zustand Auf/Zu) je Instanz. Die adiabatische Vorkuehlung hat i.d.R. KEINE Pumpe - die Befeuchtung wird pro Bank/Reihe ueber genau ein Magnetventil gesteuert. In Modul 4 so oft hinzufuegen wie Luefterbaenke/-reihen vorhanden sind. Kein zusaetzliches Schaltschrank-Bauteil.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk-Zubehör",
+    "geprueft": false
+  },
+  {
+    "id": "420_000079",
+    "name": "Rückkühlwerk adiabatisch: Magnetventil Befeuchtung je Bank, Auf/Zu (Modbus TCP)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72] Wie 420_000078, Modbus TCP.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk-Zubehör",
+    "geprueft": false
+  },
+  {
+    "id": "420_000080",
+    "name": "Glykolwarnanlage Rückkühlwerk (Leckage-Erkennung, GUS GLF), 230V AC mit eigenem FI/LSS-Abgang",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Vorgabe 09.10.2026] Eigenstaendige, frei (auch mehrfach) hinzufuegbare Baugruppe statt eigener Anlage - \"so kann eine Leckageanlage ueberall aufgerufen werden, z.B. bei steigender Anzahl Rueckkuehlwerke\". Ueberwacht den Aufstellort eines im Freien stehenden Rueckkuehlers auf Wasser-Glykol-Leckage (WHG/AwSV). Versorgung 230V AC ueber EIGENEN Abgang: FI 5SV3321-4 (2-polig/1P+N, 16A/30mA) + LSS 5SL6116-6 (B16A, 1-polig) + 2x Hilfsschalter 5ST3010 in Ruhestromkette (1x BI Stoerung FI/LSS, Regel 12, keine eigene Klemme - analog 480_000018/480_000036) - speist das GUS-Steuermodul UND den GHS-Ventilantrieb gemeinsam. 5x BI Feldkontakte (Leckage-Alarm Steuermodul, Alarm-/Betriebsmeldekontakt Ablaufventil, Stellungsrueckmeldung GHS Auf/Zu). Kein Modbus verfuegbar (Hersteller bietet keine Busanbindung). Sensor (GUS-GLF) und Ventilantrieb (GHS-VENTIL) bleiben externes Betriebsmittel, gespeist aus dieser Baugruppe.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SV3321-4",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5SL6116-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "feldgeraet_artikel_nr": "GUS-GLF",
+    "automationsanbindung": true,
+    "kategorie": "Leckageüberwachung",
+    "geprueft": false
+  },
+  {
+    "id": "450_000003",
+    "name": "Schnittstelle Gaswarnanlage extern (Sicherheitskette, Butan-/Propan-Kältemaschine R600a/R290)",
+    "gewerk": "450",
+    "beschreibung": "[Fork-Recherche 10/2026] Keine eigenstaendige Gaswarnanlage - modelliert nur die Uebergabe der externen, bauseitigen Gaswarnanlage (Planungsfabrikat Danfoss Climate Solutions, Reglereinheit im Maschinenraum) an den Schaltschrank (Regel 7, analog 450_000001/002 BMA/Gasloeschanlage). Hauptalarm schaltet die Kaeltemaschine ueber ein zwangsgefuehrtes Sicherheitsrelais PSR-SCP-24DC/FSP/1X1/1X2 (SIL3/Kat.4, Art. 2981978, Regel 17) sicherheitsgerichtet ab. Sammelstoerung + Voralarm rein meldend, kein Koppelrelais. Bei mehreren unabhaengigen Hauptalarm-Ausgaengen (je Sensorzone getrennt) diese Baugruppe mehrfach hinzufuegen (1 Relais je Ausgang). Optionale Modbus-Detailueberwachung ueber 450_000004 (RTU) / 450_000005 (TCP), menge = Anzahl Messzonen.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2981978",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "sicherheit",
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Steuerkoppler",
+    "geprueft": false
+  },
+  {
+    "id": "450_000004",
+    "name": "Schnittstelle Gaswarnanlage: Busauswertung Modbus RTU je Messzone (optional)",
+    "gewerk": "450",
+    "beschreibung": "[Session 72] Rein kommunikativer Mehrbedarf, 1x AI (Gaskonzentration) + 1x BI (Relais-/Alarmstatus) je Messzone, nicht sicherheitsrelevant (reine GLT-Detailueberwachung). Menge = Anzahl Messzonen/Sensorbereiche. Kein zusaetzliches Schaltschrank-Bauteil.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 1,
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "sicherheit",
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Steuerkoppler",
+    "geprueft": false
+  },
+  {
+    "id": "450_000005",
+    "name": "Schnittstelle Gaswarnanlage: Busauswertung Modbus TCP je Messzone (optional)",
+    "gewerk": "450",
+    "beschreibung": "[Session 72] Wie 450_000004, Modbus TCP.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 1,
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "sicherheit",
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Steuerkoppler",
+    "geprueft": false
   }
 ]

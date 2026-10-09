@@ -2630,5 +2630,119 @@
     "kategorie": "Kälteübertrager",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "420_A00038",
+    "name": "Kältemaschine (Kompressions-Kälteerzeuger) ab 250 kW, generischer Datenpunktsatz, mit Modbus-Anbindung (RTU/TCP wählbar)",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026] Zentrale Kälteerzeugung ab 250kW. Physische Grundausstattung (420_000065) fest, Busprotokoll RTU/TCP als Pflicht-Dropdown (420_000066/067). Economizer-Punkt entfernt.",
+    "mitglieder": [
+      {
+        "bg_id": "420_000065",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000066",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU"
+      },
+      {
+        "bg_id": "420_000067",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kälteerzeuger",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00039",
+    "name": "Rückkühlwerk trocken ab 250 kW (EC-Lüfter), mit Modbus-Anbindung (RTU/TCP wählbar) und Glykol-Leckageüberwachung",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026] 2x Tauchfühler (Austritt+Eintritt), Betriebsmeldung Ventilatoren als Sammelmeldung, Glykolwarnanlage (420_000080) als STANDARD-Mitglied. Lüfterdrehzahl je Bank (420_000074/075) und Lüfter-Einzelmeldung je Ventilator (420_000076/077) sind NICHT fest gebündelt - in Modul 4 je nach Anzahl Bänke/Ventilatoren manuell in gewünschter Menge zusätzlich hinzufügen.",
+    "mitglieder": [
+      {
+        "bg_id": "420_000068",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000069",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU"
+      },
+      {
+        "bg_id": "420_000070",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
+      {
+        "bg_id": "420_000080",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Rückkühlwerk",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00040",
+    "name": "Rückkühlwerk adiabatisch ab 250 kW mit Feuchtelanzen-Vorkühlung, Modbus-Anbindung (RTU/TCP wählbar) und Glykol-Leckageüberwachung",
+    "gewerk": "420",
+    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026] Wie 420_A00039, zusätzlich Spülzyklus-Punkte und Magnetventil-Zubehör (420_000078/079) für die adiabatische Vorkühlung (keine Pumpe, je Bank 1 Magnetventil Auf/Zu). Glykolwarnanlage (420_000080) ebenfalls STANDARD-Mitglied.",
+    "mitglieder": [
+      {
+        "bg_id": "420_000071",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000072",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU"
+      },
+      {
+        "bg_id": "420_000073",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
+      {
+        "bg_id": "420_000080",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 2
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Rückkühlwerk",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]

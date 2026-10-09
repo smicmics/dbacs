@@ -1,6 +1,32 @@
 # DBACS – Revisionsstand
 
-**Stand:** 08. Oktober 2026 – Session 71 (Modul 4 Katalog,
+**Stand:** 09. Oktober 2026 – Session 72 (Modul 4 Katalog,
+`data/ga_komponenten.xlsx`): Fork-Recherche Kältemaschinen/Rückkühlwerke/
+Glykol-/Gaswarnanlage (Session 71) nach Nutzer-Feedback finalisiert und
+eingetragen. 3 neue Anlagen: Kältemaschine ≥250kW, Rückkühlwerk trocken
+≥250kW, Rückkühlwerk adiabatisch ≥250kW (je mit Modbus-RTU/TCP-
+Pflichtdropdown). Kernkorrekturen ggü. der Freigabe-Vorlage: Economizer-
+Punkt bei der Kältemaschine entfernt; Rückkühlwerk bekommt zusätzlich die
+Eintrittstemperatur physisch (2. Tauchfühler); „Betriebsmeldung Ventilator"
+zur Sammelmeldung umbenannt; Lüfterdrehzahl-Sollwert (je Bank/Reihe) und
+Lüfter-Einzelmeldung Betrieb/Störung (je Ventilator) als eigenständige,
+frei mehrfach hinzufügbare Baugruppen modelliert – darüber werden auch sehr
+große Rückkühlwerke (viele Bänke/Ventilatoren) allein über die Mengen-
+eingabe abgedeckt, ohne neue UI; bei der adiabatischen Variante zusätzlich
+ein Magnetventil-Zubehör je Bank (Auf/Zu, keine Pumpe). Glykolwarnanlage
+jetzt als eigenständige, mehrfach verwendbare Baugruppe (230V AC, eigener
+FI/LSS-Abgang mit Ruhestromketten-Hilfsschalter) statt eigener Anlage – als
+Standardmitglied in beiden Rückkühlwerk-Anlagen gebündelt. Gaswarnanlage-
+Schnittstelle ebenfalls als eigenständige Baugruppe (Gewerk 450, analog
+BMA/Gaslöschanlage). 19 neue Baugruppen, 5 neue Feldgeräte, 3 neue Anlagen.
+Export: baugruppen 215→234, feldgeräte 111→116, anlagen 43→46,
+einzelbauteile unverändert 226. Vollständig regressionsgetestet:
+`testKatalogScan()` sauber, `testBaugruppe()` 234/234, `testAnlage()`
+46/46, plus End-to-End-Integrationstest (Rückkühlwerk + 2 Lüfterbänke +
+20 Einzelventilatoren) ohne Overflow/fehlende Platzierung. Details:
+`CLAUDE.md` → „Offene Punkte" Nachtrag Session 72.
+
+Vorheriger Stand – Session 71 (Modul 4 Katalog,
 `data/ga_komponenten.xlsx`): Anlagengruppe Kälte – 12 neue Anlagen durch
 Duplikation bestehender Heizungs-Anlagen (Kältekreis Verteilung,
 Kälteverteiler-/Sammler, Kälteübertrager), zugrundeliegende Baugruppen
@@ -9,9 +35,7 @@ Referenzen angepasst. Fußbodenheizkreise und Wärmeerzeuger (Fernwärme)
 bewusst nicht dupliziert (kein Kälte-Pendant). Export anlagen 31→43.
 Vollständig regressionsgetestet: alle 12 neuen Anlagen einzeln
 `testAnlage()`-geprüft, 215/215 Baugruppen, 43/43 Anlagen gesamt,
-`testKatalogScan()` sauber. Parallel: Fork-Recherche für Kältemaschinen/
-Rückkühlwerke (≥250kW) sowie Glykol-/Gaswarnanlage gestartet, Ergebnisse
-stehen noch aus. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag
+`testKatalogScan()` sauber. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag
 Session 71.
 
 Vorheriger Stand – Session 70 Teil 9 (Modul 4, Verifikation):
