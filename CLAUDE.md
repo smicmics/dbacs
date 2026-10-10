@@ -93,10 +93,45 @@
 > WSL-localhost-Relay-Ausfall (Session 51) – behoben mit `wsl --shutdown`
 > (Nutzerfreigabe eingeholt) vor dem Server-Neustart.
 > **Noch nicht geprüft:** ob dieselbe Diagnose auch für die anderen
-> `zone_modus`-Varianten (`getrennt_els`/`einsp_misch`/`einsp_leist_misch`)
-> und für Wandschränke (dort strukturell ohne Folgefeld-Kaskade, Hinweis
-> müsste dann gar nicht greifen) weiterhin korrekt greift bzw. korrekt
-> ausbleibt – bei Gelegenheit nachholen.
+> `zone_modus`-Varianten (`getrennt_els`/`einsp_misch`) und für Wandschränke
+> (dort strukturell ohne Folgefeld-Kaskade, Hinweis müsste dann gar nicht
+> greifen) weiterhin korrekt greift bzw. korrekt ausbleibt – bei Gelegenheit
+> nachholen. **`einsp_leist_misch` bereits geprüft** (siehe Nachtrag unten,
+> dort als Reproduktionsgrundlage verwendet).
+> **Nachtrag (10.10.2026) – Nutzer-Praxistest deckte scheinbare
+> Inkonsistenz auf, Ursache gefunden, bewusst NICHT behoben (Nutzer-
+> Entscheidung):** Standschrank 699×1499mm, `einsp_leist_misch`,
+> Doppelstock, Reserve Schaltschrank 0%. 60× `430_000056` (Motorischer
+> BSK-Antrieb) passten vollständig in 1 Feld. Eine einzelne weitere Instanz
+> (61) öffnete korrekt ein 2. Feld – **verschob dabei aber ein ganzes,
+> bereits passendes Paar (2 Instanzen) zusätzlich zur neuen mit**, macht 3
+> statt der erwarteten 1 Instanz im neuen Feld. Nutzer-Verdacht: Verstoß
+> gegen den Baugruppen-Zusammenhalt (Session 49), Koppelrelais und Klemmen
+> derselben Instanz landen in unterschiedlichen Feldern.
+> **Untersuchung (direkte Konsolen-Inspektion von `bgInstanceQueue` +
+> Bandbreiten vor/nach):** Zusammenhalt ist NICHT verletzt – Feld 1 enthält
+> bei 61 Stück nachweislich exakt 29 vollständige Paare in JEDER Zone
+> gleichermaßen (Koppelrelais 174=29×6, Klemmen 58=29×2, exakt deckungs-
+> gleich). Tatsächliche Ursache: `redistributeKlemmBands()` berechnet die
+> Breitenaufteilung zwischen `klemm_l`/`klemm_f`/`klemm_s` bei JEDEM
+> `calculate()`-Lauf neu, proportional zum GESAMTEN verbleibenden Bedarf
+> (nicht lokal/inkrementell) – die `klemm_f`-Bandbreite in Feld 1 schrumpfte
+> direkt gemessen von 312,0mm (bei 60 Stück) auf 304,6mm (bei 61 Stück), da
+> die eine neue Instanz den Bedarfs-Mix zugunsten `klemm_l` verschob. Das
+> schmalere Band verdrängte dadurch rückwirkend ein zuvor passendes Paar
+> zusätzlich zur neuen Instanz.
+> **Nutzer-Entscheidung nach Abwägung (Vor-/Nachteile besprochen): bewusst
+> NICHT beheben, aktuelles Verhalten beibehalten.** Hauptgründe: (1) die
+> globale, zustandslose Neuberechnung ist exakt das Prinzip, das in
+> derselben Sitzung bereits ausgiebig als reihenfolgeunabhängig bestätigt
+> wurde (siehe Nachtrag direkt oben) – eine inkrementelle/"sticky"
+> Alternative würde genau diese Garantie wieder aufs Spiel setzen; (2) bei
+> gleicher END-Menge ist das Ergebnis ohnehin identisch und korrekt, der
+> Effekt betrifft nur die Zwischenschritt-Wahrnehmung beim schrittweisen
+> Hinzufügen; (3) `redistributeKlemmBands()` wird von praktisch dem
+> gesamten Katalog genutzt – ein Eingriff bräuchte eine vollständige
+> Regression ohne klaren Gegenwert. Für künftige Sessions: dieses Verhalten
+> ist bekannt und **bewusst akzeptiert**, nicht erneut als Bug aufgreifen.
 
 > **Nachtrag Session 72 (09.10.2026) – Fork-Recherche Kältemaschinen/
 > Rückkühlwerke/Glykol-/Gaswarnanlage (Session 71) nach Nutzer-Feedback

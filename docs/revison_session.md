@@ -21,8 +21,16 @@ behoben/verworfen zugunsten des Badge-Ansatzes). Browser-verifiziert
 (50×/300×-BSK-Testfall, Hinweis korrekt nur bei reinem Klemmleisten-Engpass,
 Schranksicht-Größe unverändert), vollständiger
 Katalog-Regressionstest: `testKatalogScan()` sauber, `testBaugruppe()`
-234/234, `testAnlage()` 46/46, keine Konsolenfehler. Details: `CLAUDE.md` →
-„Offene Punkte" Nachtrag Session 73.
+234/234, `testAnlage()` 46/46, keine Konsolenfehler. Zusätzlich Nutzer-
+gemeldete scheinbare Inkonsistenz untersucht (60→61× BSK verschob ein
+ganzes zusätzliches Paar statt nur der neuen Instanz) – Ursache gefunden
+(`redistributeKlemmBands()` berechnet Klemmleisten-Breiten global statt
+lokal neu, direkt gemessen: klemm_f-Band 312,0mm→304,6mm), Baugruppen-
+Zusammenhalt NICHT verletzt (29 vollständige Paare je Zone deckungsgleich
+nachgewiesen). Nutzer-Entscheidung nach Vor-/Nachteil-Abwägung: bewusst
+NICHT beheben, aktuelles Verhalten akzeptiert (Hauptgrund: Fix würde die
+in derselben Sitzung bestätigte Reihenfolgenunabhängigkeit gefährden).
+Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 73.
 
 Vorheriger Stand – Session 72 (Modul 4 Katalog,
 `data/ga_komponenten.xlsx`): Fork-Recherche Kältemaschinen/Rückkühlwerke/
