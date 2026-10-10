@@ -16,6 +16,65 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 76 (10.10.2026) – Kälte-Korrektur Teil 1: Rückkühlwerk-
+> Größe (Kühlreihen/Motoren) als echtes Eingabefeld, neue Engine-Fähigkeit
+> „Mengenfeld".** Nutzer-Ausgangspunkt: „Bei der Kältemaschine und dem
+> Rückkühlwerk handelt es sich um eine Großanlage. Im Auswahltext ist die
+> Ausstattung nicht zu erkennen." Dokumentation der aktuellen Ausstattung
+> (nach der vereinbarten Vorlage `feedback_anlagen_erlaeuterung_vorlage.md`,
+> live aus Modul 4 verifiziert) dem Nutzer vorgelegt – bestätigt: alle 3
+> Anlagen (`420_A00038` Kältemaschine, `420_A00039`/`040` Rückkühlwerk
+> trocken/adiabatisch) sind bewusst reine Monitoring-/Schnittstellen-Anlagen
+> (Regel 7, Fremdbauteil), deshalb taucht keine Pumpe/kein Ventil im
+> Auswahltext auf – das ist aktuell korrekt, keine Baugruppe fehlt
+> unentdeckt.
+> **Thema 1 – Pumpen/Ventile bei der Kältemaschine ergänzen:** vom Nutzer
+> bewusst zurückgestellt („erst grundsätzlich klären, welcher Kreislauf
+> gemeint ist") – eigener, noch nicht begonnener Schritt. Offene Fachfrage:
+> Kaltwasser-Verdampferkreis, Kondenswasser-/Glykolkreis zum Rückkühlwerk,
+> oder beides?
+> **Thema 2 – Rückkühlwerk-Größe als Optionsfeld (umgesetzt):** bisher
+> waren „Anzahl Kühlreihen" und „Anzahl Motoren" NICHT erfassbar – die
+> zugehörigen kommunikativen Zusatz-Baugruppen (`420_000074`–`079`,
+> Session 72) mussten manuell in passender Menge separat hinzugefügt
+> werden, ohne jede Führung im UI. Nutzer wollte explizit ein echtes
+> Eingabefeld (Dropdown Kühlreihen 1/2 + Zahlenfeld Motoranzahl), **trotz
+> Hinweis, dass das eine neue Engine-Fähigkeit braucht** (bisherige
+> `gruppe`-Mechanik kennt nur feste Auswahloptionen, keine freie
+> Mengenkopplung).
+> **Neue Engine-Fähigkeit „Mengenfeld"** (`modules/modul-04-innenaufbau/
+> index.html`, generisch, nicht RKW-spezifisch): neue optionale Spalte
+> `mengenfeld` in `anlagen_baugruppen` (+ `xlsx_to_json.py`-Export) – ein
+> Mitglied mit gesetztem `mengenfeld` bekommt in Modul 4 statt eines
+> `<select>` ein `<input type=number>` (`ANLAGE_MENGENFELD_LABEL`/
+> `_DEFAULT`-Dicts für Beschriftung/Vorbelegung); der finale Mengen-
+> Multiplikator = `Mitglied.menge × Eingabewert` (0 → Mitglied komplett
+> ausgelassen). Kombinierbar mit einer gleichzeitig gesetzten `gruppe`
+> (hier: dieselbe `bus`-Gruppe wie die Kern-Busauswertung, gleicher
+> `variante_label`-Text „Busauswertung Modbus RTU/TCP" – dank der bereits
+> in dieser Sitzung gebauten Label-Bündelung wird die mengen-gekoppelte
+> Zeile automatisch mit ausgewählt, sobald der Nutzer das Busprotokoll
+> wählt, ohne eigene Protokoll-Auswahl für diese Zeile). Konkret ergänzt:
+> `420_000074`/`075` (Lüfterdrehzahl je Bank) + `420_000076`/`077`
+> (Lüfter-Einzelmeldung je Motor) bei BEIDEN Rückkühlwerk-Anlagen,
+> zusätzlich `420_000078`/`079` (Magnetventil je Bank) nur bei adiabatisch
+> – alle mit `mengenfeld='kuehlreihen'` bzw. `'motoren'`. UI zeigt „Anzahl
+> Kühlreihen" (Default 1) + „Anzahl Motoren (Lüfter)" (Default 4) als
+> Zahlenfelder direkt neben der Busanbindung-Auswahl.
+> **Browser-Verifikation:** `testKatalogScan()` 0 verwaist; `testAnlage()`
+> auf `420_A00039`/`040` weiterhin `pass:true`; manueller UI-Test (Kühlreihen
+> 2 + Motoren 8 + RTU) ergibt korrekt `420_000074:2`/`420_000076:8` in der
+> Belegung (nur die RTU-Variante, TCP-Geschwister korrekt NICHT gesetzt);
+> Null-Test (beide Felder auf 0) lässt die Mitglieder korrekt vollständig
+> entfallen; Regressionstest bestehender Anlagen mit `gruppe`-Varianten
+> (`420_A00002`/`420_A00020`/`480_A00002`/`430_A00001`/`002`/`005`)
+> weiterhin `pass:true`. Keine Konsolenfehler. Backup:
+> `ga_komponenten_vor-mengenfeld-rkw_<timestamp>.xlsx`.
+> **Nächster Schritt:** Thema 1 (Pumpen/Ventile Kältemaschine) mit dem
+> Nutzer fachlich klären, dann ggf. weitere Kälte-Korrekturen (Auftrag war
+> nur als Platzhalter „Bevor wir an der Kälte korrigieren" angekündigt,
+> genauer Umfang entsteht erst im Gespräch).
+
 > **Nachtrag Session 75 (10.10.2026) – RLT-Anlagen eingetragen (Freigabe
 > erteilt: „Lege die RLT-Anlagen an"), Anlagen-Engine um Label-Bundling
 > erweitert, Elektro-Sicherungsabgänge-Lücke gefunden (Folgearbeit läuft).**

@@ -1,6 +1,21 @@
 # DBACS – Revisionsstand
 
-**Stand:** 10. Oktober 2026 – Session 75: RLT-Anlagen (Lüftung) **eingetragen**
+**Stand:** 10. Oktober 2026 – Session 76: Kälte-Korrektur begonnen. Nutzer-
+Fund „Ausstattung der Kältemaschine/Rückkühlwerke im Auswahltext nicht
+erkennbar" – Dokumentation der aktuellen Ausstattung (vereinbarte Vorlage)
+vorgelegt, bestätigt dass die 3 Anlagen (`420_A00038`–`040`) bewusst reine
+Monitoring-Schnittstellen sind (Regel 7). **Pumpen/Ventile bei der
+Kältemaschine bleiben zurückgestellt** (Nutzer: erst fachlich klären,
+welcher Kreislauf gemeint ist). **Rückkühlwerk-Größe umgesetzt:** neue
+generische Engine-Fähigkeit „Mengenfeld" (`anlagen_baugruppen.mengenfeld`,
+Zahlenfeld statt Dropdown, kombinierbar mit `gruppe`) – „Anzahl Kühlreihen"
++ „Anzahl Motoren" sind jetzt echte Eingabefelder bei `420_A00039`/`040`,
+steuern automatisch die Menge der Lüfterdrehzahl-/Lüfter-Einzelmeldung-/
+Magnetventil-Datenpunkte. Browser-verifiziert, keine Regression. Details:
+`CLAUDE.md` → „Offene Punkte" Nachtrag Session 76. **Nächster Schritt:**
+Pumpen/Ventile-Frage klären, dann weitere Kälte-Korrekturen nach Bedarf.
+
+Vorheriger Stand – Session 75: RLT-Anlagen (Lüftung) **eingetragen**
 (Freigabe erteilt: „Lege die RLT-Anlagen an"). 9 neue Baugruppen
 `430_000062`–`070`, 8 neue `feldgeraete`-Zeilen, **7 neue Anlagen**
 `430_A00001`–`007` – die 4 ursprünglich geplanten komponierten RLT-Anlagen

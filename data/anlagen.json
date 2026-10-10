@@ -2673,7 +2673,7 @@
     "id": "420_A00039",
     "name": "Rückkühlwerk trocken ab 250 kW (EC-Lüfter), mit Modbus-Anbindung (RTU/TCP wählbar) und Glykol-Leckageüberwachung",
     "gewerk": "420",
-    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026] 2x Tauchfühler (Austritt+Eintritt), Betriebsmeldung Ventilatoren als Sammelmeldung, Glykolwarnanlage (420_000080) als STANDARD-Mitglied. Lüfterdrehzahl je Bank (420_000074/075) und Lüfter-Einzelmeldung je Ventilator (420_000076/077) sind NICHT fest gebündelt - in Modul 4 je nach Anzahl Bänke/Ventilatoren manuell in gewünschter Menge zusätzlich hinzufügen.",
+    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026; Session 75 Mengenfelder ergaenzt] 2x Tauchfuehler (Austritt+Eintritt), Betriebsmeldung Ventilatoren als Sammelmeldung, Glykolwarnanlage (420_000080) als STANDARD-Mitglied. 'Anzahl Kuehlreihen' und 'Anzahl Motoren' sind echte Eingabefelder (steuern automatisch die Menge der Luefterdrehzahl-/Luefter-Einzelmeldung-Datenpunkte je nach gewaehltem Busprotokoll) - 0 = Funktion nicht benoetigt.",
     "mitglieder": [
       {
         "bg_id": "420_000068",
@@ -2698,6 +2698,34 @@
       {
         "bg_id": "430_000006",
         "menge": 2
+      },
+      {
+        "bg_id": "420_000074",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "kuehlreihen"
+      },
+      {
+        "bg_id": "420_000075",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "kuehlreihen"
+      },
+      {
+        "bg_id": "420_000076",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "motoren"
+      },
+      {
+        "bg_id": "420_000077",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "motoren"
       }
     ],
     "funktionsbereich": [
@@ -2711,7 +2739,7 @@
     "id": "420_A00040",
     "name": "Rückkühlwerk adiabatisch ab 250 kW mit Feuchtelanzen-Vorkühlung, Modbus-Anbindung (RTU/TCP wählbar) und Glykol-Leckageüberwachung",
     "gewerk": "420",
-    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026] Wie 420_A00039, zusätzlich Spülzyklus-Punkte und Magnetventil-Zubehör (420_000078/079) für die adiabatische Vorkühlung (keine Pumpe, je Bank 1 Magnetventil Auf/Zu). Glykolwarnanlage (420_000080) ebenfalls STANDARD-Mitglied.",
+    "beschreibung": "[Session 72, Nutzer-Freigabe 09.10.2026; Session 75 Mengenfelder ergaenzt] Wie 420_A00039, zusaetzlich Spuelzyklus-Punkte. 'Anzahl Kuehlreihen' steuert zusaetzlich die Menge der Magnetventil-Datenpunkte (je Bank 1 Magnetventil Auf/Zu, keine Pumpe). Glykol-warnanlage (420_000080) ebenfalls STANDARD-Mitglied.",
     "mitglieder": [
       {
         "bg_id": "420_000071",
@@ -2736,6 +2764,48 @@
       {
         "bg_id": "430_000006",
         "menge": 2
+      },
+      {
+        "bg_id": "420_000074",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "kuehlreihen"
+      },
+      {
+        "bg_id": "420_000075",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "kuehlreihen"
+      },
+      {
+        "bg_id": "420_000076",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "motoren"
+      },
+      {
+        "bg_id": "420_000077",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "motoren"
+      },
+      {
+        "bg_id": "420_000078",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "kuehlreihen"
+      },
+      {
+        "bg_id": "420_000079",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "kuehlreihen"
       }
     ],
     "funktionsbereich": [

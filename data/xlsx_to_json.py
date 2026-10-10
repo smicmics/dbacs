@@ -695,6 +695,14 @@ def export_anlagen(wb):
         # Variante gewaehlt, wie bisher bei TouchPanel-Groesse/UMG-Protokoll).
         if rec.get('gruppe_optional'):
             m['gruppe_optional'] = True
+        # mengenfeld (Session 75, Rueckkuehlwerk-Groesse): markiert eine Zeile
+        # als mengen-gekoppelt an ein freies Zahlenfeld (z.B. 'kuehlreihen'/
+        # 'motoren') statt an eine feste gruppe-Auswahl - Modul 4 zeigt dafuer
+        # ein <input type=number> neben den gruppe-<select>s; der finale
+        # Mengenwert = m.menge * Eingabewert (addAnlage()). Kann zusaetzlich
+        # zu `gruppe` gesetzt sein (z.B. "nur bei Busprotokoll X UND Anzahl Y").
+        if rec.get('mengenfeld') is not None:
+            m['mengenfeld'] = str(rec['mengenfeld'])
         mitglieder_je_anlage.setdefault(str(anlage_id), []).append(m)
 
     ws = wb[SHEET]
