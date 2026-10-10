@@ -1492,8 +1492,21 @@ function updateAnlageVariantenUI() {
   // .bg-anlage-labels).
   box.style.display = 'flex';
   labelBox.style.display = 'flex';
-  labelBox.innerHTML = keys.map(gr => `<span class="anlage-variante-lbltext">${ANLAGE_GRUPPEN_LABEL[gr] || gr}</span>`).join('');
-  box.innerHTML = keys.map(gr => {
+  // DOM-Konstruktion statt String-Interpolation (Session 75 Bugfix): ein
+  // variante_label kann beliebige Zeichen enthalten, insbesondere
+  // Anfuehrungszeichen (z.B. TouchPanel-Groessen '10,1" PXM40') - als
+  // <option value="${key}">-String interpoliert bricht das die HTML-
+  // Attributsyntax (das " beendet das Attribut vorzeitig). .value/
+  // .textContent als Property-Zuweisung braucht dagegen kein Escaping.
+  labelBox.innerHTML = '';
+  keys.forEach(gr => {
+    const span = document.createElement('span');
+    span.className = 'anlage-variante-lbltext';
+    span.textContent = ANLAGE_GRUPPEN_LABEL[gr] || gr;
+    labelBox.appendChild(span);
+  });
+  box.innerHTML = '';
+  keys.forEach(gr => {
     const mitglieder = gruppen[gr];
     // gruppe_optional (Session 68, Heizkreise Verteilung): traegt mind. ein
     // Mitglied dieser Gruppe das Flag, ist die Gruppe nicht zwingend -
@@ -1505,24 +1518,64 @@ function updateAnlageVariantenUI() {
     // bisher (TouchPanel-Groesse/UMG-Protokoll - immer eine echte Variante).
     const optional = mitglieder.some(m => m.gruppe_optional);
     const hatDefault = mitglieder.some(m => m.ist_default);
-    let opts = '';
+    const select = document.createElement('select');
+    select.id = 'anlage_variante_' + gr;
+    select.className = 'anlage-variante-select';
     if (optional) {
-      opts += `<option value=""${hatDefault ? '' : ' selected'}>${ANLAGE_GRUPPE_OHNE_LABEL[gr] || 'Ohne'}</option>`;
+      const opt = document.createElement('option');
+      opt.value = '';
+      opt.textContent = ANLAGE_GRUPPE_OHNE_LABEL[gr] || 'Ohne';
+      opt.selected = !hatDefault;
+      select.appendChild(opt);
     }
-    opts += mitglieder
+    // Buendelung nach variante_label (Session 75, RLT-Register): mehrere
+    // Mitglieder mit DEMSELBEN Label werden als EIN Dropdown-Eintrag
+    // dargestellt und bei Auswahl GEMEINSAM hinzugefuegt (z.B. Pumpe +
+    // Ventilantrieb + Tauchfuehler + Frostschutzwaechter eines kompletten
+    // Registers unter einer "Ja, klein (...)"-Option) - noetig, da einzelne
+    // dieser Bestandteile (Tauchfuehler-/Kanaltemperaturfuehler-Baugruppen)
+    // selbst eigenstaendige bg_ids sind und NICHT als baugruppen_bauteile-
+    // Zeile in eine andere Baugruppe genestet werden duerfen (Regel: keine
+    // Baugruppe-in-Baugruppe). Rueckwaertskompatibel: bisher hatte jede
+    // (anlage_id, gruppe, variante_label)-Kombination ohnehin genau 1
+    // Mitglied, der Options-Wert war also schon immer effektiv eindeutig -
+    // nur die Vergleichsbasis wechselt von bg_id auf variante_label (siehe
+    // addAnlage()).
+    const byLabel = {};
+    mitglieder
       .filter(m => {
         const bg = BAUGRUPPEN_DB.find(b => b.id === m.bg_id);
         return bg ? tuerTouchpanelPasstAufTuerInAnlage(bg, anlage) : true;
       })
-      .map(m => `<option value="${m.bg_id}"${m.ist_default ? ' selected' : ''}>${m.variante_label || m.bg_id}</option>`)
-      .join('');
-    return `<select id="anlage_variante_${gr}" class="anlage-variante-select">${opts}</select>`;
-  }).join('');
+      .forEach(m => {
+        const key = m.variante_label || m.bg_id;
+        (byLabel[key] = byLabel[key] || []).push(m);
+      });
+    Object.keys(byLabel).forEach(key => {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = key;
+      opt.selected = byLabel[key].some(m => m.ist_default);
+      select.appendChild(opt);
+    });
+    box.appendChild(select);
+  });
 }
-const ANLAGE_GRUPPEN_LABEL = { touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll', bus: 'Busanbindung', wmz: 'Wärmemengenzähler' };
+const ANLAGE_GRUPPEN_LABEL = {
+  touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll', bus: 'Busanbindung', wmz: 'Wärmemengenzähler',
+  pumpengroesse: 'Pumpengröße', ventilator: 'Ventilator', zuluftventilator: 'Zuluftventilator',
+  abluftventilator: 'Abluftventilator', filter: 'Filterwächter', vorerhitzer: 'Vorerhitzer',
+  kuehler: 'Kühler', nacherhitzer: 'Nacherhitzer', wrg: 'Wärmerückgewinnung', befeuchter: 'Luftbefeuchter',
+  meldung: 'Meldung'
+};
 // Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
-// (Session 68) - Default-Fallback ist das generische Wort "Ohne".
-const ANLAGE_GRUPPE_OHNE_LABEL = { bus: 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)', wmz: 'Ohne Wärmemengenzähler' };
+// (Session 68, erweitert Session 75) - Default-Fallback ist das generische
+// Wort "Ohne".
+const ANLAGE_GRUPPE_OHNE_LABEL = {
+  bus: 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)', wmz: 'Ohne Wärmemengenzähler',
+  filter: 'Ohne Filterwächter', vorerhitzer: 'Keine', kuehler: 'Keine', nacherhitzer: 'Keine',
+  wrg: 'Keine', befeuchter: 'Keine', meldung: 'Ohne Meldung'
+};
 
 // ── Belegung ─────────────────────────────────────────────────────────
 function addBaugruppe() {
@@ -1577,7 +1630,10 @@ function addAnlage(anlageId) {
     if(m.gruppe) {
       const auswahlEl = document.getElementById('anlage_variante_' + m.gruppe);
       const gewaehlt = auswahlEl ? auswahlEl.value : null;
-      if(gewaehlt !== m.bg_id) return;
+      // Vergleich gegen variante_label statt bg_id (Session 75) - erlaubt
+      // mehreren Mitgliedern mit demselben Label, gemeinsam als EIN
+      // Options-Bundle hinzugefuegt zu werden (siehe updateAnlageVariantenUI()).
+      if(gewaehlt !== (m.variante_label || m.bg_id)) return;
     }
     addBaugruppeById(m.bg_id, (m.menge || 1) * anlageMenge);
   });
@@ -5554,7 +5610,12 @@ function testAnlage(anlageId, menge) {
   const gruppenKeys = Object.keys(gruppen);
   let kombis = [{}];
   gruppenKeys.forEach(gr => {
-    const optionen = gruppen[gr].map(m => m.bg_id);
+    // Session 75: Optionen sind jetzt nach variante_label gebuendelt (mehrere
+    // Mitglieder koennen denselben Label teilen und werden dann gemeinsam
+    // hinzugefuegt, siehe updateAnlageVariantenUI()/addAnlage()) - Test
+    // muss dieselbe Schluesselbasis (Label statt bg_id) verwenden, sonst
+    // trifft `el.value = kombi[gr]` keine echte Option.
+    const optionen = [...new Set(gruppen[gr].map(m => m.variante_label || m.bg_id))];
     if (gruppen[gr].some(m => m.gruppe_optional)) optionen.unshift(null);
     const neu = [];
     kombis.forEach(k => optionen.forEach(opt => neu.push({...k, [gr]: opt})));
@@ -5582,7 +5643,7 @@ function testAnlage(anlageId, menge) {
     const eingesetzteBgIds = belegung.map(b => b.bg_id);
     const erwarteteBgIds = (anlage.mitglieder||[])
       .filter(m => !m.netztyp_bindung || m.netztyp_bindung === (localStorage.getItem('m03_zone_netztyp')||'drehstrom'))
-      .filter(m => !m.gruppe || kombi[m.gruppe] === m.bg_id)
+      .filter(m => !m.gruppe || kombi[m.gruppe] === (m.variante_label || m.bg_id))
       .map(m => m.bg_id);
     const bgEinsatzKorrekt = erwarteteBgIds.every(id => eingesetzteBgIds.includes(id))
       && eingesetzteBgIds.every(id => erwarteteBgIds.includes(id));

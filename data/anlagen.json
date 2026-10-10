@@ -2744,5 +2744,1533 @@
     "kategorie": "Rückkühlwerk",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "430_A00001",
+    "name": "Abluftanlage einfach",
+    "gewerk": "430",
+    "beschreibung": "Reine Abluftanlage ohne Luftbehandlung - Ventilator (einstufig/druckgeregelt waehlbar), 1x Abluftklappe mit DDC-Ansteuerung, optional Filterwaechter. Bewusst OHNE Temperaturfuehler (Nutzer-Ausnahme, Session 74 allgemeine Sensor-/Klappen-Regel gilt fuer alle Anlagen ausser dieser).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000047",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000028",
+        "menge": 1,
+        "gruppe": "ventilator",
+        "variante_label": "Einstufig (230V AC 1~)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "430_000037",
+        "menge": 1,
+        "gruppe": "ventilator",
+        "variante_label": "Druckgeregelt (FU, 400V AC 3~)"
+      },
+      {
+        "bg_id": "430_000011",
+        "menge": 1,
+        "gruppe": "filter",
+        "variante_label": "Mit Filterwaechter",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung_anlagen"
+    ],
+    "kategorie": "Abluftanlagen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "430_A00002",
+    "name": "Zuluftanlage einfach",
+    "gewerk": "430",
+    "beschreibung": "Zuluftanlage mit Aussenluft-/Zuluftklappe, Filterwaechter, Aussentemperatur-fuehler (Pflicht) und Ventilator (einstufig/druckgeregelt waehlbar). Optionaler Vorerhitzer (keine/klein/mittel/gross) - bei Auswahl komplettes Register inkl. Fail-Safe-Ventilantrieb, Frostschutzwaechter und Kanaltemperaturfuehler danach.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000047",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000070",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000011",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000028",
+        "menge": 1,
+        "gruppe": "ventilator",
+        "variante_label": "Einstufig (230V AC 1~)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "430_000037",
+        "menge": 1,
+        "gruppe": "ventilator",
+        "variante_label": "Druckgeregelt (FU, 400V AC 3~)"
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung_anlagen"
+    ],
+    "kategorie": "Zuluftanlagen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "430_A00003",
+    "name": "Zu-/Abluftanlage ohne WRG",
+    "gewerk": "430",
+    "beschreibung": "Zu-/Abluftanlage ohne Waermerueckgewinnung - 4 Klappen (Aussen-/Zu-/Ab-/Fortluft), 2x Filterwaechter, Kanalrauchmelder, Aussentemperaturfuehler und Abluft-Kanaltemperaturfuehler (beide Pflicht, kein Fortluftfuehler ohne WRG), je ein Zu-/Abluftventilator (einstufig/druckgeregelt). 3 unabhaengige optionale Register-Achsen (je keine/klein/mittel/gross): Vorerhitzer (Fail-Safe+Frostschutz), Kuehler, Nacherhitzer - jede Auswahl bringt komplettes Register inkl. VL/RL-Fuehler und Kanaltemperaturfuehler danach mit.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000047",
+        "menge": 4
+      },
+      {
+        "bg_id": "430_000070",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000011",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000015",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000028",
+        "menge": 1,
+        "gruppe": "zuluftventilator",
+        "variante_label": "Einstufig (230V AC 1~)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "430_000037",
+        "menge": 1,
+        "gruppe": "zuluftventilator",
+        "variante_label": "Druckgeregelt (FU, 400V AC 3~)"
+      },
+      {
+        "bg_id": "430_000028",
+        "menge": 1,
+        "gruppe": "abluftventilator",
+        "variante_label": "Einstufig (230V AC 1~)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "430_000037",
+        "menge": 1,
+        "gruppe": "abluftventilator",
+        "variante_label": "Druckgeregelt (FU, 400V AC 3~)"
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000014",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000014",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung_anlagen"
+    ],
+    "kategorie": "Zu-/Abluftanlagen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "430_A00004",
+    "name": "Vollklimaanlage (Baukasten)",
+    "gewerk": "430",
+    "beschreibung": "Wie 'Zu-/Abluftanlage ohne WRG' (430_A00003), zusaetzlich 2 weitere optionale Achsen: Waermerueckgewinnung (keine/rekuperativ ohne eigenen GA-Punkt/regenerativ mit Klingenburg-Rotorantrieb, jeweils inkl. Fortluft-Kanaltemperaturfuehler) und Luftbefeuchtung (keine/Dampf Condair RS/Spruehbefeuchtung Carel humiFog, jeweils inkl. Luftfeuchtefuehler + Kanalhygrostat + Kanaltemperaturfuehler danach). Baukasten-Ansatz, erster Ansatz - KVS-Verbundsystem (2 Pumpenkreise) noch nicht als Option verfuegbar.",
+    "mitglieder": [
+      {
+        "bg_id": "430_000047",
+        "menge": 4
+      },
+      {
+        "bg_id": "430_000070",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000011",
+        "menge": 2
+      },
+      {
+        "bg_id": "430_000015",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000028",
+        "menge": 1,
+        "gruppe": "zuluftventilator",
+        "variante_label": "Einstufig (230V AC 1~)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "430_000037",
+        "menge": 1,
+        "gruppe": "zuluftventilator",
+        "variante_label": "Druckgeregelt (FU, 400V AC 3~)"
+      },
+      {
+        "bg_id": "430_000028",
+        "menge": 1,
+        "gruppe": "abluftventilator",
+        "variante_label": "Einstufig (230V AC 1~)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "430_000037",
+        "menge": 1,
+        "gruppe": "abluftventilator",
+        "variante_label": "Druckgeregelt (FU, 400V AC 3~)"
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000014",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000014",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000015",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "vorerhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "kuehler",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "nacherhitzer",
+        "variante_label": "Ja, gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "wrg",
+        "variante_label": "Rekuperativ (Platten-WT, Fremdbauteil ohne GA-Punkt)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000066",
+        "menge": 1,
+        "gruppe": "wrg",
+        "variante_label": "Regenerativ (Rotor-WT, Klingenburg)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "wrg",
+        "variante_label": "Regenerativ (Rotor-WT, Klingenburg)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000067",
+        "menge": 1,
+        "gruppe": "befeuchter",
+        "variante_label": "Dampf (Condair RS, mit Freigabe/Sollwert)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000010",
+        "menge": 1,
+        "gruppe": "befeuchter",
+        "variante_label": "Dampf (Condair RS, mit Freigabe/Sollwert)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000014",
+        "menge": 1,
+        "gruppe": "befeuchter",
+        "variante_label": "Dampf (Condair RS, mit Freigabe/Sollwert)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "befeuchter",
+        "variante_label": "Dampf (Condair RS, mit Freigabe/Sollwert)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000069",
+        "menge": 1,
+        "gruppe": "befeuchter",
+        "variante_label": "Spruehbefeuchtung (Carel humiFog direct)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000010",
+        "menge": 1,
+        "gruppe": "befeuchter",
+        "variante_label": "Spruehbefeuchtung (Carel humiFog direct)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000014",
+        "menge": 1,
+        "gruppe": "befeuchter",
+        "variante_label": "Spruehbefeuchtung (Carel humiFog direct)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1,
+        "gruppe": "befeuchter",
+        "variante_label": "Spruehbefeuchtung (Carel humiFog direct)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung_anlagen"
+    ],
+    "kategorie": "Vollklimaanlagen",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "430_A00005",
+    "name": "Vorerhitzer (Register, Einzelanlage fuer Lueftung, Pumpengroesse klein/mittel/gross)",
+    "gewerk": "430",
+    "beschreibung": "Eigenstaendiges Vorerhitzer-Register (Fail-Safe-Ventilantrieb 24V, Frostschutzwaechter, VL/RL-Tauchfuehler, Kanaltemperaturfuehler danach, Umwaelzpumpe waehlbar PICO/MAXO/GIGA2.0) - manuell zu beliebigen Lueftungsanlagen hinzufuegbar, wenn die komponierten RLT-Anlagen (430_A00002-004) nicht passen oder mehrere Register derselben Funktion gebraucht werden. Nutzer-Vorgabe Session 75: Register auch als Einzelanlage zur manuellen Zusammensetzung.",
+    "mitglieder": [
+      {
+        "bg_id": "420_000015",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000021",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "Pumpe PICO 3...45W",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "Pumpe MAXO 40W...1,5kW"
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "Pumpe GIGA2.0 0,37...7,5kW 400V 3~"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung_anlagen"
+    ],
+    "kategorie": "RLT-Register",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "430_A00006",
+    "name": "Nacherhitzer (Register, Einzelanlage fuer Lueftung, Pumpengroesse klein/mittel/gross)",
+    "gewerk": "430",
+    "beschreibung": "Eigenstaendiges Nacherhitzer-Register (einfacher Ventilantrieb - 200N bei Pumpengroesse klein, 800N bei mittel/gross -, VL/RL-Tauchfuehler, Kanaltemperaturfuehler danach, Umwaelzpumpe waehlbar PICO/MAXO/GIGA2.0) - manuell zu beliebigen Lueftungsanlagen hinzufuegbar. Kein Frostschutz (Position nicht der Aussenluft ausgesetzt).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000014",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)"
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)"
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)"
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung_anlagen"
+    ],
+    "kategorie": "RLT-Register",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "430_A00007",
+    "name": "Luftkuehler (Register, Einzelanlage fuer Lueftung, Pumpengroesse klein/mittel/gross)",
+    "gewerk": "430",
+    "beschreibung": "Eigenstaendiges Kuehlregister (einfacher Ventilantrieb - 200N bei Pumpengroesse klein, 800N bei mittel/gross -, VL/RL-Tauchfuehler, Kanaltemperaturfuehler danach, Umwaelzpumpe waehlbar PICO/MAXO/GIGA2.0, Kaeltekreis) - manuell zu beliebigen Lueftungsanlagen hinzufuegbar. Kein Frostschutz. Gleiche Baugruppen wie Nacherhitzer, nur andere Zweckbindung (DBACS bilanziert keine reale Hydraulik/kein Kaelte- vs. Warmwassernetz).",
+    "mitglieder": [
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000009",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000014",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "klein (Pumpe PICO 3...45W, Ventilantrieb 200N)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)"
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "mittel (Pumpe MAXO 40W...1,5kW, Ventilantrieb 800N)"
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)"
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "pumpengroesse",
+        "variante_label": "gross (Pumpe GIGA2.0 0,37...7,5kW 400V 3~, Ventilantrieb 800N)"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung_anlagen"
+    ],
+    "kategorie": "RLT-Register",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00001",
+    "name": "Leistungsabgang Wechselstrom 1~, 10A / 2,3kW (LSS B10)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Wechselstrom 1~, 10A / 2,3kW (LSS B10) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000042",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000053",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00002",
+    "name": "Leistungsabgang Wechselstrom 1~, 16A / 3,7kW (LSS B16)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Wechselstrom 1~, 16A / 3,7kW (LSS B16) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000043",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000053",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00003",
+    "name": "Leistungsabgang Drehstrom 3~, 16A / 10,0kW (LSS C16)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrom 3~, 16A / 10,0kW (LSS C16) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000044",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000053",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00004",
+    "name": "Leistungsabgang Drehstrom 3~, 25A / 15,6kW (LSS B25)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrom 3~, 25A / 15,6kW (LSS B25) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000045",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000053",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00005",
+    "name": "Leistungsabgang Drehstrom 3~, 32A / 20,0kW (LSS C32)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrom 3~, 32A / 20,0kW (LSS C32) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000046",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000053",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00006",
+    "name": "Leistungsabgang Drehstrom 3~, 40A / 25,0kW (LSS C40)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrom 3~, 40A / 25,0kW (LSS C40) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000047",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000053",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00007",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 1,5kW (Motorschutzschalter, S00)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 1,5kW (Motorschutzschalter, S00) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000048",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000054",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00008",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 4,0kW (Motorschutzschalter, S00)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 4,0kW (Motorschutzschalter, S00) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000049",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000054",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00009",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 7,5kW (Motorschutzschalter, S0)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 7,5kW (Motorschutzschalter, S0) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000050",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000054",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00010",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 15kW (Motorschutzschalter, S2)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 15kW (Motorschutzschalter, S2) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000051",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000054",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00011",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 25...30kW (Motorschutzschalter, S2)",
+    "gewerk": "440",
+    "beschreibung": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 25...30kW (Motorschutzschalter, S2) - Absicherung + Abgangsklemmen fuer einen externen Verbraucher ohne eigene Leistungsabgangs-Baugruppe (z.B. eine Waermepumpen-Anlage, die nur die DDC-Kern-Baugruppe ohne Leistungsversorgung mitbringt). Meldung (Hilfsschalter+BI) optional zuwaehlbar.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000052",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000054",
+        "menge": 1,
+        "gruppe": "meldung",
+        "variante_label": "Mit Meldung (Stoerungs-BI)",
+        "gruppe_optional": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]

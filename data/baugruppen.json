@@ -9888,5 +9888,881 @@
     "automationsanbindung": true,
     "kategorie": "Steuerkoppler",
     "geprueft": false
+  },
+  {
+    "id": "430_000062",
+    "name": "Luftklappenantrieb GLB161.1E, 10 Nm, modulierend 0...10V mit Rueckmeldung, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Luftklappenantrieb, elektromotorisch, 10 Nm, modulierendes Stellsignal DC 0...10V mit Positionsrueckmeldung, Siemens Acvatix GLB161.1E. 4 Abgangsklemmen in der Feldgeraete-Klemmleiste (Y Stellsignal-Eingang + G0 Bezug, U Rueckmeldesignal-Ausgang + G0 Bezug). Antriebs-Eigenversorgung (G/G0) wird wie bei den bestehenden ON/OFF-Antrieben 430_000045-052 nicht separat geklemmt (Familienkonvention, Session 68). Datenpunktbedarf 1x AO + 1x AI. Quelle: Siemens A6V11350746_enAP_e (2025-12-02).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GLB161.1E (Siemens Acvatix), modulierend 0...10V mit Positionsrueckmeldung",
+    "feldgeraet_artikel_nr": "GLB161.1E",
+    "automationsanbindung": true,
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000063",
+    "name": "Luftklappenantrieb GLB361.1E, 10 Nm, modulierend 0...10V mit Rueckmeldung, 230V AC",
+    "gewerk": "430",
+    "beschreibung": "Luftklappenantrieb, elektromotorisch, 10 Nm, modulierendes Stellsignal DC 0...10V mit Positionsrueckmeldung, Siemens Acvatix GLB361.1E. Signalkreis (Y/G0, U/G0) laut Originaldatenblatt SELV/PELV, galvanisch von der 230V-Motorspeisung getrennt - kein Koppelrelais noetig (Regel 9, nicht Regel 10 wie bei den ON/OFF-Antrieben: dort fuehrt Y1/Y2 selbst die 230V-Phase). 4 Abgangsklemmen (Y+G0, U+G0). Antriebs-Eigenversorgung (L/N) nicht separat geklemmt (Familienkonvention). Datenpunktbedarf 1x AO + 1x AI. Quelle: Siemens A6V11350746_enAP_e (2025-12-02).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GLB361.1E (Siemens Acvatix), modulierend 0...10V mit Positionsrueckmeldung",
+    "feldgeraet_artikel_nr": "GLB361.1E",
+    "automationsanbindung": true,
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000064",
+    "name": "Luftklappenantrieb GBB161.1E, 25 Nm, modulierend 0...10V mit Rueckmeldung, 24V AC/DC",
+    "gewerk": "430",
+    "beschreibung": "Luftklappenantrieb, elektromotorisch, 25 Nm, modulierendes Stellsignal DC 0...10V mit Positionsrueckmeldung, Siemens Acvatix GBB161.1E - 25Nm-Pendant zu GLB161.1E, identisches Anschlussschema (Y/G0, U/G0). Datenpunktbedarf 1x AO + 1x AI. Quelle: i-acs.co.uk/SIPATEC (10/2026).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb GBB161.1E (Siemens Acvatix), modulierend 0...10V mit Positionsrueckmeldung",
+    "feldgeraet_artikel_nr": "GBB161.1E",
+    "automationsanbindung": true,
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000065",
+    "name": "Luftklappenantrieb Belimo SM230ASR, 20 Nm (Planungsfabrikat-Abweichung - 25Nm/230V modulierend bei Siemens UND Belimo nicht verfuegbar), modulierend 0...10V mit Rueckmeldung, 230V AC",
+    "gewerk": "430",
+    "beschreibung": "Luftklappenantrieb, elektromotorisch, 20 Nm (NICHT 25 Nm - weder Siemens noch Belimo fuehren eine 230V/25Nm-modulierende Kombination, Belimo-Drehmomentstufen sind fix 2/5/10/20/40Nm), modulierendes Stellsignal DC 0...10V mit Positionsrueckmeldung, Belimo SM230ASR. Signalkreis (Terminal 3=Y, Terminal 5=U, Terminal 1=Bezug) ueber eigenes, physisch getrenntes Kabel von der Netzspeisung (Schutzklasse II) - SELV/PELV-Trennung NUR INDIREKT belegt (Datenblatt nennt den Begriff nicht woertlich), vom Nutzer als Annahme akzeptiert (Regel 9, kein Koppelrelais). 4 Abgangsklemmen (Y+Bezug, U+Bezug). Datenpunktbedarf 1x AO + 1x AI. Quelle: Belimo T2-SM230ASR en v2.0 08.2009.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ai": 1
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Luftklappenantrieb Belimo SM230ASR, modulierend 0...10V mit Positionsrueckmeldung (20 statt 25 Nm)",
+    "feldgeraet_artikel_nr": "SM230ASR",
+    "automationsanbindung": true,
+    "kategorie": "Luftklappenantriebe",
+    "geprueft": false
+  },
+  {
+    "id": "430_000066",
+    "name": "Rotationswaermetauscher-Antrieb Klingenburg KR MicroMax 370 + RGM-Getriebemotor, bis 370W, Sollwertfuehrung 0...10V, Rotationsueberwachung, Stoerung, inkl. Rep.-Schalter, 230V AC 1~",
+    "gewerk": "430",
+    "beschreibung": "Antriebspaket fuer Rotations-Waermetauscher (WRG), Klingenburg Controller KR MicroMax 370 (einphasig gespeist, erzeugt intern die 3-phasige Motorspeisung) + Getriebemotor RGM90/180/370 je nach Rotordurchmesser. Klemme 2(+)/3(-): Drehzahlsollwert DC 0...10V -> 1x AO. Klemme 9(+)/10(-): Rotationsueberwachung (Encoder/Naeherungsschalter am Rotor, bestaetigt echte Drehbewegung) -> 1x BI. Klemme 13-14-15: Alarmrelais (Stoerung ODER Spannungsausfall) -> 1x BI. Kein separates Freigabe-BO (Controller laeuft sobald Sollwert > 0, Wartungs-Override A1-A2 nicht als GA-Funktion modelliert). L/N/PE-Versorgung ueber eigenen Abgang (1-poliger LSS B6A), inkl. Reparaturschalter (Regel 16 nicht einschlaegig - kein bestaetigter geraeteeigener Hauptschalter). Datenpunktbedarf 1x AO + 2x BI. Quelle: Klingenburg RRU ECO Manual Rev. i-EN 250322.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0319691",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Rotationswaermetauscher-Antrieb Klingenburg KR MicroMax 370 + RGM-Getriebemotor",
+    "feldgeraet_artikel_nr": "RGM370+KR-MicroMax370",
+    "automationsanbindung": true,
+    "kategorie": "WRG-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "430_000067",
+    "name": "Dampfbefeuchter Condair RS 20...160, mit Freigabe/Betrieb/Stoerung/Sollwertfuehrung, inkl. Fernmeldeplatine, 230V AC",
+    "gewerk": "430",
+    "beschreibung": "Elektrischer Dampfzylinder-Luftbefeuchter, Widerstandselektroden, Condair RS (Baugroessen 20...160kg/h). Externer Freigabekontakt (Treiberplatine X12) potentialfrei -> ueber Koppelrelais (Regel 15, Geraet erwartet eine potentialfreie Bruecke, keine externe Spannung) -> 1x BO. Analogeingang Dampfabgabe/Feuchtesollwert DC 0...10V -> 1x AO. Optionale Betriebs-/Stoerungsfernmeldeplatine (Pflichtzubehoer, keine Katalog-Artikelnummer gefunden - projektbezogen): Relais 'Error' -> 1x BI Sammelstoerung, Relais 'Steam' (Dampfproduktion aktiv) -> 1x BI Betrieb. Eigener Netztrennschalter am Geraet -> kein Reparaturschalter noetig (Regel 16). Versorgung ueber eigenen L/N/PE-Abgang, vereinfacht als EIN Abgang modelliert (das Geraet hat laut Anleitung zwei getrennte Netztrennschalter fuer Heiz- und Steuerspannung, Baugroessen-Stromwerte nicht tabellarisch dokumentiert - vor Projekteinsatz technisches Datenblatt pruefen). Datenpunktbedarf 1x BO + 1x AO + 2x BI. Quelle: Condair BA-RS-CE-2582158-B-DE-1610.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Dampfbefeuchter Condair RS, mit Freigabe/Betrieb/Stoerung/Sollwertfuehrung, inkl. Fernmeldeplatine (projektbezogen)",
+    "feldgeraet_artikel_nr": "CONDAIR-RS",
+    "automationsanbindung": true,
+    "kategorie": "Luftbefeuchter",
+    "geprueft": false
+  },
+  {
+    "id": "430_000068",
+    "name": "Dampfbefeuchter Condair RS 20...160, Nur Monitoring (Betrieb/Stoerung), inkl. Fernmeldeplatine, 230V AC",
+    "gewerk": "430",
+    "beschreibung": "Wie 430_000067 (Condair RS), aber reduziert auf die beiden Melderelais der Fernmeldeplatine ('Error'/'Steam') - Freigabe/Sollwert werden anderweitig realisiert (z.B. Raumfeuchtefuehler direkt am Geraet). Analog zum CRAH-Muster 430_000026/027. Datenpunktbedarf 2x BI. Quelle: Condair BA-RS-CE-2582158-B-DE-1610.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Dampfbefeuchter Condair RS, Nur Monitoring (Betrieb/Stoerung), inkl. Fernmeldeplatine (projektbezogen)",
+    "feldgeraet_artikel_nr": "CONDAIR-RS",
+    "automationsanbindung": true,
+    "kategorie": "Luftbefeuchter",
+    "geprueft": false
+  },
+  {
+    "id": "430_000069",
+    "name": "Spruehbefeuchter Carel humiFog direct 40...80 l/h, Freigabe/Betrieb/Stoerung/Sollwertfuehrung 0...10V, 230V AC 1~",
+    "gewerk": "430",
+    "beschreibung": "Adiabate Hochdruck-Spruehbefeuchtung, Carel humiFog direct, Regler c.pHC. Terminal M2 Pin 7/8 ('Remote ON-OFF', potentialfrei, werkseitig kurzgeschlossen) -> ueber Koppelrelais (Regel 15) -> 1x BO Freigabe. Terminal M2 'IN a' (externer Sollwertgeber, Signaltyp projektabhaengig parametrierbar, hier DC 0...10V angenommen - nicht abschliessend verifiziert) -> 1x AO. Terminal M6 (Sammelalarm-Wechsler) -> 1x BI. Terminal M5 (Unit-Status, Sprayproduktion aktiv) -> 1x BI. Versorgung 230V 1~ ueber eigenen L/N/PE-Abgang + LSS + Reparaturschalter (kein geraeteeigener Hauptschalter bestaetigt, Regel 16 nicht einschlaegig). Datenpunktbedarf 1x BO + 1x AO + 2x BI. Quelle: Carel humiFog direct Installation Manual 0300073EN.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3813635",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "0319691",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "lueftung"
+    ],
+    "betriebsmittel": "Spruehbefeuchter Carel humiFog direct, Freigabe/Betrieb/Stoerung/Sollwertfuehrung",
+    "feldgeraet_artikel_nr": "HUMIFOG-DIRECT-80",
+    "automationsanbindung": true,
+    "kategorie": "Luftbefeuchter",
+    "geprueft": false
+  },
+  {
+    "id": "430_000070",
+    "name": "Aussentemperaturfuehler, NTC1000Ohm passiv, -50...70 Grad C, Siemens QAC34/101",
+    "gewerk": "430",
+    "beschreibung": "Aussentemperaturfuehler, Siemens QAC34/101, NTC1000Ohm passiv, Messbereich -50...+70 Grad C. Bereits in Session 68 als Leitfabrikat fuer Heizung+Kaelte+Lueftung entschieden (zentraler Fuehler, 1x pro Schrank), jetzt erstmals katalogisiert. 2 Klemmen klemm_s (passiver Zweidraht-Anschluss), kein Koppelrelais/Steuerspannung noetig. Datenpunktbedarf 1x AI. Genaue Original-Klemmennummerierung nicht gefunden (nur Kennwerte bestaetigt) - fuer DBACS irrelevant (2 passive Adern). Quelle: Siemens CE1Q1811.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s",
+        "dp_ai": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_s"
+      }
+    ],
+    "funktionsbereich": [
+      "heizung",
+      "kaelte",
+      "lueftung"
+    ],
+    "betriebsmittel": "Aussentemperaturfuehler, Siemens QAC34/101",
+    "feldgeraet_artikel_nr": "QAC34/101",
+    "automationsanbindung": true,
+    "kategorie": "Aussensensoren",
+    "geprueft": false
+  },
+  {
+    "id": "440_000042",
+    "name": "Leistungsabgang Wechselstrom 1~, 10A / 2,3kW (LSS B10)",
+    "gewerk": "440",
+    "beschreibung": "Generischer Leistungsabgang fuer einen externen Wechselstrom-Verbraucher ohne eigene, bereits dimensionierte Baugruppe (z.B. eine Anlage, die nur eine DDC-Kern-Baugruppe ohne eigenen Leistungsabgang mitbringt). LSS 1-polig B10A + L/N/PE-Abgangsklemmen PT2,5 (bis 4mm² Leiterquerschnitt). Leistung P=230V*10A*cos phi 1,0 (Richtwert, keine reale Lastberechnung). Meldung (Hilfsschalter+BI) optional ueber die zugehoerige Anlage 'Leistungsabgang Wechselstrom 1~, 10A / 2,3kW' waehlbar.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6110-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000043",
+    "name": "Leistungsabgang Wechselstrom 1~, 16A / 3,7kW (LSS B16)",
+    "gewerk": "440",
+    "beschreibung": "Wie 440_000042, aber LSS 1-polig B16A (Katalog-Obergrenze fuer 1-polige LSS). Leistung P=230V*16A*cos phi 1,0 (Richtwert). Fuer Wechselstromverbraucher >16A existiert aktuell keine katalogisierte 1-/2-polige LSS-Stufe - offener Punkt.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6116-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000044",
+    "name": "Leistungsabgang Drehstrom 3~, 16A / 10,0kW (LSS C16)",
+    "gewerk": "440",
+    "beschreibung": "Generischer Leistungsabgang fuer einen externen Drehstrom-Verbraucher OHNE Motor-Direktanlaufstrom (z.B. Waermepumpe mit eigenem Sanftanlauf/Inverter, Heizwiderstand, 3-phasiges elektronisches Geraet). LSS 3-polig C16A (C-Charakteristik - verkraftet hoehere Einschaltstroeme als B, gaengig fuer Trafo-/Inverter-Lasten) + L1/L2/L3/N/PE-Abgangsklemmen PT2,5 (bis 4mm²). Leistung P=Wurzel3*400V*16A*cos phi 0,9 (Richtwert) = 10,0kW. Meldung optional ueber die zugehoerige Anlage.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6316-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000045",
+    "name": "Leistungsabgang Drehstrom 3~, 25A / 15,6kW (LSS B25)",
+    "gewerk": "440",
+    "beschreibung": "Wie 440_000044, aber LSS 3-polig B25A + L1/L2/L3/N/PE-Klemmen PT10 (bis 16mm², reale Leiterquerschnittsgrenze ab hier - Analogie zur Pumpen-Baugruppe 420_000025 GIGA2.0). Leistung P=Wurzel3*400V*25A*cos phi 0,9 (Richtwert) = 15,6kW.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6325-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212123",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000046",
+    "name": "Leistungsabgang Drehstrom 3~, 32A / 20,0kW (LSS C32)",
+    "gewerk": "440",
+    "beschreibung": "Wie 440_000045, aber LSS 3-polig C32A. Leistung P=Wurzel3*400V*32A*cos phi 0,9 (Richtwert) = 20,0kW.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6332-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212123",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000047",
+    "name": "Leistungsabgang Drehstrom 3~, 40A / 25,0kW (LSS C40)",
+    "gewerk": "440",
+    "beschreibung": "Wie 440_000045, aber LSS 3-polig C40A (Katalog-Obergrenze fuer 3-polige LSS). Leistung P=Wurzel3*400V*40A*cos phi 0,9 (Richtwert) = 25,0kW.",
+    "bauteile": [
+      {
+        "artikel_nr": "5SL6340-7",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212123",
+        "menge": 1,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000048",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 1,5kW (Motorschutzschalter, S00)",
+    "gewerk": "440",
+    "beschreibung": "Generischer Leistungsabgang fuer einen Drehstrommotor mit Direktanlauf (kein Schuetz/Stern-Dreieck in dieser Baugruppe - fuer Motoren mit eigener Anlaufelektronik/kleine Hilfsantriebe, die direkt ueber den Motorschutzschalter geschaltet werden). Motorschutzschalter 3RV2011-1EA10 (2,8-4,0A, 1,5kW, S00) + L1/L2/L3/PE-Abgangsklemmen PT2,5 (reiner Motorabgang, kein N noetig - analog Ventilator-Baugruppen 430_000030ff.). Meldung (Hilfsschalter 3RV2901-1E, 1x BI) optional ueber die zugehoerige Anlage.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2011-1EA10",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000049",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 4,0kW (Motorschutzschalter, S00)",
+    "gewerk": "440",
+    "beschreibung": "Wie 440_000048, aber Motorschutzschalter 3RV2011-1JA10 (7,0-10A, 4,0kW, S00).",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2011-1JA10",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3209536",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000050",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 7,5kW (Motorschutzschalter, S0)",
+    "gewerk": "440",
+    "beschreibung": "Wie 440_000048, aber Motorschutzschalter 3RV2021-4BA10 (13-20A, 7,5kW, S0) + L1/L2/L3/PE-Klemmen PT10 (ab hier reale Leiterquerschnittsgrenze, analog Familie B).",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2021-4BA10",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000051",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 15kW (Motorschutzschalter, S2)",
+    "gewerk": "440",
+    "beschreibung": "Wie 440_000050, aber Motorschutzschalter 3RV2031-4EA10 (22-32A, 15kW, S2) - Hilfsschalter 3RV2901-1E laut Original-Siemens-Bezeichnung weiterhin passend (S00/S0/S2 bestaetigt).",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2031-4EA10",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000052",
+    "name": "Leistungsabgang Drehstrommotor 3~ Direktanlauf, 25...30kW (Motorschutzschalter, S2)",
+    "gewerk": "440",
+    "beschreibung": "Wie 440_000050, aber Motorschutzschalter 3RV2031-4RA10 (47-63A, 25-30kW, S2 - oberes Ende des mit Hilfsschalter 3RV2901-1E bestaetigt kompatiblen Bereichs). Fuer groessere Direktanlauf-Leistungen in der Praxis unueblich (ab ca. 7,5-11kW wird meist Stern-Dreieck/Sanftstarter/FU eingesetzt, siehe CLAUDE.md Motorleistungsreihe-Referenz) - diese Stufe deckt den oberen Rand ab, falls dennoch benoetigt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2031-4RA10",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "3212120",
+        "menge": 3,
+        "zone": "klemm_l"
+      },
+      {
+        "artikel_nr": "3212131",
+        "menge": 1,
+        "zone": "klemm_l"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000053",
+    "name": "Meldung Leistungsabgang (Hilfsschalter LSS, 1x BI Ausloesung)",
+    "gewerk": "440",
+    "beschreibung": "Zubehoer-Baugruppe: Hilfsschalter 5ST3010 (universell aufsteckbar auf 5SL6-LSS 1-/2-/3-polig) mit 1x BI Ausloesemeldung. Wird NICHT einzeln hinzugefuegt, sondern ueber die 'Meldung'-Optionsachse der jeweiligen Leistungsabgang-Anlage (Familie A/B) ausgewaehlt - clipt auf das bereits vorhandene LSS der Kern-Baugruppe auf.",
+    "bauteile": [
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "440_000054",
+    "name": "Meldung Leistungsabgang (Hilfsschalter Motorschutzschalter, 1x BI Ausloesung)",
+    "gewerk": "440",
+    "beschreibung": "Zubehoer-Baugruppe: Hilfsschalter 3RV2901-1E (seitlich, fuer Motorschutzschalter 3RV2 S00/S0/S2) mit 1x BI Ausloesemeldung. Wird ueber die 'Meldung'-Optionsachse der Leistungsabgang-Drehstrommotor-Anlagen (Familie C) ausgewaehlt.",
+    "bauteile": [
+      {
+        "artikel_nr": "3RV2901-1E",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
   }
 ]

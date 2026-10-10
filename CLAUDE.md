@@ -16,6 +16,136 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 75 (10.10.2026) – RLT-Anlagen eingetragen (Freigabe
+> erteilt: „Lege die RLT-Anlagen an"), Anlagen-Engine um Label-Bundling
+> erweitert, Elektro-Sicherungsabgänge-Lücke gefunden (Folgearbeit läuft).**
+> **1. RLT-Anlagen final eingetragen** (Grundlage
+> `scratchpad/rlt_anlagen_freigabe_vorlage_final.md`): 9 neue Baugruppen
+> `430_000062`–`070` (4 modulierende Luftklappenantriebe inkl. Belimo-
+> Alternative, Klingenburg-Rotor-WT-Antrieb, 2 Condair-RS-Dampfbefeuchter-
+> Varianten, Carel-humiFog-Sprühbefeuchter, Siemens-QAC34/101-Außenfühler),
+> 8 neue `feldgeraete`-Zeilen, **7 neue Anlagen** `430_A00001`–`007`:
+> Abluftanlage einfach, Zuluftanlage einfach, Zu-/Abluftanlage ohne WRG,
+> Vollklimaanlage (Baukasten) – **plus 3 NEUE standalone Register-Anlagen**
+> `430_A00005`–`007` (Vorerhitzer/Nacherhitzer/Luftkühler, je mit
+> `gruppe:'pumpengroesse'` klein/mittel/groß) auf expliziten Nutzer-Wunsch:
+> „Was machen wir mit den Baugruppen für Vorerhitzer, Nacherhitzer,
+> Luftkühler. Auch als Einzelanlage anlegen, damit sie manuell zu einer
+> Lüftungsanlage zusammengesetzt werden können" – diese Register sind damit
+> sowohl eingebettet in den 4 komponierten RLT-Anlagen (optionale
+> `gruppe`-Achse keine/klein/mittel/groß) ALS AUCH einzeln, eigenständig
+> wählbar für individuelle Zusammenstellungen.
+> **2. Architektur-Erweiterung (notwendig, um Register-Bündel abzubilden):**
+> ein Register (z. B. „Vorerhitzer, klein") besteht aus mehreren bg_ids
+> (Pumpe + Fail-Safe-Ventilantrieb + 2× Tauchfühler + Frostschutzwächter +
+> Kanaltemperaturfühler danach) – da Tauchfühler/Kanaltemperaturfühler
+> selbst eigenständige Baugruppen sind (keine Baugruppe-in-Baugruppe-
+> Verschachtelung erlaubt), konnte das bisherige `gruppe`-Mitglied-Schema
+> (1 Dropdown-Option = exakt 1 bg_id, geprüft: alle 198 bestehenden
+> `gruppe`-Zeilen hatten diese 1:1-Eigenschaft bereits) das nicht abbilden.
+> **Fix:** `updateAnlageVariantenUI()`/`addAnlage()`
+> (`modules/modul-04-innenaufbau/index.html`) gruppieren/vergleichen jetzt
+> nach `variante_label` statt `bg_id` – mehrere `anlagen_baugruppen`-Zeilen
+> mit demselben `(anlage_id, gruppe, variante_label)` erscheinen als EIN
+> Dropdown-Eintrag und werden bei Auswahl gemeinsam hinzugefügt. 100%
+> rückwärtskompatibel (jede bisherige Zeile hatte ohnehin ein eindeutiges
+> Label).
+> **3. Dabei gefundener Bug (sofort behoben): HTML-Escaping.** Die neue
+> Options-Erzeugung interpolierte `variante_label` zunächst direkt in
+> `<option value="${key}">`-Strings – Labels mit Anführungszeichen (z. B.
+> bestehende TouchPanel-Größen „10,1\" PXM40 (klein)") brachen die
+> HTML-Attributsyntax, das Dropdown wählte lautlos die falsche/keine
+> Option (gefunden durch `testAnlage('480_A00002')`, das nach der
+> Engine-Änderung plötzlich fehlschlug – war zuvor grün). Fix: komplette
+> Options-Erzeugung auf DOM-Konstruktion (`createElement`+`.value`/
+> `.textContent`-Property-Zuweisung) umgestellt statt String-Interpolation
+> – braucht kein Escaping, identisch zum bereits bestehenden Muster bei
+> den anderen Dropdowns im selben Modul. `testAnlage()` selbst (Browser-
+> Testroutine) musste ebenfalls auf `variante_label`-Vergleich umgestellt
+> werden (war zuvor hart auf `bg_id` verdrahtet).
+> **Browser-Verifikation:** `testKatalogScan()` 0 verwaist; `testBaugruppe()`
+> 9/9 neue Baugruppen bestanden; `testAnlage()` auf allen 7 neuen Anlagen
+> bestanden (A00001 4, A00002 8, A00003 **256** Kombinationen, A00005–007
+> je 3 – alle `pass:true`); A00004 (2304 Kombinationen) sprengt den
+> `javascript_tool`-Timeout bei vollem Sweep (bekannter Gotcha) – stattdessen
+> gezielt eine kleine (0 Overflow) und eine maximale Stress-Kombination
+> (Vollklimaanlage mit allen Registern „groß" + WRG + Befeuchter
+> gleichzeitig) manuell getestet: letztere zeigt korrekt `overflow`+
+> `fehlendPlatziert` für dieselbe Zone (kein Silent-Loss-Bug, Referenzschrank
+> ist für diese Maximalausstattung schlicht zu klein – erwartetes Verhalten).
+> **Regressionstest bestehender `gruppe`-Anlagen nach der Engine-Änderung:**
+> `420_A00002` (Heizkreis, wmz+bus), `420_A00020` (Wärmepumpe, 68 Kombi.),
+> `480_A00002`/`480_A00003` (ASP, touchpanel+umg_protokoll) – alle weiterhin
+> `pass:true` nach dem Escaping-Fix. Export: baugruppen 234→**243**,
+> feldgeraete 116→**124**, anlagen 46→**53**, einzelbauteile unverändert
+> 226. Backup: `ga_komponenten_vor-rlt-anlagen_20261010_180235.xlsx`.
+> **Vereinfachung ggü. ursprünglicher Vorlage:** WRG-Achse in der
+> Vollklimaanlage bietet nur „keine/rekuperativ (ohne eigenen GA-Punkt,
+> Fremdbauteil)/regenerativ (Klingenburg-Rotorantrieb)" – KVS
+> (Kreislaufverbundsystem, bräuchte 2 eigene Pumpenkreise) ist noch nicht
+> als Option verfügbar (kein konkretes bg_id-Bündel dafür ausgearbeitet).
+> **Nachtrag direkt im Anschluss – Leistungsabgänge Schaltschrank (Gewerk
+> Elektro) ergänzt, Nutzer-Fund vollständig geschlossen.** Nutzer entdeckte
+> beim Hinzufügen einer Wärmepumpe-Anlage, dass keine Sicherung automatisch
+> ergänzt wird (für ihn grundsätzlich plausibel bei großen/optional
+> versorgten Verbrauchern, aber Pumpen/Ventilatoren „fast immer" aus dem
+> ASP versorgt) und vermutete eine Elektro-Katalog-Lücke. **Bestätigt:
+> Pumpen-/Ventilator-Baugruppen (`420_000022`–`026`/`430_000028`–`044`)
+> haben bereits korrekt leistungsgerecht dimensionierte LSS/Motorschutz-
+> schalter eingebaut** – kein Problem dort. Die echte Lücke: die
+> bestehende „Schutzorgan mit Meldekontakt"-Familie (`440_000004`–`014`,
+> Session 63) ist nur bis B16/C16 (16A) katalogisiert, hat kein
+> Motorschutzschalter-Pendant, UND hat ohnehin **keine Abgangsklemmen**
+> (schützt nur schrankinterne, bereits anderweitig verdrahtete Kreise,
+> Zone `evert`, kein `klemm_l`).
+> **13 neue Baugruppen `440_000042`–`054`** (Kategorie „Leistungsabgänge
+> Schaltschrank", NEU): 2× Wechselstrom 1~ generisch (LSS 1-polig B10/B16,
+> PT2,5-Klemmen L/N/PE), 4× Drehstrom 3~ generisch ohne Motor-Anlaufstrom
+> (LSS 3-polig C16/B25/C32/C40, PT2,5 bis 16A dann PT10, L1/L2/L3/N/PE),
+> 5× Drehstrommotor 3~ Direktanlauf (Motorschutzschalter 1,5/4,0/7,5/15/
+> 25…30kW aus dem bestehenden 3RV2-Bestand, Klemmen L1/L2/L3/PE **ohne N** –
+> reiner Motorabgang hat keinen Neutralleiter), plus 2 generische
+> „Meldung"-Zubehör-Baugruppen (Hilfsschalter 5ST3010 bzw. 3RV2901-1E,
+> je 1× BI) – diese werden NICHT einzeln gewählt, sondern ausschließlich
+> über die zugehörige Anlage.
+> **Architektur-Entscheidung (Nutzer-Vorgabe „Meldung als Dropdown statt
+> 2 Baugruppen"):** jeder Leistungsabgang ist eine **Anlage** (neues
+> Gewerk `440_A00001`–`011`, erste Elektro-Anlagen überhaupt) mit fixem
+> Kern-Mitglied (Absicherung+Klemmen) + `gruppe_optional:'meldung'`-Achse
+> (keine/mit) – nutzt den bestehenden Anlagen-Mechanismus 1:1, kein neuer
+> Code nötig außer dem Label-Eintrag `meldung` in `ANLAGE_GRUPPEN_LABEL`/
+> `ANLAGE_GRUPPE_OHNE_LABEL`. Name zeigt durchgängig Nennstrom + Leistung
+> (Richtwert `P=U·I·cosφ`, cosφ 1,0 bei 1~ bzw. 0,9 bei 3~, keine reale
+> Lastberechnung – im `quelle_hinweis`/`beschreibung` vermerkt).
+> **Dabei gefundener, sofort behobener Bug (betrifft die GESAMTE
+> bestehende Anlagen-Engine, nicht nur diese Session):** die neue
+> Label-Bündelung (Punkt oben) interpolierte `variante_label` zunächst
+> direkt in `<option value="${key}">`-HTML-Strings – ein Label mit
+> Anführungszeichen (z. B. bestehende TouchPanel-Größe „10,1\" PXM40")
+> bricht die Attributsyntax, das Dropdown wählte lautlos die falsche
+> Option. Gefunden durch `testAnlage('480_A00002')`, das nach der
+> Engine-Änderung plötzlich fehlschlug (vorher grün). **Fix:** komplette
+> Options-Erzeugung in `updateAnlageVariantenUI()` auf DOM-Konstruktion
+> (`createElement`+`.value`/`.textContent`) umgestellt statt
+> String-Interpolation – braucht kein Escaping. `testAnlage()` selbst
+> musste ebenfalls von `bg_id`- auf `variante_label`-Vergleich umgestellt
+> werden. Regressionsgetestet: `420_A00002`/`420_A00020`/`480_A00002`/
+> `480_A00003` (bestehende Anlagen mit `gruppe`-Varianten) weiterhin
+> `pass:true`.
+> **Browser-Verifikation:** `testKatalogScan()` 0 verwaist; `testBaugruppe()`
+> 13/13 neue Baugruppen bestanden; `testAnlage()` 11/11 neue Anlagen
+> bestanden; Stückliste/DDC-Statistik für „Leistungsabgang Drehstrommotor
+> 7,5kW mit Meldung" live geprüft (Motorschutzschalter + Hilfsschalter
+> korrekt aufgelöst, BI 1/16). Export: baugruppen 243→**256**, anlagen
+> 53→**64**, einzelbauteile/feldgeraete unverändert. Backup:
+> `ga_komponenten_vor-leistungsabgaenge_<timestamp>.xlsx`.
+> **Offene Punkte:** Wechselstrom-Leistungsabgänge >16A nicht möglich
+> (keine 1-/2-polige LSS-Stufe über B16 katalogisiert); Leistungsangaben
+> sind Richtwerte (cosφ-Annahme), keine reale Lastberechnung; Motorschutz-
+> schalter-Familie endet bei S2 (3RV2031-4RA10, 25…30kW) – Hilfsschalter
+> `3RV2901-1E` ist laut Originaldatenblatt nur für S00/S0/S2 bestätigt,
+> S3 (`3RV2041…`) bewusst nicht aufgenommen.
+
 > **Nachtrag Session 74 (10.10.2026) – RLT-Anlagen (Lüftung): Fork-Recherche
 > abgeschlossen, konsolidierte Freigabe-Vorlage steht, NOCH NICHT in
 > `ga_komponenten.xlsx` eingetragen (Nutzer-Auftrag „Speichere den Zustand" –

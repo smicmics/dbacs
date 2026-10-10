@@ -1,28 +1,37 @@
 # DBACS – Revisionsstand
 
-**Stand:** 10. Oktober 2026 – Session 74 (Modul 4 Katalog-Planung, noch
-**nicht** in `ga_komponenten.xlsx` eingetragen – Sitzung auf Nutzer-Wunsch
-„Speichere den Zustand" pausiert): RLT-Anlagen (Lüftung) Fork-Recherche
-abgeschlossen und mit dem Nutzer bis zur finalen Freigabe-Frage
-durchgesprochen. Vollständige Vorlage in
-`scratchpad/rlt_anlagen_freigabe_vorlage_final.md` – beim Fortsetzen zuerst
-lesen. Kurzfassung: 9 neue Einzelkomponenten-Baugruppen `430_000062`–`070`
-(4 modulierende Luftklappenantriebe inkl. Belimo-Alternative SM230ASR 20Nm,
-Rotor-WT-Antrieb Klingenburg, 2 Dampfbefeuchter-Varianten Condair RS,
-1 Sprühbefeuchter Carel humiFog, Außentemperaturfühler Siemens QAC34/101 –
-in Session 68 entschieden, jetzt erstmals katalogisiert) + 4 neue Anlagen
-`430_A00001`–`004` (Abluftanlage einfach, Zuluftanlage einfach mit
-Vorerhitzer-Option, Zu-/Abluftanlage ohne WRG mit 3 Register-Achsen,
-Vollklimaanlage-Baukasten mit 7 `gruppe`-Achsen/17 Varianten). Vorerhitzer
-braucht zwingend Fail-Safe-Ventilantrieb + Frostschutzwächter (immer
-Außenluft ausgesetzt), Register-Funktionen referenzieren direkt bestehende
-Heizkreis-/Kältekreis-Beimischschaltungs-Anlagen statt neuer RLT-Baugruppen.
-Kondensatwächter bewusst nicht aufgenommen (nur für Deckenklimageräte
-relevant). Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 74.
-**Nächster Schritt:** Freigabe einholen, dann Excel-Eintrag (Phase 5
-`dbacs-recherche`-Skill), danach zurück zur angekündigten Kälte-Korrektur.
+**Stand:** 10. Oktober 2026 – Session 75: RLT-Anlagen (Lüftung) **eingetragen**
+(Freigabe erteilt: „Lege die RLT-Anlagen an"). 9 neue Baugruppen
+`430_000062`–`070`, 8 neue `feldgeraete`-Zeilen, **7 neue Anlagen**
+`430_A00001`–`007` – die 4 ursprünglich geplanten komponierten RLT-Anlagen
+(Abluftanlage einfach, Zuluftanlage einfach, Zu-/Abluftanlage ohne WRG,
+Vollklimaanlage-Baukasten) **plus 3 neue standalone Register-Anlagen**
+(Vorerhitzer/Nacherhitzer/Luftkühler, `430_A00005`–`007`) auf Nutzer-Wunsch,
+damit Register auch manuell zu beliebigen Lüftungsanlagen zusammengesetzt
+werden können. Dafür Anlagen-Engine erweitert (`gruppe`-Optionen können
+jetzt mehrere bg_ids bündeln, per `variante_label` statt `bg_id` gematcht –
+nötig, da Register wie „Vorerhitzer, klein" aus mehreren eigenständigen
+Baugruppen bestehen) + dabei gefundenen Escaping-Bug behoben (Options-
+Erzeugung jetzt per DOM-Konstruktion statt String-Interpolation).
+Browser-vollständig verifiziert (`testKatalogScan`/`testBaugruppe`/
+`testAnlage`, inkl. Regressionstest bestehender Anlagen mit `gruppe`-
+Varianten). Export: baugruppen 234→243, feldgeraete 116→124, anlagen 46→53.
+Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 75.
+**Im Anschluss (selbe Sitzung):** Nutzer-Fund „keine Sicherung bei
+Wärmepumpe ergänzt" führte zu 13 neuen Elektro-Baugruppen
+`440_000042`–`054` + 11 neuen Elektro-Anlagen `440_A00001`–`011`
+(„Leistungsabgang Schaltschrank" – Wechsel-/Drehstrom generisch + Drehstrom-
+motor-Direktanlauf, je mit optionaler Meldung über Anlagen-Dropdown).
+Dabei einen Engine-Bug gefunden+behoben, der die GESAMTE bestehende
+Anlagen-Engine betraf (HTML-Escaping in `updateAnlageVariantenUI()`, siehe
+CLAUDE.md). Export: baugruppen 243→256, anlagen 53→64. Alles Browser-
+verifiziert. **Danach weiterhin:** zurück zur angekündigten Kälte-Korrektur
+(ursprüngliche Nutzer-Ankündigung, noch nicht begonnen).
 
-Vorheriger Stand – Session 73 (Modul 4,
+Vorheriger Stand – Session 74 (RLT-Anlagen-Planung vor Freigabe) siehe
+`CLAUDE.md`-Archiv der Session-Nachträge.
+
+Stand davor – Session 73 (Modul 4,
 `modules/modul-04-innenaufbau/index.html`): Hinweis bei Klemmleisten-
 getriebenem Feldwechsel. Nutzer-Praxistest (mehrere Baugruppen-/Anlagen-
 Kombinationen, insbes. Motor-Brandschutzklappenantriebe in hoher Stückzahl)

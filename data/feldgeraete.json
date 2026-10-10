@@ -1018,5 +1018,73 @@
     "kategorie": "Leckageüberwachung",
     "quelle_hinweis": "Fork-Recherche 10/2026, Pflichtzubehör zu GUS-GLF (gemeinsam gespeist über Baugruppe 420_000080).",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "GLB161.1E",
+    "bezeichnung": "Luftklappenantrieb, elektromotorisch, 10 Nm, modulierend DC 0...10V mit Positionsrueckmeldung, AC 24V~/DC 24...48V (Siemens Acvatix)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "preis_eur": 140.0,
+    "quelle_hinweis": "Siemens Original-Datenblatt A6V11350746_enAP_e (2025-12-02), Preis SIPATEC ~134-147 EUR netto, Stand 10/2026.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GLB361.1E",
+    "bezeichnung": "Luftklappenantrieb, elektromotorisch, 10 Nm, modulierend DC 0...10V mit Positionsrueckmeldung, AC 100...240V~, Signalkreis SELV/PELV (Siemens Acvatix)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "preis_eur": 150.0,
+    "quelle_hinweis": "Siemens Original-Datenblatt A6V11350746_enAP_e (2025-12-02), Preis-Streuung Distributoren ~137-175 EUR netto, kein einheitlicher Wert, Stand 10/2026.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "GBB161.1E",
+    "bezeichnung": "Luftklappenantrieb, elektromotorisch, 25 Nm, modulierend DC 0...10V mit Positionsrueckmeldung, AC 24V~/DC 24...48V (Siemens Acvatix)",
+    "hersteller": "Siemens",
+    "kategorie": "Klappenantriebe",
+    "preis_eur": 198.8,
+    "quelle_hinweis": "i-acs.co.uk / SIPATEC, Preis 198,80 EUR netto, Stand 10/2026.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "SM230ASR",
+    "bezeichnung": "Luftklappenantrieb, elektromotorisch, 20 Nm, modulierend DC 0...10V mit Positionsrueckmeldung, AC 100...240V~ (Belimo)",
+    "hersteller": "Belimo",
+    "kategorie": "Klappenantriebe",
+    "preis_eur": 214.2,
+    "quelle_hinweis": "Belimo Original-Technical-Data-Sheet T2-SM230ASR en v2.0 08.2009. Preis i-acs.co.uk (UK-Distributor) GBP 214.20, kein Herstellerlisten-preis gefunden (belimo.com vergibt keine oeffentlichen Endkundenpreise). SELV/PELV-Trennung des Signalkreises nur indirekt belegt (Datenblatt nennt den Begriff nicht woertlich).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "RGM370+KR-MicroMax370",
+    "bezeichnung": "Rotations-WT-Antriebspaket: Getriebemotor RGM90/180/370 + Controller KR MicroMax 370, einphasig AC 230...240V~, bis 370W Motorlast",
+    "hersteller": "Klingenburg",
+    "kategorie": "WRG-Komponenten",
+    "quelle_hinweis": "Klingenburg RRU ECO Installation and Operating Manual, Rev. i-EN, 250322. Keine oeffentliche Preisliste gefunden (Klingenburg vertreibt projektbezogen ueber Fachgrosshandel/Direktvertrieb).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "CONDAIR-RS",
+    "bezeichnung": "Elektrischer Dampfzylinder-Luftbefeuchter, Widerstandselektroden, Baugroessen 20...160 kg/h, AC 230V (Condair RS)",
+    "hersteller": "Condair",
+    "kategorie": "Luftbefeuchter",
+    "quelle_hinweis": "Condair Original-Betriebsanleitung BA-RS-CE-2582158-B-DE-1610. Keine oeffentliche Preisliste gefunden (projektbezogene/distributorabhaengige Preisbildung). Baugroessenabhaengige Heizspannungswerte (230V 1~ vs. 400V 3~) nicht tabellarisch dokumentiert.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "HUMIFOG-DIRECT-80",
+    "bezeichnung": "Adiabate Hochdruck-Spruehbefeuchtung, Regler c.pHC, 40...80 l/h, AC 230V 1~ (Carel humiFog direct)",
+    "hersteller": "Carel",
+    "kategorie": "Luftbefeuchter",
+    "quelle_hinweis": "Carel humiFog direct Installation Manual 0300073EN. Keine oeffentliche Preisliste gefunden. Exakter Signaltyp des externen Sollwertgebers (0...10V vs. 4...20mA) nicht abschliessend verifiziert.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "QAC34/101",
+    "bezeichnung": "Aussentemperaturfuehler, NTC1000Ohm passiv, -50...+70 Grad C (Siemens)",
+    "hersteller": "Siemens",
+    "kategorie": "Aussensensoren",
+    "quelle_hinweis": "Siemens QAC34/101, Session 68 als Leitfabrikat entschieden. Genaue Original-Klemmennummerierung nicht gefunden (nur Kennwerte bestaetigt), fuer DBACS irrelevant (2 passive Adern). Kein bestaetigter Nettopreis.",
+    "geprueft": false
   }
 ]
