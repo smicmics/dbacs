@@ -18,14 +18,19 @@ Browser-vollständig verifiziert (`testKatalogScan`/`testBaugruppe`/
 Varianten). Export: baugruppen 234→243, feldgeraete 116→124, anlagen 46→53.
 Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 75.
 **Im Anschluss (selbe Sitzung):** Nutzer-Fund „keine Sicherung bei
-Wärmepumpe ergänzt" führte zu 13 neuen Elektro-Baugruppen
-`440_000042`–`054` + 11 neuen Elektro-Anlagen `440_A00001`–`011`
-(„Leistungsabgang Schaltschrank" – Wechsel-/Drehstrom generisch + Drehstrom-
-motor-Direktanlauf, je mit optionaler Meldung über Anlagen-Dropdown).
+Wärmepumpe ergänzt" führte zu neuen Elektro-Baugruppen „Leistungsabgänge
+Schaltschrank" (Wechsel-/Drehstrom generisch + Drehstrommotor-Direktanlauf).
+Erste Fassung nutzte Anlagen mit Meldung-Dropdown – Nutzer-Korrektur („eher
+als Baugruppe, weil überschaubar – Anlagen sind Kombinationen mehrerer
+Baugruppen") führte zum Rückbau: **finaler Stand 24 plain Baugruppen**
+`440_000042`–`052`/`055`–`067` (je Kernschritt + „mit Meldung"-Zwilling),
+inkl. nachträglich ergänztem 6A-Wechselstrom-Schritt (Nutzer-Fund).
 Dabei einen Engine-Bug gefunden+behoben, der die GESAMTE bestehende
 Anlagen-Engine betraf (HTML-Escaping in `updateAnlageVariantenUI()`, siehe
-CLAUDE.md). Export: baugruppen 243→256, anlagen 53→64. Alles Browser-
-verifiziert. **Danach weiterhin:** zurück zur angekündigten Kälte-Korrektur
+CLAUDE.md – bleibt als Fix erhalten, unabhängig vom verworfenen Anlagen-
+Ansatz). Export (finaler Stand): baugruppen 243→**267**, anlagen netto
+unverändert **53** (11 Anlagen wieder entfernt). Alles Browser-verifiziert.
+**Danach weiterhin:** zurück zur angekündigten Kälte-Korrektur
 (ursprüngliche Nutzer-Ankündigung, noch nicht begonnen).
 
 Vorheriger Stand – Session 74 (RLT-Anlagen-Planung vor Freigabe) siehe

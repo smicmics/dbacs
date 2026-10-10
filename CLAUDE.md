@@ -98,49 +98,68 @@
 > Motorschutzschalter-Pendant, UND hat ohnehin **keine Abgangsklemmen**
 > (schützt nur schrankinterne, bereits anderweitig verdrahtete Kreise,
 > Zone `evert`, kein `klemm_l`).
-> **13 neue Baugruppen `440_000042`–`054`** (Kategorie „Leistungsabgänge
-> Schaltschrank", NEU): 2× Wechselstrom 1~ generisch (LSS 1-polig B10/B16,
-> PT2,5-Klemmen L/N/PE), 4× Drehstrom 3~ generisch ohne Motor-Anlaufstrom
-> (LSS 3-polig C16/B25/C32/C40, PT2,5 bis 16A dann PT10, L1/L2/L3/N/PE),
-> 5× Drehstrommotor 3~ Direktanlauf (Motorschutzschalter 1,5/4,0/7,5/15/
-> 25…30kW aus dem bestehenden 3RV2-Bestand, Klemmen L1/L2/L3/PE **ohne N** –
-> reiner Motorabgang hat keinen Neutralleiter), plus 2 generische
-> „Meldung"-Zubehör-Baugruppen (Hilfsschalter 5ST3010 bzw. 3RV2901-1E,
-> je 1× BI) – diese werden NICHT einzeln gewählt, sondern ausschließlich
-> über die zugehörige Anlage.
-> **Architektur-Entscheidung (Nutzer-Vorgabe „Meldung als Dropdown statt
-> 2 Baugruppen"):** jeder Leistungsabgang ist eine **Anlage** (neues
-> Gewerk `440_A00001`–`011`, erste Elektro-Anlagen überhaupt) mit fixem
-> Kern-Mitglied (Absicherung+Klemmen) + `gruppe_optional:'meldung'`-Achse
-> (keine/mit) – nutzt den bestehenden Anlagen-Mechanismus 1:1, kein neuer
-> Code nötig außer dem Label-Eintrag `meldung` in `ANLAGE_GRUPPEN_LABEL`/
-> `ANLAGE_GRUPPE_OHNE_LABEL`. Name zeigt durchgängig Nennstrom + Leistung
-> (Richtwert `P=U·I·cosφ`, cosφ 1,0 bei 1~ bzw. 0,9 bei 3~, keine reale
-> Lastberechnung – im `quelle_hinweis`/`beschreibung` vermerkt).
-> **Dabei gefundener, sofort behobener Bug (betrifft die GESAMTE
-> bestehende Anlagen-Engine, nicht nur diese Session):** die neue
-> Label-Bündelung (Punkt oben) interpolierte `variante_label` zunächst
-> direkt in `<option value="${key}">`-HTML-Strings – ein Label mit
-> Anführungszeichen (z. B. bestehende TouchPanel-Größe „10,1\" PXM40")
-> bricht die Attributsyntax, das Dropdown wählte lautlos die falsche
-> Option. Gefunden durch `testAnlage('480_A00002')`, das nach der
-> Engine-Änderung plötzlich fehlschlug (vorher grün). **Fix:** komplette
-> Options-Erzeugung in `updateAnlageVariantenUI()` auf DOM-Konstruktion
-> (`createElement`+`.value`/`.textContent`) umgestellt statt
-> String-Interpolation – braucht kein Escaping. `testAnlage()` selbst
-> musste ebenfalls von `bg_id`- auf `variante_label`-Vergleich umgestellt
-> werden. Regressionsgetestet: `420_A00002`/`420_A00020`/`480_A00002`/
-> `480_A00003` (bestehende Anlagen mit `gruppe`-Varianten) weiterhin
-> `pass:true`.
-> **Browser-Verifikation:** `testKatalogScan()` 0 verwaist; `testBaugruppe()`
-> 13/13 neue Baugruppen bestanden; `testAnlage()` 11/11 neue Anlagen
-> bestanden; Stückliste/DDC-Statistik für „Leistungsabgang Drehstrommotor
-> 7,5kW mit Meldung" live geprüft (Motorschutzschalter + Hilfsschalter
-> korrekt aufgelöst, BI 1/16). Export: baugruppen 243→**256**, anlagen
-> 53→**64**, einzelbauteile/feldgeraete unverändert. Backup:
-> `ga_komponenten_vor-leistungsabgaenge_<timestamp>.xlsx`.
+> **Erster Entwurf (verworfen) – Anlagen-Pattern:** zunächst als 11 Kern-
+> Baugruppen `440_000042`–`052` + 2 generische „Meldung"-Zubehör-Baugruppen
+> (`440_000053`/`054`) + 11 Anlagen `440_A00001`–`011` mit
+> `gruppe_optional:'meldung'`-Achse umgesetzt (Nutzer-Vorgabe „Meldung als
+> Dropdown statt 2 Baugruppen"). **Nutzer-Korrektur direkt im Anschluss:**
+> „Ich würde sie eher als Baugruppe sehen, weil sie so überschaubar sind.
+> Anlagen stellen eine Kombination aus mehreren Baugruppen dar" – ein
+> Leistungsabgang ist ein einzelnes, atomares Bauteil-Bündel (Absicherung+
+> Klemmen+optionaler Hilfsschalter), keine Kombination mehrerer eigenständig
+> bedeutsamer Baugruppen wie eine echte Anlage (RLT-System, Wärmepumpe) –
+> die 11 Anlagen + 2 Meldung-Companions wieder gelöscht, durch **direkte
+> „mit/ohne Meldung"-Baugruppenpaare** ersetzt (konsistent mit dem Rest des
+> Katalogs, z. B. CRAH „mit Betrieb"/„Nur Monitoring", Kanalrauchmelder
+> 24V/230V). Dabei zusätzlich den vom Nutzer gefundenen **fehlenden 6A-
+> Wechselstrom-Schritt** ergänzt (kleinste katalogisierte LSS-Stufe,
+> `5SL6106-6`, war in der ersten Fassung übersehen worden).
+> **Finaler Stand: 24 Baugruppen `440_000042`–`052` (ohne Meldung) + `055`–
+> `067` (6A-Kern + 12× „mit Meldung"-Zwilling je Kernschritt)**, Kategorie
+> „Leistungsabgänge Schaltschrank": 3× Wechselstrom 1~ generisch (LSS
+> 1-polig B6/B10/B16, PT2,5-Klemmen L/N/PE), 4× Drehstrom 3~ generisch ohne
+> Motor-Anlaufstrom (LSS 3-polig C16/B25/C32/C40, PT2,5 bis 16A dann PT10,
+> L1/L2/L3/N/PE), 5× Drehstrommotor 3~ Direktanlauf (Motorschutzschalter
+> 1,5/4,0/7,5/15/25…30kW aus dem bestehenden 3RV2-Bestand, Klemmen
+> L1/L2/L3/PE **ohne N** – reiner Motorabgang hat keinen Neutralleiter) –
+> jeweils als Kern-Baugruppe (ohne Meldung) UND als „mit Meldung"-Zwilling
+> (Hilfsschalter 5ST3010 bzw. 3RV2901-1E + 1× BI, 1:1 duplizierte
+> Kern-Bauteile + angehängte Hilfsschalter-Zeile). Name zeigt durchgängig
+> Nennstrom + Leistung (Richtwert `P=U·I·cosφ`, cosφ 1,0 bei 1~ bzw. 0,9
+> bei 3~, keine reale Lastberechnung – in der `beschreibung` vermerkt).
+> **Dabei gefundener, dauerhaft behobener Engine-Bug (betrifft die GESAMTE
+> bestehende Anlagen-Engine, nicht nur diesen – inzwischen verworfenen –
+> Anwendungsfall, bleibt daher als Fix erhalten):** die für die Register-
+> Bündelung (siehe RLT-Nachtrag oben) eingeführte Label-Bündelung
+> interpolierte `variante_label` zunächst direkt in
+> `<option value="${key}">`-HTML-Strings – ein Label mit Anführungszeichen
+> (z. B. bestehende TouchPanel-Größe „10,1\" PXM40") bricht die
+> Attributsyntax, das Dropdown wählte lautlos die falsche Option. Gefunden
+> durch `testAnlage('480_A00002')`, das nach der Engine-Änderung plötzlich
+> fehlschlug (vorher grün). **Fix:** komplette Options-Erzeugung in
+> `updateAnlageVariantenUI()` auf DOM-Konstruktion (`createElement`+
+> `.value`/`.textContent`) umgestellt statt String-Interpolation – braucht
+> kein Escaping. `testAnlage()` selbst musste ebenfalls von `bg_id`- auf
+> `variante_label`-Vergleich umgestellt werden. Regressionsgetestet:
+> `420_A00002`/`420_A00020`/`480_A00002`/`480_A00003` (bestehende Anlagen
+> mit `gruppe`-Varianten) weiterhin `pass:true`.
+> **Browser-Verifikation (finaler Stand):** `testKatalogScan()` 0 verwaist;
+> `testBaugruppe()` auf allen 14 neuen/geänderten IDs (`055`–`067` + Stich-
+> probe `042`) bestanden; `elektro_anlagen`-Tab (jetzt wieder leer, da die
+> 11 Anlagen gelöscht wurden) degradiert sauber ohne Absturz; Stückliste/
+> DDC-Statistik für „Leistungsabgang Drehstrommotor 7,5kW mit Meldung"
+> live geprüft (Motorschutzschalter + Hilfsschalter korrekt aufgelöst,
+> BI 1/16), keine Konsolenfehler. Export (finaler Stand): baugruppen
+> 243→256→**267** (Zwischenstand 256 war die inzwischen verworfene
+> Anlagen-Fassung), anlagen 53→64→**53** (netto unverändert – 11 Anlagen
+> wieder entfernt), einzelbauteile/feldgeraete unverändert. Backups:
+> `ga_komponenten_vor-leistungsabgaenge_<ts1>.xlsx` (vor Erstfassung),
+> `ga_komponenten_vor-leistungsabgaenge-revert_<ts2>.xlsx` (vor Korrektur).
 > **Offene Punkte:** Wechselstrom-Leistungsabgänge >16A nicht möglich
-> (keine 1-/2-polige LSS-Stufe über B16 katalogisiert); Leistungsangaben
+> (keine 1-/2-polige LSS-Stufe über B16 katalogisiert); Drehstrom-
+> Leistungsabgänge <16A nicht möglich (keine 3-polige LSS-Stufe unter 16A
+> katalogisiert – auch der 6A-Wunsch des Nutzers ließ sich daher nur für
+> die Wechselstrom-Familie umsetzen, nicht für Drehstrom); Leistungsangaben
 > sind Richtwerte (cosφ-Annahme), keine reale Lastberechnung; Motorschutz-
 > schalter-Familie endet bei S2 (3RV2031-4RA10, 25…30kW) – Hilfsschalter
 > `3RV2901-1E` ist laut Originaldatenblatt nur für S00/S0/S2 bestätigt,
