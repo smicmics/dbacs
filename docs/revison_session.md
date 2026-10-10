@@ -1,5 +1,26 @@
 # DBACS – Revisionsstand
 
+> **Sitzung pausiert (Nutzer-Auftrag „Speichere den Zustand, wir machen
+> morgen weiter", 10.10.2026, Ende Session 76).** Alles bis hier beschrieben
+> ist bereits in `ga_komponenten.xlsx` eingetragen, exportiert, committet
+> und Browser-verifiziert – kein Excel-Schreibschritt steht aus. Beim
+> Fortsetzen offen (keine Reihenfolge vorgegeben):
+> 1. **RKW-Datenpunkt-Rückfrage:** Nutzer behauptete, das adiabatische
+>    Rückkühlwerk habe weniger Datenpunkte als das trockene – live nicht
+>    reproduzierbar (adiabatisch hat durchgängig gleich viele oder mehr).
+>    Nutzer nach der genauen verglichenen Konfiguration/Ansicht fragen.
+> 2. **Pumpen/Ventile bei der Kältemaschine** (`420_A00038`) ergänzen –
+>    vom Nutzer bewusst zurückgestellt, bis geklärt ist, welcher Kreislauf
+>    gemeint ist (Kaltwasser-Verdampferkreis? Kondenswasser-/Glykolkreis
+>    zum Rückkühlwerk? Beides?).
+> 3. **Weitere Kälte-Korrekturen** nach Bedarf (der ursprüngliche Auftrag
+>    „Bevor wir an der Kälte korrigieren" war nur ein Platzhalter ohne
+>    vorab festgelegten Gesamtumfang – bisher abgearbeitet: Ausstattungs-
+>    Dokumentation, RKW-Größen-Eingabefelder, Klemmen-Fehler-Scan. Ob damit
+>    "die Kälte-Korrektur" insgesamt erledigt ist, mit dem Nutzer klären).
+> Danach zurück zum ursprünglich (Session 74) angekündigten nächsten Thema,
+> falls noch relevant.
+
 **Stand:** 10. Oktober 2026 – Session 76 Teil 2: Klemmen-Fehler gefunden+
 behoben. Nutzer-Fund: AO/BO/BI brauchen IMMER 2 Klemmen (Signal+Referenz/
 Rückleitung) – bei der Kältemaschine/RKW-Kern/Glykolwarnanlage fehlte die
