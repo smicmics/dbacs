@@ -16,6 +16,52 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 74 (10.10.2026) – RLT-Anlagen (Lüftung): Fork-Recherche
+> abgeschlossen, konsolidierte Freigabe-Vorlage steht, NOCH NICHT in
+> `ga_komponenten.xlsx` eingetragen (Nutzer-Auftrag „Speichere den Zustand" –
+> Sitzung pausiert vor dem finalen Excel-Schreibschritt).**
+> **Vollständiger Stand:** `scratchpad/rlt_anlagen_freigabe_vorlage_final.md` –
+> diese Datei beim Fortsetzen zuerst lesen, sie enthält die komplette,
+> bereits mit dem Nutzer abgestimmte Struktur:
+> - **9 neue Einzelkomponenten-Baugruppen** `430_000062`–`070` (4 modulierende
+>   Luftklappenantriebe inkl. Belimo-Alternative, Rotor-WT-Antrieb Klingenburg,
+>   2 Dampfbefeuchter-Varianten Condair RS, 1 Sprühbefeuchter Carel humiFog,
+>   **neu: Außentemperaturfühler Siemens QAC34/101** `430_000070` – war in
+>   Session 68 als Leitfabrikat entschieden, aber nie katalogisiert, jetzt
+>   nachgeholt).
+> - **4 neue Anlagen** `430_A00001`–`004`: Abluftanlage einfach (nur
+>   Abluftventilator+-klappe, keine Fühler), Zuluftanlage einfach (mit
+>   Vorerhitzer-Option), Zu-/Abluftanlage ohne WRG (3 unabhängige
+>   Vorerhitzer/Kühler/Nacherhitzer-`gruppe`-Achsen), Vollklimaanlage-Baukasten
+>   (zusätzlich `wrg`+`befeuchter`-Achsen, 17 Einzelvarianten über 7 Achsen).
+> - **Kernkorrekturen aus der Freigabe-Runde:** Pumpen-/Ventil-Baugruppen aus
+>   Heizung waren schon für `lueftung` getaggt (keine Aktion nötig); Register-
+>   Funktionen (Vorerhitzer/Kühler/Nacherhitzer) referenzieren DIREKT die
+>   bestehenden Heizkreis-/Kältekreis-Beimischschaltungs-Anlagen
+>   (`420_A00001`–`003`/`420_A00026`–`028`) statt neuer RLT-Baugruppen –
+>   **Ausnahme Vorerhitzer**: braucht zwingend den Fail-Safe-Ventilantrieb
+>   (`420_000015`/`016` statt `420_000013`/`014`) + Frostschutzwächter
+>   `430_000021` (immer der Außenluft ausgesetzt). Kondensatwächter bewusst
+>   NICHT aufgenommen (nur für Deckenklimageräte/Kassetten relevant, RLT-
+>   Zentralgeräte entwässern ins Abwassernetz). Allgemeine Sensor-/Klappen-
+>   Regel (gilt für alle 4 Anlagen außer der minimalen Abluftanlage):
+>   Außenluft-Fühler immer, je gewählter Luftbehandlungsstufe ein
+>   Kanaltemperaturfühler danach, Abluft-Fühler immer (wenn Abluftstrom
+>   vorhanden), Fortluft-Fühler nur bei WRG; Befeuchtung zieht immer
+>   Luftfeuchtefühler + Kanalhygrostat mit; 4 Klappen (Außen-/Zu-/Ab-/
+>   Fortluft) in allen Anlagen außer der Abluftanlage (dort nur 1×
+>   Abluftklappe).
+> **Offene Punkte:** `430_000065` (Belimo SM230ASR, 20Nm statt der gesuchten
+> 25Nm – bei Siemens UND Belimo existiert keine 230V/25Nm-Kombination am
+> Markt) – SELV/PELV-Trennung des Signalkreises nur indirekt belegt, Nutzer
+> hat das als Annahme akzeptiert (Regel 9, kein Koppelrelais); keine
+> Herstellerlistenpreise für die 2 Befeuchter + Rotor-WT-Antrieb gefunden.
+> **Nächster Schritt:** dem Nutzer erneut die Freigabe-Frage stellen, dann
+> Excel-Eintrag (Phase 5 `dbacs-recherche`-Skill: Lock-Check, Backup,
+> Writer-Skript, Export, Browser-Verifikation), danach wie ursprünglich
+> geplant zurück zur Kälte-Korrektur (Nutzer-Ankündigung „Bevor wir an der
+> Kälte korrigieren...").
+
 > **Nachtrag Session 73 (10.10.2026) – Hinweis bei Klemmleisten-getriebenem
 > Feldwechsel (Modul 4, `modules/modul-04-innenaufbau/index.html`).
 > Auslöser: Nutzer-Praxistest mit mehreren Baugruppen-/Anlagen-Kombinationen

@@ -1,6 +1,28 @@
 # DBACS – Revisionsstand
 
-**Stand:** 10. Oktober 2026 – Session 73 (Modul 4,
+**Stand:** 10. Oktober 2026 – Session 74 (Modul 4 Katalog-Planung, noch
+**nicht** in `ga_komponenten.xlsx` eingetragen – Sitzung auf Nutzer-Wunsch
+„Speichere den Zustand" pausiert): RLT-Anlagen (Lüftung) Fork-Recherche
+abgeschlossen und mit dem Nutzer bis zur finalen Freigabe-Frage
+durchgesprochen. Vollständige Vorlage in
+`scratchpad/rlt_anlagen_freigabe_vorlage_final.md` – beim Fortsetzen zuerst
+lesen. Kurzfassung: 9 neue Einzelkomponenten-Baugruppen `430_000062`–`070`
+(4 modulierende Luftklappenantriebe inkl. Belimo-Alternative SM230ASR 20Nm,
+Rotor-WT-Antrieb Klingenburg, 2 Dampfbefeuchter-Varianten Condair RS,
+1 Sprühbefeuchter Carel humiFog, Außentemperaturfühler Siemens QAC34/101 –
+in Session 68 entschieden, jetzt erstmals katalogisiert) + 4 neue Anlagen
+`430_A00001`–`004` (Abluftanlage einfach, Zuluftanlage einfach mit
+Vorerhitzer-Option, Zu-/Abluftanlage ohne WRG mit 3 Register-Achsen,
+Vollklimaanlage-Baukasten mit 7 `gruppe`-Achsen/17 Varianten). Vorerhitzer
+braucht zwingend Fail-Safe-Ventilantrieb + Frostschutzwächter (immer
+Außenluft ausgesetzt), Register-Funktionen referenzieren direkt bestehende
+Heizkreis-/Kältekreis-Beimischschaltungs-Anlagen statt neuer RLT-Baugruppen.
+Kondensatwächter bewusst nicht aufgenommen (nur für Deckenklimageräte
+relevant). Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 74.
+**Nächster Schritt:** Freigabe einholen, dann Excel-Eintrag (Phase 5
+`dbacs-recherche`-Skill), danach zurück zur angekündigten Kälte-Korrektur.
+
+Vorheriger Stand – Session 73 (Modul 4,
 `modules/modul-04-innenaufbau/index.html`): Hinweis bei Klemmleisten-
 getriebenem Feldwechsel. Nutzer-Praxistest (mehrere Baugruppen-/Anlagen-
 Kombinationen, insbes. Motor-Brandschutzklappenantriebe in hoher Stückzahl)
