@@ -16,6 +16,62 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 73 (10.10.2026) – Hinweis bei Klemmleisten-getriebenem
+> Feldwechsel (Modul 4, `modules/modul-04-innenaufbau/index.html`).
+> Auslöser: Nutzer-Praxistest mit mehreren Baugruppen-/Anlagen-Kombinationen
+> zeigte, dass der Feldwechsel bei Mehrfeld-Schränken (`zone_modus`
+> `je_feld`/`getrennt_els`/…) oft viel zu früh erfolgt – die Leistungs-/
+> Steuerzone war meist noch deutlich unter 60% gefüllt, limitierender
+> Faktor war fast immer die Abgangsklemmleiste (`klemm_l`/`klemm_f`,
+> insbesondere bei Motor-Brandschutzklappenantrieben mit vielen Instanzen,
+> je 50-300x getestet). Eine zweite, übereinanderliegende Klemmleisten-
+> reihe wurde als Lösung diskutiert und verworfen (Kabel der oberen Reihe
+> würden die untere überlappen – bei Neuanlage nicht akzeptabel, nur im
+> Bestand bei Platzmangel üblich). Stattdessen: sichtbarer Hinweis, WENN
+> ein Folgefeld ausschließlich wegen der Abgangsklemmen-Zonen entsteht.**
+> **Root-Cause-Problem beim naiven Ansatz (roher Bedarf aus `queues`/
+> `bgInstanceQueue`):** eine Baugruppen-Instanz wird durch den
+> Baugruppen-Zusammenhalt (Session 49) nur ALS GANZES reserviert – scheitert
+> sie an `klemm_f`, bleibt ihr KOMPLETTER Bedarf (auch der `leist`-Teil)
+> offen, obwohl die `leist`-Zone selbst noch gar nicht voll ist. Auch
+> `zones[zn].overflow` allein ist unzuverlässig: `leist`/`steuer` bekommen
+> nur die bereits ATOMAR BESTÄTIGTEN Instanzen zum Platzieren übergeben
+> (`confirmedBg`), die passen per Konstruktion fast immer vollständig, auch
+> wenn `klemm_f` der eigentliche Blocker war.
+> **Lösung:** `platziereBaugruppenFuerFeld()` liefert jetzt zusätzlich
+> `blockedZones` (Set) – die Zone, an der der Dry-Run-Fit-Check einer
+> Instanz tatsächlich zuerst scheiterte (`result.leftoverDevs.length > 0`).
+> Durchgereicht über `placeBauteileForField()` → `buildFeld()` →
+> `felder[].blockedZones`. In `calculateFelder()`s Folgefeld-Schleife wird
+> vor jedem neuen Feld geprüft, ob das zuletzt gebaute Feld NUR durch
+> `klemm_l`/`klemm_f`/`klemm_s` (neue Konstante `ABGANGS_KLEMM_ZONEN`)
+> blockiert war (ergänzt um `zones[zn].overflow` für den Randfall direkt
+> platzierter Einzelbauteile) – nur dann `feld.klemmHinweis` setzen, inkl.
+> Füllstand von `leist`/`steuer` im vorherigen Feld zur Einordnung. UI:
+> jedes Feld bekommt jetzt eine Spalte (`.feld-col` statt direkt
+> `.feld-svg-wrap`), optional mit einer Hinweisbox (`.feld-klemm-warn`,
+> amber) oberhalb der Zeichnung; `schrumpfWrapAufInhalt()` misst/verkleinert
+> jetzt die Spalte statt des reinen Zeichnungs-Wraps.
+> **Browser-Verifikation:** 50×- und 300×-`430_000056`-Testfall
+> (Standschrank-Referenz, `zone_modus=je_feld`) zeigt den Hinweis korrekt an
+> jedem Folgefeld, dessen Vorgänger ausschließlich an `klemm_f` scheiterte
+> (Beispiel: „Feldwechsel durch Überlauf von Abg.-Kl. Feldgeräte ausgelöst –
+> Leistungsbaugruppe 54%, Steuerbaugruppe 59% im vorherigen Feld noch nicht
+> ausgelastet.", `klemm_f`/`klemm_l` 99% vs. `leist` 54%/`steuer` 59%); beim
+> 300×-Stresstest bleibt die Diagnose über alle 11 Folgefelder konsistent
+> (durchgängig nur `klemm_f` blockiert). Vollständiger Katalog-Regressions-
+> test danach: `testKatalogScan()` sauber, `testBaugruppe()` 234/234,
+> `testAnlage()` 46/46 (in mehreren Batches wegen des bekannten
+> `javascript_tool`-Timeout-Gotchas bei langen Wärmepumpen-Optionsschleifen),
+> keine Konsolenfehler. **Nebenbefund (Infrastruktur, kein Projekt-Bug):**
+> wieder der bekannte WSL-localhost-Relay-Ausfall (Session 51) – behoben mit
+> `wsl --shutdown` (Nutzerfreigabe eingeholt) vor dem Server-Neustart.
+> **Noch nicht geprüft:** ob dieselbe Diagnose auch für die anderen
+> `zone_modus`-Varianten (`getrennt_els`/`einsp_misch`/`einsp_leist_misch`)
+> und für Wandschränke (dort strukturell ohne Folgefeld-Kaskade, Hinweis
+> müsste dann gar nicht greifen) weiterhin korrekt greift bzw. korrekt
+> ausbleibt – bei Gelegenheit nachholen.
+
 > **Nachtrag Session 72 (09.10.2026) – Fork-Recherche Kältemaschinen/
 > Rückkühlwerke/Glykol-/Gaswarnanlage (Session 71) nach Nutzer-Feedback
 > finalisiert und in `ga_komponenten.xlsx` eingetragen. 3 neue Anlagen, 19

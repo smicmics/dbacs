@@ -401,12 +401,21 @@ legend{
    scrollt die Reihe horizontal statt die Blöcke zu stauchen (Bauteil-
    Lesbarkeit hat Vorrang vor Kompaktheit). */
 .felder-row{display:flex;gap:12px;flex:1 1 auto;min-width:0;min-height:0;overflow-x:auto;}
+/* Session 73: Spalte je Feld – optionaler Klemmleisten-Hinweis oberhalb der
+   eigentlichen Schranksicht. schrumpfWrapAufInhalt() misst/verkleinert
+   diese Spalte (nicht mehr .feld-svg-wrap direkt) auf die SVG-Breite. */
+.feld-col{display:flex;flex-direction:column;gap:4px;min-width:220px;flex:1 0 260px;}
 .feld-svg-wrap{
   border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
-  min-height:200px;min-width:220px;overflow:hidden;flex:1 0 260px;
+  min-height:200px;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
 }
 .feld-svg-wrap svg{display:block;}
+.feld-klemm-warn{
+  font-size:10.5px;line-height:1.35;color:#D4A84B;
+  background:rgba(212,168,75,0.12);border:1px solid rgba(212,168,75,0.4);
+  border-radius:4px;padding:4px 6px;
+}
 /* Rechts: Reihe der zugehörigen Türansichten, gleiche Feld-Reihenfolge wie
    links (Session 47 Grundlage, Session 48 auf mehrere Felder erweitert) –
    nur Felder mit mindestens einem Türbauteil bekommen einen Block. */
@@ -923,6 +932,16 @@ const ZONE_COLORS = {
 const REIHEN_ZONEN = ['leist','steuer'];
 const KLEMM_ZONEN  = ['klemm_e','uss','klemm_l','klemm_f','klemm_s'];
 const ALLE_ZONEN   = ['klemm_e','uss','evert','leist','steuer','klemm_l','klemm_f','klemm_s'];
+// Abgangsklemmen-Zonen (Session 73, Nutzer-Praxistest Motor-BSK-Baugruppen):
+// in der Praxis sind oft NICHT leist/steuer der limitierende Faktor für
+// einen Feldwechsel, sondern die Abgangsklemmleisten – vor allem bei vielen
+// gleichartigen Instanzen mit mehreren Klemmen je Stück (z. B. Brandschutz-
+// klappenantriebe). Eine zweite, übereinanderliegende Klemmleistenreihe
+// wurde geprüft und verworfen (Kabel der oberen Reihe würden die untere
+// überlappen – bei Neuanlage nicht akzeptabel, nur im Bestand bei
+// Platzmangel üblich). Siehe calculateFelder() für den daraus abgeleiteten
+// Hinweis, wenn ein Folgefeld AUSSCHLIESSLICH wegen dieser Zonen entsteht.
+const ABGANGS_KLEMM_ZONEN = ['klemm_l','klemm_f','klemm_s'];
 // DDC-Datenpunkttypen (siehe data/xlsx_to_json.py, DP_FELDER) – bei
 // bauteil_typ==='ddc_io' bereitgestellte Kapazität je Typ, sonst Bedarf je Typ.
 const DP_TYPES = ['dp_ai','dp_ao','dp_bi','dp_bo','dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo'];
@@ -2839,17 +2858,31 @@ function calculate() {
   // einmal falsch gemessenes erstes Feld auf einem anderen Maßstab als die
   // übrigen.
   felderRow.innerHTML = '';
-  const feldSvgWraps = felder.map(() => {
+  // Session 73: jedes Feld bekommt eine Spalte (.feld-col) statt direkt den
+  // Zeichnungs-Wrap – trägt optional den Klemmleisten-Überlauf-Hinweis
+  // (feld.klemmHinweis, siehe calculateFelder()) oberhalb der Zeichnung.
+  const feldCols = [];
+  const feldSvgWraps = felder.map(feld => {
+    const col = document.createElement('div');
+    col.className = 'feld-col';
+    if (feld.klemmHinweis) {
+      const hint = document.createElement('div');
+      hint.className = 'feld-klemm-warn';
+      hint.textContent = '⚠ ' + feld.klemmHinweis;
+      col.appendChild(hint);
+    }
     const wrap = document.createElement('div');
     wrap.className = 'feld-svg-wrap';
     wrap.innerHTML = '<div class="feld-svg-inner"></div>';
-    felderRow.appendChild(wrap);
+    col.appendChild(wrap);
+    felderRow.appendChild(col);
+    feldCols.push(col);
     return wrap;
   });
   felder.forEach((feld, i) => {
     const wrap = feldSvgWraps[i];
     buildSVG(feld.zp, feld.layout, feld.zones, wrap, wrap.querySelector('.feld-svg-inner'));
-    schrumpfWrapAufInhalt(wrap);
+    schrumpfWrapAufInhalt(feldCols[i]);
   });
 
   // Hinweis, dass weitere Felder automatisch erscheinen, sobald sie benötigt
@@ -4046,6 +4079,13 @@ function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, u
   const confirmed = {};
   zoneSet.forEach(zn => confirmed[zn] = []);
   const isBandZone = zn => zn === 'evert' ? !useEvKanal : REIHEN_ZONEN.includes(zn);
+  // Session 73 (Nutzer-Praxistest, Feldwechsel-Diagnose): welche Zone hat
+  // mindestens eine Instanz tatsächlich blockiert? Der Fit-Check unten läuft
+  // kumulativ über alle Instanzen – sobald EINE Zone hier auftaucht, war sie
+  // zum Zeitpunkt der jeweiligen Instanz nachweislich voll (nicht nur
+  // Bedarfs-Vermutung wie bei `queues[zn].length`, das bei atomar
+  // gescheiterten Instanzen auch in noch gar nicht vollen Zonen Rest zeigt).
+  const blockedZones = new Set();
 
   // Relevant: die Instanz hat MINDESTENS eine Zone in diesem Feldtyp.
   const relevantIdx = [];
@@ -4062,7 +4102,7 @@ function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, u
       const devsTry = confirmed[zn].concat(inst.zonen[zn]);
       const bands = bandsProZone[zn] || [];
       const result = isBandZone(zn) ? placeInBands(devsTry, bands, klemmraum, 0) : placeInKlemmRow(devsTry, bands, 0);
-      if (result.leftoverDevs.length > 0) { fitsAll = false; break; }
+      if (result.leftoverDevs.length > 0) { fitsAll = false; blockedZones.add(zn); break; }
     }
     // Session 67, Nutzer-Fund (echter Blackout-Bug): passt eine Instanz in
     // EINER ihrer Zonen nicht mehr (Zone voll), darf das NICHT die gesamte
@@ -4085,7 +4125,7 @@ function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, u
   }
 
   for (let k = doneIdx.length - 1; k >= 0; k--) bgInstanceQueue.splice(doneIdx[k], 1);
-  return confirmed;
+  return { confirmed, blockedZones };
 }
 
 // ── Bauteile EINES Feldes platzieren (Session 48, aus placeBauteile()
@@ -4125,7 +4165,7 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, bgInstanceQ
     else bandsProZone[zn] = bandsAll[zn] || [];
   });
 
-  const confirmedBg = platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet);
+  const { confirmed: confirmedBg, blockedZones } = platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet);
 
   REIHEN_ZONEN.forEach(zn => {
     if (!zoneSet.includes(zn)) return;
@@ -4194,7 +4234,7 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, bgInstanceQ
     }
   }
 
-  return { zones, reserveShortfall };
+  return { zones, reserveShortfall, blockedZones };
 }
 
 // ── Mehrfeld-Orchestrator (Session 48) ────────────────────────────────
@@ -4241,7 +4281,7 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
     const layout = getZoneBands(zp, ft);
     const feld = placeBauteileForField(layout.bands, klemmraum, ft, queues, bgInstanceQueue, idxCounters, reservePct, zp.useEvKanal);
     if (feld.reserveShortfall) reserveShortfall = true;
-    felder.push({ feldtyp: ft, zp, layout, zones: feld.zones });
+    felder.push({ feldtyp: ft, zp, layout, zones: feld.zones, blockedZones: feld.blockedZones });
   };
 
   // Regel für die Erstansicht (Nutzer-Vorgabe): "Zeige alle Felder, die eine
@@ -4267,7 +4307,47 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
     while (felder.length < MAX_FELDER) {
       const vor = restOf(phase.ft);
       if (vor === 0) break; // kein Bedarf für diesen Feldtyp
+      // Diagnose (Session 73, Nutzer-Praxistest Motor-BSK-Baugruppen): war
+      // der zuletzt gebaute Feld tatsächlich NUR durch die Abgangsklemmen-
+      // Zonen (klemm_l/f/s) begrenzt, während leist/steuer dort noch Luft
+      // hatten? Dafür NICHT den rohen Bedarf (queues/bgInstanceQueue)
+      // auswerten – der zeigt bei JEDER Zone der zuletzt gescheiterten
+      // Baugruppen-Instanz einen Rest an, auch in leist/steuer, weil der
+      // Baugruppen-Zusammenhalt (Session 49) eine Instanz nur ALS GANZES
+      // reserviert: scheitert sie an klemm_f, bleibt ihr kompletter Bedarf
+      // (auch der leist-Teil) offen, obwohl die leist-ZONE selbst noch gar
+      // nicht voll ist. `zones[zn].overflow` allein ist für leist/steuer
+      // ebenfalls unzuverlässig – placeInBands()/placeInKlemmRow() bekommen
+      // dort nur die bereits ATOMAR BESTÄTIGTEN Instanzen übergeben
+      // (confirmedBg), die passen per Konstruktion fast immer vollständig,
+      // auch wenn klemm_f der eigentliche Blocker war. Maßgeblich ist daher
+      // `blockedZones` aus `platziereBaugruppenFuerFeld()` (die Zone, an der
+      // der Dry-Run-Fit-Check einer Baugruppen-Instanz tatsächlich
+      // scheiterte) – ergänzt um `zones[zn].overflow` für den selteneren
+      // Fall, dass frei platzierte Einzelbauteile (nicht über eine
+      // Baugruppen-Instanz) direkt eine Zone sprengen.
+      let klemmHinweis = null;
+      const vorherig = felder[felder.length - 1];
+      if (vorherig) {
+        const direktOverflow = Object.keys(vorherig.zones).filter(zn => vorherig.zones[zn].overflow);
+        const blockiert = new Set([...(vorherig.blockedZones || []), ...direktOverflow]);
+        const klemmBlockiert = [...blockiert].filter(zn => ABGANGS_KLEMM_ZONEN.includes(zn));
+        const andereBlockiert = [...blockiert].filter(zn => !ABGANGS_KLEMM_ZONEN.includes(zn));
+        if (klemmBlockiert.length > 0 && andereBlockiert.length === 0) {
+          const leistSteuerHier = ['leist','steuer'].filter(zn => vorherig.zones[zn]);
+          const fillPct = zn => {
+            const z = vorherig.zones[zn];
+            return z && z.mm_total > 0 ? Math.round((z.mm_used / z.mm_total) * 100) : null;
+          };
+          const teile = leistSteuerHier
+            .map(zn => { const p = fillPct(zn); return p !== null ? `${ZONE_LABELS[zn] || zn} ${p}%` : null; })
+            .filter(Boolean);
+          klemmHinweis = `Feldwechsel durch Überlauf von ${klemmBlockiert.map(zn => ZONE_LABELS[zn] || zn).join('/')} ausgelöst` +
+            (teile.length ? ` – ${teile.join(', ')} im vorherigen Feld noch nicht ausgelastet.` : '.');
+        }
+      }
       buildFeld(phase.ft);
+      if (klemmHinweis) felder[felder.length - 1].klemmHinweis = klemmHinweis;
       FELDTYP_ZONEN[phase.ft].forEach(zn => zonesGezeigt.add(zn));
       if (restOf(phase.ft) >= vor) break; // kein Fortschritt → Abbruch
     }

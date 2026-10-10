@@ -1,6 +1,25 @@
 # DBACS – Revisionsstand
 
-**Stand:** 09. Oktober 2026 – Session 72 (Modul 4 Katalog,
+**Stand:** 10. Oktober 2026 – Session 73 (Modul 4,
+`modules/modul-04-innenaufbau/index.html`): Hinweis bei Klemmleisten-
+getriebenem Feldwechsel. Nutzer-Praxistest (mehrere Baugruppen-/Anlagen-
+Kombinationen, insbes. Motor-Brandschutzklappenantriebe in hoher Stückzahl)
+zeigte, dass Feldwechsel bei Mehrfeld-Schränken oft erfolgen, obwohl
+Leistungs-/Steuerzone noch deutlich unterausgelastet sind – limitierender
+Faktor ist fast immer die Abgangsklemmleiste (klemm_l/klemm_f). Eine zweite
+Klemmleistenreihe wurde geprüft und verworfen (Kabelüberlappung bei
+Neuanlage). Stattdessen: `platziereBaugruppenFuerFeld()` liefert jetzt
+`blockedZones` (welche Zone den Dry-Run-Fit-Check einer Baugruppen-Instanz
+tatsächlich blockierte), `calculateFelder()` setzt daraus `feld.klemmHinweis`
+nur wenn AUSSCHLIESSLICH klemm_l/klemm_f/klemm_s blockierten (nicht
+leist/steuer) – UI zeigt das als amber Hinweisbox oberhalb der betroffenen
+Feld-Zeichnung (`.feld-klemm-warn`). Browser-verifiziert (50×/300×-BSK-
+Testfall, Hinweis korrekt nur bei reinem Klemmleisten-Engpass), vollständiger
+Katalog-Regressionstest: `testKatalogScan()` sauber, `testBaugruppe()`
+234/234, `testAnlage()` 46/46, keine Konsolenfehler. Details: `CLAUDE.md` →
+„Offene Punkte" Nachtrag Session 73.
+
+Vorheriger Stand – Session 72 (Modul 4 Katalog,
 `data/ga_komponenten.xlsx`): Fork-Recherche Kältemaschinen/Rückkühlwerke/
 Glykol-/Gaswarnanlage (Session 71) nach Nutzer-Feedback finalisiert und
 eingetragen. 3 neue Anlagen: Kältemaschine ≥250kW, Rückkühlwerk trocken
