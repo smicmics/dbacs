@@ -16,6 +16,67 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 76 Teil 2 (10.10.2026) – Fehlende Gegenader-/Referenz-
+> klemmen bei AO/BO/BI gefunden + behoben (Nutzer-Fund), katalogweiter Scan.**
+> Nutzer-Regel (verbindlich, Ergänzung zu Regel 14): **AO** braucht immer
+> 2 Klemmen (Signal + DDC-Systemmasse), **BO** auf ein externes Gerät
+> (schließt dort eine Brücke) braucht immer 2 Klemmen, **BI** von einem
+> potentialfreien Kontakt braucht ebenfalls immer 2 Klemmen – auch wenn in
+> der Praxis ein gemeinsamer „Systemplus" mehrere nahe beieinanderliegende
+> Kontakte bedienen könnte (das ist eine Projektentscheidung vor Ort, DBACS
+> modelliert bewusst den sicheren/einfachen Fall: „Die Praxis entscheidet,
+> ob auch weniger geht").
+> **Systematischer Katalogscan** (alle `baugruppen_bauteile`-Zeilen in den
+> Feldklemmen-Zonen `klemm_e/l/f/s`, Gruppierung nach (Zone, Artikel),
+> geprüft ob genug „freie" Klemmen für alle Signale vorhanden sind) ergab
+> 6 echte Treffer – **behoben**:
+> - `420_000065` (Kältemaschine Kern): 2×BI+1×BO+1×AO hatten GAR KEINE
+>   eigene Referenzklemme (nur die unabhängigen Bus-Klemmen vorhanden) →
+>   4 Klemmen ergänzt.
+> - `420_000068`/`071` (Rückkühlwerk Kern trocken/adiabatisch): je 1×BI+1×BO
+>   ohne Referenz → je 2 Klemmen ergänzt.
+> - `420_000080` (Glykolwarnanlage): 5×BI (Leckage-Alarm, Alarm/Betrieb
+>   Ablaufventil, Stellungsrückm. Auf/Zu) komplett ohne Referenzklemmen →
+>   5 Klemmen ergänzt.
+> - `420_000005` (Drucksensor+wächter Kombi): der AI-Anteil (`klemm_s`) hatte
+>   gar keine Referenzklemme (die 2 BI in `klemm_f` waren bereits korrekt
+>   1:1 gepaart) → 1 Klemme ergänzt.
+> - `430_000039`–`042` (EC-Ventilator, alle 4 Leistungsstufen identisch
+>   betroffen): das 2. BI (Störung) teilte sich die einzige Klemme mit dem
+>   1. BI (Betrieb) → je 1 Klemme ergänzt (jetzt 2:2 statt 2:1).
+> **Explizit geprüft und NICHT verändert** (bewusste/dokumentierte
+> Ausnahmen, kein Verstoß gegen die neue Regel):
+> - `410_000004` (Reflex Variomat): 2 AI teilen sich 1 gemeinsame GNDA-
+>   Klemme (3 statt 4 Klemmen) – **bereits in Session 62 explizit gegen das
+>   Original-Klemmenplan verifiziert**, keine Annahme.
+> - `430_000024` (QAA27 Sollwertversteller) und `430_000025` (Raum-CO2/
+>   Feuchte/Temp-Kombifühler): teilen sich dokumentiert eine gemeinsame
+>   Referenzklemme zwischen mehreren Signalen (B/M/R-Schema bzw. gemeinsame
+>   Versorgung mehrerer Kanäle, Session 53/54) – Katalogwert bleibt, nicht
+>   die hier neu formalisierte „immer 2, nie geteilt"-Regel.
+> - **Pumpen (`420_000022`–`026`), Ventilantriebe (`420_000013`–`017`/
+>   `027`/`028`), Klappenantriebe (`430_000045`–`052`/`062`–`065`,
+>   `420_000055`)** auf Nutzer-Bitte ausdrücklich mitgeprüft: alle bereits
+>   korrekt (2 Klemmen je Signal, teils als erkennbar geteiltes Pool-Muster
+>   wie die Ventilantrieb-G0-Referenz – mathematisch dieselbe Gesamtzahl).
+>   **Keine Änderung nötig.**
+> **Browser-Verifikation:** `testKatalogScan()` 0 verwaist; `testBaugruppe()`
+> auf allen 9 korrigierten IDs bestanden; `testAnlage()` auf
+> `420_A00038`/`039`/`040` weiterhin `pass:true`; erneuter Katalog-Scan
+> (gleiches Script) zeigt nur noch die 2 bewusst unveränderten Ausnahmen.
+> Backup: `ga_komponenten_vor-gegenader-klemmen-fix_<timestamp>.xlsx`.
+> **Zweite Nutzer-Frage („RKW adiabatisch hat weniger Datenpunkte als
+> trocken") – live nachgerechnet, NICHT reproduzierbar:** mit identischen
+> Bedingungen (Busauswertung RTU, Kühlreihen/Motoren auf 0 gesetzt, um nur
+> die Basis-Anlage zu vergleichen) zeigt `420_A00039` (trocken) 2AI+7BI+1BO
+> physisch / 3AI komm., `420_A00040` (adiabatisch) **identisch** 2AI+7BI+1BO
+> physisch / **4AI+1BO** komm. (Spülzyklus-Zähler+manueller Trigger) – die
+> adiabatische Anlage hat in jeder Kategorie gleich viele oder MEHR
+> Datenpunkte, nie weniger. Konnte den Nutzer-Befund nicht nachstellen –
+> Rückfrage an den Nutzer nötig, welche konkrete Konfiguration/Ansicht
+> verglichen wurde (evtl. ein Zwischenstand vor dieser Sitzung, oder ein
+> spezifischer Mengenfeld-Wert, der hier nicht getestet wurde).
+
 > **Nachtrag Session 76 (10.10.2026) – Kälte-Korrektur Teil 1: Rückkühlwerk-
 > Größe (Kühlreihen/Motoren) als echtes Eingabefeld, neue Engine-Fähigkeit
 > „Mengenfeld".** Nutzer-Ausgangspunkt: „Bei der Kältemaschine und dem

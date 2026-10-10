@@ -1,6 +1,20 @@
 # DBACS – Revisionsstand
 
-**Stand:** 10. Oktober 2026 – Session 76: Kälte-Korrektur begonnen. Nutzer-
+**Stand:** 10. Oktober 2026 – Session 76 Teil 2: Klemmen-Fehler gefunden+
+behoben. Nutzer-Fund: AO/BO/BI brauchen IMMER 2 Klemmen (Signal+Referenz/
+Rückleitung) – bei der Kältemaschine/RKW-Kern/Glykolwarnanlage fehlte die
+Referenzklemme komplett (nur 1 statt 2 je Signal). Katalogweiter Scan nach
+demselben Muster: 6 Baugruppen betroffen (`420_000065`/`068`/`071`/`080`,
+`420_000005`, `430_000039`–`042`), alle korrigiert. Pumpen/Ventile/Klappen
+auf Nutzer-Bitte ebenfalls geprüft – dort bereits alles korrekt, keine
+Änderung nötig. 2 Sensor-Baugruppen mit dokumentiertem geteiltem
+Referenzschema (QAA27, Raum-CO2-Kombifühler) bewusst unverändert gelassen.
+Zweite Nutzer-Frage (RKW adiabatisch habe weniger Datenpunkte als trocken)
+live nachgerechnet – **nicht reproduzierbar**, adiabatisch hat durchgängig
+gleich viele oder mehr Datenpunkte. Rückfrage an Nutzer offen. Details:
+`CLAUDE.md` → „Offene Punkte" Nachtrag Session 76 Teil 2.
+
+Vorheriger Stand – Session 76 Teil 1: Kälte-Korrektur begonnen. Nutzer-
 Fund „Ausstattung der Kältemaschine/Rückkühlwerke im Auswahltext nicht
 erkennbar" – Dokumentation der aktuellen Ausstattung (vereinbarte Vorlage)
 vorgelegt, bestätigt dass die 3 Anlagen (`420_A00038`–`040`) bewusst reine
