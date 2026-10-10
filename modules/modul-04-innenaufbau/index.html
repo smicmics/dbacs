@@ -401,20 +401,25 @@ legend{
    scrollt die Reihe horizontal statt die Blöcke zu stauchen (Bauteil-
    Lesbarkeit hat Vorrang vor Kompaktheit). */
 .felder-row{display:flex;gap:12px;flex:1 1 auto;min-width:0;min-height:0;overflow-x:auto;}
-/* Session 73: Spalte je Feld – optionaler Klemmleisten-Hinweis oberhalb der
-   eigentlichen Schranksicht. schrumpfWrapAufInhalt() misst/verkleinert
-   diese Spalte (nicht mehr .feld-svg-wrap direkt) auf die SVG-Breite. */
-.feld-col{display:flex;flex-direction:column;gap:4px;min-width:220px;flex:1 0 260px;}
 .feld-svg-wrap{
   border:1px solid var(--bord);border-radius:6px;background:#2A2A28;
-  min-height:200px;overflow:hidden;
+  min-height:200px;min-width:220px;overflow:hidden;flex:1 0 260px;
   display:flex;align-items:center;justify-content:center;
+  position:relative; /* Session 73: Trägt optional .feld-klemm-badge (absolut positioniert, kein Einfluss auf die Flex-/Messlogik) */
 }
 .feld-svg-wrap svg{display:block;}
-.feld-klemm-warn{
-  font-size:10.5px;line-height:1.35;color:#D4A84B;
-  background:rgba(212,168,75,0.12);border:1px solid rgba(212,168,75,0.4);
-  border-radius:4px;padding:4px 6px;
+/* Session 73 (Nutzer-Vorgabe: "Zeichen in die freie Fläche", analog zum
+   bestehenden Reserve-Warndreieck #reserve-warn): kompaktes Hinweis-Icon in
+   der Ecke der Schranksicht statt einer eigenen Banner-Zeile – absolut
+   positioniert, nimmt daher KEINEN Platz im Flex-Layout ein (der erste
+   Versuch mit einer Banner-Zeile oberhalb der Zeichnung hatte
+   schrumpfWrapAufInhalt()/die Höhen-Stretch-Logik durcheinandergebracht und
+   die komplette Zeichnung geschrumpft). */
+.feld-klemm-badge{
+  position:absolute;top:4px;right:4px;z-index:2;
+  font-size:13px;font-weight:bold;line-height:1;cursor:default;
+  color:#D4A84B;background:rgba(42,42,40,0.9);
+  border:1px solid rgba(212,168,75,0.6);border-radius:3px;padding:1px 6px;
 }
 /* Rechts: Reihe der zugehörigen Türansichten, gleiche Feld-Reihenfolge wie
    links (Session 47 Grundlage, Session 48 auf mehrere Felder erweitert) –
@@ -2858,31 +2863,27 @@ function calculate() {
   // einmal falsch gemessenes erstes Feld auf einem anderen Maßstab als die
   // übrigen.
   felderRow.innerHTML = '';
-  // Session 73: jedes Feld bekommt eine Spalte (.feld-col) statt direkt den
-  // Zeichnungs-Wrap – trägt optional den Klemmleisten-Überlauf-Hinweis
-  // (feld.klemmHinweis, siehe calculateFelder()) oberhalb der Zeichnung.
-  const feldCols = [];
   const feldSvgWraps = felder.map(feld => {
-    const col = document.createElement('div');
-    col.className = 'feld-col';
-    if (feld.klemmHinweis) {
-      const hint = document.createElement('div');
-      hint.className = 'feld-klemm-warn';
-      hint.textContent = '⚠ ' + feld.klemmHinweis;
-      col.appendChild(hint);
-    }
     const wrap = document.createElement('div');
     wrap.className = 'feld-svg-wrap';
     wrap.innerHTML = '<div class="feld-svg-inner"></div>';
-    col.appendChild(wrap);
-    felderRow.appendChild(col);
-    feldCols.push(col);
+    // Session 73 (Nutzer-Vorgabe: kompaktes Zeichen statt Banner-Zeile,
+    // analog #reserve-warn): Hinweis-Badge absolut in der Ecke, nimmt
+    // keinen eigenen Platz im Flex-Layout ein.
+    if (feld.klemmHinweis) {
+      const badge = document.createElement('span');
+      badge.className = 'feld-klemm-badge';
+      badge.textContent = '!';
+      badge.title = feld.klemmHinweis;
+      wrap.appendChild(badge);
+    }
+    felderRow.appendChild(wrap);
     return wrap;
   });
   felder.forEach((feld, i) => {
     const wrap = feldSvgWraps[i];
     buildSVG(feld.zp, feld.layout, feld.zones, wrap, wrap.querySelector('.feld-svg-inner'));
-    schrumpfWrapAufInhalt(feldCols[i]);
+    schrumpfWrapAufInhalt(wrap);
   });
 
   // Hinweis, dass weitere Felder automatisch erscheinen, sobald sie benötigt

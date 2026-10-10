@@ -12,9 +12,14 @@ Neuanlage). Stattdessen: `platziereBaugruppenFuerFeld()` liefert jetzt
 `blockedZones` (welche Zone den Dry-Run-Fit-Check einer Baugruppen-Instanz
 tatsächlich blockierte), `calculateFelder()` setzt daraus `feld.klemmHinweis`
 nur wenn AUSSCHLIESSLICH klemm_l/klemm_f/klemm_s blockierten (nicht
-leist/steuer) – UI zeigt das als amber Hinweisbox oberhalb der betroffenen
-Feld-Zeichnung (`.feld-klemm-warn`). Browser-verifiziert (50×/300×-BSK-
-Testfall, Hinweis korrekt nur bei reinem Klemmleisten-Engpass), vollständiger
+leist/steuer) – UI zeigt das als kompaktes amber „!"-Badge (mit Tooltip) in
+der Ecke der betroffenen Feld-Zeichnung, analog zum bestehenden Reserve-
+Warndreieck (`#reserve-warn`), absolut positioniert ohne Einfluss auf das
+Flex-Layout (ein erster Zwischenstand mit einer eigenen Banner-Zeile hatte
+die Schranksicht-Größe kaputtgemacht – gefunden per Nutzer-Screenshot,
+behoben/verworfen zugunsten des Badge-Ansatzes). Browser-verifiziert
+(50×/300×-BSK-Testfall, Hinweis korrekt nur bei reinem Klemmleisten-Engpass,
+Schranksicht-Größe unverändert), vollständiger
 Katalog-Regressionstest: `testKatalogScan()` sauber, `testBaugruppe()`
 234/234, `testAnlage()` 46/46, keine Konsolenfehler. Details: `CLAUDE.md` →
 „Offene Punkte" Nachtrag Session 73.

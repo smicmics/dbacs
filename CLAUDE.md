@@ -47,25 +47,51 @@
 > `klemm_l`/`klemm_f`/`klemm_s` (neue Konstante `ABGANGS_KLEMM_ZONEN`)
 > blockiert war (ergänzt um `zones[zn].overflow` für den Randfall direkt
 > platzierter Einzelbauteile) – nur dann `feld.klemmHinweis` setzen, inkl.
-> Füllstand von `leist`/`steuer` im vorherigen Feld zur Einordnung. UI:
-> jedes Feld bekommt jetzt eine Spalte (`.feld-col` statt direkt
-> `.feld-svg-wrap`), optional mit einer Hinweisbox (`.feld-klemm-warn`,
-> amber) oberhalb der Zeichnung; `schrumpfWrapAufInhalt()` misst/verkleinert
-> jetzt die Spalte statt des reinen Zeichnungs-Wraps.
-> **Browser-Verifikation:** 50×- und 300×-`430_000056`-Testfall
-> (Standschrank-Referenz, `zone_modus=je_feld`) zeigt den Hinweis korrekt an
-> jedem Folgefeld, dessen Vorgänger ausschließlich an `klemm_f` scheiterte
-> (Beispiel: „Feldwechsel durch Überlauf von Abg.-Kl. Feldgeräte ausgelöst –
-> Leistungsbaugruppe 54%, Steuerbaugruppe 59% im vorherigen Feld noch nicht
-> ausgelastet.", `klemm_f`/`klemm_l` 99% vs. `leist` 54%/`steuer` 59%); beim
-> 300×-Stresstest bleibt die Diagnose über alle 11 Folgefelder konsistent
-> (durchgängig nur `klemm_f` blockiert). Vollständiger Katalog-Regressions-
-> test danach: `testKatalogScan()` sauber, `testBaugruppe()` 234/234,
-> `testAnlage()` 46/46 (in mehreren Batches wegen des bekannten
-> `javascript_tool`-Timeout-Gotchas bei langen Wärmepumpen-Optionsschleifen),
-> keine Konsolenfehler. **Nebenbefund (Infrastruktur, kein Projekt-Bug):**
-> wieder der bekannte WSL-localhost-Relay-Ausfall (Session 51) – behoben mit
-> `wsl --shutdown` (Nutzerfreigabe eingeholt) vor dem Server-Neustart.
+> Füllstand von `leist`/`steuer` im vorherigen Feld zur Einordnung.
+> **UI, finale Fassung (2 Zwischenstände verworfen, siehe unten):** kompaktes
+> Hinweis-Badge (`.feld-klemm-badge`, amber „!", mit `title`-Tooltip) absolut
+> positioniert in der oberen rechten Ecke der betroffenen Feld-Zeichnung –
+> analog zum bereits bestehenden `#reserve-warn`-Warndreieck (Nutzer-Vorgabe:
+> „Packe den Hinweis doch durch ein Zeichen hier in die freie Fläche"), NICHT
+> als separate Banner-Zeile. Da `position:absolute` verwendet wird, nimmt das
+> Badge keinen Platz im Flex-Layout ein – kein Eingriff in
+> `schrumpfWrapAufInhalt()`/die Höhen-Stretch-Logik nötig, `.feld-svg-wrap`
+> bleibt unverändert direktes Flex-Kind von `.felder-row` wie vor dieser
+> Session.
+> **Zwischenstand 1 (verworfen):** erster Versuch war eine eigene
+> Banner-Zeile (`.feld-klemm-warn`) oberhalb der Zeichnung, dafür wurde eine
+> neue Zwischenebene `.feld-col` (Flex-Spalte) eingeführt. Das brach die
+> Größe der Schranksicht: `.feld-svg-wrap` war bisher DIREKTES Flex-Kind von
+> `.felder-row` und wurde per Default-`align-items:stretch` auf die volle
+> verfügbare Höhe gestreckt (`buildSVG()` skaliert die Zeichnung anhand
+> dieser gemessenen Höhe); als Kind der neuen Spalte griff stattdessen der
+> Haupt-Achsen-Default `flex:0 1 auto`, also nur noch Inhaltshöhe/
+> `min-height:200px` – die Zeichnung schrumpfte dadurch drastisch (Nutzer-
+> Fund per Screenshot: „Schaltschränke (Innenansicht) sind viel kleiner
+> geworden. So ist nichts zu sehen").
+> **Zwischenstand 2 (verworfen):** `.feld-svg-wrap` bekam probeweise
+> `flex:1 1 auto` zurück, um die Spalte wieder vollständig auszufüllen –
+> behob den Größenbug, aber der Nutzer wollte stattdessen explizit das
+> kompakte Icon-Muster (siehe oben) statt einer platzraubenden Banner-Zeile.
+> Komplett zur ursprünglichen Struktur zurückgebaut (kein `.feld-col` mehr).
+> **Browser-Verifikation (finale Fassung):** 50×- und 300×-`430_000056`-
+> Testfall (Standschrank-Referenz, `zone_modus=je_feld`) zeigt das Badge
+> korrekt an jedem Folgefeld, dessen Vorgänger ausschließlich an `klemm_f`
+> scheiterte, Tooltip-Text z. B. „Feldwechsel durch Überlauf von Abg.-Kl.
+> Feldgeräte ausgelöst – Leistungsbaugruppe 54%, Steuerbaugruppe 59% im
+> vorherigen Feld noch nicht ausgelastet." (`klemm_f`/`klemm_l` 99% vs.
+> `leist` 54%/`steuer` 59%); beim 300×-Stresstest bleibt die Diagnose über
+> alle 11 Folgefelder konsistent (durchgängig nur `klemm_f` blockiert).
+> Schranksicht-/Türansicht-Boxen wieder exakt wie vor dieser Session
+> dimensioniert (z. B. 222×366 vs. 226×366 bei 1400×900-Viewport), Badge
+> nimmt nachweislich keinen Layout-Platz ein. Vollständiger Katalog-
+> Regressionstest (nach jeder Zwischenstufe erneut gefahren):
+> `testKatalogScan()` sauber, `testBaugruppe()` 234/234, `testAnlage()`
+> 46/46 (in mehreren Batches wegen des bekannten `javascript_tool`-Timeout-
+> Gotchas bei langen Wärmepumpen-Optionsschleifen), keine Konsolenfehler.
+> **Nebenbefund (Infrastruktur, kein Projekt-Bug):** wieder der bekannte
+> WSL-localhost-Relay-Ausfall (Session 51) – behoben mit `wsl --shutdown`
+> (Nutzerfreigabe eingeholt) vor dem Server-Neustart.
 > **Noch nicht geprüft:** ob dieselbe Diagnose auch für die anderen
 > `zone_modus`-Varianten (`getrennt_els`/`einsp_misch`/`einsp_leist_misch`)
 > und für Wandschränke (dort strukturell ohne Folgefeld-Kaskade, Hinweis
