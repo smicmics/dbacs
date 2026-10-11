@@ -4109,5 +4109,44 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "440_A00005",
+    "name": "MS-Hauptverteilungs-Abgangsfeld: UMZ-Relais mit Wandlersatz + Leistungsschalter + Erdungstrenner",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Abgangsfeld zum Transformator (Fork-Recherche Siemens SIMOSEC/ABB/Schneider + Stromnetz Berlin TB3312/TB3340). Identische Ausstattung wie MS-Einspeise/Kuppelfeld (440_A00001/A00002) - referenziert dieselben wiederverwendbaren Baugruppen UMZ-Relais mit Wandlersatz (440_000068, Busauswertung RTU/TCP wählbar), Leistungsschalter (440_000071) und Erdungstrenner (440_000072). Keine neuen Katalogeinträge.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000068",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000069",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Mittelspannungsschaltanlage",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]

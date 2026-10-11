@@ -71,7 +71,16 @@
 > verifiziert (`testKatalogScan()` sauber, `testAnlage()` 2/2 Kombinationen
 > RTU/TCP bestanden, korrekt ausschließlich die Busauswertung-Baugruppe
 > ohne jedes physische Bauteil aufgelöst).
-> **Nächster Schritt:** Abgangsfeld zum Trafo, danach NSHV/UV.
+> **Direkt im Anschluss ergänzt:** `440_A00005` „MS-Hauptverteilungs-
+> Abgangsfeld" (UMZ-Relais + Leistungsschalter + Erdungstrenner, identische
+> Zusammensetzung wie Einspeise-/Kuppelfeld) – keine neuen Baugruppen.
+> Export anlagen 54→55. Browser-verifiziert (`testKatalogScan()` sauber,
+> `testAnlage()` 2/2 Kombinationen bestanden). **Damit alle 5 MS-Feldtypen
+> aus der Fork-Recherche abgedeckt:** Einspeise (Ringfeld), Kuppelfeld,
+> Übergabefeld, Messfeld, Abgangsfeld zum Trafo – `440_A00001`–`005`.
+> **Nächster Schritt:** NSHV/UV (Fork-Ergebnisse liegen bereits vor,
+> Freigabe-Vorlage steht noch aus), danach ggf. die 5 Feld-Anlagen zu einer
+> kompletten MS-Anlage zusammensetzen (Nutzer-Ankündigung Elektro-Auftakt).
 
 > **Nachtrag Session 77 Teil 3 (11.10.2026) – Klimageräte Kälte: Split-
 > Klimagerät (Daikin) + wassergekühltes Klimagerät (Vertiv/Liebert
