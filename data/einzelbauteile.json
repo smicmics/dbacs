@@ -3520,5 +3520,20 @@
     ],
     "kategorie": "Anschlussklemmen Leistung/Feldgeräte/Sensoren",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "MBUS-IMPULS-KOPPLER",
+    "bezeichnung": "Impuls-zu-M-Bus-Koppler, 3 Impulseingänge (S0), generisches Modell",
+    "hersteller": "generisch",
+    "bauteil_typ": "impuls_mbus_koppler",
+    "b_mm": 35.0,
+    "te_breite": 2,
+    "h_mm": 78.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "DDC-Automationseinrichtung",
+    "benoetigt_steuerspannung": "24vac",
+    "geprueft": false
   }
 ]

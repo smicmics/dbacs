@@ -4188,5 +4188,23 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "440_A00008",
+    "name": "MS-Messfeld VNB (Impulsausgänge): 4-Quadrantenzähler mit M-Bus-Koppler",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Zweite Messfeld-Variante neben 440_A00004 (Modbus/Janitza UMG96) - viele VNB erlauben die Aufschaltung nur über die Impulsausgänge ihres eigenen 4-Quadrantenzählers, nicht über eine direkte Modbus-Anbindung. Bündelt die Baugruppe 440_000073 (3 Impulsklemmen + M-Bus-Koppler).",
+    "mitglieder": [
+      {
+        "bg_id": "440_000073",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Mittelspannungsschaltanlage",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]

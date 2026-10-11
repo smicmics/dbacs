@@ -11968,5 +11968,57 @@
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
     "geprueft": false
+  },
+  {
+    "id": "440_000073",
+    "name": "MS-Messfeld VNB: 4-Quadrantenzähler mit Impulsausgängen, M-Bus-Koppler (Bezug/Liefermenge/Blindenergie)",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Alternative zum bestehenden Modbus-Messfeld (440_000068ff.) - der VNB-eigene 4-Quadrantenzähler (geeichtes Fremdbauteil, Regel 7, kein eigener Katalogeintrag) liefert 3 Impulsausgänge (S0): Bezug, Liefermenge (Einspeisung), Blindenergie. Jeder Impulsausgang als eigenes Feldkabel mit 2 Klemmen (Regel 14), KEINE physischen Datenpunkte auf diesen Klemmen (reine Impulsweiterleitung zum Koppler). Impuls-zu-M-Bus-Koppler (schrankintern, eigene 24V-AC-Steuerspannung) wandelt die 3 Impulse in ein M-Bus-Telegramm um, das wie jeder andere M-Bus-Zähler über den bestehenden Pegelwandler-Ratchet (MR006/MR004C) zur DDC gelangt. 3x AI komm. (Bezug, Liefermenge, Blindenergie) via M-Bus.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "MBUS-IMPULS-KOPPLER",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 3,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "VNB-4Q-ZAEHLER-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
   }
 ]

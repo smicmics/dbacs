@@ -1156,5 +1156,14 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert.",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "VNB-4Q-ZAEHLER-GENERIC",
+    "bezeichnung": "VNB-eigener 4-Quadrantenzähler mit 3 Impulsausgängen (Bezug/Liefermenge/Blindenergie), generischer Platzhalter",
+    "hersteller": "generisch (VNB-Eigentum, geeicht)",
+    "kategorie": "Mittelspannungsschaltanlage",
+    "quelle_hinweis": "[Session 77 Folgearbeit] Fremdbauteil (Regel 7) - Zähler selbst ist Eigentum/Verantwortung des Verteilnetzbetreibers, kein spezifisches Fabrikat recherchiert.",
+    "kommunikative_datenpunkte": "Über Impuls-zu-M-Bus-Koppler (440_000073): Bezug, Liefermenge, Blindenergie (M-Bus, je AI)",
+    "geprueft": false
   }
 ]
