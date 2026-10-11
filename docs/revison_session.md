@@ -1,6 +1,23 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 77 Teil 4 (11.10.2026).** Elektro-Start Mittelspannung:
+> **Stand nach Session 77 Teil 5 (11.10.2026).** MS-Messfeld VNB
+> (Impulsausgänge) ergänzt (`440_A00008`, 4-Quadrantenzähler mit 3
+> Impulseingängen + neuer Impuls-zu-M-Bus-Koppler, nutzt den bestehenden
+> M-Bus-Pegelwandler-Ratchet) – damit 8 MS-Feld-Anlagen. **Wichtiger
+> Bugfix:** Feldklemmen (`klemm_f`) landeten in der Konfiguration
+> „Leistung/Einspeisung gemischt / Steuerung getrennt" (`einsp_leist_misch`)
+> fälschlich im Leistungsfeld, auch wenn dort KEIN Bauteil (Koppelrelais)
+> saß – Nutzer-Fund per Screenshot (leerer Schrank + MS-Ringfeld mit Modbus
+> TCP). Neue verbindliche Regel: Klemmen für Datenpunkte, die direkt auf
+> ein DDC-Modul verschaltet werden (kein Koppelrelais), gehören ins Feld,
+> wo das aufnehmende DDC-Modul sitzt. Fix über neue Funktion
+> `klemmFGueltigInFeldtyp()` in `modules/modul-04-innenaufbau/index.html`.
+> Vollständig verifiziert (exakter Nutzer-Repro, Koppelrelais-Regression,
+> voller Katalog-Scan, Motor-BSK-Validierung). Export: baugruppen 288→289,
+> einzelbauteile 229→230, feldgeraete 132→133, anlagen 57→58.
+> Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 77 Teil 5.
+
+Vorheriger Stand – Session 77 Teil 4 (11.10.2026). Elektro-Start Mittelspannung:
 > 5 neue Baugruppen (UMZ-Relais mit Wandlersatz [Kern+Busauswertung RTU/TCP],
 > Leistungsschalter MS, Erdungstrenner MS, Gewerk 440) + 2 neue Anlagen
 > „MS-Einspeise (Ringfeld)"/„MS-Kuppelfeld" (identische Ausstattung), neue

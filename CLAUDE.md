@@ -16,6 +16,84 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 77 Teil 5 (11.10.2026) – MS-Messfeld VNB (Impulsaus-
+> gänge) ergänzt + wichtiger Bugfix: Feldklemmen (`klemm_f`) landeten bei
+> reinen Steuerungs-Baugruppen ohne Koppelrelais im falschen Feld.**
+> **1. Neue Anlage `440_A00008` „MS-Messfeld VNB (Impulsausgänge)":** viele
+> Verteilnetzbetreiber erlauben die Aufschaltung nur über die 3
+> Impulsausgänge (S0, Bezug/Liefermenge/Blindenergie) ihres eigenen
+> 4-Quadrantenzählers (Fremdbauteil, Regel 7), nicht über eine direkte
+> Modbus-Anbindung wie beim bestehenden `440_A00004` (Wandlersatz+UMG96).
+> Neue Baugruppe `440_000073`: 3× Impulseingang (je 2 Klemmen `klemm_f`,
+> keine physischen DP – reine Impulsweiterleitung) + neues Einzelbauteil
+> `MBUS-IMPULS-KOPPLER` (generisches Modell, schrankintern, `steuer`,
+> wandelt die 3 Impulse in ein M-Bus-Telegramm, das wie jeder andere
+> M-Bus-Zähler über den bestehenden Pegelwandler-Ratchet MR006/MR004C zur
+> DDC gelangt) – 3×AI komm. via M-Bus. Neues Feldgerät
+> `VNB-4Q-ZAEHLER-GENERIC` (Dokumentation, kein eigener Klemmenbedarf).
+> Export baugruppen 288→**289**, einzelbauteile 229→**230**, feldgeraete
+> 132→**133**, anlagen 57→**58**. Backup:
+> `ga_komponenten_vor-ms-messfeld-impuls_<timestamp>.xlsx`. Browser-
+> verifiziert: `testKatalogScan()` sauber, `testAnlage('440_A00008')` 1/1
+> bestanden, 3 Klemmenpaare + Koppler korrekt aufgelöst, 0 fehlendPlatziert.
+> **2. Bugfix „Feldklemmen im falschen Feld" (Nutzer-Fund per Screenshot,
+> Konfiguration `einsp_leist_misch`):** leerer Schrank + MS-Ringfeld mit
+> Modbus TCP hinzugefügt → alle 16 Feldklemmen landeten in Feld 1
+> (Leistung/Einspeisung gemischt), obwohl in diesem Feld KEINE Bauteile
+> standen (CPU/DDC-Module saßen korrekt in Feld 2, Steuerung). Nutzer-
+> Kernsatz: „Niemand verkabelt eine Anlage oder ein Betriebsmittel in ein
+> Feld, wo es nicht gebraucht wird – wir müssen immer das Gegenstück im
+> Schaltschrank im Blick haben (Relais, Koppelrelais, DDC-Modul, Switch,
+> Modbus-Anschluss usw.)." **Generelle Regel (neu, verbindlich):** wird ein
+> Datenpunkt direkt auf ein DDC-Modul verschaltet (keine Koppelrelais-
+> Zwischenschaltung), kommen die zugehörigen Feldklemmen in das Feld, in
+> dem das aufnehmende DDC-Modul (Steuerbaugruppe) tatsächlich sitzt – nicht
+> ins Leistungsfeld, nur weil dessen Feldtyp `klemm_f` ebenfalls kennt.
+> **Root Cause:** `FELDTYP_ZONEN.F`/`.G` (Leistungsfeld) UND `FELDTYP_ZONEN.E`
+> (Steuerungsfeld) enthalten beide `klemm_f` (Session 70 Teil 8: „Rückmelde-
+> leitungen auf Leistungsbauteile wie Relais"). Baugruppen OHNE
+> Koppelrelais/`leist`-Komponente (reine Feldkontakt-Baugruppen wie UMZ-
+> Relais, Leistungsschalter, Erdungstrenner, Automations-Reserve-BI/BO)
+> hatten in `leist` keine Bauteile zu platzieren, versuchten aber trotzdem
+> zuerst Feld F (vor E verarbeitet) für ihre Klemmen – landeten dort, weil
+> der Algorithmus nicht prüfte, ob überhaupt ein funktionales Gegenstück
+> (Koppelrelais) in diesem Feld steht. **Fix** (`modules/modul-04-
+> innenaufbau/index.html`): neue Funktion `klemmFGueltigInFeldtyp(feldtyp,
+> inst)` – gibt für Feldtyp F/G nur `true` zurück, wenn die Baugruppen-
+> instanz auch eine `leist`/`leist_ext`-Komponente hat (Koppelrelais
+> vorhanden); für alle anderen Feldtypen (A–E) immer `true` (kein Einfluss
+> auf andere `zone_modus`-Varianten). `platziereBaugruppenFuerFeld()` nimmt
+> jetzt einen `feldtyp`-Parameter und filtert `klemm_f`-Zuordnungen damit.
+> Zusätzlich `restOf()` in `calculateFelder()` angepasst (zählte sonst ein
+> Phantom-Leerfeld G, weil der rohe `klemm_f`-Bedarf ohne dieselbe Prüfung
+> gegengerechnet wurde). **Verifiziert:** (1) exakter Nutzer-Repro (leerer
+> Schrank + `440_A00001` mit Modbus TCP) zeigt jetzt korrekt 2 Felder statt
+> 3, alle 16 Klemmen in Feld E zusammen mit CPU/DDC/Switch; (2) Regression
+> mit Pumpen-Baugruppe (`420_000022`, hat Koppelrelais) – `klemm_f` bleibt
+> korrekt in Feld F; (3) Mischszenario (Pumpen + MS-Baugruppen gemeinsam) –
+> korrekt aufgeteilt; (4) voller Katalog-Regressionstest – alle 289
+> Baugruppen `testBaugruppe()`, `testKatalogScan()` sauber; (5) Funktions-
+> Check `klemmFGueltigInFeldtyp` liefert für A–E unconditional `true`
+> (0 Einfluss auf andere Modi); (6) finale Validierung mit echter
+> Koppelrelais-Baugruppe `430_000056` (Motor-BSK, 5 Instanzen) unter
+> `einsp_leist_misch`: alle 20 Klemmen + 17 Leistungsteile (Steuertrafo +
+> Sicherung + 16 Koppelrelais) bleiben zusammen in Feld F (idx0), Feld E
+> (idx1) komplett leer (klemm_f_count:0, leist_count:0), 0
+> fehlendPlatziert, 0 Overflow – exakt wie vom Nutzer vorausgesagt.
+> **Noch offen (nicht Teil dieser Session):** Nutzer-Frage, ob eine normale
+> MS-Anlage OHNE Kopplung zu einem anderen MS-Strang (nur 2
+> Einspeisefelder + 1 Messfeld + N Trafoabgangsfelder, kein Kuppelfeld) mit
+> den bestehenden 8 Feld-Anlagen abgebildet werden kann, nur mit Abfrage der
+> Trafo-Anzahl – sowie ein Soll-Ist-Abgleich der 8 Feld-Anlagen gegen die
+> Siemens-SIMOSEC-Lehrbuch-Recherche (Einspeisefeld: Lehrbuch nutzt eher
+> Lasttrennschalter statt Leistungsschalter, i.d.R. ohne UMZ; Übergabefeld:
+> Lehrbuch verortet UMZ dort, nicht im Einspeisefeld; „Lasttrennschalter
+> Abgang" nutzt aktuell denselben Leistungsschalter-Artikel wie das
+> Übergabefeld, kein dedizierter Lasttrennschalter katalogisiert;
+> „Ausspeisefeld VNB" ist kein in der Lehrbuch-Recherche gefundener
+> Fachbegriff) – als nächster Schritt zu klären, bevor komplette MS-
+> Schaltanlagen aus den Feld-Anlagen zusammengesetzt werden.
+
 > **Nachtrag Session 77 Teil 4 (11.10.2026) – Elektro-Start: Mittelspannung,
 > erste 2 MS-Schaltfeld-Anlagen (Einspeise-Ringfeld + Kuppelfeld), neue
 > Kategorie „Mittelspannungsschaltanlage", bisher leerer `elektro_anlagen`-

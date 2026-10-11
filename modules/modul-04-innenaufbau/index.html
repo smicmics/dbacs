@@ -4264,7 +4264,26 @@ function buildQueues(ddcReservePct) {
 // committed, sonst bricht die Prüfung ab (FIFO, kein Vorbeispringen an
 // einer nicht passenden Instanz – analog zur bereits akzeptierten
 // Bin-Packing-Einschränkung bei Einzelbauteilen).
-function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet) {
+// Session 77 Folgearbeit (Nutzer-Fund): klemm_f ist in den Feldtypen F/G
+// (Session 70 Teil 8) bewusst NEBEN leist aufgenommen worden, mit der
+// Begruendung "Rueckmeldeleitungen auf Leistungsbauteile wie Relais laufen
+// auch hier ueber klemm_f" - das setzt voraus, dass dieselbe Instanz
+// tatsaechlich ein Leistungsbauteil (Koppelrelais o.ae.) im selben Feld
+// hat. Reine Feldkontakt-Baugruppen OHNE jedes Leistungsbauteil (z.B.
+// UMZ-Relais, Leistungsschalter-/Erdungstrenner-Meldungen - nur klemm_f,
+// kein leist) hatten dafuer keinen Grund, landeten aber trotzdem im
+// Leistungsfeld (F wird vor E versucht) statt im Steuerungsfeld (E), wo
+// der Nutzer sie erwartet (Signalklemmen gehoeren zur DDC/Steuerung, wenn
+// kein lokales Leistungsbauteil sie rechtfertigt). Fix: klemm_f zaehlt in
+// F/G nur als Zone dieser Instanz, wenn sie dort AUCH leist/leist_ext hat
+// - sonst wartet die Instanz auf ein Feld, das klemm_f ohne diese
+// Bedingung anbietet (Typ E).
+function klemmFGueltigInFeldtyp(feldtyp, inst) {
+  if (feldtyp !== 'F' && feldtyp !== 'G') return true;
+  return !!(inst.zonen.leist || inst.zonen.leist_ext);
+}
+
+function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet, feldtyp) {
   const confirmed = {};
   zoneSet.forEach(zn => confirmed[zn] = []);
   const isBandZone = zn => zn === 'evert' ? !useEvKanal : REIHEN_ZONEN.includes(zn);
@@ -4276,16 +4295,20 @@ function platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, u
   // gescheiterten Instanzen auch in noch gar nicht vollen Zonen Rest zeigt).
   const blockedZones = new Set();
 
+  // Zone zn gilt fuer diese Instanz in diesem Feldtyp? (siehe
+  // klemmFGueltigInFeldtyp() oben fuer die klemm_f-Sonderregel F/G)
+  const zoneGueltig = (inst, z) => zoneSet.includes(z) && (z !== 'klemm_f' || klemmFGueltigInFeldtyp(feldtyp, inst));
+
   // Relevant: die Instanz hat MINDESTENS eine Zone in diesem Feldtyp.
   const relevantIdx = [];
   bgInstanceQueue.forEach((inst, i) => {
-    if (Object.keys(inst.zonen).some(z => zoneSet.includes(z))) relevantIdx.push(i);
+    if (Object.keys(inst.zonen).some(z => zoneGueltig(inst, z))) relevantIdx.push(i);
   });
 
   const doneIdx = [];
   for (const i of relevantIdx) {
     const inst = bgInstanceQueue[i];
-    const zonenHier = Object.keys(inst.zonen).filter(z => zoneSet.includes(z));
+    const zonenHier = Object.keys(inst.zonen).filter(z => zoneGueltig(inst, z));
     let fitsAll = true;
     for (const zn of zonenHier) {
       const devsTry = confirmed[zn].concat(inst.zonen[zn]);
@@ -4354,7 +4377,7 @@ function placeBauteileForField(bandsAll, klemmraum, feldtyp, queues, bgInstanceQ
     else bandsProZone[zn] = bandsAll[zn] || [];
   });
 
-  const { confirmed: confirmedBg, blockedZones } = platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet);
+  const { confirmed: confirmedBg, blockedZones } = platziereBaugruppenFuerFeld(bgInstanceQueue, bandsProZone, klemmraum, useEvKanal, zoneSet, feldtyp);
 
   REIHEN_ZONEN.forEach(zn => {
     if (!zoneSet.includes(zn)) return;
@@ -4461,8 +4484,16 @@ function calculateFelder(klemmraum, reservePct, ddcReservePct) {
   // restOf() zählt zusätzlich zu den Einzelbauteil-Warteschlangen auch noch
   // offene Baugruppen-Instanzen dieses Feldtyps mit – sonst bliebe ein
   // nötiges Folgefeld aus, wenn nur noch unbestätigte Instanzen anstehen.
+  // klemm_f-Sonderregel (Session 77 Folgearbeit, siehe
+  // klemmFGueltigInFeldtyp()) muss auch hier gelten – sonst erzeugt eine
+  // reine Feldkontakt-Instanz (kein leist) einen leeren Phantom-Feld G,
+  // weil restOf() sie als "Bedarf für G" zählt, obwohl sie dort gar nicht
+  // platziert werden darf/wird.
   const restOf = ft => FELDTYP_ZONEN[ft].reduce((s, zn) => {
-    const bgTe = bgInstanceQueue.reduce((c, inst) => c + (inst.zonen[zn] ? inst.zonen[zn].length : 0), 0);
+    const bgTe = bgInstanceQueue.reduce((c, inst) => {
+      if (zn === 'klemm_f' && !klemmFGueltigInFeldtyp(ft, inst)) return c;
+      return c + (inst.zonen[zn] ? inst.zonen[zn].length : 0);
+    }, 0);
     return s + (queues[zn] || []).length + bgTe;
   }, 0);
   const buildFeld = ft => {
