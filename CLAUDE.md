@@ -16,6 +16,99 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 77 (11.10.2026) – Kälte-Korrektur Teil 2: generative
+> Kältemaschine (wasser-/luftgekühlt) + RKW-Ergänzungen, 9 neue Baugruppen,
+> 1 neue Anlage, neue UI-Regel „Optionsfeld-Platzhalter". Vollständig
+> umgesetzt, Excel-eingetragen, exportiert, Browser-verifiziert.**
+> **Neue Baugruppen** `420_000081`–`089` (Gewerk 420, `kaelte_anlagen`):
+> Kern+Busauswertung RTU/TCP für die neue **luftgekühlte Kältemaschine**
+> (baugleich zur wassergekühlten, nur ohne Primärseite/Kühlwasserkreis);
+> **Hauptschalter-Stellungsmeldung** (potentialfreier Feldkontakt, 1×BI,
+> gemeinsam für Kältemaschine UND RKW genutzt – Nutzer-Korrektur: physisch/
+> potentialfrei, nicht kommunikativ, „unabhängig von der Energieversorgung
+> der Anlage"); **RKW-Sammelstörmeldung** (potentialfreier Feldkontakt,
+> fehlte bisher komplett); **Kreis-Störmeldung Hoch-/Niederdruck je
+> Kältekreis** + **Verdichter Betriebs-/Störmeldung je Leistungsstufe**
+> (je RTU/TCP, rein kommunikativ, `KOMM-FB`) – beide über neue Mengenfelder
+> „Kältekreise (Anzahl)"/„Leistungsstufen/Verdichter gesamt (Anzahl)"
+> gesteuert, unter der bestehenden `gruppe:'bus'` gebündelt (Session-75-
+> Label-Bündelung, identisches Muster wie die RKW-Lüfterdrehzahl-Baugruppen)
+> – **Vereinfachung aus Engine-Gründen**: „Leistungsstufen" wird als
+> Gesamtzahl Verdichter erfasst statt gesondert je Kreis multipliziert (ein
+> Mengenfeld kennt nur einen Multiplikator, keine 2D-Matrix) – bei 2 Kreisen
+> mit je 2 Stufen gibt der Nutzer direkt 4 ein.
+> **MAG kein neues Bauteil** (Nutzer-Vorgabe: „brauchst Du nicht
+> recherchieren"): bestehender `420_000002` „Druckwächter Min" wird in der
+> Primärkreis-Variante „Mit Pumpen+Ventil" mitverwendet, in der Herleitung/
+> Doku als „Druckwächter MAG" bezeichnet (kein Katalognamens-Umbau, das
+> Ausdehnungsgefäß selbst bleibt Fremdbauteil ohne DP, Regel 7).
+> **Absperrklappen + Strömungswächter ebenfalls kein neues Bauteil**
+> (Nutzer-Fund: beide bereits katalogisiert) – `420_000055`/`056`
+> (Absperrklappenantrieb 24V/230V, DDC-Ansteuerung Auf/Zu mit Rückmeldung,
+> Session 68) und `420_000006` (Strömungswächter, Session 54). **2 Klappen
+> je Seite (VL+RL)**, nicht 1 (Nutzer-Korrektur) – wassergekühlt 4 Klappen
+> (primär+sekundär), luftgekühlt/RKW je 2 (nur eine Seite).
+> **420_A00038 (wassergekühlte Kältemaschine) erweitert:** Primärseite
+> ergänzt (2× Tauchfühler Kühlwasserkreis, 1× Strömungswächter, 2× Absperr-
+> klappe), Hauptschalter, neues Dropdown „Primärkreis-Ausstattung" (7
+> Optionen: Ohne Pumpen / Mit Pumpen klein-mittel-groß (PICO/MAXO/GIGA2.0,
+> primär+sekundär gleiche Größe) / Mit Pumpen+Ventil klein-mittel-groß
+> (zusätzlich Regelventil `420_000013` + Druckwächter MAG primär)), WMZ-
+> Option (DN15-25/50/100 Kältemengenzähler), Kältekreise-/Leistungsstufen-
+> Mengenfelder.
+> **NEU `420_A00041` „Luftgekühlte Kältemaschine ≥250kW"**: wie
+> wassergekühlt, aber ohne jede Primärseite (kein Kühlwasserkreis/Pumpen/
+> Ventil/Druckwächter dort); zusätzliches Dropdown „Befeuchtung" (Ohne/Mit
+> Sprühbefeuchtung → zieht Wasserzähler `420_000045` nach). Neues
+> generisches Feldgerät `KM-LUFT-GENERIC-250` (kein Stromlaufplan-Anspruch,
+> analog `KM-GENERIC-250`).
+> **420_A00039/420_A00040 (RKW trocken/adiabatisch) erweitert:**
+> Hauptschalter, Sammelstörmeldung, 2× Absperrklappe (sekundärseitig – „ein
+> RKW hat nur eine Seite", Nutzer-Klarstellung), WMZ-Option (Wärme- statt
+> Kältemengenzähler-Familie, `420_000029`/`031`/`034`); adiabatisch
+> zusätzlich Wasserzähler-Option (Feuchtelanzen-Vorkühlung verbraucht
+> ebenfalls Wasser). **Reparaturschalter je Motor ergänzt:** `420_000076`/
+> `077` (Lüfter-Einzelmeldung je Ventilator) von 2×BI auf 3×BI je Instanz
+> erweitert (Betrieb + Störung + Reparaturschalter-Status, rein
+> kommunikativ).
+> **Glykolwarnanlage (`420_000080`) geprüft, kein Fix nötig:** Nutzer-Sorge
+> „2 Klemmen pro DI" war bereits durch den Session-76-Teil-2-Fix erfüllt
+> (5× Feldkontakt-BI mit je 2 Klemmen = 10 `klemm_f`-Zeilen; die 6. BI
+> „Störung FI/LSS" ist echt schrankintern, Regel 12, braucht keine Klemme) –
+> live gegengeprüft, keine Änderung vorgenommen.
+> **Neue verbindliche UI-Regel „Optionsfeld-Platzhalter"** (Nutzer-Vorgabe:
+> bei 3–4 gleichzeitigen Optionsfeldern pro Anlage ist ohne Beschriftung
+> beim Öffnen nicht erkennbar, was dort gewählt wird): jedes `gruppe`-
+> Dropdown in `updateAnlageVariantenUI()` bekommt jetzt automatisch eine
+> deaktivierte, nie ausgewählte erste `<option>` mit Text „– ‹Label aus
+> `ANLAGE_GRUPPEN_LABEL`› wählen –" – nur beim aufgeklappten Dropdown
+> sichtbar, ändert nichts an der tatsächlichen Vorbelegung (Browser
+> überspringt disabled-Optionen bei der impliziten Default-Auswahl,
+> regressionsgetestet gegen bestehende Anlagen ohne eigenes `ist_default`
+> bestätigt). Gilt für JEDES bestehende UND künftige `gruppe`-Dropdown im
+> gesamten Katalog, nicht nur die neuen Kälte-Anlagen.
+> **Export:** baugruppen 267→**276**, feldgeraete 124→**125**, anlagen
+> 53→**54**, einzelbauteile unverändert 226. Backup:
+> `ga_komponenten_vor-kaelteanlagen-erweiterung_<timestamp>.xlsx`.
+> **Browser-Verifikation:** `testKatalogScan()` 0 verwaist; `testBaugruppe()`
+> auf allen 9 neuen + 2 geänderten IDs bestanden; `testAnlage()` auf allen 4
+> betroffenen Anlagen über JEDE Optionskombination bestanden (`420_A00038`
+> 112/112, `420_A00041` 32/32, `420_A00039` 16/16, `420_A00040` 32/32);
+> Regressionstest bestehender Anlagen mit `gruppe`-Dropdowns nach der UI-
+> Änderung (`480_A00002`, `420_A00020` 68/68, `430_A00003` 256/256,
+> `420_A00026` 2/2) weiterhin `pass:true`. Zusätzlich 2 reale UI-
+> Durchläufe mit Nicht-Standard-Werten (luftgekühlt: Kältekreise=2,
+> Verdichter=4, Sprühbefeuchtung+WMZ DN50; wassergekühlt: Primärkreis „Mit
+> Pumpen+Ventil, mittel", Kältekreise=1, Verdichter=2) – Belegung/
+> Zonenfüllstand/`stuecklisteVsPlatzierungCheck()` exakt wie von Hand
+> berechnet, 0 Overflow, 0 fehlendPlatziert; Modul 5 (Feldgeräteliste)
+> beider Konfigurationen stimmt (Tauchfühler/Strömungswächter/
+> Absperrklappen/Pumpe/Ventil/Druckwächter/Zähler korrekt mit Menge und
+> Preis aggregiert); keine Konsolenfehler in Modul 4 oder 5.
+> **Offene Rückfrage aus Session 76 weiterhin unbeantwortet:** RKW-
+> Datenpunkt-Vergleich (adiabatisch angeblich weniger DP als trocken) –
+> Nutzer nach der genauen verglichenen Konfiguration fragen, sobald relevant.
+
 > **Nachtrag Session 76 Teil 2 (10.10.2026) – Fehlende Gegenader-/Referenz-
 > klemmen bei AO/BO/BI gefunden + behoben (Nutzer-Fund), katalogweiter Scan.**
 > Nutzer-Regel (verbindlich, Ergänzung zu Regel 14): **AO** braucht immer

@@ -9707,15 +9707,15 @@
   },
   {
     "id": "420_000076",
-    "name": "Rückkühlwerk: Lüfter-Einzelmeldung Betrieb/Störung je Ventilator (Modbus RTU)",
+    "name": "Rückkühlwerk: Lüfter-Einzelmeldung Betrieb/Störung/Reparaturschalter je Ventilator (Modbus RTU)",
     "gewerk": "420",
-    "beschreibung": "[Session 72, Nutzer-Vorgabe 09.10.2026] Rein kommunikativer Mehrbedarf, 2x BI je Instanz (1x Betrieb + 1x Stoerung) - je EINZELVENTILATOR, waehrend die physische Betriebsmeldung auf der Kern-Baugruppe (420_000068/071) eine reine Sammelmeldung aller Ventilatoren ist. In Modul 4 so oft hinzufuegen wie Einzelventilatoren vorhanden sind (z.B. 10x oder 20x) - Mengeneingabe erschlaegt beliebig grosse Luefterfelder ohne neue Katalogzeilen. Kein zusaetzliches Schaltschrank-Bauteil.",
+    "beschreibung": "[Session 72, Nutzer-Vorgabe 09.10.2026] Rein kommunikativer Mehrbedarf, 2x BI je Instanz (1x Betrieb + 1x Stoerung) - je EINZELVENTILATOR, waehrend die physische Betriebsmeldung auf der Kern-Baugruppe (420_000068/071) eine reine Sammelmeldung aller Ventilatoren ist. In Modul 4 so oft hinzufuegen wie Einzelventilatoren vorhanden sind (z.B. 10x oder 20x) - Mengeneingabe erschlaegt beliebig grosse Luefterfelder ohne neue Katalogzeilen. Kein zusaetzliches Schaltschrank-Bauteil. [Session 76 Folgearbeit, Nutzer-Vorgabe] Erweitert um 3. BI Reparaturschalter-Status je Ventilator - jetzt 3x BI je Instanz (Betrieb + Störung + Reparaturschalter).",
     "bauteile": [
       {
         "artikel_nr": "KOMM-FB",
         "menge": 1,
         "zone": "steuer",
-        "dp_fb_bi": 2,
+        "dp_fb_bi": 3,
         "feldbus_protokoll": "modbus_rtu"
       }
     ],
@@ -9728,15 +9728,15 @@
   },
   {
     "id": "420_000077",
-    "name": "Rückkühlwerk: Lüfter-Einzelmeldung Betrieb/Störung je Ventilator (Modbus TCP)",
+    "name": "Rückkühlwerk: Lüfter-Einzelmeldung Betrieb/Störung/Reparaturschalter je Ventilator (Modbus TCP)",
     "gewerk": "420",
-    "beschreibung": "[Session 72] Wie 420_000076, Modbus TCP.",
+    "beschreibung": "[Session 72] Wie 420_000076, Modbus TCP. [Session 76 Folgearbeit, Nutzer-Vorgabe] Erweitert um 3. BI Reparaturschalter-Status je Ventilator - jetzt 3x BI je Instanz (Betrieb + Störung + Reparaturschalter).",
     "bauteile": [
       {
         "artikel_nr": "KOMM-FB",
         "menge": 1,
         "zone": "steuer",
-        "dp_fb_bi": 2,
+        "dp_fb_bi": 3,
         "feldbus_protokoll": "modbus_tcp"
       }
     ],
@@ -11301,6 +11301,248 @@
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
+    "geprueft": false
+  },
+  {
+    "id": "420_000081",
+    "name": "Kältemaschine luftgekühlt ≥250kW: Kern-Baugruppe (physische Reserve-DP + 2 Buskabel-Klemmen)",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit] Physische Grundausstattung fuer eine luftgekuehlte Kaeltemaschine ab 250kW, analog 420_000065 (wassergekuehlt) - identischer Datenpunktbedarf (Betriebsmeldung BI, Sammelstoermeldung BI, Freigabe/Sperre BO, Sollwertvorgabe 0...10V AO) auf klemm_f + 2 Buskabel-Klemmen fuer Modbus (A/B). Kein Kuehlwasserkreis/Primaerseite (Luftkondensator). Generisches Feldgeraet KM-LUFT-GENERIC-250.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_ao": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 2,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "feldgeraet_artikel_nr": "KM-LUFT-GENERIC-250",
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000082",
+    "name": "Kältemaschine luftgekühlt: Busauswertung Modbus RTU (generischer Datenpunktsatz)",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit] Wie 420_000066 (wassergekuehlt), aber Werte beziehen sich auf den intern geregelten Kaeltekreis (kein externer Kuehlwasserkreis vorhanden): 6x AI (Vorlauf/Ruecklauf Kaeltekreis intern, aktueller Sollwert, elektrische Leistung, Energieverbrauch, uebertragene Kaelteleistung) + 3x BI (Hochdruck-/Niederdruckwaechter, Kaeltemittel-Leckagemelder). Kein zusaetzliches Schaltschrank-Bauteil (KOMM-FB virtueller Traeger). Modbus RTU direkt an CPU-Port.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 6,
+        "dp_fb_bi": 3,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000083",
+    "name": "Kältemaschine luftgekühlt: Busauswertung Modbus TCP (generischer Datenpunktsatz)",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit] Wie 420_000082, Modbus TCP - zieht bei Bedarf den Ethernet-Switch-Ratchet (2891021) automatisch nach.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 6,
+        "dp_fb_bi": 3,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000084",
+    "name": "Kälteanlage: Hauptschalter-Stellungsmeldung, potentialfreier Feldkontakt",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit, Nutzer-Vorgabe] Potentialfreier Hilfskontakt am externen Hauptschalter der Kaeltemaschine/des Rueckkuehlwerks (Fremdbetriebsmittel, Regel 7) - unabhaengig von der Energieversorgung der Anlage selbst, daher physisch/potentialfrei statt kommunikativ ausgelesen. 2 Abgangsklemmen (Signal + Referenz, Regel 14), kein Koppelrelais noetig (potentialfrei).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000085",
+    "name": "Rückkühlwerk: Sammelstörmeldung, potentialfreier Feldkontakt",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit, Nutzer-Vorgabe] Sammelstoermeldung des Rueckkuehlwerks als potentialfreier Kontakt - fehlte bisher komplett im Modell. 2 Abgangsklemmen (Signal + Referenz, Regel 14).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Rückkühlwerk",
+    "geprueft": false
+  },
+  {
+    "id": "420_000086",
+    "name": "Kältemaschine: Kreis-Störmeldung Hoch-/Niederdruck je Kältekreis (Modbus RTU)",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit] Rein kommunikativer Mehrbedarf, 2x BI je Instanz (Hochdruck-/Niederdruckstoerung) - EIN Kaeltekreis. Ueber das Mengenfeld \"Kaeltekreise\" in Modul 4 so oft hinzugefuegt wie Kreise vorhanden sind (1 oder 2). Kein zusaetzliches Schaltschrank-Bauteil.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000087",
+    "name": "Kältemaschine: Kreis-Störmeldung Hoch-/Niederdruck je Kältekreis (Modbus TCP)",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit] Wie 420_000086, Modbus TCP.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000088",
+    "name": "Kältemaschine: Verdichter Betriebs-/Störmeldung je Leistungsstufe (Modbus RTU)",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit] Rein kommunikativer Mehrbedarf, 2x BI je Instanz (Betrieb + Stoerung) - EIN Verdichter/EINE Leistungsstufe. Ueber das Mengenfeld \"Leistungsstufen/Verdichter gesamt\" in Modul 4 so oft hinzugefuegt wie Verdichter vorhanden sind - bei z.B. 2 Kaeltekreisen mit je 2 Stufen wird direkt 4 eingegeben (aus Engine-Gruenden als Gesamtzahl statt als eigene Matrix je Kreis erfasst, Mengenfeld kennt nur einen Multiplikator). Kein zusaetzliches Schaltschrank-Bauteil.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000089",
+    "name": "Kältemaschine: Verdichter Betriebs-/Störmeldung je Leistungsstufe (Modbus TCP)",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit] Wie 420_000088, Modbus TCP.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_bi": 2,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Kälteerzeuger",
     "geprueft": false
   }
 ]

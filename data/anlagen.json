@@ -2655,11 +2655,165 @@
       },
       {
         "bg_id": "430_000006",
-        "menge": 1
+        "menge": 2
       },
       {
         "bg_id": "430_000007",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000084",
         "menge": 1
+      },
+      {
+        "bg_id": "420_000006",
+        "menge": 2
+      },
+      {
+        "bg_id": "420_000055",
+        "menge": 4,
+        "gruppe": "absperrklappen_spannung",
+        "variante_label": "24V AC/DC",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000056",
+        "menge": 4,
+        "gruppe": "absperrklappen_spannung",
+        "variante_label": "230V AC (mit Koppelrelais)"
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 2,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen, klein (PICO)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 2,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen, mittel (MAXO)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 2,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen, groß (GIGA2.0)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000022",
+        "menge": 2,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, klein (PICO)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, klein (PICO)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, klein (PICO)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000023",
+        "menge": 2,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, mittel (MAXO)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, mittel (MAXO)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, mittel (MAXO)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000025",
+        "menge": 2,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, groß (GIGA2.0)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000013",
+        "menge": 1,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, groß (GIGA2.0)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000002",
+        "menge": 1,
+        "gruppe": "primaerkreis",
+        "variante_label": "Mit Pumpen+Ventil, groß (GIGA2.0)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000037",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kältemengenzähler DN15-25 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kältemengenzähler DN50 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000042",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kältemengenzähler DN100 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000086",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "kaeltekreise"
+      },
+      {
+        "bg_id": "420_000088",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "verdichter"
+      },
+      {
+        "bg_id": "420_000087",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "kaeltekreise"
+      },
+      {
+        "bg_id": "420_000089",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "verdichter"
       }
     ],
     "funktionsbereich": [
@@ -2726,6 +2880,48 @@
         "gruppe": "bus",
         "variante_label": "Busauswertung Modbus TCP",
         "mengenfeld": "motoren"
+      },
+      {
+        "bg_id": "420_000084",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000085",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000055",
+        "menge": 2,
+        "gruppe": "absperrklappen_spannung",
+        "variante_label": "24V AC/DC",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000056",
+        "menge": 2,
+        "gruppe": "absperrklappen_spannung",
+        "variante_label": "230V AC (mit Koppelrelais)"
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Wärmemengenzähler DN15-25 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Wärmemengenzähler DN50 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Wärmemengenzähler DN100 (M-Bus)",
+        "gruppe_optional": true
       }
     ],
     "funktionsbereich": [
@@ -2806,6 +3002,55 @@
         "gruppe": "bus",
         "variante_label": "Busauswertung Modbus TCP",
         "mengenfeld": "kuehlreihen"
+      },
+      {
+        "bg_id": "420_000084",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000085",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000055",
+        "menge": 2,
+        "gruppe": "absperrklappen_spannung",
+        "variante_label": "24V AC/DC",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000056",
+        "menge": 2,
+        "gruppe": "absperrklappen_spannung",
+        "variante_label": "230V AC (mit Koppelrelais)"
+      },
+      {
+        "bg_id": "420_000029",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Wärmemengenzähler DN15-25 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000031",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Wärmemengenzähler DN50 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000034",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Wärmemengenzähler DN100 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000045",
+        "menge": 1,
+        "gruppe": "wasserzaehler",
+        "variante_label": "Mit Wasserzähler (M-Bus)",
+        "gruppe_optional": true
       }
     ],
     "funktionsbereich": [
@@ -4065,6 +4310,122 @@
       "lueftung_anlagen"
     ],
     "kategorie": "RLT-Register",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "420_A00041",
+    "name": "Luftgekühlte Kältemaschine ≥250kW, optional mit Sprühbefeuchtung Kondensator, Modbus-Anbindung (RTU/TCP wählbar)",
+    "gewerk": "420",
+    "beschreibung": "[Session 76 Folgearbeit, Nutzer-Freigabe] Analog zur wassergekuehlten Kaeltemaschine (420_A00038), aber ohne Primaerseite/Kuehlwasserkreis (Luftkondensator) - alle primaerseitigen Komponenten (Pumpen/Ventil/Druckwaechter MAG/Tauchfuehler/Stroemungswaechter primaer) entfallen. Optionale Spruehbefeuchtung des Kondensators zieht einen Wasserzaehler nach.",
+    "mitglieder": [
+      {
+        "bg_id": "420_000081",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000082",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000083",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
+      {
+        "bg_id": "420_000084",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "430_000007",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000006",
+        "menge": 1
+      },
+      {
+        "bg_id": "420_000055",
+        "menge": 2,
+        "gruppe": "absperrklappen_spannung",
+        "variante_label": "24V AC/DC",
+        "ist_default": true
+      },
+      {
+        "bg_id": "420_000056",
+        "menge": 2,
+        "gruppe": "absperrklappen_spannung",
+        "variante_label": "230V AC (mit Koppelrelais)"
+      },
+      {
+        "bg_id": "420_000037",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kältemengenzähler DN15-25 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000039",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kältemengenzähler DN50 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000042",
+        "menge": 1,
+        "gruppe": "wmz",
+        "variante_label": "Mit Kältemengenzähler DN100 (M-Bus)",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000045",
+        "menge": 1,
+        "gruppe": "befeuchtung",
+        "variante_label": "Mit Sprühbefeuchtung",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "420_000086",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "kaeltekreise"
+      },
+      {
+        "bg_id": "420_000088",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "mengenfeld": "verdichter"
+      },
+      {
+        "bg_id": "420_000087",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "kaeltekreise"
+      },
+      {
+        "bg_id": "420_000089",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP",
+        "mengenfeld": "verdichter"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte_anlagen"
+    ],
+    "kategorie": "Kälteerzeuger",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
   }

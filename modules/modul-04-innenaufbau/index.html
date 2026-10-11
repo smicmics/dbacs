@@ -1542,6 +1542,18 @@ function updateAnlageVariantenUI() {
     const select = document.createElement('select');
     select.id = 'anlage_variante_' + gr;
     select.className = 'anlage-variante-select';
+    // Platzhalter-Erstzeile (Session 76 Folgearbeit, Nutzer-Vorgabe): bei
+    // mehreren Optionsfeldern pro Anlage (teils 3-4 gleichzeitig) ist ohne
+    // eigenes Label nicht erkennbar, welches Dropdown was steuert - eine
+    // deaktivierte, nie ausgewaehlte erste <option> nennt beim OEFFNEN den
+    // Zweck. Die eigentliche Vorbelegung (echte Option oder "Ohne") bleibt
+    // unveraendert, der Platzhalter ist nur beim aufgeklappten Dropdown
+    // sichtbar.
+    const placeholder = document.createElement('option');
+    placeholder.value = '__placeholder__';
+    placeholder.disabled = true;
+    placeholder.textContent = '– ' + (ANLAGE_GRUPPEN_LABEL[gr] || gr) + ' wählen –';
+    select.appendChild(placeholder);
     if (optional) {
       const opt = document.createElement('option');
       opt.value = '';
@@ -1601,7 +1613,10 @@ const ANLAGE_GRUPPEN_LABEL = {
   pumpengroesse: 'Pumpengröße', ventilator: 'Ventilator', zuluftventilator: 'Zuluftventilator',
   abluftventilator: 'Abluftventilator', filter: 'Filterwächter', vorerhitzer: 'Vorerhitzer',
   kuehler: 'Kühler', nacherhitzer: 'Nacherhitzer', wrg: 'Wärmerückgewinnung', befeuchter: 'Luftbefeuchter',
-  meldung: 'Meldung'
+  meldung: 'Meldung',
+  // Session 76 Folgearbeit (Kältemaschinen wasser-/luftgekühlt, RKW):
+  primaerkreis: 'Primärkreis-Ausstattung', absperrklappen_spannung: 'Spannung Absperrklappenantrieb',
+  befeuchtung: 'Befeuchtung', wasserzaehler: 'Wasserzähler'
 };
 // Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
 // (Session 68, erweitert Session 75) - Default-Fallback ist das generische
@@ -1609,15 +1624,20 @@ const ANLAGE_GRUPPEN_LABEL = {
 const ANLAGE_GRUPPE_OHNE_LABEL = {
   bus: 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)', wmz: 'Ohne Wärmemengenzähler',
   filter: 'Ohne Filterwächter', vorerhitzer: 'Keine', kuehler: 'Keine', nacherhitzer: 'Keine',
-  wrg: 'Keine', befeuchter: 'Keine', meldung: 'Ohne Meldung'
+  wrg: 'Keine', befeuchter: 'Keine', meldung: 'Ohne Meldung',
+  // Session 76 Folgearbeit:
+  primaerkreis: 'Ohne Pumpen', befeuchtung: 'Ohne Befeuchtung', wasserzaehler: 'Ohne Wasserzähler'
 };
 // Mengenfeld (Session 75, Rueckkuehlwerk-Groesse): Beschriftung + Vorbelegung
 // je Zahlenfeld-Schluessel - ein Mitglied mit `mengenfeld` gesetzt bekommt
 // statt eines <select> ein <input type=number>, dessen Wert den finalen
 // Mengen-Multiplikator liefert (0 = Mitglied komplett auslassen). Siehe
 // updateAnlageVariantenUI()/addAnlage().
-const ANLAGE_MENGENFELD_LABEL = { kuehlreihen: 'Anzahl Kühlreihen', motoren: 'Anzahl Motoren (Lüfter)' };
-const ANLAGE_MENGENFELD_DEFAULT = { kuehlreihen: 1, motoren: 4 };
+const ANLAGE_MENGENFELD_LABEL = {
+  kuehlreihen: 'Anzahl Kühlreihen', motoren: 'Anzahl Motoren (Lüfter)',
+  kaeltekreise: 'Kältekreise (Anzahl)', verdichter: 'Leistungsstufen/Verdichter gesamt (Anzahl)'
+};
+const ANLAGE_MENGENFELD_DEFAULT = { kuehlreihen: 1, motoren: 4, kaeltekreise: 1, verdichter: 1 };
 
 // ── Belegung ─────────────────────────────────────────────────────────
 function addBaugruppe() {

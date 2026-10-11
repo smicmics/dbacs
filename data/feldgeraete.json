@@ -989,7 +989,7 @@
     "hersteller": "EVAPCO",
     "kategorie": "Rückkühlwerk",
     "quelle_hinweis": "Generischer Platzhalter auf Basis EVAPCO eco-Air COMM20EC-Datenblatt (Fork-Recherche 10/2026).",
-    "kommunikative_datenpunkte": "Modbus RTU/TCP: Außenlufttemperatur, Wärmeleistung, elektrische Leistung Gesamt (420_000069/070); je Bank Lüfterdrehzahl-Sollwert (420_000074/075); je Ventilator Betrieb/Störung (420_000076/077)",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP: Außenlufttemperatur, Wärmeleistung, elektrische Leistung Gesamt (420_000069/070); je Bank Lüfterdrehzahl-Sollwert (420_000074/075); je Ventilator Betrieb/Störung (420_000076/077); je Ventilator zusätzlich Reparaturschalter-Status (420_000076/077)",
     "geprueft": false
   },
   {
@@ -998,7 +998,7 @@
     "hersteller": "EVAPCO",
     "kategorie": "Rückkühlwerk",
     "quelle_hinweis": "Generischer Platzhalter, EVAPCO eco-Air mit Pad-Befeuchtungssystem (Fork-Recherche 10/2026). Keine Pumpe - Befeuchtung je Bank über Magnetventil (420_000078/079).",
-    "kommunikative_datenpunkte": "Wie RK-TROCKEN-250, zusätzlich Spülzeit-/Trockenzeit-Zähler + manueller Spülzyklus (420_000072/073); je Bank Magnetventil Auf/Zu (420_000078/079)",
+    "kommunikative_datenpunkte": "Wie RK-TROCKEN-250, zusätzlich Spülzeit-/Trockenzeit-Zähler + manueller Spülzyklus (420_000072/073); je Bank Magnetventil Auf/Zu (420_000078/079); je Ventilator zusätzlich Reparaturschalter-Status (420_000076/077)",
     "geprueft": false
   },
   {
@@ -1085,6 +1085,15 @@
     "hersteller": "Siemens",
     "kategorie": "Aussensensoren",
     "quelle_hinweis": "Siemens QAC34/101, Session 68 als Leitfabrikat entschieden. Genaue Original-Klemmennummerierung nicht gefunden (nur Kennwerte bestaetigt), fuer DBACS irrelevant (2 passive Adern). Kein bestaetigter Nettopreis.",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "KM-LUFT-GENERIC-250",
+    "bezeichnung": "Luftgekühlte Kältemaschine ≥250kW, generischer Datenpunktsatz",
+    "hersteller": "-",
+    "kategorie": "Kälteerzeuger",
+    "quelle_hinweis": "Generischer Platzhalter (kein Stromlaufplan-Anspruch), analog KM-GENERIC-250 (Session 72) - kein Hersteller liefert eine oeffentliche Komplett-Registerliste.",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP: Hochdruck-/Niederdruckwächter, Kältemittel-Leckagemelder, VL/RL-Temperatur Kältekreis intern, aktueller Sollwert, elektrische Leistung, Energieverbrauch, übertragene Kälteleistung (420_000082/083); je Kältekreis Hoch-/Niederdruckstörung (420_000086/087); je Verdichter Betrieb/Störung (420_000088/089)",
     "geprueft": false
   }
 ]

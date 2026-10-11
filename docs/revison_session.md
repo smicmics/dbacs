@@ -1,27 +1,27 @@
 # DBACS – Revisionsstand
 
-> **Sitzung pausiert (Nutzer-Auftrag „Speichere den Zustand, wir machen
-> morgen weiter", 10.10.2026, Ende Session 76).** Alles bis hier beschrieben
-> ist bereits in `ga_komponenten.xlsx` eingetragen, exportiert, committet
-> und Browser-verifiziert – kein Excel-Schreibschritt steht aus. Beim
-> Fortsetzen offen (keine Reihenfolge vorgegeben):
-> 1. **RKW-Datenpunkt-Rückfrage:** Nutzer behauptete, das adiabatische
->    Rückkühlwerk habe weniger Datenpunkte als das trockene – live nicht
->    reproduzierbar (adiabatisch hat durchgängig gleich viele oder mehr).
->    Nutzer nach der genauen verglichenen Konfiguration/Ansicht fragen.
-> 2. **Pumpen/Ventile bei der Kältemaschine** (`420_A00038`) ergänzen –
->    vom Nutzer bewusst zurückgestellt, bis geklärt ist, welcher Kreislauf
->    gemeint ist (Kaltwasser-Verdampferkreis? Kondenswasser-/Glykolkreis
->    zum Rückkühlwerk? Beides?).
-> 3. **Weitere Kälte-Korrekturen** nach Bedarf (der ursprüngliche Auftrag
->    „Bevor wir an der Kälte korrigieren" war nur ein Platzhalter ohne
->    vorab festgelegten Gesamtumfang – bisher abgearbeitet: Ausstattungs-
->    Dokumentation, RKW-Größen-Eingabefelder, Klemmen-Fehler-Scan. Ob damit
->    "die Kälte-Korrektur" insgesamt erledigt ist, mit dem Nutzer klären).
-> Danach zurück zum ursprünglich (Session 74) angekündigten nächsten Thema,
-> falls noch relevant.
+> **Stand nach Session 77 (11.10.2026) – Kälte-Korrektur Teil 2
+> abgeschlossen.** Generative Kältemaschine (wassergekühlt + neu
+> luftgekühlt) fertig modelliert: Primärseite (Tauchfühler/Strömungswächter/
+> Absperrklappen), Hauptschalter-Meldung, Primärkreis-Ausstattung-Dropdown
+> (Pumpen/Pumpen+Ventil+Druckwächter MAG), Kältekreise-/Leistungsstufen-
+> Mengenfelder, WMZ-Option. RKW trocken/adiabatisch ergänzt um Hauptschalter,
+> Sammelstörmeldung, Absperrklappen, WMZ-/Wasserzähler-Option, Reparatur-
+> schalter je Motor (komm.). Neue, katalogweit geltende UI-Regel: jedes
+> Anlagen-Optionsfeld zeigt beim Öffnen eine Platzhalter-Erstzeile. 9 neue
+> Baugruppen, 1 neue Anlage (`420_A00041` Luftgekühlte Kältemaschine),
+> Export baugruppen 267→276, feldgeraete 124→125, anlagen 53→54.
+> Vollständig Browser-verifiziert (`testKatalogScan`/`testBaugruppe`/
+> `testAnlage` auf allen 4 betroffenen Anlagen über jede Optionskombination,
+> Regressionstest bestehender Anlagen nach der UI-Änderung, 2 reale UI-
+> Durchläufe mit Nicht-Standard-Werten inkl. Modul-5-Check). Details:
+> `CLAUDE.md` → „Offene Punkte" Nachtrag Session 77.
+> **Weiterhin offen (aus Session 76):** RKW-Datenpunkt-Rückfrage (Nutzer
+> behauptete, adiabatisch habe weniger DP als trocken – live nicht
+> reproduzierbar, Nutzer nach der genauen verglichenen Konfiguration
+> fragen).
 
-**Stand:** 10. Oktober 2026 – Session 76 Teil 2: Klemmen-Fehler gefunden+
+Vorheriger Stand – Session 76 Teil 2: Klemmen-Fehler gefunden+
 behoben. Nutzer-Fund: AO/BO/BI brauchen IMMER 2 Klemmen (Signal+Referenz/
 Rückleitung) – bei der Kältemaschine/RKW-Kern/Glykolwarnanlage fehlte die
 Referenzklemme komplett (nur 1 statt 2 je Signal). Katalogweiter Scan nach
