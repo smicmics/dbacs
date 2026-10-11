@@ -1,6 +1,20 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 77 Teil 5 (11.10.2026).** MS-Messfeld VNB
+> **Stand nach Session 77 Teil 5, direkt im Anschluss (11.10.2026).**
+> Lehrbuch-Abgleich umgesetzt: Ausstattung von `440_A00001` „MS-Einspeise
+> (Ringfeld)" und `440_A00003` „MS-Übergabefeld" getauscht – Ringfeld hat
+> jetzt nur Leistungsschalter+Erdungstrenner, Übergabefeld bündelt jetzt
+> UMZ-Relais mit Wandlersatz (Kern+Busauswertung RTU/TCP)+Leistungsschalter+
+> Erdungstrenner (Messung/Schutz sitzt laut Siemens/Stromnetz-Berlin-
+> Lehrbuch im Übergabefeld, nicht im Ringkabelfeld). Reine
+> `anlagen_baugruppen`-Umhängung, keine neuen Katalogeinträge. `440_A00002`
+> „MS-Kuppelfeld" bewusst NICHT mitgeändert (nicht Teil des Auftrags) – ist
+> dadurch nicht mehr identisch zum neuen Ringfeld, offener Punkt für eine
+> Folgesitzung. Browser-verifiziert (anlagen.json-Mitglieder korrekt
+> vertauscht). Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 77
+> Teil 5 (Anschluss).
+
+Vorheriger Stand – Session 77 Teil 5 (11.10.2026). MS-Messfeld VNB
 > (Impulsausgänge) ergänzt (`440_A00008`, 4-Quadrantenzähler mit 3
 > Impulseingängen + neuer Impuls-zu-M-Bus-Koppler, nutzt den bestehenden
 > M-Bus-Pegelwandler-Ratchet) – damit 8 MS-Feld-Anlagen. **Wichtiger

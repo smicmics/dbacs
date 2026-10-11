@@ -93,6 +93,31 @@
 > „Ausspeisefeld VNB" ist kein in der Lehrbuch-Recherche gefundener
 > Fachbegriff) – als nächster Schritt zu klären, bevor komplette MS-
 > Schaltanlagen aus den Feld-Anlagen zusammengesetzt werden.
+> **Direkt im Anschluss umgesetzt (Nutzer-Freigabe „tausche die Ausstattung
+> von Übergabe und Ringfeld"):** Punkt 1 des Soll-Ist-Abgleichs korrigiert –
+> `440_A00001` „MS-Einspeise (Ringfeld)" hat jetzt nur noch Leistungsschalter
+> + Erdungstrenner (`440_000071`/`072`, keine eigene Messung/Schutz mehr),
+> `440_A00003` „MS-Übergabefeld" bündelt jetzt UMZ-Relais mit Wandlersatz
+> (Kern+Busauswertung RTU/TCP) + Leistungsschalter + Erdungstrenner – exakt
+> die Lehrbuch-Zuordnung (Messung/Schutz im Übergabefeld, nicht im
+> Ringkabelfeld). Reine `anlagen_baugruppen`-Umhängung (Zeilen zwischen den
+> beiden `anlage_id`s vertauscht), keine neuen Katalogeinträge, Namen/
+> Beschreibungen beider Anlagen an die neue Ausstattung angepasst. **Bewusst
+> NICHT angepasst:** `440_A00002` „MS-Kuppelfeld" (war seit Erstanlage
+> explizit „gleiche Ausstattung wie Ringfeld" – nicht Teil dieses Auftrags,
+> hat dadurch jetzt noch die ALTE Ringfeld-Ausstattung UMZ+Bus+LS+ET und ist
+> nicht mehr identisch zum neuen, schlankeren Ringfeld – bei Bedarf in einer
+> Folgesitzung klären, ob das Kuppelfeld ebenfalls vereinfacht werden soll).
+> Backup: `ga_komponenten_vor-ringfeld-uebergabe-tausch_<timestamp>.xlsx`.
+> Export unverändert (reine Umhängung, keine neuen/gelöschten Zeilen).
+> Browser-verifiziert: `anlagen.json` zeigt `440_A00001.mitglieder` = nur
+> LS+ET, `440_A00003.mitglieder` = UMZ-Kern+Bus(RTU default/TCP)+LS+ET.
+> Noch offen: Punkt 2 (Lasttrennschalter-Abgang `440_A00006` nutzt weiterhin
+> denselben Leistungsschalter-Artikel statt eines eigenen Lasttrennschalter-
+> Katalogeintrags) sowie die eigentliche Frage „normale MS-Anlage ohne
+> Kopplung" (2×Ringfeld+1×Messfeld+N×Trafoabgangsfeld, kein Kuppelfeld,
+> bereits mit den bestehenden Feld-Anlagen abbildbar, siehe oben) – beides
+> in einer Folgesitzung weiterführen.
 
 > **Nachtrag Session 77 Teil 4 (11.10.2026) – Elektro-Start: Mittelspannung,
 > erste 2 MS-Schaltfeld-Anlagen (Einspeise-Ringfeld + Kuppelfeld), neue

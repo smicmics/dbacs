@@ -3985,27 +3985,10 @@
   },
   {
     "id": "440_A00001",
-    "name": "MS-Einspeise (Ringfeld): UMZ-Relais mit Wandlersatz + Leistungsschalter + Erdungstrenner",
+    "name": "MS-Einspeise (Ringfeld): Leistungsschalter + Erdungstrenner",
     "gewerk": "440",
-    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Erstes Mittelspannungs-Schaltfeld (Einspeise-/Ringkabelfeld, Fork-Recherche Siemens SIMOSEC/ABB SafeRing-SafePlus/Schneider RM6 inkl. Primärquelle Stromnetz Berlin TB3312/TB3340). Bündelt die 3 eigenständigen, in weiteren MS-Feldtypen wiederverwendbaren Baugruppen UMZ-Relais mit Wandlersatz (440_000068, Busauswertung RTU/TCP wählbar), Leistungsschalter (440_000071) und Erdungstrenner (440_000072). Jedes MS-Schaltfeld wird als eigene Anlage angelegt - mehrere Feld-Anlagen können später zu einer kompletten MS-Anlage zusammengesetzt werden.",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe 11.10.2026] Lehrbuch-Abgleich (Siemens SIMOSEC/Stromnetz Berlin TB3312 Kap. 9): das Ringkabelfeld braucht i.d.R. nur Leistungsschalter+Erdungstrenner, keine eigene Messung/Schutz (die sitzt im Übergabefeld). Ausstattung mit dem Übergabefeld (440_A00003) getauscht - referenziert jetzt 440_000071 (Leistungsschalter MS) + 440_000072 (Erdungstrenner MS).",
     "mitglieder": [
-      {
-        "bg_id": "440_000068",
-        "menge": 1
-      },
-      {
-        "bg_id": "440_000069",
-        "menge": 1,
-        "gruppe": "bus",
-        "variante_label": "Busauswertung Modbus RTU",
-        "ist_default": true
-      },
-      {
-        "bg_id": "440_000070",
-        "menge": 1,
-        "gruppe": "bus",
-        "variante_label": "Busauswertung Modbus TCP"
-      },
       {
         "bg_id": "440_000071",
         "menge": 1
@@ -4063,10 +4046,27 @@
   },
   {
     "id": "440_A00003",
-    "name": "MS-Übergabefeld: Leistungsschalter + Erdungstrenner",
+    "name": "MS-Übergabefeld: UMZ-Relais mit Wandlersatz + Leistungsschalter + Erdungstrenner",
     "gewerk": "440",
-    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Übergabefeld (Eigentums-/Verantwortungsgrenze Netzbetreiber/Kunde, Fork-Recherche Stromnetz Berlin TB3312/TB3340 + Siemens SIMOSEC/ABB/Schneider). Nutzer-Vorgabe: besteht nur aus Leistungsschalter (440_000071) + Erdungstrenner (440_000072) - kein eigenes UMZ-Relais in diesem Feld (Messung/Schutz sitzt im Einspeisefeld). Referenziert dieselben wiederverwendbaren Baugruppen wie 440_A00001/A00002.",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe 11.10.2026] Lehrbuch-Abgleich (Siemens SIMOSEC/Stromnetz Berlin TB3312 Kap. 9): das Übergabefeld ist der Ort der Messung/des Schutzes, nicht das Ringkabelfeld. Ausstattung mit dem Ringfeld (440_A00001) getauscht - bündelt jetzt UMZ-Relais mit Wandlersatz (Kern+Busauswertung RTU/TCP) + Leistungsschalter + Erdungstrenner.",
     "mitglieder": [
+      {
+        "bg_id": "440_000068",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000069",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
       {
         "bg_id": "440_000071",
         "menge": 1
