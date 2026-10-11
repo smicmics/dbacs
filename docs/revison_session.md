@@ -1,6 +1,20 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 77 Teil 2 (11.10.2026).** Mengenfelder (Kühlreihen/
+> **Stand nach Session 77 Teil 3 (11.10.2026).** Klimageräte Kälte
+> eingetragen: Split-Klimagerät (Daikin, Wandgerät+Deckenkassette, 3
+> physische DP + komm. Modbus RTU) und wassergekühltes Klimagerät (Vertiv
+> DataMate, Wandgerät+Deckenkassette generisch, 2 physische DP + komm.
+> Modbus RTU/TCP). Außengerät bewusst nicht als eigene Baugruppe. Zusätzlich
+> das bestehende Umluftkühlgerät (CRAH) nach Kälte transferiert (zusätzlich
+> zu Lüftung wählbar). 7 neue Baugruppen, 4 neue Feldgeräte, Export
+> baugruppen 276→283, feldgeraete 125→129. Vollständig Browser-verifiziert.
+> Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 77 Teil 3.
+> **Als Nächstes: Elektro** (UMZ-Schutzrelais, MS-Übergabefelder, NSHV/UV) –
+> 6 Forks bereits abgeschlossen (ABB REF601 als UMZ-Empfehlung, Siemens
+> SIMOSEC für MS-Felder, Siemens SIPROTEC 5 für Schutzrelais verworfen da
+> keine feste Modbus-Registerliste), Freigabe-Vorlage steht noch aus.
+
+Vorheriger Stand – Session 77 Teil 2 (11.10.2026). Mengenfelder (Kühlreihen/
 > Kältekreise/Ventilatoren/Verdichterstufen) von Freitext-Zahlenfeldern auf
 > echte `<select>`-Festwerte umgestellt (neue Engine-Fähigkeit
 > `mengenfeld2` für Kreuzmultiplikation, z.B. Kältekreise×Verdichterstufen).

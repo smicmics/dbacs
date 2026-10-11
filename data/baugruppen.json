@@ -2000,7 +2000,8 @@
       }
     ],
     "funktionsbereich": [
-      "lueftung"
+      "lueftung",
+      "kaelte"
     ],
     "betriebsmittel": "Umluftkuehlgeraet (CRAH), Chilled Water, 20...250 kW (Schneider Electric Uniflair HDCV)",
     "feldgeraet_artikel_nr": "HDCV",
@@ -3510,7 +3511,8 @@
       }
     ],
     "funktionsbereich": [
-      "lueftung"
+      "lueftung",
+      "kaelte"
     ],
     "betriebsmittel": "Umluftkuehlgeraet (CRAH), Chilled Water, 20...250 kW (Schneider Electric Uniflair HDCV)",
     "feldgeraet_artikel_nr": "HDCV",
@@ -11543,6 +11545,255 @@
     ],
     "automationsanbindung": true,
     "kategorie": "Kälteerzeuger",
+    "geprueft": false
+  },
+  {
+    "id": "420_000090",
+    "name": "Split-Klimagerät Wandgerät (Innen-/Außengerät), Daikin VRV FXAQ, Modbus-Anbindung wählbar",
+    "gewerk": "420",
+    "beschreibung": "[Session 77 Folgearbeit, Fork-Recherche] Split-/VRF-Klimagerät Wandgerät, Daikin FXAQ-Baureihe, physische Schnittstelle KRP4A71 (Adapter je Innengerät). Außengerät bewusst NICHT als eigene Baugruppe (keine separate, vom Innengerät unabhängige Diagnose am Markt belastbar auffindbar - interne Verkabelung Innen-/Außengerät). Keine Versorgungsspannung aus dem Schaltschrank (Gerät arbeitet autark, 230V AC bauseits, meist vorhandener Anschluss in Gebäudenähe - Nutzer-Vorgabe) - kein LSS/Trafo-Ratchet, keine Leistungsklemmen. 3x physischer DP: BO Start/Stopp (Dauerkontakt potentialfrei 12-24V DC), BI Betrieb, BI Störung (beide potentialfreie Schließer bis 230V). Physischer Sollwerteingang (0-135Ω Widerstandssignal) bewusst NICHT uebernommen (Nutzer-Vorgabe: nur fuer lokale Verstellung ueber herstellereigenen Sollwertgeber relevant, kein DDC-Punkt). Generisches Feldgerät DAIKIN-FXAQ-WAND.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "feldgeraet_artikel_nr": "DAIKIN-FXAQ-WAND",
+    "automationsanbindung": true,
+    "kategorie": "Klimageräte",
+    "geprueft": false
+  },
+  {
+    "id": "420_000091",
+    "name": "Split-Klimagerät Deckenkassette (Innen-/Außengerät), Daikin VRV FXFQ, Modbus-Anbindung wählbar",
+    "gewerk": "420",
+    "beschreibung": "[Session 77 Folgearbeit, Fork-Recherche] Wie 420_000090 (Wandgerät), aber Daikin FXFQ-Baureihe (4-Wege-Deckenkassette) mit Adapter KRP4A73 - identisches physisches Interface/DP-Set, nur andere Bauform/Feldgerät. Generisches Feldgerät DAIKIN-FXFQ-DECKE.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "feldgeraet_artikel_nr": "DAIKIN-FXFQ-DECKE",
+    "automationsanbindung": true,
+    "kategorie": "Klimageräte",
+    "geprueft": false
+  },
+  {
+    "id": "420_000092",
+    "name": "Split-Klimagerät: Busauswertung Modbus RTU (generischer Datenpunktsatz)",
+    "gewerk": "420",
+    "beschreibung": "[Session 77 Folgearbeit, Fork-Recherche, Nutzer-Freigabe] Rein kommunikativer Mehrbedarf ueber Adapter DTA116A51 (Modbus RTU, kein TCP-Modul bei Daikin gefunden): AO Sollwert Raum-/Ablufttemperatur (Holding-Register), AI Istwert Raum-/Ablufttemperatur (deckt die Raumsensor-Pflicht ab - kein separater physischer Raumsensor noetig), AI Betrieb Luefterstufe (als Zahl, generisch unabhaengig von der tatsaechlichen Stufenzahl), BI Kommunikationsstatus (Geraeteueberwachung). Fehlercode bewusst NICHT uebernommen (Nutzer-Vorgabe, nicht benoetigt). Kein zusaetzliches Schaltschrank-Bauteil (KOMM-FB virtueller Traeger). Modbus RTU direkt an CPU-Port.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 2,
+        "dp_fb_ao": 1,
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Klimageräte",
+    "geprueft": false
+  },
+  {
+    "id": "420_000093",
+    "name": "Wassergekühltes Klimagerät Wandgerät, Vertiv/Liebert DataMate, Modbus-Anbindung wählbar",
+    "gewerk": "420",
+    "beschreibung": "[Session 77 Folgearbeit, Fork-Recherche, Nutzer-Freigabe] Wassergekühltes Klimagerät (DX mit wassergekühltem Kondensator ODER reines Kaltwasser-Fan-Coil, beide Lesarten bei diesem Produkt real vorhanden) als Wandgerät, Vertiv/Liebert DataMate DME020E/027E/037E-Baureihe (bzw. DME044C Kaltwasser-Ausführung). Keine Versorgungsspannung aus dem Schaltschrank (Nutzer-Vorgabe). Schlankeres DP-Set als das Umluftkühlgerät/CRAH-Modell (Geraet deutlich kleiner): 1x BO Freigabe/Fernein-Ausschaltung UEBER KOPPELRELAIS (Geraet erwartet passiven Kontaktschluss, kein Spannungssignal - TXM liefert Spannung, Regel 10/15) + 1x BI Sammelalarm (1 programmierbarer Kontakt, deckt 8 Werksalarme + 2 freie Zusatzalarme ab - KEINE separate Betriebsmeldung im Standard vorhanden). Kein physischer AO-Sollwerteingang (nur lokal am Geraet oder optional kommunikativ ueber IS-UNITY-DP-Karte). Generisches Feldgerät VERTIV-DATAMATE-WAND.",
+    "bauteile": [
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "feldgeraet_artikel_nr": "VERTIV-DATAMATE-WAND",
+    "automationsanbindung": true,
+    "kategorie": "Klimageräte",
+    "geprueft": false
+  },
+  {
+    "id": "420_000094",
+    "name": "Wassergekühltes Klimagerät Deckenkassette, generisches Modell, Modbus-Anbindung wählbar",
+    "gewerk": "420",
+    "beschreibung": "[Session 77 Folgearbeit, Fork-Recherche, Nutzer-Freigabe] Kein reales Referenzprodukt mit vergleichbarem Reglerniveau als wassergekühlte Deckenkassette am Markt gefunden (Rittal/Stulz/Vertiv/Schneider Uniflair geprüft) - auf Nutzer-Vorgabe dasselbe generische DP-Modell wie das Wandgerät 420_000093 (1x BO über Koppelrelais + 1x BI Sammelalarm), da DBACS ein generisches Modell statt eines realen Einzelprodukts abbildet. Generisches Platzhalter-Feldgerät VERTIV-DATAMATE-DECKE-GENERIC (kein Stromlaufplan-Anspruch).",
+    "bauteile": [
+      {
+        "artikel_nr": "2967073",
+        "menge": 1,
+        "zone": "leist",
+        "dp_bo": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "feldgeraet_artikel_nr": "VERTIV-DATAMATE-DECKE-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Klimageräte",
+    "geprueft": false
+  },
+  {
+    "id": "420_000095",
+    "name": "Wassergekühltes Klimagerät: Busauswertung Modbus RTU (generischer Datenpunktsatz)",
+    "gewerk": "420",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Wie 420_000092 (Split-Klimagerät), identisches generisches Datenpunktset auf das wassergekühlte Klimagerät übertragen (IS-UNITY-DP-Registerliste selbst nicht einzeln bestätigt): AO Sollwert Raum-/Ablufttemperatur, AI Istwert Raum-/Ablufttemperatur, AI Betrieb Lüfterstufe (als Zahl), BI Kommunikationsstatus. Kein zusätzliches Schaltschrank-Bauteil. Modbus RTU direkt an CPU-Port.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 2,
+        "dp_fb_ao": 1,
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Klimageräte",
+    "geprueft": false
+  },
+  {
+    "id": "420_000096",
+    "name": "Wassergekühltes Klimagerät: Busauswertung Modbus TCP (generischer Datenpunktsatz)",
+    "gewerk": "420",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Wie 420_000095, Modbus TCP (IS-UNITY-DP-Karte unterstützt laut Datenblatt sowohl BACnet/Modbus IP als auch RS485) - zieht bei Bedarf den Ethernet-Switch-Ratchet (2891021) automatisch nach.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 2,
+        "dp_fb_ao": 1,
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "kaelte"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Klimageräte",
     "geprueft": false
   }
 ]

@@ -1095,5 +1095,41 @@
     "quelle_hinweis": "Generischer Platzhalter (kein Stromlaufplan-Anspruch), analog KM-GENERIC-250 (Session 72) - kein Hersteller liefert eine oeffentliche Komplett-Registerliste.",
     "kommunikative_datenpunkte": "Modbus RTU/TCP: Hochdruck-/Niederdruckwächter, Kältemittel-Leckagemelder, VL/RL-Temperatur Kältekreis intern, aktueller Sollwert, elektrische Leistung, Energieverbrauch, übertragene Kälteleistung (420_000082/083); je Kältekreis Hoch-/Niederdruckstörung (420_000086/087); je Verdichter Betrieb/Störung (420_000088/089)",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "DAIKIN-FXAQ-WAND",
+    "bezeichnung": "Split-Klimagerät Wandgerät, Daikin VRV FXAQ-Baureihe, inkl. BMS-Schnittstelle KRP4A71 (physisch) + DTA116A51 (Modbus RTU, optional)",
+    "hersteller": "Daikin",
+    "kategorie": "Klimageräte",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch. FXAQ-Baureihe (z.B. FXAQ50A), Adapter KRP4A71 physisch + DTA116A51 Modbus RTU. Kein belastbarer Netto-Listenpreis gefunden (B2B-Preisliste login-geschützt).",
+    "kommunikative_datenpunkte": "Modbus RTU (DTA116A51): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000092)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "DAIKIN-FXFQ-DECKE",
+    "bezeichnung": "Split-Klimagerät Deckenkassette, Daikin VRV FXFQ-Baureihe, inkl. BMS-Schnittstelle KRP4A73 (physisch) + DTA116A51 (Modbus RTU, optional)",
+    "hersteller": "Daikin",
+    "kategorie": "Klimageräte",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch. FXFQ-Baureihe (4-Wege-Kassette, z.B. FXFQ63A), Adapter KRP4A73. Kein belastbarer Netto-Listenpreis gefunden.",
+    "kommunikative_datenpunkte": "Modbus RTU (DTA116A51): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000092)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "VERTIV-DATAMATE-WAND",
+    "bezeichnung": "Wassergekühltes Klimagerät Wandgerät, Vertiv/Liebert DataMate DME020E/027E/037E-Baureihe",
+    "hersteller": "Vertiv/Liebert",
+    "kategorie": "Klimageräte",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch. 5,0-10,5 kW je nach Baugröße. Kein belastbarer Netto-Listenpreis gefunden.",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP (IS-UNITY-DP, Registerliste nicht einzeln bestätigt, generisches Set übernommen): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000095/096)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "VERTIV-DATAMATE-DECKE-GENERIC",
+    "bezeichnung": "Wassergekühltes Klimagerät Deckenkassette, generischer Platzhalter (kein reales Referenzprodukt mit vergleichbarem Reglerniveau gefunden)",
+    "hersteller": "generisch",
+    "kategorie": "Klimageräte",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Kein Hersteller (Rittal/Stulz/Vertiv/Schneider Uniflair geprüft) bietet eine wassergekühlte/Kaltwasser-Deckenkassette mit vergleichbarem Reglerniveau - generisches Platzhaltermodell analog KM-GENERIC-250, DP-Set identisch zum Wandgerät VERTIV-DATAMATE-WAND.",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP (generisches Set): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000095/096)",
+    "geprueft": false
   }
 ]

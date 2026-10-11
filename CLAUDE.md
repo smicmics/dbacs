@@ -16,6 +16,58 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 77 Teil 3 (11.10.2026) – Klimageräte Kälte: Split-
+> Klimagerät (Daikin) + wassergekühltes Klimagerät (Vertiv/Liebert
+> DataMate), je Wandgerät+Deckenkassette, + Umluftkühlgerät-Transfer nach
+> Kälte. 7 neue Baugruppen, 4 neue Feldgeräte, Fork-Recherche (6 Forks
+> insgesamt für diese + die parallel laufende Elektro-Recherche, siehe
+> unten) vorab vollständig mit Nutzer abgestimmt und freigegeben.**
+> **Split-Klimagerät** (`420_000090` Wandgerät/`420_000091` Deckenkassette,
+> Daikin VRV FXAQ/FXFQ): physisch 1×BO Start/Stopp (Dauerkontakt,
+> potentialfrei, KEIN Koppelrelais nötig) + 1×BI Betrieb + 1×BI Störung
+> (Adapter KRP4A71/73) – 6 Klemmen, keine Versorgungsspannung aus dem
+> Schrank (Nutzer-Vorgabe: Geräte arbeiten autark, 230V AC bauseits). Kein
+> physischer Sollwerteingang übernommen (Daikin nur 0–135Ω-Widerstand,
+> Nutzer-Entscheidung: nur für lokale Verstellung relevant, kein DDC-Punkt).
+> **Außengerät bewusst NICHT als eigene Baugruppe** (Nutzer-Vorgabe – keine
+> separate Diagnose am Markt belastbar, interne Verkabelung mit dem
+> Innengerät), stattdessen im Namen mitgeführt. Komm. Zusatzbaugruppe
+> `420_000092` (nur Modbus RTU, Daikin DTA116A51 hat kein TCP-Modul): AO
+> Sollwert Raum-/Ablufttemperatur, AI Istwert Raum-/Ablufttemperatur (deckt
+> die Raumsensor-Pflicht ab, Nutzer-Vorgabe), AI Betrieb Lüfterstufe (als
+> Zahl statt BI je Stufe, generisch), BI Kommunikationsstatus. Fehlercode
+> bewusst nicht übernommen (Nutzer-Vorgabe, nicht benötigt).
+> **Wassergekühltes Klimagerät** (`420_000093` Wandgerät/`420_000094`
+> Deckenkassette generisch, Vertiv/Liebert DataMate): deutlich schlanker
+> als das Umluftkühlgerät/CRAH-Vorbild (Gerät kleiner) – 1×BO Freigabe
+> **über Koppelrelais** (Gerät erwartet passiven Kontaktschluss, TXM liefert
+> Spannung ⇒ Regel 10/15) + 1×BI Sammelalarm (1 programmierbarer Kontakt,
+> deckt 8 Werksalarme + 2 frei ab – **keine** separate Betriebsmeldung im
+> Standard vorhanden, reale Gerätegrenze, vom Nutzer akzeptiert). Kein
+> reales Referenzprodukt für eine wassergekühlte Deckenkassette gefunden
+> (Rittal/Stulz/Vertiv/Schneider Uniflair geprüft) – auf Nutzer-Vorgabe
+> dasselbe generische Modell wie das Wandgerät, generischer Platzhalter-
+> Feldgerät `VERTIV-DATAMATE-DECKE-GENERIC`. Komm. Zusatzbaugruppen
+> `420_000095`/`096` (RTU/TCP, IS-UNITY-DP-Karte unterstützt beides) mit
+> demselben generischen Datenpunktset wie beim Split-Klimagerät übertragen
+> (eigene Registerliste nicht einzeln bestätigt).
+> **Umluftkühlgerät-Transfer:** `430_000026`/`027` (CRAH, Session 56/58)
+> `funktionsbereich` von `['lueftung']` auf `['lueftung','kaelte']`
+> erweitert – keine sonstige Änderung, jetzt auch im Kälte-Baugruppen-Tab
+> wählbar.
+> **Export:** baugruppen 276→**283**, feldgeraete 125→**129**. Backup:
+> `ga_komponenten_vor-klimageraete_<timestamp>.xlsx`. **Browser-
+> Verifikation:** `testKatalogScan()` 0 verwaist; `testBaugruppe()` auf
+> allen 7 neuen IDs bestanden (DP exakt wie Herleitung: 090/091 2BI+1BO,
+> 092 komm. AI2/AO1/BI1 RTU, 093/094 1BI+1BO, 095/096 komm. AI2/AO1/BI1
+> RTU/TCP); alle 7 + die beiden CRAH-IDs sichtbar im Kälte-Tab; Live-Test
+> (4 Baugruppen gleichzeitig platziert) 0 Overflow, 0 fehlendPlatziert,
+> keine Konsolenfehler in Modul 4 oder 5. **Nebenbefund (Infrastruktur,
+> kein Projekt-Bug):** wieder der bekannte WSL-localhost-Relay-Ausfall
+> (Session 51/73) – behoben mit `wsl --shutdown` vor dem Server-Neustart.
+> **Nächster Schritt:** Elektro (UMZ-Schutzrelais/MS-Übergabe/NSHV-UV) –
+> Forks bereits abgeschlossen, Freigabe-Vorlage steht noch aus.
+
 > **Nachtrag Session 77 Teil 2 (11.10.2026) – Mengenfelder auf echte
 > Select-Festwerte umgestellt (Kreuzmultiplikation), Kältemengenzähler-
 > Begriff vereinheitlicht, Wärmepumpen-Anlagen konsolidiert (8→4).**
