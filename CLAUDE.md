@@ -16,6 +16,55 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 77 Teil 4 (11.10.2026) – Elektro-Start: Mittelspannung,
+> erste 2 MS-Schaltfeld-Anlagen (Einspeise-Ringfeld + Kuppelfeld), neue
+> Kategorie „Mittelspannungsschaltanlage", bisher leerer `elektro_anlagen`-
+> Tab (Session 75) erstmals befüllt.** 5 neue Baugruppen Gewerk 440:
+> `440_000068` **UMZ-Relais mit Wandlersatz** (Kern, physisch 3×BI Betrieb/
+> Sammelstörung/Ausgelöst-TRIP, je 2 Klemmen) – bündelt bewusst **zwei reale
+> Geräte an einem gemeinsamen Wandlersatz**, da kein Marktgerät Schutz UND
+> volle Leistungs-/Energiemessung mit fester Modbus-Registerliste vereint
+> (Fork-Vergleich: ABB REF601 nur Strom, Schneider Sepam getrennte Strom-/
+> Spannungsmodelle, Siemens SIPROTEC 5 ohne feste Registerliste – verworfen,
+> da inkompatibel mit „1 Katalogeintrag = feste DP-Zahl"): **ABB REF601/
+> REJ601** für die Schutzfunktion + **Janitza UMG** für die Messfunktion am
+> selben Wandlersatz. Wandlersatz selbst ohne eigenen Klemmenbedarf (reines
+> Fremdbauteil, Regel 7). `440_000069`/`070` Busauswertung RTU/TCP (komm.
+> 14×AI: Zählernummer, Zählwert Verbrauch, Zählwert Bezug Blindarbeit,
+> Wirk-/Schein-/Blindleistung, Frequenz, Leistungsfaktor, 3×Spannung
+> L1-L2/L2-L3/L3-L1, 3×Strom L1/L2/L3). `440_000071` **Leistungsschalter
+> Mittelspannung** (3×BI Ein/Aus/Auslösung) und `440_000072`
+> **Erdungstrenner Mittelspannung** (2×BI Ein/Aus) – beide bewusst
+> **eigenständige, wiederverwendbare Baugruppen** (Nutzer-Vorgabe: „kommen
+> in anderen Feldern wieder, lösen identische Datenpunkte aus"), keine
+> Versorgungsspannung/PE-Klemme aus dem Schaltschrank (Feldgerät im fremden
+> MS-Schaltfeld, Regel 7/8).
+> **2 neue Anlagen** `440_A00001` „MS-Einspeise (Ringfeld)" und
+> `440_A00002` „MS-Kuppelfeld" (Nutzer-Vorgabe: identische Ausstattung –
+> Kuppelfeld ist bei Siemens SIMOSEC nicht als eigener Feldtyp benannt, nur
+> bei ABB/Schneider, Geräteausstattung aber herstellerübergreifend
+> gleichwertig) – beide bündeln dieselben 3 Baugruppen (UMZ-Kern + Bus-
+> auswertung RTU/TCP-Dropdown + Leistungsschalter + Erdungstrenner).
+> Konzept (Nutzer-Vorgabe Elektro-Auftaktnachricht): jedes MS-Schaltfeld
+> wird als eigene Anlage angelegt, mehrere Feld-Anlagen können später zu
+> einer kompletten MS-Anlage zusammengesetzt werden.
+> **Export:** baugruppen 283→**288**, feldgeraete 129→**132**, anlagen
+> 50→**52**. Backup: `ga_komponenten_vor-ms-einspeisefeld_<timestamp>.xlsx`.
+> **Browser-Verifikation:** `testKatalogScan()` 0 verwaist; `testBaugruppe()`
+> auf allen 5 neuen IDs bestanden (DP exakt wie Herleitung); `testAnlage()`
+> auf beiden neuen Anlagen bestanden (2/2 Kombinationen je RTU/TCP); beide
+> sichtbar im zuvor leeren `elektro_anlagen`-Tab; Live-Test (440_A00001
+> hinzugefügt) löst korrekt zu 440_000068+069(RTU-Default)+071+072 auf, 0
+> Overflow, 0 fehlendPlatziert, keine Konsolenfehler.
+> **Direkt im Anschluss ergänzt:** `440_A00003` „MS-Übergabefeld" (Nutzer-
+> Vorgabe: nur Leistungsschalter + Erdungstrenner, kein eigenes UMZ-Relais
+> – Messung/Schutz sitzt im Einspeisefeld) – reine `anlagen`/
+> `anlagen_baugruppen`-Ergänzung, keine neuen Baugruppen nötig (referenziert
+> `440_000071`/`072`). Export anlagen 52→53, Browser-verifiziert
+> (`testKatalogScan()` sauber, `testAnlage()` 1/1 Kombination bestanden).
+> **Nächster Schritt:** weitere MS-Feldtypen (Messfeld VNB, Abgangsfeld zum
+> Trafo), danach NSHV/UV.
+
 > **Nachtrag Session 77 Teil 3 (11.10.2026) – Klimageräte Kälte: Split-
 > Klimagerät (Daikin) + wassergekühltes Klimagerät (Vertiv/Liebert
 > DataMate), je Wandgerät+Deckenkassette, + Umluftkühlgerät-Transfer nach

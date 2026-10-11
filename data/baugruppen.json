@@ -11795,5 +11795,178 @@
     "automationsanbindung": true,
     "kategorie": "Klimageräte",
     "geprueft": false
+  },
+  {
+    "id": "440_000068",
+    "name": "UMZ-Relais mit Wandlersatz (Mittelspannung): Betrieb/Sammelstörung/Ausgelöst",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Fork-Recherche, Nutzer-Freigabe] Unabhängiger Überstromzeitschutz (UMZ) für ein Mittelspannungs-Schaltfeld, bündelt Schutz- und Messfunktion an einem gemeinsamen Wandlersatz (Strom-/Spannungswandler, liefert selbst keine eigenen Datenpunkte, reines Fremdbauteil ohne Klemmenbedarf, Regel 7). Schutzfunktion ABB Relion REF601/REJ601 (beste öffentliche Modbus-Registerdoku), Messfunktion über separates Netzanalysator-Gerät (Janitza UMG-Reihe) am selben Wandlersatz - kein einzelnes Marktgerät vereint Schutz UND vollständige Leistungs-/Energiemessung mit fester Registerliste (Fork-Vergleich ABB/Schneider Sepam/Siemens SIPROTEC 5). 3x physischer BI (Betrieb, Sammelstörung, Ausgelöst/TRIP), je 2 Klemmen (Regel 14). Feldgerät installiert im fremden Mittelspannungsschaltfeld (Regel 7) - keine Versorgungsspannung/PE-Klemme aus dem Schaltschrank (ABB-Klemmenplan weist keine eigene Erdungsklemme aus, Regel 8). Kommunikative Messwerte: siehe 440_000069/070.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "MS-UMZ-SCHUTZ-MESS",
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
+  },
+  {
+    "id": "440_000069",
+    "name": "UMZ-Relais mit Wandlersatz: Busauswertung Modbus RTU (Messwerte)",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Rein kommunikativer Mehrbedarf des Netzanalysator-Anteils (Janitza-UMG-Typ) am Wandlersatz der UMZ-Baugruppe 440_000068: Zählernummer, Zählwert Verbrauch, Zählwert Bezug Blindarbeit, Wirkleistung, Scheinleistung, Blindleistung, Frequenz, Leistungsfaktor, Spannung L1-L2/L2-L3/L3-L1, Strom L1/L2/L3 - alle als AI (14x). Kein zusätzliches Schaltschrank-Bauteil (KOMM-FB virtueller Träger). Modbus RTU direkt an CPU-Port.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 14,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
+  },
+  {
+    "id": "440_000070",
+    "name": "UMZ-Relais mit Wandlersatz: Busauswertung Modbus TCP (Messwerte)",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Wie 440_000069, Modbus TCP - zieht bei Bedarf den Ethernet-Switch-Ratchet (2891021) automatisch nach.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 14,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
+  },
+  {
+    "id": "440_000071",
+    "name": "Leistungsschalter Mittelspannung: Ein/Aus/Auslösung",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Fork-Recherche (Siemens SIMOSEC-Feldaufbau), Nutzer-Freigabe] Mittelspannungs-Leistungsschalter als Feldgerät im fremden MS-Schaltfeld (Regel 7) - wiederverwendbar in mehreren MS-Feldtypen (Einspeise-/Übergabe-/Abgangsfeld). 3x physischer BI (Schalterstellung Ein, Schalterstellung Aus, Auslösung), je 2 Klemmen (Regel 14). Keine Versorgungsspannung/PE-Klemme aus dem Schaltschrank.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
+  },
+  {
+    "id": "440_000072",
+    "name": "Erdungstrenner Mittelspannung: Ein/Aus",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Fork-Recherche (Siemens SIMOSEC-Feldaufbau), Nutzer-Freigabe] Mittelspannungs-Erdungstrenner als Feldgerät im fremden MS-Schaltfeld (Regel 7) - wiederverwendbar in mehreren MS-Feldtypen. 2x physischer BI (Schalterstellung Ein, Schalterstellung Aus), je 2 Klemmen (Regel 14). Keine Versorgungsspannung/PE-Klemme aus dem Schaltschrank.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
   }
 ]

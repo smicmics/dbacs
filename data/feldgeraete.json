@@ -1131,5 +1131,30 @@
     "quelle_hinweis": "[Fork-Recherche 10/2026] Kein Hersteller (Rittal/Stulz/Vertiv/Schneider Uniflair geprüft) bietet eine wassergekühlte/Kaltwasser-Deckenkassette mit vergleichbarem Reglerniveau - generisches Platzhaltermodell analog KM-GENERIC-250, DP-Set identisch zum Wandgerät VERTIV-DATAMATE-WAND.",
     "kommunikative_datenpunkte": "Modbus RTU/TCP (generisches Set): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000095/096)",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "MS-UMZ-SCHUTZ-MESS",
+    "bezeichnung": "UMZ-Schutzrelais mit Wandlersatz (Mittelspannung), Schutz ABB Relion REF601/REJ601 + Messung Janitza UMG-Reihe am selben Wandlersatz",
+    "hersteller": "ABB / Janitza",
+    "kategorie": "Mittelspannungsschaltanlage",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Bündel-Modell, kein Stromlaufplan-Anspruch - kein einzelnes Marktgerät vereint Schutz+volle Leistungs-/Energiemessung mit fester, öffentlicher Modbus-Registerliste (ABB REF601 nur Strom, Schneider Sepam getrennte Strom-/Spannungsmodelle, Siemens SIPROTEC 5 ohne feste Registerliste). Kein Nettopreis gefunden.",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP: Zählernummer, Zählwert Verbrauch, Zählwert Bezug Blindarbeit, Wirkleistung, Scheinleistung, Blindleistung, Frequenz, Leistungsfaktor, Spannung L1-L2/L2-L3/L3-L1, Strom L1/L2/L3 (440_000069/070)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "MS-LEISTUNGSSCHALTER-GENERIC",
+    "bezeichnung": "Mittelspannungs-Leistungsschalter, generisches Modell (Siemens SIMOSEC-Feldaufbau)",
+    "hersteller": "Siemens (SIMOSEC)",
+    "kategorie": "Mittelspannungsschaltanlage",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert (Leistungsschalter sitzt feldintegriert in der SIMOSEC-Schaltanlage, kein separates Einzelbauteil-Datenblatt).",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "MS-ERDUNGSTRENNER-GENERIC",
+    "bezeichnung": "Mittelspannungs-Erdungstrenner, generisches Modell (Siemens SIMOSEC-Feldaufbau)",
+    "hersteller": "Siemens (SIMOSEC)",
+    "kategorie": "Mittelspannungsschaltanlage",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert.",
+    "geprueft": false
   }
 ]

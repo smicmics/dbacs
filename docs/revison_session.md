@@ -1,6 +1,17 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 77 Teil 3 (11.10.2026).** Klimageräte Kälte
+> **Stand nach Session 77 Teil 4 (11.10.2026).** Elektro-Start Mittelspannung:
+> 5 neue Baugruppen (UMZ-Relais mit Wandlersatz [Kern+Busauswertung RTU/TCP],
+> Leistungsschalter MS, Erdungstrenner MS, Gewerk 440) + 2 neue Anlagen
+> „MS-Einspeise (Ringfeld)"/„MS-Kuppelfeld" (identische Ausstattung), neue
+> Kategorie „Mittelspannungsschaltanlage", bisher leerer `elektro_anlagen`-
+> Tab erstmals befüllt. UMZ bündelt zwei reale Geräte (ABB REF601 Schutz +
+> Janitza UMG Messung) an einem Wandlersatz, da kein Markgerät beides mit
+> fester Modbus-Registerliste vereint. Export: baugruppen 283→288,
+> feldgeraete 129→132, anlagen 50→52. Vollständig Browser-verifiziert.
+> Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 77 Teil 4.
+
+Vorheriger Stand – Session 77 Teil 3 (11.10.2026). Klimageräte Kälte
 > eingetragen: Split-Klimagerät (Daikin, Wandgerät+Deckenkassette, 3
 > physische DP + komm. Modbus RTU) und wassergekühltes Klimagerät (Vertiv
 > DataMate, Wandgerät+Deckenkassette generisch, 2 physische DP + komm.
