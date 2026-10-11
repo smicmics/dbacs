@@ -16,6 +16,67 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 77 Teil 2 (11.10.2026) – Mengenfelder auf echte
+> Select-Festwerte umgestellt (Kreuzmultiplikation), Kältemengenzähler-
+> Begriff vereinheitlicht, Wärmepumpen-Anlagen konsolidiert (8→4).**
+> **1. Mengenfelder (Kühlreihen/Kältekreise/Ventilatoren/Verdichterstufen)**
+> waren bisher freie `<input type=number>` ohne erkennbare Beschriftung
+> beim Ausfüllen mehrerer Felder gleichzeitig (Nutzer-Fund). Umgestellt auf
+> `<select>` mit Festwerten + derselben Platzhalter-Erstzeile wie die
+> `gruppe`-Dropdowns: Kühlreihen/Kältekreise 0–2, Verdichterstufen je Kreis
+> 0–8, Ventilatoren je Reihe 0–15 (Nutzer-Vorgabe). **Neue Engine-Fähigkeit
+> `mengenfeld2`** (neue Spalte in `anlagen_baugruppen`): ein Mitglied kann
+> jetzt ZWEI unabhängige Mengenfelder tragen, deren Werte miteinander UND
+> mit `menge` multipliziert werden – echte Kreuzmultiplikation statt der
+> bisherigen Einzelwert-Vereinfachung („Leistungsstufen gesamt" eintragen).
+> Kreis-/Reihen-Meldungen (420_000086/087, 420_000074/075) bleiben
+> einfaktoriell (`mengenfeld` allein), Verdichter-/Lüfter-Einzelmeldungen
+> (420_000088/089, 420_000076/077) bekommen `mengenfeld2` zusätzlich –
+> `mengenfeld:'kaeltekreise'`+`mengenfeld2:'verdichterstufen_je_kreis'` bzw.
+> `mengenfeld:'kuehlreihen'`+`mengenfeld2:'ventilatoren_je_reihe'`. Live
+> verifiziert: 2 Kühlreihen × 6 Ventilatoren/Reihe → korrekt 12× BI
+> (`420_000076:12`), Lüfterdrehzahl bleibt unabhängig bei 2×.
+> **2. „Wärmemengenzähler" → „Kältemengenzähler" nur auf der Kälteseite:**
+> der `gruppe`-Schlüssel `wmz` wird von Heizkreisen UND Kälteanlagen
+> gemeinsam genutzt – eine globale Umbenennung hätte die Heizkreis-
+> Dropdowns falsch beschriftet. Stattdessen neuer, eigener Schlüssel
+> **`wmz_kaelte`** für alle Kälte-seitigen WMZ-Optionen (Kältekreis
+> Verteilung/Übertrager seit Session 71 UND die neuen Kältemaschine-/RKW-
+> Anlagen aus Teil 1) – 19 `anlagen_baugruppen`-Zeilen umgehängt
+> (`gruppe='wmz'`+Kälte-WMZ-Artikel → `gruppe='wmz_kaelte'`). RKWs
+> WMZ-Option referenzierte bisher versehentlich die Wärme- statt die
+> Kältemengenzähler-Familie (420_000029/031/034 → 420_000037/039/042) –
+> jetzt korrigiert, Begriff durchgängig „Kältemengenzähler".
+> **3. Wärmepumpen-Anlagen 8→4 konsolidiert** (Nutzer-Fund: „Pumpenkonzept"
+> intern/extern war als 2 komplett getrennte Anlagen modelliert statt als
+> Anlagenoption – „macht Sinn, sie in Anlagen rüber zu holen"). Vergleich
+> der 8 Kern-Baugruppen (420_000057–064) ergab: intern/extern unterscheiden
+> sich **ausschließlich** um 2× kommunikative BI (interne Pumpe Betrieb/
+> Störung), sonst identisch – idealer Fall für das „Primärkreis-
+> Ausstattung"-Muster aus Teil 1. Neues kombiniertes Dropdown
+> `gruppe:'pumpenkonzept'` (3 Optionen: Interne Sekundärpumpe / Externe
+> Sekundärpumpe mittel (MAXO) / Externe Sekundärpumpe groß (GIGA2.0)) in
+> `420_A00018/020/022/024` (L-W/W-W × nicht-reversibel/reversibel). Die 4
+> bisherigen „...externe Sekundärpumpe"-Anlagen (`420_A00019/021/023/025`)
+> **nicht gelöscht, sondern `aktiv=FALSE`** gesetzt (Katalogkonvention,
+> Name um Hinweis ergänzt) – Historie bleibt in der Excel-Datei
+> nachvollziehbar. Anlagen-Namen generalisiert (nicht mehr „...interne
+> Sekundärpumpe" fest im Namen, da jetzt wählbar).
+> **4. Druckhaltung/Nachspeisung (410_000001–005) geprüft, bereits in
+> Kälte vorhanden** (Nutzer-Nachfrage) – `funktionsbereich` enthielt schon
+> seit Session 62 `kaelte`, live im Kälte-Baugruppen-Tab bestätigt. Keine
+> Änderung nötig.
+> **Export:** Anlagen 54→**50** (4 WP-Anlagen deaktiviert), `anlagen_
+> baugruppen` neue Spalte `mengenfeld2`. **Browser-Verifikation:**
+> `testKatalogScan()` 0 verwaist; `testAnlage()` auf allen 4 Kälte-Anlagen
+> aus Teil 1 weiterhin pass (112/32/16/32), auf allen 4 konsolidierten WP-
+> Anlagen pass (108/204/108/204, inkl. Pumpenkonzept × WMZ × Elektrozähler-
+> Kreuzung), Regressionstest `420_A00001` (Heizkreis, wmz-Label unverändert
+> „Wärmemengenzähler"), `420_A00026` (Kältekreis, wmz_kaelte), `480_A00002`
+> (ASP) weiterhin grün; Live-UI-Test (RKW 2 Kühlreihen × 6 Ventilatoren/
+> Reihe, Wärmepumpe alle 3 Pumpenkonzept-Varianten) liefert exakt erwartete
+> Bauteile/Mengen; keine Konsolenfehler in Modul 4 oder 5.
+
 > **Nachtrag Session 77 (11.10.2026) – Kälte-Korrektur Teil 2: generative
 > Kältemaschine (wasser-/luftgekühlt) + RKW-Ergänzungen, 9 neue Baugruppen,
 > 1 neue Anlage, neue UI-Regel „Optionsfeld-Platzhalter". Vollständig

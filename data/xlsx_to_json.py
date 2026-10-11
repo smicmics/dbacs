@@ -703,6 +703,13 @@ def export_anlagen(wb):
         # zu `gruppe` gesetzt sein (z.B. "nur bei Busprotokoll X UND Anzahl Y").
         if rec.get('mengenfeld') is not None:
             m['mengenfeld'] = str(rec['mengenfeld'])
+        # mengenfeld2 (Session 77 Folgearbeit, 11.10.2026): zweiter,
+        # unabhaengiger Mengen-Multiplikator fuer echte Kreuzmultiplikation
+        # (z.B. Kaeltekreise x Verdichterstufen je Kreis, Kuehlreihen x
+        # Ventilatoren je Reihe) - beide Felder werden in addAnlage()
+        # (Modul 4) miteinander UND mit m.menge multipliziert.
+        if rec.get('mengenfeld2') is not None:
+            m['mengenfeld2'] = str(rec['mengenfeld2'])
         mitglieder_je_anlage.setdefault(str(anlage_id), []).append(m)
 
     ws = wb[SHEET]

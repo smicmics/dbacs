@@ -1487,15 +1487,20 @@ function updateAnlageVariantenUI() {
     (gruppen[m.gruppe] = gruppen[m.gruppe] || []).push(m);
   });
   const keys = Object.keys(gruppen);
-  // Mengenfelder (Session 75, Rueckkuehlwerk-Groesse): Mitglieder mit
-  // `mengenfeld` statt/zusaetzlich zu `gruppe` - sammeln als eigene Liste
-  // (ein Mitglied kann BEIDES tragen, z.B. "nur bei Busprotokoll X UND
-  // Menge Y" - es erscheint dann sowohl im zugehoerigen gruppe-<select>
-  // ALS AUCH steuert ein separates <input type=number> seine Menge).
+  // Mengenfelder (Session 75, Rueckkuehlwerk-Groesse; Session 77
+  // Folgearbeit: mengenfeld2 fuer echte Kreuzmultiplikation): Mitglieder mit
+  // `mengenfeld`/`mengenfeld2` statt/zusaetzlich zu `gruppe` - sammeln als
+  // eigene Liste (ein Mitglied kann beides tragen, z.B. "nur bei
+  // Busprotokoll X UND Kaeltekreise Y UND Verdichterstufen Z" - es
+  // erscheint dann im zugehoerigen gruppe-<select>, UND zwei eigene
+  // <select>-Felder (Festwerte statt Freitext, Session 77 Folgearbeit)
+  // multiplizieren gemeinsam seine Menge).
   const mengenfelder = {};
   (anlage.mitglieder || []).forEach(m => {
-    if (!m.mengenfeld) return;
-    (mengenfelder[m.mengenfeld] = mengenfelder[m.mengenfeld] || []).push(m);
+    [m.mengenfeld, m.mengenfeld2].forEach(mf => {
+      if (!mf) return;
+      (mengenfelder[mf] = mengenfelder[mf] || []).push(m);
+    });
   });
   const mengenKeys = Object.keys(mengenfelder);
   if (!keys.length && !mengenKeys.length) { hide(); return; }
@@ -1593,51 +1598,95 @@ function updateAnlageVariantenUI() {
     });
     box.appendChild(select);
   });
-  // Mengenfeld-Eingaben (Session 75): <input type=number>, Wert steuert
-  // den Mengen-Multiplikator in addAnlage() (0 = Mitglied auslassen).
-  // Vorbelegung aus ANLAGE_MENGENFELD_DEFAULT, kein eigener Persistenz-
-  // Mechanismus noetig (wird bei jedem Anlagen-Wechsel neu aufgebaut).
+  // Mengenfeld-Eingaben (Session 75: <input type=number> mit Freitext;
+  // Session 77 Folgearbeit: auf <select> mit Festwerten umgestellt, Nutzer-
+  // Vorgabe – ohne Beschriftung war nicht erkennbar, welches Zahlenfeld
+  // wofuer steht, und freie Zahlen erlaubten unplausible Werte). Wert
+  // steuert weiterhin den Mengen-Multiplikator in addAnlage() (0 = Mitglied
+  // auslassen) – `.value` verhaelt sich bei <select> identisch zu <input>,
+  // keine Aenderung an addAnlage() noetig. Platzhalter-Erstzeile wie bei den
+  // gruppe-Selects (siehe oben), echte Optionsliste aus
+  // ANLAGE_MENGENFELD_OPTIONS, Vorbelegung aus ANLAGE_MENGENFELD_DEFAULT.
   mengenKeys.forEach(mf => {
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.id = 'anlage_mengenfeld_' + mf;
-    input.className = 'anlage-mengenfeld-input';
-    input.min = '0';
-    input.max = '99';
-    input.value = String(ANLAGE_MENGENFELD_DEFAULT[mf] ?? 1);
-    box.appendChild(input);
+    const select = document.createElement('select');
+    select.id = 'anlage_mengenfeld_' + mf;
+    select.className = 'anlage-variante-select';
+    const placeholder = document.createElement('option');
+    placeholder.value = '__placeholder__';
+    placeholder.disabled = true;
+    placeholder.textContent = '– ' + (ANLAGE_MENGENFELD_LABEL[mf] || mf) + ' wählen –';
+    select.appendChild(placeholder);
+    const def = ANLAGE_MENGENFELD_DEFAULT[mf] ?? 1;
+    (ANLAGE_MENGENFELD_OPTIONS[mf] || [0, 1, 2, 3, 4]).forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = String(v);
+      opt.textContent = String(v);
+      opt.selected = (v === def);
+      select.appendChild(opt);
+    });
+    box.appendChild(select);
   });
 }
 const ANLAGE_GRUPPEN_LABEL = {
-  touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll', bus: 'Busanbindung', wmz: 'Wärmemengenzähler',
+  touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll', bus: 'Busanbindung',
+  // wmz bleibt Heizkreisen vorbehalten (Waermemengenzaehler); die
+  // Kaelteanlagen (Kaeltekreise/-uebertrager + neu Kaeltemaschine/RKW)
+  // nutzen seit Session 77 Folgearbeit den eigenen Schluessel
+  // 'wmz_kaelte' - sonst wuerde eine gemeinsame Beschriftung fuer BEIDE
+  // Seiten falsch sein (Begriff "Kältemengenzähler" passt nicht auf die
+  // Heizkreis-Dropdowns, Nutzer-Vorgabe war nur fuer die Kaelteseite).
+  wmz: 'Wärmemengenzähler', wmz_kaelte: 'Kältemengenzähler',
   pumpengroesse: 'Pumpengröße', ventilator: 'Ventilator', zuluftventilator: 'Zuluftventilator',
   abluftventilator: 'Abluftventilator', filter: 'Filterwächter', vorerhitzer: 'Vorerhitzer',
   kuehler: 'Kühler', nacherhitzer: 'Nacherhitzer', wrg: 'Wärmerückgewinnung', befeuchter: 'Luftbefeuchter',
   meldung: 'Meldung',
-  // Session 76 Folgearbeit (Kältemaschinen wasser-/luftgekühlt, RKW):
+  // Session 76/77 Folgearbeit (Kältemaschinen wasser-/luftgekühlt, RKW):
   primaerkreis: 'Primärkreis-Ausstattung', absperrklappen_spannung: 'Spannung Absperrklappenantrieb',
-  befeuchtung: 'Befeuchtung', wasserzaehler: 'Wasserzähler'
+  befeuchtung: 'Befeuchtung', wasserzaehler: 'Wasserzähler',
+  // Session 77 Folgearbeit (Wärmepumpen-Konsolidierung, Nutzer-Vorgabe):
+  // "Pumpenkonzept" (intern/extern, vorher 2 getrennte Anlagen je Paar)
+  // ersetzt durch ein kombiniertes Dropdown pro Anlage.
+  pumpenkonzept: 'Sekundärpumpe'
 };
 // Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
 // (Session 68, erweitert Session 75) - Default-Fallback ist das generische
 // Wort "Ohne".
 const ANLAGE_GRUPPE_OHNE_LABEL = {
   bus: 'DDC-Schaltschrank-Ansteuerung (hartverdrahtet)', wmz: 'Ohne Wärmemengenzähler',
+  wmz_kaelte: 'Ohne Kältemengenzähler',
   filter: 'Ohne Filterwächter', vorerhitzer: 'Keine', kuehler: 'Keine', nacherhitzer: 'Keine',
   wrg: 'Keine', befeuchter: 'Keine', meldung: 'Ohne Meldung',
   // Session 76 Folgearbeit:
   primaerkreis: 'Ohne Pumpen', befeuchtung: 'Ohne Befeuchtung', wasserzaehler: 'Ohne Wasserzähler'
 };
-// Mengenfeld (Session 75, Rueckkuehlwerk-Groesse): Beschriftung + Vorbelegung
-// je Zahlenfeld-Schluessel - ein Mitglied mit `mengenfeld` gesetzt bekommt
-// statt eines <select> ein <input type=number>, dessen Wert den finalen
-// Mengen-Multiplikator liefert (0 = Mitglied komplett auslassen). Siehe
-// updateAnlageVariantenUI()/addAnlage().
+// Mengenfeld (Session 75, Rueckkuehlwerk-Groesse; Session 77 Folgearbeit:
+// echte <select>-Festwerte statt Freitext + mengenfeld2 fuer Kreuzmultipli-
+// kation): Beschriftung + Vorbelegung + erlaubte Werte je Zahlenfeld-
+// Schluessel - ein Mitglied mit `mengenfeld`/`mengenfeld2` gesetzt bekommt
+// ein <select> je Schluessel, dessen Wert(e) den finalen Mengen-
+// Multiplikator liefern (0 = Mitglied komplett auslassen, mengenfeld UND
+// mengenfeld2 werden multipliziert). Siehe updateAnlageVariantenUI()/
+// addAnlage(). 'motoren'/'verdichter' (Session 75/76, reine Gesamtzahl)
+// sind seit dieser Folgearbeit durch 'ventilatoren_je_reihe'/
+// 'verdichterstufen_je_kreis' (echte Pro-Einheit-Werte, kombiniert mit
+// 'kuehlreihen'/'kaeltekreise' als zweitem Faktor) ersetzt.
 const ANLAGE_MENGENFELD_LABEL = {
-  kuehlreihen: 'Anzahl Kühlreihen', motoren: 'Anzahl Motoren (Lüfter)',
-  kaeltekreise: 'Kältekreise (Anzahl)', verdichter: 'Leistungsstufen/Verdichter gesamt (Anzahl)'
+  kuehlreihen: 'Kühlreihen (Anzahl)', kaeltekreise: 'Kältekreise (Anzahl)',
+  ventilatoren_je_reihe: 'Ventilatoren je Reihe (Anzahl)',
+  verdichterstufen_je_kreis: 'Verdichterstufen je Kreis (Anzahl)'
 };
-const ANLAGE_MENGENFELD_DEFAULT = { kuehlreihen: 1, motoren: 4, kaeltekreise: 1, verdichter: 1 };
+const ANLAGE_MENGENFELD_DEFAULT = {
+  kuehlreihen: 1, kaeltekreise: 1, ventilatoren_je_reihe: 4, verdichterstufen_je_kreis: 1
+};
+// Erlaubte Festwerte je Mengenfeld (Session 77 Folgearbeit, Nutzer-Vorgabe:
+// "Kühlreihen/Kältekreise 1 oder 2", "Verdichterstufen je Kreis max 8",
+// "Ventilatoren je Reihe max 15") - 0 bleibt als "nicht benötigt"-Option
+// erhalten (bestehende Konvention, Session 75).
+const ANLAGE_MENGENFELD_OPTIONS = {
+  kuehlreihen: [0, 1, 2], kaeltekreise: [0, 1, 2],
+  ventilatoren_je_reihe: Array.from({length: 16}, (_, i) => i),
+  verdichterstufen_je_kreis: Array.from({length: 9}, (_, i) => i)
+};
 
 // ── Belegung ─────────────────────────────────────────────────────────
 function addBaugruppe() {
@@ -1707,6 +1756,16 @@ function addAnlage(anlageId) {
       const feldEl = document.getElementById('anlage_mengenfeld_' + m.mengenfeld);
       mengenMultiplikator = feldEl ? Math.max(0, parseInt(feldEl.value, 10) || 0) : 1;
       if(mengenMultiplikator === 0) return;
+    }
+    // mengenfeld2 (Session 77 Folgearbeit): zweiter, unabhaengiger Faktor -
+    // echte Kreuzmultiplikation (z.B. Kaeltekreise x Verdichterstufen je
+    // Kreis). 0 bei EINEM der beiden Felder laesst das Mitglied komplett
+    // aus (z.B. "0 Kreise" -> keine Verdichter, unabhaengig vom Stufenwert).
+    if(m.mengenfeld2) {
+      const feldEl2 = document.getElementById('anlage_mengenfeld_' + m.mengenfeld2);
+      const faktor2 = feldEl2 ? Math.max(0, parseInt(feldEl2.value, 10) || 0) : 1;
+      if(faktor2 === 0) return;
+      mengenMultiplikator *= faktor2;
     }
     addBaugruppeById(m.bg_id, (m.menge || 1) * mengenMultiplikator * anlageMenge);
   });

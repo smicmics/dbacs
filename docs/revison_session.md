@@ -1,7 +1,24 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 77 (11.10.2026) – Kälte-Korrektur Teil 2
-> abgeschlossen.** Generative Kältemaschine (wassergekühlt + neu
+> **Stand nach Session 77 Teil 2 (11.10.2026).** Mengenfelder (Kühlreihen/
+> Kältekreise/Ventilatoren/Verdichterstufen) von Freitext-Zahlenfeldern auf
+> echte `<select>`-Festwerte umgestellt (neue Engine-Fähigkeit
+> `mengenfeld2` für Kreuzmultiplikation, z.B. Kältekreise×Verdichterstufen).
+> „Wärmemengenzähler" auf der Kälteseite durchgängig zu „Kältemengenzähler"
+> vereinheitlicht (eigener Gruppenschlüssel `wmz_kaelte`, Heizkreise
+> unverändert). **Wärmepumpen-Anlagen von 8 auf 4 konsolidiert:** das
+> bisher als 2 getrennte Anlagen modellierte „Pumpenkonzept" (interne/
+> externe Sekundärpumpe) ist jetzt ein kombiniertes Dropdown pro Anlage
+> (420_A00018/020/022/024), die 4 alten „externe Pumpe"-Anlagen sind
+> `aktiv=FALSE` (nicht gelöscht). Druckhaltung/Nachspeisung (410_000001–005)
+> war bereits seit Session 62 in Kälte verfügbar, keine Änderung nötig.
+> Export: Anlagen 54→50. Vollständig Browser-verifiziert (testKatalogScan,
+> testAnlage auf allen betroffenen + mehreren unveränderten Anlagen,
+> Live-UI-Kreuzmultiplikationstest). Details: `CLAUDE.md` → „Offene Punkte"
+> Nachtrag Session 77 Teil 2.
+
+Vorheriger Stand – Session 77 Teil 1 (11.10.2026) – Kälte-Korrektur Teil 2
+abgeschlossen. Generative Kältemaschine (wassergekühlt + neu
 > luftgekühlt) fertig modelliert: Primärseite (Tauchfühler/Strömungswächter/
 > Absperrklappen), Hauptschalter-Meldung, Primärkreis-Ausstattung-Dropdown
 > (Pumpen/Pumpen+Ventil+Druckwächter MAG), Kältekreise-/Leistungsstufen-
