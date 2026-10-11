@@ -4170,5 +4170,23 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "440_A00007",
+    "name": "MS-Ausspeisefeld VNB: Leistungsschalter",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Ausspeisefeld zum Verteilnetzbetreiber (VNB) - Nutzer-Vorgabe: besteht nur aus einem Leistungsschalter (440_000071), kein Erdungstrenner, kein UMZ-Relais in diesem Feld. Referenziert dieselbe wiederverwendbare Baugruppe wie die anderen MS-Felder, keine neuen Katalogeintraege.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000071",
+        "menge": 1
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Mittelspannungsschaltanlage",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]

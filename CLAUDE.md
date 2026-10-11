@@ -88,8 +88,16 @@
 > **Damit 6 MS-Feld-Anlagen:** Einspeise (Ringfeld), Kuppelfeld,
 > Übergabefeld, Messfeld, Hauptverteilungsfeld Abgang MS-Transformator (mit
 > Leistungsschalter+UMZ), Lasttrennschalter-Abgang – `440_A00001`–`006`.
+> **Direkt im Anschluss ergänzt:** `440_A00007` „MS-Ausspeisefeld VNB"
+> (Abgabe an den Verteilnetzbetreiber, Nutzer-Vorgabe: nur ein
+> Leistungsschalter, kein Erdungstrenner/UMZ) – keine neuen Baugruppen.
+> Export anlagen 56→57. Browser-verifiziert (`testKatalogScan()` sauber,
+> `testAnlage()` 1/1 bestanden). **Damit 7 MS-Feld-Anlagen:** Einspeise
+> (Ringfeld), Kuppelfeld, Übergabefeld, Messfeld, Hauptverteilungsfeld
+> Abgang MS-Transformator, Lasttrennschalter-Abgang, Ausspeisefeld VNB –
+> `440_A00001`–`007`.
 > **Nächster Schritt:** NSHV/UV (Fork-Ergebnisse liegen bereits vor,
-> Freigabe-Vorlage steht noch aus), danach ggf. die 6 Feld-Anlagen zu einer
+> Freigabe-Vorlage steht noch aus), danach ggf. die 7 Feld-Anlagen zu einer
 > kompletten MS-Anlage zusammensetzen (Nutzer-Ankündigung Elektro-Auftakt).
 
 > **Nachtrag Session 77 Teil 3 (11.10.2026) – Klimageräte Kälte: Split-
