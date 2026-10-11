@@ -62,8 +62,16 @@
 > `anlagen_baugruppen`-Ergänzung, keine neuen Baugruppen nötig (referenziert
 > `440_000071`/`072`). Export anlagen 52→53, Browser-verifiziert
 > (`testKatalogScan()` sauber, `testAnlage()` 1/1 Kombination bestanden).
-> **Nächster Schritt:** weitere MS-Feldtypen (Messfeld VNB, Abgangsfeld zum
-> Trafo), danach NSHV/UV.
+> **Direkt im Anschluss ergänzt:** `440_A00004` „MS-Messfeld" (Wandlersatz +
+> Janitza UMG96, Nutzer-Vorgabe: rein kommunikativ, keine physischen DP) –
+> referenziert direkt die bestehenden Busauswertung-Baugruppen
+> `440_000069`/`070` (identisches 14×AI-Set wie beim UMZ, da dieselbe
+> Janitza-Messfunktion) statt neue Baugruppen anzulegen – keine neuen
+> Katalogeinträge außer der Anlage selbst. Export anlagen 53→54. Browser-
+> verifiziert (`testKatalogScan()` sauber, `testAnlage()` 2/2 Kombinationen
+> RTU/TCP bestanden, korrekt ausschließlich die Busauswertung-Baugruppe
+> ohne jedes physische Bauteil aufgelöst).
+> **Nächster Schritt:** Abgangsfeld zum Trafo, danach NSHV/UV.
 
 > **Nachtrag Session 77 Teil 3 (11.10.2026) – Klimageräte Kälte: Split-
 > Klimagerät (Daikin) + wassergekühltes Klimagerät (Vertiv/Liebert

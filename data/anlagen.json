@@ -4082,5 +4082,32 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "440_A00004",
+    "name": "MS-Messfeld: Wandlersatz + Janitza UMG96",
+    "gewerk": "440",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Messfeld (Messung durch den Verteilnetzbetreiber, bei Kundenstationen i.d.R. Pflicht, Fork-Recherche Stromnetz Berlin TB3312/TB3340). Besteht aus Wandlersatz (Strom-/Spannungswandler, Fremdbauteil ohne eigenen Klemmenbedarf, Regel 7) + Janitza UMG96-Netzanalysator - rein kommunikativ, KEINE physischen Datenpunkte (kein Schutzrelais in diesem Feld). Referenziert direkt die bestehenden Busauswertung-Baugruppen 440_000069/070 (identisches Datenpunktset wie beim UMZ-Relais 440_A00001/A00002, Nutzer-Vorgabe) - keine neuen Baugruppen nötig.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000069",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Mittelspannungsschaltanlage",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]
