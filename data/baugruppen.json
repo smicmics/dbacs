@@ -11929,6 +11929,7 @@
     "funktionsbereich": [
       "elektro"
     ],
+    "feldgeraet_artikel_nr": "MS-LEISTUNGSSCHALTER-GENERIC",
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
     "geprueft": false
@@ -11965,6 +11966,7 @@
     "funktionsbereich": [
       "elektro"
     ],
+    "feldgeraet_artikel_nr": "MS-ERDUNGSTRENNER-GENERIC",
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
     "geprueft": false
@@ -12017,6 +12019,91 @@
       "elektro"
     ],
     "feldgeraet_artikel_nr": "VNB-4Q-ZAEHLER-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
+  },
+  {
+    "id": "440_000074",
+    "name": "Lasttrennschalter Mittelspannung: Ein/Aus",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Reiner MS-Lasttrennschalter (ohne HH-Sicherungen) fuer Ringkabelfeld/Kuppelfeld als Feldgeraet im fremden MS-Schaltfeld (Regel 7) - ersetzt die bisherige Fremdverwendung von 440_000071 (Leistungsschalter MS) in diesen Feldern. Fork-Recherche bestaetigt: ein reiner Lasttrennschalter hat KEINE elektronische Schutzausloesung, nur eine Stellungsmeldung Ein/Aus (Hilfsschalter am Antrieb). 2x physischer BI (Ein, Aus), je 2 Klemmen (Regel 14). Keine Versorgungsspannung/PE-Klemme aus dem Schaltschrank (Regel 8). Quellen: Stromnetz Berlin TB3310 Abschn. 10 (stromnetz.berlin/.../tb3310_...pdf), TB3340 Abschn. 6/20.1 (.../tb3340_fernsteuerung_...pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus 12-24kV Katalog Modul C/Sl-Sv (library.e.abb.com/public/207cafdaa3d4bfc2482578070000fce2/12-24kV_SafeRing_SafePlus_EN.pdf)",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "MS-LASTTRENNSCHALTER-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
+  },
+  {
+    "id": "440_000075",
+    "name": "Lasttrennschalter-Sicherungskombination Mittelspannung bis 800kVA: Ein/Aus, Ausloesung durch Sicherung",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] MS-Lasttrennschalter-Sicherungskombination (mit HH-Sicherungen) fuer kleinere Transformator-Abgangsfelder bis 800kVA (Siemens SIMOSEC HA 41.43 UND Stromnetz Berlin TA-MS 2025 bestaetigen exakt dieselbe Schwelle; oberhalb bleibt 440_A00005 mit echtem Leistungsschalter+UMZ zustaendig) - ersetzt die bisherige Fremdverwendung von 440_000071 (Leistungsschalter MS) im Feld 440_A00006. 2x physischer BI (Ein, Aus) wie beim reinen Lasttrennschalter PLUS 1x physischer BI 'Ausloesung durch Sicherung' - ein durch den Schlagstift (Striker-Pin, IEC 60282-1) einer durchgebrannten HH-Sicherung rein mechanisch ausgeloester, eigener potentialfreier Kontakt (Stromnetz Berlin: 'potenzialfreier Kontakt fuer die Trafoauslosung'; ABB: 'Aux. switch S9, fuse blown' 1NO) - KEINE elektronische Schutzrelais-Auslosung wie beim Leistungsschalter, sondern ein rein mechanischer Vorgang. Je 2 Klemmen pro BI (Regel 14), 3x BI gesamt, 6 Klemmen. Keine Versorgungsspannung/PE-Klemme aus dem Schaltschrank (Regel 8), kein Koppelrelais (Regel 1, reiner potentialfreier Einzelkontakt). Quellen: Stromnetz Berlin TB3310 Abschn. 11.1 / TB3312 Abschn. 12.1, TA-MS 2025 Anlage 2 'Anschlussprinzipien', Siemens 'Technische Schriftenreihe Ausgabe 2 - Lastschalter-Sicherungs-Kombinationen' (assets.new.siemens.com/.../ausgabe-2-ms-lastschalter-sicherungs-kombinationen.pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus Katalog Modul F (library.e.abb.com, Abschn. 4.3/6.3/6.4/6.6)",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "MS-LASTTRENNSCHALTER-SICHERUNG-GENERIC",
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
     "geprueft": false

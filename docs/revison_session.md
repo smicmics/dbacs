@@ -1,18 +1,44 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 77 Teil 5, direkt im Anschluss (11.10.2026).**
-> Lehrbuch-Abgleich umgesetzt: Ausstattung von `440_A00001` „MS-Einspeise
-> (Ringfeld)" und `440_A00003` „MS-Übergabefeld" getauscht – Ringfeld hat
-> jetzt nur Leistungsschalter+Erdungstrenner, Übergabefeld bündelt jetzt
-> UMZ-Relais mit Wandlersatz (Kern+Busauswertung RTU/TCP)+Leistungsschalter+
-> Erdungstrenner (Messung/Schutz sitzt laut Siemens/Stromnetz-Berlin-
-> Lehrbuch im Übergabefeld, nicht im Ringkabelfeld). Reine
-> `anlagen_baugruppen`-Umhängung, keine neuen Katalogeinträge. `440_A00002`
-> „MS-Kuppelfeld" bewusst NICHT mitgeändert (nicht Teil des Auftrags) – ist
-> dadurch nicht mehr identisch zum neuen Ringfeld, offener Punkt für eine
-> Folgesitzung. Browser-verifiziert (anlagen.json-Mitglieder korrekt
-> vertauscht). Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 77
-> Teil 5 (Anschluss).
+> **Stand nach Session 78 (17.10.2026).**
+> MS-Feldanlagen an das Lehrbuch angepasst (Stromnetz Berlin TB3310/
+> TB3312/TB3340/TA-MS 2025, Siemens SIMOSEC HA 41.43, ABB SafeRing/
+> SafePlus) – 2 Fork-Rechercheaufträge bestätigten: ein reiner MS-
+> Lasttrennschalter hat keine elektronische Auslösung, nur eine
+> Stellungsmeldung Ein/Aus; die bisherige Fremdverwendung von
+> `440_000071` (Leistungsschalter MS, mit Auslösungs-BI) in Ringfeld/
+> Kuppelfeld/kleinem Trafoabgang war fachlich falsch. **2 neue
+> Baugruppen:** `440_000074` „Lasttrennschalter Mittelspannung" (2×BI
+> Ein/Aus) und `440_000075` „Lasttrennschalter-Sicherungskombination
+> Mittelspannung bis 800kVA" (3×BI inkl. mechanisch über den Schlagstift
+> ausgelöster „Auslösung durch Sicherung" – kVA-Schwelle durch Siemens
+> SIMOSEC UND Stromnetz Berlin TA-MS 2025 übereinstimmend belegt) + 2 neue
+> Feldgeräte. `440_A00001` (Ringfeld) und `440_A00002` (Kuppelfeld)
+> referenzieren jetzt `440_000074`+`440_000072` (Kuppelfeld verliert dabei
+> UMZ+Busauswertung, Begriff „Kuppelfeld" auf Nutzer-Vorgabe beibehalten);
+> `440_A00006` referenziert jetzt `440_000075`+`440_000072`. `440_A00007`
+> „MS-Ausspeisefeld VNB" deaktiviert (`aktiv=FALSE`, Begriff nicht im
+> Lehrbuch belegt). Nebenbefund behoben: `440_000071`/`072` fehlte die
+> Verknüpfung zu bereits bestehenden Feldgeräte-Einträgen. Export
+> baugruppen 289→291, feldgeraete 133→135, anlagen 58→57 (aktiv).
+> Vollständig Browser-verifiziert (`testKatalogScan`, `testBaugruppe`
+> 291/291, `testAnlage` auf allen 7 verbleibenden MS-Feldanlagen,
+> Live-UI-Test Kuppelfeld). Details: `CLAUDE.md` → „Offene Punkte"
+> Nachtrag Session 78. **Noch offen:** „normale MS-Anlage ohne Kopplung"
+> (2×Ringfeld+1×Messfeld+N×Trafoabgangsfeld) aus den 7 Feld-Anlagen
+> zusammensetzen.
+
+Vorheriger Stand – Session 77 Teil 5, direkt im Anschluss (11.10.2026).
+Lehrbuch-Abgleich umgesetzt: Ausstattung von `440_A00001` „MS-Einspeise
+(Ringfeld)" und `440_A00003` „MS-Übergabefeld" getauscht – Ringfeld hatte
+danach nur Leistungsschalter+Erdungstrenner (seit Session 78 auf
+Lasttrennschalter korrigiert), Übergabefeld bündelt UMZ-Relais mit
+Wandlersatz (Kern+Busauswertung RTU/TCP)+Leistungsschalter+Erdungstrenner
+(Messung/Schutz sitzt laut Siemens/Stromnetz-Berlin-Lehrbuch im
+Übergabefeld, nicht im Ringkabelfeld). Reine `anlagen_baugruppen`-
+Umhängung, keine neuen Katalogeinträge. `440_A00002` „MS-Kuppelfeld" war
+bewusst NICHT mitgeändert (seit Session 78 ebenfalls korrigiert). Details:
+`CLAUDE.md` → „Offene Punkte" Nachtrag Session 77 Teil 5 (Anschluss).
 
 Vorheriger Stand – Session 77 Teil 5 (11.10.2026). MS-Messfeld VNB
 > (Impulsausgänge) ergänzt (`440_A00008`, 4-Quadrantenzähler mit 3

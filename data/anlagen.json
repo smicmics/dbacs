@@ -3985,12 +3985,12 @@
   },
   {
     "id": "440_A00001",
-    "name": "MS-Einspeise (Ringfeld): Leistungsschalter + Erdungstrenner",
+    "name": "MS-Einspeise (Ringfeld): Lasttrennschalter + Erdungstrenner",
     "gewerk": "440",
-    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe 11.10.2026] Lehrbuch-Abgleich (Siemens SIMOSEC/Stromnetz Berlin TB3312 Kap. 9): das Ringkabelfeld braucht i.d.R. nur Leistungsschalter+Erdungstrenner, keine eigene Messung/Schutz (die sitzt im Übergabefeld). Ausstattung mit dem Übergabefeld (440_A00003) getauscht - referenziert jetzt 440_000071 (Leistungsschalter MS) + 440_000072 (Erdungstrenner MS).",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe 11.10.2026] Lehrbuch-Abgleich (Siemens SIMOSEC/Stromnetz Berlin TB3312 Kap. 9): das Ringkabelfeld braucht i.d.R. nur Leistungsschalter+Erdungstrenner, keine eigene Messung/Schutz (die sitzt im Übergabefeld). Ausstattung mit dem Übergabefeld (440_A00003) getauscht - referenziert jetzt 440_000071 (Leistungsschalter MS) + 440_000072 (Erdungstrenner MS). [Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Fork-Recherche bestaetigt: ein Ringkabelfeld-Lasttrennschalter liefert nur eine Stellungsmeldung Ein/Aus, KEIN Auslose-/TRIP-Signal (das gab es bisher faelschlich ueber die Fremdverwendung von 440_000071 Leistungsschalter MS, der eine Auslosungsmeldung hat, die ein Lasttrennschalter nicht liefern kann). Referenziert jetzt den neuen, eigenstaendigen Katalogeintrag 440_000074 (Lasttrennschalter Mittelspannung, 2x BI Ein/Aus) statt 440_000071. Quellen: Stromnetz Berlin TB3310 Abschn. 10 (stromnetz.berlin/.../tb3310_...pdf), TB3340 Abschn. 6/20.1 (.../tb3340_fernsteuerung_...pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus 12-24kV Katalog Modul C/Sl-Sv (library.e.abb.com/public/207cafdaa3d4bfc2482578070000fce2/12-24kV_SafeRing_SafePlus_EN.pdf)",
     "mitglieder": [
       {
-        "bg_id": "440_000071",
+        "bg_id": "440_000074",
         "menge": 1
       },
       {
@@ -4007,29 +4007,12 @@
   },
   {
     "id": "440_A00002",
-    "name": "MS-Kuppelfeld: UMZ-Relais mit Wandlersatz + Leistungsschalter + Erdungstrenner",
+    "name": "MS-Kuppelfeld: Lasttrennschalter + Erdungstrenner",
     "gewerk": "440",
-    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Kuppelfeld (Verbindung zweier Sammelschienenabschnitte/Ringschluss) - identische Ausstattung wie MS-Einspeise (440_A00001), Nutzer-Vorgabe \"gleiche Ausstattung\". Kuppelfeld ist bei Siemens SIMOSEC nicht als eigener Feldtyp benannt (nur bei ABB Sl/Sv-Modulen und Schneider IC/BC), die Geräteausstattung (Schutz+Messung, Leistungsschalter, Erdungstrenner) ist aber herstellerübergreifend gleichwertig. Referenziert dieselben 3 Baugruppen wie 440_A00001.",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Kuppelfeld (Verbindung zweier Sammelschienenabschnitte/Ringschluss) - identische Ausstattung wie MS-Einspeise (440_A00001), Nutzer-Vorgabe \"gleiche Ausstattung\". Kuppelfeld ist bei Siemens SIMOSEC nicht als eigener Feldtyp benannt (nur bei ABB Sl/Sv-Modulen und Schneider IC/BC), die Geräteausstattung (Schutz+Messung, Leistungsschalter, Erdungstrenner) ist aber herstellerübergreifend gleichwertig. Referenziert dieselben 3 Baugruppen wie 440_A00001. [Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Ausstattung korrigiert - die urspruengliche 'gleiche Ausstattung wie Ringfeld'-Vorgabe galt der schweren Vor-Korrektur-Version des Ringfelds (UMZ+Leistungsschalter), nicht der nach Session 77 Teil 5 vereinfachten Version. Jetzt tatsaechlich an das vereinfachte Ringfeld (440_A00001) angeglichen: Messung/Schutz (UMZ-Relais 440_000068, Busauswertung 440_000069/070) entfernt, Leistungsschalter (440_000071) durch den neuen Lasttrennschalter-Eintrag (440_000074) ersetzt. Fork-Recherche bestaetigt funktional ueber ABB SafeRing/SafePlus Modul 'Sl/Sv - Busbar sectionaliser' (identische Hilfsschalter-Ausstattung wie Modul 'C - Cable switch'/Ringfeld) sowie Siemens SIMOSEC 'Laengskupplungsfeld' (gleiche Geraetekategorie 'ohne HH-Sicherungen' wie das Ringkabelfeld) - eine woertliche deutsche TAB-Quelle, die den Begriff 'Kuppelfeld' exakt so definiert, wurde nicht gefunden (Stromnetz Berlin kennt den Begriff in den geprueften Dokumenten nicht). DBACS behaelt den Begriff 'Kuppelfeld' auf Nutzer-Vorgabe bei (nicht auf 'Laengskupplungsfeld' umbenannt). Quellen: Stromnetz Berlin TB3310 Abschn. 10 (stromnetz.berlin/.../tb3310_...pdf), TB3340 Abschn. 6/20.1 (.../tb3340_fernsteuerung_...pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus 12-24kV Katalog Modul C/Sl-Sv (library.e.abb.com/public/207cafdaa3d4bfc2482578070000fce2/12-24kV_SafeRing_SafePlus_EN.pdf)",
     "mitglieder": [
       {
-        "bg_id": "440_000068",
-        "menge": 1
-      },
-      {
-        "bg_id": "440_000069",
-        "menge": 1,
-        "gruppe": "bus",
-        "variante_label": "Busauswertung Modbus RTU",
-        "ist_default": true
-      },
-      {
-        "bg_id": "440_000070",
-        "menge": 1,
-        "gruppe": "bus",
-        "variante_label": "Busauswertung Modbus TCP"
-      },
-      {
-        "bg_id": "440_000071",
+        "bg_id": "440_000074",
         "menge": 1
       },
       {
@@ -4151,34 +4134,16 @@
   },
   {
     "id": "440_A00006",
-    "name": "MS-Lasttrennschalter Abgang: Leistungsschalter + Erdungstrenner",
+    "name": "MS-Lasttrennschalter Abgang (bis 800kVA): Lasttrennschalter-Sicherungskombination + Erdungstrenner",
     "gewerk": "440",
-    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Abgangsfeld mit Lasttrennschalter-Bestückung (einfachere/kostenguenstigere Feldvariante ggue. dem Leistungsschalter-Abgangsfeld 440_A00005, typisch fuer kleinere Trafoabgaenge in Ringkabelstationen). Nutzer-Vorgabe: identische Geraeteausstattung wie das Uebergabefeld (440_A00003) - Leistungsschalter (440_000071) + Erdungstrenner (440_000072), kein eigenes UMZ-Relais in diesem Feld. Referenziert dieselben wiederverwendbaren Baugruppen, keine neuen Katalogeintraege.",
+    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Abgangsfeld mit Lasttrennschalter-Bestückung (einfachere/kostenguenstigere Feldvariante ggue. dem Leistungsschalter-Abgangsfeld 440_A00005, typisch fuer kleinere Trafoabgaenge in Ringkabelstationen). Nutzer-Vorgabe: identische Geraeteausstattung wie das Uebergabefeld (440_A00003) - Leistungsschalter (440_000071) + Erdungstrenner (440_000072), kein eigenes UMZ-Relais in diesem Feld. Referenziert dieselben wiederverwendbaren Baugruppen, keine neuen Katalogeintraege. [Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Ausstattung korrigiert - referenzierte bisher faelschlich 440_000071 (Leistungsschalter MS, hat eine elektronische Auslosungsmeldung, die ein Lasttrennschalter nicht hat). Fork-Recherche bestaetigt: eine Lasttrennschalter-Sicherungskombination hat zusaetzlich zur Ein/Aus-Stellungsmeldung einen eigenen Meldekontakt fuer die Trafoauslosung durch den Schlagstift einer durchgebrannten HH-Sicherung (rein mechanisch, kein Schutzrelais) - bis 800kVA Transformatorleistung (Siemens SIMOSEC UND Stromnetz Berlin TA-MS 2025 stimmen exakt ueberein), oberhalb 800kVA bleibt 440_A00005 mit echtem Leistungsschalter+UMZ zustaendig. Referenziert jetzt den neuen Katalogeintrag 440_000075 (Lasttrennschalter-Sicherungskombination Mittelspannung bis 800kVA, 3x BI: Ein/Aus/Ausloesung durch Sicherung) statt 440_000071. Quellen: Stromnetz Berlin TB3310 Abschn. 11.1 / TB3312 Abschn. 12.1, TA-MS 2025 Anlage 2 'Anschlussprinzipien', Siemens 'Technische Schriftenreihe Ausgabe 2 - Lastschalter-Sicherungs-Kombinationen' (assets.new.siemens.com/.../ausgabe-2-ms-lastschalter-sicherungs-kombinationen.pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus Katalog Modul F (library.e.abb.com, Abschn. 4.3/6.3/6.4/6.6)",
     "mitglieder": [
       {
-        "bg_id": "440_000071",
+        "bg_id": "440_000075",
         "menge": 1
       },
       {
         "bg_id": "440_000072",
-        "menge": 1
-      }
-    ],
-    "funktionsbereich": [
-      "elektro_anlagen"
-    ],
-    "kategorie": "Mittelspannungsschaltanlage",
-    "doppeleinspeisung_bindung": "nein",
-    "geprueft": false
-  },
-  {
-    "id": "440_A00007",
-    "name": "MS-Ausspeisefeld VNB: Leistungsschalter",
-    "gewerk": "440",
-    "beschreibung": "[Session 77 Folgearbeit, Nutzer-Freigabe] Mittelspannungs-Ausspeisefeld zum Verteilnetzbetreiber (VNB) - Nutzer-Vorgabe: besteht nur aus einem Leistungsschalter (440_000071), kein Erdungstrenner, kein UMZ-Relais in diesem Feld. Referenziert dieselbe wiederverwendbare Baugruppe wie die anderen MS-Felder, keine neuen Katalogeintraege.",
-    "mitglieder": [
-      {
-        "bg_id": "440_000071",
         "menge": 1
       }
     ],

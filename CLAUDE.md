@@ -16,6 +16,69 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 (17.10.2026) – MS-Feldanlagen Lehrbuch-Korrektur:
+> Lasttrennschalter statt Leistungsschalter in Ring-/Kuppelfeld,
+> Lasttrennschalter-Sicherungskombi im kleinen Trafoabgang, Ausspeisefeld
+> VNB deaktiviert.**
+> Vollständiger Soll-Ist-Abgleich aller 8 MS-Feldanlagen gegen das Lehrbuch
+> (Stromnetz Berlin TB3310/TB3312/TB3340/TA-MS 2025, Siemens SIMOSEC
+> HA 41.43, ABB SafeRing/SafePlus-Katalog) ergab: die Fremdverwendung von
+> `440_000071` (Leistungsschalter MS, 3×BI inkl. Auslösung) in den Feldern
+> Ringfeld/Kuppelfeld/kleiner Trafoabgang war fachlich falsch – ein
+> Lasttrennschalter hat keine elektronische Schutzauslösung.
+> **2 Fork-Rechercheaufträge** bestätigten unabhängig (TB3310 Abschn. 10,
+> TB3340 Abschn. 6/20.1, Siemens SIMOSEC HA 41.43, ABB SafeRing/SafePlus
+> Modul C/Sl-Sv): ein reiner MS-Lasttrennschalter liefert nur eine
+> Stellungsmeldung Ein/Aus, kein Auslöse-/TRIP-Signal. Eine
+> Lasttrennschalter-Sicherungskombination (TB3310 Abschn. 11.1/TB3312
+> Abschn. 12.1, Siemens „Technische Schriftenreihe Ausgabe 2", ABB Modul F)
+> hat zusätzlich einen eigenen, rein mechanisch über den Schlagstift einer
+> durchgebrannten HH-Sicherung ausgelösten Meldekontakt („potenzialfreier
+> Kontakt für die Trafoauslösung"/„fuse blown") – bis **800kVA**
+> Transformatorleistung (Siemens SIMOSEC UND Stromnetz Berlin TA-MS 2025
+> stimmen exakt überein), darüber bleibt das bereits korrekte `440_A00005`
+> (Leistungsschalter+UMZ) zuständig.
+> **2 neue Baugruppen:** `440_000074` „Lasttrennschalter Mittelspannung:
+> Ein/Aus" (2×BI, 4 Klemmen, analog zum bestehenden Muster „Erdungstrenner
+> Mittelspannung") + `440_000075` „Lasttrennschalter-Sicherungskombination
+> Mittelspannung bis 800kVA: Ein/Aus, Auslösung durch Sicherung" (3×BI,
+> 6 Klemmen) – beide ohne PE/Koppelrelais/Steuerspannung (reine
+> potentialfreie Feldkontakte, Regel 1/8/14). 2 neue Feldgeräte
+> `MS-LASTTRENNSCHALTER-GENERIC`/`MS-LASTTRENNSCHALTER-SICHERUNG-GENERIC`.
+> **Anlagen umgehängt:** `440_A00001` Ringfeld und `440_A00002` Kuppelfeld
+> referenzieren jetzt `440_000074`+`440_000072` (Kuppelfeld verliert dabei
+> UMZ+Busauswertung – war seit der Session-77-Teil-5-Korrektur des
+> Ringfelds inkonsistent dazu geworden); `440_A00006` referenziert jetzt
+> `440_000075`+`440_000072`, Name um „(bis 800kVA)" ergänzt. **Begriff
+> „Kuppelfeld" auf Nutzer-Vorgabe beibehalten** (nicht auf
+> „Längskupplungsfeld" umbenannt, obwohl das die einzige wörtlich belegte
+> deutsche Fachbezeichnung bei Siemens SIMOSEC ist – Fork fand keine
+> deutsche TAB-Quelle, die „Kuppelfeld" exakt so definiert, nur funktional
+> über ABB „Sl/Sv"/Siemens „Längskupplungsfeld" bestätigt).
+> **`440_A00007` „MS-Ausspeisefeld VNB" deaktiviert** (`aktiv=FALSE`,
+> Katalogkonvention wie bei den Session-77-Wärmepumpen-Deaktivierungen) –
+> der Begriff war in keiner geprüften Lehrbuchquelle als eigener MS-Feldtyp
+> belegt.
+> **Nebenbefund behoben:** `440_000071`/`440_000072` hatten trotz
+> existierender `MS-LEISTUNGSSCHALTER-GENERIC`/`MS-ERDUNGSTRENNER-GENERIC`-
+> Feldgeräte-Einträge kein `feldgeraet_artikel_nr` gesetzt – nachgetragen,
+> taucht jetzt korrekt in Modul 5 auf.
+> Export: baugruppen 289→**291**, feldgeraete 133→**135**, anlagen
+> 58→**57** (aktiv, eine Zeile deaktiviert statt gelöscht). Browser-
+> verifiziert: `testKatalogScan()` sauber, `testBaugruppe()` 291/291
+> bestanden (0 verwaist), `testAnlage()` auf allen 7 verbleibenden
+> MS-Feldanlagen einzeln bestanden (korrekte `eingesetzteBgIds`),
+> `440_A00007` korrekt aus `ANLAGEN_DB` verschwunden (57 statt 58),
+> Stichproben-Regressionstest auf 4 unabhängigen Nicht-MS-Anlagen weiterhin
+> grün, keine Konsolenfehler. Live-UI-Test (Kuppelfeld hinzugefügt)
+> bestätigt `belegung` exakt `[440_000074, 440_000072]`.
+> **Noch offen:** die eigentliche Frage „normale MS-Anlage ohne Kopplung"
+> (2×Ringfeld+1×Messfeld+N×Trafoabgangsfeld, kein Kuppelfeld, mit den
+> bestehenden 7 Feld-Anlagen abbildbar, nur Abfrage der Trafo-Anzahl nötig)
+> – weiterhin in einer Folgesitzung zu klären. Rohdaten:
+> `scratchpad/fork_1_ms_lasttrennschalter_rein_ergebnis.md`,
+> `scratchpad/fork_2_ms_lasttrennschalter_sicherung_ergebnis.md`.
+
 > **Nachtrag Session 77 Teil 5 (11.10.2026) – MS-Messfeld VNB (Impulsaus-
 > gänge) ergänzt + wichtiger Bugfix: Feldklemmen (`klemm_f`) landeten bei
 > reinen Steuerungs-Baugruppen ohne Koppelrelais im falschen Feld.**

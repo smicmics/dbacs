@@ -1165,5 +1165,21 @@
     "quelle_hinweis": "[Session 77 Folgearbeit] Fremdbauteil (Regel 7) - Zähler selbst ist Eigentum/Verantwortung des Verteilnetzbetreibers, kein spezifisches Fabrikat recherchiert.",
     "kommunikative_datenpunkte": "Über Impuls-zu-M-Bus-Koppler (440_000073): Bezug, Liefermenge, Blindenergie (M-Bus, je AI)",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "MS-LASTTRENNSCHALTER-GENERIC",
+    "bezeichnung": "Mittelspannungs-Lasttrennschalter, generisches Modell (Siemens SIMOSEC-Feldaufbau, Feldtyp R - Ringkabelfeld/Kuppelfeld, ohne HH-Sicherungen)",
+    "hersteller": "Siemens (SIMOSEC)",
+    "kategorie": "Mittelspannungsschaltanlage",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert (Lasttrennschalter sitzt feldintegriert in der SIMOSEC-Schaltanlage, kein separates Einzelbauteil-Datenblatt). Meldekontakte bestaetigt: nur Stellungsmeldung Ein/Aus, kein Trip-Signal. Quellen: Stromnetz Berlin TB3310 Abschn. 10 (stromnetz.berlin/.../tb3310_...pdf), TB3340 Abschn. 6/20.1 (.../tb3340_fernsteuerung_...pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus 12-24kV Katalog Modul C/Sl-Sv (library.e.abb.com/public/207cafdaa3d4bfc2482578070000fce2/12-24kV_SafeRing_SafePlus_EN.pdf)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "MS-LASTTRENNSCHALTER-SICHERUNG-GENERIC",
+    "bezeichnung": "Mittelspannungs-Lasttrennschalter-Sicherungskombination bis 800kVA, generisches Modell (Siemens SIMOSEC Feldtyp T/T1, IEC/EN 62271-105)",
+    "hersteller": "Siemens (SIMOSEC)",
+    "kategorie": "Mittelspannungsschaltanlage",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert. 800kVA-Grenze + Meldekontakte (Stellungsmeldung Ein/Aus + separater Kontakt 'Trafoauslosung' durch Schlagstift-Mechanismus) bestaetigt. Quellen: Stromnetz Berlin TB3310 Abschn. 11.1 / TB3312 Abschn. 12.1, TA-MS 2025 Anlage 2 'Anschlussprinzipien', Siemens 'Technische Schriftenreihe Ausgabe 2 - Lastschalter-Sicherungs-Kombinationen' (assets.new.siemens.com/.../ausgabe-2-ms-lastschalter-sicherungs-kombinationen.pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus Katalog Modul F (library.e.abb.com, Abschn. 4.3/6.3/6.4/6.6)",
+    "geprueft": false
   }
 ]
