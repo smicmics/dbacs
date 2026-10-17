@@ -12107,5 +12107,335 @@
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
     "geprueft": false
+  },
+  {
+    "id": "440_000076",
+    "name": "Leistungsschalter 630 A, Siemens 3WA (BG1), Ein/Aus/Ausgeloest/Trennstellung, mit Messung (COM100/COM800, Modbus TCP), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Messvariante von 440_000037 (identische 4x BI: Ein/Aus/Ausgeloest/Trennstellung, 8 Klemmen klemm_f) - zusaetzlich kommunikatives Kommunikationsmodul (COM100 fuer 1 Schalter / COM800 fuer bis zu 8 Schalter an einem Konzentrator), Modbus TCP, 17 AI (Strom/Spannung/Leistung/Energie/Frequenz/Leistungsfaktor, generische Naeherung). Alternative fuer Lasttrenner-Abgaenge (440_000032-036): dort ist KEINE Messung integriert (Lasttrenner hat keine ETU) - stattdessen den generischen Energiezaehler (440_000001-003) als zusaetzliche, unabhaengige Baugruppe mit CT am Abgang kombinieren (Fork-Recherche bestaetigt: Aufsteck-Stromwandler direkt am Lasttrenner-Element ist etablierte Praxis, 2 Patente + EAM-Netz-Technikdokument). [Fork-Recherche 10/2026] Siemens LV10 Messgeraete/Energiemonitoring-Planungsunterlage (cache.industry.siemens.com), COM800-Datenblatt (emas.cz), Siemens-Support-Forum-Bestaetigung EA_L1_IMPORT-Register existieren. Messfunktion sitzt im ETU der Serie 8 (kein externer Wandlersatz noetig, anders als beim MS-Pendant 440_000068). 17 AI als generische Naeherung (gleiche Groessenordnung wie die bestehenden Energiezaehler-Baugruppen 440_000001-003, offizielle COM800-Modbus-Registerliste oeffentlich nicht gefunden - vor Projekteinsatz mit offizieller Siemens-COM800-Betriebsanleitung abgleichen).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "3WA-630A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000077",
+    "name": "Leistungsschalter 1250 A, Siemens 3WA (BG1), Ein/Aus/Ausgeloest/Trennstellung, mit Messung (COM100/COM800, Modbus TCP), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Messvariante von 440_000038 (identische 4x BI: Ein/Aus/Ausgeloest/Trennstellung, 8 Klemmen klemm_f) - zusaetzlich kommunikatives Kommunikationsmodul (COM100 fuer 1 Schalter / COM800 fuer bis zu 8 Schalter an einem Konzentrator), Modbus TCP, 17 AI (Strom/Spannung/Leistung/Energie/Frequenz/Leistungsfaktor, generische Naeherung). Alternative fuer Lasttrenner-Abgaenge (440_000032-036): dort ist KEINE Messung integriert (Lasttrenner hat keine ETU) - stattdessen den generischen Energiezaehler (440_000001-003) als zusaetzliche, unabhaengige Baugruppe mit CT am Abgang kombinieren (Fork-Recherche bestaetigt: Aufsteck-Stromwandler direkt am Lasttrenner-Element ist etablierte Praxis, 2 Patente + EAM-Netz-Technikdokument). [Fork-Recherche 10/2026] Siemens LV10 Messgeraete/Energiemonitoring-Planungsunterlage (cache.industry.siemens.com), COM800-Datenblatt (emas.cz), Siemens-Support-Forum-Bestaetigung EA_L1_IMPORT-Register existieren. Messfunktion sitzt im ETU der Serie 8 (kein externer Wandlersatz noetig, anders als beim MS-Pendant 440_000068). 17 AI als generische Naeherung (gleiche Groessenordnung wie die bestehenden Energiezaehler-Baugruppen 440_000001-003, offizielle COM800-Modbus-Registerliste oeffentlich nicht gefunden - vor Projekteinsatz mit offizieller Siemens-COM800-Betriebsanleitung abgleichen).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "3WA-1250A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000078",
+    "name": "Leistungsschalter 2000 A, Siemens 3WA (BG1/2), Ein/Aus/Ausgeloest/Trennstellung, mit Messung (COM100/COM800, Modbus TCP), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Messvariante von 440_000039 (identische 4x BI: Ein/Aus/Ausgeloest/Trennstellung, 8 Klemmen klemm_f) - zusaetzlich kommunikatives Kommunikationsmodul (COM100 fuer 1 Schalter / COM800 fuer bis zu 8 Schalter an einem Konzentrator), Modbus TCP, 17 AI (Strom/Spannung/Leistung/Energie/Frequenz/Leistungsfaktor, generische Naeherung). Alternative fuer Lasttrenner-Abgaenge (440_000032-036): dort ist KEINE Messung integriert (Lasttrenner hat keine ETU) - stattdessen den generischen Energiezaehler (440_000001-003) als zusaetzliche, unabhaengige Baugruppe mit CT am Abgang kombinieren (Fork-Recherche bestaetigt: Aufsteck-Stromwandler direkt am Lasttrenner-Element ist etablierte Praxis, 2 Patente + EAM-Netz-Technikdokument). [Fork-Recherche 10/2026] Siemens LV10 Messgeraete/Energiemonitoring-Planungsunterlage (cache.industry.siemens.com), COM800-Datenblatt (emas.cz), Siemens-Support-Forum-Bestaetigung EA_L1_IMPORT-Register existieren. Messfunktion sitzt im ETU der Serie 8 (kein externer Wandlersatz noetig, anders als beim MS-Pendant 440_000068). 17 AI als generische Naeherung (gleiche Groessenordnung wie die bestehenden Energiezaehler-Baugruppen 440_000001-003, offizielle COM800-Modbus-Registerliste oeffentlich nicht gefunden - vor Projekteinsatz mit offizieller Siemens-COM800-Betriebsanleitung abgleichen).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "3WA-2000A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000079",
+    "name": "Leistungsschalter 3200 A, Siemens 3WA (BG2/3), Ein/Aus/Ausgeloest/Trennstellung, mit Messung (COM100/COM800, Modbus TCP), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Messvariante von 440_000040 (identische 4x BI: Ein/Aus/Ausgeloest/Trennstellung, 8 Klemmen klemm_f) - zusaetzlich kommunikatives Kommunikationsmodul (COM100 fuer 1 Schalter / COM800 fuer bis zu 8 Schalter an einem Konzentrator), Modbus TCP, 17 AI (Strom/Spannung/Leistung/Energie/Frequenz/Leistungsfaktor, generische Naeherung). Alternative fuer Lasttrenner-Abgaenge (440_000032-036): dort ist KEINE Messung integriert (Lasttrenner hat keine ETU) - stattdessen den generischen Energiezaehler (440_000001-003) als zusaetzliche, unabhaengige Baugruppe mit CT am Abgang kombinieren (Fork-Recherche bestaetigt: Aufsteck-Stromwandler direkt am Lasttrenner-Element ist etablierte Praxis, 2 Patente + EAM-Netz-Technikdokument). [Fork-Recherche 10/2026] Siemens LV10 Messgeraete/Energiemonitoring-Planungsunterlage (cache.industry.siemens.com), COM800-Datenblatt (emas.cz), Siemens-Support-Forum-Bestaetigung EA_L1_IMPORT-Register existieren. Messfunktion sitzt im ETU der Serie 8 (kein externer Wandlersatz noetig, anders als beim MS-Pendant 440_000068). 17 AI als generische Naeherung (gleiche Groessenordnung wie die bestehenden Energiezaehler-Baugruppen 440_000001-003, offizielle COM800-Modbus-Registerliste oeffentlich nicht gefunden - vor Projekteinsatz mit offizieller Siemens-COM800-Betriebsanleitung abgleichen).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "3WA-3200A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000080",
+    "name": "Leistungsschalter 5000 A, Siemens 3WA (BG3), Ein/Aus/Ausgeloest/Trennstellung, mit Messung (COM100/COM800, Modbus TCP), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Messvariante von 440_000041 (identische 4x BI: Ein/Aus/Ausgeloest/Trennstellung, 8 Klemmen klemm_f) - zusaetzlich kommunikatives Kommunikationsmodul (COM100 fuer 1 Schalter / COM800 fuer bis zu 8 Schalter an einem Konzentrator), Modbus TCP, 17 AI (Strom/Spannung/Leistung/Energie/Frequenz/Leistungsfaktor, generische Naeherung). Alternative fuer Lasttrenner-Abgaenge (440_000032-036): dort ist KEINE Messung integriert (Lasttrenner hat keine ETU) - stattdessen den generischen Energiezaehler (440_000001-003) als zusaetzliche, unabhaengige Baugruppe mit CT am Abgang kombinieren (Fork-Recherche bestaetigt: Aufsteck-Stromwandler direkt am Lasttrenner-Element ist etablierte Praxis, 2 Patente + EAM-Netz-Technikdokument). [Fork-Recherche 10/2026] Siemens LV10 Messgeraete/Energiemonitoring-Planungsunterlage (cache.industry.siemens.com), COM800-Datenblatt (emas.cz), Siemens-Support-Forum-Bestaetigung EA_L1_IMPORT-Register existieren. Messfunktion sitzt im ETU der Serie 8 (kein externer Wandlersatz noetig, anders als beim MS-Pendant 440_000068). 17 AI als generische Naeherung (gleiche Groessenordnung wie die bestehenden Energiezaehler-Baugruppen 440_000001-003, offizielle COM800-Modbus-Registerliste oeffentlich nicht gefunden - vor Projekteinsatz mit offizieller Siemens-COM800-Betriebsanleitung abgleichen).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "3WA-5000A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
   }
 ]

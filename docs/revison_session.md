@@ -1,6 +1,28 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 (17.10.2026).**
+> **Stand nach Session 78 Teil 2 (17.10.2026).**
+> Start Elektrounterverteilungen (NSHV/UV): 4-Fork-Survey (NSHV-Architektur,
+> UV Allgemein/Beleuchtung+KNX/DALI, UV IT, NH-Trenner+Sammelauslöse-
+> meldung) durchgeführt und mit dem Nutzer entschieden. Kernentscheidungen:
+> KNX/DALI laufen als Gateway-Baustein (`modbus_rtu`/`modbus_tcp`, kein
+> neues `feldbus_protokoll`); gemessener NSHV-Leistungsschalterabgang als
+> DP-Variante der bestehenden 3WA-Baugruppen (umgesetzt: 5 neue Baugruppen
+> `440_000076`–`080`, 8× BI wie bisher + 17 AI komm. Modbus TCP, COM100/
+> COM800); gemessener Lasttrenner-Abgang braucht keinen neuen Katalog-
+> eintrag (Lasttrenner + bestehender generischer Energiezähler `440_000001`–
+> `003` kombinieren); Sammelstörmeldung-Gruppengröße und „Anzahl gemessener
+> Abgänge" als freie Mengenfeld-Eingabe; „Einzelabsicherung Regel-/
+> Netzgeräte" = überwachte Sicherung je Gerätegruppe (1 BI, Ruhestromkette,
+> externe UV); ATS/STS als neue externe Baugruppe (3× BI) für UV IT geplant.
+> Export: baugruppen 291→296. Browser-verifiziert (`testKatalogScan`,
+> `testBaugruppe` 296/296, Live-Test inkl. DDC-Modul- und Switch-Ratchet).
+> Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 78 Teil 2.
+> **Noch offen:** KNX/DALI-Gateway-Baugruppe, Rollladen-Gateway (Mengenfeld
+> je Rollladen), Gruppen-Sammelstörmeldung UV Allgemein, NH-Trenner-mit-
+> Automation-Baugruppe (Siemens 3NP1/Mersen), ATS/STS-Baugruppe selbst noch
+> nicht angelegt.
+
+Vorheriger Stand – Session 78 (17.10.2026).
 > MS-Feldanlagen an das Lehrbuch angepasst (Stromnetz Berlin TB3310/
 > TB3312/TB3340/TA-MS 2025, Siemens SIMOSEC HA 41.43, ABB SafeRing/
 > SafePlus) – 2 Fork-Rechercheaufträge bestätigten: ein reiner MS-

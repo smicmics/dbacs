@@ -16,6 +16,88 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Teil 2 (17.10.2026) – Start Elektrounterverteilungen
+> (NSHV/UV): 4-Fork-Survey (NSHV-Architektur, UV Allgemein/Beleuchtung+
+> KNX/DALI, UV IT, NH-Trenner+Sammelauslösemeldung) + erste Umsetzung
+> „gemessener NSHV-Leistungsschalterabgang".**
+> **Katalog-Audit vorab:** Gewerk 440 hat bereits Einzelstromkreis-Meldung
+> (`440_000004`–`025`), NS-Leistungsschalter/-Lasttrenner als Feldgerät ohne
+> Messung (`440_000032`–`041`, Siemens 3KF/3WA), generischen Energiezähler
+> (`440_000001`–`003`), aber keine Anlagen-Gruppierung UV/NSHV und kein
+> KNX/DALI-Protokoll (`feldbus_protokoll` kennt nur `mbus`/`modbus_rtu`/
+> `modbus_tcp`).
+> **Fork-Kernbefunde (Details `scratchpad/fork_nshv_1..4_*_ergebnis.md`):**
+> (1) NSHV – keine Quelle (AMEV, VDI 3814, Siemens/ABB/Schneider) liefert
+> eine fertige GA-Punkteliste, unser Schema (Schalterstatus BI + Zähler
+> komm.) trifft aber die reale Kommunikationsarchitektur; NS-Leistungs-
+> schalter (3WA/Emax2/NSX) haben die Messfunktion werkseitig im Schalter
+> integriert (ETU Serie 8/Ekip Touch/BSCM), kein externer Wandlersatz wie
+> beim MS-Pendant `440_000068`. (2) UV Allgemein/Beleuchtung – Gruppen-
+> Sammelstörmeldung ist Herstellerpraxis (Ruhestromkette, Regel 6/17),
+> keine normierte Gruppengröße; KNX/DALI haben KEINE native Modbus/BACnet-
+> Schnittstelle, immer über 3rd-Party-Gateway (Intesis/HMS IN703DAL0640000
+> im Detail geprüft: Fehler nur als Bitfeld je Einzelgerät, keine fertige
+> Gruppen-Sammelmeldung im Gateway). (3) UV IT – USV-Kontaktmuster
+> herstellerübergreifend bestätigt (`480_000011` ist plausible Teilmenge),
+> ATS/STS noch nicht katalogisiert (Socomec: nur Sammelstörung/Watchdog +
+> Stellungskontakte, kein bestätigtes „Umschaltung läuft"-Signal),
+> Messgranularität normativ über PUE-Kategorien gestuft (keine Pflicht zur
+> Einzelabgangsmessung). (4) NH-Trenner – Siemens 3NP1 hat eigenen
+> Sicherungsüberwachungs-Bestellcode (MFM/EFM10/EFM20/EFM15, dieselbe
+> Technologie wie beim bereits katalogisierten 3KF!), Mersen gleichwertiges
+> Nachrüstzubehör (FSD) – „NH-Trenner mit Automation" ist also genauso real
+> verfügbar wie 3KF, nur andere MLFB. Messung am NH-Abgang ist etablierte
+> Praxis (Aufsteck-Stromwandler + separater Zähler, 2 Patente + EAM-Netz-
+> Dokument). Sammelauslösemeldung-Verdrahtungsmuster (Ruhestromkette)
+> herstellerübergreifend bestätigt (ABB SK400SA „collective alarm", Doepke
+> DHi-S10, US-„Bell Alarm"), aber keine Norm/Kontaktzahl-Obergrenze.
+> **Nutzer-Entscheidungen (17.10.2026):**
+> 1. KNX/DALI als Gateway-Baustein (`modbus_rtu`/`modbus_tcp`-kommunikatives
+>    Bauteil), kein neues `feldbus_protokoll`.
+> 2. BACnet MS/TP zurückgestellt; Rollladen-Gateway zunächst generisch als
+>    Modbus-Baustein, je Rollladen-Instanz feste DP (Stellung AI,
+>    Motorstörung BI, Windschutz BI, Auf/Zu BO) × Mengenfeld „Anzahl
+>    Rollläden".
+> 3. Gemessener NSHV-Abgang als DP-Variante von `440_000037`–`041`
+>    (**umgesetzt, siehe unten**). Gemessener Lasttrenner-Abgang (`440_032`–
+>    `036`): KEIN neuer Katalogeintrag – einfach zusätzlich den
+>    bestehenden generischen Energiezähler (`440_000001`–`003`) hinzufügen
+>    (Lasttrenner hat keine integrierte Messung).
+> 4. Sammelstörmeldung-Gruppengröße (UV Allgemein) und „Anzahl gemessener
+>    Abgänge" (NSHV) als freie Mengenfeld-Eingabe statt fester Regel.
+> 5a. „Einzelabsicherung Regel-/Netzgeräte" = Geräte in fremder UV
+>    installiert → generische „überwachte Sicherung" **je Gerätegruppe
+>    1 BI** (Ruhestromkette, dasselbe Muster wie die UV-Allgemein-
+>    Sammelmeldung – vermutlich derselbe Baustein, nur andere Zielgruppe).
+> 5b. ATS/STS als neue externe Baugruppe: 3× BI (Sammelstörung/Watchdog,
+>    Schalterstellung Quelle A, Schalterstellung Quelle B) – relevant vor
+>    allem für UV IT/Rechenzentren.
+> **Umgesetzt (dieser Nachtrag):** 5 neue Baugruppen `440_000076`–`080`
+> „Leistungsschalter <630/1250/2000/3200/5000A>, Siemens 3WA, ... mit
+> Messung (COM100/COM800, Modbus TCP)" – identische 4× BI wie die
+> zugrundeliegenden `440_000037`–`041` (8 Klemmen `klemm_f`) PLUS
+> kommunikatives `KOMM-FB`-Bauteil mit 17 AI `modbus_tcp` (generische
+> Näherung in derselben Größenordnung wie die bestehenden Energiezähler-
+> Baugruppen – offizielle COM800-Registerliste öffentlich nicht gefunden,
+> offener Punkt). Reuse der bestehenden `feldgeraet_artikel_nr`
+> (`3WA-<Strom>A`, dasselbe physische Gerät, nur Bestelloption
+> Kommunikationsmodul) – `kommunikative_datenpunkte` additiv ergänzt.
+> Export: baugruppen 291→**296**, feldgeraete/anlagen/einzelbauteile
+> unverändert. Browser-verifiziert: `testKatalogScan()` sauber,
+> `testBaugruppe()` 296/296 bestanden, Live-Test (`440_000076` platziert)
+> zeigt korrekt automatische DDC-Modul-Ergänzung (physische 4×BI) UND
+> Ethernet-Switch-Ratchet (`2891021`, ausgelöst durch die 17 komm. AI
+> `modbus_tcp`), keine Konsolenfehler.
+> **Noch offen / nächste Schritte:** KNX/DALI-Gateway-Baugruppe (Intesis-
+> Vorbild, 2 Klemmen für RS485-Bus + Eingangs-/Ausgangs-Punkt-Baugruppen
+> mit frei wählbarer Menge, analog zum Automations-Reserve-Muster
+> `480_000001`), Rollladen-Gateway (Mengenfeld-Baustein je Rollladen),
+> Gruppen-Sammelstörmeldung UV Allgemein + „überwachte Sicherung
+> Regel-/Netzgerät je Gruppe" (vermutlich derselbe Baustein), NH-Trenner-
+> mit-Automation-Baugruppe (Siemens 3NP1-EFM/MFM oder Mersen FSD, analog
+> 3KF), ATS/STS-Baugruppe. Offizielle COM800-Modbus-Registerliste bei
+> Siemens beschaffen, falls die 17-AI-Näherung verfeinert werden soll.
+
 > **Nachtrag Session 78 (17.10.2026) – MS-Feldanlagen Lehrbuch-Korrektur:
 > Lasttrennschalter statt Leistungsschalter in Ring-/Kuppelfeld,
 > Lasttrennschalter-Sicherungskombi im kleinen Trafoabgang, Ausspeisefeld

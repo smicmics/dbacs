@@ -808,6 +808,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "kommunikative_datenpunkte": "Mit Messvariante 440_000076: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
     "geprueft": false
   },
   {
@@ -816,6 +817,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "kommunikative_datenpunkte": "Mit Messvariante 440_000077: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
     "geprueft": false
   },
   {
@@ -824,6 +826,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "kommunikative_datenpunkte": "Mit Messvariante 440_000078: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
     "geprueft": false
   },
   {
@@ -832,6 +835,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "kommunikative_datenpunkte": "Mit Messvariante 440_000079: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
     "geprueft": false
   },
   {
@@ -840,6 +844,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
+    "kommunikative_datenpunkte": "Mit Messvariante 440_000080: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
     "geprueft": false
   },
   {
