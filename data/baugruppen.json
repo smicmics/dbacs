@@ -12437,5 +12437,230 @@
     "automationsanbindung": true,
     "kategorie": "Schaltanlagen-Komponenten",
     "geprueft": false
+  },
+  {
+    "id": "440_000081",
+    "name": "KNX/DALI-Gateway: Grundgeraet mit RS485-Busanschluss (Modbus RTU)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Grundgeraet des KNX- bzw. DALI-zu-Modbus-Gateways (ein Gateway je Gewerk/Anlage einmal hinzufuegen). Busanschluss RS485, 2 Klemmen (A/B). Datenpunkte selbst ueber die separaten Eingangs-/Ausgangs-Baugruppen (440_000083-086) in der benoetigten Anzahl hinzufuegen. [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "KNX-DALI-GATEWAY-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000082",
+    "name": "KNX/DALI-Gateway: Grundgeraet mit Ethernet-Anschluss (Modbus TCP)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000081, aber Modbus TCP ueber Ethernet - keine eigenen Busklemmen (Netzwerkanbindung laeuft ueber den bestehenden Ethernet-Switch-Ratchet, automatisch ausgeloest durch die kommunikativen Eingangs-/Ausgangs-Datenpunkte). [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "KNX-DALI-GATEWAY-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000083",
+    "name": "KNX/DALI-Gateway: Eingang, 1 Datenpunkt (Modbus RTU)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Ein kommunikativer Eingangs-Datenpunkt (AI, z.B. DALI-Helligkeitsistwert, KNX-Statuswert) - so oft hinzufuegen wie Eingaenge benoetigt werden. Nutzer-Vorgabe: nur AI/AO, keine weitere Trennung nach binaer/analog. [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000084",
+    "name": "KNX/DALI-Gateway: Eingang, 1 Datenpunkt (Modbus TCP)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000083, Modbus TCP. [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 1,
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000085",
+    "name": "KNX/DALI-Gateway: Ausgang, 1 Datenpunkt (Modbus RTU)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Ein kommunikativer Ausgangs-Datenpunkt (AO, z.B. DALI-Dimmwert, KNX-Steuerbefehl) - so oft hinzufuegen wie Ausgaenge benoetigt werden. [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ao": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000086",
+    "name": "KNX/DALI-Gateway: Ausgang, 1 Datenpunkt (Modbus TCP)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000085, Modbus TCP. [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ao": 1,
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000087",
+    "name": "Rollladen/Jalousie-Gateway: Grundgeraet mit RS485-Busanschluss (Modbus RTU)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Grundgeraet des KNX-Rollladen/Jalousie-zu-Modbus-Gateways (einmal je Anlage hinzufuegen). Busanschluss RS485, 2 Klemmen (A/B). Je Rollladen zusaetzlich 440_000089/090 in der benoetigten Anzahl hinzufuegen. [Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "ROLLADEN-GATEWAY-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000088",
+    "name": "Rollladen/Jalousie-Gateway: Grundgeraet mit Ethernet-Anschluss (Modbus TCP)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000087, Modbus TCP ueber Ethernet - keine eigenen Busklemmen. [Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "feldgeraet_artikel_nr": "ROLLADEN-GATEWAY-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000089",
+    "name": "Rollladen/Jalousie, je Instanz: Stellung, Motorstoerung, Windschutz, Auf/Zu (Modbus RTU)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Fester Datenpunktsatz je Rollladen/Jalousie-Antrieb - so oft hinzufuegen wie Rollladen vorhanden sind (Menge = Anzahl Rollladen). 1x AI Stellung (Position), 1x BI Motorstoerung, 1x BI Windschutz-Zwangsfahrt aktiv (Sturm/Frost, hoechste Prioritaet vor Automatik/Handbedienung laut Fork-Recherche), 2x BO Auf/Zu (Fahrbefehle). [Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 1,
+        "dp_fb_bi": 2,
+        "dp_fb_bo": 2,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000090",
+    "name": "Rollladen/Jalousie, je Instanz: Stellung, Motorstoerung, Windschutz, Auf/Zu (Modbus TCP)",
+    "gewerk": "440",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000089, Modbus TCP. [Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 1,
+        "dp_fb_bi": 2,
+        "dp_fb_bo": 2,
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
   }
 ]

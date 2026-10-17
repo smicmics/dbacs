@@ -1,6 +1,27 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Teil 2 (17.10.2026).**
+> **Stand nach Session 78 Teil 3 (17.10.2026).**
+> KNX/DALI-Gateway + Rollladen/Jalousie-Gateway angelegt (10 neue
+> Baugruppen `440_000081`–`090`, neue Kategorie „Gebaeudebus-Gateways",
+> 2 neue Feldgeräte) – Grundgerät (RTU/TCP) + frei oft hinzufügbare
+> Eingangs-/Ausgangs-Zähl-Baugruppen (KNX/DALI, nur AI/AO) bzw. fester
+> Datenpunktsatz je Rollladen-Instanz (Stellung/Motorstörung/Windschutz/
+> Auf-Zu). **Dabei echten Bug im Ethernet-Switch-Ratchet gefunden+behoben:**
+> mehrere Zähl-Baugruppen desselben Gateways wurden fälschlich als
+> getrennte IP-Teilnehmer gezählt (7+3+4 Instanzen → 4 Switches statt
+> korrekt 1) – neue Spalte `kein_ip_teilnehmer` + Engine-Fix in
+> `modul-04-innenaufbau/index.html`, als neue Regel 18 in `CLAUDE.md`
+> dokumentiert (gilt für jedes künftige „geteiltes Gateway"-Muster).
+> Export: baugruppen 296→306, feldgeraete 135→137. Vollständig Browser-
+> verifiziert (testKatalogScan, testBaugruppe 306/306, Live-Test exakte
+> DP-Summen + korrekte Switch-Zahl, Regressionstest bestehender
+> Einzelgeräte-Baugruppen unverändert). Details: `CLAUDE.md` → „Offene
+> Punkte" Nachtrag Session 78 Teil 3.
+> **Noch offen:** Gruppen-Sammelstörmeldung UV Allgemein + „überwachte
+> Sicherung Regel-/Netzgerät je Gruppe", NH-Trenner-mit-Automation-
+> Baugruppe, ATS/STS-Baugruppe.
+
+Vorheriger Stand – Session 78 Teil 2 (17.10.2026).
 > Start Elektrounterverteilungen (NSHV/UV): 4-Fork-Survey (NSHV-Architektur,
 > UV Allgemein/Beleuchtung+KNX/DALI, UV IT, NH-Trenner+Sammelauslöse-
 > meldung) durchgeführt und mit dem Nutzer entschieden. Kernentscheidungen:

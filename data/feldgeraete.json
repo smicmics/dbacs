@@ -1186,5 +1186,23 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert. 800kVA-Grenze + Meldekontakte (Stellungsmeldung Ein/Aus + separater Kontakt 'Trafoauslosung' durch Schlagstift-Mechanismus) bestaetigt. Quellen: Stromnetz Berlin TB3310 Abschn. 11.1 / TB3312 Abschn. 12.1, TA-MS 2025 Anlage 2 'Anschlussprinzipien', Siemens 'Technische Schriftenreihe Ausgabe 2 - Lastschalter-Sicherungs-Kombinationen' (assets.new.siemens.com/.../ausgabe-2-ms-lastschalter-sicherungs-kombinationen.pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus Katalog Modul F (library.e.abb.com, Abschn. 4.3/6.3/6.4/6.6)",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "KNX-DALI-GATEWAY-GENERIC",
+    "bezeichnung": "KNX/DALI-zu-Modbus-Gateway, generisches Modell (z.B. Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX)",
+    "hersteller": "Intesis/HMS Networks (generisch)",
+    "kategorie": "Gebaeudebus-Gateways",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP: Anzahl Ein-/Ausgaenge projektspezifisch (siehe verknuepfte 440_000083-086)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "ROLLADEN-GATEWAY-GENERIC",
+    "bezeichnung": "KNX-Rollladen/Jalousie-zu-Modbus-Gateway, generisches Modell (kein spezifisches Modbus-Produkt gefunden - WAREMA 4M230.8i AP ist nur BACnet-faehig)",
+    "hersteller": "generisch",
+    "kategorie": "Gebaeudebus-Gateways",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung.",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP je Rollladen: Stellung (AI), Motorstoerung (BI), Windschutz (BI), Auf/Zu (2x BO) - siehe 440_000089/090",
+    "geprueft": false
   }
 ]

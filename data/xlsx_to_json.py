@@ -519,6 +519,16 @@ def export_baugruppen(wb):
                 bt[dpf] = int(rec[dpf])
         if rec.get('feldbus_protokoll') is not None:
             bt['feldbus_protokoll'] = str(rec['feldbus_protokoll'])
+        # kein_ip_teilnehmer (Session 78 Folgearbeit): diese Zeile ist einer von
+        # mehreren Datenpunkten EINES gemeinsam genutzten Gateways (z.B. KNX/
+        # DALI-Gateway "Eingang"/"Ausgang"-Zaehl-Baugruppen) - traegt ihre
+        # dp_fb_* Werte normal in die Komm.-Statistik ein, zaehlt aber NICHT
+        # zusaetzlich als eigener IP-Teilnehmer fuer den Switch-Ratchet (das
+        # Grundgeraet traegt den alleinigen Marker). Ohne dieses Flag wuerde
+        # jede zusaetzliche Zaehl-Instanz faelschlich einen eigenen Switch-Port
+        # verlangen, obwohl real nur EIN Ethernet-Anschluss am Gateway haengt.
+        if rec.get('kein_ip_teilnehmer'):
+            bt['kein_ip_teilnehmer'] = True
         # lvb_erforderlich (Session 49): dieser Datenpunktbedarf darf nur durch
         # ein Modul MIT integrierter lokaler Vorrangbedienung gedeckt werden.
         if rec.get('lvb_erforderlich'):

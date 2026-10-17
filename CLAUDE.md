@@ -16,6 +16,51 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Teil 3 (17.10.2026) – KNX/DALI-Gateway +
+> Rollladen/Jalousie-Gateway angelegt, dabei echten Switch-Ratchet-Bug
+> gefunden + behoben (siehe Regel 18).**
+> **10 neue Baugruppen** `440_000081`–`090`, neue Kategorie
+> „Gebaeudebus-Gateways": je 2 Grundgeräte (RTU mit 2 Busklemmen / TCP ohne
+> Klemmen) + 2 Zähl-Baugruppen (Eingang/Ausgang, je 1 AI/AO komm., beliebig
+> oft hinzufügbar) für KNX/DALI (`081`–`086`), sowie 2 Grundgeräte + 2
+> Instanz-Baugruppen (fester Satz je Rollladen: 1×AI Stellung, 2×BI
+> Motorstörung/Windschutz-Zwangsfahrt, 2×BO Auf/Zu) für Rollladen/Jalousie
+> (`087`–`090`). 2 neue Feldgeräte `KNX-DALI-GATEWAY-GENERIC`/
+> `ROLLADEN-GATEWAY-GENERIC`. Nutzer-Vorgaben: nur AI/AO beim KNX/DALI-
+> Gateway (keine weitere BI/BO-Trennung), BACnet MS/TP zurückgestellt
+> (WAREMA-Rollladenaktor ist nur BACnet-fähig, kein Modbus gefunden – auf
+> Nutzer-Wunsch generisches Modbus-Gatewaymodell stattdessen).
+> **Echter Bug beim Live-Test gefunden:** der bestehende Ethernet-Switch-
+> Ratchet (Session 58) zählt jede `modbus_tcp`-Zeile unabhängig als eigenen
+> IP-Teilnehmer – bei den neuen Zähl-Baugruppen (mehrere Instanzen = EIN
+> gemeinsames Gateway) führte das zu absurd überhöhten Switch-Zahlen (7
+> Eingänge+3 Ausgänge+4 Rollläden = 14 „Teilnehmer" → 4 Switches statt
+> korrekt 1). Fix: neue Spalte `kein_ip_teilnehmer`, Grundgerät trägt den
+> alleinigen `modbus_tcp`-Marker, Zähl-Baugruppen davon ausgenommen (Regel
+> 18 oben, Details dort). **Zweiter Nebeneffekt beim Debuggen entdeckt
+> (kein Bug, Bestätigung):** `resolveBaugruppenBauteile()`/
+> `applyNetztypResolution()` geben bei Standard-Klemmenvariante
+> benutzerdefinierte Bauteil-Felder (wie `kein_ip_teilnehmer`) korrekt
+> durch – das ursprüngliche Nicht-Greifen des Fixes lag an der bekannten
+> HTML/JS-Browser-Cache-Falle (Session 29/67, `?cb=`-Query bzw. Hard-Refresh
+> nötig) kombiniert mit dem Watermark-Ratchet (`kommWatermark` sinkt nie von
+> selbst, `localStorage.clear()` vor jedem Neutest nötig).
+> Export: baugruppen 296→**306**, feldgeraete 135→**137**, einzelbauteile/
+> anlagen unverändert. Backup vor der strukturellen Spalten-Änderung:
+> `ga_komponenten_vor-ip-teilnehmer-ausnahme_<timestamp>.xlsx`.
+> **Browser-verifiziert (nach dem Fix, mit geleertem localStorage):**
+> `testKatalogScan()` sauber, `testBaugruppe()` 306/306 bestanden, Live-Test
+> (1× Grundgerät TCP + 7× Eingang + 3× Ausgang + 4× Rollladen, alle TCP)
+> zeigt exakt `AI 11 · AO 3 · BI 8 · BO 8` UND korrekt nur 1 Switch (vorher
+> fälschlich 4); Regressionstest mit 5× unveränderter UMZ-Busauswertung-TCP
+> (`440_000070`, normaler Einzelgeräte-Fall) liefert weiterhin korrekt 2
+> Switches (`ceil(5/4)`) – der Fix wirkt nur für die neu geflaggten Zeilen,
+> keine Nebenwirkung auf bestehende Baugruppen. Keine Konsolenfehler.
+> **Noch offen:** Gruppen-Sammelstörmeldung UV Allgemein + „überwachte
+> Sicherung Regel-/Netzgerät je Gruppe" (vermutlich derselbe Baustein),
+> NH-Trenner-mit-Automation-Baugruppe (Siemens 3NP1/Mersen), ATS/STS-
+> Baugruppe.
+
 > **Nachtrag Session 78 Teil 2 (17.10.2026) – Start Elektrounterverteilungen
 > (NSHV/UV): 4-Fork-Survey (NSHV-Architektur, UV Allgemein/Beleuchtung+
 > KNX/DALI, UV IT, NH-Trenner+Sammelauslösemeldung) + erste Umsetzung
@@ -4364,6 +4409,30 @@ für alle künftigen Baugruppen bestätigt. Ausführliche Herleitung/Beispiele:
     sauber. Ursprung: Fork-Recherche Brandschutzklappen (konventionell, TROX
     FK2-EU) – gilt aber generisch für jeden Anwendungsfall mit diesem Muster,
     nicht nur Brandschutzklappen.
+18. **Geteiltes Gateway mit variabler Datenpunktzahl: nur EIN IP-Teilnehmer
+    für den Switch-Ratchet, unabhängig von der Anzahl der Zähl-Baugruppen
+    (Session 78 Folgearbeit, verbindlich, echter Bug gefunden+behoben):**
+    braucht ein Projekt eine frei wählbare Anzahl kommunikativer Punkte an
+    EINEM gemeinsam genutzten Gateway (z. B. KNX/DALI-Gateway mit
+    projektabhängig vielen Gruppenadressen/Vorschaltgeräten), werden dafür
+    mehrere kleine „Zähl-Baugruppen" (je 1 Datenpunkt, z. B. „Eingang"/
+    „Ausgang") beliebig oft hinzugefügt – analog zum bestehenden
+    Automations-Reserve-Muster (`480_000001`ff). **Der
+    Ethernet-Switch-Ratchet (`ipTeilnehmer += bt.menge` bei jeder
+    `modbus_tcp`-tragenden Bauteilzeile, Session 58) zählt dabei aber
+    BLIND jede Zeile als eigenen IP-Teilnehmer** – korrekt für echte
+    Einzelgeräte (Energiezähler, UMZ-Busauswertung, je 1 Gerät = 1
+    Switch-Port), aber falsch für mehrere Zähl-Baugruppen desselben
+    physischen Gateways (ein Gerät mit 37 Registern braucht einen
+    Ethernet-Port, nicht 10 Switches). **Fix:** neue Spalte
+    `baugruppen_bauteile.kein_ip_teilnehmer` (Boolean) – Zeilen mit `TRUE`
+    tragen ihre `dp_fb_*`-Werte weiterhin normal in die Komm.-Statistik
+    ein, zählen aber NICHT zusätzlich als IP-Teilnehmer. Das Grundgerät
+    (einmalig hinzugefügt) trägt stattdessen selbst `feldbus_protokoll:
+    modbus_tcp` (ohne `dp_fb_*`) als alleinigen Marker – genau 1
+    Switch-Port pro Gateway, unabhängig von der Punktzahl. Gilt für jedes
+    künftige „geteiltes Gateway mit variabler Punktzahl"-Muster, nicht nur
+    KNX/DALI/Rollladen-Gateways.
 
 ### Referenz: Motorleistungsreihe & Schaltgerätekonzept Drehstrommotoren (Session 56)
 

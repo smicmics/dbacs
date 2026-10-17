@@ -3800,7 +3800,13 @@ function buildQueues(ddcReservePct) {
           // unten per Ratchet ergaenzt (neededKomm).
           if (bt.feldbus_protokoll && fbDemand[bt.feldbus_protokoll]) {
             FB_DP_TYPES.forEach(t => { if (bt[t]) fbDemand[bt.feldbus_protokoll][t] += bt[t] * bt.menge; });
-            if (bt.feldbus_protokoll === 'modbus_tcp') ipTeilnehmer += bt.menge;
+            // kein_ip_teilnehmer (Session 78 Folgearbeit): mehrere Datenpunkte
+            // EINES gemeinsam genutzten Gateways (z.B. KNX/DALI-Gateway
+            // "Eingang"/"Ausgang"-Zaehl-Baugruppen) teilen sich einen einzigen
+            // Ethernet-Anschluss - nur das Grundgeraet zaehlt als IP-Teilnehmer,
+            // sonst wuerde jede zusaetzliche Zaehl-Instanz faelschlich einen
+            // eigenen Switch-Port verlangen.
+            if (bt.feldbus_protokoll === 'modbus_tcp' && !bt.kein_ip_teilnehmer) ipTeilnehmer += bt.menge;
           }
           // dp_ai/ao/bi/bo je Verwendung (Session 49): analog zum bestehenden
           // bt.zone-Override – ein Bauteil wie eine Klemme traegt selbst keinen
