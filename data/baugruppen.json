@@ -12919,7 +12919,7 @@
     "id": "440_000091",
     "name": "KNX/DALI-Gateway: Grundgeraet, intern im Schaltschrank montiert (Modbus RTU)",
     "gewerk": "440",
-    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Gateway als schrankinternes Hutschienengeraet (MBS Universal Gateway Triple-X KNX+DALI, Art. 11-0064, 65x100x70mm, Zone steuer). RS485-Verbindung zur Automationsstation ist Schrankinnenverdrahtung und braucht keine Klemme (Regel 12), unabhaengig von RTU/TCP. Stattdessen 2 Klemmen klemm_f fuer den AUSGEHENDEN Gebaeudebus (KNX oder DALI, je 2-adrig) zu den Feldgeraeten. Eigenversorgung des Gateways (12-24V AC/DC) zieht automatisch eine Steuerspannungsquelle nach (Regel 5, einzelbauteile.benoetigt_steuerspannung=24vdc), keine eigene Klemme noetig (Regel 12). Datenpunkte ueber die separaten Eingangs-/Ausgangs-Baugruppen (440_000083-086) in der benoetigten Anzahl hinzufuegen. Gegenstueck zum bestehenden 440_000081/082 (Extern-Montage, dort 4 RS485-Klemmen zum extern installierten Gateway).",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Gateway als schrankinternes Hutschienengeraet (MBS Universal Gateway Triple-X KNX+DALI, Art. 11-0064, 65x100x70mm, Zone steuer). RS485-Verbindung zur Automationsstation ist Schrankinnenverdrahtung und braucht keine Klemme (Regel 12), unabhaengig von RTU/TCP. Stattdessen 2 Klemmen klemm_f fuer den AUSGEHENDEN Gebaeudebus (KNX oder DALI, je 2-adrig) zu den Feldgeraeten. Eigenversorgung des Gateways (12-24V AC/DC) zieht automatisch eine Steuerspannungsquelle nach (Regel 5, einzelbauteile.benoetigt_steuerspannung=24vdc), keine eigene Klemme noetig (Regel 12). Datenpunkte ueber die separaten Eingangs-/Ausgangs-Baugruppen (440_000083-086) in der benoetigten Anzahl hinzufuegen. Gegenstueck zum bestehenden 440_000081/082 (Extern-Montage, dort 4 RS485-Klemmen zum extern installierten Gateway). [Nachtrag Session 78 Folgearbeit, 18.10.2026] KNX-Busspannungsversorgung ergaenzt (ABB SV/S 30.640.3.1, 30V DC/640mA) - das Gateway selbst liefert die KNX-Busspannung nicht mit (Regel, siehe 11-0064/11-0056). Eigene Absicherung (LSS) mit Hilfsschalter-BI (Stoermeldung), schrankintern (Regel 12, keine Klemme). Eingang 100-240V AC direkt aus der Energieverteilung.",
     "bauteile": [
       {
         "artikel_nr": "11-0064",
@@ -12935,6 +12935,22 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2CDG110167R0011",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
       }
     ],
     "funktionsbereich": [
@@ -12948,7 +12964,7 @@
     "id": "440_000092",
     "name": "KNX/DALI-Gateway: Grundgeraet, intern im Schaltschrank montiert (Modbus TCP)",
     "gewerk": "440",
-    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Wie 440_000091, Modbus TCP ueber Ethernet - Verbindung zur Automations-station laeuft schrankintern ueber den bestehenden Ethernet-Switch-Ratchet (kein eigener Klemmenbedarf). Traegt den alleinigen modbus_tcp-IP-Teilnehmer-Marker (Regel 18), die Eingangs-/Ausgangs-Baugruppen (440_000084/086) sind davon ausgenommen (kein_ip_teilnehmer).",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Wie 440_000091, Modbus TCP ueber Ethernet - Verbindung zur Automations-station laeuft schrankintern ueber den bestehenden Ethernet-Switch-Ratchet (kein eigener Klemmenbedarf). Traegt den alleinigen modbus_tcp-IP-Teilnehmer-Marker (Regel 18), die Eingangs-/Ausgangs-Baugruppen (440_000084/086) sind davon ausgenommen (kein_ip_teilnehmer). [Nachtrag Session 78 Folgearbeit, 18.10.2026] KNX-Busspannungsversorgung ergaenzt (ABB SV/S 30.640.3.1, 30V DC/640mA) - das Gateway selbst liefert die KNX-Busspannung nicht mit (Regel, siehe 11-0064/11-0056). Eigene Absicherung (LSS) mit Hilfsschalter-BI (Stoermeldung), schrankintern (Regel 12, keine Klemme). Eingang 100-240V AC direkt aus der Energieverteilung.",
     "bauteile": [
       {
         "artikel_nr": "11-0064",
@@ -12965,6 +12981,22 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2CDG110167R0011",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
       }
     ],
     "funktionsbereich": [
@@ -12978,7 +13010,7 @@
     "id": "440_000093",
     "name": "Rollladen/Jalousie-Gateway: Grundgeraet, intern im Schaltschrank montiert (Modbus RTU)",
     "gewerk": "440",
-    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Gateway als schrankinternes Hutschienengeraet (MBS Universal Gateway Double-X KNX, Art. 11-0056, 48x100x70mm, Zone steuer) - fuer Rollladen-/Jalousiesysteme, die selbst KNX-Busteilnehmer sind. RS485-Verbindung zur DDC schrankintern, keine Klemme (Regel 12). 2 Klemmen klemm_f fuer den ausgehenden KNX-Bus zu den Rollladen-Antrieben. Eigenversorgung zieht automatisch eine Steuerspannungsquelle nach (Regel 5). Je Rollladen zusaetzlich 440_000089 in der benoetigten Anzahl hinzufuegen. Gegenstueck zu 440_000087/088 (Extern-Montage).",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Gateway als schrankinternes Hutschienengeraet (MBS Universal Gateway Double-X KNX, Art. 11-0056, 48x100x70mm, Zone steuer) - fuer Rollladen-/Jalousiesysteme, die selbst KNX-Busteilnehmer sind. RS485-Verbindung zur DDC schrankintern, keine Klemme (Regel 12). 2 Klemmen klemm_f fuer den ausgehenden KNX-Bus zu den Rollladen-Antrieben. Eigenversorgung zieht automatisch eine Steuerspannungsquelle nach (Regel 5). Je Rollladen zusaetzlich 440_000089 in der benoetigten Anzahl hinzufuegen. Gegenstueck zu 440_000087/088 (Extern-Montage). [Nachtrag Session 78 Folgearbeit, 18.10.2026] KNX-Busspannungsversorgung ergaenzt (ABB SV/S 30.640.3.1, 30V DC/640mA) - das Gateway selbst liefert die KNX-Busspannung nicht mit (Regel, siehe 11-0064/11-0056). Eigene Absicherung (LSS) mit Hilfsschalter-BI (Stoermeldung), schrankintern (Regel 12, keine Klemme). Eingang 100-240V AC direkt aus der Energieverteilung.",
     "bauteile": [
       {
         "artikel_nr": "11-0056",
@@ -12994,6 +13026,22 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2CDG110167R0011",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
       }
     ],
     "funktionsbereich": [
@@ -13007,7 +13055,7 @@
     "id": "440_000094",
     "name": "Rollladen/Jalousie-Gateway: Grundgeraet, intern im Schaltschrank montiert (Modbus TCP)",
     "gewerk": "440",
-    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Wie 440_000093, Modbus TCP - schrankinterne Ethernet-Verbindung ueber den bestehenden Switch-Ratchet, traegt den alleinigen modbus_tcp-IP-Teilnehmer-Marker (Regel 18), 440_000090 ist davon ausgenommen (kein_ip_teilnehmer).",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Wie 440_000093, Modbus TCP - schrankinterne Ethernet-Verbindung ueber den bestehenden Switch-Ratchet, traegt den alleinigen modbus_tcp-IP-Teilnehmer-Marker (Regel 18), 440_000090 ist davon ausgenommen (kein_ip_teilnehmer). [Nachtrag Session 78 Folgearbeit, 18.10.2026] KNX-Busspannungsversorgung ergaenzt (ABB SV/S 30.640.3.1, 30V DC/640mA) - das Gateway selbst liefert die KNX-Busspannung nicht mit (Regel, siehe 11-0064/11-0056). Eigene Absicherung (LSS) mit Hilfsschalter-BI (Stoermeldung), schrankintern (Regel 12, keine Klemme). Eingang 100-240V AC direkt aus der Energieverteilung.",
     "bauteile": [
       {
         "artikel_nr": "11-0056",
@@ -13024,6 +13072,22 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "2CDG110167R0011",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "5SL6106-6",
+        "menge": 1,
+        "zone": "evert"
+      },
+      {
+        "artikel_nr": "5ST3010",
+        "menge": 1,
+        "zone": "evert",
+        "dp_bi": 1
       }
     ],
     "funktionsbereich": [

@@ -16,6 +16,48 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Folgearbeit 8 (18.10.2026) – KNX-Busspannungs-
+> versorgung für die 4 Intern-Gateway-Baugruppen ergänzt (Nutzer-Auftrag
+> „KNX intern. Busspannungsversorgung mit Absicherung gemeldet vorsehen")
+> + MBS/WAREMA/Lüftungsmodul vom Nutzer final bestätigt (keine Änderung) +
+> vollständiger 57-Anlagen-Sweep abgeschlossen.**
+> **Fork-Ergebnis:** ABB i-bus KNX ist der einzige der großen Hersteller mit
+> einem eigenständigen Hutschienen-KNX-Netzteil (Siemens/Phoenix Contact
+> führen keins) – gewählt **SV/S 30.640.3.1** (Art. `2CDG110167R0011`,
+> 640mA, 90×72×64,5mm/4TE, Eingang 100-240V AC direkt, Ausgang 30V DC mit
+> eingebauter Drossel, integrierter Kurzschluss-/Überlastschutz busseitig).
+> Kleinere Stufe SV/S 30.320.1.1 (`2CDG110166R0011`, 320mA) als Alternative
+> im `quelle_hinweis` vermerkt. **Kein eigener Störmeldekontakt am Gerät**
+> (auch die teurere Diagnose-Variante sendet nur KNX-Telegramme, kein
+> Hardwarekontakt) – die vom Nutzer gewünschte „gemeldete Absicherung"
+> kommt daher wie im DBACS-Standardmuster über den Hilfsschalter der
+> vorgeschalteten Sicherung (Regel 12, schrankintern, keine Klemme).
+> **Umgesetzt:** `440_000091`–`094` (alle 4 Intern-Gateway-Grundgeräte, KNX/
+> DALI UND Rollladen – beide nutzen KNX als Feldbus) um 3 Bauteile ergänzt:
+> KNX-Netzteil (Zone `steuer`) + LSS `5SL6106-6` (Zone `evert`) +
+> Hilfsschalter `5ST3010` mit `dp_bi:1` (Zone `evert`). Export:
+> einzelbauteile 229→**230**, baugruppen_bauteile +12 Zeilen (baugruppen.json
+> selbst unverändert 312). Browser-verifiziert: alle 4 Baugruppen zeigen
+> jetzt korrekt `dp_bi:1` + alle 4 Zonen (evert/leist/steuer/klemm_f)
+> belegt, `testKatalogScan()`/`testKlemmenVarianten()`/`testSwitchRatchet()`
+> weiterhin sauber, keine Konsolenfehler.
+> **MBS/WAREMA/Lüftungsmodul vom Nutzer bestätigt, bewusst unverändert:**
+> MBS-Multiprotokollfähigkeit war nie die offene Frage – für DBACS zählen
+> nur Gerätegröße, Spannungsversorgung und Busanschluss (Fremdsystem+DDC),
+> das ist bereits vollständig modelliert. WAREMA bleibt externes Bauteil,
+> für DBACS nur die 4 Modbus-Busklemmen relevant. `430_000043`/`044`
+> (Lüftungs-Kommunikationsmodul) bleibt bewusst externes Bauteil, eigene
+> Produktfamilie – für eine direkte ASP→Fremdsystem-Anbindung stehen
+> stattdessen die Gateway-Baugruppen zur Verfügung.
+> **57-Anlagen-Sweep vollständig abgeschlossen** (in Batches à 2–10 Anlagen
+> wegen des bekannten `javascript_tool`-Zeitlimits pro Einzelaufruf, nicht
+> wegen Rechenzeit der Testlogik selbst): 56 von 57 Anlagen einzeln
+> `pass:true` via `testAnlage()`. **`430_A00004`** (Vollklimaanlage-
+> Baukasten, 2304 Kombinationen) sprengt weiterhin den Einzelaufruf – wie
+> bereits in Session 75 dokumentiert nur per gezielter Stichprobe geprüft
+> (Default-Mitgliederkombination: 7 Baugruppen, `fehlendPlatziert:[]`,
+> `overflow:[]`).
+
 > **Nachtrag Session 78 Folgearbeit 7 (18.10.2026) – Drei verschachtelte
 > Doppelstock-/Trennklemmen-Bugs in `resolveBaugruppenBauteile()` gefunden
 > und behoben (Nutzer-Fund: Elektro-Energiezähler M-Bus platzierte unter

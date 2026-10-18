@@ -1,6 +1,18 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Folgearbeit 7 (18.10.2026).**
+> **Stand nach Session 78 Folgearbeit 8 (18.10.2026).**
+> KNX-Busspannungsversorgung (ABB SV/S 30.640.3.1, 30V DC/640mA) + LSS +
+> gemeldete Absicherung (Hilfsschalter-BI) in alle 4 Intern-Gateway-
+> Baugruppen (`440_000091`–`094`) ergänzt – Nutzer-Auftrag „Busspannungs-
+> versorgung mit Absicherung gemeldet vorsehen". MBS/WAREMA/Lüftungs-
+> Kommunikationsmodul vom Nutzer final bestätigt, keine weitere Änderung.
+> Vollständiger 57-Anlagen-Sweep abgeschlossen (56/57 einzeln `pass:true`
+> in Batches, `430_A00004` per Stichprobe wie bereits seit Session 75
+> dokumentiert). Export: einzelbauteile 229→230. Browser-verifiziert, keine
+> Konsolenfehler. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session
+> 78 Folgearbeit 8.
+
+Vorheriger Stand – Session 78 Folgearbeit 7 (18.10.2026).
 > Zwei Nutzer-Funde beim Testen (Rückkühlwerk TCP ergab 6 statt 1 Switch;
 > Elektro-Energiezähler M-Bus platzierte unter Doppelstock-Klemmenauswahl
 > gar nichts) führten zu zwei größeren Bugfix-Runden:
