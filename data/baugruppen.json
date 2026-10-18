@@ -5686,7 +5686,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B6 A, 1-polig, 6 kA, Siemens",
     "automationsanbindung": true,
@@ -5712,7 +5712,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B10 A, 1-polig, 6 kA, Siemens",
     "automationsanbindung": true,
@@ -5738,7 +5738,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B16 A, 1-polig, 6 kA, Siemens",
     "automationsanbindung": true,
@@ -5764,7 +5764,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B6 A, 2-polig, 6 kA, Siemens",
     "automationsanbindung": true,
@@ -5790,7 +5790,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B10 A, 2-polig, 6 kA, Siemens",
     "automationsanbindung": true,
@@ -5816,7 +5816,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B16 A, 2-polig, 6 kA, Siemens",
     "automationsanbindung": true,
@@ -5842,7 +5842,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B16 A, 3-polig, 6 kA, Siemens",
     "automationsanbindung": true,
@@ -5868,7 +5868,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 C16 A, 3-polig, 6 kA, Siemens",
     "automationsanbindung": true,
@@ -5894,7 +5894,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 30mA, Typ A, Siemens",
     "automationsanbindung": true,
@@ -5920,7 +5920,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 300mA, Typ A, Siemens",
     "automationsanbindung": true,
@@ -5946,7 +5946,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 500mA, Typ A, Siemens",
     "automationsanbindung": true,
@@ -10662,7 +10662,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10695,7 +10695,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10728,7 +10728,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10761,7 +10761,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10794,7 +10794,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10827,7 +10827,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10855,7 +10855,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10883,7 +10883,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10911,7 +10911,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10939,7 +10939,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -10967,7 +10967,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -11000,7 +11000,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "kategorie": "Leistungsabgänge Schaltschrank",
     "geprueft": false
@@ -11039,7 +11039,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11079,7 +11079,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11119,7 +11119,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11159,7 +11159,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11199,7 +11199,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11239,7 +11239,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11274,7 +11274,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11309,7 +11309,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11344,7 +11344,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11379,7 +11379,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11414,7 +11414,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -11454,7 +11454,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Leistungsabgänge Schaltschrank",
@@ -12666,7 +12666,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12688,7 +12689,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12709,7 +12711,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12731,7 +12734,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12812,7 +12816,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12836,7 +12841,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12865,7 +12871,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12895,7 +12901,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12924,7 +12930,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
@@ -12954,7 +12960,7 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",

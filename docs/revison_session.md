@@ -1,6 +1,22 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Folgearbeit (18.10.2026).**
+> **Stand nach Session 78 Folgearbeit 2 (18.10.2026).**
+> Umsortierung Elektro ↔ Automation (reine `funktionsbereich`-Änderung,
+> 45 Baugruppen): **Leistungsabgänge Schaltschrank** (24) komplett nach
+> Automation verschoben (schrankinterne Schutzorgane, Bestandteil des
+> ASPs, vorab verifiziert); **Schutzorgane mit Meldekontakt** nach
+> intern/extern gesplittet (11 „im Schaltschrank" → Automation, 11
+> „Feldgerät externe Anlage" → bleibt Elektro); **Gebäudebus-Gateways**
+> ebenso gesplittet (4 Intern-Grundgeräte → Automation, 4 Extern-
+> Grundgeräte → bleibt Elektro, 6 Eingangs-/Ausgangs-Zähl-Baugruppen →
+> beide Disziplinen). Leitprinzip: über Klemmen von außen zugeführte
+> Komponenten bleiben Elektro, physisch im Schaltschrank/ASP verbaute
+> Komponenten gehören zu Automation. Browser-verifiziert (Dropdown-
+> Aufteilung je Gewerke-Tab exakt wie erwartet, `testKatalogScan()`
+> sauber, keine Konsolenfehler). Details: `CLAUDE.md` → „Offene Punkte"
+> Nachtrag Session 78 Folgearbeit 2.
+
+Vorheriger Stand – Session 78 Folgearbeit (18.10.2026).
 > Gateway-Montageposition intern/extern eingeführt, Hersteller-Wechsel
 > KNX/DALI-Gateway + Rollladen-Gateway von Intesis/HMS auf **MBS GmbH
 > (Krefeld, Universal Gateway)**, neuer **WAREMA-Modbus-Schaltaktor**

@@ -16,6 +16,41 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Folgearbeit 2 (18.10.2026) – Umsortierung Elektro ↔
+> Automation (reine `funktionsbereich`-Änderung, keine ID-/Gewerk-Änderung).
+> Nutzer-Vorgabe: ein Bauteil, das über Klemmen VON AUSSEN in die
+> Automationsanlage eingespeist wird, gehört zu Elektro; ein Bauteil, das
+> PHYSISCH Bestandteil des Schaltschranks/ASP selbst ist, gehört zu
+> Automation. Eine Kategorie darf in beiden Disziplinen auftauchen, aber
+> nur mit den jeweils dafür bestimmten Baugruppen.**
+> **Leistungsabgänge Schaltschrank (24 Baugruppen, `440_000042`–`052`/
+> `055`–`067`) komplett nach Automation verschoben** (vorher nur `elektro`).
+> Vorab geprüft: alle 24 sind schrankinterne Schutzorgane, die aus der
+> Leistungszone DESSELBEN Schaltschranks gespeist werden – auch die
+> „ohne Meldung"-Varianten ohne eigenen DDC-Datenpunkt sind physisch
+> Bestandteil des ASPs, nicht von außen über Klemmen zugeführt. Damit
+> bestätigt sich die Nutzer-Prämisse, komplette Verschiebung korrekt.
+> **Schutzorgane mit Meldekontakt** (22 Baugruppen, gleicher Kategoriename,
+> zwei Unterfamilien): die 11 „im Schaltschrank"-Varianten (`440_000004`–
+> `014`, 0 Klemmen, BI direkt am Hilfsschalter, Regel 12) → Automation.
+> Die 11 „Feldgerät (externe Anlage)"-Zwillinge (`440_000015`–`025`, über
+> `klemm_f` von einer fremden Unterverteilung zugeführt) bleiben Elektro.
+> **Gebäudebus-Gateways**: die 4 „intern im Schaltschrank montiert"-
+> Grundgeräte (`440_000091`–`094`) → Automation (kommen raus aus Elektro,
+> sind Bestandteil des ASPs). Die 4 externen Grundgeräte (`440_000081`/
+> `082`/`087`/`088`, über Klemmen/Ethernet von außen zugeführt) bleiben
+> Elektro. Die 6 Eingangs-/Ausgangs-Zähl-Baugruppen (`440_000083`–`086`/
+> `089`/`090`, rein kommunikativ, kein eigener Platzbedarf, von BEIDEN
+> Grundgerät-Varianten gleichermaßen genutzt) sind die einzige bewusste
+> Doppel-Zuordnung dieser Sitzung: `funktionsbereich: elektro,automation`.
+> **Export:** reine Feldänderung, Zeilenzahl unverändert (baugruppen 312).
+> **Browser-verifiziert:** `testKatalogScan()` sauber, `testBaugruppe()`
+> auf Stichproben aller 3 Familien weiterhin `pass:true`; Dropdown-Prüfung
+> (`filterBaugruppen('elektro')` vs. `('automation')`) zeigt exakt die
+> erwartete Aufteilung je Tab (Elektro: 10 Gateway- + 11 Schutzorgane-
+> Einträge ohne Leistungsabgänge; Automation: 10 Gateway- + 24 Leistungs-
+> abgänge- + 11 Schutzorgane-Einträge), keine Konsolenfehler.
+
 > **Nachtrag Session 78 Folgearbeit (18.10.2026) – Gateway-Montageposition
 > intern/extern, Hersteller-Wechsel auf MBS (Krefeld), WAREMA-Modbus-Aktor,
 > katalogweite RS485-Korrektur auf 4 Adern. Nutzer-Fund + 5 Fork-Recherchen +
