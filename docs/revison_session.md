@@ -1,6 +1,22 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Folgearbeit 9 (18.10.2026).**
+> **Stand nach Session 78 Folgearbeit 10 (18.10.2026).**
+> MS-Gesamtanlagen nach Nutzer-Freigabe („MS Anlagen sind so ok
+> übernehmen") eingetragen: neue Baugruppe `440_000097`
+> Netzentkupplungsschutz (NES/ÜEKS) Woodward/SEG HighPROTEC MRU4
+> (`MRU4-2A0AAA`, 3× BI, Muster identisch UMZ-Relais `440_000068`) + 3 neue
+> Anlagen `440_A00009` (Einspeisefeld Erzeugungsanlage, Stichanschaltung
+> n-0, mit NES), `440_A00010` (Ring-Anschluss Gebäude: 2 Ringfelder +
+> Übergabefeld + N Trafoabgänge), `440_A00011` (redundante A/B-Ring-
+> Einspeisung Rechenzentrum: 4 Ringfelder + 2 Übergabefelder + wählbares
+> Kuppelfeld + N Trafoabgänge). Neues Mengenfeld `anzahl_trafos` × Auswahl
+> „Trafoabgang" (5 flache Optionen, da die Engine keine verschachtelte
+> Bus-Untergruppe kennt). Export: baugruppen 312→313, feldgeraete 139→140,
+> anlagen 57→60. Browser-verifiziert (`testBaugruppe`/`testAnlage` 15/15/30
+> Kombinationen `pass:true`, Mengenstichproben exakt, keine Konsolenfehler).
+> Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 78 Folgearbeit 10.
+
+Vorheriger Stand – Session 78 Folgearbeit 9 (18.10.2026).
 > `testAnlage()` um Batch-Fähigkeit erweitert (`slice`-Parameter +
 > `testAnlageBatch()`), damit auch sehr kombinationsreiche Anlagen
 > VOLLSTÄNDIG statt nur stichprobenhaft geprüft werden können (das bisherige

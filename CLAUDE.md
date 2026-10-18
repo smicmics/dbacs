@@ -16,6 +16,81 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Folgearbeit 10 (18.10.2026) – MS-Gesamtanlagen
+> (Kundenanlagen) nach Nutzer-Freigabe „MS Anlagen sind so ok übernehmen"
+> eingetragen: neue Baugruppe Netzentkupplungsschutz + 3 komplette MS-
+> Anlagen (Stich n-0 Erzeugungsanlage / Ring-Anschluss Gebäude /
+> redundante A/B-Ring-Einspeisung Rechenzentrum).**
+> **Neue Baugruppe `440_000097`** „Netzentkupplungsschutz (NES/ÜEKS)
+> Mittelspannung, Woodward/SEG HighPROTEC MRU4" – Modellierung exakt wie
+> UMZ-Relais `440_000068` (externes Betriebsmittel Regel 7, 3× BI Betrieb/
+> Sammelstörung/Entkupplung ausgelöst, je 2 Klemmen `klemm_f` mit
+> `menge:1`-Override nach Regel 14, kein Koppelrelais/keine Versorgung/PE
+> aus dem Schrank). Neues Feldgerät `MRU4-2A0AAA` (Fronttafeleinbau, ohne
+> Kommunikationsmodul – Kommunikation bewusst nicht modelliert; 141,5×183×
+> 208mm aus Technical-Data-Tabelle, NICHT aus Maßzeichnung; 24…270V DC/
+> 48…230V AC; 6 Wechsler, 3 genutzt; Quelle MRU4-3.7-EN-REF/-MAN; kein
+> Preis). **Abweichung zu `440_000068`:** zusätzlich `betriebsmittel`
+> gesetzt – Modul 5 (`aggregateFeldgeraete()`) zeigt nur Baugruppen MIT
+> `betriebsmittel`; bestätigt live: der NES erscheint in Modul 5, die
+> bestehenden MS-Baugruppen `440_000068`/`071`/`072`/`074`/`075` dagegen
+> NICHT (haben nur `feldgeraet_artikel_nr`, kein `betriebsmittel` –
+> vorbestehende Lücke, die Session-78-Aussage „taucht jetzt korrekt in
+> Modul 5 auf" für 071/072 stimmt so nicht; nicht in dieser Folgearbeit
+> behoben, offener Punkt).
+> **3 neue Anlagen** (Kategorie „Mittelspannungsschaltanlage",
+> `elektro_anlagen`):
+> - `440_A00009` „MS-Einspeisefeld Erzeugungsanlage, Stichanschaltung
+>   (n-0)": `440_000068` + Busanbindung (RTU `069` default / TCP `070` /
+>   „Separates Messfeld VNB (Impulsausgänge)" `073`) + `071` + `072` +
+>   NES `440_000097` + Trafoabgang-Baustein. Hinweis im Text: Stich n-0
+>   laut VNB-TAB nur für Erzeugungsanlagen, NES (VDE-AR-N 4110) wirkt
+>   parallel zum UMZ auf denselben Leistungsschalter.
+> - `440_A00010` „MS-Ring-Anschluss Gebäude": 2× [`074`+`072`] + `068` +
+>   Busanbindung + `071`+`072` + Trafoabgang-Baustein.
+> - `440_A00011` „MS-Redundante A/B-Ring-Einspeisung Rechenzentrum": 4×
+>   [`074`+`072`] + 2× `068` + Busanbindung (EINE gemeinsame Auswahl,
+>   **Menge 2** = je Übergabefeld eine Busauswertung/Messfeld – bewusste
+>   Interpretation von „gemeinsam für beide Seiten") + 2× [`071`+`072`] +
+>   neue Auswahl „Kuppelfeld" (ohne Automatik `074`+`072` default / mit
+>   Automatik `071`+`072`) + Trafoabgang-Baustein. 2-aus-3-Verriegelung
+>   nur dokumentiert, keine Steuerungslogik.
+> **Trafoabgang-Baustein (alle 3 Anlagen):** neues Mengenfeld
+> `anzahl_trafos` („Anzahl Trafos/Generatorabgänge", Default 1, Werte 0–10)
+> auf jeder Zeile der neuen Auswahl `gruppe:'trafoabgang'`. **Engine-
+> bedingte Abweichung von der Spezifikation:** eine bedingte Bus-Untergruppe
+> (`bus_trafo`) innerhalb einer Trafoabgang-Option kennt die Anlagen-Engine
+> nicht (ein Mitglied mit eigener `gruppe` wäre unabhängig von der
+> Trafoabgang-Wahl immer aktiv) – daher als 5 flache Optionen in EINEM
+> Dropdown umgesetzt: „klein ≤800kVA (Sicherungskombi)" (`075`+`072`,
+> default) / „groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU"
+> (`068`+`069`+`071`+`072`) / „…, Modbus TCP" (`068`+`070`+`071`+`072`) /
+> „…, separates Messfeld VNB (Impulsausgänge)" (`068`+`073`+`071`+`072`) /
+> „groß >800kVA ohne eigenen Schutz" (`071`+`072`). Funktional identisch
+> (eigene, von der Feld-Busanbindung unabhängige Busauswahl je Abgang).
+> **Code (`modules/modul-04-innenaufbau/index.html`):** nur Datendeklara-
+> tionen – `ANLAGE_GRUPPEN_LABEL` um `trafoabgang`/`kuppelfeld`,
+> `ANLAGE_MENGENFELD_LABEL`/`_DEFAULT`/`_OPTIONS` um `anzahl_trafos`.
+> **Export:** baugruppen 312→**313**, feldgeraete 139→**140**, anlagen
+> 57→**60**, einzelbauteile unverändert 230, anlagen_baugruppen +75
+> Zeilen. Backup: `ga_komponenten_vor-ms-gesamtanlagen_20261018_193318.xlsx`.
+> Writer: `scratchpad/xlsx_write_ms_gesamtanlagen.py`.
+> **Browser-verifiziert:** `testKatalogScan()` sauber; `testBaugruppe
+> ('440_000097')` `pass:true` (3× BI, 0 fehlendPlatziert/Overflow);
+> `testAnlage()` `440_A00009` 15/15, `440_A00010` 15/15, `440_A00011` 30/30
+> Kombinationen `pass:true`; Mengenstichproben exakt wie von Hand
+> gerechnet (z. B. `440_A00011` TCP + Kuppelfeld mit Automatik + 3×
+> „groß mit Schutz, TCP": `074`:4, `072`:10, `068`:5, `070`:5, `071`:6;
+> `440_A00009` mit 0 Trafos → Trafoabgang komplett entfallen; `440_A00010`
+> 2× klein → `075`:2, `072`:5), 0 Overflow im Referenzschrank;
+> Regressionstest `420_A00039` (16), `440_A00003` (2), `480_A00002` (6)
+> weiterhin `pass:true`; Modul 5 zeigt den NES; keine Konsolenfehler.
+> **Offen:** Preis `MRU4-2A0AAA`; Abmessungen nicht an der Maßzeichnung
+> verifiziert; NES-Kommunikation (Registerliste) nicht modelliert;
+> `betriebsmittel`-Lücke der bestehenden MS-Baugruppen (Modul 5);
+> symmetrische A/B-Aufteilung der Trafoabgänge bei `440_A00011` wird nicht
+> topologisch geprüft (nur Planungsempfehlung im Text).
+
 > **Nachtrag Session 78 Folgearbeit 9 (18.10.2026) – `testAnlage()` um
 > Batch-Fähigkeit erweitert (`slice`-Parameter + neue `testAnlageBatch()`),
 > damit auch sehr kombinationsreiche Anlagen VOLLSTÄNDIG geprüft werden
