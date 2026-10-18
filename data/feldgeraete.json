@@ -1188,21 +1188,39 @@
     "geprueft": false
   },
   {
-    "artikel_nr": "KNX-DALI-GATEWAY-GENERIC",
-    "bezeichnung": "KNX/DALI-zu-Modbus-Gateway, generisches Modell (z.B. Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX)",
-    "hersteller": "Intesis/HMS Networks (generisch)",
+    "artikel_nr": "11-0064",
+    "bezeichnung": "MBS Universal Gateway Triple-X KNX+DALI zu Modbus, extern installiert",
+    "hersteller": "MBS GmbH",
     "kategorie": "Gebaeudebus-Gateways",
-    "quelle_hinweis": "[Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] MBS GmbH, Roemerstr. 15, 47809 Krefeld (www.mbs-solutions.de), Universal-Gateway-Serie X, Original-Datenblatt (PDF, Stand 06/2023). RS485-Host: B+(nicht invertiert)/A-(invertiert)/SGND/Shld, 4 Klemmen, galvanisch getrennt 1kV, DIP-Schalter Bias/120Ohm-Terminierung. Versorgung V+/V- 12-24V AC/DC (2 Klemmen) - DBACS waehlt 24V DC. Modbus-Protokoll-Verfuegbarkeit laut MBS-FAQ (BACnet/Modbus/MQTT/OPC UA/KNX/DALI2/M-Bus/PROFINET als Beispiele), NICHT woertlich im Datenblatt selbst benannt - vor Projekteinsatz bei vertrieb@mbs-solutions.de bestaetigen lassen, welche Modbus-Variante (RTU/TCP) konkret verfuegbar ist. Kein oeffentlicher Preis gefunden (B2B-Direktvertrieb, Angebot noetig). Datenpunktzahl ist bei MBS eine separate, kostenpflichtige Protokoll-Lizenz-stufe (25/200/500/1.000/2.500 DP) - auf Nutzer-Entscheid 18.10.2026 NICHT in DBACS modelliert (kein Einfluss auf Montagegroesse/Anschluesse, reiner Kostenfaktor). Modell Triple-X KNX+DALI, Art. 11-0064 (RS-485-Host).",
     "kommunikative_datenpunkte": "Modbus RTU/TCP: Anzahl Ein-/Ausgaenge projektspezifisch (siehe verknuepfte 440_000083-086)",
     "geprueft": false
   },
   {
-    "artikel_nr": "ROLLADEN-GATEWAY-GENERIC",
-    "bezeichnung": "KNX-Rollladen/Jalousie-zu-Modbus-Gateway, generisches Modell (kein spezifisches Modbus-Produkt gefunden - WAREMA 4M230.8i AP ist nur BACnet-faehig)",
-    "hersteller": "generisch",
+    "artikel_nr": "11-0056",
+    "bezeichnung": "MBS Universal Gateway Double-X KNX zu Modbus, extern installiert (Rollladen-/Jalousiesysteme via KNX)",
+    "hersteller": "MBS GmbH",
     "kategorie": "Gebaeudebus-Gateways",
-    "quelle_hinweis": "[Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung.",
-    "kommunikative_datenpunkte": "Modbus RTU/TCP je Rollladen: Stellung (AI), Motorstoerung (BI), Windschutz (BI), Auf/Zu (2x BO) - siehe 440_000089/090",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] MBS GmbH, Roemerstr. 15, 47809 Krefeld (www.mbs-solutions.de), Universal-Gateway-Serie X, Original-Datenblatt (PDF, Stand 06/2023). RS485-Host: B+(nicht invertiert)/A-(invertiert)/SGND/Shld, 4 Klemmen, galvanisch getrennt 1kV, DIP-Schalter Bias/120Ohm-Terminierung. Versorgung V+/V- 12-24V AC/DC (2 Klemmen) - DBACS waehlt 24V DC. Modbus-Protokoll-Verfuegbarkeit laut MBS-FAQ (BACnet/Modbus/MQTT/OPC UA/KNX/DALI2/M-Bus/PROFINET als Beispiele), NICHT woertlich im Datenblatt selbst benannt - vor Projekteinsatz bei vertrieb@mbs-solutions.de bestaetigen lassen, welche Modbus-Variante (RTU/TCP) konkret verfuegbar ist. Kein oeffentlicher Preis gefunden (B2B-Direktvertrieb, Angebot noetig). Datenpunktzahl ist bei MBS eine separate, kostenpflichtige Protokoll-Lizenz-stufe (25/200/500/1.000/2.500 DP) - auf Nutzer-Entscheid 18.10.2026 NICHT in DBACS modelliert (kein Einfluss auf Montagegroesse/Anschluesse, reiner Kostenfaktor). Modell Double-X KNX, Art. 11-0056 (RS-485-Host).",
+    "kommunikative_datenpunkte": "Modbus RTU/TCP: Anzahl Ein-/Ausgaenge projektspezifisch (siehe verknuepfte 440_000089/090)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2039312",
+    "bezeichnung": "WAREMA Jalousie-/Rollladen-Schaltaktor 4M230 REG, 4x 230V AC/500VA je Ausgang, Modbus RTU, Hutschiene, extern installiert",
+    "hersteller": "WAREMA Renkhoff SE",
+    "kategorie": "Jalousie-/Rollladenaktoren",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] WAREMA Renkhoff SE, smartbuildings.warema.com. KEIN Original-PDF-Datenblatt/Betriebsanleitung fuer die Modbus-RTU-Variante oeffentlich auffindbar (WAREMA vertreibt diese Serie ueber Web-Produktseiten ohne PDF-Download). Technische Basisdaten (230V AC, Schaltleistung, IP30, Schutzklasse I, Baubreite in MW) von der offiziellen Produktseite bestaetigt (2 unabhaengige Quellenabrufe). Klemmenplan NUR als Naeherung ueber die bauartverwandte WAREMA-climatronic-Schwesterbaugruppe (identische Hardware-Baureihe '4M230/6M230', ANDERE Artikelnummer/anderes Busprotokoll) aus dem frei zugaenglichen Handbuch 'WAREMA climatronic 3.0 Montage und Anschluss' rekonstruiert (manualslib.de/manual/459678) - NICHT am Original-Modbus-Geraet bestaetigt. Maße (B) aus MW-Baubreite abgeleitet (1 MW=17,5mm nach DIN 43880, nur indirekt ueber eine dritte Quelle gestuetzt, nicht am WAREMA-Original verifiziert); Hoehe/Tiefe nicht auffindbar - deshalb bewusst NICHT als eigenes einzelbauteile-Bauteil platziert, sondern als reines Feldgeraet (Regel 7, extern installiert, nur die RS485-Busklemmen im Schaltschrank modelliert). Busklemmen 'Bus A/Bus B/0V/P' von der WAREMA-Produktseite ('4-adriges Bus-Kabel') UND dem climatronic-Handbuch (Seite 20/21) uebereinstimmend bestaetigt - P-Funktion (vermutlich Versorgung fuer Busteilnehmer/Repeater) nicht erklaert, offener Punkt. Modbus-Register-liste (welche Werte/Bits pro Ausgang) NICHT oeffentlich gefunden - Datenpunktsatz (2x BO Auf/Zu je Ausgang) ist eine plausible Minimalannahme (reiner Schaltbefehl, keine Positions-/Stoerrueckmeldung wie bei KNX-basierten Systemen), vor Projekteinsatz bei WAREMA zu bestaetigen. Kein Preis gefunden (weder Hersteller- noch Distributorpreis).",
+    "kommunikative_datenpunkte": "Modbus RTU: je Ausgang Auf/Zu-Schaltbefehl (2x BO), 4 Ausgaenge gesamt = 8x BO (Minimalannahme, keine Registerliste oeffentlich verfuegbar)",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "2039313",
+    "bezeichnung": "WAREMA Jalousie-/Rollladen-Schaltaktor 6M230 REG, 6x 230V AC/500VA je Ausgang, Modbus RTU, Hutschiene, extern installiert",
+    "hersteller": "WAREMA Renkhoff SE",
+    "kategorie": "Jalousie-/Rollladenaktoren",
+    "quelle_hinweis": "[Fork-Recherche 10/2026] WAREMA Renkhoff SE, smartbuildings.warema.com. KEIN Original-PDF-Datenblatt/Betriebsanleitung fuer die Modbus-RTU-Variante oeffentlich auffindbar (WAREMA vertreibt diese Serie ueber Web-Produktseiten ohne PDF-Download). Technische Basisdaten (230V AC, Schaltleistung, IP30, Schutzklasse I, Baubreite in MW) von der offiziellen Produktseite bestaetigt (2 unabhaengige Quellenabrufe). Klemmenplan NUR als Naeherung ueber die bauartverwandte WAREMA-climatronic-Schwesterbaugruppe (identische Hardware-Baureihe '4M230/6M230', ANDERE Artikelnummer/anderes Busprotokoll) aus dem frei zugaenglichen Handbuch 'WAREMA climatronic 3.0 Montage und Anschluss' rekonstruiert (manualslib.de/manual/459678) - NICHT am Original-Modbus-Geraet bestaetigt. Maße (B) aus MW-Baubreite abgeleitet (1 MW=17,5mm nach DIN 43880, nur indirekt ueber eine dritte Quelle gestuetzt, nicht am WAREMA-Original verifiziert); Hoehe/Tiefe nicht auffindbar - deshalb bewusst NICHT als eigenes einzelbauteile-Bauteil platziert, sondern als reines Feldgeraet (Regel 7, extern installiert, nur die RS485-Busklemmen im Schaltschrank modelliert). Busklemmen 'Bus A/Bus B/0V/P' von der WAREMA-Produktseite ('4-adriges Bus-Kabel') UND dem climatronic-Handbuch (Seite 20/21) uebereinstimmend bestaetigt - P-Funktion (vermutlich Versorgung fuer Busteilnehmer/Repeater) nicht erklaert, offener Punkt. Modbus-Register-liste (welche Werte/Bits pro Ausgang) NICHT oeffentlich gefunden - Datenpunktsatz (2x BO Auf/Zu je Ausgang) ist eine plausible Minimalannahme (reiner Schaltbefehl, keine Positions-/Stoerrueckmeldung wie bei KNX-basierten Systemen), vor Projekteinsatz bei WAREMA zu bestaetigen. Kein Preis gefunden (weder Hersteller- noch Distributorpreis).",
+    "kommunikative_datenpunkte": "Modbus RTU: je Ausgang Auf/Zu-Schaltbefehl (2x BO), 6 Ausgaenge gesamt = 12x BO (Minimalannahme, keine Registerliste oeffentlich verfuegbar)",
     "geprueft": false
   }
 ]

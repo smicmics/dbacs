@@ -16,6 +16,104 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Folgearbeit (18.10.2026) – Gateway-Montageposition
+> intern/extern, Hersteller-Wechsel auf MBS (Krefeld), WAREMA-Modbus-Aktor,
+> katalogweite RS485-Korrektur auf 4 Adern. Nutzer-Fund + 5 Fork-Recherchen +
+> Freigabe 18.10.2026.**
+> **Nutzer-Fund:** `440_000081`/`087` (KNX/DALI- bzw. Rollladen-Gateway
+> Grundgerät extern) hatten kein `betriebsmittel` gesetzt → erschienen trotz
+> `feldgeraet_artikel_nr` nicht in Modul 5 (`aggregateFeldgeraete()` filtert
+> zwingend auf `betriebsmittel`). Zweiter Fund: RS485-Busklemmenzahl (bisher
+> 2, A/B) zu gering.
+> **Fork-Ergebnis Modbus.org:** offizielle Spezifikation „MODBUS over Serial
+> Line V1.02" (Abschn. 3.3.2/3.6) fordert zwingend eine dritte Common-Ader
+> („a third conductor must also interconnect all the devices of the bus"),
+> Kabelschirm ist eine zusätzliche 4. Anforderung – „2-Draht-RS485" meint nur
+> das balancierte Signalpaar, nicht die Gesamtaderzahl. Nutzer-Entscheidung:
+> DBACS modelliert RS485/Modbus-RTU-Busanschlüsse ab sofort durchgängig mit
+> **4 Klemmen (A, B, Common, Schirm)** statt bisher 2 – katalogweit, nicht
+> nur bei den neuen Gateway-Baugruppen.
+> **Katalogweite RS485-Korrektur umgesetzt** (2 zusätzliche plaine
+> `3209510`-Klemmen je Fundstelle, dp-tragende Zeile unverändert): betrifft
+> 17 Baugruppen – `420_000033/036/041/044` (Wärme-/Kältemengenzähler Dual
+> M-Bus+Modbus RTU), `420_000051` (Wilo-Kommunikationsmodul), `420_000057`–
+> `064` (8× Wärmepumpen-Kern), `440_000001` (Elektro-Energiezähler),
+> `440_000081`/`087` (Gateway-Grundgeräte extern). **Dabei Nebenbefund
+> behoben:** `430_000043`/`044` (Modul Modbus RTU/TCP, Lüftung-Kommunika-
+> tionsmodul) hatten die RS485-Klemmen als EINE Zeile mit `menge:2` +
+> `dp_fb_*`-Override modelliert – da `accumulateDp()` den Override mit der
+> Zeilen-`menge` multipliziert (Regel 14), verdoppelte das den kommunikativen
+> Datenpunktbedarf unbemerkt (7 Register laut Beschreibung, tatsächlich 14
+> gezählt). `430_000043` (RTU) korrigiert: 1 Zeile `menge:1` mit Override +
+> 3 plaine Zeilen = 4 Klemmen, Datenpunktwert unverändert korrekt. `430_000044`
+> (TCP) bewusst NICHT angefasst (TCP braucht keine RS485-Adern, eigener,
+> unabhängiger Altbefund „2 Klemmen bei TCP" bleibt als offener Punkt stehen).
+> **Hersteller-Wechsel Intesis/HMS → MBS GmbH (Krefeld)** auf Nutzer-Wunsch,
+> per Fork verifiziert: reale Firma, eigene Produktlinie „Universal Gateway"
+> (X-/A-/XT-Serie). 2 neue `einzelbauteile` (nur für „Intern"-Montage, mit
+> echten Maßen): `11-0064` MBS Triple-X KNX+DALI (65×100×70mm, 5 TE) und
+> `11-0056` MBS Double-X KNX (48×100×70mm, 3 TE), je Zone `steuer`,
+> `benoetigt_steuerspannung:24vdc`. Dieselben Artikel zusätzlich als
+> `feldgeraete`-Zeilen für die „Extern"-Montage (kein Platzbedarf im Schrank).
+> Alte Platzhalter `KNX-DALI-GATEWAY-GENERIC`/`ROLLADEN-GATEWAY-GENERIC` auf
+> `aktiv=FALSE` gesetzt (ersetzt, nicht gelöscht). **MBS-Datenblatt bestätigt
+> unabhängig dieselbe 4-Klemmen-RS485-Architektur** (B+/A-/SGND/Shld).
+> Offene Punkte MBS: Modbus-Protokollverfügbarkeit nur über FAQ angedeutet,
+> nicht im Datenblatt selbst (vor Projekteinsatz bei MBS bestätigen lassen);
+> kein öffentlicher Preis; KNX-Busspannung wird vom Gateway NICHT mitgeliefert
+> (eigene Versorgung durch den Kunden nötig, kein DBACS-Bauteil dafür
+> angelegt); Datenpunkt-Lizenzstufen (25/200/.../2.500 DP) sind bei MBS eine
+> separate Kostenposition – auf Nutzer-Entscheid NICHT in DBACS modelliert
+> (kein Einfluss auf Montagegröße/Anschlüsse).
+> **Montageposition intern/extern eingeführt** (4 neue Baugruppen):
+> `440_000091`/`092` (KNX/DALI-Gateway, intern, RTU/TCP) und `440_000093`/
+> `094` (Rollladen-Gateway, intern, RTU/TCP) – Gateway als schrankinternes
+> Hutschienengerät (`11-0064`/`11-0056`, Zone `steuer`); RS485/Ethernet zur
+> DDC ist Schrankinnenverdrahtung, keine Klemme (Regel 12); stattdessen 2
+> Klemmen `klemm_f` für den AUSGEHENDEN Gebäudebus (KNX/DALI bzw. Rollladen-
+> Bus, je 2-adrig) zu den Feldgeräten. TCP-Varianten tragen den alleinigen
+> `modbus_tcp`-IP-Teilnehmer-Marker (Regel 18). Die bestehenden Eingangs-/
+> Ausgangs-Zähl-Baugruppen (`083`–`086`/`089`) werden unverändert sowohl von
+> der Extern- als auch der Intern-Variante mitgenutzt (rein kommunikativ,
+> kein eigener Platzbedarf).
+> **Neu: WAREMA-Modbus-Schaltaktor** (Nutzer-Fund per Fork: WAREMA hat entgegen
+> der Session-78-Annahme doch native Modbus-RTU-Hutschienenaktoren, die
+> Rollladenmotoren DIREKT schalten – kein Gateway nötig). 2 neue Baugruppen
+> `440_000095`/`096` (WAREMA 4M230 REG / 6M230 REG, Art. 2039312/2039313,
+> 4×/6× 230V AC Ausgänge) als eigenständiger Pfad NEBEN dem generischen
+> KNX-Rollladen-Gateway (für Rollladensysteme, die NICHT WAREMA-Modbus sind).
+> Modelliert als reines Feldgerät (Regel 7, extern installiert, typischerweise
+> in einer lokalen Antriebsverteilung) – im Schrank nur die 4 RS485-
+> Busklemmen (Bus A/Bus B/0V/P, Originalbeschriftung des Geräts, deckt sich
+> bereits mit dem neuen 4-Adern-Standard), kommunikativ 2×BO (Auf/Zu) je
+> Ausgang. **Wichtige Einschränkung:** kein Original-PDF-Datenblatt für die
+> Modbus-Variante öffentlich auffindbar (WAREMA vertreibt die Serie ohne
+> PDF-Download); Klemmenplan/Maße nur über eine bauartverwandte climatronic-
+> Schwesterbaugruppe (andere Artikelnummer, anderes Protokoll) rekonstruiert,
+> NICHT am Original bestätigt; keine Modbus-Registerliste gefunden (2×BO je
+> Ausgang ist eine plausible Minimalannahme); kein Preis gefunden. Vor
+> Projekteinsatz bei WAREMA-Vertrieb zu verifizieren.
+> **Export:** einzelbauteile 227→**229**, baugruppen 306→**312**, feldgeraete
+> 137→**139** (4 neu, 2 alte Platzhalter deaktiviert). Backup:
+> `ga_komponenten_vor-mbs-gateway-warema-rs485fix_<timestamp>.xlsx`.
+> **Verifikation:** vollständiger Katalog-Scan (Regel 7) über `baugruppen.json`/
+> `einzelbauteile.json`/`feldgeraete.json` zeigt 0 neue verwaiste Referenzen
+> (nur die 16 bereits dokumentierten Alt-Lücken bei Wilo-Pumpen/Siemens-
+> Aktoren-Platzhaltern, siehe „Feldgeräte-Katalogzeilen fehlen" unten);
+> `430_000043` dp-Werte nach dem Fix direkt gegengerechnet (5 AI + 2 BI,
+> nicht mehr verdoppelt); alle 10 neuen/geänderten Gateway-Baugruppen
+> stichprobenartig gegen die erwartete Klemmenzahl geprüft. **Browser-
+> Live-Verifikation NICHT möglich** (bekannter WSL-localhost-Relay-Ausfall,
+> Session 51/73 – Preview-Server startete nicht, Fix `wsl --shutdown`
+> braucht Nutzer-Freigabe) – Stand ausschließlich über direkte JSON-
+> Inspektion geprüft, Modul 4/5-Live-Test steht noch aus.
+> **Noch offen:** Gruppen-Sammelstörmeldung UV Allgemein + „überwachte
+> Sicherung Regel-/Netzgerät je Gruppe", NH-Trenner-mit-Automation-Baugruppe,
+> ATS/STS-Baugruppe, `430_000044`-TCP-Klemmenanomalie (separater, nicht in
+> dieser Sitzung behobener Altbefund), KNX-Busspannungsversorgung für die
+> Intern-Montage (noch kein DBACS-Bauteil), Modbus-Protokollbestätigung bei
+> MBS, Browser-Live-Verifikation nachholen sobald WSL läuft.
+
 > **Nachtrag Session 78 Teil 3 (17.10.2026) – KNX/DALI-Gateway +
 > Rollladen/Jalousie-Gateway angelegt, dabei echten Switch-Ratchet-Bug
 > gefunden + behoben (siehe Regel 18).**

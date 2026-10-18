@@ -2779,6 +2779,16 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -2887,6 +2897,16 @@
         "zone": "klemm_f",
         "dp_fb_ai": 7,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -3082,6 +3102,16 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -3190,6 +3220,16 @@
         "zone": "klemm_f",
         "dp_fb_ai": 7,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -3432,6 +3472,16 @@
         "dp_fb_ao": 2,
         "dp_fb_bo": 1,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -3537,6 +3587,16 @@
         "zone": "klemm_f",
         "dp_fb_ai": 17,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -5067,11 +5127,26 @@
     "bauteile": [
       {
         "artikel_nr": "3209510",
-        "menge": 2,
+        "menge": 1,
         "zone": "klemm_f",
         "dp_fb_ai": 5,
         "dp_fb_bi": 2,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -8740,6 +8815,16 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -8819,6 +8904,16 @@
         "dp_fb_ai": 7,
         "dp_fb_bi": 3,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -8914,6 +9009,16 @@
         "dp_fb_ai": 8,
         "dp_fb_bi": 5,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -9015,6 +9120,16 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -9100,6 +9215,16 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -9179,6 +9304,16 @@
         "dp_fb_ai": 7,
         "dp_fb_bi": 5,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -9279,6 +9414,16 @@
         "artikel_nr": "3209510",
         "menge": 1,
         "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -9370,6 +9515,16 @@
         "dp_fb_ai": 8,
         "dp_fb_bi": 5,
         "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       },
       {
         "artikel_nr": "3209510",
@@ -12442,8 +12597,18 @@
     "id": "440_000081",
     "name": "KNX/DALI-Gateway: Grundgeraet mit RS485-Busanschluss (Modbus RTU)",
     "gewerk": "440",
-    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Grundgeraet des KNX- bzw. DALI-zu-Modbus-Gateways (ein Gateway je Gewerk/Anlage einmal hinzufuegen). Busanschluss RS485, 2 Klemmen (A/B). Datenpunkte selbst ueber die separaten Eingangs-/Ausgangs-Baugruppen (440_000083-086) in der benoetigten Anzahl hinzufuegen. [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Grundgeraet des KNX- bzw. DALI-zu-Modbus-Gateways (ein Gateway je Gewerk/Anlage einmal hinzufuegen). Busanschluss RS485, 2 Klemmen (A/B). Datenpunkte selbst ueber die separaten Eingangs-/Ausgangs-Baugruppen (440_000083-086) in der benoetigten Anzahl hinzufuegen. [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff). [Nachtrag Session 78 Folgearbeit, 18.10.2026] Planungsfabrikat auf MBS GmbH (Krefeld) umgestellt (vorher Intesis/HMS Networks, s.o. - Recherche bleibt als Hintergrund stehen, Produktauswahl aber MBS). RS485-Klemmen von 2 auf 4 korrigiert (A, B, Common, Schirm - siehe Klemmen-Herleitung).",
     "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
       {
         "artikel_nr": "3209510",
         "menge": 1,
@@ -12458,7 +12623,8 @@
     "funktionsbereich": [
       "elektro"
     ],
-    "feldgeraet_artikel_nr": "KNX-DALI-GATEWAY-GENERIC",
+    "betriebsmittel": "KNX/DALI-zu-Modbus-Gateway, extern installiert (MBS Universal Gateway Triple-X KNX+DALI, RS485)",
+    "feldgeraet_artikel_nr": "11-0064",
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
     "geprueft": false
@@ -12467,7 +12633,7 @@
     "id": "440_000082",
     "name": "KNX/DALI-Gateway: Grundgeraet mit Ethernet-Anschluss (Modbus TCP)",
     "gewerk": "440",
-    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000081, aber Modbus TCP ueber Ethernet - keine eigenen Busklemmen (Netzwerkanbindung laeuft ueber den bestehenden Ethernet-Switch-Ratchet, automatisch ausgeloest durch die kommunikativen Eingangs-/Ausgangs-Datenpunkte). [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff).",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000081, aber Modbus TCP ueber Ethernet - keine eigenen Busklemmen (Netzwerkanbindung laeuft ueber den bestehenden Ethernet-Switch-Ratchet, automatisch ausgeloest durch die kommunikativen Eingangs-/Ausgangs-Datenpunkte). [Fork-Recherche 10/2026] Weder MDT/Gira/ABB-i-bus-KNX-IP-Router noch DALI-Vorschaltgeraete haben eine native Modbus/BACnet-Schnittstelle - immer ueber ein eigenstaendiges 3rd-Party-Gateway (Intesis/HMS Networks IN703DAL0640000-Familie fuer DALI, Intesis IN70/Ekinex/HMS Anybus fuer KNX, im Detail geprueft inkl. Original-Manual-Registerabschnitt). Die tatsaechliche Datenpunktzahl haengt vom Projekt ab (Anzahl KNX-Gruppenadressen bzw. DALI-Vorschaltgeraete) - deshalb als frei zaehlbare Eingangs-/Ausgangs-Baugruppen modelliert statt fester Registerliste, analog zum bestehenden Automations-Reserve-Muster (480_000001ff). [Nachtrag Session 78 Folgearbeit, 18.10.2026] Planungsfabrikat auf MBS GmbH (Krefeld) umgestellt (vorher Intesis/HMS Networks, s.o. - Recherche bleibt als Hintergrund stehen, Produktauswahl aber MBS). RS485-Klemmen von 2 auf 4 korrigiert (A, B, Common, Schirm - siehe Klemmen-Herleitung).",
     "bauteile": [
       {
         "artikel_nr": "KOMM-FB",
@@ -12479,7 +12645,8 @@
     "funktionsbereich": [
       "elektro"
     ],
-    "feldgeraet_artikel_nr": "KNX-DALI-GATEWAY-GENERIC",
+    "betriebsmittel": "KNX/DALI-zu-Modbus-Gateway, extern installiert (MBS Universal Gateway Triple-X KNX+DALI, Ethernet)",
+    "feldgeraet_artikel_nr": "11-0064",
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
     "geprueft": false
@@ -12574,8 +12741,18 @@
     "id": "440_000087",
     "name": "Rollladen/Jalousie-Gateway: Grundgeraet mit RS485-Busanschluss (Modbus RTU)",
     "gewerk": "440",
-    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Grundgeraet des KNX-Rollladen/Jalousie-zu-Modbus-Gateways (einmal je Anlage hinzufuegen). Busanschluss RS485, 2 Klemmen (A/B). Je Rollladen zusaetzlich 440_000089/090 in der benoetigten Anzahl hinzufuegen. [Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung.",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Grundgeraet des KNX-Rollladen/Jalousie-zu-Modbus-Gateways (einmal je Anlage hinzufuegen). Busanschluss RS485, 2 Klemmen (A/B). Je Rollladen zusaetzlich 440_000089/090 in der benoetigten Anzahl hinzufuegen. [Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung. [Nachtrag Session 78 Folgearbeit, 18.10.2026] Planungsfabrikat auf MBS GmbH (Krefeld) umgestellt (vorher Intesis/HMS Networks, s.o. - Recherche bleibt als Hintergrund stehen, Produktauswahl aber MBS). RS485-Klemmen von 2 auf 4 korrigiert (A, B, Common, Schirm - siehe Klemmen-Herleitung).",
     "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
       {
         "artikel_nr": "3209510",
         "menge": 1,
@@ -12590,7 +12767,8 @@
     "funktionsbereich": [
       "elektro"
     ],
-    "feldgeraet_artikel_nr": "ROLLADEN-GATEWAY-GENERIC",
+    "betriebsmittel": "Rollladen/Jalousie-zu-Modbus-Gateway, extern installiert (MBS Universal Gateway Double-X KNX, RS485)",
+    "feldgeraet_artikel_nr": "11-0056",
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
     "geprueft": false
@@ -12599,7 +12777,7 @@
     "id": "440_000088",
     "name": "Rollladen/Jalousie-Gateway: Grundgeraet mit Ethernet-Anschluss (Modbus TCP)",
     "gewerk": "440",
-    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000087, Modbus TCP ueber Ethernet - keine eigenen Busklemmen. [Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung.",
+    "beschreibung": "[Nachtrag Session 78, Nutzer-Freigabe 17.10.2026] Wie 440_000087, Modbus TCP ueber Ethernet - keine eigenen Busklemmen. [Fork-Recherche 10/2026] WAREMA 4M230.8i AP ist direkt BACnet-faehig (Position/Lamellenwinkel/Fahrzustand), aber keine Modbus-Variante gefunden - Nutzer-Vorgabe: generisches Modbus-Gatewaymodell reicht zunaechst aus (BACnet MS/TP spaeter). Sturm-/Frost-Zwangsfahrt hat laut mehreren Quellen (Hochschule Duesseldorf FAQ, Beckhoff-Doku) durchgaengig hoechste Prioritaet vor Sonnenautomatik/manueller Bedienung. [Nachtrag Session 78 Folgearbeit, 18.10.2026] Planungsfabrikat auf MBS GmbH (Krefeld) umgestellt (vorher Intesis/HMS Networks, s.o. - Recherche bleibt als Hintergrund stehen, Produktauswahl aber MBS). RS485-Klemmen von 2 auf 4 korrigiert (A, B, Common, Schirm - siehe Klemmen-Herleitung).",
     "bauteile": [
       {
         "artikel_nr": "KOMM-FB",
@@ -12611,7 +12789,8 @@
     "funktionsbereich": [
       "elektro"
     ],
-    "feldgeraet_artikel_nr": "ROLLADEN-GATEWAY-GENERIC",
+    "betriebsmittel": "Rollladen/Jalousie-zu-Modbus-Gateway, extern installiert (MBS Universal Gateway Double-X KNX, Ethernet)",
+    "feldgeraet_artikel_nr": "11-0056",
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
     "geprueft": false
@@ -12661,6 +12840,200 @@
     ],
     "automationsanbindung": true,
     "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000091",
+    "name": "KNX/DALI-Gateway: Grundgeraet, intern im Schaltschrank montiert (Modbus RTU)",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Gateway als schrankinternes Hutschienengeraet (MBS Universal Gateway Triple-X KNX+DALI, Art. 11-0064, 65x100x70mm, Zone steuer). RS485-Verbindung zur Automationsstation ist Schrankinnenverdrahtung und braucht keine Klemme (Regel 12), unabhaengig von RTU/TCP. Stattdessen 2 Klemmen klemm_f fuer den AUSGEHENDEN Gebaeudebus (KNX oder DALI, je 2-adrig) zu den Feldgeraeten. Eigenversorgung des Gateways (12-24V AC/DC) zieht automatisch eine Steuerspannungsquelle nach (Regel 5, einzelbauteile.benoetigt_steuerspannung=24vdc), keine eigene Klemme noetig (Regel 12). Datenpunkte ueber die separaten Eingangs-/Ausgangs-Baugruppen (440_000083-086) in der benoetigten Anzahl hinzufuegen. Gegenstueck zum bestehenden 440_000081/082 (Extern-Montage, dort 4 RS485-Klemmen zum extern installierten Gateway).",
+    "bauteile": [
+      {
+        "artikel_nr": "11-0064",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000092",
+    "name": "KNX/DALI-Gateway: Grundgeraet, intern im Schaltschrank montiert (Modbus TCP)",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Wie 440_000091, Modbus TCP ueber Ethernet - Verbindung zur Automations-station laeuft schrankintern ueber den bestehenden Ethernet-Switch-Ratchet (kein eigener Klemmenbedarf). Traegt den alleinigen modbus_tcp-IP-Teilnehmer-Marker (Regel 18), die Eingangs-/Ausgangs-Baugruppen (440_000084/086) sind davon ausgenommen (kein_ip_teilnehmer).",
+    "bauteile": [
+      {
+        "artikel_nr": "11-0064",
+        "menge": 1,
+        "zone": "steuer",
+        "feldbus_protokoll": "modbus_tcp"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000093",
+    "name": "Rollladen/Jalousie-Gateway: Grundgeraet, intern im Schaltschrank montiert (Modbus RTU)",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Gateway als schrankinternes Hutschienengeraet (MBS Universal Gateway Double-X KNX, Art. 11-0056, 48x100x70mm, Zone steuer) - fuer Rollladen-/Jalousiesysteme, die selbst KNX-Busteilnehmer sind. RS485-Verbindung zur DDC schrankintern, keine Klemme (Regel 12). 2 Klemmen klemm_f fuer den ausgehenden KNX-Bus zu den Rollladen-Antrieben. Eigenversorgung zieht automatisch eine Steuerspannungsquelle nach (Regel 5). Je Rollladen zusaetzlich 440_000089 in der benoetigten Anzahl hinzufuegen. Gegenstueck zu 440_000087/088 (Extern-Montage).",
+    "bauteile": [
+      {
+        "artikel_nr": "11-0056",
+        "menge": 1,
+        "zone": "steuer"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000094",
+    "name": "Rollladen/Jalousie-Gateway: Grundgeraet, intern im Schaltschrank montiert (Modbus TCP)",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Wie 440_000093, Modbus TCP - schrankinterne Ethernet-Verbindung ueber den bestehenden Switch-Ratchet, traegt den alleinigen modbus_tcp-IP-Teilnehmer-Marker (Regel 18), 440_000090 ist davon ausgenommen (kein_ip_teilnehmer).",
+    "bauteile": [
+      {
+        "artikel_nr": "11-0056",
+        "menge": 1,
+        "zone": "steuer",
+        "feldbus_protokoll": "modbus_tcp"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Gebaeudebus-Gateways",
+    "geprueft": false
+  },
+  {
+    "id": "440_000095",
+    "name": "Jalousie-/Rollladen-Schaltaktor WAREMA 4M230 REG, 4x 230V AC, Modbus RTU",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Direkter Modbus-RTU-Schaltaktor (WAREMA 4M230 REG, Art. 2039312, 4x 230V AC/500VA-Ausgaenge, 9 MW) - KEIN Gateway, sondern eigenstaendiger Feldaktor, der Rollladen-/Jalousiemotoren DIREKT ueber Modbus-Kommandos schaltet (Regel 7, extern installiert, typischerweise in einer lokalen Antriebsverteilung nahe den Motoren, nicht im ASP). Schaltschrankseitig nur der RS485-Busanschluss (4 Klemmen klemm_f: Bus A, Bus B, 0V, P - Originalbeschriftung des Geraets, deckt sich bereits mit dem neuen 4-Adern-Standard). Eigene 230V-Versorgung sowie Motorausgaenge (je 3 Klemmen L/N/Auf/Zu + gemeinsame PE) liegen AUSSERHALB des Schaltschranks, nicht Teil dieser Baugruppe. Kommunikativ 2x BO je Ausgang (Auf/Zu-Schaltbefehl), 4 Ausgaenge = 8x BO gesamt - Minimalannahme, keine offizielle Modbus-Registerliste gefunden (siehe quelle_hinweis des Feldgeraets 2039312). Wichtige Einschraenkung: Maße/Klemmenplan nur ueber ein bauartverwandtes Schwestermodell (anderes Protokoll) rekonstruiert, nicht am Original-Modbus-Geraet bestaetigt - vor Projekteinsatz bei WAREMA verifizieren.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_bo": 8,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "WAREMA Jalousie-/Rollladen-Schaltaktor 4M230 REG, 4x 230V AC Modbus RTU",
+    "feldgeraet_artikel_nr": "2039312",
+    "automationsanbindung": true,
+    "kategorie": "Jalousie-/Rollladenaktoren",
+    "geprueft": false
+  },
+  {
+    "id": "440_000096",
+    "name": "Jalousie-/Rollladen-Schaltaktor WAREMA 6M230 REG, 6x 230V AC, Modbus RTU",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Wie 440_000095, groessere Leistungsstufe (WAREMA 6M230 REG, Art. 2039313, 6x 230V AC/500VA-Ausgaenge, 12 MW). Kommunikativ 2x BO je Ausgang, 6 Ausgaenge = 12x BO gesamt - gleiche Einschraenkungen wie 440_000095 (siehe dort).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_bo": 12,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro"
+    ],
+    "betriebsmittel": "WAREMA Jalousie-/Rollladen-Schaltaktor 6M230 REG, 6x 230V AC Modbus RTU",
+    "feldgeraet_artikel_nr": "2039313",
+    "automationsanbindung": true,
+    "kategorie": "Jalousie-/Rollladenaktoren",
     "geprueft": false
   }
 ]

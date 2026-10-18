@@ -1,6 +1,28 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Teil 3 (17.10.2026).**
+> **Stand nach Session 78 Folgearbeit (18.10.2026).**
+> Gateway-Montageposition intern/extern eingeführt, Hersteller-Wechsel
+> KNX/DALI-Gateway + Rollladen-Gateway von Intesis/HMS auf **MBS GmbH
+> (Krefeld, Universal Gateway)**, neuer **WAREMA-Modbus-Schaltaktor**
+> (4M230/6M230 REG, direkter Rollladen-Feldaktor ohne Gateway) und
+> **katalogweite RS485-Korrektur auf 4 Adern** (A/B/Common/Schirm, bisher 2)
+> – ausgelöst durch Nutzer-Fund (fehlendes `betriebsmittel` + zu wenige
+> RS485-Klemmen), bestätigt durch 5 Fork-Recherchen (Modbus.org-Spezifikation,
+> MBS-Datenblätter, WAREMA-Produktdaten). Betrifft 17 Baugruppen
+> katalogweit (Zähler, Wärmepumpen, Gateways), dabei Nebenbefund behoben:
+> `430_000043` hatte einen Datenpunkt-Verdopplungsfehler (Klemmen als
+> `menge:2`-Zeile statt 2 Einzelzeilen modelliert). 6 neue Baugruppen
+> (`440_000091`–`096`: 4× Gateway intern + 2× WAREMA-Aktor), 2 neue
+> `einzelbauteile` (MBS-Gateway-Hardware), 4 neue `feldgeraete`, 2 alte
+> Platzhalter deaktiviert. Export: einzelbauteile 227→229, baugruppen
+> 306→312, feldgeraete 137→139. Katalog-Scan (Regel 7) ohne neue verwaiste
+> Referenzen, Struktur direkt in der JSON-Ausgabe gegengeprüft. **Browser-
+> Live-Verifikation noch offen** (WSL-localhost-Relay-Ausfall, bekanntes
+> Infrastrukturproblem seit Session 51/73 – `wsl --shutdown` braucht
+> Nutzer-Freigabe). Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session
+> 78 Folgearbeit.
+
+Vorheriger Stand – Session 78 Teil 3 (17.10.2026).
 > KNX/DALI-Gateway + Rollladen/Jalousie-Gateway angelegt (10 neue
 > Baugruppen `440_000081`–`090`, neue Kategorie „Gebaeudebus-Gateways",
 > 2 neue Feldgeräte) – Grundgerät (RTU/TCP) + frei oft hinzufügbare

@@ -3535,5 +3535,35 @@
     "kategorie": "DDC-Automationseinrichtung",
     "benoetigt_steuerspannung": "24vac",
     "geprueft": false
+  },
+  {
+    "artikel_nr": "11-0064",
+    "bezeichnung": "MBS Universal Gateway Triple-X KNX+DALI, RS485-Host, intern im Schaltschrank montiert, Hutschiene",
+    "hersteller": "MBS GmbH",
+    "bauteil_typ": "sonstige",
+    "b_mm": 65.0,
+    "te_breite": 4,
+    "h_mm": 100.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "Gebaeudebus-Gateways",
+    "benoetigt_steuerspannung": "24vdc",
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "11-0056",
+    "bezeichnung": "MBS Universal Gateway Double-X KNX, RS485-Host, intern im Schaltschrank montiert, Hutschiene",
+    "hersteller": "MBS GmbH",
+    "bauteil_typ": "sonstige",
+    "b_mm": 48.0,
+    "te_breite": 3,
+    "h_mm": 100.0,
+    "zone": [
+      "steuer"
+    ],
+    "kategorie": "Gebaeudebus-Gateways",
+    "benoetigt_steuerspannung": "24vdc",
+    "geprueft": false
   }
 ]
