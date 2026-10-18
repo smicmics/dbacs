@@ -1,6 +1,28 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Folgearbeit 2 (18.10.2026).**
+> **Stand nach Session 78 Folgearbeit 5 (18.10.2026).**
+> Nach mehreren Nutzer-Korrekturen steht die endgültige Elektro/Automation-
+> Regel: **Automation** zeigt alle schrankinternen (ASP-montierten)
+> Baugruppen PLUS jedes externe Betriebsmittel, das einen Datenpunkt in die
+> Automationsanlage einspeist (dasselbe Bauteil kann aus einem fremden
+> Schaltschrank/einer Unterverteilung/Anlage kommen). **Elektro** zeigt
+> ausschließlich externe Betriebsmittel, relevant nur wenn sie einen
+> Datenpunkt tragen. Vollständiger Katalog-Audit (Folgearbeit 4) fand 32
+> bisher übersehene Baugruppen (Elektro-Energiezähler, Handschalter-
+> Feldgerät, NS-/MS-Schaltanlagen-Komponenten) und taggte sie zusätzlich
+> auf `automation`. Endstand: 77 Baugruppen rein `automation`, 55 dual
+> `elektro,automation`, 0 verbliebene `elektro`-only (bis auf 2 bewusst
+> unveränderte Lüftungs-Kommunikationsmodule, andere Produktfamilie).
+> Zusätzlich (Folgearbeit 5): Auswahltext „ASP Labor/Rechenzentrum/
+> Krankenhaus" (`480_A00003`/`480_A00006`) um „interne USV" ergänzt – der
+> namensgebende Unterschied zur kleineren Anlage fehlte im Text.
+> Browser-verifiziert: Elektro-Dropdown 57 / Automation-Dropdown 132
+> Einträge, exakt deckungsgleich mit der Katalog-Auszählung;
+> `testKatalogScan()` und Stichproben-`testBaugruppe()` durchgängig grün,
+> keine Konsolenfehler. Details: `CLAUDE.md` → „Offene Punkte" Nachträge
+> Session 78 Folgearbeit 2–5.
+
+Vorheriger Stand – Session 78 Folgearbeit 2 (18.10.2026).
 > Umsortierung Elektro ↔ Automation (reine `funktionsbereich`-Änderung,
 > 45 Baugruppen): **Leistungsabgänge Schaltschrank** (24) komplett nach
 > Automation verschoben (schrankinterne Schutzorgane, Bestandteil des

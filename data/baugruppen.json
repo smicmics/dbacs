@@ -3600,7 +3600,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., Modbus RTU (Janitza UMG 96RM / Schneider Acti9 iEM3350)",
     "feldgeraet_artikel_nr": "EZ-NA-RTU",
@@ -3628,7 +3629,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., M-Bus (Janitza UMG 96RM-M / Schneider Acti9 iEM3135)",
     "feldgeraet_artikel_nr": "EZ-NA-MBUS",
@@ -3651,7 +3653,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., Modbus TCP/IP (Janitza UMG 96RM-PN)",
     "feldgeraet_artikel_nr": "EZ-NA-TCP",
@@ -5972,7 +5975,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B6 A, 1-polig, 6 kA (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SL6106-6-FELD",
@@ -5999,7 +6003,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B10 A, 1-polig, 6 kA (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SL6110-6-FELD",
@@ -6026,7 +6031,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B16 A, 1-polig, 6 kA (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SL6116-6-FELD",
@@ -6053,7 +6059,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B6 A, 2-polig, 6 kA (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SL6206-6-FELD",
@@ -6080,7 +6087,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B10 A, 2-polig, 6 kA (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SL6210-6-FELD",
@@ -6107,7 +6115,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B16 A, 2-polig, 6 kA (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SL6216-6-FELD",
@@ -6134,7 +6143,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 B16 A, 3-polig, 6 kA (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SL6316-6-FELD",
@@ -6161,7 +6171,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "LSS 5SL6 C16 A, 3-polig, 6 kA (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SL6316-7-FELD",
@@ -6188,7 +6199,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 30mA, Typ A (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SV3344-6-FELD",
@@ -6215,7 +6227,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 300mA, Typ A (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SV3644-6-FELD",
@@ -6242,7 +6255,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "FI-Schutzschalter SENTRON 5SV3, 4-polig, 40A, 500mA, Typ A (Siemens), extern eingebaut",
     "feldgeraet_artikel_nr": "5SV3744-6-FELD",
@@ -6280,7 +6294,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A",
     "feldgeraet_artikel_nr": "3SU1100-2BL60-1NA0",
@@ -6307,7 +6322,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit, 1x Schliesser (SPST), 22mm, 500V/10A",
     "feldgeraet_artikel_nr": "3SU1100-2BF60-3BA0",
@@ -6345,7 +6361,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A",
     "feldgeraet_artikel_nr": "3SU1100-2BL60-1NA0",
@@ -6394,7 +6411,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 4-Stufen (Betaetiger + 3 separate Kontaktelemente, individuell rastbar) - KEINE fertige \"komplette Einheit\" im Katalog gefunden, custom aus Modulsystem aufgebaut, NICHT verifiziert",
     "feldgeraet_artikel_nr": "3SU1100-4-UNVERIFIZIERT",
@@ -6421,7 +6439,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 2-Stufen komplette Einheit, 1x Schliesser (SPST), 22mm, 500V/10A",
     "feldgeraet_artikel_nr": "3SU1100-2BF60-3BA0",
@@ -6459,7 +6478,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Siemens SIRIUS ACT Wahlschalter 3-Stufen komplette Einheit, 2x Schliesser (2NO), 22mm, 500V/10A",
     "feldgeraet_artikel_nr": "3SU1100-2BL60-1NA0",
@@ -6508,7 +6528,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Sicherungslasttrennschalter 3KF, 32-63 A (Siemens)",
     "feldgeraet_artikel_nr": "3KF-63A",
@@ -6557,7 +6578,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Sicherungslasttrennschalter 3KF, 100-160 A (Siemens)",
     "feldgeraet_artikel_nr": "3KF-160A",
@@ -6606,7 +6628,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Sicherungslasttrennschalter 3KF, 200-250 A (Siemens)",
     "feldgeraet_artikel_nr": "3KF-250A",
@@ -6655,7 +6678,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Sicherungslasttrennschalter 3KF, 315-400 A (Siemens)",
     "feldgeraet_artikel_nr": "3KF-400A",
@@ -6704,7 +6728,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Sicherungslasttrennschalter 3KF, 630-800 A (Siemens)",
     "feldgeraet_artikel_nr": "3KF-800A",
@@ -6764,7 +6789,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Leistungsschalter 3WA, 630 A (Siemens)",
     "feldgeraet_artikel_nr": "3WA-630A",
@@ -6824,7 +6850,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Leistungsschalter 3WA, 1250 A (Siemens)",
     "feldgeraet_artikel_nr": "3WA-1250A",
@@ -6884,7 +6911,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Leistungsschalter 3WA, 2000 A (Siemens)",
     "feldgeraet_artikel_nr": "3WA-2000A",
@@ -6944,7 +6972,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Leistungsschalter 3WA, 3200 A (Siemens)",
     "feldgeraet_artikel_nr": "3WA-3200A",
@@ -7004,7 +7033,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Leistungsschalter 3WA, 5000 A (Siemens)",
     "feldgeraet_artikel_nr": "3WA-5000A",
@@ -11992,7 +12022,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "MS-UMZ-SCHUTZ-MESS",
     "automationsanbindung": true,
@@ -12014,7 +12045,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
@@ -12035,7 +12067,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
@@ -12082,7 +12115,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "MS-LEISTUNGSSCHALTER-GENERIC",
     "automationsanbindung": true,
@@ -12119,7 +12153,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "MS-ERDUNGSTRENNER-GENERIC",
     "automationsanbindung": true,
@@ -12171,7 +12206,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "VNB-4Q-ZAEHLER-GENERIC",
     "automationsanbindung": true,
@@ -12208,7 +12244,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "MS-LASTTRENNSCHALTER-GENERIC",
     "automationsanbindung": true,
@@ -12256,7 +12293,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "MS-LASTTRENNSCHALTER-SICHERUNG-GENERIC",
     "automationsanbindung": true,
@@ -12322,7 +12360,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "3WA-630A",
     "automationsanbindung": true,
@@ -12388,7 +12427,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "3WA-1250A",
     "automationsanbindung": true,
@@ -12454,7 +12494,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "3WA-2000A",
     "automationsanbindung": true,
@@ -12520,7 +12561,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "3WA-3200A",
     "automationsanbindung": true,
@@ -12586,7 +12628,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "feldgeraet_artikel_nr": "3WA-5000A",
     "automationsanbindung": true,
@@ -12621,7 +12664,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "KNX/DALI-zu-Modbus-Gateway, extern installiert (MBS Universal Gateway Triple-X KNX+DALI, RS485)",
     "feldgeraet_artikel_nr": "11-0064",
@@ -12643,7 +12687,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "KNX/DALI-zu-Modbus-Gateway, extern installiert (MBS Universal Gateway Triple-X KNX+DALI, Ethernet)",
     "feldgeraet_artikel_nr": "11-0064",
@@ -12769,7 +12814,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Rollladen/Jalousie-zu-Modbus-Gateway, extern installiert (MBS Universal Gateway Double-X KNX, RS485)",
     "feldgeraet_artikel_nr": "11-0056",
@@ -12791,7 +12837,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "Rollladen/Jalousie-zu-Modbus-Gateway, extern installiert (MBS Universal Gateway Double-X KNX, Ethernet)",
     "feldgeraet_artikel_nr": "11-0056",
@@ -12996,7 +13043,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "WAREMA Jalousie-/Rollladen-Schaltaktor 4M230 REG, 4x 230V AC Modbus RTU",
     "feldgeraet_artikel_nr": "2039312",
@@ -13034,7 +13082,8 @@
       }
     ],
     "funktionsbereich": [
-      "elektro"
+      "elektro",
+      "automation"
     ],
     "betriebsmittel": "WAREMA Jalousie-/Rollladen-Schaltaktor 6M230 REG, 6x 230V AC Modbus RTU",
     "feldgeraet_artikel_nr": "2039313",

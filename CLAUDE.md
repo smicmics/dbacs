@@ -16,6 +16,65 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Folgearbeit 5 (18.10.2026) – Nutzer-Fund: Auswahltext
+> „ASP Labor/Rechenzentrum/Krankenhaus – hohe Verfügbarkeit" (`480_A00003`)
+> nannte die interne USV nicht, obwohl sie der namensgebende Unterschied zu
+> „ASP mit Bedienpanel" ist. Name um „, interne USV" ergänzt – ebenso bei
+> `480_A00006` (Doppeleinspeisung-Variante). Reine Textänderung, keine
+> Mitglieder-/DP-Änderung. Browser-verifiziert (`ANLAGEN_DB` zeigt beide
+> neuen Namen, `testKatalogScan()` sauber).
+
+> **Nachtrag Session 78 Folgearbeit 4 (18.10.2026) – Vollständiger Audit
+> Elektro ↔ Automation auf Nutzer-Anfrage („prüfe das für alle enthaltenen
+> Komponenten"). 32 weitere, bisher übersehene Baugruppen auf `elektro,
+> automation` dual-getaggt, damit ist die in Folgearbeit 2/3 entwickelte
+> Regel jetzt lückenlos über den gesamten Katalog angewendet.**
+> Gefunden per systematischem Scan (jede `elektro`-Baugruppe gegen
+> `feldgeraet_artikel_nr`+Datenpunkt-Vorhandensein geprüft): `440_000001`–
+> `003` (Elektro-Energiezähler/Netzanalysator), `440_000026`–`031`
+> (Handschalter Feldgerät-Türeinbau externe Anlage), `440_000032`–`041`
+> (NS-Schaltanlagen-Komponenten 3KF-Lasttrennschalter/3WA-Leistungsschalter),
+> `440_000068`–`075` (komplette Mittelspannungsschaltanlage: UMZ-Relais+
+> Wandlersatz, Busauswertung RTU/TCP, Leistungsschalter/Erdungstrenner/
+> Lasttrennschalter MS, MS-Messfeld VNB), `440_000076`–`080` (NS-
+> Schaltanlagen-Komponenten mit Messung, 3WA+COM100/800) – alle waren
+> `elektro`-only, obwohl sie wie die bereits korrigierten Familien externe
+> Betriebsmittel mit Datenpunkt sind.
+> **Endergebnis (vollständig, kein `elektro`-only-Rest mehr im Katalog):**
+> 77 Baugruppen rein `automation` (schrankinterne ASP-Hardware + die
+> ASP-montierten ex-Elektro-Familien aus Folgearbeit 2), 55 Baugruppen
+> dual `elektro,automation` (jedes externe Betriebsmittel mit Datenpunkt),
+> 2 Baugruppen bewusst unverändert `lueftung,heizung,kaelte,elektro`
+> (`430_000043`/`044`, Lüftungs-Kommunikationsmodul – andere Produkt-
+> familie, nicht Teil dieser Bereinigung, bei Bedarf separat klären).
+> Browser-verifiziert: Elektro-Dropdown 57 Einträge (55 dual + 2
+> Lüftungsmodul), Automation-Dropdown 132 Einträge (77+55) – exakt
+> deckungsgleich mit der Katalog-Auszählung; `testKatalogScan()` sauber,
+> Stichproben-`testBaugruppe()` auf allen 5 neu betroffenen Familien
+> `pass:true`, keine Konsolenfehler.
+
+> **Nachtrag Session 78 Folgearbeit 3 (18.10.2026) – Präzisierung der
+> Elektro/Automation-Regel (Nutzer-Korrektur zur Folgearbeit 2 unten).
+> Endgültige Regel: Elektro zeigt IMMER NUR externe Bauteile (Komponenten
+> einer fremden Anlage/Unterverteilung, relevant nur wenn sie einen
+> Datenpunkt tragen). Automation zeigt ZUSÄTZLICH zu den schrankinternen
+> (ASP-montierten) Varianten auch diese externen Bauteile – weil ein
+> identisches Bauteil aus einem fremden Schaltschrank/einer
+> Unterverteilung/Anlage dort ebenfalls als Datenpunkt aufgeschaltet werden
+> kann.** Konkret: die „intern"/„im Schaltschrank"-Varianten bleiben
+> automation-only (unverändert aus Folgearbeit 2) – die „extern"/
+> „Feldgerät (externe Anlage)"-Varianten werden zusätzlich auf Automation
+> dual-getaggt (`elektro,automation` statt nur `elektro`): 11×
+> Schutzorgane-Feldgerät (`440_000015`–`025`), 4× Gateway-Grundgerät extern
+> (`440_000081`/`082`/`087`/`088`), 2× WAREMA-Modbus-Aktor (`440_000095`/
+> `096`, gleiches Muster „externes Betriebsmittel als Datenpunkt
+> aufgeschaltet"). Ergebnis: Elektro-Tab unverändert 10 Gateway-/2
+> Jalousie-/11 Schutzorgane-Einträge (nur extern); Automation-Tab jetzt 14
+> Gateway- (10 extern+Zähl + 4 intern) /2 Jalousie-/24 Leistungsabgänge-/22
+> Schutzorgane-Einträge (11 extern + 11 intern) – vollständige Sicht.
+> Browser-verifiziert: Dropdown-Zählung je Tab exakt wie oben,
+> `testKatalogScan()` sauber, keine Konsolenfehler.
+
 > **Nachtrag Session 78 Folgearbeit 2 (18.10.2026) – Umsortierung Elektro ↔
 > Automation (reine `funktionsbereich`-Änderung, keine ID-/Gewerk-Änderung).
 > Nutzer-Vorgabe: ein Bauteil, das über Klemmen VON AUSSEN in die
