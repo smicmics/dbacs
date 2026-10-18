@@ -3571,6 +3571,16 @@ function resolveBaugruppenBauteile(bg, variante) {
   // vorhanden) – nur dann gilt die Instanzen-Paarung in buildQueues().
   const out = [];
   const countByKey = {};
+  const lastRowByKey = {};
+  // Nutzer-Fund 18.10.2026 (440_000002 u.a.): das gerade Vorkommen "entfällt"
+  // als eigene Zeile, aber falls es selbst einen DP-/Feldbus-Override trägt
+  // (z. B. die 2. von 2 Zeilen: 1. plain Referenzader, 2. Signalader mit
+  // dp_fb_ai+feldbus_protokoll – genau das in diesem Katalog übliche Muster),
+  // ging dieser Override bisher komplett verloren, sobald Doppelstock aktiv
+  // war (Standard-Variante war nicht betroffen, da dort beide Zeilen bleiben).
+  // Fix: Override-Felder des geraden Vorkommens auf die zuletzt angelegte
+  // (ungerade) Zeile desselben Keys übertragen, statt sie zu verwerfen.
+  const DS_MERGE_FIELDS = ['dp_ai','dp_ao','dp_bi','dp_bo','dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo','feldbus_protokoll','lvb_erforderlich'];
   bg.bauteile.forEach(bt => {
     const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
     if (!eb) { out.push(bt); return; }
@@ -3590,9 +3600,17 @@ function resolveBaugruppenBauteile(bg, variante) {
     const key = (bt.zone || eb.zone[0]) + '|' + bt.artikel_nr;
     const n = countByKey[key] = (countByKey[key] || 0) + 1;
     if (n % 2 === 1) {
-      out.push({...bt, artikel_nr: ziel.artikel_nr, _dsPairable: true}); // ungerades Vorkommen: neue Doppelstockklemme
+      const neu = {...bt, artikel_nr: ziel.artikel_nr, _dsPairable: true}; // ungerades Vorkommen: neue Doppelstockklemme
+      out.push(neu);
+      lastRowByKey[key] = neu;
+    } else {
+      // gerades Vorkommen: entfällt als eigene Zeile, teilt sich die zuletzt
+      // angelegte Klemme (2. Ebene) – Override-Felder trotzdem übernehmen.
+      const zielRow = lastRowByKey[key];
+      if (zielRow) {
+        DS_MERGE_FIELDS.forEach(f => { if (bt[f] != null && zielRow[f] == null) zielRow[f] = bt[f]; });
+      }
     }
-    // gerades Vorkommen: entfällt, teilt sich die zuletzt angelegte Klemme (2. Ebene)
   });
   return applyNetztypResolution(out);
 }

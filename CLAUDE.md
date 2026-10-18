@@ -16,6 +16,63 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Folgearbeit 6 (18.10.2026) – Nutzer-Fund: Ethernet-
+> Switch-Ratchet-Bug katalogweit, nicht nur bei den Gateways. Rückkühlwerk
+> trocken TCP + 2 Reihen à 10 Ventilatoren ergab 6 Switches statt 1.**
+> **Root Cause:** Regel 18 (Session 78 Teil 3) führte `kein_ip_teilnehmer`
+> nur für die KNX/DALI-/Rollladen-Gateway-Zähl-Baugruppen ein – dieselbe
+> Fehlerklasse (mehrere frei mehrfach hinzufügbare „Zubehör"-Baugruppen
+> teilen sich den EINEN TCP-Anschluss eines gemeinsamen Kerns/Grundsystems,
+> zählten aber bisher JEDE Instanz als eigenen IP-Teilnehmer) bestand in 4
+> weiteren Baugruppenfamilien unverändert fort. Katalogweiter Scan aller
+> `modbus_tcp`-Fundstellen (`scratchpad/scan_tcp_switch.py`) durchgeführt.
+> **Behoben:**
+> - **Rückkühlwerk-Zubehör** (`420_000075`/`077`/`079`, Lüfterdrehzahl/
+>   Lüfter-Einzelmeldung/Magnetventil je Bank bzw. Ventilator) →
+>   `kein_ip_teilnehmer`. Kern-Busauswertung (`420_000070`/`073`) bleibt
+>   alleiniger Marker – exakter Nutzer-Repro (1× Kern + 2× Lüfterdrehzahl +
+>   20× Lüfter-Einzelmeldung) zeigt jetzt korrekt **1 Switch statt 6**.
+> - **Kältemaschine-Mengenfeld-Zubehör** (`420_000087`/`089`, Kreis-Stör-
+>   meldung je Kältekreis / Verdichter-Meldung je Leistungsstufe) →
+>   `kein_ip_teilnehmer`. Kern-Busauswertung (`420_000067`/`083`) bleibt
+>   alleiniger Marker.
+> - **ASi-Bus-Brandschutzklappen** (`430_000060`/`061`, BMA-Kopplung/
+>   Klappe hinzufügen) → `kein_ip_teilnehmer`. Das Grundsystem
+>   (`430_000059`, TNC-A1412) hatte bisher **gar keinen** `feldbus_
+>   protokoll`-Marker – ergänzt (jetzt alleiniger Zähler). Schwerster
+>   Einzelfall: 50 Klappen ergaben vorher 13 Switches, jetzt korrekt 1.
+> - **Gaswarnanlage-Schnittstelle** (`450_000005`, Busauswertung je
+>   Messzone) → `kein_ip_teilnehmer`. `450_000003` (externe Übergabe)
+>   hatte ebenfalls keinen Marker – neue `KOMM-FB`-Zeile mit
+>   `feldbus_protokoll:modbus_tcp` ergänzt (zählt korrekt je unabhängigem
+>   Hauptalarm-Ausgang, da `450_000003` selbst mehrfach hinzufügbar ist).
+> - **Eigenständiger Zweitbug gefunden:** `430_000044` (Lüftungs-Kommuni-
+>   kationsmodul Modbus TCP) modellierte seine RS485/TCP-Klemme als EINE
+>   Zeile mit `menge:2` statt zwei Einzelzeilen – dieselbe Fehlerklasse wie
+>   der in Session 61 behobene Ventilator-Klemmen-Bug (Regel 14: ein
+>   dp-Override wird mit der Zeilen-`menge` multipliziert). Das verdoppelte
+>   sowohl den kommunikativen Datenpunktbedarf (war bereits bei der RTU-
+>   Schwesterbaugruppe `430_000043` in Folgearbeit 1 korrigiert, TCP blieb
+>   damals bewusst unangetastet) ALS AUCH den IP-Teilnehmer-Beitrag je
+>   Instanz. Jetzt korrigiert: 1 dp-tragende Zeile `menge:1` + 1 zusätzliche
+>   plaine Klemmenzeile. 5 Instanzen ergeben jetzt korrekt 2 Switches
+>   (`ceil(5/4)`) statt vorher 3 (`ceil(10/4)`).
+> **Bewusst unverändert geprüft (kein Bug):** Belimo-Energieventile
+> (`420_000027`/`028`), Wilo-CIF-Modul (`420_000052`), 3WA-Leistungsschalter
+> mit COM100/800 (`440_000076`–`080`), UMZ-Busauswertung (`440_000070`),
+> Elektro-Energiezähler (`440_000003`), UMG96RM-PN Türeinbau
+> (`480_000014`), Split-/wassergekühltes-Klimagerät-Busauswertung
+> (`420_000096`) – alle sind jeweils EIGENSTÄNDIGE physische Geräte mit
+> eigenem IP-Anschluss, kein geteilter Kern, zählen also zurecht je
+> Instanz.
+> **Browser-verifiziert:** exakter Nutzer-Repro (RKW) 6→1 Switch;
+> Kältemaschine-Mengenfeld-Szenario, ASi-Bus-50-Klappen-Szenario,
+> Gaswarnanlage-2×Hauptalarm-Szenario je auf das rechnerisch korrekte
+> Ergebnis geprüft; Regressionstest der bereits bestehenden Regel-18-
+> Gateway-Fälle weiterhin korrekt; `testKatalogScan()` sauber, keine
+> Konsolenfehler. Export: baugruppen_bauteile +12 Zeilen (baugruppen.json
+> selbst unverändert 312, reine Verknüpfungstabellen-Änderung).
+
 > **Nachtrag Session 78 Folgearbeit 5 (18.10.2026) – Nutzer-Fund: Auswahltext
 > „ASP Labor/Rechenzentrum/Krankenhaus – hohe Verfügbarkeit" (`480_A00003`)
 > nannte die interne USV nicht, obwohl sie der namensgebende Unterschied zu

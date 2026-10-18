@@ -5170,11 +5170,16 @@
     "bauteile": [
       {
         "artikel_nr": "3209510",
-        "menge": 2,
+        "menge": 1,
         "zone": "klemm_f",
         "dp_fb_ai": 5,
         "dp_fb_bi": 2,
         "feldbus_protokoll": "modbus_tcp"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
       }
     ],
     "funktionsbereich": [
@@ -8598,7 +8603,8 @@
       {
         "artikel_nr": "TNC-A1412",
         "menge": 1,
-        "zone": "steuer"
+        "zone": "steuer",
+        "feldbus_protokoll": "modbus_tcp"
       },
       {
         "artikel_nr": "5SL6106-6",
@@ -8661,7 +8667,8 @@
         "zone": "steuer",
         "dp_fb_bi": 1,
         "dp_fb_bo": 1,
-        "feldbus_protokoll": "modbus_tcp"
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
       }
     ],
     "funktionsbereich": [
@@ -8682,7 +8689,8 @@
         "menge": 1,
         "zone": "steuer",
         "dp_fb_bi": 2,
-        "feldbus_protokoll": "modbus_tcp"
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
       }
     ],
     "funktionsbereich": [
@@ -9882,7 +9890,8 @@
         "menge": 1,
         "zone": "steuer",
         "dp_fb_ao": 1,
-        "feldbus_protokoll": "modbus_tcp"
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
       }
     ],
     "funktionsbereich": [
@@ -9924,7 +9933,8 @@
         "menge": 1,
         "zone": "steuer",
         "dp_fb_bi": 3,
-        "feldbus_protokoll": "modbus_tcp"
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
       }
     ],
     "funktionsbereich": [
@@ -9966,7 +9976,8 @@
         "menge": 1,
         "zone": "steuer",
         "dp_fb_bi": 1,
-        "feldbus_protokoll": "modbus_tcp"
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
       }
     ],
     "funktionsbereich": [
@@ -10110,6 +10121,12 @@
         "menge": 1,
         "zone": "klemm_f",
         "dp_bi": 1
+      },
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "feldbus_protokoll": "modbus_tcp"
       }
     ],
     "funktionsbereich": [
@@ -10155,7 +10172,8 @@
         "zone": "steuer",
         "dp_fb_ai": 1,
         "dp_fb_bi": 1,
-        "feldbus_protokoll": "modbus_tcp"
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
       }
     ],
     "funktionsbereich": [
@@ -11680,7 +11698,8 @@
         "menge": 1,
         "zone": "steuer",
         "dp_fb_bi": 2,
-        "feldbus_protokoll": "modbus_tcp"
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
       }
     ],
     "funktionsbereich": [
@@ -11722,7 +11741,8 @@
         "menge": 1,
         "zone": "steuer",
         "dp_fb_bi": 2,
-        "feldbus_protokoll": "modbus_tcp"
+        "feldbus_protokoll": "modbus_tcp",
+        "kein_ip_teilnehmer": true
       }
     ],
     "funktionsbereich": [
