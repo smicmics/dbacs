@@ -16,6 +16,47 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Folgearbeit 9 (18.10.2026) – `testAnlage()` um
+> Batch-Fähigkeit erweitert (`slice`-Parameter + neue `testAnlageBatch()`),
+> damit auch sehr kombinationsreiche Anlagen VOLLSTÄNDIG geprüft werden
+> können. Erstmals alle 2304 Kombinationen von `430_A00004` (Vollklima-
+> anlage-Baukasten) einzeln durchgetestet – bisher nur per Stichprobe
+> geprüft. Nutzer-Anstoß: „Klimaanlagen sind wichtig, da oft eingesetzt...
+> ein Test kann ruhig Tage dauern, wenn es erforderlich ist."**
+> **Root Cause des bisherigen Timeouts:** nicht die Rechenzeit der
+> Prüflogik selbst, sondern das Antwortzeit-Limit des Browser-Steuerungs-
+> werkzeugs PRO EINZELAUFRUF (~45s) – `testAnlage()` testete bisher immer
+> ALLE Kombinationen in einem Rutsch. **Fix:** optionaler dritter Parameter
+> `slice: {offset, limit}` – testet nur einen Ausschnitt der vollen
+> Kombinationsmenge, gibt zusätzlich `total`/`geprueft` zurück. Neue
+> `testAnlageBatch(anlageId, batchSize, startOffset, menge)` kapselt das
+> (liefert zusätzlich `naechsterOffset`/`fertig` für eine Orchestrierung
+> von außen über mehrere Aufrufe hinweg). Kein Verhalten geändert, wenn
+> `slice` weggelassen wird (voll abwärtskompatibel zu allen bisherigen
+> Aufrufen inkl. `testAlles()`).
+> **Ergebnis des Vollsweeps (alle 2304/2304 Kombinationen, in 150er-
+> Batches):** 90 „Fehlschläge" (≈3,9%) – bei genauerer Prüfung **keine
+> echten Bugs**, sondern durchgängig derselbe, bereits seit Session 75
+> bekannte und akzeptierte Fall: die äußersten Maximal-Kombinationen
+> (alle Register „groß", Dampf-/Sprühbefeuchtung, Rotor-WT-WRG
+> gleichzeitig) sprengen schlicht den EINEN festen 1-Feld-Referenzschrank
+> (1200×2000mm) – 32 davon reiner Zonen-Overflow (Stückliste vollständig,
+> nur kein Platz), 58 zusätzlich mit `fehlendPlatziert:["2967073"]`
+> (Koppelrelais der thermischen Ventilantriebe, das einzige je in dieser
+> Situation betroffene Bauteil – immer erst NACH bereits vollständigem
+> Overflow in evert/leist/klemm_l/klemm_f). **Gegenprobe bestätigt reine
+> Schrankgrößenfrage, kein Logikfehler:** dieselbe Extremkombination unter
+> `zone_modus='je_feld'` (mehrere Felder erlaubt) platziert vollständig
+> ohne jeden Fehler (`fehlendPlatziert:[]`, `overflow:[]`). In der Praxis
+> würde für eine derart maximal ausgestattete Vollklimaanlage ohnehin ein
+> größerer/mehrfeldriger Schrank gewählt – das System erkennt diesen Fall
+> korrekt und meldet ihn zuverlässig, statt etwas stillschweigend zu
+> verlieren. Keine Katalog-/Code-Korrektur nötig.
+> **Bedeutung für die künftige Testroutine (Memory `project_dbacs_
+> testroutine`):** die Batch-Fähigkeit macht „jede Anlage vollständig,
+> nicht nur stichprobenhaft" jetzt grundsätzlich möglich und ist direkt
+> wiederverwendbar für künftige noch größere Anlagen/Kombinationsräume.
+
 > **Nachtrag Session 78 Folgearbeit 8 (18.10.2026) – KNX-Busspannungs-
 > versorgung für die 4 Intern-Gateway-Baugruppen ergänzt (Nutzer-Auftrag
 > „KNX intern. Busspannungsversorgung mit Absicherung gemeldet vorsehen")

@@ -1,6 +1,21 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Folgearbeit 8 (18.10.2026).**
+> **Stand nach Session 78 Folgearbeit 9 (18.10.2026).**
+> `testAnlage()` um Batch-Fähigkeit erweitert (`slice`-Parameter +
+> `testAnlageBatch()`), damit auch sehr kombinationsreiche Anlagen
+> VOLLSTÄNDIG statt nur stichprobenhaft geprüft werden können (das bisherige
+> Zeitlimit war rein werkzeugseitig pro Einzelaufruf, nicht die Rechenzeit
+> der Prüfung). Erstmals alle 2304 Kombinationen von `430_A00004`
+> (Vollklimaanlage-Baukasten) einzeln durchgetestet: 90 „Fehlschläge"
+> gefunden, bei Prüfung aber keine echten Bugs – durchgängig derselbe,
+> bereits bekannte Fall (Maximal-Ausstattung sprengt den 1-Feld-
+> Referenzschrank), per Gegenprobe unter `zone_modus='je_feld'` als reine
+> Schrankgrößenfrage bestätigt (dieselbe Kombination platziert dort
+> fehlerfrei). Keine Katalog-/Code-Korrektur nötig, reine Testinfrastruktur-
+> Erweiterung. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 78
+> Folgearbeit 9.
+
+Vorheriger Stand – Session 78 Folgearbeit 8 (18.10.2026).
 > KNX-Busspannungsversorgung (ABB SV/S 30.640.3.1, 30V DC/640mA) + LSS +
 > gemeldete Absicherung (Hilfsschalter-BI) in alle 4 Intern-Gateway-
 > Baugruppen (`440_000091`–`094`) ergänzt – Nutzer-Auftrag „Busspannungs-

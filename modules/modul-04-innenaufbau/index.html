@@ -5804,7 +5804,21 @@ function testBaugruppe(bgId, menge) {
 // Prüft EINE Anlage über ALLE möglichen Options-Kombinationen (gruppe-
 // Dropdowns, inkl. "Ohne" bei gruppe_optional) - zeigt je Kombination, ob
 // genau die dazu passenden Baugruppen eingesetzt werden.
-function testAnlage(anlageId, menge) {
+// `slice` (Session 78 Folgearbeit, 18.10.2026): optional {offset, limit} -
+// testet nur einen Ausschnitt der vollen Kombinationsmenge statt ALLER auf
+// einmal. Grund: bei sehr kombinationsreichen Anlagen (z.B. 430_A00004
+// Vollklimaanlage-Baukasten mit 2304 Kombinationen) sprengt ein einzelner
+// `javascript_tool`-Aufruf das Zeitlimit - nicht weil die Pruefung selbst
+// zu lange braeuchte, sondern weil JEDE Kombination einen echten
+// DOM-getriebenen `calculate()`-Lauf ausloest (Nutzer-Vorgabe: "ein Test
+// kann ruhig Tage dauern" - das Zeitlimit ist rein werkzeugseitig pro
+// Einzelaufruf, nicht die Rechenzeit der Pruefung). Mit `slice` kann der
+// volle Kombinationsraum von aussen in mehreren Batches durchlaufen werden
+// (z.B. `testAnlage('430_A00004', 1, {offset:0, limit:300})`,
+// `{offset:300, limit:300}`, ... bis `total` erreicht ist) und die
+// Ergebnisse ueber mehrere Aufrufe hinweg akkumuliert werden - deckt am
+// Ende trotzdem JEDE einzelne Kombination ab, nur nicht in einem Rutsch.
+function testAnlage(anlageId, menge, slice) {
   menge = menge || 1;
   const anlage = ANLAGEN_DB.find(a => a.id === anlageId);
   if (!anlage) { console.error('✗', anlageId, 'nicht im Katalog gefunden'); return { pass:false, anlageId, fehler:'nicht gefunden' }; }
@@ -5831,6 +5845,8 @@ function testAnlage(anlageId, menge) {
     kombis.forEach(k => optionen.forEach(opt => neu.push({...k, [gr]: opt})));
     kombis = neu;
   });
+  const total = kombis.length;
+  if (slice) kombis = kombis.slice(slice.offset || 0, (slice.offset || 0) + (slice.limit || kombis.length));
 
   const ergebnisse = [];
   kombis.forEach(kombi => {
@@ -5878,9 +5894,21 @@ function testAnlage(anlageId, menge) {
   });
 
   const pass = refsAnlage.length === 0 && ergebnisse.every(e => e.pass);
-  console.log((pass ? '✓ GESAMT PASS' : '✗ GESAMT FAIL') + ' — ' + anlageId + ' (' + ergebnisse.length + ' Kombination(en) geprüft)');
+  const sliceInfo = slice ? ' [Slice ' + (slice.offset||0) + '..' + ((slice.offset||0)+kombis.length-1) + ' von ' + total + ']' : '';
+  console.log((pass ? '✓ PASS' : '✗ FAIL') + ' — ' + anlageId + sliceInfo + ' (' + ergebnisse.length + ' Kombination(en) geprüft)');
   if (refsAnlage.length) console.warn('  verwaiste bg_id-Referenzen:', refsAnlage);
-  return { pass, anlageId, name: anlage.name, verwaisteReferenzen: refsAnlage, kombinationen: ergebnisse };
+  return { pass, anlageId, name: anlage.name, verwaisteReferenzen: refsAnlage, kombinationen: ergebnisse, total, geprueft: kombis.length };
+}
+
+// Orchestriert testAnlage() in Batches ueber den GESAMTEN Kombinationsraum,
+// auch wenn der einzelne javascript_tool-Aufruf das nicht am Stueck schafft
+// (siehe Kommentar an testAnlage()). Eigener Aufruf von aussen je Batch,
+// akkumuliert ueber `startOffset`/vorige Ergebnisse - siehe Nutzung unten.
+function testAnlageBatch(anlageId, batchSize, startOffset, menge) {
+  const r = testAnlage(anlageId, menge, { offset: startOffset || 0, limit: batchSize || 300 });
+  const naechsterOffset = (startOffset || 0) + r.geprueft;
+  const fertig = naechsterOffset >= r.total;
+  return { ...r, naechsterOffset, fertig };
 }
 
 // ── Testroutinenkatalog (Session 78 Folgearbeit, 18.10.2026) ───────────
