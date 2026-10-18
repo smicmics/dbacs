@@ -3580,7 +3580,14 @@ function resolveBaugruppenBauteile(bg, variante) {
   // war (Standard-Variante war nicht betroffen, da dort beide Zeilen bleiben).
   // Fix: Override-Felder des geraden Vorkommens auf die zuletzt angelegte
   // (ungerade) Zeile desselben Keys übertragen, statt sie zu verwerfen.
-  const DS_MERGE_FIELDS = ['dp_ai','dp_ao','dp_bi','dp_bo','dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo','feldbus_protokoll','lvb_erforderlich'];
+  // Numerische DP-Felder werden ADDIERT statt nur bei Leerstand übernommen:
+  // trägt die ungerade UND die gerade Zeile je einen eigenen DP (z. B. 430_000005
+  // – U1=Feuchte-AI, U2=Temperatur-AI, beide auf eigenen Adern derselben
+  // Doppelstockklemme), ging der zweite Wert vorher verloren, weil "nur bei
+  // Leerstand übernehmen" ihn stillschweigend verworfen hat (Nutzer-Fund
+  // 18.10.2026, Folgefehler beim Beheben des ersten Doppelstock-Bugs).
+  const DS_MERGE_NUM_FIELDS = ['dp_ai','dp_ao','dp_bi','dp_bo','dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo'];
+  const DS_MERGE_SET_FIELDS = ['feldbus_protokoll','lvb_erforderlich'];
   bg.bauteile.forEach(bt => {
     const eb = EINZELBAUTEILE_DB.find(e => e.artikel_nr === bt.artikel_nr);
     if (!eb) { out.push(bt); return; }
@@ -3598,17 +3605,29 @@ function resolveBaugruppenBauteile(bg, variante) {
       return;
     }
     const key = (bt.zone || eb.zone[0]) + '|' + bt.artikel_nr;
-    const n = countByKey[key] = (countByKey[key] || 0) + 1;
-    if (n % 2 === 1) {
-      const neu = {...bt, artikel_nr: ziel.artikel_nr, _dsPairable: true}; // ungerades Vorkommen: neue Doppelstockklemme
-      out.push(neu);
-      lastRowByKey[key] = neu;
-    } else {
-      // gerades Vorkommen: entfällt als eigene Zeile, teilt sich die zuletzt
-      // angelegte Klemme (2. Ebene) – Override-Felder trotzdem übernehmen.
-      const zielRow = lastRowByKey[key];
-      if (zielRow) {
-        DS_MERGE_FIELDS.forEach(f => { if (bt[f] != null && zielRow[f] == null) zielRow[f] = bt[f]; });
+    // Nutzer-Fund 18.10.2026 (25 weitere Baugruppen, u. a. Ventilator-Familie
+    // 430_000028ff.): eine Zeile mit menge>1 (z. B. 2 plaine Feldadern in
+    // EINER Zeile statt 2 Einzelzeilen) zählte bisher nur als EIN Vorkommen
+    // für die Odd/Even-Paritätszählung – das verschob die Zuordnung aller
+    // NACHFOLGENDEN Vorkommen desselben Keys, wodurch ein später echter
+    // DP-Override an der falschen (geraden statt ungeraden) Position landete
+    // und beim Merge verloren ging. Fix: jede Zeile zählt für die Paarung mit
+    // `bt.menge` Einzelvorkommen (je menge:1), nicht nur 1 – unabhängig davon,
+    // wie viele physische Klemmen in einer Katalogzeile zusammengefasst sind.
+    for (let u = 0; u < bt.menge; u++) {
+      const n = countByKey[key] = (countByKey[key] || 0) + 1;
+      if (n % 2 === 1) {
+        const neu = {...bt, artikel_nr: ziel.artikel_nr, menge: 1, _dsPairable: true}; // ungerades Vorkommen: neue Doppelstockklemme
+        out.push(neu);
+        lastRowByKey[key] = neu;
+      } else {
+        // gerades Vorkommen: entfällt als eigene Zeile, teilt sich die zuletzt
+        // angelegte Klemme (2. Ebene) – Override-Felder trotzdem übernehmen.
+        const zielRow = lastRowByKey[key];
+        if (zielRow) {
+          DS_MERGE_NUM_FIELDS.forEach(f => { if (bt[f] != null) zielRow[f] = (zielRow[f] || 0) + bt[f]; });
+          DS_MERGE_SET_FIELDS.forEach(f => { if (bt[f] != null && zielRow[f] == null) zielRow[f] = bt[f]; });
+        }
       }
     }
   });
@@ -5862,6 +5881,104 @@ function testAnlage(anlageId, menge) {
   console.log((pass ? '✓ GESAMT PASS' : '✗ GESAMT FAIL') + ' — ' + anlageId + ' (' + ergebnisse.length + ' Kombination(en) geprüft)');
   if (refsAnlage.length) console.warn('  verwaiste bg_id-Referenzen:', refsAnlage);
   return { pass, anlageId, name: anlage.name, verwaisteReferenzen: refsAnlage, kombinationen: ergebnisse };
+}
+
+// ── Testroutinenkatalog (Session 78 Folgearbeit, 18.10.2026) ───────────
+// Nutzer-Auftrag: "Testroutine, die die gesamte Anwendung umfangreich und
+// mit diversen Konfigurationen ... testet, damit wir Fehlerfreiheit
+// erhalten." Operationalisiert die beiden in dieser Sitzung gefundenen
+// Bug-Klassen als permanente, jederzeit erneut auslösbare Regressionstests
+// (testBaugruppe()/testAnlage() deckten beide NICHT ab, da sie nur im
+// Standard-Klemmenmodus auf dem einen festen Referenzschrank prüfen).
+// Ausbaustufe 1 von mehreren geplanten (siehe Memory project_dbacs_
+// testroutine) - weitere Kriterien (Schranktyp-/CPU-Matrix) folgen, sobald
+// der Katalog dafür umfangreich genug ist.
+
+// Kriterium 1: Klemmenvarianten-Konsistenz. Die aufsummierten physischen +
+// kommunikativen Datenpunkte EINER Baugruppe dürfen sich durch die Wahl
+// Doppelstock/Trennklemme/DS-Trennklemme NICHT ändern ggü. Standard - das
+// ist reine Klemmen-Zusammenlegung, kein Signal darf dabei verschwinden
+// oder doppelt/einfach statt richtig gezählt werden. Deckt die Session-78-
+// Bugklasse ab (Override auf geradem Vorkommen verloren, menge>1-Zeilen
+// verschieben die Paritätszählung, zwei echte DP-Werte nicht summiert).
+function testKlemmenVarianten() {
+  const types = ['dp_ai','dp_ao','dp_bi','dp_bo','dp_fb_ai','dp_fb_ao','dp_fb_bi','dp_fb_bo'];
+  function sumDp(rows) {
+    const s = {}; types.forEach(t => s[t] = 0);
+    rows.forEach(bt => types.forEach(t => { if (bt[t]) s[t] += bt[t] * bt.menge; }));
+    return s;
+  }
+  const varianten = ['doppelstock', 'trenn', 'doppelstock_trenn'];
+  const fehler = [];
+  BAUGRUPPEN_DB.forEach(bg => {
+    const std = sumDp(resolveBaugruppenBauteile(bg, 'standard'));
+    varianten.forEach(variante => {
+      const v = sumDp(resolveBaugruppenBauteile(bg, variante));
+      const abweichend = types.filter(t => std[t] !== v[t]);
+      if (abweichend.length) {
+        fehler.push({ bgId: bg.id, name: bg.name, variante, standard: std, ist: v, abweichend });
+      }
+    });
+  });
+  const pass = fehler.length === 0;
+  console.log((pass ? '✓' : '✗') + ' Klemmenvarianten-Konsistenz: ' + BAUGRUPPEN_DB.length + ' Baugruppen × ' +
+              varianten.length + ' Varianten, ' + fehler.length + ' Abweichung(en)');
+  fehler.forEach(f => console.warn('  ' + f.bgId + ' (' + f.variante + '): ' + f.abweichend.join(',') +
+                                    ' soll=' + JSON.stringify(f.standard) + ' ist=' + JSON.stringify(f.ist)));
+  return { pass, fehler };
+}
+
+// Kriterium 2: Switch-Ratchet-Familien-Regression. Mehrere "Kern + frei
+// mehrfach hinzufügbares Zubehör teilt sich EINEN Modbus-TCP-Anschluss"-
+// Familien wurden in dieser Sitzung gefunden, bei denen jede Zubehör-
+// Instanz fälschlich als eigener IP-Teilnehmer zählte (2 Reihen × 10
+// Lüfter ergaben 6 statt 1 Switch). Kein generischer Katalog-Scan möglich
+// (erfordert Domänenwissen, welche Baugruppen sich einen Anschluss teilen)
+// - deshalb als kuratierte Szenario-Liste mit genau den beim Fund
+// verwendeten Mengen, non-destruktiv wie testBaugruppe().
+const SWITCH_RATCHET_SZENARIEN = [
+  { label: 'Rückkühlwerk trocken TCP (Kern+Busauswertung+2 Reihen+20 Lüfter)',
+    items: [['420_000068',1], ['420_000070',1], ['420_000075',2], ['420_000077',20]], erwartet: 1 },
+  { label: 'Kältemaschine wassergekühlt TCP (Kern+2 Kreise+4 Stufen)',
+    items: [['420_000067',1], ['420_000087',2], ['420_000089',4]], erwartet: 1 },
+  { label: 'ASi-Bus Brandschutzklappen (Grundsystem+BMA-Kopplung+50 Klappen)',
+    items: [['430_000059',1], ['430_000060',1], ['430_000061',50]], erwartet: 1 },
+  { label: 'Gaswarnanlage TCP (2× Hauptalarm + 4 Messzonen)',
+    items: [['450_000003',2], ['450_000005',4]], erwartet: 1 },
+  { label: 'KNX/DALI-Gateway extern TCP (Grundgerät + 7 Eingänge + 3 Ausgänge) – Regel-18-Regression',
+    items: [['440_000082',1], ['440_000084',7], ['440_000086',3]], erwartet: 1 },
+  { label: '430_000044 Lüftungs-Kommunikationsmodul TCP × 5 unabhängige Instanzen',
+    items: [['430_000044',5]], erwartet: 2 },
+];
+function testSwitchRatchet() {
+  const snap = _testSnapshot();
+  _testSetupReferenzschrank();
+  const fehler = [];
+  SWITCH_RATCHET_SZENARIEN.forEach(sz => {
+    resetSchrankKomplett();
+    belegung = sz.items.map(([bg_id, menge]) => ({ typ: 'baugruppe', bg_id, menge, ci: 0 }));
+    calculate();
+    const ist = kommWatermark.ip_switches || 0;
+    if (ist !== sz.erwartet) fehler.push({ label: sz.label, erwartet: sz.erwartet, ist });
+  });
+  _testRestore(snap);
+  const pass = fehler.length === 0;
+  console.log((pass ? '✓' : '✗') + ' Switch-Ratchet-Familien: ' + SWITCH_RATCHET_SZENARIEN.length +
+              ' Szenarien, ' + fehler.length + ' Abweichung(en)');
+  fehler.forEach(f => console.warn('  ' + f.label + ': erwartet ' + f.erwartet + ', ist ' + f.ist));
+  return { pass, fehler };
+}
+
+// Sammel-Einstiegspunkt: kompletter Katalog-Selbsttest + beide neuen
+// Kriterien in einem Aufruf ("bei Auslösung umfangreich prüfen").
+function testUmfassend() {
+  console.log('=== Umfassender Testroutinenkatalog ===');
+  const alles = testAlles();
+  const klemmen = testKlemmenVarianten();
+  const switches = testSwitchRatchet();
+  const pass = alles.pass && klemmen.pass && switches.pass;
+  console.log('=== Gesamtergebnis: ' + (pass ? '✓ ALLES PASS' : '✗ FEHLER GEFUNDEN') + ' ===');
+  return { pass, alles, klemmen, switches };
 }
 
 // Kompletter Katalog: alle Baugruppen + alle Anlagen (alle Kombinationen).

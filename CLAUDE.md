@@ -16,6 +16,59 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 78 Folgearbeit 7 (18.10.2026) – Drei verschachtelte
+> Doppelstock-/Trennklemmen-Bugs in `resolveBaugruppenBauteile()` gefunden
+> und behoben (Nutzer-Fund: Elektro-Energiezähler M-Bus platzierte unter
+> Doppelstock keine Bauteile, Datenpunkte blieben bei 0). Dazu neuer,
+> permanenter Testroutinenkatalog in `modul-04-innenaufbau/index.html`
+> (`testKlemmenVarianten()`, `testSwitchRatchet()`, `testUmfassend()`).**
+> **3 Bugs, alle NUR unter Doppelstock/Trenn/DS-Trenn sichtbar (Standard
+> war nie betroffen), jeweils in der Paarungslogik für 2 zusammengelegte
+> Vorkommen derselben Klemme:**
+> a) DP-/Feldbus-Override auf dem GERADEN (2.) Vorkommen eines Paares ging
+>    beim Zusammenlegen komplett verloren (z. B. `440_000002`: 1. Zeile
+>    plain Referenzader, 2. Zeile mit `dp_fb_ai`+`feldbus_protokoll` – genau
+>    das katalogübliche Muster).
+> b) Eine Katalogzeile mit `menge>1` (mehrere Klemmen in einer Zeile statt
+>    Einzelzeilen, z. B. 2 plaine PTC-Fühleradern in einer Zeile) zählte nur
+>    als 1 Vorkommen für die Odd/Even-Paritätszählung – verschob dadurch
+>    alle NACHFOLGENDEN Vorkommen desselben Schlüssels und ließ einen
+>    später echten Override an der falschen Stelle landen (betraf u. a. die
+>    gesamte Ventilator-Familie `430_000028`ff.).
+> c) Tragen BEIDE Vorkommen eines Paares einen eigenen, unterschiedlichen
+>    DP-Wert (z. B. `430_000005`: Feuchte-AI + Temperatur-AI auf 2 Adern
+>    derselben Doppelstockklemme), wurde nur der erste übernommen statt
+>    beide zu summieren.
+> **Fix:** `resolveBaugruppenBauteile()` – jede Zeile zählt mit `bt.menge`
+> Einzelvorkommen statt pauschal 1 (behebt b); Override-Felder des geraden
+> Vorkommens werden auf die zuletzt angelegte Zeile übertragen statt
+> verworfen (behebt a); numerische DP-Felder werden dabei ADDIERT statt nur
+> bei Leerstand übernommen (behebt c). **Verifikation: katalogweiter Diff
+> `std-Summe je DP-Typ === Doppelstock/Trenn/DS-Trenn-Summe` über ALLE
+> Baugruppen** – vor dem Fix 81 Abweichungen, nach Teilfix (nur a+b) 25,
+> nach Vollfix (a+b+c) **0 Abweichungen**, bei allen 4 Klemmenvarianten.
+> **Neuer Testroutinenkatalog** (Nutzer-Auftrag „Testroutine, die die
+> gesamte Anwendung umfangreich mit diversen Konfigurationen prüft, damit
+> wir Fehlerfreiheit erhalten" – Ausbaustufe 1, weitere Kriterien wie
+> Schranktyp-/CPU-Matrix folgen bei wachsendem Katalog):
+> - `testKlemmenVarianten()` – obiger Diff-Check als permanente, jederzeit
+>   auslösbare Funktion (operationalisiert den Fund).
+> - `testSwitchRatchet()` – kuratierte Regressionsliste der 6 in Folgearbeit
+>   6 gefundenen „Kern+Zubehör teilt sich 1 TCP-Anschluss"-Szenarien
+>   (Rückkühlwerk, Kältemaschine, ASi-Bus, Gaswarnanlage, KNX/DALI-Gateway,
+>   `430_000044`) mit exakt erwarteter Switch-Zahl – Negativtest bestätigt,
+>   dass die Routine echte Abweichungen erkennt (nicht nur grün durchwinkt).
+> - `testUmfassend()` – Sammel-Einstiegspunkt: `testAlles()` +
+>   `testKlemmenVarianten()` + `testSwitchRatchet()` in einem Aufruf.
+> **Browser-verifiziert:** `testKlemmenVarianten()`/`testSwitchRatchet()`
+> beide `pass:true`, Negativtest (künstlich falscher Erwartungswert) korrekt
+> als Fehler erkannt; `testKatalogScan()` + `testBaugruppe()` auf allen 312
+> Baugruppen einzeln `pass:true`; `testAnlage()` auf Stichprobe (erste 5)
+> `pass:true` (voller 57-Anlagen-Sweep sprengt weiterhin den bekannten
+> `javascript_tool`-Timeout bei dieser Katalokgröße, siehe Memory
+> `project_dbacs_testroutine`); keine Konsolenfehler. Details + Kontext zum
+> Testroutine-Ausbau: Memory `project_dbacs_testroutine.md`.
+
 > **Nachtrag Session 78 Folgearbeit 6 (18.10.2026) – Nutzer-Fund: Ethernet-
 > Switch-Ratchet-Bug katalogweit, nicht nur bei den Gateways. Rückkühlwerk
 > trocken TCP + 2 Reihen à 10 Ventilatoren ergab 6 Switches statt 1.**

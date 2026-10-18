@@ -1,6 +1,31 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Folgearbeit 5 (18.10.2026).**
+> **Stand nach Session 78 Folgearbeit 7 (18.10.2026).**
+> Zwei Nutzer-Funde beim Testen (Rückkühlwerk TCP ergab 6 statt 1 Switch;
+> Elektro-Energiezähler M-Bus platzierte unter Doppelstock-Klemmenauswahl
+> gar nichts) führten zu zwei größeren Bugfix-Runden:
+> 1. **Ethernet-Switch-Ratchet** zählte in 5 weiteren „Kern+frei mehrfach
+>    hinzufügbares Zubehör teilt sich 1 TCP-Anschluss"-Familien (Rückkühl-
+>    werk, Kältemaschine-Mengenfeld, ASi-Bus-Brandschutzklappen, Gaswarn-
+>    anlage, `430_000044`-Lüftungsmodul) jede Zubehör-Instanz fälschlich als
+>    eigenen IP-Teilnehmer (`kein_ip_teilnehmer` war nur für die KNX/DALI-/
+>    Rollladen-Gateway-Familie gesetzt) – jetzt katalogweit konsistent.
+> 2. **Doppelstock-/Trennklemmen-Paarungslogik** (`resolveBaugruppenBauteile()`)
+>    hatte drei verschachtelte Bugs, die je nach Baugruppe Datenpunkte
+>    komplett verloren, an die falsche Stelle verschoben oder nicht summiert
+>    haben – betraf 81 von 312 Baugruppen, bei 0 im Standard-Modus. Vollstän-
+>    dig behoben, katalogweiter Diff-Check bestätigt 0 Abweichungen.
+> **Neuer Testroutinenkatalog** in Modul 4 (`testKlemmenVarianten()`,
+> `testSwitchRatchet()`, `testUmfassend()`) operationalisiert beide Funde
+> als permanente Regressionstests – Ausbaustufe 1 eines vom Nutzer
+> beauftragten umfassenderen Testkonzepts (weitere Kriterien wie Schranktyp-/
+> CPU-Matrix folgen bei wachsendem Katalog, siehe Memory
+> `project_dbacs_testroutine`). Browser-verifiziert: alle 312 Baugruppen
+> einzeln `pass:true`, neue Regressionssuiten `pass:true` inkl. bestätigtem
+> Negativtest, keine Konsolenfehler. Details: `CLAUDE.md` → „Offene Punkte"
+> Nachträge Session 78 Folgearbeit 6–7.
+
+Vorheriger Stand – Session 78 Folgearbeit 5 (18.10.2026).
 > Nach mehreren Nutzer-Korrekturen steht die endgültige Elektro/Automation-
 > Regel: **Automation** zeigt alle schrankinternen (ASP-montierten)
 > Baugruppen PLUS jedes externe Betriebsmittel, das einen Datenpunkt in die
