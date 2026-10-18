@@ -13174,5 +13174,55 @@
     "automationsanbindung": true,
     "kategorie": "Jalousie-/Rollladenaktoren",
     "geprueft": false
+  },
+  {
+    "id": "440_000097",
+    "name": "Netzentkupplungsschutz (NES/ÜEKS) Mittelspannung, Woodward/SEG HighPROTEC MRU4: Betrieb/Sammelstörung/Entkupplung ausgelöst",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Unabhaengiger Netzentkupplungsschutz (NES, auch UEEKS - uebergeordneter Entkupplungsschutz) fuer Mittelspannungs-Erzeugungsanlagen nach VDE-AR-N 4110 - wirkt PARALLEL zum Kurzschlussschutz (UMZ-Relais 440_000068) auf denselben Leistungsschalter, ersetzt ihn nicht. Referenzgeraet Woodward/SEG HighPROTEC MRU4 (MRU4-2A0AAA, Fronttafel-/Schranktuereinbau im fremden MS-Schaltfeld, Hilfsspannung 24...270V DC/48...230V AC aus der Stationsversorgung). Modelliert identisch zum UMZ-Relais: externes Betriebsmittel (Regel 7), 3x physischer BI (Betrieb, Sammelstoerung, Entkupplung ausgeloest) ueber potentialfreie Wechsler (6 verfuegbar, 3 genutzt), je 2 Klemmen klemm_f (Regel 14), kein Koppelrelais (Regel 1), keine Versorgungsspannung/PE-Klemme aus dem Schaltschrank (Regel 8). Kommunikation bewusst nicht modelliert (Bestellvariante ohne Kommunikationsmodul).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Netzentkupplungsschutz (NES/ÜEKS) Woodward/SEG HighPROTEC MRU4",
+    "feldgeraet_artikel_nr": "MRU4-2A0AAA",
+    "automationsanbindung": true,
+    "kategorie": "Mittelspannungsschaltanlage",
+    "geprueft": false
   }
 ]

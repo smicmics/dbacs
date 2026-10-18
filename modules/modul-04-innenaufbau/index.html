@@ -1646,7 +1646,9 @@ const ANLAGE_GRUPPEN_LABEL = {
   // Session 77 Folgearbeit (Wärmepumpen-Konsolidierung, Nutzer-Vorgabe):
   // "Pumpenkonzept" (intern/extern, vorher 2 getrennte Anlagen je Paar)
   // ersetzt durch ein kombiniertes Dropdown pro Anlage.
-  pumpenkonzept: 'Sekundärpumpe'
+  pumpenkonzept: 'Sekundärpumpe',
+  // Session 78 Folgearbeit (MS-Gesamtanlagen 440_A00009-011):
+  trafoabgang: 'Trafoabgang', kuppelfeld: 'Kuppelfeld'
 };
 // Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
 // (Session 68, erweitert Session 75) - Default-Fallback ist das generische
@@ -1673,10 +1675,13 @@ const ANLAGE_GRUPPE_OHNE_LABEL = {
 const ANLAGE_MENGENFELD_LABEL = {
   kuehlreihen: 'Kühlreihen (Anzahl)', kaeltekreise: 'Kältekreise (Anzahl)',
   ventilatoren_je_reihe: 'Ventilatoren je Reihe (Anzahl)',
-  verdichterstufen_je_kreis: 'Verdichterstufen je Kreis (Anzahl)'
+  verdichterstufen_je_kreis: 'Verdichterstufen je Kreis (Anzahl)',
+  // Session 78 Folgearbeit (MS-Gesamtanlagen 440_A00009-011):
+  anzahl_trafos: 'Anzahl Trafos/Generatorabgänge'
 };
 const ANLAGE_MENGENFELD_DEFAULT = {
-  kuehlreihen: 1, kaeltekreise: 1, ventilatoren_je_reihe: 4, verdichterstufen_je_kreis: 1
+  kuehlreihen: 1, kaeltekreise: 1, ventilatoren_je_reihe: 4, verdichterstufen_je_kreis: 1,
+  anzahl_trafos: 1
 };
 // Erlaubte Festwerte je Mengenfeld (Session 77 Folgearbeit, Nutzer-Vorgabe:
 // "Kühlreihen/Kältekreise 1 oder 2", "Verdichterstufen je Kreis max 8",
@@ -1685,7 +1690,9 @@ const ANLAGE_MENGENFELD_DEFAULT = {
 const ANLAGE_MENGENFELD_OPTIONS = {
   kuehlreihen: [0, 1, 2], kaeltekreise: [0, 1, 2],
   ventilatoren_je_reihe: Array.from({length: 16}, (_, i) => i),
-  verdichterstufen_je_kreis: Array.from({length: 9}, (_, i) => i)
+  verdichterstufen_je_kreis: Array.from({length: 9}, (_, i) => i),
+  // MS-Gesamtanlagen: 0 = keine Trafo-/Generatorabgaenge, bis 10 je Anlage
+  anzahl_trafos: Array.from({length: 11}, (_, i) => i)
 };
 
 // ── Belegung ─────────────────────────────────────────────────────────

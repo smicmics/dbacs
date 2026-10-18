@@ -4171,5 +4171,528 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "440_A00009",
+    "name": "MS-Einspeisefeld Erzeugungsanlage, Stichanschaltung (n-0): UMZ-Relais + Netzentkupplungsschutz + Leistungsschalter + Erdungstrenner, Trafo-/Generatorabgänge wählbar",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Stichanschaltung (n-0) laut VNB-TAB (z. B. Stromnetz Berlin) nur fuer Erzeugungsanlagen (PV/Windkraft/sonstige MS-Erzeuger) zulaessig, nicht fuer Lastkunden. Zusaetzlich zum Kurzschlussschutz (UMZ) ist ein unabhaengiger Netzentkupplungsschutz (NES/UEEKS) vorgeschrieben (VDE-AR-N 4110) - beide Geraete wirken parallel auf denselben Leistungsschalter, keine Ersetzung. Feld: UMZ-Relais mit Wandlersatz 440_000068 + Busanbindung (Modbus RTU 440_000069 / Modbus TCP 440_000070 / separates Messfeld VNB mit Impulsausgaengen 440_000073) + Leistungsschalter 440_000071 + Erdungstrenner 440_000072 + Netzentkupplungsschutz 440_000097. Trafo-/Abgangsfelder ueber das Mengenfeld 'Anzahl Trafos/Generatorabgaenge' (Default 1, 0 = keine) kombiniert mit der Auswahl 'Trafoabgang': klein <=800kVA = Lasttrennschalter-Sicherungskombination 440_000075 + Erdungstrenner 440_000072; gross >800kVA mit eigenem Schutz = UMZ-Relais 440_000068 + eigene Busauswertung (RTU 440_000069 / TCP 440_000070 / separates Messfeld VNB 440_000073, unabhaengig von der Feld-Busanbindung) + Leistungsschalter 440_000071 + Erdungstrenner 440_000072; gross >800kVA ohne eigenen Schutz = 440_000071 + 440_000072. (Engine-bedingt als 5 flache Optionen in einem Dropdown statt verschachtelter Bus-Untergruppe.)",
+    "mitglieder": [
+      {
+        "bg_id": "440_000068",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000069",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
+      {
+        "bg_id": "440_000073",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Separates Messfeld VNB (Impulsausgänge)"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000097",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000075",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "klein ≤800kVA (Sicherungskombi)",
+        "ist_default": true,
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "klein ≤800kVA (Sicherungskombi)",
+        "ist_default": true,
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000069",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000073",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA ohne eigenen Schutz",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA ohne eigenen Schutz",
+        "mengenfeld": "anzahl_trafos"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Mittelspannungsschaltanlage",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00010",
+    "name": "MS-Ring-Anschluss Gebäude: 2 Ringfelder (Lasttrennschalter) + Übergabefeld (UMZ-Relais, Leistungsschalter) + Trafoabgänge wählbar",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Standardfall fuer den Gebaeude-/Lastanschluss an einen offenen Mittelspannungsring des VNB (bestaetigt u. a. durch Stromnetz Berlin TA Mittelspannung 2025, Stadtwerke Itzehoe-Netz TAB) - 2 Ringfelder + 1 gemeinsames Uebergabefeld + N Trafoabgaenge. Ringfelder je Lasttrennschalter 440_000074 + Erdungstrenner 440_000072 (2x); Uebergabefeld UMZ-Relais mit Wandlersatz 440_000068 + Busanbindung (RTU 440_000069 / TCP 440_000070 / separates Messfeld VNB 440_000073) + Leistungsschalter 440_000071 + Erdungstrenner 440_000072. Trafo-/Abgangsfelder ueber das Mengenfeld 'Anzahl Trafos/Generatorabgaenge' (Default 1, 0 = keine) kombiniert mit der Auswahl 'Trafoabgang': klein <=800kVA = Lasttrennschalter-Sicherungskombination 440_000075 + Erdungstrenner 440_000072; gross >800kVA mit eigenem Schutz = UMZ-Relais 440_000068 + eigene Busauswertung (RTU 440_000069 / TCP 440_000070 / separates Messfeld VNB 440_000073, unabhaengig von der Feld-Busanbindung) + Leistungsschalter 440_000071 + Erdungstrenner 440_000072; gross >800kVA ohne eigenen Schutz = 440_000071 + 440_000072. (Engine-bedingt als 5 flache Optionen in einem Dropdown statt verschachtelter Bus-Untergruppe.)",
+    "mitglieder": [
+      {
+        "bg_id": "440_000074",
+        "menge": 2
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 2
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000069",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
+      {
+        "bg_id": "440_000073",
+        "menge": 1,
+        "gruppe": "bus",
+        "variante_label": "Separates Messfeld VNB (Impulsausgänge)"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000075",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "klein ≤800kVA (Sicherungskombi)",
+        "ist_default": true,
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "klein ≤800kVA (Sicherungskombi)",
+        "ist_default": true,
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000069",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000073",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA ohne eigenen Schutz",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA ohne eigenen Schutz",
+        "mengenfeld": "anzahl_trafos"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Mittelspannungsschaltanlage",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00011",
+    "name": "MS-Redundante A/B-Ring-Einspeisung Rechenzentrum: 4 Ringfelder + 2 Übergabefelder (UMZ-Relais, Leistungsschalter) + Kuppelfeld wählbar + Trafoabgänge wählbar",
+    "gewerk": "440",
+    "beschreibung": "[Session 78 Folgearbeit, Nutzer-Freigabe 18.10.2026] Redundante MS-Einspeisung fuer Rechenzentren ueber 2 unabhaengige VNB-Ringe (Seite A+B), Main-Tie-Main-Topologie mit normal offenem Kuppelfeld und 2-aus-3-Verriegelung (beide Einspeisungen + Kuppelfeld nie alle 3 gleichzeitig geschlossen - reine Dokumentation, keine Steuerungslogik). Trafoabgaenge symmetrisch auf A/B aufteilen (Planungsempfehlung, von DBACS nicht topologisch geprueft). Ringfelder 4x (2 je Seite) Lasttrennschalter 440_000074 + Erdungstrenner 440_000072; Uebergabefelder 2x (je Seite) UMZ-Relais mit Wandlersatz 440_000068 + Leistungsschalter 440_000071 + Erdungstrenner 440_000072; Busanbindung als EINE gemeinsame Auswahl fuer beide Seiten (RTU 440_000069 / TCP 440_000070 / separates Messfeld VNB 440_000073), Menge 2 = je Uebergabefeld eine Busauswertung; Kuppelfeld ohne Automatik (Lasttrennschalter 440_000074 + Erdungstrenner 440_000072, manuell) oder mit Automatik (Leistungsschalter 440_000071 + Erdungstrenner 440_000072). Trafo-/Abgangsfelder ueber das Mengenfeld 'Anzahl Trafos/Generatorabgaenge' (Default 1, 0 = keine) kombiniert mit der Auswahl 'Trafoabgang': klein <=800kVA = Lasttrennschalter-Sicherungskombination 440_000075 + Erdungstrenner 440_000072; gross >800kVA mit eigenem Schutz = UMZ-Relais 440_000068 + eigene Busauswertung (RTU 440_000069 / TCP 440_000070 / separates Messfeld VNB 440_000073, unabhaengig von der Feld-Busanbindung) + Leistungsschalter 440_000071 + Erdungstrenner 440_000072; gross >800kVA ohne eigenen Schutz = 440_000071 + 440_000072. (Engine-bedingt als 5 flache Optionen in einem Dropdown statt verschachtelter Bus-Untergruppe.)",
+    "mitglieder": [
+      {
+        "bg_id": "440_000074",
+        "menge": 4
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 4
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 2
+      },
+      {
+        "bg_id": "440_000069",
+        "menge": 2,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 2,
+        "gruppe": "bus",
+        "variante_label": "Busauswertung Modbus TCP"
+      },
+      {
+        "bg_id": "440_000073",
+        "menge": 2,
+        "gruppe": "bus",
+        "variante_label": "Separates Messfeld VNB (Impulsausgänge)"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 2
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 2
+      },
+      {
+        "bg_id": "440_000074",
+        "menge": 1,
+        "gruppe": "kuppelfeld",
+        "variante_label": "ohne Automatik (Lasttrennschalter, manuell)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "kuppelfeld",
+        "variante_label": "ohne Automatik (Lasttrennschalter, manuell)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "kuppelfeld",
+        "variante_label": "mit Automatik (Leistungsschalter, automatisiert)"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "kuppelfeld",
+        "variante_label": "mit Automatik (Leistungsschalter, automatisiert)"
+      },
+      {
+        "bg_id": "440_000075",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "klein ≤800kVA (Sicherungskombi)",
+        "ist_default": true,
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "klein ≤800kVA (Sicherungskombi)",
+        "ist_default": true,
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000069",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus RTU",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000070",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, Busauswertung Modbus TCP",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000068",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000073",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA mit eigenem Schutz, separates Messfeld VNB (Impulsausgänge)",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000071",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA ohne eigenen Schutz",
+        "mengenfeld": "anzahl_trafos"
+      },
+      {
+        "bg_id": "440_000072",
+        "menge": 1,
+        "gruppe": "trafoabgang",
+        "variante_label": "groß >800kVA ohne eigenen Schutz",
+        "mengenfeld": "anzahl_trafos"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Mittelspannungsschaltanlage",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]
