@@ -12045,6 +12045,7 @@
       "elektro",
       "automation"
     ],
+    "betriebsmittel": "UMZ-Relais mit Wandlersatz (Mittelspannung), Schutz ABB Relion REF601/REJ601 + Messung Janitza UMG-Reihe am selben Wandlersatz",
     "feldgeraet_artikel_nr": "MS-UMZ-SCHUTZ-MESS",
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
@@ -12138,6 +12139,7 @@
       "elektro",
       "automation"
     ],
+    "betriebsmittel": "Leistungsschalter Mittelspannung (Siemens SIMOSEC-Feldaufbau)",
     "feldgeraet_artikel_nr": "MS-LEISTUNGSSCHALTER-GENERIC",
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
@@ -12176,6 +12178,7 @@
       "elektro",
       "automation"
     ],
+    "betriebsmittel": "Erdungstrenner Mittelspannung (Siemens SIMOSEC-Feldaufbau)",
     "feldgeraet_artikel_nr": "MS-ERDUNGSTRENNER-GENERIC",
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
@@ -12267,6 +12270,7 @@
       "elektro",
       "automation"
     ],
+    "betriebsmittel": "Lasttrennschalter Mittelspannung (Siemens SIMOSEC-Feldaufbau, Feldtyp R - Ringkabelfeld/Kuppelfeld, ohne HH-Sicherungen)",
     "feldgeraet_artikel_nr": "MS-LASTTRENNSCHALTER-GENERIC",
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
@@ -12316,6 +12320,7 @@
       "elektro",
       "automation"
     ],
+    "betriebsmittel": "Lasttrennschalter-Sicherungskombination Mittelspannung bis 800kVA (Siemens SIMOSEC Feldtyp T/T1, IEC/EN 62271-105)",
     "feldgeraet_artikel_nr": "MS-LASTTRENNSCHALTER-SICHERUNG-GENERIC",
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
