@@ -16,6 +16,75 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 79 (23.10.2026) – Die 5 offenen Punkte aus Session 78
+> Folgearbeit 10 (siehe Eintrag direkt darunter) abgeschlossen, bevor mit
+> den Elektroverteilungen (NSHV/UV) weitergemacht wird. Nutzer-Auftrag:
+> „Schließe die offenen Punkte zunächst ab".**
+> **1. Preis `MRU4-2A0AAA`:** per Fork erneut gezielt bei Distributoren
+> (Rexel/Sonepar/Distrelec/RS/TME) und per Websuche gesucht – weiterhin
+> kein öffentlicher Listenpreis auffindbar. HighPROTEC-Schutzrelais werden
+> branchenüblich projektspezifisch beim Hersteller angefragt, nicht über
+> Distributoren mit Online-Preisliste vertrieben. Herstellerkontakt aus dem
+> Handbuch-Impressum ergänzt (Woodward Kempen GmbH / SEG Electronics,
+> `SalesPGD_EMEA@woodward.com`, +49 2152 145 331) – **bleibt offener Punkt,
+> Herstelleranfrage nötig**, keine Schätzung eingetragen.
+> **2. Abmessungen vs. Maßzeichnung:** die zugehörige Maßzeichnung
+> (`MRU4-3.7-EN-MAN` Kap. 2.1 „Dimension Drawings", Fig. 5 „B1 Housing, 8
+> Softkeys") liegt im PDF nur als Rastergrafik ohne Text-Layer vor –
+> `pdftotext` extrahiert daraus keine Maßzahl, und in der Arbeitsumgebung
+> steht kein PDF-Renderer (pdftoppm/ImageMagick/Ghostscript) zur Verfügung,
+> um die Seite zu rastern und visuell zu prüfen. Der Tabellenwert aus den
+> Technischen Daten (Kap. 12, S. 320: Höhe 183mm/Breite 141,5mm, Tiefe
+> 208mm inkl. Klemmen) bestätigt exakt den Katalogwert; zusätzlich bestätigt
+> ein Hinweis direkt vor den Zeichnungen, dass der Tiefenwert bei
+> kommunikationslosen Geräten (wie `MRU4-2A0AAA`) NICHT um einen D-Sub-/
+> Ethernet-Steckverbinder-Zuschlag zu erhöhen ist – stützt die Plausibilität
+> des Werts. **Bleibt technisch unverifiziert (kein Renderer verfügbar),
+> aber durch den Tabellenwert + diese Zusatzbedingung ausreichend
+> plausibilisiert** – kein Hinweis auf eine Abweichung gefunden.
+> **3. NES-Kommunikation (Registerliste):** Bestellschlüssel-Analyse
+> (`MRU4-3.7-EN-MAN` Kap. 1.2.1 „Order Form", Position #4) bestätigt:
+> `MRU4-2A0AAA` ist am Bestellcode selbst eindeutig als „A = Without
+> protocol" kodiert – **bewusste Herstellerkodierung, keine
+> Recherchelücke**. Eine kommunikationsfähige Schwestervariante (Code
+> B = Modbus RTU/RS485, C = Modbus TCP/Ethernet u. a.) existiert; ihre
+> Dokumentation liegt bereits in den beiden bekannten Handbüchern
+> (Referenzhandbuch Kap. 8.5 „Modbus", Installationshandbuch Kap. 3
+> „Communication Protocols") – kein zusätzliches Dokument übersehen.
+> Wichtiger Fachbefund: HighPROTEC nutzt ein konfigurierbares SCADA-Mapping
+> (Smart-view-Software, `*.HptSMap`-Dateien) statt einer fest gedruckten
+> Registeradresstabelle – eine klassische „Modbus-Register-Tabelle mit
+> festen Adressen" existiert für diese Baureihe grundsätzlich nicht als
+> eigenes Dokument. **Formal geschlossen, kein Nachholbedarf** (die
+> gewählte Variante bleibt bewusst ohne Kommunikationsmodul).
+> **4. `betriebsmittel`-Lücke der bestehenden MS-Baugruppen behoben:** die 5
+> Baugruppen `440_000068`/`071`/`072`/`074`/`075` hatten zwar
+> `feldgeraet_artikel_nr`, aber kein `betriebsmittel` gesetzt – dadurch
+> filterte `aggregateFeldgeraete()` sie aus Modul 5 heraus, obwohl
+> `440_000097` (identisches Modellierungsmuster) korrekt erscheint. Werte
+> analog zur jeweiligen `feldgeraete.bezeichnung` der `MS-*-GENERIC`-
+> Einträge ergänzt (reine Feldänderung, keine neuen Zeilen). Browser-
+> verifiziert: Modul 5 zeigt jetzt alle 6 statt vorher 1 Betriebsmittel bei
+> gleichzeitiger Testplatzierung aller 6 Baugruppen; `testKatalogScan()`
+> sauber, `testBaugruppe()` auf allen 6 IDs weiterhin `pass:true`, keine
+> Konsolenfehler.
+> **5. Symmetrische A/B-Trafoabgang-Aufteilung bei `440_A00011` – als
+> bewusste Einschränkung geschlossen, kein Code gebaut:** DBACS bilanziert
+> grundsätzlich keine reale Schaltungstopologie (gleiches Prinzip wie die
+> bereits dokumentierte 2-aus-3-Verriegelung des Kuppelfelds, „nur
+> dokumentiert, keine Steuerungslogik"). Eine echte A/B-Paritätsprüfung
+> bräuchte ein zweites, seitenbezogenes Mengenfeld plus Topologie-Tracking –
+> das wäre ein Bruch mit dem etablierten Scope (Komponenten/Datenpunkte/
+> Platzierung, keine reale Verschaltung). Bleibt wie bisher ausschließlich
+> als Planungsempfehlung im Anlagentext dokumentiert, nicht topologisch
+> geprüft – **endgültig so akzeptiert, kein weiterer Handlungsbedarf**.
+> **Export:** reine Feldänderungen (`betriebsmittel` + `quelle_hinweis`
+> additiv), Zeilenzahl unverändert (baugruppen 313, feldgeraete 140).
+> **Verbleibender offener Punkt insgesamt nur noch:** Preis `MRU4-2A0AAA`
+> (Herstelleranfrage nötig, Kontakt siehe oben) – alle anderen 4 Punkte
+> aus Folgearbeit 10 sind geschlossen (bestätigt/plausibilisiert/formal
+> als bewusste Einschränkung akzeptiert).
+
 > **Nachtrag Session 78 Folgearbeit 10 (18.10.2026) – MS-Gesamtanlagen
 > (Kundenanlagen) nach Nutzer-Freigabe „MS Anlagen sind so ok übernehmen"
 > eingetragen: neue Baugruppe Netzentkupplungsschutz + 3 komplette MS-

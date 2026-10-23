@@ -1,6 +1,33 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 78 Folgearbeit 10 (18.10.2026).**
+> **Stand nach Session 79 (23.10.2026).**
+> Die 5 offenen Punkte aus Session 78 Folgearbeit 10 abgeschlossen (Nutzer-
+> Auftrag: „Schließe die offenen Punkte zunächst ab", bevor es mit den
+> Elektroverteilungen weitergeht). **Preis `MRU4-2A0AAA`:** weiterhin kein
+> öffentlicher Listenpreis, Herstelleranfrage nötig (Woodward Kempen GmbH /
+> SEG Electronics, Kontakt ergänzt) – bleibt einziger verbleibender offener
+> Punkt. **Abmessungen:** Tabellenwert 141,5×183×208mm aus
+> `MRU4-3.7-EN-MAN` Kap. 12 bestätigt; zugehörige Maßzeichnung technisch
+> nicht auslesbar (Rastergrafik ohne Text, kein PDF-Renderer verfügbar) –
+> bleibt unverifiziert, aber durch Tabellenwert + Zusatzbedingung
+> plausibilisiert. **NES-Kommunikation:** Bestellschlüssel-Analyse
+> bestätigt bewusste Kodierung „ohne Protokoll" – formal geschlossen, keine
+> Recherchelücke. **`betriebsmittel`-Lücke behoben:** die 5 bestehenden
+> MS-Baugruppen `440_000068`/`071`/`072`/`074`/`075` haben jetzt wie
+> `440_000097` ein `betriebsmittel`-Feld – erscheinen jetzt korrekt in
+> Modul 5 (vorher gefiltert). **Symmetrische A/B-Trafoabgang-Aufteilung**
+> bei `440_A00011` bleibt bewusst nur als Planungsempfehlung dokumentiert
+> (DBACS bilanziert keine reale Topologie, analog zur bereits bestehenden
+> 2-aus-3-Verriegelung) – endgültig akzeptiert, kein Code gebaut. Export:
+> reine Feldänderungen (`betriebsmittel` + `quelle_hinweis` additiv),
+> Zeilenzahlen unverändert (baugruppen 313, feldgeraete 140). Browser-
+> verifiziert (Modul 5 zeigt jetzt alle 6 statt 1 Betriebsmittel,
+> `testKatalogScan()`/`testBaugruppe()` weiterhin `pass:true`, keine
+> Konsolenfehler). Details: `CLAUDE.md` → „Offene Punkte" Nachtrag
+> Session 79.
+
+Vorheriger Stand – Session 78 Folgearbeit 10 (18.10.2026).
+> MS-Gesamtanlagen nach Nutzer-Freigabe („MS Anlagen sind so ok
 > MS-Gesamtanlagen nach Nutzer-Freigabe („MS Anlagen sind so ok
 > übernehmen") eingetragen: neue Baugruppe `440_000097`
 > Netzentkupplungsschutz (NES/ÜEKS) Woodward/SEG HighPROTEC MRU4
