@@ -16,6 +16,89 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 84 (24.10.2026) – Anlage „Schienenabgangsverteiler
+> (Rechenzentrum)" (440_A00019), erste UV-Art für RZ-Busbar-Trunking-Systeme
+> (Siemens Sivacon 8PS / Starline-Legrand als Referenz), generisches,
+> konfektioniertes Modell statt Fertigprodukt. Fork-Recherche + Freigabe-Loop
+> über 2 Nutzer-Nachrichten, danach Excel-Eintrag.**
+> **Recherche-Kernbefund (Siemens Sivacon-8PS-LX-Konfigurationshandbuch, lokal
+> per `pdftotext` ausgelesen – WebFetch scheitert an dieser PDF zuverlässig,
+> wie schon bei früheren Siemens-PDFs – Kap. 4.3.3/6.1.3 „Feeder units", sowie
+> unabhängig bestätigt durch die Starline/Legrand-Produktdaten):** der
+> Einspeisekasten eines Schienenverteilersystems (Universal-Sammelschienen-
+> Anschlusseinheit/Kabeleinspeisekasten/Schaltanlagen-Anschlusseinheit) ist
+> **rein mechanisch** – kein Schalter, keine Sicherung, kein Trenner, kein
+> Meldekontakt. Die Kurzschluss-/Überlastabsicherung sitzt grundsätzlich in
+> der **speisenden NSHV/UV** (dort bereits modelliert, `440_A00012`–`018`) –
+> daher **keine eigene Einspeiseschutz-Baugruppe** für diese Anlage nötig
+> (beantwortet die Nutzer-Frage „Schalter, Sicherung, Trenner?" abschließend:
+> keins davon direkt am Schienenverteiler).
+> **3 neue Baugruppen:**
+> - `440_000120` „RCM-Überwachung Reststrom, Modbus RTU" – Bender RCMB301
+>   (Art. `B74043100`, Datenblatt lokal ausgelesen) + Messwandler CTBC60 (Art.
+>   `B98120005`, als Zubehör verknüpft). Nur Modbus RTU verfügbar (kein M-Bus/
+>   TCP am Gerät selbst). Die 2 geräteeigenen Wechsler K1/K2 bleiben bewusst
+>   der Elektroanlage vorbehalten (lokale Lampe/Unterspannungsauslösung,
+>   Nutzer-Bestätigung „Der RCM schaltet in der Regel eine Lampe ein ... Die
+>   Hardwarekontakte sind aller Vermutung nach für die Elektroanlage
+>   vorgesehen") – keine eigene Klemme dafür. Rein kommunikativ: 1× AI
+>   (Reststromwert) + 1× BI (Sammelalarm), klemmenlos (`KOMM-FB`-Träger,
+>   Session-58-Systematik), teilt sich wie die Energiezähler eine gemeinsame
+>   RS485-Sammelzuleitung (`440_000113`).
+> - `440_000121`/`440_000122` „Kompaktleistungsschalter 160A/250A, Siemens
+>   3VA1(/3VA2)" – Zubehör „Auxiliary switch" `3VA9988-0AA12` (Stellungs-
+>   meldung) + „Trip alarm switch" `3VA9988-0AB11` (Ausgelöst), beide
+>   Distributor-bestätigt für die Rahmengrößen 3VA1/3VA20–25. 2× BI, 4 Klemmen
+>   `klemm_f` (Regel 14) – identisches Muster wie der bestehende NH-Trenner
+>   (`440_000099`). Feldgeräte-Artikel als „repräsentativer Platzhalter"
+>   markiert (echte Bestellnummer hängt von Auslöseeinheit/Polzahl/Schutzart
+>   ab, Siemens-Konfigurator vor Projekteinsatz prüfen) – gleiches, bereits
+>   akzeptiertes Vorgehen wie beim NH-Trenner (Session 81).
+> **1 neue Anlage `440_A00019` „Schienenabgangsverteiler (Rechenzentrum)"**
+> (neue Kategorie „Schienenabgangsverteiler"), generisches Modell statt
+> Vendor-Fertigprodukt (Nutzer-Vorgabe: „man kauft diesen Schienenabgangskasten
+> und stattet ihn aus"): Mengenfeld „Einspeisepfade A/B/C/D" (0–4) steuert
+> Hauptschalter (`440_000109`, wiederverwendet) + Versorgungsmessung
+> gemeinsam (Protokoll-Dropdown Drehstrom 3~ RTU/M-Bus/TCP, wiederverwendete
+> Janitza-UMG96-Baugruppen `440_000115`–`003`/`116`/`114`, Fronttafeleinbau –
+> Nutzer-Korrektur: „Die Messgeräte sind UMG96 und werden meist von vorne
+> sichtbar montiert"). RCM-Überwachung als **eigenständiges** Mengenfeld
+> (bewusst getrennt von der Pfadanzahl, analog zur bereits etablierten
+> Trennung Sammelstörmeldung/Gruppenabgänge bei der IT-UV – einfachere
+> Zuordnung). Absicherung der Lastabgänge in 3 unabhängig zählbaren Klassen
+> mit je eigenem Mengenfeld (Nutzer-Vorgabe „Hauptschalter RCM Absicherung der
+> Lastabgänge LSS bis 32A, Kompaktleistungsschalter oder NH-Trenner für
+> größere Ströme + Pfade"): LSS bis 32A (`440_000021`, wiederverwendet), neu
+> Kompaktleistungsschalter (160A/250A-Dropdown), NH-Trenner (5 Baugrößen-
+> Dropdown, `440_000099`–`103`, wiederverwendet). Pop-up-Varianten-Modal
+> (Session 83) greift automatisch (7 Eingabefelder). **Bekannte, akzeptierte
+> Vereinfachung (wie bei NSHV/UV):** da sowohl die Versorgungsmessung als auch
+> die RCM-Überwachung bei RTU-Wahl dieselbe Sammelzuleitung (`440_000113`)
+> referenzieren, wird diese bei gleichzeitiger Nutzung geringfügig doppelt
+> gezählt – bewusst nicht behoben, Live-Test bestätigt genau dieses erwartete
+> Verhalten (2+2=4 statt 2).
+> **Export:** einzelbauteile unverändert 230, baugruppen 335→**338**,
+> feldgeraete 160→**164**, anlagen 67→**68**. Backup:
+> `ga_komponenten_vor-schienenabgangsverteiler_20261024_180156.xlsx`.
+> **Browser-verifiziert:** `testKatalogScan()` sauber; `testBaugruppe()` auf
+> allen 3 neuen IDs `pass:true` (120: 1×AI+1×BI komm. RTU, 0 physische DP;
+> 121/122: je 2×BI, 4 Klemmen `klemm_f`); `testAnlage('440_A00019')` alle 30
+> Kombinationen (3 Protokolle × 2 KLS-Baugrößen × 5 NH-Baugrößen) `pass:true`;
+> Pop-up-Modal zeigt korrekt alle 7 Felder mit den vorgegebenen Default-Werten
+> (Screenshot geprüft); Live-UI-Test (Default-Werte: 2 Pfade, 2 RCM, 4 LSS-
+> Abgänge) liefert exakt die erwartete Belegung (`440_000109`:2,
+> `440_000115`:2, `440_000113`:4 [bekannte Doppelzählung], `440_000120`:2,
+> `440_000021`:4), `overflow:[]`, `stuecklisteVsPlatzierungCheck()` 0
+> Abweichungen; Modul 5 zeigt alle 5 Feldgeräte korrekt inkl. Zubehör-
+> Verknüpfung (CTBC60 als „Zubehör zu: RCM-Überwachung …"); keine
+> Konsolenfehler in Modul 4 oder 5.
+> **Offen:** keine Preise recherchiert (weder Bender-RCMB301/CTBC60 noch
+> 3VA-Zubehör/Breaker); Kompaktleistungsschalter-Bestellnummern sind
+> repräsentative Platzhalter (Polzahl/Auslöseeinheit am Siemens-Konfigurator
+> vor Projekteinsatz zu bestätigen); nur Drehstrom-3~-Versorgungsmessung
+> modelliert (1~-Variante bewusst nicht, da RZ-Racks/PDUs dieser Baugröße
+> i.d.R. dreiphasig gespeist werden).
+
 > **Nachtrag Session 83 Fortsetzung (24.10.2026) – 2 IT-UV-Gesamtanlagen +
 > neue generische „USV-Anlage"-Baugruppe, direkt im Anschluss an die
 > allgemeine UV-Anlagengruppe.**

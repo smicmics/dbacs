@@ -1695,7 +1695,14 @@ const ANLAGE_GRUPPEN_LABEL = {
   abgang_zaehler_protokoll: 'Energiezähler Abgänge',
   ats_abgang: 'ATS-Abgang',
   // Session 83 (UV-Gesamtanlagen 440_A00015/016):
-  einspeisung_trennungsart: 'Einspeisung-Trennungsart'
+  einspeisung_trennungsart: 'Einspeisung-Trennungsart',
+  // Session 84 (Schienenabgangsverteiler 440_A00019): Protokoll der
+  // Versorgungsmessung (RTU/M-Bus/TCP, je Pfad ueber mengenfeld
+  // 'schienenv_pfade' skaliert) + Baugroessen-Dropdowns der beiden
+  // groesseren Abgangsklassen.
+  schienenv_messung_protokoll: 'Versorgungsmessung-Protokoll',
+  schienenv_abgang_kls_groesse: 'Kompaktleistungsschalter-Baugröße',
+  schienenv_abgang_nh_groesse: 'NH-Trenner-Baugröße'
 };
 // Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
 // (Session 68, erweitert Session 75) - Default-Fallback ist das generische
@@ -1750,7 +1757,18 @@ const ANLAGE_MENGENFELD_LABEL = {
   // beide dieselbe Baugruppe 440_000098 nutzen.
   uv_it_abgang_gemessen: 'Abgänge gemessen (Anzahl, Einzel-/Sammelmessung)',
   uv_it_abgang_ungemessen: 'Abgänge ungemessen (Anzahl)',
-  uv_gruppenabgaenge: 'Gruppenabgänge (Anzahl, serielle Sicherungsverschaltung)'
+  uv_gruppenabgaenge: 'Gruppenabgänge (Anzahl, serielle Sicherungsverschaltung)',
+  // Session 84 (Schienenabgangsverteiler 440_A00019): Pfadanzahl steuert
+  // Hauptschalter+Versorgungsmessung gemeinsam, RCM-Ueberwachung ist ein
+  // bewusst eigenstaendiges Mengenfeld (Nutzer-Vorgabe-Analogie zu den
+  // getrennten Sammelstoerung/Gruppenabgaenge-Feldern bei der IT-UV -
+  // "laesst sich die Zuordnung spaeter leichter herstellen"). Absicherung
+  // der Lastabgaenge in 3 unabhaengig zaehlbaren Klassen.
+  schienenv_pfade: 'Einspeisepfade A/B/C/D (Anzahl)',
+  schienenv_rcm: 'RCM-Überwachungen (Anzahl)',
+  schienenv_abgang_lss: 'Abgänge LSS bis 32A (Anzahl)',
+  schienenv_abgang_kls: 'Abgänge Kompaktleistungsschalter (Anzahl)',
+  schienenv_abgang_nh: 'Abgänge NH-Trenner, größere Ströme (Anzahl)'
 };
 const ANLAGE_MENGENFELD_DEFAULT = {
   kuehlreihen: 1, kaeltekreise: 1, ventilatoren_je_reihe: 4, verdichterstufen_je_kreis: 1,
@@ -1758,7 +1776,9 @@ const ANLAGE_MENGENFELD_DEFAULT = {
   abgang_gross: 2, abgang_gross_gemessen: 0, abgang_mittel: 4, abgang_mittel_gemessen: 0,
   abgang_klein: 4, abgang_klein_gemessen: 0, sammelstoerung_gruppen: 0, anzahl_ats_abgaenge: 1,
   uv_abgang_lss: 8, uv_abgang_nh: 0, uv_abgang_gemessen: 0,
-  uv_it_abgang_gemessen: 8, uv_it_abgang_ungemessen: 2, uv_gruppenabgaenge: 0
+  uv_it_abgang_gemessen: 8, uv_it_abgang_ungemessen: 2, uv_gruppenabgaenge: 0,
+  schienenv_pfade: 2, schienenv_rcm: 2, schienenv_abgang_lss: 4,
+  schienenv_abgang_kls: 0, schienenv_abgang_nh: 0
 };
 // Erlaubte Festwerte je Mengenfeld (Session 77 Folgearbeit, Nutzer-Vorgabe:
 // "Kühlreihen/Kältekreise 1 oder 2", "Verdichterstufen je Kreis max 8",
@@ -1788,7 +1808,15 @@ const ANLAGE_MENGENFELD_OPTIONS = {
   uv_abgang_gemessen: Array.from({length: 21}, (_, i) => i),
   uv_it_abgang_gemessen: Array.from({length: 31}, (_, i) => i),
   uv_it_abgang_ungemessen: Array.from({length: 11}, (_, i) => i),
-  uv_gruppenabgaenge: Array.from({length: 11}, (_, i) => i)
+  uv_gruppenabgaenge: Array.from({length: 11}, (_, i) => i),
+  // Schienenabgangsverteiler (Session 84): bis zu 4 Einspeisepfade
+  // (EN 50600 A/B/C/D), RCM/Abgaenge grosszuegiger bemessen (Racks einer
+  // RZ-Reihe koennen viele kleine LSS-Abgaenge haben).
+  schienenv_pfade: Array.from({length: 5}, (_, i) => i),
+  schienenv_rcm: Array.from({length: 9}, (_, i) => i),
+  schienenv_abgang_lss: Array.from({length: 31}, (_, i) => i),
+  schienenv_abgang_kls: Array.from({length: 11}, (_, i) => i),
+  schienenv_abgang_nh: Array.from({length: 11}, (_, i) => i)
 };
 
 // ── Belegung ─────────────────────────────────────────────────────────

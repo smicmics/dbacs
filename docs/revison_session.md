@@ -1,5 +1,27 @@
 # DBACS – Revisionsstand
 
+> **Stand nach Session 84 (24.10.2026).** Neue Anlage `440_A00019`
+> „Schienenabgangsverteiler (Rechenzentrum)" – erste UV-Art für RZ-Busbar-
+> Trunking-Systeme (Siemens Sivacon 8PS/Starline als Referenz), generisches
+> konfektioniertes Modell. Recherche-Kernbefund (Siemens-LX-Handbuch +
+> Starline, lokal ausgelesen): Einspeisekasten ist rein mechanisch, kein
+> eigenes Schutzorgan – Absicherung sitzt in der speisenden NSHV/UV, daher
+> keine neue Einspeiseschutz-Baugruppe. 3 neue Baugruppen: `440_000120`
+> RCM-Überwachung (Bender RCMB301, rein kommunikativ Modbus RTU, 1×AI+1×BI),
+> `440_000121`/`122` Kompaktleistungsschalter 160A/250A (Siemens 3VA, 2×BI).
+> Anlage bündelt Hauptschalter+Versorgungsmessung (Janitza UMG96, Fronttafel-
+> einbau) je Einspeisepfad (0–4, A/B/C/D), RCM als eigenes Mengenfeld, 3
+> Abgangsklassen (LSS≤32A/Kompaktleistungsschalter/NH-Trenner) je eigenes
+> Mengenfeld. Pop-up-Varianten-Modal greift automatisch. Export: baugruppen
+> 335→**338**, feldgeraete 160→**164**, anlagen 67→**68**. Browser-
+> verifiziert: `testKatalogScan()` sauber, alle 3 Baugruppen `pass:true`,
+> `testAnlage()` 30/30 Kombinationen `pass:true`, Live-Test liefert erwartete
+> Belegung inkl. der bekannten, akzeptierten Sammelzuleitungs-Doppelzählung,
+> Modul 5 zeigt alle Feldgeräte korrekt inkl. Zubehör-Verknüpfung, keine
+> Konsolenfehler. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 84.
+
+Vorheriger Stand – Session 83, Fortsetzung IT-UV (24.10.2026).
+
 > **Stand nach Session 83, Fortsetzung IT-UV (24.10.2026).**
 > Direkt im Anschluss an die allgemeine UV-Anlagengruppe: **2 IT-UV-
 > Gesamtanlagen** – `440_A00017` „IT-UV mit interner USV" und `440_A00018`

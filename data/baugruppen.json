@@ -14017,5 +14017,108 @@
     "automationsanbindung": true,
     "kategorie": "Sammelstörmeldungen",
     "geprueft": false
+  },
+  {
+    "id": "440_000120",
+    "name": "RCM-Ueberwachung Reststrom, Modbus RTU, gemeinsame Busleitung",
+    "gewerk": "440",
+    "beschreibung": "[Session 84, 24.10.2026, Nutzer-Freigabe] Residual Current Monitoring (RCM) fuer einen Einspeisepfad/Abgang eines Schienenabgangsverteilers - NUR MONITORING, rein kommunikativ ueber Modbus RTU (Bender RCMB301, siehe Feldgeraet B74043100). Die 2 geraeteeigenen Wechselkontakte (K1 Vorwarnung/K2 Hauptalarm) bleiben der Elektroanlage vorbehalten (z.B. lokale Lampe) - KEINE eigene Klemme/kein eigener Datenpunkt dafuer (Nutzer-Bestaetigung: \"Der RCM schaltet in der Regel eine Lampe ein. Wir haben ihn kommunikativ eingebunden. Die Hardwarekontakte sind aller Vermutung nach fuer die Elektroanlage vorgesehen.\"). Teilt sich wie die Energiezaehler-Baugruppen eine gemeinsame RS485-Sammelzuleitung mit weiteren Messgeraeten derselben Anlage (440_000113, Session-83-Pattern - bekannte, akzeptierte Vereinfachung: waehlt eine Anlage dieselbe Buslogik fuer Messung UND RCM, wird die Sammelzuleitung geringfuegig doppelt gezaehlt, bewusst nicht behoben). Datenpunktbedarf 1x AI (Reststromwert) + 1x BI (Sammelalarm) kommunikativ.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 1,
+        "dp_fb_bi": 1,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "RCM-Ueberwachung Reststrom, Modbus RTU",
+    "feldgeraet_artikel_nr": "B74043100",
+    "automationsanbindung": true,
+    "kategorie": "RCM-/Isolationsueberwachung",
+    "geprueft": true
+  },
+  {
+    "id": "440_000121",
+    "name": "Kompaktleistungsschalter 160A, Siemens 3VA1, Stellungsmeldung/Ausgeloest, Feldgeraet (Schienenabgangskasten)",
+    "gewerk": "440",
+    "beschreibung": "[Session 84, 24.10.2026, Nutzer-Freigabe] Kompaktleistungsschalter als Lastabgangs-Absicherung eines Schienenabgangskastens (RZ-Schienenverteiler) - NUR MONITORING, keine Energieversorgung/kein LSS hier (das Geraet steckt im Abgangskasten selbst, speist von der Schiene). Stellungsmeldung ueber Auxiliary-Switch 3VA9988-0AA12 (1 Wechsler) + Ausgeloest ueber Trip-Alarm-Switch 3VA9988-0AB11 (1 Wechsler) - identisches 2-Signal-Muster wie der bestehende NH-Trenner (440_000099). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 2x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Kompaktleistungsschalter 160A (Siemens 3VA1)",
+    "feldgeraet_artikel_nr": "KOMPAKTLS-160A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": true
+  },
+  {
+    "id": "440_000122",
+    "name": "Kompaktleistungsschalter 250A, Siemens 3VA1/3VA2, Stellungsmeldung/Ausgeloest, Feldgeraet (Schienenabgangskasten)",
+    "gewerk": "440",
+    "beschreibung": "[Session 84, 24.10.2026, Nutzer-Freigabe] Wie 440_000121, Baugroesse 250A. Gleiches Zubehoer (3VA9988-0AA12 Stellungsmeldung, 3VA9988-0AB11 Ausgeloest) - laut Distributor-Quelle fuer die Rahmengroessen 3VA1/3VA20...3VA25 durchgaengig passend. Datenpunktbedarf 2x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Kompaktleistungsschalter 250A (Siemens 3VA1/3VA2)",
+    "feldgeraet_artikel_nr": "KOMPAKTLS-250A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": true
   }
 ]

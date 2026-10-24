@@ -1557,5 +1557,44 @@
     "quelle_hinweis": "[Session 83, 24.10.2026] Generischer Platzhalter - Kontaktmuster (Alarm/Batteriebetrieb/Batterieladung) herstellerübergreifend üblich bei USV-Anlagen, analog zur bereits recherchierten Phoenix-Contact-QUINT-UPS-Baugruppe 480_000011 (Session 54), hier aber für eine deutlich größere Gebäude-/IT-USV ohne konkrete Produktfestlegung.",
     "ga_liefert_default": false,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "B74043100",
+    "bezeichnung": "Bender RCMB301, Reststrom-Ueberwachungsmodul (Typ B, AC/DC-sensitiv), Modbus RTU, 2x Wechsler K1/K2 fuer Elektroanlage",
+    "hersteller": "Bender",
+    "kategorie": "RCM-/Isolationsueberwachung",
+    "quelle_hinweis": "[Session 84, 24.10.2026, Nutzer-Freigabe] Bender RCMB300-series Datenblatt (D00372_05_D_XXEN/06.2024, lokal per pdftotext ausgelesen: https://www.bender.de/fileadmin/content/Products/d/e/RCMB300-series_D00372_D_XXEN.pdf). RCMB301 (Art.-Nr. B74043100): RS-485-Schnittstelle mit Modbus RTU zum Auslesen der Messwerte (Reststrom AC/DC-sensitiv Typ B gemaess IEC 60755); zusaetzlich 2 galvanisch getrennte Wechsler K1 (Vorwarnung)/K2 (Hauptalarm) - diese Hardwarekontakte sind fuer die Elektroanlage (z.B. lokale Lampe, Unterspannungs-/Arbeitsstromausloesung) vorgesehen, NICHT fuer die GA-Aufschaltung (Nutzer-Bestaetigung Session 84). Versorgung DC 24V - externes Feldgeraet, Spannungsversorgung am Einbauort (Nur-Monitoring-Pattern). Messwandler CTBC60(P) (Art.-Nr. B98120005, Innendurchmesser 60mm) als generische Referenzgroesse gewaehlt (deckt ca. 160-320A ab, passend fuer typische RZ-Rack-/PDU-Stromkreise) - bei Bedarf projektspezifisch gegen eine andere CTBC-Baugroesse (20/35/120/210mm) austauschbar, DBACS bilanziert keine reale Stromstaerke je Messwandler. Nur Modbus RTU verfuegbar (kein M-Bus/TCP-Interface am Geraet selbst dokumentiert).",
+    "kommunikative_datenpunkte": "AI: Reststromwert (r.m.s., AC-/DC-Anteil getrennt auswertbar). BI: Sammelalarm (Vorwarnung/Hauptalarm ueber Modbus-Statusbit).",
+    "zubehoer_feldgeraet_artikel_nr": "B98120005",
+    "zubehoer_menge": 1,
+    "ga_liefert_default": true,
+    "geprueft": true
+  },
+  {
+    "artikel_nr": "B98120005",
+    "bezeichnung": "Bender CTBC60, Messwandler fuer RCMB301 (Innendurchmesser 60mm, generische Referenzgroesse ca. 160-320A)",
+    "hersteller": "Bender",
+    "kategorie": "RCM-/Isolationsueberwachung",
+    "quelle_hinweis": "[Session 84, 24.10.2026, Nutzer-Freigabe] Bender RCMB300-series Datenblatt (D00372_05_D_XXEN/06.2024, lokal per pdftotext ausgelesen: https://www.bender.de/fileadmin/content/Products/d/e/RCMB300-series_D00372_D_XXEN.pdf). RCMB301 (Art.-Nr. B74043100): RS-485-Schnittstelle mit Modbus RTU zum Auslesen der Messwerte (Reststrom AC/DC-sensitiv Typ B gemaess IEC 60755); zusaetzlich 2 galvanisch getrennte Wechsler K1 (Vorwarnung)/K2 (Hauptalarm) - diese Hardwarekontakte sind fuer die Elektroanlage (z.B. lokale Lampe, Unterspannungs-/Arbeitsstromausloesung) vorgesehen, NICHT fuer die GA-Aufschaltung (Nutzer-Bestaetigung Session 84). Versorgung DC 24V - externes Feldgeraet, Spannungsversorgung am Einbauort (Nur-Monitoring-Pattern). Messwandler CTBC60(P) (Art.-Nr. B98120005, Innendurchmesser 60mm) als generische Referenzgroesse gewaehlt (deckt ca. 160-320A ab, passend fuer typische RZ-Rack-/PDU-Stromkreise) - bei Bedarf projektspezifisch gegen eine andere CTBC-Baugroesse (20/35/120/210mm) austauschbar, DBACS bilanziert keine reale Stromstaerke je Messwandler. Nur Modbus RTU verfuegbar (kein M-Bus/TCP-Interface am Geraet selbst dokumentiert).",
+    "ga_liefert_default": true,
+    "geprueft": true
+  },
+  {
+    "artikel_nr": "KOMPAKTLS-160A",
+    "bezeichnung": "Kompaktleistungsschalter 160A, Siemens 3VA1 (3-polig), Stellungsmeldung + Ausgeloest - repraesentativer Platzhalter (echte Bestellnummer haengt von Ausloeseeinheit/Schutzart ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 84, 24.10.2026, Nutzer-Freigabe] Siemens SENTRON 3VA Kompaktleistungsschalter - Zubehoer 'Auxiliary switch' 3VA9988-0AA12 (Stellungsmeldung Ein/Aus, 1 Wechsler, 6A/240VAC, fuer 3VA1 und 3VA20...3VA25) und 'Trip alarm switch' 3VA9988-0AB11 (Ausgeloest bei jeder Ausloeseursache, 1 Wechsler, 10A/600VAC) - beide Distributor-bestaetigt (https://se.rs-online.com/web/p/products/8744512 , https://www.distrelec.ch/en/auxiliary-switch-6a-240vac-7mm-siemens-3va9988-0aa12/p/30138121). Repraesentative Breaker-Bestellnummer als Platzhalter (echte Bestellnummer haengt von Polzahl/Ausloeseeinheit/Schutzart ab, Siemens-Konfigurator vor Projekteinsatz pruefen) - analog zum bereits etablierten NH-Trenner-Muster (440_000099). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 2x BI (Stellungsmeldung, Ausgeloest) - identisches Muster wie NH-Trenner mit Automation (440_000099ff., Session 81).",
+    "ga_liefert_default": true,
+    "geprueft": true
+  },
+  {
+    "artikel_nr": "KOMPAKTLS-250A",
+    "bezeichnung": "Kompaktleistungsschalter 250A, Siemens 3VA1/3VA2, Stellungsmeldung + Ausgeloest - repraesentativer Platzhalter (echte Bestellnummer haengt von Ausloeseeinheit/Schutzart/Polzahl ab, Siemens-Konfigurator noetig)",
+    "hersteller": "Siemens",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 84, 24.10.2026, Nutzer-Freigabe] Siemens SENTRON 3VA Kompaktleistungsschalter - Zubehoer 'Auxiliary switch' 3VA9988-0AA12 (Stellungsmeldung Ein/Aus, 1 Wechsler, 6A/240VAC, fuer 3VA1 und 3VA20...3VA25) und 'Trip alarm switch' 3VA9988-0AB11 (Ausgeloest bei jeder Ausloeseursache, 1 Wechsler, 10A/600VAC) - beide Distributor-bestaetigt (https://se.rs-online.com/web/p/products/8744512 , https://www.distrelec.ch/en/auxiliary-switch-6a-240vac-7mm-siemens-3va9988-0aa12/p/30138121). Repraesentative Breaker-Bestellnummer als Platzhalter (echte Bestellnummer haengt von Polzahl/Ausloeseeinheit/Schutzart ab, Siemens-Konfigurator vor Projekteinsatz pruefen) - analog zum bereits etablierten NH-Trenner-Muster (440_000099). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 2x BI (Stellungsmeldung, Ausgeloest) - identisches Muster wie NH-Trenner mit Automation (440_000099ff., Session 81).",
+    "ga_liefert_default": true,
+    "geprueft": true
   }
 ]

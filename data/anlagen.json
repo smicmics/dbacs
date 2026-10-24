@@ -5930,5 +5930,127 @@
     "kategorie": "Unterverteilung",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "440_A00019",
+    "name": "Schienenabgangsverteiler (Rechenzentrum)",
+    "gewerk": "440",
+    "beschreibung": "[Session 84, 24.10.2026, Nutzer-Freigabe] Generisches Modell eines Schienenabgangsverteilers (Busbar-Trunking-/Schienenverteilersystem, z.B. Siemens Sivacon 8PS oder Starline/Legrand) fuer Rechenzentren - konfektioniert statt Fertigprodukt (Nutzer-Vorgabe: 'man kauft diesen Schienenabgangskasten und stattet ihn aus'). Bis zu 4 Einspeisepfade (A/B/C/D nach EN 50600-Redundanzkonzept), je Pfad Hauptschalter (440_000109) + Versorgungsmessung (Janitza UMG96, Fronttafeleinbau, bereits etablierte Energiezaehler-Baugruppen) + optionale RCM-Ueberwachung (440_000120, rein kommunikativ). Recherche-Kernbefund (Siemens Sivacon-8PS-Konfigurationshandbuch + Starline-Produktdaten, beide unabhaengig bestaetigt): der Einspeisekasten eines Schienenverteilers selbst ist ein REIN MECHANISCHES Verbindungsbauteil ohne eigenes Schutzorgan - die Kurzschluss-/Ueberlastabsicherung sitzt in der speisenden NSHV/UV (dort bereits modelliert, 440_A00012-018), daher KEINE eigene Einspeiseschutz-Baugruppe in dieser Anlage. Absicherung der Lastabgaenge (Ausspeisepfade zu den Racks/PDUs) in 3 unabhaengig zaehlbaren Klassen: LSS bis 32A (440_000021, kleine Rack-/PDU-Abgaenge), Kompaktleistungsschalter (440_000121/122, Siemens 3VA, 160/250A), NH-Trenner mit Automation (440_000099-103, bereits katalogisiert, 100-630A fuer groessere Abgaenge). Alle Geraete sind externe Nur-Monitoring-Feldgeraete mit eigener Spannungsversorgung vor Ort (Regel 7), keine Steuerspannung aus dem GA-Schrank.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000109",
+        "menge": 1,
+        "mengenfeld": "schienenv_pfade"
+      },
+      {
+        "bg_id": "440_000115",
+        "menge": 1,
+        "gruppe": "schienenv_messung_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "schienenv_pfade"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "schienenv_messung_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "schienenv_pfade"
+      },
+      {
+        "bg_id": "440_000116",
+        "menge": 1,
+        "gruppe": "schienenv_messung_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "mengenfeld": "schienenv_pfade"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "schienenv_messung_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "mengenfeld": "schienenv_pfade"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "schienenv_messung_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus TCP",
+        "mengenfeld": "schienenv_pfade"
+      },
+      {
+        "bg_id": "440_000120",
+        "menge": 1,
+        "mengenfeld": "schienenv_rcm"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "mengenfeld": "schienenv_rcm"
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "mengenfeld": "schienenv_abgang_lss"
+      },
+      {
+        "bg_id": "440_000121",
+        "menge": 1,
+        "gruppe": "schienenv_abgang_kls_groesse",
+        "variante_label": "160A",
+        "ist_default": true,
+        "mengenfeld": "schienenv_abgang_kls"
+      },
+      {
+        "bg_id": "440_000122",
+        "menge": 1,
+        "gruppe": "schienenv_abgang_kls_groesse",
+        "variante_label": "250A",
+        "mengenfeld": "schienenv_abgang_kls"
+      },
+      {
+        "bg_id": "440_000099",
+        "menge": 1,
+        "gruppe": "schienenv_abgang_nh_groesse",
+        "variante_label": "NH000, 100A",
+        "ist_default": true,
+        "mengenfeld": "schienenv_abgang_nh"
+      },
+      {
+        "bg_id": "440_000100",
+        "menge": 1,
+        "gruppe": "schienenv_abgang_nh_groesse",
+        "variante_label": "NH00, 160A",
+        "mengenfeld": "schienenv_abgang_nh"
+      },
+      {
+        "bg_id": "440_000101",
+        "menge": 1,
+        "gruppe": "schienenv_abgang_nh_groesse",
+        "variante_label": "NH1, 250A",
+        "mengenfeld": "schienenv_abgang_nh"
+      },
+      {
+        "bg_id": "440_000102",
+        "menge": 1,
+        "gruppe": "schienenv_abgang_nh_groesse",
+        "variante_label": "NH2, 400A",
+        "mengenfeld": "schienenv_abgang_nh"
+      },
+      {
+        "bg_id": "440_000103",
+        "menge": 1,
+        "gruppe": "schienenv_abgang_nh_groesse",
+        "variante_label": "NH3, 630A",
+        "mengenfeld": "schienenv_abgang_nh"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Schienenabgangsverteiler",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]
