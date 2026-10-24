@@ -16,6 +16,73 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 80 (24.10.2026) – Modul 5 umbenannt zu „Externe
+> Bauteile" + neues TAG „GA liefert" je Position (Nutzer-Auftrag:
+> Architektur-Anpassung vor Fortsetzung der Elektroverteilungen).**
+> **Hintergrund:** Modul 5 listet alle externen Betriebsmittel, die über
+> `baugruppen.betriebsmittel`/`feldgeraet_artikel_nr` aufgeschlagen werden
+> (Pumpen, Sensoren, Leistungsschalter, Ventilantriebe …) – unabhängig
+> davon, wer das Bauteil tatsächlich liefert. In der Praxis liefert die
+> Gebäudeautomation (GA) oft nur die Sensorik/Aktorik für die eigene
+> Aufschaltung (Sensoren, Messgeräte, Ventilantriebe); vieles andere kommt
+> vom jeweiligen Fach-Gewerk (Lüftung, Elektro-UV, NSHV, Mittelspannung
+> usw.). Die Liste selbst bleibt vollständig (Quelle/Ziel der Verkabelung
+> muss unabhängig vom Lieferanten nachvollziehbar bleiben), bekommt aber
+> ein neues, vom Nutzer umschaltbares TAG je Position – Grundlage für eine
+> spätere Feldgeräte-Kalkulation (nur GA-Anteil) und z. B. eine künftige
+> automatische Betriebsmittelkennzeichnung (Datenpunkt ↔ Feldgerät bleibt
+> dadurch immer korreliert).
+> **Umgesetzt:**
+> 1. Neue Excel-Spalte `ga_liefert_default` (Sheet `feldgeraete`,
+>    TRUE/FALSE) → Export nach `feldgeraete.json`
+>    (`xlsx_to_json.py`/`export_feldgeraete()`). Vorbelegung TRUE für
+>    Kategorien, die laut Nutzer-Vorgabe "fast immer von der GA geliefert"
+>    werden – Sensoren (`Raumsensor`/`Kanalsensor`/`Sensor`/
+>    `Aussensensoren` + die Druck-/Strömungssensoren/-wächter/
+>    Sicherheitsbegrenzer-Kategorien `Feldgerät Heizung/Kälte/Sanitär`/
+>    `Feldgerät Heizung/Kälte`/`Feldgerät Heizung`), Messgeräte
+>    (`Energie und Zählwerteinrichtungen`) und Ventilantriebe
+>    (`Klappenantriebe`, `Regelventil mit Energiemessung`,
+>    `Leckageüberwachung` – GUS-GLF-Sensor + GHS-Ventilantrieb). Ergebnis:
+>    **64 von 140 Zeilen TRUE**, Rest (Elektro-/MS-/NS-Komponenten, Pumpen,
+>    Klimageräte/Wärmepumpen/Kälteerzeuger, Brandschutz/BMA,
+>    Gateway-/Jalousie-Aktoren anderer Gewerke usw.) FALSE – vom Nutzer in
+>    Modul 5 je Position einzeln aktivierbar. Backup vor der Änderung:
+>    `ga_komponenten_vor-ga-liefert-tag_20261024_095805.xlsx`.
+> 2. **Modul 5 ist damit erstmals nicht mehr rein lesend:** neue Spalte
+>    „GA liefert" mit Checkbox je aggregierter Zeile
+>    (`modules/modul-05-feldgeraete/index.html`), vorbelegt aus
+>    `fg.ga_liefert_default`, Override je Projekt in `localStorage`
+>    (`m05_ga_liefert_overrides`, Map `key→bool` – Override wird nur bei
+>    Abweichung von der Katalog-Vorbelegung gespeichert, damit eine
+>    spätere Katalogpflege weiterhin wirkt, solange der Nutzer diese
+>    Position nicht manuell umgeschaltet hat). Checkbox referenziert die
+>    Zeile über einen Index in der zuletzt gerenderten Liste
+>    (`LETZTE_LISTE`), nicht über den Artikeltext selbst – vermeidet das
+>    bereits aus Session 75 bekannte HTML-Escaping-Problem bei Labels mit
+>    Sonderzeichen. Neue Zeile „davon GA-Lieferumfang: … €" unter der
+>    Gesamtsumme macht die Wirkung des TAGs sofort sichtbar.
+> 3. **Umbenennung „Feldgeräte" → „Externe Bauteile"** – nur Titel/
+>    Hinweistexte in Modul 5, Modul 4 (Nav-Link), und auf der Startseite
+>    (`web/index.html`), bewusst **nicht** der Modulpfad
+>    `modul-05-feldgeraete` (Links/Lesezeichen bleiben gültig) und **nicht**
+>    die unabhängige Zonen-Terminologie „Abg.-Kl. Feldgeräte"/`klemm_f` in
+>    Modul 4 (andere Bedeutung: Abgangsklemmen für Feldkabel, keine
+>    Lieferanten-Frage).
+> **Browser-Verifiziert:** Export-Zahlen unverändert (baugruppen 313,
+> feldgeraete 140, anlagen 60 – reine Feldergänzung), `feldgeraete.json`
+> zeigt `ga_liefert_default` korrekt (Stichprobe `QAA24` true, Wilo-CIF-
+> Modul false); Modul 5 zeigt neue Spalte + Checkbox, Haken persistiert
+> über Reload, GA-Anteil-Summe reagiert korrekt auf Umschalten, keine
+> Konsolenfehler.
+> **Noch offen / nächster Schritt (vom Nutzer angekündigt, noch nicht
+> Teil dieser Änderung):** Dienstleistungsanteile + eigenes Gesamt-
+> kalkulationsmodul für den Schaltschrank-Aufbau; eigentliche Feldgeräte-
+> Kalkulation (nutzt das neue TAG, filtert auf GA-Anteil); mögliche
+> automatische Feldgeräte-/Betriebsmittelkennzeichen-Vergabe auf Basis der
+> Datenpunkt↔Feldgerät-Korrelation. Danach zurück zu den Elektro-
+> verteilungen (NSHV/UV, siehe Nachtrag Session 79/78).
+
 > **Nachtrag Session 79 (23.10.2026) – Die 5 offenen Punkte aus Session 78
 > Folgearbeit 10 (siehe Eintrag direkt darunter) abgeschlossen, bevor mit
 > den Elektroverteilungen (NSHV/UV) weitergemacht wird. Nutzer-Auftrag:
@@ -4509,7 +4576,7 @@ dbacs/
 │   ├── modul-02-standschrank/index.html         h_ke-Rechner (Standschrank, Sockel) ✅
 │   ├── modul-03-architektur/index.html          TE-Berechnung & Reihenkapazität ✅
 │   ├── modul-04-innenaufbau/index.html          Baugruppen · Innenaufbau ✅
-│   ├── modul-05-feldgeraete/index.html          Feldgeräte-Stückliste (rein lesend, gespeist aus Modul 4) ✅
+│   ├── modul-05-feldgeraete/index.html          Externe Bauteile-Stückliste (gespeist aus Modul 4, "GA liefert"-TAG je Position seit Session 80) ✅
 │   └── modul-07-stammdatenpflege/index.html     Artikeldaten-Katalog-Browser (rein lesend) ✅
 ├── drawings/
 │   ├── wandschrank_frontansicht.html            Referenzzeichnung Wandschrank (nicht bearbeiten)

@@ -638,6 +638,12 @@ def export_feldgeraete(wb):
         if rec.get('zubehoer_feldgeraet_artikel_nr'):
             entry['zubehoer_feldgeraet_artikel_nr'] = str(rec['zubehoer_feldgeraet_artikel_nr'])
             entry['zubehoer_menge'] = int(rec['zubehoer_menge']) if rec.get('zubehoer_menge') is not None else 1
+        # ga_liefert_default (Session 80): Katalog-Vorbelegung, ob dieser
+        # Artikeltyp ueblicherweise von der GA selbst geliefert wird (statt
+        # vom jeweiligen Fach-Gewerk) - Grundlage fuer das "GA liefert"-TAG
+        # in Modul 5 (Externe Bauteile). Reine Anzeige-Vorbelegung, der
+        # Nutzer kann je Position in Modul 5 ueberschreiben.
+        entry['ga_liefert_default'] = bool(rec.get('ga_liefert_default'))
         entry['geprueft'] = bool(rec.get('geprueft'))
         rows.append(entry)
 

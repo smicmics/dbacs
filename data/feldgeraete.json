@@ -6,6 +6,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 55.68,
     "quelle_hinweis": "Session 51 Nachtrag 8. Siemens QAA24 (Planungsfabrikat Siemens, Nutzer-Vorgabe fuer Sensoren/Feldgeraete). Messelement LG-Ni1000, Anschlussklemmen B (Messsignal)/M (Messnull) - passiv, KEINE Versorgungsspannung noetig. Terminologie/Klemmenbezeichnung B/M bestaetigt ueber das aktuelle Symaro-Nachfolgemodell QAA9020 (Siemens-Originaldatenblatt A6V12090675_de, 2020-09-25, per pypdf aus dem binaeren PDF extrahiert - identisches Messelement/gleiche Geraetegeneration), da QAA9020 selbst nur im 42er-Multipack gelistet ist und fuer Einzelbestellung ungeeignet erscheint. IP30, Schraubklemmen fuer 1x2,5mm2 oder 2x1,5mm2, Gehaeuse 90x100x32mm (BxHxT). Preis 55,68 EUR netto (hvac.de, Bestellnummer BPZ:QAA24, kein bestaetigter Siemens-Herstellerlistenpreis). Quelle: https://hvac.de/en/qaa2/5135-qaa24.html , https://sid.siemens.com/api/khub/documents/xiIGsiFNgutA1onJbuRvmw/content",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -15,6 +16,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 529.22,
     "quelle_hinweis": "Session 51 Nachtrag 8. Siemens QPA2000 (Symaro-Reihe, Planungsfabrikat Siemens). Reiner CO2-Fuehler (NDIR-Messprinzip, kein VOC/Temperatur/Feuchte-Zusatz - das ist die Kombivariante QPA2002/QPA2062). Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC15-35V, G0 dient gleichzeitig als Messnull) und X1 (Signalausgang, wahlweise DC 0-10V/DC 0-5V/4-20mA per Steckbruecke). IP30, Schraubklemmen 1x2,5mm2 oder 2x1,5mm2. Preis 529,22 EUR netto (Odilon Plus, franz. Distributor, kein bestaetigter Siemens-Herstellerlistenpreis). Quelle: Siemens-Originaldatenblatt CE1N1961de (2024-03-05), per pypdf aus dem binaeren PDF extrahiert: https://sid.siemens.com/api/khub/documents/92GFfoVaFyMO2HZsCQt_Qw/content",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -24,6 +26,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 283.18,
     "quelle_hinweis": "Session 51 Nachtrag 8. Siemens QPA1000 (Symaro-Reihe, gleiche Baureihe/Datenblatt wie QPA2000). Reiner VOC-Fuehler (Metalloxid-Halbleiter-Messelement, misst Mischgaskonzentration als Indikator fuer Gerueche/Tabakrauch). Anschlussklemmen G/G0 (Versorgung) und X1 (Signalausgang DC 0-10V/0-5V/4-20mA waehlbar). IP30. Preis 283,18 EUR netto (Odilon Plus, kein bestaetigter Siemens-Herstellerlistenpreis). Quelle: Siemens-Originaldatenblatt CE1N1961de (2024-03-05): https://sid.siemens.com/api/khub/documents/92GFfoVaFyMO2HZsCQt_Qw/content",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -33,6 +36,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 283.9,
     "quelle_hinweis": "Session 51 Nachtrag 8. Siemens QFA2000 (Symaro-Reihe, Planungsfabrikat Siemens). Reiner Feuchtefuehler (kapazitives Messelement), KEINE Temperaturmessung (Distributor-Bestaetigung: \"does not include active or passive temperature measurement\" - die QFA20xx-Familie hat separate Typen wie QFA2040/QFA2060 fuer Feuchte+Temperatur-Kombinationen). Anschlussklemmen G/G0 (Versorgung AC24V/DC13,5-35V) und ein Signalausgang (DC 0-10V, 0-100% r.F.) - Klemmenbezeichnung (vermutlich U1) NICHT aus dem vollstaendigen QFA2000-Originaldatenblatt selbst bestaetigt (Abruf per WebFetch scheiterte am Timeout), sondern aus dem durchgaengigen Klemmenschema der gesamten Siemens-QFA-Familie abgeleitet (identisch dokumentiert bei QFA3160, Originaldatenblatt CE1N1858de 2004 UND bei der QPA-Familie, Originaldatenblatt CE1N1961de 2024 - 20 Jahre durchgaengig gleiches Schema G/G0+Xn/Un). Vor Bestellung/Verdrahtung idealerweise gegen das QFA2000-eigene Datenblatt gegenpruefen. Preis 283,90 EUR netto (Distributor, kein bestaetigter Siemens-Herstellerlistenpreis). Quelle: https://www.elektro4000.de/Anlagen-Systemtechnik/Klima-und-Raumluftgeraete/Temperaturfuehler/Siemens-Dig-Industr-Raumfuehler-BPZ-QFA2000::506268.html",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -42,6 +46,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 224.4,
     "quelle_hinweis": "Session 51 Nachtrag 10. Siemens QFA2060 (Symaro-Standardgenauigkeit, Planungsfabrikat Siemens) - Nutzer-Vorgabe \"Kombifuehler Raumtemperatur und Feuchte\" fuer Lueftung/Heizung/Kaelte. Bewusst NICHT der QFA3160 (bereits verworfen, industrielle Optik/Messstab-Bauform) - QFA2060 hat stattdessen dasselbe flache Wandaufbaugehaeuse wie QAA24/QPA-Familie (90x100x36mm, IP30, Schraubklemmen), architektonisch unauffaellig. Anschlussklemmen (abgeleitet aus dem identischen QFA-Familienschema, bestaetigt am Schwestermodell QFA3160/CE1N1858de): G/G0 Versorgung (AC24V oder DC13,5-35V), U1 Signalausgang Feuchte 0-10V (0-100% r.F.), U2 Signalausgang Temperatur 0-10V (Messbereich waehlbar 0-50/-35...35/-40...70 Grad C). Kein bestaetigter Netto-Preis gefunden (nur Gebrauchtmarkt-/US-Distributor-Preise, nicht uebernommen). Quelle: https://docs.rs-online.com/4018/A700000012966442.pdf , https://hvac.de/en/qfa20/5397-qfa2060.html  ||  [Preisrecherche 08/2026] 224.40 EUR netto (Distributor, hvac.de) – Netto; Symaro Raumfühler rF/Temp",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -51,6 +56,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 85.08,
     "quelle_hinweis": "Session 51 Nachtrag 11. Siemens QAE2120.010 (Symaro-Reihe, Planungsfabrikat Siemens), Tauchtemperaturfuehler passiv fuer Heizung/Kaelte (Wasser-/Medientemperatur in Rohren/Behaeltern). Messelement LG-Ni1000 - bewusst diese Elementvariante statt Pt100/Pt1000/NTC gewaehlt, da nur \"QAE2120.xxx\" die Tauchhuelse (Schutztasche mit Gewindenippel G½A) BEREITS im Lieferumfang enthaelt (\"Including protection pocket with threaded nipple\"); alle anderen Elementtypen brauchen die Tauchhuelse als separates Zubehoer. Konsistent zum bereits katalogisierten Raumtemperaturfuehler QAA24 (ebenfalls LG-Ni1000). Baulaenge 100mm - laut Original-Typenuebersicht (Siemens-Datenblatt CE1N1781en, 2017-07-19) sind 100mm und 150mm die EINZIGEN in dieser Baureihe verfuegbaren Laengen, keine 65mm- oder 200-250mm-Variante existiert (vom Nutzer zunaechst vorgeschlagen, per Recherche korrigiert). Mindest-Eintauchtiefe bei Montage 60mm (Installationsvorgabe). Anschlussklemmen B/M (passiv, Schraubklemmen, austauschbar/polaritaetsunabhaengig). Preis 85,08 EUR (Siemens HIT-Portal-Preis laut Distributor-Suche, kein direkt bestaetigter Herstellerlistenpreis). Quelle: https://www.intellisys.it/media/wysiwyg/Siemens_documentation/QAE/QAE21%20Datasheet%20Eng.pdf , https://hvac.de/en/qae21/5172-qae2120010.html",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -60,6 +66,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 89.63,
     "quelle_hinweis": "Session 51 Nachtrag 11. Siemens QAE2120.015 (Symaro-Reihe, Planungsfabrikat Siemens), Tauchtemperaturfuehler passiv fuer Heizung/Kaelte (Wasser-/Medientemperatur in Rohren/Behaeltern). Messelement LG-Ni1000 - bewusst diese Elementvariante statt Pt100/Pt1000/NTC gewaehlt, da nur \"QAE2120.xxx\" die Tauchhuelse (Schutztasche mit Gewindenippel G½A) BEREITS im Lieferumfang enthaelt (\"Including protection pocket with threaded nipple\"); alle anderen Elementtypen brauchen die Tauchhuelse als separates Zubehoer. Konsistent zum bereits katalogisierten Raumtemperaturfuehler QAA24 (ebenfalls LG-Ni1000). Baulaenge 150mm - laut Original-Typenuebersicht (Siemens-Datenblatt CE1N1781en, 2017-07-19) sind 100mm und 150mm die EINZIGEN in dieser Baureihe verfuegbaren Laengen, keine 65mm- oder 200-250mm-Variante existiert (vom Nutzer zunaechst vorgeschlagen, per Recherche korrigiert). Mindest-Eintauchtiefe bei Montage 60mm (Installationsvorgabe). Anschlussklemmen B/M (passiv, Schraubklemmen, austauschbar/polaritaetsunabhaengig). Preis 89,63 EUR (Siemens HIT-Portal-Preis laut Distributor-Suche, kein direkt bestaetigter Herstellerlistenpreis). Quelle: https://www.intellisys.it/media/wysiwyg/Siemens_documentation/QAE/QAE21%20Datasheet%20Eng.pdf , https://hvac.de/en/qae21/5172-qae2120010.html",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -69,6 +76,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 90.0,
     "quelle_hinweis": "Siemens QAM2120.040 (Symaro), Kanaltemperaturfuehler passiv fuer Lueftungskanal, Montageflansch AQM63.0 im Lieferumfang. Anschlussklemmen B/M (identisch QAA24), Messbereich -50...+80C. Fuehlerbauform: biegsame Kupferkapillare (kein starrer Stab) - min. Biegeradius 10mm, gilt laut Originaldatenblatt CE1N1761en fuer die gesamte QAM21-Baureihe einschliesslich der 0,4m-Kurzversion. QAM2120.200/.600 SIND bereits der Kapillar-Mittelwertfuehler (keine separate Averaging-Typkennung bei Siemens). Ein starrer Stabfuehler mit Flansch existiert in der europaeischen Symaro-Reihe nicht (nur aeltere, separate US-Produktlinie 149-915) - bei Bedarf spaeter Alternativen anderer Hersteller recherchieren. Messelement LG-Ni1000 gewaehlt (nicht Pt1000/Pt100/NTC), da die Ni1000-Kennlinie nativ vom eingesetzten Siemens-Automationssystem (Desigo PX/TX-I/O) unterstuetzt wird, konsistent zu allen bisherigen Symaro-Katalogeintraegen (QAA24, QFA-Familie, QAE2120). Preis 90,00 EUR (Siemens HIT-Portal, nur als Google-Suchtreffer bestaetigt, nicht direkt von der JS-Seite verifiziert - vor Uebernahme idealerweise gegenpruefen). Quelle: Siemens-Originaldatenblatt CE1N1761en (2024-06-14): https://sid.siemens.com/api/khub/documents/i0~Z65~B5zWwLpjvUJmGRw/content",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -78,6 +86,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 158.0,
     "quelle_hinweis": "Siemens QAM2120.200 (Symaro), Kapillar-Mittelwertfuehler (misst gemittelte Temperatur ueber den Kanalquerschnitt, Kapillarrohr diagonal verlegt, 4 Montageklemmen AQM63.3 im Lieferumfang). Anschlussklemmen B/M (identisch zu QAM2120.040/QAA24), Messbereich -50...+80C. Fuehlerbauform: biegsame Kupferkapillare (kein starrer Stab) - min. Biegeradius 10mm, gilt laut Originaldatenblatt CE1N1761en fuer die gesamte QAM21-Baureihe einschliesslich der 0,4m-Kurzversion. QAM2120.200/.600 SIND bereits der Kapillar-Mittelwertfuehler (keine separate Averaging-Typkennung bei Siemens). Ein starrer Stabfuehler mit Flansch existiert in der europaeischen Symaro-Reihe nicht (nur aeltere, separate US-Produktlinie 149-915) - bei Bedarf spaeter Alternativen anderer Hersteller recherchieren. Messelement LG-Ni1000 gewaehlt (nicht Pt1000/Pt100/NTC), da die Ni1000-Kennlinie nativ vom eingesetzten Siemens-Automationssystem (Desigo PX/TX-I/O) unterstuetzt wird, konsistent zu allen bisherigen Symaro-Katalogeintraegen (QAA24, QFA-Familie, QAE2120). Preis 158,00 EUR (gleiche Quellenlage wie QAM2120.040, nur Suchtreffer-bestaetigt). Quelle: Siemens-Originaldatenblatt CE1N1761en (2024-06-14): https://sid.siemens.com/api/khub/documents/i0~Z65~B5zWwLpjvUJmGRw/content",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -87,6 +96,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 170.0,
     "quelle_hinweis": "Siemens QFM2100 (Symaro), Kanalfeuchtefuehler aktiv (kapazitives Messelement, 0...100% r.F.), 3-Leiter mit waehlbarem Ausgang DC0-5V/0-10V/4-20mA. Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC13,5-35V) + X1 (Signal) - konsistent zum G/G0-Klemmenschema von QPA2000/QFA2000. Montageflansch + Kabelverschraubung M16 im Lieferumfang, Eintauchlaenge 90-154mm einstellbar, IP54. Preis 170,00 EUR (KelvinTech.de, MwSt.-Ausweis 23% unplausibel fuer DE - vor Uebernahme idealerweise gegenpruefen). Quelle: Siemens-Originaldatenblatt CE1N1864en: https://sid.siemens.com/api/khub/documents/ZjTecRUaa9BmOJqWOwvL2g/content",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -96,6 +106,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 49.62,
     "quelle_hinweis": "Siemens QBM81-3, rein mechanischer Differenzdruckwaechter (Membran, 1-poliger potentialfreier Wechsler), fuer Filterueberwachung. Anschlussklemmen 1(COM)/2(schaltet bei Druckabfall)/3(schaltet bei Druckanstieg). 2 Anschlussduesen P1/P2, Set FK-PZ3 (2 Kanalanschlussstutzen + 4 Schrauben + 2m PVC-Schlauch) im Lieferumfang. Kontaktbelastung AC250V/5A. Preis 49,62 EUR inkl. 19% MwSt. (ams-elektro.com). Quelle: Siemens-Originaldatenblatt CA1N1552E (2014-07-30, EU-Ausgabe): https://www.siemensbolt.hu/doc/siemens/pdf/QBM81.pdf",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -105,6 +116,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 50.0,
     "quelle_hinweis": "Siemens QBM81-10, baugleich QBM81-3, groesserer Schaltbereich fuer Ventilator-/Riemenueberwachung. Anschlussklemmen 1(COM)/2/3 wie QBM81-3. Kein belastbarer EUR-Preis gefunden. Sicherheitsrelevant (Ventilatorabschaltung) - da nur 1 Wechsler vorhanden, wird in der Baugruppe ein Koppelrelais (Phoenix Contact 2967099) zwischengeschaltet, das die Sicherheitsfunktion (Leistungssteuerung) und die DDC-Meldung auf 2 getrennte Kontakte aufteilt. Quelle: Siemens-Originaldatenblatt CA1N1552E: https://www.siemensbolt.hu/doc/siemens/pdf/QBM81.pdf  ||  [Preisrecherche 08/2026] 50.00 EUR netto (Distributor, www.kelvintech.de) – netto; 100-1000 Pa; teils abgekuendigt",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -114,6 +126,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 192.0,
     "quelle_hinweis": "Siemens QBM3020-10 (Symaro), elektronischer Differenzdrucktransmitter, 3-Leiter, DC0-10V, Messbereich 0-1000 Pa (Endwert 500-1000Pa einstellbar). Anschlussklemmen G(+)/M(GND)/U(Signal). 2 Anschlussduesen P1(+)/P2(-), 2m PVC-Schlauch im Lieferumfang. Fuer Kanaldruck-/Ventilatorregelung wird P2 ueblicherweise offen an Atmosphaere gelassen (Ingenieurpraxis, nicht explizit im Datenblatt). Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CA1N1916en01 (2016-12-23): https://www.ciz-regulace.cz/fotky930/fotov/_ps_2158QBM3020_3120_ENG.pdf  ||  [Preisrecherche 08/2026] 192.00 EUR netto (Distributor, www.kelvintech.de) – netto; ohne Display, 0-1000 Pa 0-10V",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -123,6 +136,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 228.0,
     "quelle_hinweis": "Siemens QFM81.21, mechanischer Mikroschalter-Hygrostat (1-poliger potentialfreier Wechsler), Sollwerteinsteller verdeckt (IP55, gegenueber QFM81.2 mit aussenliegendem Einsteller/IP30 fuer Sicherheitsfunktion gewaehlt). Einstellbereich 15-95% r.F., Schaltdifferenz ca. 4% r.F. fest. Anschlussklemmen 1(COM)/2(Befeuchtung, schliesst bei steigender Feuchte)/3(Entfeuchtung, schliesst bei fallender Feuchte) - fuer Ueberfeuchtungsschutz wird Kl. 1+2 verdrahtet. Montageflansch, Tauchlaenge 130-156mm einstellbar. Nur 1 Wechsler vorhanden - Baugruppe schaltet daher ueber Koppelrelais (Phoenix Contact 2967099), das Sicherheitsfunktion (Befeuchter-Abschaltung) und DDC-Meldung auf 2 getrennte Kontakte aufteilt. Preis 228,00 EUR netto (KelvinTech.de, Distributor-Preis, kein Siemens-HIT-Preis verfuegbar). Quelle: Siemens Installationsanleitung Document No. 129-606: https://manuals.plus/siemens/qfm81-2-duct-hygrostat-manual.pdf",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -134,6 +148,7 @@
     "quelle_hinweis": "Oppermann KRM-1-DZ (230V AC-Linie der KRM-DZ-Baureihe), integrierter optischer Rauchmelder mit Einrohr-Luftmesssystem (Standard-Messrohr 600mm, kuerzbar ab 160mm). DIBt-Zulassung zur direkten Ansteuerung von Brand-/Rauchschutzklappen (die DIBt-Nummer selbst bewusst nicht in den Auswahltext uebernommen). Relaisausgaenge, alle potentialfrei: Alarmrelais verriegelt = 1 Umschalter (Kl.11/12/13) + 1 Oeffner (Kl.14/15, fuer Klappenansteuerung/Leistungssteuerung), Verschmutzungsrelais 1 Oeffner (Kl.16/17), Systemstoerungsrelais 1 Oeffner (Kl.18/19), Luftstroemungsrelais 1 Oeffner (Kl.20/21, faellt bei Stroemung <1m/s ab). Fern-Reset/-Test Kl.9/10. Benoetigt zwingend Montagekonsole KS als Zubehoer (Blechschrauben zur Kanalmontage nicht im Lieferumfang) - wird beim Waehlen dieser Baugruppe automatisch in die Feldgeraetestueckliste ergaenzt (Modul 5), zaehlt dort NICHT als eigenes Feldgeraet in der Statistik. Kein belastbarer Preis gefunden. Quelle: Oppermann-Originaldatenblatt KRM-DZ (Nr. 41302, 08-2015): https://www.digicontrol.info/fileadmin/media/Produkte/R-KRM-x-DZ/171009_Geraetedatenblatt_R-KRM-2-DZ_81289_10-2017_DE-EN.pdf  ||  [Preisrecherche 08/2026] 757.00 EUR netto (Distributor, www.buschek-shop.de) – aus brutto 900,83 /1,19; Variante 0.16 (kuerzestes Messrohr); stark variantenabhaengig",
     "zubehoer_feldgeraet_artikel_nr": "KS",
     "zubehoer_menge": 1,
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -145,6 +160,7 @@
     "quelle_hinweis": "Oppermann KRM-2-DZ (24V AC/DC-Linie der KRM-DZ-Baureihe), technisch identisch zu KRM-1-DZ (siehe dort), nur Versorgungsspannung 24V AC/DC statt 230V AC - konsistent zu den uebrigen SELV-Feldgeraeten im Katalog. Benoetigt ebenfalls die Montagekonsole KS (automatischer Zubehoer-Eintrag in Modul 5, siehe KRM-1-DZ). Kein belastbarer Preis gefunden. Quelle: Oppermann-Originaldatenblatt KRM-DZ (Nr. 41302, 08-2015): https://www.digicontrol.info/fileadmin/media/Produkte/R-KRM-x-DZ/171009_Geraetedatenblatt_R-KRM-2-DZ_81289_10-2017_DE-EN.pdf  ||  [Preisrecherche 08/2026] 685.74 EUR netto (Distributor, www.aura-nord.com) – Netto/Brutto unklar; falls brutto ~576,25 netto; variantenabhaengig",
     "zubehoer_feldgeraet_artikel_nr": "KS",
     "zubehoer_menge": 1,
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -154,6 +170,7 @@
     "kategorie": "Zubehör Kanalrauchmelder",
     "preis_eur": 35.6,
     "quelle_hinweis": "Oppermann Montagekonsole KS, Zubehoer fuer KRM-DZ-Baureihe (isolierte/runde Kanaele), lt. Originaldatenblatt NICHT im Lieferumfang des Kanalrauchmelders enthalten (ebenso die 4 Befestigungsschrauben zur Blechkanalmontage). Wird ueber 'zubehoer_feldgeraet_artikel_nr' automatisch mit dem Rauchmelder in der Feldgeraetestueckliste (Modul 5) ergaenzt, erscheint aber NICHT als eigene Baugruppe in Modul 4 und wird nicht als eigenes Feldgeraet gezaehlt (reines Zubehoer). Kein Preis/keine Bestellnummer ueber die genannte Konsolentype hinaus gefunden. Quelle: Oppermann-Originaldatenblatt KRM-DZ (Nr. 41302): https://www.digicontrol.info/fileadmin/media/Produkte/R-KRM-x-DZ/171009_Geraetedatenblatt_R-KRM-2-DZ_81289_10-2017_DE-EN.pdf  ||  [Preisrecherche 08/2026] 35.60 EUR netto (Distributor, auranord-technik.com) – Montagekonsole; Netto/Brutto unklar; falls brutto ~29,92",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -163,6 +180,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 392.0,
     "quelle_hinweis": "Siemens QPM2100 (Symaro), reiner Kanal-CO2-Fuehler (NDIR, wartungsfrei, rekalibrationsfrei 8 Jahre), Messbereich 0-2000ppm. Anschlussklemmen G/G0 (Versorgung AC24V/DC15-35V SELV) + X1 (Signal). Montageflansch + M16-Kabelverschraubung im Lieferumfang (Bestellangabe: \"Im Lieferumfang sind Montageflansch und M16-Kabelverschraubung enthalten\") - kein separates Kanalmontage-Zubehoer noetig. Einziges Zubehoer: Ersatz-Filterkappe AQF3101 (nur bei Verschleiss). Externe Absicherung Zuleitung: Schmelzsicherung traege max. 10A oder LSS max. 13A. Kein belastbarer EUR-Preis gefunden (nur US-HIT-Listenpreis ~1126 USD und diverse US-Distributor-Preise $340-630, keine seriöse EU/EUR-Quelle). Quelle: Siemens-Originaldatenblatt CE1N1962de (2025-03-26, aktuell, nicht veraltet): https://cache.industry.siemens.com/dl/files/295/109791295/att_1048058/v4/A6V11527225.pdf  ||  [Preisrecherche 08/2026] 392.00 EUR netto (Distributor, www.kelvintech.de) – netto; Siemens-HIT-Liste ca. 537 (nicht verifiziert)",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -172,6 +190,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 239.9,
     "quelle_hinweis": "Siemens QPM1100 (Symaro), reiner Kanal-VOC-Fuehler (beheizter Zinndioxid-Halbleiter, wartungs-/rekalibrierungsfrei), Messbereich 0-100% VOC, Zeitkonstante R1(langsam)/R2(normal, Werkseinst.)/R3(schnell) per Jumper. Anschlussklemmen G/G0 (Versorgung AC24V/DC15-35V SELV) + X1 (Signal). Montageflansch + M16-Kabelverschraubung im Lieferumfang, kein separates Kanalmontage-Zubehoer noetig. Preis 239,90 EUR netto (Hörburger/Sigstu eShop, Distributor-Preis, kein Siemens-HIT-Listenpreis verfuegbar). Quelle: Siemens-Originaldatenblatt CE1N1962de (2025-03-26): https://cache.industry.siemens.com/dl/files/295/109791295/att_1048058/v4/A6V11527225.pdf",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -181,6 +200,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 657.0,
     "quelle_hinweis": "Siemens QPM2102 (Symaro), Kombifuehler CO2+VOC. Anschlussklemmen G/G0 (Versorgung) + X1 (CO2-Rohsignal 0-2000ppm) + X2 (Lueftungsbedarfssignal = Maximalauswahl aus CO2- und gefiltertem VOC-Messsignal, 0-100%). Montageflansch + M16-Kabelverschraubung im Lieferumfang. Preis 657,00 EUR (Siemens-Listenpreis laut offiziellem Katalog). Quelle: Siemens-Originaldatenblatt CE1N1962de (2025-03-26): https://cache.industry.siemens.com/dl/files/295/109791295/att_1048058/v4/A6V11527225.pdf",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -189,6 +209,7 @@
     "hersteller": "KRIWAN",
     "kategorie": "Kanalsensor",
     "quelle_hinweis": "KRIWAN INT511 Luftstromwaechter (Herstellerabweichung: Siemens fuehrte dieses Geraet unter eigenem Typenschluessel INT511/Art.Nr. INT51120N842 im HIT-Portal, ist dort inzwischen abgekuendigt/\"nicht mehr lieferbar\" - Originalhersteller KRIWAN Industrie-Elektronik fuehrt es unveraendert als aktuelles Serienprodukt, \"neue Generation, konsequente Weiterentwicklung des Vorgaengers\". Analog zum bestehenden Oppermann/Metz-Connect-Praezedenzfall.) Kalorimetrisches Messprinzip, Messbereich 0,2-10m/s, Grenzwert per Potentiometer einstellbar (Werkseinst. ca. 2,5m/s), einstellbare Anlaufueberbrueckung 1-3min (Werkseinst. 2min) gegen Fehlausloesung beim Anlagenstart. Versorgung AC/DC 24V ±10%, 2VA. Relais-Wechsler (Kontakt 11-14/12), AC240V/2,5A, ca. 1 Mio. Schaltspiele. IP65. Richtungsunabhaengig montierbar, geeignet fuer Rechteck- UND Rundkanal (Bohrung Ø13mm + Befestigungsflansch, Einbau im mittleren Drittel des Kanalquerschnitts). Befestigungsflansch fuer Kanalmontage im Lieferumfang enthalten (Komponentenliste: \"Sondenrohr mit Anschlussdose, Kabelverschraubung, Befestigungsflansch fuer Kanalmontage, Gewebeschlauchabschnitte, Datenblatt\") - kein separates Kanalmontage-Zubehoer noetig. Zubehoer nur als Ersatzteil: Kabeldurchfuehrung M16 (02Z842) oder M20 (02Z843). Kein belastbarer EUR-Preis fuer genau diese 24V-AC/DC-Variante (20N842S021) gefunden - gefundene Distributor-Preise (~215-245EUR) liessen sich nicht eindeutig dieser Variante zuordnen, koennten andere KRIWAN-Typvarianten betreffen. Quelle: KRIWAN-Originaldatenblatt 700.00622.1: https://www.kriwan.com/fileadmin/Downloadcenter/Data_Sheets/German/20N842S021_INT511_Luftstromwaechter_70000622.1.pdf sowie KRIWAN-Zubehoer-/Anwendungshinweise 800.00114.0: https://www.kriwan.com/fileadmin/02_Produkte/07_Luftstromsensoren/Betriebsanleitung_Luftstromtechnik_Anwendungshinweise_Zubehoer_80000114.0_01.pdf  ||  [Preisrecherche 08/2026] weiterhin kein belastbarer Neupreis (KRIWAN INT511 24V AC/DC exakte Bestellnr. nicht bepreist; andere INT511 31N142 ~195 / 52N142 ~237) – Herstelleranfrage noetig",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -198,6 +219,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 213.0,
     "quelle_hinweis": "Siemens QAF64.2-J (Symaro-Linie), Frostwaechter mit auf gesamter Laenge aktivem Kapillarrohr (Mindestansprechlaenge 250mm), erfasst die tiefste Temperatur entlang des Rohrs. Anschlussklemmen G/G0 (Versorgung AC24V SELV) + B (Messsignal DC0-11,5V entspr. 0-15 Grad C, kontinuierlich) + Y/Y10 (optionale Ventilsteuersignal-Durchschleife, hier nicht genutzt) + Q11/Q12/Q14 (Relais-Wechslerkontakt, potentialfrei AC/DC 5-250V, schliesst Q11-Q12 bei Frostgefahr). Werkseinstellung Frostschaltpunkt 5 Grad C (Bereich 1-10 Grad C einstellbar), Schaltdifferenz ca. 2K. IP42, Kunststoffgehaeuse. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt A6V10432022_de--_c (2016-02-08): https://hvac.de/en/index.php?controller=attachment&id_attachment=4371  ||  [Preisrecherche 08/2026] 213.00 EUR netto (Distributor, www.kelvintech.de) – netto; S55700-P155",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -207,6 +229,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 254.15,
     "quelle_hinweis": "Siemens QBM3020-3 (Symaro), elektronischer Differenzdrucktransmitter, 3-Leiter, DC0-10V, Messbereich 0-300 Pa (Endwert 100-300Pa einstellbar), Kennlinie druck-linear oder wurzelziehend umschaltbar. Anschlussklemmen G(+)/M(GND)/U(Signal), baugleich zum bereits katalogisierten QBM3020-10 (nur anderer Messbereich). 2 Anschlussduesen P1/P2, 2m PVC-Schlauch im Lieferumfang, IP54. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CA1N1916en01 (2013-07-02): https://www.siemens-ru.com/doc/Siemens-QBM3020.pdf  ||  [Preisrecherche 08/2026] 254.15 EUR netto (Distributor, hvac.de) – netto aus brutto 302,44; ohne Display 0-300 Pa",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -216,6 +239,7 @@
     "kategorie": "Kanalsensor",
     "preis_eur": 178.0,
     "quelle_hinweis": "Siemens QFM2160 (Symaro, Nachfolgebezeichnung des im Handel als \"QFM21..\" abgekuendigten Vorgaengers - identische Baureihe/Datenblatt, nur Typenbezeichnung), Kanal-Kombifuehler Feuchte (kapazitiv) + Temperatur (aktiv), je DC0-5V/0-10V/4-20mA waehlbar (3-Leiter). Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC13,5-35V) + X1 (Feuchtesignal 0-100% r.F.) + X2 (Temperatursignal, Messbereich 0-50/-35...35/-40...70 Grad C waehlbar). Montageflansch + M16-Kabelverschraubung im Lieferumfang, IP54. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CE1N1864en (2023-04-20): https://sid.siemens.com/api/khub/documents/ZjTecRUaa9BmOJqWOwvL2g/content  ||  [Preisrecherche 08/2026] 178.00 EUR netto (Distributor, www.kelvintech.de) – netto; Kanalfühler rF+Temp aktiv 0-10V",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -225,6 +249,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 95.0,
     "quelle_hinweis": "Siemens QAA27, passiver Raumtemperaturfuehler (Messelement LG-Ni1000, wie QAA24) mit zusaetzlichem Sollwertversteller-Drehknopf (Einstellbereich +/-3K relativ zum Sollwert), mechanisch begrenzbar ueber 2 Steckreiter. Anschlussklemmen B/M (Temperatursignal, wie QAA24) + R (Sollwertsignal, eigener passiver Widerstandskreis 1000-1175 Ohm). IP30, Schraubklemmen, gleiches Gehaeuse wie QAA24/25/26 (Familie). Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CM1N1721D (2017-12-01, Typenuebersicht QAA24...27): https://docs.rs-online.com/69de/A700000011235238.pdf  ||  [Preisrecherche 08/2026] 95.00 EUR netto (Distributor, www.kelvintech.de) – netto; passiv Ni1000 + Sollwertversteller +/-3K",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -234,6 +259,7 @@
     "kategorie": "Raumsensor",
     "preis_eur": 372.0,
     "quelle_hinweis": "Siemens QPA2062 (Symaro-Familie, wie QPA2000/QPA1000 bereits katalogisiert), Kombifuehler CO2 (NDIR, 0-2000ppm) + relative Feuchte (kapazitiv, 0-100%) + Temperatur (aktiv, 0-50/-35...35 Grad C waehlbar), je DC0-5V/0-10V/4-20mA waehlbar. Anschlussklemmen G/G0 (Versorgung AC24V SELV oder DC15-35V) + X1 (CO2-Signal) + X2 (Feuchtesignal) + X3 (Temperatursignal). Keine Sollwertversteller-Variante in der aktuellen QPA10../QPA20..-Baureihe verfuegbar (Nutzer-Anfrage nach \"CO2+Feuchte+Temp+Sollwertversteller\" zurueckgestellt, siehe CLAUDE.md). IP30. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CE1N1961de (2024-03-05): https://cache.industry.siemens.com/dl/files/291/109791291/att_1048054/v3/A6V11526865.pdf  ||  [Preisrecherche 08/2026] 372.00 EUR netto (Distributor, www.kelvintech.de) – netto; Raum CO2/Temp/rF aktiv",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -243,6 +269,7 @@
     "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
     "preis_eur": 69.51,
     "quelle_hinweis": "Siemens QBE1900-P7, mechanischer Druckschalter (Messsystem, kein Sensor mit Hilfsenergie), Wechselkontakt, Einstellbereich -0,3...7 bar, Schaltdifferenz 1,5-5 bar, automatischer Reset (im Gegensatz zur -M-Variante mit manuellem Reset/Wiedereinschaltsperre = Sicherheitsbegrenzer). Anschluss G1/2\" außen, 3 Schraubklemmen (1,5-4mm²) + 1 Erdungsklemme. Laut Anschlussschema im Datenblatt fuer \"Single low pressure switch response\" (P7-Familie) vs. \"Single high pressure switch response\" (P32-Familie) vorgesehen - hier auf Nutzer-Entscheidung als EIN Gerät fuer beide Rollen (Max und Min, je nach Kontaktwahl vor Ort) verwendet, in DBACS als 2 getrennte Baugruppen (420_000001/002) mit p-Max/p-Min-Kennzeichnung. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt A6V12204470_en (2023-06-19): https://www.siemensbolt.hu/doc/siemens/pdf/A6V12976650_Pressure%20switch%20QBE1900-Px_en.pdf  ||  [Preisrecherche 08/2026] 69.51 EUR netto (Distributor, www.sipatec.org) – netto; S55720-S532; Siemens-HIT ca. 124",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -252,6 +279,7 @@
     "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
     "preis_eur": 200.0,
     "quelle_hinweis": "Siemens QBE2003-P4, piezoresistiver Drucksensor fuer neutrale und leicht aggressive Fluessigkeiten/Gase, Anschluss G1/2\" aussen + M5 innen, Stecker DIN EN175301-803-A, Klemmen G(Versorgung 24VAC/DC12-33V)/U(Signal 0-10V)/M(Messnull GND), 3-Leiter. Nutzer-Vorgabe \"ca. 0-3 bar\" - naechste Normgroesse oberhalb gewaehlt (Alternative waere QBE2003-P2.5, naeher am Wert aber ohne Reserve). Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt A6V10432494_en--_a (2014-08-29).  ||  [Preisrecherche 08/2026] 200.00 EUR netto (Distributor, www.kelvintech.de) – netto; 0-4 bar 0-10V; S55720-S293",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -261,6 +289,7 @@
     "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
     "preis_eur": 200.0,
     "quelle_hinweis": "Siemens QBE2003-P10, piezoresistiver Drucksensor fuer neutrale und leicht aggressive Fluessigkeiten/Gase, Anschluss G1/2\" aussen + M5 innen, Stecker DIN EN175301-803-A, Klemmen G(Versorgung 24VAC/DC12-33V)/U(Signal 0-10V)/M(Messnull GND), 3-Leiter. Exakter Treffer fuer Nutzer-Vorgabe \"ca. 0-10 bar\". Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt A6V10432494_en--_a (2014-08-29).  ||  [Preisrecherche 08/2026] 200.00 EUR netto (Distributor, www.kelvintech.de) – netto; 0-10 bar 0-10V; S55720-S295",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -269,6 +298,7 @@
     "hersteller": "Honeywell (FEMA)",
     "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
     "quelle_hinweis": "Honeywell/FEMA Smart Press PST010RG12S, mikroprozessorgestuetzter Druckschalter/-transmitter mit 2 konfigurierbaren Open-Collector-Schaltausgaengen (je als Minimal-/Maximaldruckwaechter/Fensterueberwachung, Oeffner/Schliesser waehlbar) UND Analogausgang 0-10V oder 4-20mA, Messbereich 0-10 bar, G1/2\" Aussengewinde (Standard-Manometeranschluss), Versorgung DC14-36V. Elektrischer Anschluss ueber 2x 5-polige M12-Steckverbinder (1x fuer Transmitter-/Analogfunktion, 1x fuer Schaltausgaenge) - exakte Pin-Belegung nicht aus der Herstellerkatalog-Uebersicht ablesbar (nur Zubehoerliste fuer Kabeldosen ST12-5 gefunden), vor Verdrahtung idealerweise anhand des vollstaendigen Smart-Press-Datenblatts gegenpruefen. Nutzer-Hinweis: \"Schau Dir mal bei Honeywell FEMA den Smart DCM an\" fuehrte zur verwandten Baureihe Smart Press PST (Smart DCM selbst hat nur Schaltausgaenge, kein Analogsignal - PST ist die Variante mit beidem). Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Elektronische Druckschalter\": http://www.fema-armaturen.ch/pdf/web_02.pdf  ||  [Preisrecherche 08/2026] weiterhin kein belastbarer Neupreis (FEMA/Honeywell Smart Press kein oeffentl. EUR-Preis) – Herstelleranfrage noetig",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -278,6 +308,7 @@
     "kategorie": "Feldgerät Heizung/Kälte/Sanitär",
     "preis_eur": 119.0,
     "quelle_hinweis": "Siemens QVE1901, Stroemungswaechter fuer Fluessigkeiten in Rohrleitungen DN20-200, Paddelsystem mit Dauermagnet + Reedkontakt (Arbeits-/Ruhekontakt manuell umstellbar), Einbau in T-Stueck nach EN10241/EN10242 mit G1/2\" Innengewinde, Paddellaenge fuer die jeweilige Nennweite kuerzbar, Kontaktbelastung AC230V 1A/DC48V 1A, Nenndruck PN25. Steckverbinder DIN EN175301-803-A. Kein belastbarer EUR-Preis gefunden. Quelle: Siemens-Originaldatenblatt CM1N1594de (2021-08-16).  ||  [Preisrecherche 08/2026] 119.00 EUR netto (Distributor, www.kelvintech.de) – netto; Stroemungswaechter DN20-200 Reed",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -287,6 +318,7 @@
     "kategorie": "Feldgerät Heizung/Kälte",
     "preis_eur": 461.53,
     "quelle_hinweis": "Honeywell/FEMA SDBAM6, Druckbegrenzer \"besonderer Bauart\" mit selbstueberwachendem Sensor (Sicherheitsmembrane), interner Verriegelung (Plombiereinrichtung P2 im Lieferumfang), gebaut nach Druckgeraeterichtlinie 2014/68/EU, einsetzbar als Druckbegrenzer fuer Maximaldruckueberwachung (Anlagen nach TRBS/DIN EN12828), Einstellbereich 1,2-6 bar, Druckaenderung zum Entriegeln 0,42 bar, max. zulaessiger Druck 10 bar, Anschluss G1/2\" aussen (Manometeranschluss nach DIN16288). Herstellerkatalog dokumentiert SDBAM ausdruecklich NUR fuer Maximaldrucküberwachung (separate DWR-Baureihe fuer Minimaldruckbegrenzung vorgesehen) - auf ausdruecklichen Nutzer-Wunsch dennoch fuer beide Rollen (p-Max UND p-Min, Baugruppen 420_000007/008) verwendet. Eine dedizierte \"2-stufige\" Variante (2 unabhaengige Schaltpunkte in einem Geraet) wurde nicht gefunden, siehe CLAUDE.md offene Punkte. Kein belastbarer EUR-Preis gefunden. Quelle: Honeywell-Katalog \"Mechanische Druckschalter\": https://prod-edam.honeywell.com/content/dam/honeywell-edam/hbt/en-us/documents/literature-and-specs/engineering-specifications/bms-from-hco-030923/hbt-bms-gedsda-ge51r0519.pdf  ||  [Preisrecherche 08/2026] 461.53 EUR netto (Distributor, proflamm.com) – netto zzgl. MwSt; 1,2-6 bar mit Verriegelung",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -296,6 +328,7 @@
     "kategorie": "Feldgerät Heizung",
     "preis_eur": 279.0,
     "quelle_hinweis": "SYR (Hans Sasserath GmbH & Co. KG) Wasserstandbegrenzer 933.1, magnetische Uebertragung der Schwimmerbewegung auf einen Mikroschalter (Wechsler, 1-polig), Pruefung ohne Absenken des Wasserstandes moeglich, Verriegelung nach Abschalten (manueller Reset ueber Entriegelungstaster) - Typ 933.2 (ohne Verriegelung) ebenfalls verfuegbar. Absicherung von Heizkesseln in Warmwasser-Heizungsanlagen gegen Wassermangel nach DIN EN12828, Pflicht ab 300kW Heizleistung. Einbau DN20 in die Kessel-Vorlaufleitung, Betriebsdruck max. 10 bar, Betriebstemperatur max. 120°C, TÜV-Bauteilkennzeichen TÜV-HWB-12-190, VDE-Ausweis-Nr. 139223. Elektrischer Anschluss fest verdrahtet (Kabel H05VV-F 4x1,00mm², Laenge 2,5m). Weder Siemens noch Honeywell/FEMA noch IFM fuehren Wassermangelsicherungen im Programm - SYR auf Nutzer-Hinweis als Herstellerabweichung eingesetzt (analog KRIWAN-Praezedenzfall Session 53). Kein belastbarer EUR-Preis gefunden. Quelle: SYR-Originaldatenblatt: https://www.syr.de/daten_produkte/PDF/Datenblatt/Deutsch/0933.pdf  ||  [Preisrecherche 08/2026] 279.00 EUR netto (Distributor, www.sani-flex.de) – aus brutto 331,80 /1,19; DN20 mit Verriegelung",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -304,6 +337,7 @@
     "hersteller": "Honeywell (FEMA)",
     "kategorie": "Feldgerät Heizung",
     "quelle_hinweis": "Honeywell/FEMA TWP1F, Stabthermostat mit Wechselkontakt (Umschalter), TÜV-Pruefzeichen TW 89 207, Einstellbereich 20-150°C, max. zulaessige Temperatur am Fuehler 175°C, Tauchhuelse Messing G1/2\" (im Lieferumfang), Eintauchtiefe 100mm, Schaltleistung 10(2)A/250V, IP54. Kein Sicherheitsbauteil (nicht selbstueberwachend, keine Wiedereinschaltsperre) - reiner Temperaturwaechter, Gegenstueck zum Sicherheitstemperaturbegrenzer STB1F. Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Mechanische Thermostate\": http://www.fema-armaturen.ch/pdf/web_04.pdf  ||  [Preisrecherche 08/2026] weiterhin kein belastbarer Neupreis (FEMA/Honeywell TWP1-F kein aktueller EUR-Preis) – Herstelleranfrage noetig",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -312,6 +346,7 @@
     "hersteller": "Honeywell (FEMA)",
     "kategorie": "Feldgerät Heizung",
     "quelle_hinweis": "Honeywell/FEMA STB1F, Stabthermostat mit Oeffnerkontakt, selbstueberwachend (bei Bruch/Undichtigkeit im Messsystem oeffnet der Stromkreis, Anlage schaltet zur sicheren Seite ab), mit Wiedereinschaltsperre (manueller Reset nach Entfernen der Hutmutter), gepruft nach Druckgeraeterichtlinie 2014/68/EU und DIN EN14597 fuer Heizungsanlagen nach DIN EN12828, Dampf-/Heisswasseranlagen und Fernheizungen, TÜV-Pruefzeichen STB 89 507, Einstellbereich 60-130°C, max. zulaessige Temperatur am Fuehler 150°C, Tauchhuelse Messing G1/2\" (im Lieferumfang), Eintauchtiefe 150mm, Schaltleistung 10(2)A/250V, IP54, plombierbar. Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Mechanische Thermostate\": http://www.fema-armaturen.ch/pdf/web_04.pdf  ||  [Preisrecherche 08/2026] weiterhin kein belastbarer Neupreis (FEMA/Honeywell STB1-F abgekuendigt (Nachf. ETC), kein Preis) – Herstelleranfrage noetig",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -321,6 +356,7 @@
     "kategorie": "Feldgerät Heizung",
     "preis_eur": 267.99,
     "quelle_hinweis": "Honeywell/FEMA STB+TWF, Doppelthermostat mit 2 unabhaengigen Schaltelementen in einem Gehaeuse: STB (Oeffnerkontakt, selbstueberwachend, Wiedereinschaltsperre mit manuellem Reset) + TW (Wechselkontakt, ohne Sicherheitsfunktion), gepruft nach Druckgeraeterichtlinie 2014/68/EU und DIN EN14597, TÜV-Pruefzeichen TW/STB 90 407, gemeinsamer Einstellbereich 30-110°C, max. zulaessige Temperatur am Fuehler 130°C, Tauchhuelse Messing G1/2\" (im Lieferumfang), Eintauchtiefe 150mm, Schaltleistung 10(2)A/250V, IP54, plombierbar. Kein belastbarer EUR-Preis gefunden. Quelle: FEMA-Katalog (Honeywell), Kapitel \"Mechanische Thermostate\": http://www.fema-armaturen.ch/pdf/web_04.pdf  ||  [Preisrecherche 08/2026] 267.99 EUR netto (Distributor, www.lagerwerk.com) – netto aus brutto 318,91; DIN 3440; andries24 abw. 293,79 netto",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -331,6 +367,7 @@
     "preis_eur": 1815.0,
     "quelle_hinweis": "Belimo Energy Valve 4, Bestellcode EV050R2+KBAC (\"K\"=SuperCap-Notstellung, Notstellrichtung Auf ODER Zu per Webserver/App waehlbar). DN50 Rp2\"/G2 1/2\", PN25, kvs 30,4, V'nom 15 m3/h. Versorgung 24 V AC/DC (PELV, Schutzklasse III -> kein separater PE), ~26 VA (Cap-Ladung). Anschluss: fest 1 m 6x0,75 mm2 + 1x RJ45 (am Sensor-Modul). Adern 1 GND / 2 +24V / 3 Y (2..10V Stellsignal) / 5 U (0..10V Rueckmeldung) / 6-7 RS485. Kein natives 4-20 mA. Hybridmodus analog + IP gleichzeitig. Ext. Temp-Fuehler T1 (Pt1000, 3 m) serienmaessig. Ein Geraet = alle Protokolle, umschaltbar - keine getrennten Bestellnummern. Preis 1815,02 EUR netto (ifs-store.com, 30.08.2026; mauerkasten.de 1947,65 aus brutto). Quelle: https://ifs-store.com/BELIMO-EV050R2-KBAC/",
     "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Waerme-/Kaelteleistung, kumulierte Energiemenge, interne Ist-Stellgroesse Ventil, externer Temperatursensor, Geraetenummer. BI: Sammelstoerung. AO: Sollwert (Volumenstrom/Temperatur/Leistung), Vorgabe Stellgroesse Ventil (Position-Override).",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -341,6 +378,7 @@
     "preis_eur": 6187.3,
     "quelle_hinweis": "Belimo Energy Valve 4, Bestellcode EV100F+KBAC. DN100 Flansch PN16 (EN 1092-2), ps 1600 kPa, V'nom 20 l/s = 72 m3/h; kvs UNBESTAETIGT. Notstell-Laufzeit ~35 s, IP40, 1 m PVC-Anschlusskabel + RJ45. Elektrik/Protokolle wie EV050R2+KBAC (24 V AC/DC, Hybridmodus, alle Bus-Protokolle umschaltbar). Leistungsaufnahme +KBAC am DN100 nicht separat verifiziert (Annahme ~26 VA wie DN50). Preis 6187,30 EUR netto (hvac.de, 30.08.2026; brutto 7362,89). Quelle: https://hvac.de/en/water-solutions/11041-ev100fkbac.html",
     "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Waerme-/Kaelteleistung, kumulierte Energiemenge, interne Ist-Stellgroesse Ventil, externer Temperatursensor, Geraetenummer. BI: Sammelstoerung. AO: Sollwert (Volumenstrom/Temperatur/Leistung), Vorgabe Stellgroesse Ventil (Position-Override).",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -351,6 +389,7 @@
     "preis_eur": 149.0,
     "quelle_hinweis": "Referenzgeraet Zenner zelsius C5 IUF (Ultraschall-Kompakt-WMZ DN15 qp1,5 M-Bus, MID); Aquametro-Aequivalent AMTRON SONIC D (Kompakt DN15-20, Fuehler fest). M-Bus busgespeist (~1,5 mA / 1 Unit Load). Batteriebetrieb 16 s Messzyklus / bei 24-V-AC-Netzversorgung 1 s + unbegrenzte Auslesehaeufigkeit. Preis 148,70 EUR netto (stark-elektronik.de, 30.08.2026). Quelle: https://www.stark-elektronik.de/p/m-bus-ultraschall-kompaktwaermezaehler-zelsius-r-qp-1-5-m-h-mid-2025-geeicht",
     "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -360,6 +399,7 @@
     "kategorie": "Energie und Zählwerteinrichtungen",
     "quelle_hinweis": "Aquametro CALEC ST III (Standard/Smart/Advanced) + AMFLO SONIC DN50 bzw. AMTRON SONIC D DN50. Rechenwerk-Versorgung 24 V DC oder 230 V AC (kein 24 V AC). M-Bus busgespeist. Listenpreis Aquametro/Integra nicht oeffentlich (Vertrieb ueber Angebot/Systemhaus) - kein belastbarer Netto-Preis. Quelle: https://integra-metering.com/product/calec-st-iii-standard-smart/",
     "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -369,6 +409,7 @@
     "kategorie": "Energie und Zählwerteinrichtungen",
     "quelle_hinweis": "Wie WMZ-DN50, Baugroesse DN100 (Aquametro CALEC ST III + AMFLO SONIC DN100). Rechenwerk 24 V DC / 230 V AC. Kein oeffentlicher Netto-Preis. Quelle: https://integra-metering.com/product/calec-st-iii-standard-smart/",
     "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -378,6 +419,7 @@
     "kategorie": "Energie und Zählwerteinrichtungen",
     "quelle_hinweis": "Baugleich zur Kompakt-Waermezaehler-Familie (zelsius C5 / AMTRON SONIC D), mit Kaelte- bzw. Kombizulassung PTB K 7.2 und Glykol-Auswahl. M-Bus busgespeist. Kein belastbarer Netto-Preis fuer die Kaeltevariante gefunden (Referenz Waermevariante ~149 EUR). Quelle: https://aquametro.com/product/amtron-sonic-d/",
     "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -387,6 +429,7 @@
     "kategorie": "Energie und Zählwerteinrichtungen",
     "quelle_hinweis": "Aquametro CALEC ST III + AMFLO SONIC DN50, Kaelte-/Kombizulassung, gleitende Stoffdaten Wasser-Glykol. Rechenwerk 24 V DC / 230 V AC. Kein oeffentlicher Netto-Preis. Quelle: https://integra-metering.com/product/calec-st-iii-standard-smart/",
     "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -396,6 +439,7 @@
     "kategorie": "Energie und Zählwerteinrichtungen",
     "quelle_hinweis": "Wie KMZ-DN50, Baugroesse DN100. Kein oeffentlicher Netto-Preis. Quelle: https://integra-metering.com/product/calec-st-iii-standard-smart/",
     "kommunikative_datenpunkte": "AI: Vorlauftemperatur, Ruecklauftemperatur, Differenztemperatur VL-RL, Volumenstrom, Zaehlernummer, Waerme-/Kaelteleistung, kumulierte Energiemenge.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -406,6 +450,7 @@
     "preis_eur": 129.0,
     "quelle_hinweis": "Zenner MTK-M (M190 R34 = DN20, Referenz); M-Bus im Zaehlwerk integriert. Alternativ Ultraschall (Diehl HYDRUS / Itron Cyble) oder Aquametro TOPAS SONIC (DN15-40). M-Bus busgespeist / Anbaumodul mit eigener Li-Batterie. Preis DN20 129,00 EUR netto (DN15 ~149, DN25 ~159; energie-zaehler.com, 30.08.2026). Quelle: https://www.energie-zaehler.com/MTKHWX-R12G34",
     "kommunikative_datenpunkte": "AI: aktueller Durchfluss, Zaehlernummer, kumulierter Durchfluss.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -416,6 +461,7 @@
     "preis_eur": 459.0,
     "quelle_hinweis": "Zenner Woltmann WPD DN50 + M-Bus-EDC-Modul (Li-Batterie bis 15 J.). Aquametro fuehrt keine Wasserzaehler > DN40. Schaltschrankseitig nur 2 M-Bus-Klemmen (busgespeist), keine Hilfsspannung. Preis 459,00 EUR netto inkl. Eichgebuehr (stark-elektronik.de, 30.08.2026). Quelle: https://www.stark-elektronik.de/p/m-bus-woltman-grosswasserzaehler-typ-wpd-q3-25-dn50",
     "kommunikative_datenpunkte": "AI: aktueller Durchfluss, Zaehlernummer, kumulierter Durchfluss.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -425,6 +471,7 @@
     "kategorie": "Energie und Zählwerteinrichtungen",
     "quelle_hinweis": "Zenner Woltmann WPD DN100 + M-Bus-EDC. Preis auf Anfrage (energie-zaehler.com listet DN125 als naechste Groesse). Quelle: https://www.energie-zaehler.com/WPD-DN125-EDC-MBUS",
     "kommunikative_datenpunkte": "AI: aktueller Durchfluss, Zaehlernummer, kumulierter Durchfluss.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -435,6 +482,7 @@
     "preis_eur": 339.0,
     "quelle_hinweis": "Wilo CIF-Modul Modbus RTU (Art. 2190368, EAN 4048482802725, PG14), Wilo-Listenpreis 339,00 EUR netto (wilo.com Katalog, 05.09.2026). Steckkarte in den CIF-Slot der Pumpe, KEINE eigene Spannungsversorgung (aus Pumpenelektronik, SELV/galv. getrennt). RS485 EIA/TIA-485-A, Klemmen A(-)/B(+)/GND, 120-Ohm-Terminierung integriert schaltbar, Daisy-Chain. Adresse/Baudrate im Pumpenmenue. Fuer die aeltere -E-Blockpumpengeneration (CronoLine-E/IL-E, Stratos GIGA 1. Gen.) das baugleiche IF-Modul Modbus RTU Art. 2097809 (Wilo-Liste 341,00 EUR) - Datenpunkte weitgehend identisch. Kein Ethernet/Modbus-TCP fuer die IF-Generation. Quelle: https://wilo.com/de/de/Katalog/de/zubehoer/cif-module/cif-modul-modbus-rtu",
     "kommunikative_datenpunkte": "AI: Drehzahl, Volumenstrom, Druck, Wirkleistung, Stromaufnahme, kumulierte Energiemenge. AO: Sollwertfuehrung, Stellsignal. BO: Umschaltung Betriebsart.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -445,6 +493,7 @@
     "preis_eur": 717.0,
     "quelle_hinweis": "Wilo CIF-Modul Ethernet Multiprotocol (Art. 2211408, EAN 4062679124520), Wilo-Listenpreis 717,00 EUR netto (wilo.com Katalog, 05.09.2026). Protokoll Modbus TCP ODER BACnet/IP (Konfiguration, eines aktiv). Steckkarte in den CIF-Slot, KEINE eigene Versorgung. 2x RJ45 (geschirmt) mit integriertem Ethernet-Switch (10/100, Auto-MDI-X) - ein Port ans Netzwerk, zweiter zum Durchschleifen zur naechsten Pumpe (nur bei eingeschalteter Pumpe). Max. 100 m je Segment. NICHT fuer die IF-Generation (CronoLine-E) und nicht fuer Stratos PICO. Wilo-Smart Gateway ist die Cloud-Anbindung, NICHT der GLT-Weg. Quelle: https://wilo.com/de/de/Katalog/de/zubehoer/cif-module/cif-modul-ethernet",
     "kommunikative_datenpunkte": "AI: Drehzahl, Volumenstrom, Druck, Wirkleistung, Stromaufnahme, kumulierte Energiemenge. AO: Sollwertfuehrung, Stellsignal. BO: Umschaltung Betriebsart.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -455,6 +504,7 @@
     "preis_eur": 307.17,
     "quelle_hinweis": "Netzanalysator/Energiezaehler mit Modbus-RTU-Schnittstelle. Referenz Janitza UMG 96RM (Art. 5222001, RS485/Modbus RTU, ~307 EUR netto Preisrecherche 08/2026); Alternative Schneider Acti9 iEM3350 (Art. A9MEM3350, ~209 EUR). Das Geraet sitzt in der ueberwachten Elektro-Unterverteilung und erhaelt dort seine Spannungsversorgung (Messspannung / Hilfsspannung) - KEINE Versorgung aus dem GA-Schaltschrank. Schaltschrankseitig nur 2 Klemmen RS485 (A/B) zur Automationsstation. 17 Werte kommunikativ.",
     "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Blindleistung, cos phi, Frequenz, Spannung L1-L2, Spannung L2-L3, Spannung L3-L1, Spannung L1-N, Spannung L2-N, Spannung L3-N, Stromaufnahme I1, Stromaufnahme I2, Stromaufnahme I3, Stromaufnahme IN.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -465,6 +515,7 @@
     "preis_eur": 356.04,
     "quelle_hinweis": "Netzanalysator/Energiezaehler mit M-Bus-Schnittstelle. Referenz Janitza UMG 96RM-M (Art. 5222069, ~356 EUR netto); Alternative Schneider Acti9 iEM3135 (Art. A9MEM3135, ~200 EUR, MID). Versorgung am Einbauort in der Elektro-Unterverteilung, NICHT aus dem GA-Schaltschrank. Schaltschrankseitig 2 Klemmen M-Bus (busgespeist reicht fuer die Kommunikationslogik); im GA-Schrank wird automatisch ein M-Bus-Pegelwandler ergaenzt. 17 Werte kommunikativ.",
     "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Blindleistung, cos phi, Frequenz, Spannung L1-L2, Spannung L2-L3, Spannung L3-L1, Spannung L1-N, Spannung L2-N, Spannung L3-N, Stromaufnahme I1, Stromaufnahme I2, Stromaufnahme I3, Stromaufnahme IN.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -475,6 +526,7 @@
     "preis_eur": 532.11,
     "quelle_hinweis": "Netzanalysator/Energiezaehler mit Ethernet-Schnittstelle (Modbus TCP/IP bzw. PROFINET). Janitza UMG 96RM-PN (~532 EUR netto Preisrecherche 08/2026). Versorgung am Einbauort in der Elektro-Unterverteilung, NICHT aus dem GA-Schaltschrank. Schaltschrankseitig KEINE Klemme - RJ45 auf einen Ethernet-Switch im GA-Schrank, der mit der Automationsstation verbunden ist (Switch wird automatisch ergaenzt). 17 Werte kommunikativ.",
     "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Blindleistung, cos phi, Frequenz, Spannung L1-L2, Spannung L2-L3, Spannung L3-L1, Spannung L1-N, Spannung L2-N, Spannung L3-N, Stromaufnahme I1, Stromaufnahme I2, Stromaufnahme I3, Stromaufnahme IN.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -483,6 +535,7 @@
     "hersteller": "ebm-papst",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -491,6 +544,7 @@
     "hersteller": "ebm-papst",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -499,6 +553,7 @@
     "hersteller": "ebm-papst",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -507,6 +562,7 @@
     "hersteller": "ebm-papst",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -515,6 +571,7 @@
     "hersteller": "ZIEHL-ABEGG",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -523,6 +580,7 @@
     "hersteller": "Rosenberg",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -531,6 +589,7 @@
     "hersteller": "generisch",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -539,6 +598,7 @@
     "hersteller": "generisch",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -547,6 +607,7 @@
     "hersteller": "generisch",
     "kategorie": "Ventilator",
     "quelle_hinweis": "Ventilator-Baugruppen 09/2026 (Fork 5/8). Feldgeraete-Katalogzeile fuer Modul-5-Bepreisung. Abmessungen/Preis noch offen (Restliste). EC-Ventilatoren: integrierte Kommutierungs-/Leistungselektronik + Motorvollschutz + Sanftanlauf, Sollwert 0-10 V, 1 Onboard-Melderelais (Wechsler), Modbus RTU onboard. Quelle Original-Betriebsanleitungen (ebm-papst/ZIEHL-ABEGG/Rosenberg).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -555,6 +616,7 @@
     "hersteller": "Reflex",
     "kategorie": "Nachspeise-/Druckhaltetechnik",
     "quelle_hinweis": "[Recherche 09/2026] Reflex Fillset Compact Twist M-Bus, Art. 6811855, EAN 4036705227400. Datenblatt PR1724de/6811855: https://documents.pdod.de/reflex/pr1724de_6811855.pdf (157x175x117mm, 2,42kg, kvs 0,86, PN10, max 65°C). Kein Nettopreis gefunden (nur Distributor-Bruttopreise 471-750 EUR, Stand Abruf 09/2026, shkhelden.de) - offen.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -565,6 +627,7 @@
     "quelle_hinweis": "[Recherche 09/2026] Reflex Fillcontrol Smart, Art. 6813500. Originalbetriebsanleitung SI21221/9131436 (11.2024): https://media.hornbach.de/hb/installationmanual/as.179713939.pdf (299x320x194mm, 3,2kg, IPX4, 230V/50Hz <100W/4A). Kein Nettopreis gefunden - offen.",
     "zubehoer_feldgeraet_artikel_nr": "2CKA002083A0368",
     "zubehoer_menge": 1,
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -576,6 +639,7 @@
     "quelle_hinweis": "[Preisrecherche 09/2026] 5.361,00 EUR (Grosshandelslistenpreis pdod.de-Produktdatenbank, Stand-Datum auf der Seite nicht ausgewiesen, vermutlich 2025/2026er Katalogstand, kein garantiert aktueller Siemens/Reflex-Herstellerlistenpreis) https://www.pdod.de/de/articles/reflex/8800100/DE . Betriebsanleitung Rev. A 07.09.2022: https://assets.heizung-billiger.de/documents/rfma_si21166_deb_reflexomat_xs.pdf , Klemmenplan-Auswertung: https://www.manualslib.com/manual/2877264/Reflex-Reflexomat-Xs.html?page=9 . IP54, 0,25kW Kompressor. Absicherung der Steuerung (A) nicht gefunden - offen.",
     "zubehoer_feldgeraet_artikel_nr": "2CKA002083A0368",
     "zubehoer_menge": 1,
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -585,6 +649,7 @@
     "kategorie": "Nachspeise-/Druckhaltetechnik",
     "preis_eur": 7397.4,
     "quelle_hinweis": "[Preisrecherche 09/2026] 7.397,40 EUR netto ohne MwSt. It. einer Distributor-Quelle (zweite Quelle nennt abweichend 5.675,00 EUR ohne Netto/Brutto-Kennzeichnung - beide Werte aus Suchmaschinen-Snippets, nicht direkt gegengeprueft, Stand unklar ~2025/2026). Betriebsanleitung Variomat Touch VS 2-1/35/60/75/95, 11.2020 Rev.A/C: https://www.manualslib.com/manual/2147383/Reflex-Variomat-Touch-Vs-2-1-35.html . Steuerelektronik 230V AC 50-60Hz T0,16A; Gesamtstation VS2-1/35 230V max.16A einphasig - GROESSERE VS-2-Baugroessen koennen laut Klemmenplan-Textauszug 400V/20A benoetigen, in der gemeinsamen Anleitung nicht eindeutig einer Baugroesse zugeordnet, vor Projekteinsatz mit anderer Baugroesse pruefen. IP64 (Bedieneinheit).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -595,6 +660,7 @@
     "quelle_hinweis": "[Recherche 09/2026] Reflex Servitec S, Art. 8832000, IP42. Betriebsanleitung Rev.B 28.08.2019: https://xom-web.reflex.de/xom-rest/assets/cb1c3bf2-ed04-48a1-af3d-fcb877b70029/content?locale=de (per pypdf lokal ausgelesen). 0,2kW, 230V/50Hz, Absicherung 10A, Klemmenplan Kap.6.5.1 vollstaendig ausgewertet (18 Positionen). Kein Nettopreis gefunden - offen.",
     "zubehoer_feldgeraet_artikel_nr": "2CKA002083A0368",
     "zubehoer_menge": 1,
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -605,6 +671,7 @@
     "quelle_hinweis": "[Recherche 09/2026] Viega Spuelstation 2241.10 (Herst.-Art.-Nr. 762216, EAN 4015211762216), 340x525x80mm, IP54 (Steuerung/Magnetventil), IP68 Rueckstausensor. Gebrauchsanleitung: https://pspstmsimanuals.blob.core.windows.net/pub-production/Manuals/28e2eb588686a154ac1140940114470b_de_DE.pdf (per pdftotext lokal ausgewertet). Externes Steckernetzteil 230V AC -> 12V DC max 1300mA, max 15,6W. Kein belastbarer Nettopreis gefunden (2 stark abweichende Distributor-Bruttopreise 1.434 EUR / 2.140 EUR, Stand Abruf 09/2026) - offen. Optionales GLT-Modul binaer 2241.87 (8 potentialfreie Eingaenge + 12 Relaisausgaenge max 24V/100mA) NICHT Teil dieser Baugruppe - Viega-Produktseite dafuer aktuell 404, Daten nur aus Distributor-Snippets, nicht abschliessend verifiziert.",
     "zubehoer_feldgeraet_artikel_nr": "2CKA002083A0368",
     "zubehoer_menge": 1,
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -614,6 +681,7 @@
     "kategorie": "Sensor",
     "preis_eur": 35.72,
     "quelle_hinweis": "[Session 62 Nachtrag] Viega Temperatursensor 2245.62, offizielle Viega-Variantentabelle (viega.de): Art. 734855 = G1/2 x 13,5mm, Kabellaenge 1000mm, Pt1000, Edelstahl, schraubt direkt in ein Viega-T-Stueck Rp1/2 (kompatibel Raxofix/Sanfix/Sanpress-Pressysteme) - KEIN separates Schutzrohr/Tauchhuelse noetig (Nutzer-Vorgabe: kuerzerer, direktmessender Trinkwasserfuehler als Alternative zum Heizungs-QAE2120 mit 100mm-Schutzrohr). Preis 35,72 EUR netto aus 42,51 EUR brutto (Distributor pumpenscout.de, Titel dort faelschlich \"24,5mm\" - Artikelnummer 734855 und L=13,5mm laut offizieller Viega-Seite jedoch eindeutig, Distributor-Titel vermutlich Tippfehler) hochgerechnet, kein Herstellerlistenpreis bestaetigt. Quelle: viega.de Produktseite Temperatursensor-2245-62.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -622,6 +690,7 @@
     "hersteller": "Viega",
     "kategorie": "Sensor",
     "quelle_hinweis": "[Session 62 Nachtrag] Wie 734855, laengere Variante G1/2 x 25,5mm (offizielle Viega-Variantentabelle). Kein Preis gefunden.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -630,6 +699,7 @@
     "hersteller": "Viega",
     "kategorie": "Zubehoer",
     "quelle_hinweis": "[Session 62 Nachtrag] Zubehoer-Anschlusskabel fuer AquaVip-Durchfluss-/Temperatursensor 5841.50 - bricht die Sensorsignale als konventionelle Punkt-zu-Punkt-Signale heraus (PIN1 PT1000-1, PIN2 4-20mA, PIN3 PT1000-2, PIN4 vermutlich Bezug/GND fuer die 4-20mA-Schleife - nicht explizit dokumentiert, PIN5 24V-Einspeisung) statt der Viega-eigenen AquaVip-CAN-Bus-Loesung (Controller/Systemkabel) zu nutzen. Kein Preis gefunden, Pin-4-Funktion nicht am Originaldatenblatt verifiziert.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -640,6 +710,7 @@
     "quelle_hinweis": "[Session 62 Nachtrag] Viega AquaVip-Durchfluss- und Temperatursensor, DN20-Variante (Baureihe auch DN10 Art. 792473 2...40l/min und DN32 Art. 792497 14...240l/min lieferbar, hier nur DN20 auf Nutzer-Wunsch katalogisiert). Messbereich 5-85 l/min, Betriebsdruck max. 1,2MPa(60C)/0,6MPa(110C), Werkstoff Siliziumbronze/Kunststoff, fuer Trinkwasser- und Heizungsinstallationen. Eingangsspannung 24V lt. Viega-Produktseite (AC/DC nicht spezifiziert, als 24VDC angenommen - typisch fuer eine 4-20mA-Stromschleife, nicht am Originaldatenblatt verifiziert). Benoetigt Zubehoerkabel 5841.531 zur konventionellen Signal-Ausleitung. Kein Preis gefunden. Quelle: viega.de Produktseite AquaVip-Durchfluss-und-5841-50.",
     "zubehoer_feldgeraet_artikel_nr": "5841.531",
     "zubehoer_menge": 1,
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -648,6 +719,7 @@
     "hersteller": "Busch-Jaeger",
     "kategorie": "Zubehoer",
     "quelle_hinweis": "[Session 62 Nachtrag] Pflichtzubehoer fuer Reflex-/Viega-Geraete mit werkseitigem Netzstecker (Fillcontrol Smart, Reflexomat XS, Servitec S, Viega 2241.10) - Nutzer-Vorgabe: der Schaltschrank versorgt vor Ort eine Aufputz-Schutzkontaktsteckdose (LSS+L/N/PE-Klemmen bleiben in der jeweiligen Baugruppe unveraendert), das Geraet wird dort eingesteckt statt fest verdrahtet. Kein Preis gefunden.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -656,6 +728,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6106-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -664,6 +737,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6110-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -672,6 +746,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6116-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -680,6 +755,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6206-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -688,6 +764,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6210-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -696,6 +773,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6216-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -704,6 +782,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6316-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -712,6 +791,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SL6316-7, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -720,6 +800,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SV3344-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -728,6 +809,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SV3644-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -736,6 +818,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schutzorgane mit Meldekontakt",
     "quelle_hinweis": "[Session 63] Baugleiches Bauteil wie 5SV3744-6, hier als externes Feldgeraet katalogisiert (in einer Elektro-Unterverteilung oder Schaltanlage AUSSERHALB dieses Schaltschranks eingebaut - Energieversorgung/Absicherung ist dort geregelt, nicht Aufgabe dieses Schranks). Es wird nur die Ausloese-/Fehlerstrommeldung (Hilfskontakt 5ST3010) per 2 Klemmen abgeholt.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -744,6 +827,7 @@
     "hersteller": "Siemens",
     "kategorie": "Handschalter",
     "quelle_hinweis": "[Session 63] Fuer Tuereinbau in externen Tableaus/Schaltanlagen (nicht dieser Schaltschrank) - Kontaktzahl = Anzahl Schaltstellungen minus 1 (Standard-Siemens-\"komplette Einheit\"; die erste/neutrale Stellung ergibt sich aus \"kein Kontakt aktiv\").",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -752,6 +836,7 @@
     "hersteller": "Siemens",
     "kategorie": "Handschalter",
     "quelle_hinweis": "[Session 63] Fuer Tuereinbau in externen Tableaus/Schaltanlagen (nicht dieser Schaltschrank) - Kontaktzahl = Anzahl Schaltstellungen minus 1 (Standard-Siemens-\"komplette Einheit\"; die erste/neutrale Stellung ergibt sich aus \"kein Kontakt aktiv\").",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -760,6 +845,7 @@
     "hersteller": "Siemens",
     "kategorie": "Handschalter",
     "quelle_hinweis": "[Session 63] Fuer Tuereinbau in externen Tableaus/Schaltanlagen (nicht dieser Schaltschrank) - Kontaktzahl = Anzahl Schaltstellungen minus 1 (Standard-Siemens-\"komplette Einheit\"; die erste/neutrale Stellung ergibt sich aus \"kein Kontakt aktiv\"). ACHTUNG: keine fertige 4-Stufen-Einheit im SIRIUS-ACT-Katalog gefunden, Artikelnummer/Aufbau nicht verifiziert - vor Verwendung im Projekt SIRIUS-ACT-Systemhandbuch pruefen.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -768,6 +854,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -776,6 +863,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -784,6 +872,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -792,6 +881,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -800,6 +890,7 @@
     "hersteller": "Siemens",
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3KF (Nachfolger der abgekuendigten 3KL/3KM-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung, exakte kW-Umrechnung bewusst zweitrangig). Steht in einer FREMDEN Elektro-Unterverteilung/Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -809,6 +900,7 @@
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
     "kommunikative_datenpunkte": "Mit Messvariante 440_000076: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -818,6 +910,7 @@
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
     "kommunikative_datenpunkte": "Mit Messvariante 440_000077: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -827,6 +920,7 @@
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
     "kommunikative_datenpunkte": "Mit Messvariante 440_000078: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -836,6 +930,7 @@
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
     "kommunikative_datenpunkte": "Mit Messvariante 440_000079: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -845,6 +940,7 @@
     "kategorie": "Schaltanlagen-Komponenten",
     "quelle_hinweis": "[Session 63] Planungsfabrikat Siemens SENTRON 3WA (Nachfolger der abgekuendigten 3WL-Reihe). Leitungsreihe/Baugroesse laut Nutzer-Vorgabe (Richtwert-Abstufung). Steht in einer FREMDEN Schaltanlage, nicht in diesem Schrank - DBACS holt nur Meldekontakte ab (Nur-Monitoring-Entscheidung Session 63). Einschubtechnik angenommen (fuer Trennstellungs-Signal PSS321) - bei Festeinbau-Ausfuehrung entfaellt dieses Signal.",
     "kommunikative_datenpunkte": "Mit Messvariante 440_000080: COM100/COM800 Modbus TCP, 17 AI (generische Naeherung).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -854,6 +950,7 @@
     "kategorie": "Klappenantriebe",
     "preis_eur": 259.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal/Originaldatenblatt CE1N4502en: 160x124x153mm, Schutzklasse II, IP54. Preis SIPATEC-Distributor (10/2026), kein Siemens-Listenpreis (HIT-Portal zeigt Preise nur eingeloggt).",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -863,6 +960,7 @@
     "kategorie": "Klappenantriebe",
     "preis_eur": 259.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal/Originaldatenblatt CE1N4502en: 160x124x153mm, Schutzklasse III (SELV), IP54. Preis SIPATEC-Distributor (10/2026), kein Siemens-Listenpreis.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -871,6 +969,7 @@
     "hersteller": "Siemens",
     "kategorie": "Klappenantriebe",
     "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt (Schaltspannung 250V, Schaltstrom 6(3)A). Je Antrieb 2x noetig (1x Auf-Endlage, 1x Zu-Endlage), als Zubehoer an SAL31.00T10/SAL81.00T10 gehaengt. Kein verlaesslicher Preis gefunden (Distributor-Streubreite 35-65 EUR).",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -880,6 +979,7 @@
     "kategorie": "Klappenantriebe",
     "preis_eur": 120.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt: 68x137x59,5mm, IP54, Schutzklasse III. Preis Distributor Bolasystems (10/2026).",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -888,6 +988,7 @@
     "hersteller": "Siemens",
     "kategorie": "Klappenantriebe",
     "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt: 68x137x59,5mm, IP54, Schutzklasse II. Kein eindeutiger Einzelpreis (Distributor-Streubreite 107-149 EUR je nach Quelle, 10/2026) - bewusst ohne preis_stueck_eur.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -896,6 +997,7 @@
     "hersteller": "Siemens",
     "kategorie": "Klappenantriebe",
     "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt: 100x300x67,5mm (loest den in der Fork-Recherche gefundenen Distributor-Widerspruch 300x100x70,5mm vs. 100x313x71mm amtlich auf), IP54, Schutzklasse III. Kein eindeutiger Einzelpreis (Distributor-Streubreite 163-210 EUR, 10/2026) - bewusst ohne preis_stueck_eur.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -905,6 +1007,7 @@
     "kategorie": "Klappenantriebe",
     "preis_eur": 163.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] HIT-Portal bestaetigt: 100x300x67,5mm, IP54, Schutzklasse II. Preis Distributor Sipatec (10/2026).",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -914,6 +1017,7 @@
     "kategorie": "Brandschutzklappen",
     "preis_eur": 26.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] TROX Ersatzteilpreisliste Brandschutzklappen 2026-07 (gueltig ab 01.01.2026). Ersatzteilpreis, kein Neugeraete-Listenpreis (liegt erfahrungsgemaess ueber dem Einbaupreis). Kein fester Gesamtartikel fuer die komplette Klappe (projektspezifischer Bestellschluessel nach BxH) - dieser Endschalter-Typcode dient als repraesentatives Element fuer die Feldgeraeteliste.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -923,6 +1027,7 @@
     "kategorie": "Brandschutzklappen",
     "preis_eur": 426.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] TROX Ersatzteilpreisliste 2026-07 + Montage-/Betriebsanleitung OM_2020_11. Schutzklasse II, IP54, 2 Wechsler potentialfrei, Entriegelung mechanisch (Handkurbel) + automatisch bei Wiederanliegen der Versorgung. Ersatzteilpreis, kein Neugeraete-Listenpreis.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -932,6 +1037,7 @@
     "kategorie": "Brandschutzklappen",
     "preis_eur": 494.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] wie BFL230-T TR, groessere Baureihe. TROX Ersatzteilpreisliste 2026-07, Ersatzteilpreis.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -941,6 +1047,7 @@
     "kategorie": "Brandschutzklappen",
     "preis_eur": 395.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] wie BFL230-T TR, 24V-Variante. TROX Ersatzteilpreisliste 2026-07, Ersatzteilpreis.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -950,6 +1057,7 @@
     "kategorie": "Brandschutzklappen",
     "preis_eur": 492.0,
     "quelle_hinweis": "[Fork-Recherche 10/2026] wie BFN230-T TR, 24V-Variante. TROX Ersatzteilpreisliste 2026-07, Ersatzteilpreis.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -959,6 +1067,7 @@
     "kategorie": "Brandschutzklappen",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Produktdatenblatt AS-EM PD-10/2024. Sitzt direkt an/auf der Klappe im Feld, kein Schaltschrank-Platzbedarf. Macht aus einer Standard-TROX-Klappe (FK-EU/FK2-EU/FKRS-EU/FKR-EU) einen AS-i-Teilnehmer; exakte Gesamt-Bestellnummer der Klappe (vermutlich <Baureihe>/.../Z45-ZA07) nicht an einem Distributor-Shop verifiziert. Kein oeffentlicher Preis gefunden.",
     "kommunikative_datenpunkte": "Klappenstellung Auf/Zu via AS-i-Bus -> TNC-A1412-Controller (Modbus TCP)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -968,6 +1077,7 @@
     "kategorie": "Waermepumpen",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Kein konkretes Fabrikat/Produkt - Luft-Wasser-Waermepumpen aller 4 geprueften Hersteller unterscheiden sich stark in Reglerplattform/Registerliste, fuer Platzbestimmung und Bauteilliste reicht ein generischer Platzhalter (Nutzer-bestaetigt). Kein oeffentlicher Listenpreis ermittelbar. [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
     "kommunikative_datenpunkte": "Je nach Anlage ueber Modbus RTU ausgelesen: Hochdruck-/Niederdruckwaechter, Abtaubetrieb (L-W) bzw. Frostschutzwaechter Sole (W-W), Aussentemperatur, VL-/RL-Temperatur intern, aktueller Sollwert Vorlauftemperatur, elektrische Leistung, Volumenstrom, Waermeleistung, bei reversiblen Anlagen zusaetzlich Kaelteleistung, je nach Pumpenkonzept zusaetzlich Pumpe sekundaer/primaer Betrieb/Stoerung.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -977,6 +1087,7 @@
     "kategorie": "Waermepumpen",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Kein konkretes Fabrikat/Produkt - Wasser-Wasser-Waermepumpen aller 4 geprueften Hersteller unterscheiden sich stark in Reglerplattform/Registerliste, fuer Platzbestimmung und Bauteilliste reicht ein generischer Platzhalter (Nutzer-bestaetigt). Kein oeffentlicher Listenpreis ermittelbar. [Fork-Recherche 10/2026] Herleitung aus 4 Hersteller-Forks (Viessmann/Buderus/Carrier/Skadec+Mitsubishi) + 1 Normen-/Sensorik-Fork, siehe scratchpad/waermepumpen_datenpunkte_synthese.md und scratchpad/waermepumpen_anlagen_freigabe_vorlage.md. Physische Datenpunktliste + kommunikative Datenpunktliste direkt vom Nutzer vorgegeben und freigegeben.",
     "kommunikative_datenpunkte": "Je nach Anlage ueber Modbus RTU ausgelesen: Hochdruck-/Niederdruckwaechter, Abtaubetrieb (L-W) bzw. Frostschutzwaechter Sole (W-W), Aussentemperatur, VL-/RL-Temperatur intern, aktueller Sollwert Vorlauftemperatur, elektrische Leistung, Volumenstrom, Waermeleistung, bei reversiblen Anlagen zusaetzlich Kaelteleistung, je nach Pumpenkonzept zusaetzlich Pumpe sekundaer/primaer Betrieb/Stoerung.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -986,6 +1097,7 @@
     "kategorie": "Kälteerzeuger",
     "quelle_hinweis": "Generischer Platzhalter (kein Stromlaufplan-Anspruch), analog WP-LW-250 (Session 70) - kein Hersteller (Trane/Daikin/EVAPCO/York/JCI/Mitsubishi, Fork-Recherche 10/2026) liefert eine oeffentliche Komplett-Registerliste.",
     "kommunikative_datenpunkte": "Modbus RTU/TCP: Hochdruck-/Niederdruckwächter, Kältemittel-Leckagemelder, VL/RL-Temperatur primär, aktueller Sollwert, elektrische Leistung, Energieverbrauch, übertragene Kälteleistung (je 420_000066/067)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -995,6 +1107,7 @@
     "kategorie": "Rückkühlwerk",
     "quelle_hinweis": "Generischer Platzhalter auf Basis EVAPCO eco-Air COMM20EC-Datenblatt (Fork-Recherche 10/2026).",
     "kommunikative_datenpunkte": "Modbus RTU/TCP: Außenlufttemperatur, Wärmeleistung, elektrische Leistung Gesamt (420_000069/070); je Bank Lüfterdrehzahl-Sollwert (420_000074/075); je Ventilator Betrieb/Störung (420_000076/077); je Ventilator zusätzlich Reparaturschalter-Status (420_000076/077)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1004,6 +1117,7 @@
     "kategorie": "Rückkühlwerk",
     "quelle_hinweis": "Generischer Platzhalter, EVAPCO eco-Air mit Pad-Befeuchtungssystem (Fork-Recherche 10/2026). Keine Pumpe - Befeuchtung je Bank über Magnetventil (420_000078/079).",
     "kommunikative_datenpunkte": "Wie RK-TROCKEN-250, zusätzlich Spülzeit-/Trockenzeit-Zähler + manueller Spülzyklus (420_000072/073); je Bank Magnetventil Auf/Zu (420_000078/079); je Ventilator zusätzlich Reparaturschalter-Status (420_000076/077)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1014,6 +1128,7 @@
     "quelle_hinweis": "Fork-Recherche 10/2026. Versorgungsspannung 230V AC (Nutzer-Bestätigung 09.10.2026, zuvor als unbestätigt markiert).",
     "zubehoer_feldgeraet_artikel_nr": "GHS-VENTIL",
     "zubehoer_menge": 1,
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -1022,6 +1137,7 @@
     "hersteller": "-",
     "kategorie": "Leckageüberwachung",
     "quelle_hinweis": "Fork-Recherche 10/2026, Pflichtzubehör zu GUS-GLF (gemeinsam gespeist über Baugruppe 420_000080).",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -1031,6 +1147,7 @@
     "kategorie": "Klappenantriebe",
     "preis_eur": 140.0,
     "quelle_hinweis": "Siemens Original-Datenblatt A6V11350746_enAP_e (2025-12-02), Preis SIPATEC ~134-147 EUR netto, Stand 10/2026.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -1040,6 +1157,7 @@
     "kategorie": "Klappenantriebe",
     "preis_eur": 150.0,
     "quelle_hinweis": "Siemens Original-Datenblatt A6V11350746_enAP_e (2025-12-02), Preis-Streuung Distributoren ~137-175 EUR netto, kein einheitlicher Wert, Stand 10/2026.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -1049,6 +1167,7 @@
     "kategorie": "Klappenantriebe",
     "preis_eur": 198.8,
     "quelle_hinweis": "i-acs.co.uk / SIPATEC, Preis 198,80 EUR netto, Stand 10/2026.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -1058,6 +1177,7 @@
     "kategorie": "Klappenantriebe",
     "preis_eur": 214.2,
     "quelle_hinweis": "Belimo Original-Technical-Data-Sheet T2-SM230ASR en v2.0 08.2009. Preis i-acs.co.uk (UK-Distributor) GBP 214.20, kein Herstellerlisten-preis gefunden (belimo.com vergibt keine oeffentlichen Endkundenpreise). SELV/PELV-Trennung des Signalkreises nur indirekt belegt (Datenblatt nennt den Begriff nicht woertlich).",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -1066,6 +1186,7 @@
     "hersteller": "Klingenburg",
     "kategorie": "WRG-Komponenten",
     "quelle_hinweis": "Klingenburg RRU ECO Installation and Operating Manual, Rev. i-EN, 250322. Keine oeffentliche Preisliste gefunden (Klingenburg vertreibt projektbezogen ueber Fachgrosshandel/Direktvertrieb).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1074,6 +1195,7 @@
     "hersteller": "Condair",
     "kategorie": "Luftbefeuchter",
     "quelle_hinweis": "Condair Original-Betriebsanleitung BA-RS-CE-2582158-B-DE-1610. Keine oeffentliche Preisliste gefunden (projektbezogene/distributorabhaengige Preisbildung). Baugroessenabhaengige Heizspannungswerte (230V 1~ vs. 400V 3~) nicht tabellarisch dokumentiert.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1082,6 +1204,7 @@
     "hersteller": "Carel",
     "kategorie": "Luftbefeuchter",
     "quelle_hinweis": "Carel humiFog direct Installation Manual 0300073EN. Keine oeffentliche Preisliste gefunden. Exakter Signaltyp des externen Sollwertgebers (0...10V vs. 4...20mA) nicht abschliessend verifiziert.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1090,6 +1213,7 @@
     "hersteller": "Siemens",
     "kategorie": "Aussensensoren",
     "quelle_hinweis": "Siemens QAC34/101, Session 68 als Leitfabrikat entschieden. Genaue Original-Klemmennummerierung nicht gefunden (nur Kennwerte bestaetigt), fuer DBACS irrelevant (2 passive Adern). Kein bestaetigter Nettopreis.",
+    "ga_liefert_default": true,
     "geprueft": false
   },
   {
@@ -1099,6 +1223,7 @@
     "kategorie": "Kälteerzeuger",
     "quelle_hinweis": "Generischer Platzhalter (kein Stromlaufplan-Anspruch), analog KM-GENERIC-250 (Session 72) - kein Hersteller liefert eine oeffentliche Komplett-Registerliste.",
     "kommunikative_datenpunkte": "Modbus RTU/TCP: Hochdruck-/Niederdruckwächter, Kältemittel-Leckagemelder, VL/RL-Temperatur Kältekreis intern, aktueller Sollwert, elektrische Leistung, Energieverbrauch, übertragene Kälteleistung (420_000082/083); je Kältekreis Hoch-/Niederdruckstörung (420_000086/087); je Verdichter Betrieb/Störung (420_000088/089)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1108,6 +1233,7 @@
     "kategorie": "Klimageräte",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch. FXAQ-Baureihe (z.B. FXAQ50A), Adapter KRP4A71 physisch + DTA116A51 Modbus RTU. Kein belastbarer Netto-Listenpreis gefunden (B2B-Preisliste login-geschützt).",
     "kommunikative_datenpunkte": "Modbus RTU (DTA116A51): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000092)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1117,6 +1243,7 @@
     "kategorie": "Klimageräte",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch. FXFQ-Baureihe (4-Wege-Kassette, z.B. FXFQ63A), Adapter KRP4A73. Kein belastbarer Netto-Listenpreis gefunden.",
     "kommunikative_datenpunkte": "Modbus RTU (DTA116A51): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000092)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1126,6 +1253,7 @@
     "kategorie": "Klimageräte",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch. 5,0-10,5 kW je nach Baugröße. Kein belastbarer Netto-Listenpreis gefunden.",
     "kommunikative_datenpunkte": "Modbus RTU/TCP (IS-UNITY-DP, Registerliste nicht einzeln bestätigt, generisches Set übernommen): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000095/096)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1135,6 +1263,7 @@
     "kategorie": "Klimageräte",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Kein Hersteller (Rittal/Stulz/Vertiv/Schneider Uniflair geprüft) bietet eine wassergekühlte/Kaltwasser-Deckenkassette mit vergleichbarem Reglerniveau - generisches Platzhaltermodell analog KM-GENERIC-250, DP-Set identisch zum Wandgerät VERTIV-DATAMATE-WAND.",
     "kommunikative_datenpunkte": "Modbus RTU/TCP (generisches Set): Sollwert Raum-/Ablufttemperatur (AO), Istwert Raum-/Ablufttemperatur (AI), Betrieb Lüfterstufe (AI), Kommunikationsstatus (BI) (420_000095/096)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1144,6 +1273,7 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Bündel-Modell, kein Stromlaufplan-Anspruch - kein einzelnes Marktgerät vereint Schutz+volle Leistungs-/Energiemessung mit fester, öffentlicher Modbus-Registerliste (ABB REF601 nur Strom, Schneider Sepam getrennte Strom-/Spannungsmodelle, Siemens SIPROTEC 5 ohne feste Registerliste). Kein Nettopreis gefunden.",
     "kommunikative_datenpunkte": "Modbus RTU/TCP: Zählernummer, Zählwert Verbrauch, Zählwert Bezug Blindarbeit, Wirkleistung, Scheinleistung, Blindleistung, Frequenz, Leistungsfaktor, Spannung L1-L2/L2-L3/L3-L1, Strom L1/L2/L3 (440_000069/070)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1152,6 +1282,7 @@
     "hersteller": "Siemens (SIMOSEC)",
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert (Leistungsschalter sitzt feldintegriert in der SIMOSEC-Schaltanlage, kein separates Einzelbauteil-Datenblatt).",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1160,6 +1291,7 @@
     "hersteller": "Siemens (SIMOSEC)",
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert.",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1169,6 +1301,7 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Session 77 Folgearbeit] Fremdbauteil (Regel 7) - Zähler selbst ist Eigentum/Verantwortung des Verteilnetzbetreibers, kein spezifisches Fabrikat recherchiert.",
     "kommunikative_datenpunkte": "Über Impuls-zu-M-Bus-Koppler (440_000073): Bezug, Liefermenge, Blindenergie (M-Bus, je AI)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1177,6 +1310,7 @@
     "hersteller": "Siemens (SIMOSEC)",
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert (Lasttrennschalter sitzt feldintegriert in der SIMOSEC-Schaltanlage, kein separates Einzelbauteil-Datenblatt). Meldekontakte bestaetigt: nur Stellungsmeldung Ein/Aus, kein Trip-Signal. Quellen: Stromnetz Berlin TB3310 Abschn. 10 (stromnetz.berlin/.../tb3310_...pdf), TB3340 Abschn. 6/20.1 (.../tb3340_fernsteuerung_...pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus 12-24kV Katalog Modul C/Sl-Sv (library.e.abb.com/public/207cafdaa3d4bfc2482578070000fce2/12-24kV_SafeRing_SafePlus_EN.pdf)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1185,6 +1319,7 @@
     "hersteller": "Siemens (SIMOSEC)",
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Fork-Recherche 10/2026] Generisches Modell, kein Stromlaufplan-Anspruch, kein spezifischer Artikel/Preis recherchiert. 800kVA-Grenze + Meldekontakte (Stellungsmeldung Ein/Aus + separater Kontakt 'Trafoauslosung' durch Schlagstift-Mechanismus) bestaetigt. Quellen: Stromnetz Berlin TB3310 Abschn. 11.1 / TB3312 Abschn. 12.1, TA-MS 2025 Anlage 2 'Anschlussprinzipien', Siemens 'Technische Schriftenreihe Ausgabe 2 - Lastschalter-Sicherungs-Kombinationen' (assets.new.siemens.com/.../ausgabe-2-ms-lastschalter-sicherungs-kombinationen.pdf), Siemens SIMOSEC Katalog HA 41.43, ABB SafeRing/SafePlus Katalog Modul F (library.e.abb.com, Abschn. 4.3/6.3/6.4/6.6)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1194,6 +1329,7 @@
     "kategorie": "Gebaeudebus-Gateways",
     "quelle_hinweis": "[Fork-Recherche 10/2026] MBS GmbH, Roemerstr. 15, 47809 Krefeld (www.mbs-solutions.de), Universal-Gateway-Serie X, Original-Datenblatt (PDF, Stand 06/2023). RS485-Host: B+(nicht invertiert)/A-(invertiert)/SGND/Shld, 4 Klemmen, galvanisch getrennt 1kV, DIP-Schalter Bias/120Ohm-Terminierung. Versorgung V+/V- 12-24V AC/DC (2 Klemmen) - DBACS waehlt 24V DC. Modbus-Protokoll-Verfuegbarkeit laut MBS-FAQ (BACnet/Modbus/MQTT/OPC UA/KNX/DALI2/M-Bus/PROFINET als Beispiele), NICHT woertlich im Datenblatt selbst benannt - vor Projekteinsatz bei vertrieb@mbs-solutions.de bestaetigen lassen, welche Modbus-Variante (RTU/TCP) konkret verfuegbar ist. Kein oeffentlicher Preis gefunden (B2B-Direktvertrieb, Angebot noetig). Datenpunktzahl ist bei MBS eine separate, kostenpflichtige Protokoll-Lizenz-stufe (25/200/500/1.000/2.500 DP) - auf Nutzer-Entscheid 18.10.2026 NICHT in DBACS modelliert (kein Einfluss auf Montagegroesse/Anschluesse, reiner Kostenfaktor). Modell Triple-X KNX+DALI, Art. 11-0064 (RS-485-Host).",
     "kommunikative_datenpunkte": "Modbus RTU/TCP: Anzahl Ein-/Ausgaenge projektspezifisch (siehe verknuepfte 440_000083-086)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1203,6 +1339,7 @@
     "kategorie": "Gebaeudebus-Gateways",
     "quelle_hinweis": "[Fork-Recherche 10/2026] MBS GmbH, Roemerstr. 15, 47809 Krefeld (www.mbs-solutions.de), Universal-Gateway-Serie X, Original-Datenblatt (PDF, Stand 06/2023). RS485-Host: B+(nicht invertiert)/A-(invertiert)/SGND/Shld, 4 Klemmen, galvanisch getrennt 1kV, DIP-Schalter Bias/120Ohm-Terminierung. Versorgung V+/V- 12-24V AC/DC (2 Klemmen) - DBACS waehlt 24V DC. Modbus-Protokoll-Verfuegbarkeit laut MBS-FAQ (BACnet/Modbus/MQTT/OPC UA/KNX/DALI2/M-Bus/PROFINET als Beispiele), NICHT woertlich im Datenblatt selbst benannt - vor Projekteinsatz bei vertrieb@mbs-solutions.de bestaetigen lassen, welche Modbus-Variante (RTU/TCP) konkret verfuegbar ist. Kein oeffentlicher Preis gefunden (B2B-Direktvertrieb, Angebot noetig). Datenpunktzahl ist bei MBS eine separate, kostenpflichtige Protokoll-Lizenz-stufe (25/200/500/1.000/2.500 DP) - auf Nutzer-Entscheid 18.10.2026 NICHT in DBACS modelliert (kein Einfluss auf Montagegroesse/Anschluesse, reiner Kostenfaktor). Modell Double-X KNX, Art. 11-0056 (RS-485-Host).",
     "kommunikative_datenpunkte": "Modbus RTU/TCP: Anzahl Ein-/Ausgaenge projektspezifisch (siehe verknuepfte 440_000089/090)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1212,6 +1349,7 @@
     "kategorie": "Jalousie-/Rollladenaktoren",
     "quelle_hinweis": "[Fork-Recherche 10/2026] WAREMA Renkhoff SE, smartbuildings.warema.com. KEIN Original-PDF-Datenblatt/Betriebsanleitung fuer die Modbus-RTU-Variante oeffentlich auffindbar (WAREMA vertreibt diese Serie ueber Web-Produktseiten ohne PDF-Download). Technische Basisdaten (230V AC, Schaltleistung, IP30, Schutzklasse I, Baubreite in MW) von der offiziellen Produktseite bestaetigt (2 unabhaengige Quellenabrufe). Klemmenplan NUR als Naeherung ueber die bauartverwandte WAREMA-climatronic-Schwesterbaugruppe (identische Hardware-Baureihe '4M230/6M230', ANDERE Artikelnummer/anderes Busprotokoll) aus dem frei zugaenglichen Handbuch 'WAREMA climatronic 3.0 Montage und Anschluss' rekonstruiert (manualslib.de/manual/459678) - NICHT am Original-Modbus-Geraet bestaetigt. Maße (B) aus MW-Baubreite abgeleitet (1 MW=17,5mm nach DIN 43880, nur indirekt ueber eine dritte Quelle gestuetzt, nicht am WAREMA-Original verifiziert); Hoehe/Tiefe nicht auffindbar - deshalb bewusst NICHT als eigenes einzelbauteile-Bauteil platziert, sondern als reines Feldgeraet (Regel 7, extern installiert, nur die RS485-Busklemmen im Schaltschrank modelliert). Busklemmen 'Bus A/Bus B/0V/P' von der WAREMA-Produktseite ('4-adriges Bus-Kabel') UND dem climatronic-Handbuch (Seite 20/21) uebereinstimmend bestaetigt - P-Funktion (vermutlich Versorgung fuer Busteilnehmer/Repeater) nicht erklaert, offener Punkt. Modbus-Register-liste (welche Werte/Bits pro Ausgang) NICHT oeffentlich gefunden - Datenpunktsatz (2x BO Auf/Zu je Ausgang) ist eine plausible Minimalannahme (reiner Schaltbefehl, keine Positions-/Stoerrueckmeldung wie bei KNX-basierten Systemen), vor Projekteinsatz bei WAREMA zu bestaetigen. Kein Preis gefunden (weder Hersteller- noch Distributorpreis).",
     "kommunikative_datenpunkte": "Modbus RTU: je Ausgang Auf/Zu-Schaltbefehl (2x BO), 4 Ausgaenge gesamt = 8x BO (Minimalannahme, keine Registerliste oeffentlich verfuegbar)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1221,6 +1359,7 @@
     "kategorie": "Jalousie-/Rollladenaktoren",
     "quelle_hinweis": "[Fork-Recherche 10/2026] WAREMA Renkhoff SE, smartbuildings.warema.com. KEIN Original-PDF-Datenblatt/Betriebsanleitung fuer die Modbus-RTU-Variante oeffentlich auffindbar (WAREMA vertreibt diese Serie ueber Web-Produktseiten ohne PDF-Download). Technische Basisdaten (230V AC, Schaltleistung, IP30, Schutzklasse I, Baubreite in MW) von der offiziellen Produktseite bestaetigt (2 unabhaengige Quellenabrufe). Klemmenplan NUR als Naeherung ueber die bauartverwandte WAREMA-climatronic-Schwesterbaugruppe (identische Hardware-Baureihe '4M230/6M230', ANDERE Artikelnummer/anderes Busprotokoll) aus dem frei zugaenglichen Handbuch 'WAREMA climatronic 3.0 Montage und Anschluss' rekonstruiert (manualslib.de/manual/459678) - NICHT am Original-Modbus-Geraet bestaetigt. Maße (B) aus MW-Baubreite abgeleitet (1 MW=17,5mm nach DIN 43880, nur indirekt ueber eine dritte Quelle gestuetzt, nicht am WAREMA-Original verifiziert); Hoehe/Tiefe nicht auffindbar - deshalb bewusst NICHT als eigenes einzelbauteile-Bauteil platziert, sondern als reines Feldgeraet (Regel 7, extern installiert, nur die RS485-Busklemmen im Schaltschrank modelliert). Busklemmen 'Bus A/Bus B/0V/P' von der WAREMA-Produktseite ('4-adriges Bus-Kabel') UND dem climatronic-Handbuch (Seite 20/21) uebereinstimmend bestaetigt - P-Funktion (vermutlich Versorgung fuer Busteilnehmer/Repeater) nicht erklaert, offener Punkt. Modbus-Register-liste (welche Werte/Bits pro Ausgang) NICHT oeffentlich gefunden - Datenpunktsatz (2x BO Auf/Zu je Ausgang) ist eine plausible Minimalannahme (reiner Schaltbefehl, keine Positions-/Stoerrueckmeldung wie bei KNX-basierten Systemen), vor Projekteinsatz bei WAREMA zu bestaetigen. Kein Preis gefunden (weder Hersteller- noch Distributorpreis).",
     "kommunikative_datenpunkte": "Modbus RTU: je Ausgang Auf/Zu-Schaltbefehl (2x BO), 6 Ausgaenge gesamt = 12x BO (Minimalannahme, keine Registerliste oeffentlich verfuegbar)",
+    "ga_liefert_default": false,
     "geprueft": false
   },
   {
@@ -1229,6 +1368,7 @@
     "hersteller": "Woodward (SEG)",
     "kategorie": "Mittelspannungsschaltanlage",
     "quelle_hinweis": "[Recherche 10/2026, Nutzer-Freigabe 18.10.2026] Woodward/SEG HighPROTEC MRU4 (Spannungs-/Frequenzschutz, Einsatz als Netzentkupplungsschutz NES/UEEKS nach VDE-AR-N 4110). Bestellcode MRU4-2A0AAA = Gehaeuse B1 fuer Fronttafel-/Schranktuer-Einbau, OHNE Kommunikationsmodul (Kommunikation in DBACS nicht modelliert - keine spezifische Registerliste recherchiert). Abmessungen 141,5x183x208mm (BxHxT) aus der Technical-Data-Tabelle (NICHT aus der Masszeichnung extrahiert - vor Projekteinsatz Originalzeichnung pruefen). Hilfsspannung Weitbereich 24...270V DC / 48...230V AC. 6 Wechsler-Meldekontakte verfuegbar, in DBACS 3 genutzt (Betrieb/Sammelstoerung/Entkupplung ausgeloest). Quellen: Original-Referenzhandbuch MRU4-3.7-EN-REF (https://www.woodward.com/products/publication-asset/mru4-3-7-en-ref) und Installationshandbuch MRU4-3.7-EN-MAN (https://www.woodward.com/products/publication-asset/mru4-3-7-en-man). Kein oeffentlicher Preis gefunden. | [Nachrecherche 23.10.2026] Preis: kein oeffentlicher Listenpreis auffindbar, Herstelleranfrage noetig (Woodward Kempen GmbH / SEG Electronics, SalesPGD_EMEA@woodward.com, Tel. +49 2152 145 331). Abmessungen 141,5x183x208mm aus Technical-Data-Tabelle (MRU4-3.7-EN-MAN, Kap. 12, S. 320) bestaetigt unveraendert - zugehoerige Masszeichnung (Kap. 2.1, Fig. 5 'B1 Housing, 8 Softkeys') liegt nur als Rastergrafik ohne Text vor, technisch nicht auslesbar/verifizierbar in dieser Umgebung (kein PDF-Renderer verfuegbar), bleibt offener Punkt. Kommunikationslosigkeit von MRU4-2A0AAA ist bewusste Bestellschluessel-Kodierung (Position 4 = 'A' = 'Without protocol', MRU4-3.7-EN-MAN Kap. 1.2.1.2) - keine Recherchelucke; kommunikationsfaehige Variante (z. B. Protokoll-Code B/C) waere ueber Referenzhandbuch Kap. 8.5 'Modbus' dokumentiert, Register-Zuordnung dort projektspezifisch ueber Smart-view-Software konfigurierbar, kein separates Communication-Manual-Dokument vorhanden.",
+    "ga_liefert_default": false,
     "geprueft": false
   }
 ]

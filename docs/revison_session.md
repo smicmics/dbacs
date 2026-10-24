@@ -1,6 +1,22 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 79 (23.10.2026).**
+> **Stand nach Session 80 (24.10.2026).**
+> Architektur-Anpassung vor Fortsetzung der Elektroverteilungen: Modul 5
+> („Feldgeräte") wurde zu **„Externe Bauteile"** umbenannt (nur Titel/
+> Hinweistexte, nicht der Modulpfad) und bekommt ein neues, je Position
+> umschaltbares **TAG „GA liefert"** – nicht jedes externe Bauteil in der
+> Liste wird von der Gebäudeautomation selbst geliefert, vieles kommt vom
+> jeweiligen Fach-Gewerk (Lüftung, Elektro-UV, NSHV, Mittelspannung).
+> Neue Excel-Spalte `ga_liefert_default` (Sheet `feldgeraete`) liefert die
+> Katalog-Vorbelegung (64 von 140 Zeilen TRUE – Sensoren, Messgeräte,
+> Ventilantriebe), Modul 5 zeigt dafür erstmals eine Checkbox je Zeile und
+> ist damit nicht mehr rein lesend (Override in `localStorage`
+> `m05_ga_liefert_overrides`). Grundlage für eine spätere Feldgeräte-
+> Kalkulation (nur GA-Anteil). Export-Zahlen unverändert (baugruppen 313,
+> feldgeraete 140, anlagen 60). Browser-verifiziert, keine Konsolenfehler.
+> Details: `CLAUDE.md` → „Offene Punkte" Nachtrag Session 80.
+
+Vorheriger Stand – Session 79 (23.10.2026).
 > Die 5 offenen Punkte aus Session 78 Folgearbeit 10 abgeschlossen (Nutzer-
 > Auftrag: „Schließe die offenen Punkte zunächst ab", bevor es mit den
 > Elektroverteilungen weitergeht). **Preis `MRU4-2A0AAA`:** weiterhin kein

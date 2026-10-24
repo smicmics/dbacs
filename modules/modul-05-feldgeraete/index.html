@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DBACS · Modul 5 · Feldgeräte · Betriebsmittelliste</title>
+<title>DBACS · Modul 5 · Externe Bauteile · Betriebsmittelliste</title>
 <style>
 :root{
   --bg:    #0D1117;
@@ -64,7 +64,10 @@ table.stk td{padding:6px 9px;border-bottom:.5px solid var(--bord);vertical-align
 table.stk .num{text-align:right;font-family:var(--mono);}
 table.stk .src{color:var(--tx3);font-size:11px;}
 table.stk .komm{color:var(--tx2);font-size:11px;margin-top:2px;font-style:italic;}
+table.stk .ga{text-align:center;}
+table.stk .ga input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:var(--green);}
 .stk-total{text-align:right;font-size:14px;font-weight:700;margin-top:10px;color:var(--tx);}
+.stk-total-ga{text-align:right;font-size:12px;color:var(--tx2);margin-top:3px;}
 .stk-empty{color:var(--tx3);font-size:12px;padding:24px 0;}
 
 /* ── Print-Button ── */
@@ -110,6 +113,7 @@ table.stk .komm{color:var(--tx2);font-size:11px;margin-top:2px;font-style:italic
   table.stk{font-size:10px;}
   table.stk th{background:#eee;color:#222;}
   table.stk td{color:#000;}
+  table.stk .ga input[type=checkbox]{accent-color:#000;}
 }
 /* ── Oberflächentiefe (Variante C · Tiefenglas) ──────────────────────────────
    Reine Verlauf-/Schatten-Overlays auf den bestehenden Grundfarben, keine
@@ -142,7 +146,7 @@ fieldset{
 <header>
   <img src="../../web/assets/img/dbacs-logo.png" alt="DBACS" class="header-logo">
   <div class="title">
-    <h1>Modul 5 · Feldgeräte · Betriebsmittelliste</h1>
+    <h1>Modul 5 · Externe Bauteile · Betriebsmittelliste</h1>
     <p>Externe Betriebsmittel außerhalb des Schaltschranks · gespeist aus Modul 4</p>
     <p class="copyright-line" style="font-size:10px;color:var(--tx3);margin-top:2px;">© 2026 Stephan Michler</p>
   </div>
@@ -170,12 +174,15 @@ fieldset{
 <div class="hint-bar">
   Diese Liste wird automatisch aus der Belegung in <a href="../modul-04-innenaufbau/">Modul 4 · Baugruppen · Innenaufbau</a>
   ermittelt – jede dort platzierte Baugruppe mit hinterlegtem Betriebsmittel (z. B. eine Pumpe) erscheint hier zusätzlich zur
-  Schaltschrank-Stückliste. Getrennte Liste, da Feldgeräte außerhalb des Schaltschranks installiert werden und eigene
-  Bestellnummern/Preise haben.
+  Schaltschrank-Stückliste. Getrennte Liste, da externe Bauteile außerhalb des Schaltschranks installiert werden und eigene
+  Bestellnummern/Preise haben – nicht alle davon werden von der Gebäudeautomation (GA) selbst geliefert, manche stellt das
+  jeweilige Fach-Gewerk (Lüftung, Elektro-UV, NSHV, Mittelspannung …) bereit. Über „GA liefert" je Position legst du fest,
+  welcher Anteil der GA-Lieferung zufällt – vorbelegt für Typen, die GA üblicherweise selbst beschafft (Sensoren,
+  Messgeräte, Ventilantriebe), bei Bedarf einzeln umschaltbar. Grundlage für eine spätere Feldgeräte-Kalkulation.
 </div>
 
 <div class="panel">
-  <h2>Feldgeräte-Stückliste</h2>
+  <h2>Externe Bauteile – Stückliste</h2>
   <div id="stk-wrap"><p class="stk-empty">Lädt…</p></div>
 </div>
 
@@ -186,7 +193,7 @@ fieldset{
 
 <footer class="site-footer">
   <span class="copyright-line">© 2026 Stephan Michler · DBACS · Modul 5</span>
-  <span>DBACS · GA-Planung · Feldgeräte</span>
+  <span>DBACS · GA-Planung · Externe Bauteile</span>
 </footer>
 
 <script>
@@ -229,6 +236,7 @@ function aggregateFeldgeraete() {
     const key = fg ? fg.artikel_nr : ('text::' + bg.betriebsmittel);
     if (!agg[key]) {
       agg[key] = {
+        key,
         bezeichnung: fg ? fg.bezeichnung : bg.betriebsmittel,
         hersteller:  fg ? fg.hersteller  : '–',
         preis_eur:   fg && typeof fg.preis_eur === 'number' ? fg.preis_eur : null,
@@ -236,7 +244,12 @@ function aggregateFeldgeraete() {
         quellen:     new Set(),
         menge:       0,
         zubehoerNr:    fg ? fg.zubehoer_feldgeraet_artikel_nr : null,
-        zubehoerMenge: fg ? (fg.zubehoer_menge || 1) : 1
+        zubehoerMenge: fg ? (fg.zubehoer_menge || 1) : 1,
+        // ga_liefert_default (Session 80): Katalog-Vorbelegung, ob dieser
+        // Artikeltyp ueblicherweise von der GA selbst geliefert wird - siehe
+        // CLAUDE.md "Modul 5 - GA liefert-TAG". Text-Platzhalter (kein
+        // Katalogeintrag, fg===null) haben keine Vorbelegung (default false).
+        ga_liefert_default: fg ? !!fg.ga_liefert_default : false
       };
     }
     agg[key].menge += item.menge;
@@ -254,11 +267,13 @@ function aggregateFeldgeraete() {
     const zKey = 'zubehoer::' + e.zubehoerNr;
     if (!agg[zKey]) {
       agg[zKey] = {
+        key: zKey,
         bezeichnung: zfg ? zfg.bezeichnung : e.zubehoerNr,
         hersteller:  zfg ? zfg.hersteller  : '–',
         preis_eur:   zfg && typeof zfg.preis_eur === 'number' ? zfg.preis_eur : null,
         quellen:     new Set(['Zubehör zu: ' + [...e.quellen].join(', ')]),
-        menge:       0
+        menge:       0,
+        ga_liefert_default: zfg ? !!zfg.ga_liefert_default : false
       };
     }
     agg[zKey].menge += e.menge * e.zubehoerMenge;
@@ -266,24 +281,63 @@ function aggregateFeldgeraete() {
   return Object.values(agg);
 }
 
+// ── "GA liefert"-TAG (Session 80) ──────────────────────────────────────
+// Modul 5 war bisher rein lesend; der Nutzer kann jetzt je Position
+// (aggregierte Zeile, Schluessel = dieselbe Aggregation wie in
+// aggregateFeldgeraete()) festlegen, ob dieses externe Bauteil von der GA
+// selbst geliefert wird oder vom jeweiligen Fach-Gewerk - Grundlage fuer
+// eine spaetere Feldgeraete-Kalkulation. Vorbelegung kommt aus dem Katalog
+// (fg.ga_liefert_default), der Nutzer kann je Projekt (localStorage, wie
+// alle anderen Modul-Eingaben) umschalten. Override-Map ist bewusst nur
+// bei abweichendem Wert gesetzt (fehlt der Key, gilt die Katalog-Vorbelegung
+// - so wirkt eine spaetere Katalogpflege weiterhin, solange der Nutzer
+// diese Position nicht manuell angefasst hat).
+let LETZTE_LISTE = [];
+
+function getGaLiefertOverrides() {
+  try { return JSON.parse(localStorage.getItem('m05_ga_liefert_overrides') || '{}'); } catch(e) { return {}; }
+}
+function isGaLiefert(entry) {
+  const overrides = getGaLiefertOverrides();
+  return Object.prototype.hasOwnProperty.call(overrides, entry.key) ? overrides[entry.key] : entry.ga_liefert_default;
+}
+function toggleGaLiefert(idx) {
+  const entry = LETZTE_LISTE[idx];
+  if (!entry) return;
+  const overrides = getGaLiefertOverrides();
+  const neu = !isGaLiefert(entry);
+  // entspricht der neue Wert wieder der Katalog-Vorbelegung, Override
+  // entfernen statt unnoetig speichern (haelt die Map schlank).
+  if (neu === entry.ga_liefert_default) delete overrides[entry.key];
+  else overrides[entry.key] = neu;
+  localStorage.setItem('m05_ga_liefert_overrides', JSON.stringify(overrides));
+  render();
+}
+
 function render() {
   const wrap = document.getElementById('stk-wrap');
   const liste = aggregateFeldgeraete();
+  LETZTE_LISTE = liste;
   if (!liste.length) {
-    wrap.innerHTML = '<p class="stk-empty">Keine Feldgeräte – entweder noch keine Baugruppen in Modul 4 platziert, oder keine der platzierten Baugruppen hat ein Betriebsmittel hinterlegt.</p>';
+    wrap.innerHTML = '<p class="stk-empty">Keine externen Bauteile – entweder noch keine Baugruppen in Modul 4 platziert, oder keine der platzierten Baugruppen hat ein Betriebsmittel hinterlegt.</p>';
     return;
   }
-  let total = 0;
-  const rows = liste.map(e => {
+  let total = 0, totalGa = 0;
+  const rows = liste.map((e, idx) => {
     const hasPreis = typeof e.preis_eur === 'number';
     const summe = hasPreis ? e.menge * e.preis_eur : null;
-    if (hasPreis) total += summe;
+    const gaLiefert = isGaLiefert(e);
+    if (hasPreis) {
+      total += summe;
+      if (gaLiefert) totalGa += summe;
+    }
     return `<tr>
       <td>${e.bezeichnung}<div class="src">aus: ${[...e.quellen].join(', ')}</div>${e.komm_dp ? `<div class="komm">Kommunikativ ausgelesen: ${e.komm_dp}</div>` : ''}</td>
       <td>${e.hersteller}</td>
       <td class="num">${e.menge}</td>
       <td class="num">${hasPreis ? e.preis_eur.toFixed(2) : '–'}</td>
       <td class="num">${hasPreis ? summe.toFixed(2) : '–'}</td>
+      <td class="ga"><input type="checkbox" ${gaLiefert ? 'checked' : ''} onchange="toggleGaLiefert(${idx})" title="Dieses Bauteil wird von der Gebäudeautomation (GA) selbst geliefert, nicht vom jeweiligen Fach-Gewerk"></td>
     </tr>`;
   }).join('');
   wrap.innerHTML = `<table class="stk">
@@ -292,10 +346,12 @@ function render() {
       <th style="text-align:right">Menge</th>
       <th style="text-align:right">€/Stk</th>
       <th style="text-align:right">Gesamt</th>
+      <th style="text-align:center" title="Wird dieses Bauteil von der Gebäudeautomation geliefert (statt vom jeweiligen Fach-Gewerk)?">GA liefert</th>
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>
-  <div class="stk-total">Gesamt: ${total.toFixed(2)} €</div>`;
+  <div class="stk-total">Gesamt: ${total.toFixed(2)} €</div>
+  <div class="stk-total-ga">davon GA-Lieferumfang: ${totalGa.toFixed(2)} €</div>`;
 }
 
 // ── Projektfelder (identisch zu Modul 1–4/7) ───────────────────────────
