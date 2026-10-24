@@ -1451,5 +1451,14 @@
     "quelle_hinweis": "[Fork-Recherche 24.10.2026] Socomec ATyS r/d, ab 1000A. Referenzprodukt: ATyS r/d fuer externe ATS/AMF-Controller (ATyS C25/C35/C55/C65) bzw. ATyS M fuer kleinere Verteilungen - https://etinco.vn/wp-content/uploads/catalogue-ats-socomec-atys-r.pdf, https://www.nhp.com.au/public/assets/pim/Original/10027/Socomec-ATyS-Automatic-Transfer-Switch-Equipment-125A-to-3200A-Flyer.pdf. Watchdog-Relais ('Watchdog relay to check product availability', Socomec-Standardfunktion bei ATyS r/d/A/C) meldet Verfuegbarkeit/Sammelstoerung - Kontaktart/Belastbarkeit selbst NICHT am Originaldatenblatt bestaetigt (Herstellerkataloge socomec.co.in/fuji.sea.sg per 403/WAF nicht vollstaendig zugaenglich), Funktion aber eindeutig belegt (etinco.vn-Mirror https://etinco.vn/wp-content/uploads/catalogue-ats-socomec-atys-r.pdf). Schalterstellung Quelle 1 (Position I) und Quelle 2 (Position II) ueber 2 getrennte Wechsler ('ATyS Auxiliary Contact', bestaetigt ueber NHP-Distributorkatalog https://www.nhp.com.au/product/15990502). Zusaetzlich Position-0-Meldung (weder Quelle 1 noch 2 aktiv/Uebergangsstellung, Terminals 01/02/04 bzw. Controller-Terminal 73) als 4. Signal - herstelleruebergreifend bestaetigt: Socomec UND Schneider Electric TransferPacT TPSAUX33 zeigen dasselbe Muster (Positionskontakte + separater OFF-Kontakt, https://electrika.com/catalogues/schneider-electric/schneider-electric--miscellaneous/schneider-electric-miscellaneous/transferpact/tpsaux32/part/1177828) - Nutzer-Entscheidung Session 81: als eigener 4. Datenpunkt aufgenommen (urspruengliche Session-78-Vorarbeit sah nur 3 BI vor). Kein 'Umschaltung laeuft'-Signal auffindbar (2 Hersteller geprueft, Socomec + Schneider Electric). STATYS (STS) bewusst NICHT gewaehlt (nur frei konfigurierbare Dry-Contact-Option, keine feste Kontaktliste). Kein Preis fuer ein komplettes Geraet gefunden (projektspezifische Anfrage ueblich, nur unzusammenhaengende Zubehoer-Distributorpreise als grobe Einordnung).",
     "ga_liefert_default": false,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "952305",
+    "bezeichnung": "Überspannungsschutzgerät Typ 2, DEHNguard M TNC 275 FM, mit Fernmeldekontakt - hier installiert in einer fremden Unterverteilung (NSHV/UV), nicht im eigenen Schaltschrank",
+    "hersteller": "Dehn",
+    "kategorie": "Sammelstörmeldungen",
+    "quelle_hinweis": "[Session 82, 24.10.2026] Dasselbe reale Produkt wie bereits in 480_000033 (Session 66) für die Schaltschrankzuleitung verwendet - hier als externes Feldgerät in einer fremden Unterverteilung modelliert. Kein zusätzlicher Preisfund nötig, siehe 480_000033/einzelbauteile 952305 für die bereits dokumentierte Preisrecherche.",
+    "ga_liefert_default": false,
+    "geprueft": false
   }
 ]

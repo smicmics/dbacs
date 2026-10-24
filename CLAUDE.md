@@ -16,6 +16,81 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 82 (24.10.2026) – Neue Anlagengruppe NSHV
+> (Niederspannungshauptverteilung), 3 Gesamtanlagen + 1 neue generische
+> Baugruppe, über mehrere Freigabe-Korrekturrunden mit dem Nutzer final
+> abgestimmt. Dabei echten Bug in `testAnlage()` gefunden+behoben.**
+> **Neue Baugruppe `440_000107` „Überspannungsschutzgerät (ÜSS) mit
+> Sammelstörmeldung, Feldgerät (fremde Unterverteilung)"** – bewusst
+> generisch benannt (kein NSHV-Bezug im Namen, Nutzer-Vorgabe: „die Gruppe
+> benötigen wir auch später noch bei der UV"), dasselbe reale Produkt wie
+> bereits in `480_000033` (DEHNguard M TNC 275 FM, Art. `952305`), jetzt in
+> einer fremden Unterverteilung installiert statt im eigenen Schrank. 1×
+> BI, 2 Klemmen `klemm_f`. Fester, nicht abwählbarer Bestandteil jeder
+> NSHV-Gesamtanlage.
+> **3 neue Gesamtanlagen** (neue Kategorie „Niederspannungshauptverteilung",
+> `funktionsbereich: elektro_anlagen`):
+> - `440_A00012` „NSHV einfach (Einfacheinspeisung, kein Kuppelfeld)"
+> - `440_A00013` „NSHV mit 2 Einspeisungen und Sammelschienenkupplung"
+> - `440_A00014` „NSHV mit 2 Einspeisungen, Sammelschienenkupplung und
+>   ATS-Abgang für IT/Rechenzentrum"
+> **Kernentscheidungen aus dem Freigabe-Dialog (mehrere Korrekturrunden):**
+> 1. Einspeisung (und alle Abgänge) nutzen durchgängig den Leistungsschalter
+>    **ohne** Messung (3WA `440_000037`–`041`) – die geräteeigene COM100/
+>    COM800-Messung ist nicht geeicht. Die Messung läuft stattdessen immer
+>    über ein **separates, geeichtes Energiezähler-Baugruppe**
+>    (`440_000001`–`003`, Modbus RTU/M-Bus/TCP wählbar).
+> 2. Abgänge in 3 Größenklassen (groß=3WA 630A, mittel=3KF Lasttrennschalter
+>    32-63A, klein=NH-Trenner NH000 100A) **unabhängig zählbar** (eigenes
+>    Mengenfeld je Klasse), dazu je ein „davon gemessen"-Subzähler (eigener
+>    Energiezähler statt Leistungsschalter-Messung) – macht in der
+>    Dokumentation erkennbar, wie sich die DDC-Meldungen zusammensetzen.
+>    Protokoll der Abgangszähler über einen **eigenen, gemeinsamen Dropdown**
+>    für alle drei Größenklassen (nach mehreren Zwischenständen – NSHV-weit
+>    einheitlich war zu starr, pro Größenklasse einzeln zu feingranular –
+>    landete die finale Nutzer-Vorgabe genau hier: „Protokollauswahl pro
+>    Abgangsgruppe").
+> 3. Energiezähler-Protokoll der **Einspeisung** bleibt ein eigener,
+>    unabhängiger Dropdown (getrennt von den Abgängen) – bei 2 Einspeisungen
+>    (`440_A00013`/`014`) bekommt jede ihr eigenes Messgerät (`menge:2`).
+> 4. **ATS-Abgang-Recherche** (nur `440_A00014`): Socomec ATyS ist nach
+>    IEC 60947-6-1 als **„Class PC"** klassifiziert – keine eigene Überstrom-/
+>    Kurzschluss-Schutzfunktion, braucht ein vorgeschaltetes, gemeldetes
+>    Schutzorgan je Einspeisepol (Quelle: [VIOX PC/CB-Vergleich](https://viox.com/pc-class-vs-cb-class-ats-selection-guide/),
+>    Klassifikation bestätigt über Socomec-Produktbeschreibung). Umgesetzt
+>    als Dropdown×Mengenfeld mit 3 flachen Optionen (Engine-bedingt wie beim
+>    Trafoabgang-Muster, Session 78): ATyS M bis 160A + 2× NH-Trenner NH00;
+>    ATyS r/d bis 800A + 2× Lasttrennschalter 3KF (630-800A); ATyS r/d ab
+>    1000A + 2× Leistungsschalter 3WA (2000A) – je Vorschutz ohne Messung.
+> **Echter Bugfix in `testAnlage()`:** die `erwarteteBgIds`-Berechnung
+> berücksichtigte `mengenfeld`/`mengenfeld2`-Mitglieder mit Standardwert
+> **0** nicht (kein bisheriges `ANLAGE_MENGENFELD_DEFAULT` hatte je den Wert
+> 0 – meine neuen „davon gemessen"/„Sammelstörmeldung-Gruppen"-Felder sind
+> die ersten) – der Test erwartete fälschlich Mitglieder, die `addAnlage()`
+> wegen `mengenMultiplikator===0` korrekt gar nicht hinzufügt, und schlug
+> dadurch grundlos fehl. Fix: zusätzlicher Filter in `testAnlage()`
+> (`modules/modul-04-innenaufbau/index.html`), der Mitglieder mit
+> Mengenfeld-Default 0 von den erwarteten bg_ids ausschließt – betrifft nur
+> die Testroutine, keine Verhaltensänderung an `addAnlage()` selbst.
+> **Export:** einzelbauteile unverändert 230, baugruppen 322→**323**,
+> feldgeraete 149→**150**, anlagen 60→**63**. Backups:
+> `ga_komponenten_vor-nshv-uv-baugruppen_20261024_110933.xlsx` (Session 81),
+> `ga_komponenten_vor-nshv-anlagen_20261024_115248.xlsx` (diese Sitzung).
+> **Browser-verifiziert:** `testKatalogScan()` sauber; `testBaugruppe
+> ('440_000107')` `pass:true` (1× BI); **alle 945 Kombinationen** der 3
+> neuen Anlagen einzeln getestet (45/45, 225/225, 675/675, in Batches via
+> `testAnlageBatch()`) – **0 Fehlschläge nach dem testAnlage()-Fix**; Live-
+> UI-Test mit Nicht-Standard-Werten (2× TCP-Zähler groß + 3× TCP-Zähler
+> mittel + Einspeisung-Zähler RTU getrennt) liefert exakt die von Hand
+> berechnete Stückliste; `testKlemmenVarianten()`/`testSwitchRatchet()`
+> weiterhin `pass:true`; keine Konsolenfehler.
+> **Noch offen / bewusst nicht Teil dieser Anlagen:** einzelne Abgänge mit
+> abweichender Baugröße lassen sich bei Bedarf weiterhin manuell in Modul 4
+> ergänzen (Nutzer-Bestätigung: „Das ist überschaubar"); die neue
+> Baugruppe `440_000107` ist bereits bewusst UV-tauglich benannt – eine
+> eigene UV-Anlagengruppe (analog zu dieser NSHV-Gruppe) ist als nächster
+> Schritt angekündigt, aber noch nicht begonnen.
+
 > **Nachtrag Session 81 (24.10.2026) – Fortsetzung Elektroverteilungen
 > (NSHV/UV) aus Session 78 Teil 2/3: die 3 zuletzt offenen Punkte
 > abgeschlossen. 9 neue Baugruppen (Gewerk 440) + 9 Feldgeräte-Katalog-

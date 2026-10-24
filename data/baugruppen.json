@@ -13635,5 +13635,33 @@
     "automationsanbindung": true,
     "kategorie": "Netzumschaltung (ATS/STS)",
     "geprueft": false
+  },
+  {
+    "id": "440_000107",
+    "name": "Überspannungsschutzgerät (ÜSS) mit Sammelstörmeldung, Feldgerät (fremde Unterverteilung)",
+    "gewerk": "440",
+    "beschreibung": "[Session 82, 24.10.2026, Nutzer-Freigabe] Überspannungsschutzgerät Typ 2 (DEHNguard M TNC 275 FM, Art. 952305 - identisches Produkt wie das bereits im eigenen Schaltschrank verwendete 480_000033, hier jedoch in einer FREMDEN Unterverteilung installiert, z.B. NSHV oder UV) mit Fernmeldekontakt (potentialfreier Wechsler). NUR MONITORING - das Gerät steht in der fremden Unterverteilung, dieser Schrank holt nur die Fernmeldung ab, keine Energieversorgung/kein LSS hier. Bewusst generisch benannt (kein Bezug auf eine konkrete Verteilungsart im Namen) - wiederverwendbar fuer jede Art fremder Unterverteilung. Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 1x BI. Standardmäßiger, fest gebündelter Bestandteil jeder NSHV-Gesamtanlage (Überspannungsschutz ist in einer NSHV üblicherweise immer vorhanden, Nutzer-Vorgabe).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Überspannungsschutzgerät (ÜSS) mit Sammelstörmeldung (fremde Unterverteilung)",
+    "feldgeraet_artikel_nr": "952305",
+    "automationsanbindung": true,
+    "kategorie": "Sammelstörmeldungen",
+    "geprueft": false
   }
 ]

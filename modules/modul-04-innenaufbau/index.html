@@ -1648,7 +1648,12 @@ const ANLAGE_GRUPPEN_LABEL = {
   // ersetzt durch ein kombiniertes Dropdown pro Anlage.
   pumpenkonzept: 'Sekundärpumpe',
   // Session 78 Folgearbeit (MS-Gesamtanlagen 440_A00009-011):
-  trafoabgang: 'Trafoabgang', kuppelfeld: 'Kuppelfeld'
+  trafoabgang: 'Trafoabgang', kuppelfeld: 'Kuppelfeld',
+  // Session 82 (NSHV-Gesamtanlagen 440_A00012-014):
+  einspeisung_groesse: 'Einspeisung-Baugröße', kuppelfeld_groesse: 'Kuppelfeld-Baugröße',
+  einspeisung_zaehler_protokoll: 'Protokoll Einspeisung-Energiezähler',
+  abgang_zaehler_protokoll: 'Protokoll Abgangs-Energiezähler',
+  ats_abgang: 'ATS-Abgang'
 };
 // Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
 // (Session 68, erweitert Session 75) - Default-Fallback ist das generische
@@ -1677,11 +1682,23 @@ const ANLAGE_MENGENFELD_LABEL = {
   ventilatoren_je_reihe: 'Ventilatoren je Reihe (Anzahl)',
   verdichterstufen_je_kreis: 'Verdichterstufen je Kreis (Anzahl)',
   // Session 78 Folgearbeit (MS-Gesamtanlagen 440_A00009-011):
-  anzahl_trafos: 'Anzahl Trafos/Generatorabgänge'
+  anzahl_trafos: 'Anzahl Trafos/Generatorabgänge',
+  // Session 82 (NSHV-Gesamtanlagen 440_A00012-014): Abgaenge je Groessen-
+  // klasse unabhaengig zaehlbar, "davon gemessen" als eigener Subzaehler
+  // (separater Energiezaehler statt Leistungsschalter-eigener Messung,
+  // Nutzer-Vorgabe) - dokumentiert in der Namensgebung, wie sich die
+  // DDC-Meldungen zusammensetzen.
+  abgang_gross: 'Abgänge groß (Anzahl)', abgang_gross_gemessen: 'davon gemessen groß (Anzahl)',
+  abgang_mittel: 'Abgänge mittel (Anzahl)', abgang_mittel_gemessen: 'davon gemessen mittel (Anzahl)',
+  abgang_klein: 'Abgänge klein (Anzahl)', abgang_klein_gemessen: 'davon gemessen klein (Anzahl)',
+  sammelstoerung_gruppen: 'Sammelstörmeldung-Gruppen (Anzahl)',
+  anzahl_ats_abgaenge: 'ATS-Abgänge (Anzahl)'
 };
 const ANLAGE_MENGENFELD_DEFAULT = {
   kuehlreihen: 1, kaeltekreise: 1, ventilatoren_je_reihe: 4, verdichterstufen_je_kreis: 1,
-  anzahl_trafos: 1
+  anzahl_trafos: 1,
+  abgang_gross: 2, abgang_gross_gemessen: 0, abgang_mittel: 4, abgang_mittel_gemessen: 0,
+  abgang_klein: 4, abgang_klein_gemessen: 0, sammelstoerung_gruppen: 0, anzahl_ats_abgaenge: 1
 };
 // Erlaubte Festwerte je Mengenfeld (Session 77 Folgearbeit, Nutzer-Vorgabe:
 // "Kühlreihen/Kältekreise 1 oder 2", "Verdichterstufen je Kreis max 8",
@@ -1692,7 +1709,19 @@ const ANLAGE_MENGENFELD_OPTIONS = {
   ventilatoren_je_reihe: Array.from({length: 16}, (_, i) => i),
   verdichterstufen_je_kreis: Array.from({length: 9}, (_, i) => i),
   // MS-Gesamtanlagen: 0 = keine Trafo-/Generatorabgaenge, bis 10 je Anlage
-  anzahl_trafos: Array.from({length: 11}, (_, i) => i)
+  anzahl_trafos: Array.from({length: 11}, (_, i) => i),
+  // NSHV-Gesamtanlagen (Session 82): groesse/mittel/klein bis 20, "davon
+  // gemessen" ebenfalls bis 20 (kann rechnerisch bis zum Gesamtwert gehen -
+  // keine Engine-Validierung einer Teilmengenbeziehung, siehe Beschreibung),
+  // Sammelstoerung-Gruppen und ATS-Abgaenge bis 10 bzw. 6.
+  abgang_gross: Array.from({length: 11}, (_, i) => i),
+  abgang_gross_gemessen: Array.from({length: 11}, (_, i) => i),
+  abgang_mittel: Array.from({length: 21}, (_, i) => i),
+  abgang_mittel_gemessen: Array.from({length: 21}, (_, i) => i),
+  abgang_klein: Array.from({length: 21}, (_, i) => i),
+  abgang_klein_gemessen: Array.from({length: 21}, (_, i) => i),
+  sammelstoerung_gruppen: Array.from({length: 11}, (_, i) => i),
+  anzahl_ats_abgaenge: Array.from({length: 7}, (_, i) => i)
 };
 
 // ── Belegung ─────────────────────────────────────────────────────────
@@ -5885,6 +5914,13 @@ function testAnlage(anlageId, menge, slice) {
     const erwarteteBgIds = (anlage.mitglieder||[])
       .filter(m => !m.netztyp_bindung || m.netztyp_bindung === (localStorage.getItem('m03_zone_netztyp')||'drehstrom'))
       .filter(m => !m.gruppe || kombi[m.gruppe] === (m.variante_label || m.bg_id))
+      // Session 82: ein Mengenfeld-Mitglied mit Standardwert 0 wird von
+      // addAnlage() uebersprungen (mengenMultiplikator===0) - bisher hatte
+      // kein ANLAGE_MENGENFELD_DEFAULT-Eintrag den Wert 0, daher blieb diese
+      // Luecke unentdeckt. Ohne diesen Filter erwartet der Test faelschlich
+      // Mitglieder, die real gar nicht hinzugefuegt werden.
+      .filter(m => !m.mengenfeld || (ANLAGE_MENGENFELD_DEFAULT[m.mengenfeld] ?? 1) !== 0)
+      .filter(m => !m.mengenfeld2 || (ANLAGE_MENGENFELD_DEFAULT[m.mengenfeld2] ?? 1) !== 0)
       .map(m => m.bg_id);
     const bgEinsatzKorrekt = erwarteteBgIds.every(id => eingesetzteBgIds.includes(id))
       && eingesetzteBgIds.every(id => erwarteteBgIds.includes(id));

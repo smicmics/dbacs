@@ -1,6 +1,29 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 81 (24.10.2026).**
+> **Stand nach Session 82 (24.10.2026).**
+> Neue Anlagengruppe **NSHV (Niederspannungshauptverteilung)**: 3 fertige
+> Gesamtanlagen (`440_A00012` einfach / `440_A00013` mit 2 Einspeisungen +
+> Sammelschienenkupplung / `440_A00014` zusätzlich mit ATS-Abgang für IT/
+> Rechenzentrum) + 1 neue generische Baugruppe „Überspannungsschutzgerät
+> mit Sammelstörmeldung" (bewusst ohne NSHV-Bezug im Namen, später auch für
+> die UV wiederverwendbar). Kernentscheidungen nach mehreren Freigabe-
+> Korrekturrunden: Messung läuft NSHV-weit immer über einen separaten,
+> geeichten Energiezähler statt über den Leistungsschalter; Abgänge in 3
+> Größenklassen unabhängig zählbar, je mit „davon gemessen"-Subzähler und
+> eigenem Protokoll-Dropdown pro Abgangsgruppe; ATS-Abgänge brauchen laut
+> Recherche (Socomec ATyS = IEC 60947-6-1 Class PC, keine eigene
+> Kurzschluss-Schutzfunktion) ein vorgeschaltetes, gemeldetes Schutzorgan je
+> Einspeisepol. Dabei echten Bug in der Testroutine `testAnlage()` gefunden
+> und behoben (Mengenfeld-Mitglieder mit Standardwert 0 wurden fälschlich
+> als erwartet behandelt). Export: baugruppen 322→**323**, feldgeraete
+> 149→**150**, anlagen 60→**63**. Browser-verifiziert: alle 945
+> Kombinationen der 3 neuen Anlagen einzeln getestet, 0 Fehlschläge,
+> `testKatalogScan()`/`testKlemmenVarianten()`/`testSwitchRatchet()`
+> weiterhin sauber, keine Konsolenfehler. Details: `CLAUDE.md` → „Offene
+> Punkte" Nachtrag Session 82. **Nächster Schritt (angekündigt):** analoge
+> Anlagengruppe für die UV.
+
+Vorheriger Stand – Session 81 (24.10.2026).
 > Fortsetzung der Elektroverteilungen (NSHV/UV) aus Session 78 Teil 2/3 –
 > die 3 verbliebenen offenen Punkte sind abgeschlossen. **9 neue
 > Baugruppen (Gewerk 440) + 9 Feldgeräte-Katalogzeilen** über den

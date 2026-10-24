@@ -4694,5 +4694,573 @@
     "kategorie": "Mittelspannungsschaltanlage",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "440_A00012",
+    "name": "NSHV einfach (Einfacheinspeisung, kein Kuppelfeld)",
+    "gewerk": "440",
+    "beschreibung": "[Session 82, 24.10.2026, Nutzer-Freigabe] Einfachste NSHV-Architektur: 1 Einspeisung, 1 Sammelschiene, kein Kuppelfeld. Einspeisung über Leistungsschalter Siemens 3WA OHNE Messung (die geräteeigene COM100/COM800-Messung ist nicht geeicht) + separates, geeichtes Energiezähler-Baugruppe (Modbus RTU/M-Bus/TCP wählbar) - Nutzer-Korrektur Session 82. Überspannungsschutzgerät mit Sammelstörmeldung (440_000107) fest gebündelt, immer enthalten. Abgänge in 3 Größenklassen unabhängig zählbar (groß = 3WA 630A, mittel = 3KF Lasttrennschalter 32-63A, klein = NH-Trenner NH000 100A, alle OHNE Messung), je mit eigenem 'davon gemessen'-Subzähler (ebenfalls separater Energiezähler statt Leistungsschalter-eigener Messung, eigener Protokoll-Dropdown unabhängig von der Einspeisung) - macht in der späteren Dokumentation erkennbar, wie sich die DDC-Meldungen zusammensetzen. Optionale Sammelstörmeldung-Gruppen (Ruhestromkette 440_000098) für UV-Allgemein-Sammelmeldungen oder überwachte Sicherungen von Regel-/Netzgeräten in der NSHV.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000037",
+        "menge": 1,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 630A (Siemens 3WA, ohne Messung)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000038",
+        "menge": 1,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 1250A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000039",
+        "menge": 1,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 2000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000040",
+        "menge": 1,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 3200A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000041",
+        "menge": 1,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 5000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus TCP"
+      },
+      {
+        "bg_id": "440_000107",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000037",
+        "menge": 1,
+        "mengenfeld": "abgang_gross"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000032",
+        "menge": 1,
+        "mengenfeld": "abgang_mittel"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000099",
+        "menge": 1,
+        "mengenfeld": "abgang_klein"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "sammelstoerung_gruppen"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Niederspannungshauptverteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00013",
+    "name": "NSHV mit 2 Einspeisungen und Sammelschienenkupplung",
+    "gewerk": "440",
+    "beschreibung": "[Session 82, 24.10.2026, Nutzer-Freigabe] Redundante NSHV-Architektur: 2 Einspeisungen (je eigenes Energiezähler-Baugruppe, Nutzer-Vorgabe) + 1 Sammelschienenkupplung (Leistungsschalter 3WA ohne Messung, eigene Baugrößenwahl unabhängig von der Einspeisung). Einspeisung über Leistungsschalter Siemens 3WA OHNE Messung (die geräteeigene COM100/COM800-Messung ist nicht geeicht) + separates, geeichtes Energiezähler-Baugruppe (Modbus RTU/M-Bus/TCP wählbar) - Nutzer-Korrektur Session 82. Überspannungsschutzgerät mit Sammelstörmeldung (440_000107) fest gebündelt, immer enthalten. Abgänge in 3 Größenklassen unabhängig zählbar (groß = 3WA 630A, mittel = 3KF Lasttrennschalter 32-63A, klein = NH-Trenner NH000 100A, alle OHNE Messung), je mit eigenem 'davon gemessen'-Subzähler (ebenfalls separater Energiezähler statt Leistungsschalter-eigener Messung, eigener Protokoll-Dropdown unabhängig von der Einspeisung) - macht in der späteren Dokumentation erkennbar, wie sich die DDC-Meldungen zusammensetzen. Optionale Sammelstörmeldung-Gruppen (Ruhestromkette 440_000098) für UV-Allgemein-Sammelmeldungen oder überwachte Sicherungen von Regel-/Netzgeräten in der NSHV.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000037",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 630A (Siemens 3WA, ohne Messung)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000038",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 1250A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000039",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 2000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000040",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 3200A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000041",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 5000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 2,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 2,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 2,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus TCP"
+      },
+      {
+        "bg_id": "440_000037",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 630A (Siemens 3WA, ohne Messung)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000038",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 1250A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000039",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 2000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000040",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 3200A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000041",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 5000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000107",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000037",
+        "menge": 1,
+        "mengenfeld": "abgang_gross"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000032",
+        "menge": 1,
+        "mengenfeld": "abgang_mittel"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000099",
+        "menge": 1,
+        "mengenfeld": "abgang_klein"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "sammelstoerung_gruppen"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Niederspannungshauptverteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00014",
+    "name": "NSHV mit 2 Einspeisungen, Sammelschienenkupplung und ATS-Abgang für IT/Rechenzentrum",
+    "gewerk": "440",
+    "beschreibung": "[Session 82, 24.10.2026, Nutzer-Freigabe] Wie 440_A00013 (redundante Einspeisung + Sammelschienenkupplung), zusätzlich ATS-Abgang-Gruppe für kritische IT-/Rechenzentrums-Lasten (Socomec ATyS, 3 Leistungsklassen als flache Dropdown-Optionen analog zum Trafoabgang-Muster - eine verschachtelte Klasse-in-Mengenfeld-Logik kennt die Anlagen-Engine nicht). Recherche bestätigt: Socomec ATyS ist nach IEC 60947-6-1 als 'Class PC' klassifiziert - KEINE eigene Überstrom-/Kurzschluss-Schutzfunktion, braucht ein vorgeschaltetes, gemeldetes Schutzorgan je Einspeisepol (2x je ATS-Instanz): ATyS M bis 160A -> 2x NH-Trenner NH00; ATyS r/d bis 800A -> 2x Lasttrennschalter 3KF (630-800A); ATyS r/d ab 1000A -> 2x Leistungsschalter 3WA (2000A), je ohne Messung. Einspeisung über Leistungsschalter Siemens 3WA OHNE Messung (die geräteeigene COM100/COM800-Messung ist nicht geeicht) + separates, geeichtes Energiezähler-Baugruppe (Modbus RTU/M-Bus/TCP wählbar) - Nutzer-Korrektur Session 82. Überspannungsschutzgerät mit Sammelstörmeldung (440_000107) fest gebündelt, immer enthalten. Abgänge in 3 Größenklassen unabhängig zählbar (groß = 3WA 630A, mittel = 3KF Lasttrennschalter 32-63A, klein = NH-Trenner NH000 100A, alle OHNE Messung), je mit eigenem 'davon gemessen'-Subzähler (ebenfalls separater Energiezähler statt Leistungsschalter-eigener Messung, eigener Protokoll-Dropdown unabhängig von der Einspeisung) - macht in der späteren Dokumentation erkennbar, wie sich die DDC-Meldungen zusammensetzen. Optionale Sammelstörmeldung-Gruppen (Ruhestromkette 440_000098) für UV-Allgemein-Sammelmeldungen oder überwachte Sicherungen von Regel-/Netzgeräten in der NSHV.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000037",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 630A (Siemens 3WA, ohne Messung)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000038",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 1250A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000039",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 2000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000040",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 3200A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000041",
+        "menge": 2,
+        "gruppe": "einspeisung_groesse",
+        "variante_label": "Leistungsschalter 5000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 2,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 2,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 2,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus TCP"
+      },
+      {
+        "bg_id": "440_000037",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 630A (Siemens 3WA, ohne Messung)",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000038",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 1250A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000039",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 2000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000040",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 3200A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000041",
+        "menge": 1,
+        "gruppe": "kuppelfeld_groesse",
+        "variante_label": "Leistungsschalter 5000A (Siemens 3WA, ohne Messung)"
+      },
+      {
+        "bg_id": "440_000107",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000037",
+        "menge": 1,
+        "mengenfeld": "abgang_gross"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_gross_gemessen"
+      },
+      {
+        "bg_id": "440_000032",
+        "menge": 1,
+        "mengenfeld": "abgang_mittel"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_mittel_gemessen"
+      },
+      {
+        "bg_id": "440_000099",
+        "menge": 1,
+        "mengenfeld": "abgang_klein"
+      },
+      {
+        "bg_id": "440_000001",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000002",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus",
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus TCP",
+        "mengenfeld": "abgang_klein_gemessen"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "sammelstoerung_gruppen"
+      },
+      {
+        "bg_id": "440_000104",
+        "menge": 1,
+        "gruppe": "ats_abgang",
+        "variante_label": "ATyS M bis 160A + 2× NH-Trenner NH00 Vorschutz",
+        "ist_default": true,
+        "mengenfeld": "anzahl_ats_abgaenge"
+      },
+      {
+        "bg_id": "440_000100",
+        "menge": 2,
+        "gruppe": "ats_abgang",
+        "variante_label": "ATyS M bis 160A + 2× NH-Trenner NH00 Vorschutz",
+        "ist_default": true,
+        "mengenfeld": "anzahl_ats_abgaenge"
+      },
+      {
+        "bg_id": "440_000105",
+        "menge": 1,
+        "gruppe": "ats_abgang",
+        "variante_label": "ATyS r/d bis 800A + 2× Lasttrennschalter 3KF Vorschutz",
+        "mengenfeld": "anzahl_ats_abgaenge"
+      },
+      {
+        "bg_id": "440_000036",
+        "menge": 2,
+        "gruppe": "ats_abgang",
+        "variante_label": "ATyS r/d bis 800A + 2× Lasttrennschalter 3KF Vorschutz",
+        "mengenfeld": "anzahl_ats_abgaenge"
+      },
+      {
+        "bg_id": "440_000106",
+        "menge": 1,
+        "gruppe": "ats_abgang",
+        "variante_label": "ATyS r/d ab 1000A + 2× Leistungsschalter 3WA Vorschutz",
+        "mengenfeld": "anzahl_ats_abgaenge"
+      },
+      {
+        "bg_id": "440_000039",
+        "menge": 2,
+        "gruppe": "ats_abgang",
+        "variante_label": "ATyS r/d ab 1000A + 2× Leistungsschalter 3WA Vorschutz",
+        "mengenfeld": "anzahl_ats_abgaenge"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Niederspannungshauptverteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]
