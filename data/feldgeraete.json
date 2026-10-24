@@ -1460,5 +1460,14 @@
     "quelle_hinweis": "[Session 82, 24.10.2026] Dasselbe reale Produkt wie bereits in 480_000033 (Session 66) für die Schaltschrankzuleitung verwendet - hier als externes Feldgerät in einer fremden Unterverteilung modelliert. Kein zusätzlicher Preisfund nötig, siehe 480_000033/einzelbauteile 952305 für die bereits dokumentierte Preisrecherche.",
     "ga_liefert_default": false,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "3UG5616-1CR20",
+    "bezeichnung": "Phasenwächter Siemens SIRIUS 3UG5616-1CR20, 2 potentialfreie Wechsler (Phasenfolge/-ausfall/Asymmetrie/Frequenz/Über-Unterspannung) - hier installiert in einer fremden Unterverteilung (NSHV/UV), nicht im eigenen Schaltschrank",
+    "hersteller": "Siemens",
+    "kategorie": "Sammelstörmeldungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Dasselbe reale Produkt wie bereits in 480_000034 (Session 66) für die Schaltschrankzuleitung verwendet - hier als externes Feldgerät in einer fremden Unterverteilung modelliert, analog zu 952305 (Überspannungsschutz). Kein zusätzlicher Preisfund nötig, siehe 480_000034/einzelbauteile 3UG5616-1CR20 für die bereits dokumentierte Preisrecherche.",
+    "ga_liefert_default": false,
+    "geprueft": false
   }
 ]

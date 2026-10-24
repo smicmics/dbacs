@@ -13663,5 +13663,33 @@
     "automationsanbindung": true,
     "kategorie": "Sammelstörmeldungen",
     "geprueft": false
+  },
+  {
+    "id": "440_000108",
+    "name": "Phasenausfall-/Phasenüberwachung mit Sammelstörmeldung, Feldgerät (fremde Unterverteilung)",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Phasenwächter Siemens SIRIUS 3UG5616-1CR20 (2 potentialfreie Wechsler, Phasenfolge/-ausfall/Asymmetrie/Frequenz/Über-Unterspannung, 3x90-760V AC eigenversorgt - dasselbe reale Produkt wie bereits in 480_000034 für die Schaltschrankzuleitung verwendet) - hier als externes Nur-Monitoring-Feldgerät in einer fremden Unterverteilung (NSHV/UV) modelliert, analog zum Überspannungsschutzgerät 440_000107. Bewusst generisch benannt (kein NSHV-Bezug im Namen), wiederverwendbar für jede Art fremder Unterverteilung. Das Gerät steht in der fremden Unterverteilung, dieser Schrank holt nur die Störmeldung ab, keine Energieversorgung/kein LSS hier. Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 1x BI. Fester, nicht abwählbarer Bestandteil jeder NSHV-Gesamtanlage (Phasenausfallüberwachung ist in einer NSHV-Einspeisung üblicherweise immer vorhanden, Nutzer-Vorgabe - analog zum Überspannungsschutz).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Phasenausfall-/Phasenüberwachung mit Sammelstörmeldung (fremde Unterverteilung)",
+    "feldgeraet_artikel_nr": "3UG5616-1CR20",
+    "automationsanbindung": true,
+    "kategorie": "Sammelstörmeldungen",
+    "geprueft": false
   }
 ]

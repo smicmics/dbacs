@@ -294,27 +294,18 @@ legend{
 }
 
 /* ── BG-Auswahl ── */
-/* Nutzer-Vorgabe (Session 67): die Anlagen-Varianten (TouchPanel-Größe/
-   Messgerät-Protokoll) sollen NICHT mehr als eigene volle Zeile unter dem
-   Baugruppe·Anlage-Feld erscheinen ("wir verlieren eine komplette
-   Ansichtsreihe für die Schaltschrankansicht") - stattdessen rückt der
-   bg-add-row schmaler zusammen (flex-basis statt volle Breite), damit
-   #anlage_varianten kompakt DANEBEN auf derselben Zeile Platz hat.
-   Nutzer-Korrektur (2. Anlauf): die Varianten-Felder saßen dabei tiefer als
-   das Anlagen-Feld, weil jedes .anlage-variante-lbl seine eigene Beschriftung
-   ÜBER dem Select trug (Baugruppe·Anlage-Feld hat dagegen nur EINE
-   Beschriftung für das ganze eb-field). Fix: Beschriftungen und Selects in
-   zwei eigene, parallele Zeilen aufgeteilt (#anlage_varianten_labels neben
-   dem "Baugruppe · Anlage"-Label, #anlage_varianten neben dem bg-add-row) -
-   "orientiere dich an der Überschrift und dem Feld für die Anlagenauswahl". */
-.bg-anlage-labels{display:flex;gap:10px;align-items:flex-end;}
-#anlage_varianten_labels{display:none;gap:10px;}
+/* Session 83 (Nutzer-Fund per Screenshot, NSHV-Anlagen mit 9 Varianten-
+   Feldern liefen rechts aus dem Bildschirm): die bisherige Inline-Loesung
+   neben dem Anlagen-Dropdown (Session 67, siehe Archiv-Kommentar in der
+   Git-Historie) skaliert nicht auf viele Felder. Ersetzt durch ein
+   zentriertes Modal (.modal-overlay/.modal-box) mit Grid-Layout - wrapt
+   beliebig viele Felder sauber um, oeffnet nur fuer Anlagen, die ueberhaupt
+   gruppe-/mengenfeld-Mitglieder haben (anlageHatVarianten()), sonst fuegt
+   "+" wie bisher direkt hinzu. Reusable fuer jede kuenftige Anlage mit
+   vielen Optionen, ohne die Schaltschrankansicht zu verkleinern. */
 .anlage-variante-lbltext{
   font-size:9.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;
-  width:130px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.bg-anlage-row{display:flex;gap:10px;align-items:flex-start;margin-top:3px;flex-wrap:wrap;}
-.bg-anlage-row .bg-add-row{flex:1 1 220px;margin-top:0;}
 .bg-add-row{display:flex;gap:6px;margin-top:6px;min-width:0;}
 .bg-add-row input[type=number]{width:55px;flex-shrink:0;}
 .bg-add-row select{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -339,10 +330,40 @@ legend{
 .klemmen-variante-row{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:2px;}
 .ddc-auf-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px;}
 .ddc-auf-row .rowbreak-lbl{gap:4px;}
-#anlage_varianten{flex:0 0 auto;flex-wrap:wrap;gap:6px 10px;margin-top:0;}
+#anlage_varianten{
+  display:none;grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
+  gap:12px;
+}
+.anlage-modal-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
 .anlage-variante-select{
-  width:130px;flex-shrink:0;font-size:11px;padding:2px 4px;
+  width:100%;font-size:11px;padding:2px 4px;
   background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;
+}
+/* ── Anlage-Varianten-Modal ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  display:none;align-items:center;justify-content:center;
+  z-index:1000;padding:20px;
+}
+.modal-box{
+  background:var(--bg2);border:1px solid var(--bords);border-radius:6px;
+  max-width:640px;width:100%;max-height:85vh;display:flex;flex-direction:column;
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 16px;border-bottom:1px solid var(--bord);
+  font-size:13px;font-weight:700;color:var(--tx);
+}
+.modal-close{
+  background:none;border:none;color:var(--tx2);font-size:18px;cursor:pointer;
+  line-height:1;padding:0 4px;flex-shrink:0;
+}
+.modal-close:hover{color:var(--tx);}
+.modal-body{padding:16px;overflow-y:auto;}
+.modal-footer{
+  display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;
+  border-top:1px solid var(--bord);
 }
 .anlage-mengenfeld-input{
   width:55px;flex-shrink:0;font-size:11px;padding:2px 4px;
@@ -737,22 +758,16 @@ fieldset{
     </div>
 
     <div class="eb-field">
-      <div class="bg-anlage-labels">
-        <label>Baugruppe · Anlage</label>
-        <div id="anlage_varianten_labels" style="display:none"></div>
-      </div>
-      <div class="bg-anlage-row">
-        <div class="bg-add-row">
-          <select id="bg_auswahl" style="flex:1" onchange="updateAnlageVariantenUI()">
-            <option value="">Laden …</option>
-          </select>
-          <input id="bg_menge" type="number" value="1" min="1" max="99">
-          <div class="btn-stack">
-            <button class="btn-add-sm" onclick="addBaugruppe()" title="Menge hinzufügen">+</button>
-            <button class="btn-sub-sm" onclick="removeBaugruppeQty()" title="Menge abziehen">&#8722;</button>
-          </div>
+      <label>Baugruppe · Anlage</label>
+      <div class="bg-add-row">
+        <select id="bg_auswahl" style="flex:1" onchange="updateAnlageVariantenUI()">
+          <option value="">Laden …</option>
+        </select>
+        <input id="bg_menge" type="number" value="1" min="1" max="99">
+        <div class="btn-stack">
+          <button class="btn-add-sm" onclick="addBaugruppe()" title="Menge hinzufügen">+</button>
+          <button class="btn-sub-sm" onclick="removeBaugruppeQty()" title="Menge abziehen">&#8722;</button>
         </div>
-        <div id="anlage_varianten" style="display:none"></div>
       </div>
     </div>
 
@@ -784,6 +799,25 @@ fieldset{
           <option value="modbus_tcp">Modbus TCP/IP</option>
         </select>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Anlage-Varianten-Modal (Session 83) - oeffnet statt der Inline-Felder,
+     wenn die gewaehlte Anlage gruppe-/mengenfeld-Mitglieder hat (s.
+     anlageHatVarianten()/openAnlageModal() im Skript). -->
+<div id="anlage-modal-overlay" class="modal-overlay" onclick="if(event.target===this) closeAnlageModal()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span id="anlage-modal-title">Anlage konfigurieren</span>
+      <button class="modal-close" onclick="closeAnlageModal()" title="Schließen">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="anlage_varianten"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-print" onclick="closeAnlageModal()">Abbrechen</button>
+      <button class="btn-add" onclick="confirmAnlageModal()">+ Hinzufügen</button>
     </div>
   </div>
 </div>
@@ -1473,10 +1507,17 @@ function populateAnlagenAuswahl(sel, gew, cur) {
 // tuerTouchpanelPasstAufTuer()-Pruefung wiederverwendet, um auf zu kurzen
 // Tueren die grosse Variante auszublenden (gleiche Regel wie im normalen
 // Baugruppen-Dropdown, Session 64 Nachtrag 6).
+// Prueft, ob eine Anlage ueberhaupt gruppe-/mengenfeld-Mitglieder hat (dann
+// oeffnet addBaugruppe() das Varianten-Modal statt direkt hinzuzufuegen).
+function anlageHatVarianten(anlageId) {
+  const anlage = ANLAGEN_DB.find(a => a.id === anlageId);
+  if (!anlage) return false;
+  return (anlage.mitglieder || []).some(m => m.gruppe || m.mengenfeld || m.mengenfeld2);
+}
+
 function updateAnlageVariantenUI() {
   const box = document.getElementById('anlage_varianten');
-  const labelBox = document.getElementById('anlage_varianten_labels');
-  const hide = () => { box.style.display = 'none'; box.innerHTML = ''; labelBox.style.display = 'none'; labelBox.innerHTML = ''; };
+  const hide = () => { box.style.display = 'none'; box.innerHTML = ''; };
   const val = gs('bg_auswahl');
   if (!val.startsWith('anlage:')) { hide(); return; }
   const anlage = ANLAGEN_DB.find(a => a.id === val.slice(7));
@@ -1504,34 +1545,30 @@ function updateAnlageVariantenUI() {
   });
   const mengenKeys = Object.keys(mengenfelder);
   if (!keys.length && !mengenKeys.length) { hide(); return; }
-  // Beschriftung und Select stehen in zwei getrennten, parallelen Zeilen
-  // (#anlage_varianten_labels neben dem "Baugruppe · Anlage"-Label,
-  // #anlage_varianten neben dem bg-add-row) statt wie zuvor als ein Label,
-  // das Text+Select stapelt – sonst sitzen die Selects eine Zeile tiefer als
-  // das Anlagen-Dropdown (Nutzer-Fund, siehe CSS-Kommentar bei
-  // .bg-anlage-labels).
-  box.style.display = 'flex';
-  labelBox.style.display = 'flex';
-  // DOM-Konstruktion statt String-Interpolation (Session 75 Bugfix): ein
-  // variante_label kann beliebige Zeichen enthalten, insbesondere
-  // Anfuehrungszeichen (z.B. TouchPanel-Groessen '10,1" PXM40') - als
-  // <option value="${key}">-String interpoliert bricht das die HTML-
-  // Attributsyntax (das " beendet das Attribut vorzeitig). .value/
-  // .textContent als Property-Zuweisung braucht dagegen kein Escaping.
-  labelBox.innerHTML = '';
-  keys.forEach(gr => {
-    const span = document.createElement('span');
-    span.className = 'anlage-variante-lbltext';
-    span.textContent = ANLAGE_GRUPPEN_LABEL[gr] || gr;
-    labelBox.appendChild(span);
-  });
-  mengenKeys.forEach(mf => {
-    const span = document.createElement('span');
-    span.className = 'anlage-variante-lbltext';
-    span.textContent = ANLAGE_MENGENFELD_LABEL[mf] || mf;
-    labelBox.appendChild(span);
-  });
+  box.style.display = 'grid';
   box.innerHTML = '';
+  // Jedes Feld (Label + Select) als EIN zusammenhaengender Block im Grid
+  // (Session 83) - vorher standen Labels/Selects in zwei getrennten,
+  // parallelen Flex-Reihen (nur bei max. 1 Zeile stabil ausgerichtet); bei
+  // vielen Feldern (z.B. NSHV mit 9) wuerde das beim Umbruch leicht
+  // auseinanderlaufen. Jetzt label+select immer als Paar, unabhaengig vom
+  // Grid-Umbruch korrekt zugeordnet.
+  function addField(labelText, control) {
+    const wrap = document.createElement('div');
+    wrap.className = 'anlage-modal-field';
+    // DOM-Konstruktion statt String-Interpolation (Session 75 Bugfix): ein
+    // variante_label kann beliebige Zeichen enthalten, insbesondere
+    // Anfuehrungszeichen (z.B. TouchPanel-Groessen '10,1" PXM40') - als
+    // <option value="${key}">-String interpoliert bricht das die HTML-
+    // Attributsyntax. .value/.textContent als Property-Zuweisung braucht
+    // kein Escaping.
+    const span = document.createElement('span');
+    span.className = 'anlage-variante-lbltext';
+    span.textContent = labelText;
+    wrap.appendChild(span);
+    wrap.appendChild(control);
+    box.appendChild(wrap);
+  }
   keys.forEach(gr => {
     const mitglieder = gruppen[gr];
     // gruppe_optional (Session 68, Heizkreise Verteilung): traegt mind. ein
@@ -1596,7 +1633,7 @@ function updateAnlageVariantenUI() {
       opt.selected = byLabel[key].some(m => m.ist_default);
       select.appendChild(opt);
     });
-    box.appendChild(select);
+    addField(ANLAGE_GRUPPEN_LABEL[gr] || gr, select);
   });
   // Mengenfeld-Eingaben (Session 75: <input type=number> mit Freitext;
   // Session 77 Folgearbeit: auf <select> mit Festwerten umgestellt, Nutzer-
@@ -1624,7 +1661,7 @@ function updateAnlageVariantenUI() {
       opt.selected = (v === def);
       select.appendChild(opt);
     });
-    box.appendChild(select);
+    addField(ANLAGE_MENGENFELD_LABEL[mf] || mf, select);
   });
 }
 const ANLAGE_GRUPPEN_LABEL = {
@@ -1728,13 +1765,44 @@ const ANLAGE_MENGENFELD_OPTIONS = {
 function addBaugruppe() {
   const sel = gs('bg_auswahl');
   if(!sel) return;
-  if(sel.startsWith('anlage:')) { addAnlage(sel.slice(7)); return; }
+  if(sel.startsWith('anlage:')) {
+    const anlageId = sel.slice(7);
+    // Session 83: Anlagen mit gruppe-/mengenfeld-Mitgliedern (Varianten)
+    // oeffnen erst das Auswahl-Modal, statt sofort mit den Vorbelegungen
+    // hinzuzufuegen - der Nutzer bestaetigt dort explizit ("+ Hinzufügen").
+    // Anlagen ohne Varianten (die meisten einfachen Feld-Anlagen) fuegen
+    // weiterhin direkt hinzu, kein unnoetiger Modal-Umweg.
+    if (anlageHatVarianten(anlageId)) { openAnlageModal(anlageId); return; }
+    addAnlage(anlageId);
+    return;
+  }
   addBaugruppeById(sel, Math.max(1, g('bg_menge')));
   consolidateBelegung();
   saveBelegung();
   renderBelegung();
   calculate();
 }
+
+// Anlage-Varianten-Modal (Session 83) - siehe anlageHatVarianten()/
+// updateAnlageVariantenUI() weiter oben, die das Grid #anlage_varianten
+// innerhalb des Modals befuellen. Das Modal selbst traegt keine eigene
+// Mengen-Eingabe - die bestehende #bg_menge-Eingabe neben dem Anlagen-
+// Dropdown bleibt massgeblich (addAnlage() liest sie unveraendert aus).
+function openAnlageModal(anlageId) {
+  const anlage = ANLAGEN_DB.find(a => a.id === anlageId);
+  const titleEl = document.getElementById('anlage-modal-title');
+  titleEl.textContent = 'Anlage konfigurieren' + (anlage ? ' · ' + anlage.name : '');
+  document.getElementById('anlage-modal-overlay').style.display = 'flex';
+}
+function closeAnlageModal() {
+  document.getElementById('anlage-modal-overlay').style.display = 'none';
+}
+function confirmAnlageModal() {
+  const sel = gs('bg_auswahl');
+  if (sel.startsWith('anlage:')) addAnlage(sel.slice(7));
+  closeAnlageModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAnlageModal(); });
 
 // Fuegt EINE Baugruppen-Instanz zur Belegung hinzu (mergt mit einer
 // bestehenden Zeile gleicher bg_id) - aus addBaugruppe() extrahiert
@@ -5905,7 +5973,12 @@ function testAnlage(anlageId, menge, slice) {
       if (el && !el.value) el.value = String(ANLAGE_MENGENFELD_DEFAULT[mf] ?? 1);
     });
     _v('bg_menge', menge);
-    addBaugruppe();
+    // Session 83: addBaugruppe() oeffnet fuer Anlagen mit Varianten jetzt das
+    // Auswahl-Modal statt direkt hinzuzufuegen (siehe anlageHatVarianten()).
+    // Die Testroutine hat die Konfigurationsfelder oben bereits gesetzt und
+    // ruft daher addAnlage() direkt auf - das ist exakt, was der Modal-
+    // "+ Hinzufügen"-Button (confirmAnlageModal()) am Ende ebenfalls tut.
+    addAnlage(anlageId);
     calculate();
 
     const check = stuecklisteVsPlatzierungCheck(letzteAggZones);
