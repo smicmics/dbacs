@@ -1,6 +1,23 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 83 (24.10.2026).**
+> **Stand nach Session 83, Fortsetzung IT-UV (24.10.2026).**
+> Direkt im Anschluss an die allgemeine UV-Anlagengruppe: **2 IT-UV-
+> Gesamtanlagen** – `440_A00017` „IT-UV mit interner USV" und `440_A00018`
+> „IT-UV mit zentraler USV-Einspeisung" (keine eigene USV-Baugruppe dort).
+> Neue generische Baugruppe `440_000119` „USV-Anlage mit Sammelstörmeldung"
+> (3× BI, externes Nur-Monitoring-Feldgerät). Abgangsseite für IT-Lasten
+> umgestellt: „Abgänge gemessen" als primärer Typ (Default 8), kein
+> NH-Trenner, zusätzlich „Gruppenabgänge" und separat „Sammelstörmeldung-
+> Gruppen" (bewusst zwei getrennte Mengenfelder, gleiche Baugruppe
+> `440_000098`, bessere Zuordnung später). Export: baugruppen 334→**335**,
+> feldgeraete 159→**160**, anlagen 65→**67**. Browser-verifiziert: beide
+> Anlagen je 72/72 Kombinationen `pass:true`, Live-Test bestätigt RS485-
+> Sammelzuleitung bleibt bei 1× trotz mehrerer Zähler, korrekte USV-
+> Unterscheidung zwischen beiden Typen, keine Konsolenfehler. Details:
+> `CLAUDE.md` → „Offene Punkte" Nachtrag Session 83 Fortsetzung. **Damit
+> sind alle 4 angekündigten UV-Varianten + 3 NSHV-Varianten fertig.**
+
+Vorheriger Stand – Session 83 (24.10.2026).
 > Mehrteilige Sitzung: **Anlagen-Varianten-Modal** (UI-Fix – 9-Felder-NSHV-
 > Anlagen liefen rechts aus dem Bildschirm, jetzt zentriertes Popup mit
 > Grid-Layout, reusable für jede künftige Anlage mit vielen Optionen) +

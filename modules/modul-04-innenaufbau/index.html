@@ -1741,14 +1741,24 @@ const ANLAGE_MENGENFELD_LABEL = {
   // Vorgabe "das duerfte reichen", einfacher als die NSHV-Aufteilung).
   uv_abgang_lss: 'Abgänge LSS/FI (Anzahl)',
   uv_abgang_nh: 'Abgänge NH-Trenner (Anzahl, größere UV)',
-  uv_abgang_gemessen: 'davon gemessen (Anzahl, Einzel-/Sammelmessung)'
+  uv_abgang_gemessen: 'davon gemessen (Anzahl, Einzel-/Sammelmessung)',
+  // IT-UV (440_A00017/018, Session 83 Fortsetzung): Abgangsseite auf
+  // IT-Lasten umgestellt - gemessen ist hier der Normalfall, zusaetzlich
+  // Gruppenabgaenge (serielle Sicherungsverschaltung) UND Sammelstoer-
+  // meldung-Gruppen als zwei bewusst getrennte Felder (Nutzer-Vorgabe:
+  // "laesst sich die Zuordnung spaeter leichter herstellen"), obwohl
+  // beide dieselbe Baugruppe 440_000098 nutzen.
+  uv_it_abgang_gemessen: 'Abgänge gemessen (Anzahl, Einzel-/Sammelmessung)',
+  uv_it_abgang_ungemessen: 'Abgänge ungemessen (Anzahl)',
+  uv_gruppenabgaenge: 'Gruppenabgänge (Anzahl, serielle Sicherungsverschaltung)'
 };
 const ANLAGE_MENGENFELD_DEFAULT = {
   kuehlreihen: 1, kaeltekreise: 1, ventilatoren_je_reihe: 4, verdichterstufen_je_kreis: 1,
   anzahl_trafos: 1,
   abgang_gross: 2, abgang_gross_gemessen: 0, abgang_mittel: 4, abgang_mittel_gemessen: 0,
   abgang_klein: 4, abgang_klein_gemessen: 0, sammelstoerung_gruppen: 0, anzahl_ats_abgaenge: 1,
-  uv_abgang_lss: 8, uv_abgang_nh: 0, uv_abgang_gemessen: 0
+  uv_abgang_lss: 8, uv_abgang_nh: 0, uv_abgang_gemessen: 0,
+  uv_it_abgang_gemessen: 8, uv_it_abgang_ungemessen: 2, uv_gruppenabgaenge: 0
 };
 // Erlaubte Festwerte je Mengenfeld (Session 77 Folgearbeit, Nutzer-Vorgabe:
 // "Kühlreihen/Kältekreise 1 oder 2", "Verdichterstufen je Kreis max 8",
@@ -1775,7 +1785,10 @@ const ANLAGE_MENGENFELD_OPTIONS = {
   // UV-Gesamtanlagen (Session 83):
   uv_abgang_lss: Array.from({length: 31}, (_, i) => i),
   uv_abgang_nh: Array.from({length: 11}, (_, i) => i),
-  uv_abgang_gemessen: Array.from({length: 21}, (_, i) => i)
+  uv_abgang_gemessen: Array.from({length: 21}, (_, i) => i),
+  uv_it_abgang_gemessen: Array.from({length: 31}, (_, i) => i),
+  uv_it_abgang_ungemessen: Array.from({length: 11}, (_, i) => i),
+  uv_gruppenabgaenge: Array.from({length: 11}, (_, i) => i)
 };
 
 // ── Belegung ─────────────────────────────────────────────────────────

@@ -1548,5 +1548,14 @@
     "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Frequenz, Spannung L-N, Stromaufnahme I.",
     "ga_liefert_default": true,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "USV-ANLAGE-GENERIC",
+    "bezeichnung": "USV-Anlage (Gebäude-/IT-USV), generischer Platzhalter - repräsentativ für eine zentrale oder lokale IT-USV-Anlage, keine feste Bestellnummer (Leistungsklasse/Hersteller stark projektabhängig, z.B. APC Symmetra/Eaton 9395-Klasse)",
+    "hersteller": "–",
+    "kategorie": "Sammelstörmeldungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Generischer Platzhalter - Kontaktmuster (Alarm/Batteriebetrieb/Batterieladung) herstellerübergreifend üblich bei USV-Anlagen, analog zur bereits recherchierten Phoenix-Contact-QUINT-UPS-Baugruppe 480_000011 (Session 54), hier aber für eine deutlich größere Gebäude-/IT-USV ohne konkrete Produktfestlegung.",
+    "ga_liefert_default": false,
+    "geprueft": false
   }
 ]

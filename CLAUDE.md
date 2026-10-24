@@ -16,6 +16,51 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 83 Fortsetzung (24.10.2026) – 2 IT-UV-Gesamtanlagen +
+> neue generische „USV-Anlage"-Baugruppe, direkt im Anschluss an die
+> allgemeine UV-Anlagengruppe.**
+> **Neue Baugruppe `440_000119` „USV-Anlage mit Sammelstörmeldung
+> (Alarm/Batteriebetrieb/Batterieladung)"** – externes Nur-Monitoring-
+> Feldgerät für eine Gebäude-/IT-USV (deutlich größer als die bestehende
+> schrankinterne Steuerspannungs-USV `480_000011`), gleiches 3×BI-
+> Kontaktmuster wiederverwendet (Session 54). Generischer Platzhalter
+> (`USV-ANLAGE-GENERIC`), keine Leistungsklasse/Hersteller festgelegt.
+> **2 neue Gesamtanlagen** (Kategorie „Unterverteilung" weiterverwendet):
+> - `440_A00017` „IT-UV mit interner USV" – USV-Anlage (`440_000119`) fest
+>   enthalten.
+> - `440_A00018` „IT-UV mit zentraler USV-Einspeisung" – **keine** eigene
+>   USV-Baugruppe (USV sitzt in einer anderen, zentralen Anlage), sonst
+>   strukturell identisch.
+> **Abgangsseite bewusst anders als die allgemeine UV** (mehrere
+> Korrekturrunden mit dem Nutzer): „Abgänge gemessen (Einzel)" ist hier der
+> **primäre** Typ (Default 8, nicht optional wie bei der allgemeinen UV) –
+> bei IT-Lasten ist Einzelüberwachung je Abgang der Normalfall
+> (Kapazitätsplanung/Redundanzkontrolle/PUE), kein NH-Trenner-Abgang
+> (IT-Racks/PDUs liegen unter dieser Leistungsklasse). Zusätzlich
+> **„Gruppenabgänge"** (serielle Sicherungsverschaltung zu einer
+> gemeinsamen Sammelstörmeldung) **und separat „Sammelstörmeldung-
+> Gruppen"** – beide nutzen dieselbe Baugruppe `440_000098`, bleiben aber
+> **bewusst zwei getrennte Mengenfelder** (`uv_gruppenabgaenge` +
+> `sammelstoerung_gruppen`) statt zusammengelegt – Nutzer-Vorgabe: „so
+> lässt sich die Zuordnung später leichter herstellen" (auch wenn beide in
+> der fertigen Stückliste zur selben Position konsolidieren). Eine
+> optionale Gruppenmessung läuft ohne eigene Verknüpfung einfach über den
+> gemeinsamen „Abgänge gemessen"-Zähler mit (Energiezähler sind bereits als
+> „Einzel-/Sammelmessung" modelliert). RS485-Sammelbus-Korrektur (s. o.)
+> identisch übernommen.
+> **Export:** einzelbauteile unverändert 230, baugruppen 334→**335**,
+> feldgeraete 159→**160**, anlagen 65→**67**. Backup:
+> `ga_komponenten_vor-it-uv_20261024_153132.xlsx`.
+> **Browser-verifiziert:** `testKatalogScan()` sauber; `testBaugruppe
+> ('440_000119')` `pass:true` (3× BI); beide IT-UV-Anlagen je 72/72
+> Kombinationen `pass:true`; Live-UI-Test bestätigt die Sammelzuleitung
+> bleibt bei 1× trotz 8 geteilter Zähler, `440_000098` summiert korrekt
+> 2+3=5 aus den zwei getrennten Mengenfeldern, Typ B zeigt korrekt keine
+> USV-Baugruppe; keine Konsolenfehler.
+> **Damit sind beide angekündigten UV-Themen abgeschlossen** (allgemeine UV
+> 2 Varianten + IT-UV 2 Varianten, insgesamt 4 UV-Gesamtanlagen plus 3
+> NSHV-Gesamtanlagen).
+
 > **Nachtrag Session 83 (24.10.2026) – Anlagengruppe UV (Unterverteilung,
 > 2 Varianten), Anlage-Varianten-Modal (UI-Fix), RS485-Sammelbus-Korrektur
 > + Retrofit der NSHV-Anlagen. Mehrteilige Sitzung mit mehreren

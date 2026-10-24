@@ -5608,5 +5608,327 @@
     "kategorie": "Unterverteilung",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
+  },
+  {
+    "id": "440_A00017",
+    "name": "IT-UV mit interner USV",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Einspeisung-Trennungsart (Hauptschalter/LSS-FI/NH-Trenner) + optionale 3~-Einspeisung-Messung wie die allgemeine UV. Abgangsseite für IT-Lasten umgestellt: 'Abgänge gemessen (Einzel)' ist hier der PRIMÄRE Typ (höherer Default als bei der allgemeinen UV, da Einzelüberwachung je Abgang bei IT-Infrastruktur der Normalfall ist - Kapazitätsplanung/Redundanzkontrolle/PUE), 'Abgänge ungemessen (Einzel)' für Nebenlasten ohne Überwachungsbedarf. Zusätzlich 'Gruppenabgänge' (mehrere Sicherungen seriell zu einer gemeinsamen Sammelstörmeldung verschaltet, 440_000098) UND separat 'Sammelstörmeldung-Gruppen' (dieselbe Baugruppe, aber bewusst als zweites, eigenständiges Mengenfeld - Nutzer-Vorgabe: 'so lässt sich die Zuordnung später leichter herstellen'). Eine optionale Gruppenmessung läuft einfach über den gemeinsamen 'Abgänge gemessen'-Zähler mit (keine eigene Verknüpfung nötig). Kein NH-Trenner-Abgang (IT-Racks/PDUs liegen deutlich unter dieser Leistungsklasse). Überspannungsschutz + Phasenausfall fest gebündelt. RS485-Sammelbus-Korrektur (Session 83) identisch zur allgemeinen UV. Zusätzlich fest: USV-Anlage mit Sammelstörmeldung (440_000119, 3x BI Alarm/Batteriebetrieb/Batterieladung) - die USV sitzt in/an dieser Unterverteilung selbst.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000109",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "Hauptschalter",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "LSS/FI mit Meldekontakt (3-polig B16)"
+      },
+      {
+        "bg_id": "440_000099",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "NH-Trenner (größere UV)"
+      },
+      {
+        "bg_id": "440_000115",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000116",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus TCP",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000107",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000108",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000119",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000117",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000118",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus"
+      },
+      {
+        "bg_id": "440_000112",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus TCP",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000115",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU"
+      },
+      {
+        "bg_id": "440_000116",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus TCP",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "mengenfeld": "uv_it_abgang_ungemessen"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "uv_gruppenabgaenge"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "sammelstoerung_gruppen"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Unterverteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00018",
+    "name": "IT-UV mit zentraler USV-Einspeisung",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Einspeisung-Trennungsart (Hauptschalter/LSS-FI/NH-Trenner) + optionale 3~-Einspeisung-Messung wie die allgemeine UV. Abgangsseite für IT-Lasten umgestellt: 'Abgänge gemessen (Einzel)' ist hier der PRIMÄRE Typ (höherer Default als bei der allgemeinen UV, da Einzelüberwachung je Abgang bei IT-Infrastruktur der Normalfall ist - Kapazitätsplanung/Redundanzkontrolle/PUE), 'Abgänge ungemessen (Einzel)' für Nebenlasten ohne Überwachungsbedarf. Zusätzlich 'Gruppenabgänge' (mehrere Sicherungen seriell zu einer gemeinsamen Sammelstörmeldung verschaltet, 440_000098) UND separat 'Sammelstörmeldung-Gruppen' (dieselbe Baugruppe, aber bewusst als zweites, eigenständiges Mengenfeld - Nutzer-Vorgabe: 'so lässt sich die Zuordnung später leichter herstellen'). Eine optionale Gruppenmessung läuft einfach über den gemeinsamen 'Abgänge gemessen'-Zähler mit (keine eigene Verknüpfung nötig). Kein NH-Trenner-Abgang (IT-Racks/PDUs liegen deutlich unter dieser Leistungsklasse). Überspannungsschutz + Phasenausfall fest gebündelt. RS485-Sammelbus-Korrektur (Session 83) identisch zur allgemeinen UV. KEINE eigene USV-Baugruppe - die USV sitzt in einer anderen, zentralen Anlage; diese UV empfängt bereits USV-gestützte Einspeisung und bekommt nur die normale Einspeisung-Trennung/Messung.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000109",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "Hauptschalter",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "LSS/FI mit Meldekontakt (3-polig B16)"
+      },
+      {
+        "bg_id": "440_000099",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "NH-Trenner (größere UV)"
+      },
+      {
+        "bg_id": "440_000115",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000116",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus TCP",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000107",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000108",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000117",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000118",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus"
+      },
+      {
+        "bg_id": "440_000112",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus TCP",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000115",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU"
+      },
+      {
+        "bg_id": "440_000116",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus TCP",
+        "mengenfeld": "uv_it_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "mengenfeld": "uv_it_abgang_ungemessen"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "uv_gruppenabgaenge"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "sammelstoerung_gruppen"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Unterverteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
   }
 ]

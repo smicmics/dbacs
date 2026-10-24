@@ -13967,5 +13967,55 @@
     "automationsanbindung": true,
     "kategorie": "Energie und Zählwerteinrichtungen",
     "geprueft": false
+  },
+  {
+    "id": "440_000119",
+    "name": "USV-Anlage mit Sammelstörmeldung (Alarm/Batteriebetrieb/Batterieladung), Feldgerät (fremde Unterverteilung)",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] USV-Anlage (Gebäude-/IT-USV, deutlich größer als die bestehende schrankinterne Steuerspannungs-USV 480_000011) als externes Nur-Monitoring-Feldgerät - sitzt in/an der IT-Unterverteilung, dieser Schrank holt nur die Sammelstörmeldung ab, keine Energieversorgung/kein LSS hier. Gleiches Signal-Set wie 480_000011 (3 potentialfreie Wechsler: Alarm/Sammelstörung, Batteriebetrieb, Batterieladung - Original-Datenblattmuster Session 54, hier auf eine groessere Gebaeude-/IT-USV uebertragen, da dasselbe Kontaktmuster bei USV-Anlagen herstelleruebergreifend ueblich ist). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 3x BI. Fester Bestandteil der IT-UV-Variante 'mit interner USV' - bei 'zentrale USV-Einspeisung' entfällt diese Baugruppe (USV sitzt dort in einer anderen, zentralen Anlage).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "USV-Anlage mit Sammelstörmeldung (fremde Unterverteilung)",
+    "feldgeraet_artikel_nr": "USV-ANLAGE-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Sammelstörmeldungen",
+    "geprueft": false
   }
 ]
