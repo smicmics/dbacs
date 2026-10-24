@@ -16,6 +16,73 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 85 (24.10.2026) – Anlage-Varianten-Modal: thematische
+> Sektionen + Höhenausrichtung (Nutzer-Fund per Screenshot am Schienenab-
+> gangsverteiler-Modal).** Nutzer-Kritik: „Hier ist nicht klar, was wofür
+> ausgewählt werden soll. Die Einspeisung ist ein entweder oder, nicht wie
+> hier alles zusammen... es fällt auf, dass es Schwächen im Design gibt,
+> Eingabefelder sollten auf einer Höhe sein und nicht so stufig nebeneinander.
+> Auch sollte eine Gruppe thematisch zusammenpassen. Prüfe das bitte auch für
+> die anderen Pop-up-Fenster."
+> **Root Cause (2 Probleme):**
+> 1. `updateAnlageVariantenUI()` rendere bisher ALLE `gruppe`-Felder (Typ-/
+>    Baugrößenauswahl) in einer ersten Zeile und ALLE `mengenfeld`-Felder
+>    (Anzahl) in einer zweiten Zeile des flachen Grids – ein zusammen-
+>    gehöriges Paar wie „Kompaktleistungsschalter-Baugröße" + „Abgänge
+>    Kompaktleistungsschalter (Anzahl)" landete dadurch in zwei
+>    unzusammenhängenden Zeilen ohne erkennbaren Bezug.
+> 2. Da jedes Feld (Label+Select) ein eigener Flex-Spalten-Block im CSS-Grid
+>    war, wuchs ein Block bei 2-zeilig umbrechenden Labels nach unten – das
+>    `<select>` darunter rutschte dadurch gegenüber Nachbarfeldern mit
+>    kürzerem Label nach unten („stufige" Optik).
+> **Fix (`modules/modul-04-innenaufbau/index.html`):**
+> - Neue Konstante `ANLAGE_FELD_SEKTION` (gruppe-/mengenfeld-Schlüssel →
+>   Sektionstitel) – kuratiert für die Anlagen mit vielen/leicht zu
+>   verwechselnden Feldern: NSHV (`440_A00012`–`014`, 6 Sektionen: Einspeisung
+>   / Abgänge-Protokoll+Sammelstörung / ATS-Abgang / Abgänge groß/mittel/
+>   klein), UV/IT-UV (`440_A00015`–`018`, 2 Sektionen: Einspeisung/Abgänge),
+>   Schienenabgangsverteiler (`440_A00019`, 4 Sektionen: Einspeisung je Pfad /
+>   3× Abgänge-Klasse), MS-Gesamtanlagen (`440_A00009`–`011`: Busanbindung/
+>   Trafo-Generatorabgänge/Kuppelfeld). Schlüssel ohne Eintrag (alle
+>   Wärmepumpen-/Kälte-/RLT-/ASP-Anlagen mit nur 1–4 Feldern) fallen in eine
+>   abschließende, unbetitelte Sektion – unverändertes Verhalten, bewusst
+>   noch nicht kuratiert (geringer Nutzen bei wenigen Feldern).
+> - `updateAnlageVariantenUI()` komplett umgebaut: ermittelt zuerst die
+>   Sektions-REIHENFOLGE anhand der originalen `anlage.mitglieder`-Reihen-
+>   folge, baut dann je Sektion eine eigene `<div class="anlage-modal-
+>   sektion">` mit Überschrift + eigenem Grid; innerhalb einer Sektion
+>   erscheinen `gruppe`-Felder (Typ/Baugröße) immer VOR den `mengenfeld`-
+>   Feldern (Anzahl) derselben Sektion – Baugröße und Anzahl stehen dadurch
+>   garantiert nebeneinander. `addField()` bekommt den Schlüssel als neuen
+>   ersten Parameter, um die richtige Sektion zu finden. Feld-IDs
+>   (`anlage_variante_<key>`/`anlage_mengenfeld_<key>`) unverändert – `addAnlage()`/
+>   `testAnlage()` lesen ausschließlich über `getElementById()`, keine
+>   Anpassung dort nötig (DOM-Verschachtelung ist für sie unsichtbar).
+> - CSS: neue Regeln `.anlage-modal-sektion`/`-titel`/`-grid`; `.anlage-
+>   variante-lbltext` bekommt `min-height:2.6em` (reserviert immer 2 Zeilen
+>   Platz, unabhängig vom tatsächlichen Umbruch) – behebt die Höhen-
+>   Staffelung für JEDES Modal, auch unkuratierte. Modal-Breite 640→**760px**
+>   (Nutzer-Vorgabe: „Platz ist über diese Lösung kein Problem").
+> **Browser-verifiziert:** `testKatalogScan()` sauber; alle betroffenen
+> Anlagen erneut vollständig durchgetestet (`440_A00019` 30/30,
+> `440_A00015`/`016`/`017`/`018` 72+24+72+72, `440_A00012`/`013` 45+225,
+> `440_A00014` 675/675 in 2 Batches, `440_A00009`–`011` 15+15+30,
+> Regressionscheck `480_A00002`/`420_A00020` 6+204) – alle `pass:true`,
+> keine Konsolenfehler. **Einmaliger, nicht reproduzierbarer Zwischenfehler
+> dokumentiert:** ein erster Testlauf direkt nach einem abgebrochenen
+> `testAlles()`-Aufruf (Tool-Timeout, siehe bekannter Gotcha) schlug einmalig
+> mit `Cannot convert undefined or null to object` fehl – nach vollständigem
+> Seiten-Reload nicht mehr reproduzierbar, eindeutig Nachlaufzustand des
+> abgebrochenen Laufs, keine echte Regression. Screenshots bestätigen die
+> neue Sektionsgliederung an NSHV (`440_A00014`, komplexeste Anlage, 6
+> Sektionen), UV (`440_A00015`, 2 Sektionen) und Schienenabgangsverteiler
+> (`440_A00019`, 4 Sektionen) sowie den unveränderten Fallback bei kleinen
+> Anlagen (`480_A00002`, 2 Felder ohne Sektionstitel).
+> **Noch offen:** Wärmepumpen-/Kälte-/RLT-/ASP-Anlagen (1–4 Felder) sind
+> bewusst noch nicht mit eigenen Sektionstiteln kuratiert – profitieren aber
+> bereits von der Höhen-Ausrichtungskorrektur. Bei Bedarf in einer
+> Folgesitzung ergänzen, falls dort ebenfalls Verwechslungsgefahr auftritt.
+
 > **Nachtrag Session 84 (24.10.2026) – Anlage „Schienenabgangsverteiler
 > (Rechenzentrum)" (440_A00019), erste UV-Art für RZ-Busbar-Trunking-Systeme
 > (Siemens Sivacon 8PS / Starline-Legrand als Referenz), generisches,

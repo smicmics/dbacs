@@ -330,11 +330,38 @@ legend{
 .klemmen-variante-row{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:2px;}
 .ddc-auf-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px;}
 .ddc-auf-row .rowbreak-lbl{gap:4px;}
-#anlage_varianten{
-  display:none;grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
-  gap:12px;
+/* Session 85 (Nutzer-Fund per Screenshot, Schienenabgangsverteiler-Modal):
+   die bisherige FLACHE Grid-Darstellung (alle gruppe-Felder in einer
+   Reihe, alle mengenfeld-Felder in der naechsten) riss thematisch
+   zusammengehoerige Felder auseinander (z.B. "Kompaktleistungsschalter-
+   Baugroesse" oben, "Abgaenge Kompaktleistungsschalter (Anzahl)" unten,
+   ohne erkennbaren Bezug) UND fuehrte durch unterschiedlich lange Labels
+   (manche brechen auf 2 Zeilen um) zu einer "stufigen" Versatz-Optik
+   zwischen Reihen - das <select> ruckt je nach eigener Labellaenge nach
+   unten, obwohl alle Felder einer Zeile gleich hoch sein sollten. Fix:
+   (1) Felder werden jetzt in thematische Sektionen gruppiert
+   (ANLAGE_FELD_SEKTION, siehe Skript) - Baugroesse+zugehoerige Anzahl
+   landen dadurch garantiert in derselben Sektion, direkt nebeneinander.
+   (2) Jedes Label reserviert per min-height immer 2 Zeilen Platz,
+   unabhaengig vom tatsaechlichen Umbruch - alle <select> einer Zeile
+   stehen dadurch exakt auf gleicher Hoehe. (3) Modal-Breite erhoeht
+   (640->760px) - "Platz ist ueber diese Loesung kein Problem" (Nutzer-
+   Vorgabe), mehr Raum fuer Sektions-Ueberschriften statt alles eng zu
+   stapeln. */
+#anlage_varianten{display:none;flex-direction:column;gap:16px;}
+.anlage-modal-sektion{display:flex;flex-direction:column;gap:8px;}
+.anlage-modal-sektion-titel{
+  font-size:10.5px;font-weight:700;color:var(--orange);text-transform:uppercase;
+  letter-spacing:.06em;padding-bottom:4px;border-bottom:1px solid var(--bords);
+}
+.anlage-modal-sektion-grid{
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(165px, 1fr));
+  gap:12px;align-items:start;
 }
 .anlage-modal-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.anlage-variante-lbltext{
+  display:block;line-height:1.3;min-height:2.6em;
+}
 .anlage-variante-select{
   width:100%;font-size:11px;padding:2px 4px;
   background:var(--bg4);color:var(--tx);border:1px solid var(--bords);border-radius:2px;
@@ -347,7 +374,7 @@ legend{
 }
 .modal-box{
   background:var(--bg2);border:1px solid var(--bords);border-radius:6px;
-  max-width:640px;width:100%;max-height:85vh;display:flex;flex-direction:column;
+  max-width:760px;width:100%;max-height:85vh;display:flex;flex-direction:column;
   box-shadow:0 12px 40px rgba(0,0,0,.5);
 }
 .modal-header{
@@ -1545,15 +1572,60 @@ function updateAnlageVariantenUI() {
   });
   const mengenKeys = Object.keys(mengenfelder);
   if (!keys.length && !mengenKeys.length) { hide(); return; }
-  box.style.display = 'grid';
+  box.style.display = 'flex';
   box.innerHTML = '';
+  // Session 85 (Nutzer-Fund, Schienenabgangsverteiler-Modal): Felder werden
+  // nicht mehr als EIN flaches Grid gerendert (gruppe-Felder komplett vor
+  // mengenfeld-Feldern, dadurch rissen zusammengehoerige Baugroesse+Anzahl-
+  // Paare auseinander), sondern in thematische Sektionen (ANLAGE_FELD_
+  // SEKTION-Zuordnung je gruppe-/mengenfeld-Schluessel) - innerhalb einer
+  // Sektion stehen zuerst die gruppe-Felder (Typ/Baugroesse-Auswahl), dann
+  // die mengenfeld-Felder (Anzahl) derselben Sektion, sodass z.B.
+  // "Kompaktleistungsschalter-Baugroesse" direkt neben "Abgaenge Kompakt-
+  // leistungsschalter (Anzahl)" steht. Felder ohne Sektions-Eintrag landen
+  // unveraendert in einer abschliessenden, unbetitelten Sektion (Fallback
+  // fuer noch nicht kuratierte Anlagen - identisches Verhalten wie zuvor).
+  const FALLBACK_SEKTION = '__ohne_sektion__';
+  const sektionReihenfolge = [];
+  function sektionVormerken(titel) {
+    if (!sektionReihenfolge.includes(titel)) sektionReihenfolge.push(titel);
+  }
+  // Reihenfolge der Sektionen anhand der ORIGINALEN Mitglieder-Reihenfolge
+  // bestimmen (nicht anhand der gruppe-vs-mengenfeld-Aufteilung) - damit
+  // erscheint z.B. "Einspeisung je Pfad" (dessen erstes Feld ein
+  // mengenfeld ist) trotzdem als erste Sektion, wenn es im Katalog zuerst
+  // steht.
+  (anlage.mitglieder || []).forEach(m => {
+    if (m.gruppe) sektionVormerken(ANLAGE_FELD_SEKTION[m.gruppe] || FALLBACK_SEKTION);
+    if (m.mengenfeld) sektionVormerken(ANLAGE_FELD_SEKTION[m.mengenfeld] || FALLBACK_SEKTION);
+    if (m.mengenfeld2) sektionVormerken(ANLAGE_FELD_SEKTION[m.mengenfeld2] || FALLBACK_SEKTION);
+  });
+  const sektionBoxen = {};
+  function getSektionGrid(titel) {
+    if (sektionBoxen[titel]) return sektionBoxen[titel];
+    const sek = document.createElement('div');
+    sek.className = 'anlage-modal-sektion';
+    if (titel !== FALLBACK_SEKTION) {
+      const h = document.createElement('div');
+      h.className = 'anlage-modal-sektion-titel';
+      h.textContent = titel;
+      sek.appendChild(h);
+    }
+    const grid = document.createElement('div');
+    grid.className = 'anlage-modal-sektion-grid';
+    sek.appendChild(grid);
+    box.appendChild(sek);
+    sektionBoxen[titel] = grid;
+    return grid;
+  }
   // Jedes Feld (Label + Select) als EIN zusammenhaengender Block im Grid
   // (Session 83) - vorher standen Labels/Selects in zwei getrennten,
   // parallelen Flex-Reihen (nur bei max. 1 Zeile stabil ausgerichtet); bei
   // vielen Feldern (z.B. NSHV mit 9) wuerde das beim Umbruch leicht
   // auseinanderlaufen. Jetzt label+select immer als Paar, unabhaengig vom
   // Grid-Umbruch korrekt zugeordnet.
-  function addField(labelText, control) {
+  function addField(key, labelText, control) {
+    const grid = getSektionGrid(ANLAGE_FELD_SEKTION[key] || FALLBACK_SEKTION);
     const wrap = document.createElement('div');
     wrap.className = 'anlage-modal-field';
     // DOM-Konstruktion statt String-Interpolation (Session 75 Bugfix): ein
@@ -1567,9 +1639,13 @@ function updateAnlageVariantenUI() {
     span.textContent = labelText;
     wrap.appendChild(span);
     wrap.appendChild(control);
-    box.appendChild(wrap);
+    grid.appendChild(wrap);
   }
-  keys.forEach(gr => {
+  // gruppe-Felder zuerst (Typ-/Baugroessenauswahl), je Sektion vor den
+  // zugehoerigen mengenfeld-Feldern (Anzahl) - Reihenfolge der SEKTIONEN
+  // selbst kommt aus sektionReihenfolge (s.o.), nicht aus dieser Schleife.
+  sektionReihenfolge.forEach(titel => {
+    keys.filter(gr => (ANLAGE_FELD_SEKTION[gr] || FALLBACK_SEKTION) === titel).forEach(gr => {
     const mitglieder = gruppen[gr];
     // gruppe_optional (Session 68, Heizkreise Verteilung): traegt mind. ein
     // Mitglied dieser Gruppe das Flag, ist die Gruppe nicht zwingend -
@@ -1633,7 +1709,8 @@ function updateAnlageVariantenUI() {
       opt.selected = byLabel[key].some(m => m.ist_default);
       select.appendChild(opt);
     });
-    addField(ANLAGE_GRUPPEN_LABEL[gr] || gr, select);
+    addField(gr, ANLAGE_GRUPPEN_LABEL[gr] || gr, select);
+    });
   });
   // Mengenfeld-Eingaben (Session 75: <input type=number> mit Freitext;
   // Session 77 Folgearbeit: auf <select> mit Festwerten umgestellt, Nutzer-
@@ -1644,7 +1721,11 @@ function updateAnlageVariantenUI() {
   // keine Aenderung an addAnlage() noetig. Platzhalter-Erstzeile wie bei den
   // gruppe-Selects (siehe oben), echte Optionsliste aus
   // ANLAGE_MENGENFELD_OPTIONS, Vorbelegung aus ANLAGE_MENGENFELD_DEFAULT.
-  mengenKeys.forEach(mf => {
+  // Je Sektion NACH den gruppe-Feldern derselben Sektion gerendert (s.o.) -
+  // Baugroesse/Protokoll-Auswahl steht dadurch immer VOR der zugehoerigen
+  // Anzahl, innerhalb derselben Sektions-Box.
+  sektionReihenfolge.forEach(titel => {
+    mengenKeys.filter(mf => (ANLAGE_FELD_SEKTION[mf] || FALLBACK_SEKTION) === titel).forEach(mf => {
     const select = document.createElement('select');
     select.id = 'anlage_mengenfeld_' + mf;
     select.className = 'anlage-variante-select';
@@ -1661,7 +1742,8 @@ function updateAnlageVariantenUI() {
       opt.selected = (v === def);
       select.appendChild(opt);
     });
-    addField(ANLAGE_MENGENFELD_LABEL[mf] || mf, select);
+    addField(mf, ANLAGE_MENGENFELD_LABEL[mf] || mf, select);
+    });
   });
 }
 const ANLAGE_GRUPPEN_LABEL = {
@@ -1817,6 +1899,60 @@ const ANLAGE_MENGENFELD_OPTIONS = {
   schienenv_abgang_lss: Array.from({length: 31}, (_, i) => i),
   schienenv_abgang_kls: Array.from({length: 11}, (_, i) => i),
   schienenv_abgang_nh: Array.from({length: 11}, (_, i) => i)
+};
+// Session 85 (Nutzer-Fund per Screenshot, Schienenabgangsverteiler-Modal:
+// "Die Einspeisung ist ein entweder oder, nicht wie hier alles zusammen...
+// es faellt auf, dass es Schwaechen im Design gibt... Auch sollte eine
+// Gruppe thematisch zusammenpassen. Pruefe das bitte auch fuer die anderen
+// Pop-up-Fenster."): ordnet jeden gruppe-/mengenfeld-Schluessel einer
+// Sektions-Ueberschrift im Anlage-Modal zu (siehe updateAnlageVariantenUI())
+// - innerhalb einer Sektion stehen Typ-/Baugroessen-Dropdown und die
+// zugehoerige Anzahl garantiert nebeneinander, auch wenn sie technisch
+// `gruppe` bzw. `mengenfeld` sind. Schluessel OHNE Eintrag hier landen
+// unveraendert in einer abschliessenden, unbetitelten Sektion (bisheriges
+// Verhalten) - bewusst zunaechst nur fuer die Anlagen mit vielen/leicht zu
+// verwechselnden Feldern kuratiert (NSHV, UV, IT-UV, Schienenabgangs-
+// verteiler, MS-Gesamtanlagen); kleine 1-3-Felder-Anlagen (Waermepumpen,
+// RLT-Register, Kaelteanlagen, ASP) profitieren bereits ausreichend von der
+// Hoehen-Ausrichtungskorrektur (siehe CSS `.anlage-variante-lbltext`) und
+// werden bei Bedarf in einer Folgesitzung ergaenzt.
+const ANLAGE_FELD_SEKTION = {
+  // NSHV (440_A00012-014) + UV/IT-UV (440_A00015-018): Einspeisung-
+  // Baugroesse/-Trennungsart, Energiezaehler-Protokoll der Einspeisung und
+  // (bei NSHV mit 2 Einspeisungen) das Kuppelfeld gehoeren alle zur
+  // Einspeiseseite - unabhaengig von den Abgaengen.
+  einspeisung_groesse: 'Einspeisung', einspeisung_zaehler_protokoll: 'Einspeisung',
+  einspeisung_trennungsart: 'Einspeisung', kuppelfeld_groesse: 'Einspeisung',
+  // NSHV: Protokoll/Sammelstoerung gilt NSHV-weit (nicht je Groessenklasse),
+  // plus 3 eigene Sektionen je Abgangsgroesse (Baugroesse-Mengenfeld +
+  // zugehoeriger "davon gemessen"-Subzaehler direkt nebeneinander). UV/IT-UV
+  // nutzen dieselben Protokoll-/Sammelstoerungs-Schluessel zusammen mit
+  // ihren eigenen Abgang-Mengenfeldern in EINER gemeinsamen "Abgaenge"-
+  // Sektion (dort wird NICHT nach Groesse getrennt).
+  abgang_zaehler_protokoll: 'Abgänge', sammelstoerung_gruppen: 'Abgänge',
+  uv_abgang_lss: 'Abgänge', uv_abgang_nh: 'Abgänge', uv_abgang_gemessen: 'Abgänge',
+  uv_it_abgang_gemessen: 'Abgänge', uv_it_abgang_ungemessen: 'Abgänge',
+  uv_gruppenabgaenge: 'Abgänge',
+  abgang_gross: 'Abgänge groß', abgang_gross_gemessen: 'Abgänge groß',
+  abgang_mittel: 'Abgänge mittel', abgang_mittel_gemessen: 'Abgänge mittel',
+  abgang_klein: 'Abgänge klein', abgang_klein_gemessen: 'Abgänge klein',
+  ats_abgang: 'ATS-Abgang', anzahl_ats_abgaenge: 'ATS-Abgang',
+  // Schienenabgangsverteiler (440_A00019): Pfadanzahl + Messprotokoll + RCM
+  // gehoeren alle zur Einspeiseseite je Pfad (bewusst GETRENNT von den
+  // Abgangsklassen, Nutzer-Vorgabe "Die Einspeisung ist ein entweder oder").
+  // Jede der 3 Abgangsklassen bekommt ihre eigene Sektion mit Baugroesse +
+  // Anzahl direkt nebeneinander.
+  schienenv_pfade: 'Einspeisung je Pfad', schienenv_messung_protokoll: 'Einspeisung je Pfad',
+  schienenv_rcm: 'Einspeisung je Pfad',
+  schienenv_abgang_lss: 'Abgänge – LSS bis 32A',
+  schienenv_abgang_kls_groesse: 'Abgänge – Kompaktleistungsschalter',
+  schienenv_abgang_kls: 'Abgänge – Kompaktleistungsschalter',
+  schienenv_abgang_nh_groesse: 'Abgänge – NH-Trenner',
+  schienenv_abgang_nh: 'Abgänge – NH-Trenner',
+  // MS-Gesamtanlagen (440_A00009-011): Busanbindung fuer sich, Trafo-/
+  // Generatorabgaenge mit ihrer Mengenangabe zusammen, Kuppelfeld eigen.
+  bus: 'Busanbindung', trafoabgang: 'Trafo-/Generatorabgänge',
+  anzahl_trafos: 'Trafo-/Generatorabgänge', kuppelfeld: 'Kuppelfeld'
 };
 
 // ── Belegung ─────────────────────────────────────────────────────────

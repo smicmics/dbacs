@@ -1,5 +1,23 @@
 # DBACS – Revisionsstand
 
+> **Stand nach Session 85 (24.10.2026).** UI-Korrektur am Anlage-Varianten-
+> Modal (Nutzer-Fund per Screenshot): Felder werden jetzt in thematische
+> Sektionen gruppiert (neue Konstante `ANLAGE_FELD_SEKTION`, kuratiert für
+> NSHV/UV/IT-UV/Schienenabgangsverteiler/MS-Gesamtanlagen) statt flach „alle
+> Baugrößen-Dropdowns oben, alle Anzahl-Felder unten" – Baugröße und
+> zugehörige Anzahl stehen jetzt garantiert nebeneinander (z. B.
+> „Kompaktleistungsschalter-Baugröße" direkt neben „Abgänge Kompakt-
+> leistungsschalter (Anzahl)"). Zusätzlich CSS-Fix gegen die „stufige" Optik
+> (Labels reservieren jetzt immer 2 Zeilen Platz, unabhängig vom Umbruch) –
+> wirkt für JEDES Modal, auch unkuratierte. Modal-Breite 640→760px. Browser-
+> verifiziert: alle betroffenen Anlagen vollständig durchgetestet (NSHV
+> 45+225+675, UV/IT-UV 72+24+72+72, MS 15+15+30, Schienenabgangsverteiler
+> 30, Regressionscheck ASP/Wärmepumpe), alle `pass:true`, Screenshots
+> bestätigen die neue Gliederung an 4 Anlagen. Details: `CLAUDE.md` →
+> „Offene Punkte" Nachtrag Session 85.
+
+Vorheriger Stand – Session 84 (24.10.2026).
+
 > **Stand nach Session 84 (24.10.2026).** Neue Anlage `440_A00019`
 > „Schienenabgangsverteiler (Rechenzentrum)" – erste UV-Art für RZ-Busbar-
 > Trunking-Systeme (Siemens Sivacon 8PS/Starline als Referenz), generisches
