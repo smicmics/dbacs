@@ -25,6 +25,8 @@ Alternativen mit Link + Begründung, wenn der Standard nicht passt → Freigabe*
 | Ethernet-Switch (Schaltschrank) | Phoenix Contact FL SWITCH | phoenixcontact.com | `2891021` (5-Port, 24V AC); 1 Port für Uplink ⇒ 4 freie Ports je Switch |
 | Netzteile / USV (Schaltschrank) | Phoenix Contact QUINT; Siemens SITOP als Alternative | phoenixcontact.com | Marken-Konsistenz zu bestehendem 24V-DC-Netzteil |
 | Schränke / Sockel / Bodenbleche | Rittal | rittal.com Katalog | AX (Wand), VX25 (Stand) |
+| NH-Trenner mit Automation (NSHV/UV, Nur Monitoring) | Siemens 3NP1 | cache.industry.siemens.com (Onepager + Betriebsanleitung EFM/MFM, binär → `pdftotext` in WSL) | Hilfsschalter nur 1 Wechsler (1× BI), EFM10-Sicherungsüberwachung eigenes Nummernschema (≠ 3KF9010-1AA00); Mersen MSNH2 als Alternative |
+| ATS/STS-Umschalteinrichtung (UV IT/Rechenzentrum, Nur Monitoring) | Socomec ATyS (r/d/M) | etinco.vn/NHP-Distributor-Mirrors (socomec.co.in/fuji.sea.sg oft 403/WAF-gesperrt) | 3 Positionskontakte (Quelle 1/Quelle 2/Position 0) + Watchdog = 4× BI; Gegenprobe Schneider TransferPacT bestätigt dasselbe Muster; STATYS (STS) nur frei konfigurierbar, ungeeignet |
 
 ## Preisrecherche – Konvention
 

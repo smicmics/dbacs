@@ -13229,5 +13229,411 @@
     "automationsanbindung": true,
     "kategorie": "Mittelspannungsschaltanlage",
     "geprueft": false
+  },
+  {
+    "id": "440_000098",
+    "name": "Sammelstörmeldung Gerätegruppe (Ruhestromkette), Feldgerät (fremde Unterverteilung)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] Generische Baugruppe fuer eine Ruhestromkette mehrerer Hilfsschalter-/Sicherungskontakte fremder Geraete in einer fremden Unterverteilung, die zusammen EIN gemeinsames Stoersignal liefern - unabhaengig von der Gruppengroesse (beliebig oft hinzufuegbar, 1 Instanz = 1 ueberwachte Gruppe; die Gruppengroesse aendert die Datenpunktzahl nicht). Deckt laut Session-78-Entscheidung sowohl 'Sammelstoer-meldung UV Allgemein/Beleuchtung' als auch 'ueberwachte Sicherung Regel-/Netzgeraete je Gruppe' ab - technisch identisches Muster, nur andere Zielgruppe. Reine Verdrahtungskonstruktion ohne eigenes Herstellerprodukt (analog zu den Automations-Reserve-Baugruppen 480_000001ff), keine Energieversorgung/kein LSS in dieser Baugruppe. Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 1x BI.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Sammelstörmeldung Gerätegruppe (Ruhestromkette, fremde Unterverteilung)",
+    "feldgeraet_artikel_nr": "SAMMELSTOER-GRUPPE-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Sammelstörmeldungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000099",
+    "name": "NH-Trenner NH000 bis 100A, Siemens 3NP1, Stellungsmeldung/Ausgeloest (EFM10), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] NH-Sicherungslasttrennschalter Siemens 3NP1, Baugroesse NH000, bis 100A (3-polig), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/NSHV, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellungsmeldung ueber Hilfsschalter 3NP1920-1FA00 - NUR 1 Wechsler (Siemens-Originalbezeichnung + 2 unabhaengige Distributoren bestaetigt: RS Components 'Auxiliary Contact, 1 Contact, 1CO' https://uk.rs-online.com/web/p/auxiliary-contacts/2131394; Hardy-Schmitz '1 Wechsler' https://www.hardy-schmitz.de/Siemens%203NP1920-1FB00%20Hilfsschalter%201-2813277.html) - liefert dadurch EIN Signal (Zustand 0/1 deckt Ein UND Aus ab, anders als beim 3KF9-Hilfsschalter mit 2 getrennten Kontakten beim bestehenden 3KF, Nutzer-Korrektur Session 81). Ausgeloest/Sicherungsausfall ueber elektronische Sicherungs-ueberwachung EFM10 (Griffeinheit 3NP1923-1GB20 individuell am Distributor bestaetigt.) - eigener, zweiter Datenpunkt; Kontaktzahl/-art des EFM10-Meldeausgangs selbst nicht am Originaldatenblatt verifizierbar (nur Vektorgrafik), aber fuer die Ausloese-Funktion als 1 Signal ausreichend (Nutzer-Entscheidung Session 81). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 2x BI (Stellungsmeldung, Ausgeloest). NH000-Nennstrom widersprüchlich dokumentiert: Siemens-Onepager nennt 100A, eine Conrad-Bestelluebersicht (Sekundaerquelle) nennt 125A fuer dieselbe Baugroesse - vor Katalogeintrag die aktuelle Siemens-Produktseite/den LV10-Katalog direkt pruefen.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "NH-Trenner NH000, 100A (Siemens 3NP1, mit Sicherungsüberwachung EFM10)",
+    "feldgeraet_artikel_nr": "NH-TRENNER-100A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000100",
+    "name": "NH-Trenner NH00 bis 160A, Siemens 3NP1, Stellungsmeldung/Ausgeloest (EFM10), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] NH-Sicherungslasttrennschalter Siemens 3NP1, Baugroesse NH00, bis 160A (3-polig), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/NSHV, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellungsmeldung ueber Hilfsschalter 3NP1930-1FA00 - NUR 1 Wechsler (Siemens-Originalbezeichnung + 2 unabhaengige Distributoren bestaetigt: RS Components 'Auxiliary Contact, 1 Contact, 1CO' https://uk.rs-online.com/web/p/auxiliary-contacts/2131394; Hardy-Schmitz '1 Wechsler' https://www.hardy-schmitz.de/Siemens%203NP1920-1FB00%20Hilfsschalter%201-2813277.html) - liefert dadurch EIN Signal (Zustand 0/1 deckt Ein UND Aus ab, anders als beim 3KF9-Hilfsschalter mit 2 getrennten Kontakten beim bestehenden 3KF, Nutzer-Korrektur Session 81). Ausgeloest/Sicherungsausfall ueber elektronische Sicherungs-ueberwachung EFM10 (Griffeinheit 3NP1933-1GB20 individuell am Distributor bestaetigt.) - eigener, zweiter Datenpunkt; Kontaktzahl/-art des EFM10-Meldeausgangs selbst nicht am Originaldatenblatt verifizierbar (nur Vektorgrafik), aber fuer die Ausloese-Funktion als 1 Signal ausreichend (Nutzer-Entscheidung Session 81). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 2x BI (Stellungsmeldung, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "NH-Trenner NH00, 160A (Siemens 3NP1, mit Sicherungsüberwachung EFM10)",
+    "feldgeraet_artikel_nr": "NH-TRENNER-160A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000101",
+    "name": "NH-Trenner NH1 bis 250A, Siemens 3NP1, Stellungsmeldung/Ausgeloest (EFM10), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] NH-Sicherungslasttrennschalter Siemens 3NP1, Baugroesse NH1, bis 250A (3-polig), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/NSHV, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellungsmeldung ueber Hilfsschalter 3NP1940-1FA00 - NUR 1 Wechsler (Siemens-Originalbezeichnung + 2 unabhaengige Distributoren bestaetigt: RS Components 'Auxiliary Contact, 1 Contact, 1CO' https://uk.rs-online.com/web/p/auxiliary-contacts/2131394; Hardy-Schmitz '1 Wechsler' https://www.hardy-schmitz.de/Siemens%203NP1920-1FB00%20Hilfsschalter%201-2813277.html) - liefert dadurch EIN Signal (Zustand 0/1 deckt Ein UND Aus ab, anders als beim 3KF9-Hilfsschalter mit 2 getrennten Kontakten beim bestehenden 3KF, Nutzer-Korrektur Session 81). Hinweis: ein RS-Online-Attribut nennt fuer 3NP1940-1FA00 abweichend '2NO' statt '1CO' - widerspricht der Siemens-eigenen '1 Wechsler'-Bezeichnung, nicht aufgeloest (https://uk.rs-online.com/web/p/auxiliary-contacts/2131396), vor Projekteinsatz Originaldatenblatt pruefen. Ausgeloest/Sicherungsausfall ueber elektronische Sicherungs-ueberwachung EFM10 (Griffeinheit 3NP1943-1GB20 nach dem Bestellschema 3NP19x3-1GB20 abgeleitet, NICHT individuell am Distributor bestaetigt (nur x=2 und x=3 einzeln gefunden).) - eigener, zweiter Datenpunkt; Kontaktzahl/-art des EFM10-Meldeausgangs selbst nicht am Originaldatenblatt verifizierbar (nur Vektorgrafik), aber fuer die Ausloese-Funktion als 1 Signal ausreichend (Nutzer-Entscheidung Session 81). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 2x BI (Stellungsmeldung, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "NH-Trenner NH1, 250A (Siemens 3NP1, mit Sicherungsüberwachung EFM10)",
+    "feldgeraet_artikel_nr": "NH-TRENNER-250A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000102",
+    "name": "NH-Trenner NH2 bis 400A, Siemens 3NP1, Stellungsmeldung/Ausgeloest (EFM10), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] NH-Sicherungslasttrennschalter Siemens 3NP1, Baugroesse NH2, bis 400A (3-polig), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/NSHV, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellungsmeldung ueber Hilfsschalter 3NP1940-1FA00 - NUR 1 Wechsler (Siemens-Originalbezeichnung + 2 unabhaengige Distributoren bestaetigt: RS Components 'Auxiliary Contact, 1 Contact, 1CO' https://uk.rs-online.com/web/p/auxiliary-contacts/2131394; Hardy-Schmitz '1 Wechsler' https://www.hardy-schmitz.de/Siemens%203NP1920-1FB00%20Hilfsschalter%201-2813277.html) - liefert dadurch EIN Signal (Zustand 0/1 deckt Ein UND Aus ab, anders als beim 3KF9-Hilfsschalter mit 2 getrennten Kontakten beim bestehenden 3KF, Nutzer-Korrektur Session 81). Hinweis: ein RS-Online-Attribut nennt fuer 3NP1940-1FA00 abweichend '2NO' statt '1CO' - widerspricht der Siemens-eigenen '1 Wechsler'-Bezeichnung, nicht aufgeloest (https://uk.rs-online.com/web/p/auxiliary-contacts/2131396), vor Projekteinsatz Originaldatenblatt pruefen. Ausgeloest/Sicherungsausfall ueber elektronische Sicherungs-ueberwachung EFM10 (Griffeinheit 3NP1953-1GB20 nach dem Bestellschema 3NP19x3-1GB20 abgeleitet, NICHT individuell am Distributor bestaetigt (nur x=2 und x=3 einzeln gefunden).) - eigener, zweiter Datenpunkt; Kontaktzahl/-art des EFM10-Meldeausgangs selbst nicht am Originaldatenblatt verifizierbar (nur Vektorgrafik), aber fuer die Ausloese-Funktion als 1 Signal ausreichend (Nutzer-Entscheidung Session 81). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 2x BI (Stellungsmeldung, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "NH-Trenner NH2, 400A (Siemens 3NP1, mit Sicherungsüberwachung EFM10)",
+    "feldgeraet_artikel_nr": "NH-TRENNER-400A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000103",
+    "name": "NH-Trenner NH3 bis 630A, Siemens 3NP1, Stellungsmeldung/Ausgeloest (EFM10), Feldgeraet (fremder Schrank)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] NH-Sicherungslasttrennschalter Siemens 3NP1, Baugroesse NH3, bis 630A (3-polig), NUR MONITORING - das Geraet steht in einer fremden Elektro-Unterverteilung/NSHV, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Stellungsmeldung ueber Hilfsschalter 3NP1940-1FA00 - NUR 1 Wechsler (Siemens-Originalbezeichnung + 2 unabhaengige Distributoren bestaetigt: RS Components 'Auxiliary Contact, 1 Contact, 1CO' https://uk.rs-online.com/web/p/auxiliary-contacts/2131394; Hardy-Schmitz '1 Wechsler' https://www.hardy-schmitz.de/Siemens%203NP1920-1FB00%20Hilfsschalter%201-2813277.html) - liefert dadurch EIN Signal (Zustand 0/1 deckt Ein UND Aus ab, anders als beim 3KF9-Hilfsschalter mit 2 getrennten Kontakten beim bestehenden 3KF, Nutzer-Korrektur Session 81). Hinweis: ein RS-Online-Attribut nennt fuer 3NP1940-1FA00 abweichend '2NO' statt '1CO' - widerspricht der Siemens-eigenen '1 Wechsler'-Bezeichnung, nicht aufgeloest (https://uk.rs-online.com/web/p/auxiliary-contacts/2131396), vor Projekteinsatz Originaldatenblatt pruefen. Ausgeloest/Sicherungsausfall ueber elektronische Sicherungs-ueberwachung EFM10 (Griffeinheit 3NP1963-1GB20 nach dem Bestellschema 3NP19x3-1GB20 abgeleitet, NICHT individuell am Distributor bestaetigt (nur x=2 und x=3 einzeln gefunden).) - eigener, zweiter Datenpunkt; Kontaktzahl/-art des EFM10-Meldeausgangs selbst nicht am Originaldatenblatt verifizierbar (nur Vektorgrafik), aber fuer die Ausloese-Funktion als 1 Signal ausreichend (Nutzer-Entscheidung Session 81). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 2x BI (Stellungsmeldung, Ausgeloest).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "NH-Trenner NH3, 630A (Siemens 3NP1, mit Sicherungsüberwachung EFM10)",
+    "feldgeraet_artikel_nr": "NH-TRENNER-630A",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000104",
+    "name": "ATS/STS-Umschalteinrichtung ATyS M 40-160A, Socomec ATyS, Watchdog/Quelle1/Quelle2/Position0, Feldgeraet (fremde Unterverteilung)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] Automatische Netz-umschalteinrichtung (ATS, Socomec ATyS M, 40-160A) fuer redundante Einspeisung (z.B. UV IT/Rechenzentrum), NUR MONITORING - Geraet steht in einer fremden Unterverteilung, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Watchdog-Relais ('Watchdog relay to check product availability', Socomec-Standardfunktion bei ATyS r/d/A/C) meldet Verfuegbarkeit/Sammelstoerung - Kontaktart/Belastbarkeit selbst NICHT am Originaldatenblatt bestaetigt (Herstellerkataloge socomec.co.in/fuji.sea.sg per 403/WAF nicht vollstaendig zugaenglich), Funktion aber eindeutig belegt (etinco.vn-Mirror https://etinco.vn/wp-content/uploads/catalogue-ats-socomec-atys-r.pdf). Schalterstellung Quelle 1 (Position I) und Quelle 2 (Position II) ueber 2 getrennte Wechsler ('ATyS Auxiliary Contact', bestaetigt ueber NHP-Distributorkatalog https://www.nhp.com.au/product/15990502). Zusaetzlich Position-0-Meldung (weder Quelle 1 noch 2 aktiv/Uebergangsstellung, Terminals 01/02/04 bzw. Controller-Terminal 73) als 4. Signal - herstelleruebergreifend bestaetigt: Socomec UND Schneider Electric TransferPacT TPSAUX33 zeigen dasselbe Muster (Positionskontakte + separater OFF-Kontakt, https://electrika.com/catalogues/schneider-electric/schneider-electric--miscellaneous/schneider-electric-miscellaneous/transferpact/tpsaux32/part/1177828) - Nutzer-Entscheidung Session 81: als eigener 4. Datenpunkt aufgenommen (urspruengliche Session-78-Vorarbeit sah nur 3 BI vor). Kein 'Umschaltung laeuft'-Signal auffindbar (2 Hersteller geprueft, Socomec + Schneider Electric). STATYS (STS) bewusst NICHT gewaehlt (nur frei konfigurierbare Dry-Contact-Option, keine feste Kontaktliste). Kein Preis fuer ein komplettes Geraet gefunden (projektspezifische Anfrage ueblich, nur unzusammenhaengende Zubehoer-Distributorpreise als grobe Einordnung). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 4x BI (Watchdog/Sammelstoerung, Quelle 1 aktiv, Quelle 2 aktiv, Position 0/Uebergang).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "ATS/STS-Umschalteinrichtung ATyS M, 40-160A (Socomec ATyS)",
+    "feldgeraet_artikel_nr": "ATYS-M-160A",
+    "automationsanbindung": true,
+    "kategorie": "Netzumschaltung (ATS/STS)",
+    "geprueft": false
+  },
+  {
+    "id": "440_000105",
+    "name": "ATS/STS-Umschalteinrichtung ATyS r/d 125-800A, Socomec ATyS, Watchdog/Quelle1/Quelle2/Position0, Feldgeraet (fremde Unterverteilung)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] Automatische Netz-umschalteinrichtung (ATS, Socomec ATyS r/d, 125-800A) fuer redundante Einspeisung (z.B. UV IT/Rechenzentrum), NUR MONITORING - Geraet steht in einer fremden Unterverteilung, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Watchdog-Relais ('Watchdog relay to check product availability', Socomec-Standardfunktion bei ATyS r/d/A/C) meldet Verfuegbarkeit/Sammelstoerung - Kontaktart/Belastbarkeit selbst NICHT am Originaldatenblatt bestaetigt (Herstellerkataloge socomec.co.in/fuji.sea.sg per 403/WAF nicht vollstaendig zugaenglich), Funktion aber eindeutig belegt (etinco.vn-Mirror https://etinco.vn/wp-content/uploads/catalogue-ats-socomec-atys-r.pdf). Schalterstellung Quelle 1 (Position I) und Quelle 2 (Position II) ueber 2 getrennte Wechsler ('ATyS Auxiliary Contact', bestaetigt ueber NHP-Distributorkatalog https://www.nhp.com.au/product/15990502). Zusaetzlich Position-0-Meldung (weder Quelle 1 noch 2 aktiv/Uebergangsstellung, Terminals 01/02/04 bzw. Controller-Terminal 73) als 4. Signal - herstelleruebergreifend bestaetigt: Socomec UND Schneider Electric TransferPacT TPSAUX33 zeigen dasselbe Muster (Positionskontakte + separater OFF-Kontakt, https://electrika.com/catalogues/schneider-electric/schneider-electric--miscellaneous/schneider-electric-miscellaneous/transferpact/tpsaux32/part/1177828) - Nutzer-Entscheidung Session 81: als eigener 4. Datenpunkt aufgenommen (urspruengliche Session-78-Vorarbeit sah nur 3 BI vor). Kein 'Umschaltung laeuft'-Signal auffindbar (2 Hersteller geprueft, Socomec + Schneider Electric). STATYS (STS) bewusst NICHT gewaehlt (nur frei konfigurierbare Dry-Contact-Option, keine feste Kontaktliste). Kein Preis fuer ein komplettes Geraet gefunden (projektspezifische Anfrage ueblich, nur unzusammenhaengende Zubehoer-Distributorpreise als grobe Einordnung). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 4x BI (Watchdog/Sammelstoerung, Quelle 1 aktiv, Quelle 2 aktiv, Position 0/Uebergang).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "ATS/STS-Umschalteinrichtung ATyS r/d, 125-800A (Socomec ATyS)",
+    "feldgeraet_artikel_nr": "ATYS-RD-800A",
+    "automationsanbindung": true,
+    "kategorie": "Netzumschaltung (ATS/STS)",
+    "geprueft": false
+  },
+  {
+    "id": "440_000106",
+    "name": "ATS/STS-Umschalteinrichtung ATyS r/d ab 1000A, Socomec ATyS, Watchdog/Quelle1/Quelle2/Position0, Feldgeraet (fremde Unterverteilung)",
+    "gewerk": "440",
+    "beschreibung": "[Session 81, 24.10.2026, Nutzer-Freigabe] Automatische Netz-umschalteinrichtung (ATS, Socomec ATyS r/d, ab 1000A) fuer redundante Einspeisung (z.B. UV IT/Rechenzentrum), NUR MONITORING - Geraet steht in einer fremden Unterverteilung, dieser Schrank holt nur die Meldekontakte ab, keine Energieversorgung/kein LSS hier. Watchdog-Relais ('Watchdog relay to check product availability', Socomec-Standardfunktion bei ATyS r/d/A/C) meldet Verfuegbarkeit/Sammelstoerung - Kontaktart/Belastbarkeit selbst NICHT am Originaldatenblatt bestaetigt (Herstellerkataloge socomec.co.in/fuji.sea.sg per 403/WAF nicht vollstaendig zugaenglich), Funktion aber eindeutig belegt (etinco.vn-Mirror https://etinco.vn/wp-content/uploads/catalogue-ats-socomec-atys-r.pdf). Schalterstellung Quelle 1 (Position I) und Quelle 2 (Position II) ueber 2 getrennte Wechsler ('ATyS Auxiliary Contact', bestaetigt ueber NHP-Distributorkatalog https://www.nhp.com.au/product/15990502). Zusaetzlich Position-0-Meldung (weder Quelle 1 noch 2 aktiv/Uebergangsstellung, Terminals 01/02/04 bzw. Controller-Terminal 73) als 4. Signal - herstelleruebergreifend bestaetigt: Socomec UND Schneider Electric TransferPacT TPSAUX33 zeigen dasselbe Muster (Positionskontakte + separater OFF-Kontakt, https://electrika.com/catalogues/schneider-electric/schneider-electric--miscellaneous/schneider-electric-miscellaneous/transferpact/tpsaux32/part/1177828) - Nutzer-Entscheidung Session 81: als eigener 4. Datenpunkt aufgenommen (urspruengliche Session-78-Vorarbeit sah nur 3 BI vor). Kein 'Umschaltung laeuft'-Signal auffindbar (2 Hersteller geprueft, Socomec + Schneider Electric). STATYS (STS) bewusst NICHT gewaehlt (nur frei konfigurierbare Dry-Contact-Option, keine feste Kontaktliste). Kein Preis fuer ein komplettes Geraet gefunden (projektspezifische Anfrage ueblich, nur unzusammenhaengende Zubehoer-Distributorpreise als grobe Einordnung). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 4x BI (Watchdog/Sammelstoerung, Quelle 1 aktiv, Quelle 2 aktiv, Position 0/Uebergang).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "ATS/STS-Umschalteinrichtung ATyS r/d, ab 1000A (Socomec ATyS)",
+    "feldgeraet_artikel_nr": "ATYS-RD-1000A",
+    "automationsanbindung": true,
+    "kategorie": "Netzumschaltung (ATS/STS)",
+    "geprueft": false
   }
 ]

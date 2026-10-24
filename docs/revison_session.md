@@ -1,6 +1,26 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 80 (24.10.2026).**
+> **Stand nach Session 81 (24.10.2026).**
+> Fortsetzung der Elektroverteilungen (NSHV/UV) aus Session 78 Teil 2/3 –
+> die 3 verbliebenen offenen Punkte sind abgeschlossen. **9 neue
+> Baugruppen (Gewerk 440) + 9 Feldgeräte-Katalogzeilen** über den
+> `dbacs-recherche`-Skill (2 Hintergrund-Forks + Freigabe-Loop) eingetragen:
+> **`440_000098`** generische „Sammelstörmeldung Gerätegruppe
+> (Ruhestromkette)" (1× BI, deckt UV-Allgemein-Sammelmeldung UND
+> überwachte Sicherung Regel-/Netzgeräte ab); **`440_000099`–`103`**
+> „NH-Trenner mit Automation" (Siemens 3NP1, 5 Baugrößen NH000–NH3, je
+> 2× BI – Nutzer-Korrektur ggü. Erstvorschlag: der Hilfsschalter hat nur
+> 1 Wechsler, liefert daher nur 1 Signal statt der beim 3KF üblichen 2);
+> **`440_000104`–`106`** „ATS/STS-Umschalteinrichtung" (Socomec ATyS, 3
+> Leistungsklassen, je 4× BI – die Recherche fand einen dritten
+> Positionskontakt „Position 0", den der Nutzer zusätzlich aufnehmen
+> ließ). Export: baugruppen 313→**322**, feldgeraete 140→**149**.
+> Vollständig Browser-verifiziert (`testBaugruppe()` 9/9 `pass:true` mit
+> den finalen DP-Werten, `testKatalogScan()` sauber, Dropdown-Sichtbarkeit
+> + Modul-5-Feldgeräteliste bestätigt, keine Konsolenfehler). Details:
+> `CLAUDE.md` → „Offene Punkte" Nachtrag Session 81.
+
+Vorheriger Stand – Session 80 (24.10.2026).
 > Architektur-Anpassung vor Fortsetzung der Elektroverteilungen: Modul 5
 > („Feldgeräte") wurde zu **„Externe Bauteile"** umbenannt (nur Titel/
 > Hinweistexte, nicht der Modulpfad) und bekommt ein neues, je Position

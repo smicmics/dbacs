@@ -16,6 +16,76 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 81 (24.10.2026) – Fortsetzung Elektroverteilungen
+> (NSHV/UV) aus Session 78 Teil 2/3: die 3 zuletzt offenen Punkte
+> abgeschlossen. 9 neue Baugruppen (Gewerk 440) + 9 Feldgeräte-Katalog-
+> zeilen über den `dbacs-recherche`-Skill (2 Hintergrund-Forks + Freigabe-
+> Loop mit Nutzer-Korrektur) eingetragen.**
+> **1. `440_000098` „Sammelstörmeldung Gerätegruppe (Ruhestromkette)"** –
+> generische Verdrahtungskonstruktion ohne Herstellerprodukt (analog
+> Automations-Reserve `480_000001`ff), deckt sowohl „Sammelstörmeldung UV
+> Allgemein/Beleuchtung" als auch „überwachte Sicherung Regel-/Netzgeräte
+> je Gruppe" ab (Session-78-Entscheidung: technisch identisches Muster).
+> Beliebig oft hinzufügbar, 1 Instanz = 1 überwachte Gruppe, Gruppengröße
+> ändert die Datenpunktzahl nicht. 1× BI, 2 Klemmen `klemm_f`.
+> **2. `440_000099`–`440_000103` „NH-Trenner mit Automation" (Siemens
+> 3NP1), 5 Baugrößen (NH000 100A/NH00 160A/NH1 250A/NH2 400A/NH3 630A)** –
+> Fork-Recherche ([Onepager 3NP1](https://cache.industry.siemens.com/dl/files/624/109755624/att_986939/v1/20181001_Onepager3NP1_DE_Web_201905151414590348.pdf),
+> [Betriebsanleitung EFM/MFM](https://cache.industry.siemens.com/dl/files/481/109762481/att_1020374/v1/OI_7112923-17_DS03_emb_202004210605451302.pdf))
+> bestätigte Hilfsschalter mit **nur 1 Wechsler** (RS Components/Hardy-
+> Schmitz) + EFM10-Sicherungsüberwachung (eigenes Nummernschema, NICHT
+> `3KF9010-1AA00` wie beim bestehenden 3KF). **Wichtige Nutzer-Korrektur
+> ggü. dem ersten Entwurf:** da der Hilfsschalter nur 1 Wechsler hat
+> (nicht 2 getrennte Kontakte wie der 3KF9-Hilfsschalter), liefert er nur
+> **EIN** Signal (Zustand 0/1 deckt Ein/Aus ab) statt 2 getrennter BI –
+> **2× BI gesamt** (Stellungsmeldung, Ausgelöst via EFM10), nicht 3× wie
+> ursprünglich nach dem 3KF-Muster vorgeschlagen. EFM10-Kontaktzahl selbst
+> am Originaldokument nicht verifizierbar (nur Vektorgrafik) – für die
+> Auslöse-Funktion dennoch als 1 Signal übernommen. Mersen „FSD" existiert
+> nicht – dokumentierte Alternative ist **Mersen MSNH2**. Kategorie
+> „Schaltanlagen-Komponenten" (wiederverwendet, wie 3KF/3WA).
+> **3. `440_000104`–`440_000106` „ATS/STS-Umschalteinrichtung" (Socomec
+> ATyS), 3 Leistungsklassen (ATyS M 40–160A / ATyS r,d 125–800A / ATyS r,d
+> ≥1000A)** – Fork-Recherche ([ATyS r Katalog](https://etinco.vn/wp-content/uploads/catalogue-ats-socomec-atys-r.pdf),
+> Gegenprobe [Schneider TransferPacT](https://electrika.com/catalogues/schneider-electric/schneider-electric--miscellaneous/schneider-electric-miscellaneous/transferpact/tpsaux32/part/1177828))
+> fand **3 statt der ursprünglich angenommenen 2 Positionskontakte**
+> (getrennter Wechsler für Quelle 1, Quelle 2, UND Position 0/Übergang –
+> herstellerübergreifend bestätigt, auch Schneider TPSAUX33 zeigt dasselbe
+> Muster) plus das Watchdog-Relais – **Nutzer-Entscheidung: Position 0 als
+> 4. BI aufgenommen, 4× BI gesamt** (Watchdog/Sammelstörung, Quelle 1,
+> Quelle 2, Position 0), mehr als die ursprünglich in Session 78 geplanten
+> 3 BI. STATYS (STS) bewusst nicht gewählt (nur frei konfigurierbare
+> Dry-Contact-Option). Watchdog-Kontaktdaten selbst nicht verifizierbar
+> (Originalhandbücher per 403/WAF blockiert), Funktion aber eindeutig
+> belegt. Kein „Umschaltung läuft"-Signal auffindbar (2 Hersteller
+> geprüft) – bestätigt die Session-78-Vorarbeit. Neue Kategorie
+> „Netzumschaltung (ATS/STS)".
+> **Export:** baugruppen 313→**322**, feldgeraete 140→**149** (einzel-
+> bauteile/anlagen unverändert). Backup:
+> `ga_komponenten_vor-nshv-uv-baugruppen_20261024_110933.xlsx`.
+> **Browser-verifiziert:** alle 9 Baugruppen einzeln per `testBaugruppe()`
+> `pass:true` mit den finalen DP-Werten (1×BI/2×BI/4×BI wie oben),
+> `fehlendPlatziert:[]`/`overflow:[]`/`verwaisteReferenzen:[]`;
+> `testKatalogScan()` katalogweit sauber; alle 9 erscheinen korrekt im
+> Elektro-Tab-Dropdown; Modul 5 zeigt beide getesteten Feldgeräte korrekt
+> (Sammelstörmeldung + ATS/STS, „GA liefert" korrekt unchecked per
+> Katalog-Default); keine Konsolenfehler in Modul 4 oder 5.
+> **Restliste:** NH000-Nennstrom widersprüchlich dokumentiert (Siemens-
+> Onepager 100A vs. Conrad-Sekundärquelle 125A); EFM10-Griffeinheiten für
+> NH1/NH2/NH3 (`3NP19{4,5,6}3-1GB20`) nur nach Bestellschema abgeleitet,
+> nicht einzeln am Distributor bestätigt; ein RS-Attribut widerspricht der
+> Siemens-„1 Wechsler"-Bezeichnung bei `3NP1940-1FA00`; EFM10-Kontaktzahl
+> selbst unverifiziert; Watchdog-Kontaktdaten (ATyS) unverifiziert; keine
+> Preise für komplette Geräte (nur vereinzelte Zubehör-Richtwerte,
+> projektspezifische Anfrage bei beiden Herstellern üblich). Rohdaten:
+> `scratchpad/fork_1_nh-trenner_ergebnis.md`,
+> `scratchpad/fork_2_ats-sts_ergebnis.md`.
+> **Damit sind alle 3 aus Session 78 Teil 2/3 verbliebenen NSHV/UV-Punkte
+> geschlossen** (Gruppen-Sammelstörmeldung/überwachte Sicherung, NH-
+> Trenner-mit-Automation, ATS/STS) – Elektroverteilungen NSHV/UV als
+> Themenblock damit vorerst abgeschlossen, nächster Schritt laut Nutzer-
+> Ankündigung noch offen.
+
 > **Nachtrag Session 80 (24.10.2026) – Modul 5 umbenannt zu „Externe
 > Bauteile" + neues TAG „GA liefert" je Position (Nutzer-Auftrag:
 > Architektur-Anpassung vor Fortsetzung der Elektroverteilungen).**
