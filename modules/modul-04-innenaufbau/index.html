@@ -355,12 +355,16 @@ legend{
   letter-spacing:.06em;padding-bottom:4px;border-bottom:1px solid var(--bords);
 }
 .anlage-modal-sektion-grid{
-  display:grid;grid-template-columns:repeat(auto-fill, minmax(165px, 1fr));
-  gap:12px;align-items:start;
+  display:grid;column-gap:12px;row-gap:4px;align-items:end;
 }
-.anlage-modal-field{display:flex;flex-direction:column;gap:3px;min-width:0;}
+/* Session 85 Nachtrag: grid-template-columns wird je Sektion per JS gesetzt
+   (Spaltenzahl = Feldanzahl) - Labels bilden Zeile 1, Selects Zeile 2 (siehe
+   updateAnlageVariantenUI()). align-items:end richtet die <select>-Zeile an
+   ihrer Unterkante aus, Labels oben in ihrer Zeile - beides zusammen haelt
+   alle Felder einer Sektion exakt auf gleicher Hoehe, unabhaengig von
+   unterschiedlich langen/umbrechenden Labels. */
 .anlage-variante-lbltext{
-  display:block;line-height:1.3;min-height:2.6em;
+  display:block;line-height:1.3;min-height:1.3em;
 }
 .anlage-variante-select{
   width:100%;font-size:11px;padding:2px 4px;
@@ -1600,46 +1604,25 @@ function updateAnlageVariantenUI() {
     if (m.mengenfeld) sektionVormerken(ANLAGE_FELD_SEKTION[m.mengenfeld] || FALLBACK_SEKTION);
     if (m.mengenfeld2) sektionVormerken(ANLAGE_FELD_SEKTION[m.mengenfeld2] || FALLBACK_SEKTION);
   });
-  const sektionBoxen = {};
-  function getSektionGrid(titel) {
-    if (sektionBoxen[titel]) return sektionBoxen[titel];
-    const sek = document.createElement('div');
-    sek.className = 'anlage-modal-sektion';
-    if (titel !== FALLBACK_SEKTION) {
-      const h = document.createElement('div');
-      h.className = 'anlage-modal-sektion-titel';
-      h.textContent = titel;
-      sek.appendChild(h);
-    }
-    const grid = document.createElement('div');
-    grid.className = 'anlage-modal-sektion-grid';
-    sek.appendChild(grid);
-    box.appendChild(sek);
-    sektionBoxen[titel] = grid;
-    return grid;
-  }
-  // Jedes Feld (Label + Select) als EIN zusammenhaengender Block im Grid
-  // (Session 83) - vorher standen Labels/Selects in zwei getrennten,
-  // parallelen Flex-Reihen (nur bei max. 1 Zeile stabil ausgerichtet); bei
-  // vielen Feldern (z.B. NSHV mit 9) wuerde das beim Umbruch leicht
-  // auseinanderlaufen. Jetzt label+select immer als Paar, unabhaengig vom
-  // Grid-Umbruch korrekt zugeordnet.
+  // Session 85 Nachtrag (Nutzer-Fund per Screenshot: "immer noch Schwächen
+  // in der horizontalen Anordnung, hier wegen Textlänge"): eine feste
+  // min-height auf dem Label reicht nicht, sobald ein Label auf 3+ Zeilen
+  // umbricht (z.B. "Abgänge Kompaktleistungsschalter (Anzahl)" neben dem
+  // kuerzeren "Kompaktleistungsschalter-Baugröße") - der Select darunter
+  // rutscht dann trotzdem gegenueber kuerzeren Nachbarlabels nach unten.
+  // Echte CSS-Grid-Zeilen loesen das zuverlaessig: ALLE Labels einer Sektion
+  // zuerst (Zeile 1), ALLE zugehoerigen Selects danach (Zeile 2), bei fester
+  // Spaltenzahl = Feldanzahl der Sektion. Grid-Zeile 1 sizt sich automatisch
+  // auf die Hoehe des laengsten Labels (egal ob 1, 2 oder 3 Zeilen) - jeder
+  // Select in Zeile 2 beginnt dadurch exakt an derselben Y-Position,
+  // unabhaengig von der Textlaenge der Nachbarlabels. Deshalb werden Felder
+  // hier nur noch GESAMMELT (sektionFelder), das eigentliche DOM-Rendering
+  // erfolgt erst in einem letzten Durchgang (siehe render-Block nach den
+  // beiden addField-Schleifen).
+  const sektionFelder = {};
   function addField(key, labelText, control) {
-    const grid = getSektionGrid(ANLAGE_FELD_SEKTION[key] || FALLBACK_SEKTION);
-    const wrap = document.createElement('div');
-    wrap.className = 'anlage-modal-field';
-    // DOM-Konstruktion statt String-Interpolation (Session 75 Bugfix): ein
-    // variante_label kann beliebige Zeichen enthalten, insbesondere
-    // Anfuehrungszeichen (z.B. TouchPanel-Groessen '10,1" PXM40') - als
-    // <option value="${key}">-String interpoliert bricht das die HTML-
-    // Attributsyntax. .value/.textContent als Property-Zuweisung braucht
-    // kein Escaping.
-    const span = document.createElement('span');
-    span.className = 'anlage-variante-lbltext';
-    span.textContent = labelText;
-    wrap.appendChild(span);
-    wrap.appendChild(control);
-    grid.appendChild(wrap);
+    const titel = ANLAGE_FELD_SEKTION[key] || FALLBACK_SEKTION;
+    (sektionFelder[titel] = sektionFelder[titel] || []).push({ labelText, control });
   }
   // gruppe-Felder zuerst (Typ-/Baugroessenauswahl), je Sektion vor den
   // zugehoerigen mengenfeld-Feldern (Anzahl) - Reihenfolge der SEKTIONEN
@@ -1745,6 +1728,47 @@ function updateAnlageVariantenUI() {
     addField(mf, ANLAGE_MENGENFELD_LABEL[mf] || mf, select);
     });
   });
+  // Rendering: je Sektion ein 2-zeiliges CSS-Grid - ALLE Labels zuerst
+  // (Zeile 1), ALLE Selects danach (Zeile 2). Grid-Zeilen sizen sich nativ
+  // auf den hoechsten/breitesten Inhalt je Zeile - das garantiert
+  // identische Select-Hoehe unabhaengig von unterschiedlich langen
+  // Nachbarlabels (siehe Kommentar bei addField() oben). Session 85
+  // Nachtrag 2 (Nutzer-Fund per Screenshot, Vollklimaanlage-Baukasten mit
+  // 5 Luftbehandlungs-Registern): eine feste Spaltenzahl = Feldanzahl
+  // laeuft bei vielen Feldern pro Sektion (minmax(120px,...) braucht dann
+  // mehr Breite als der Modal-Koerper hat) in horizontales Ueberlaufen/
+  // Scrollen statt Umbruch. Fix: Sektionen mit mehr als MAX_SPALTEN Feldern
+  // werden in mehrere 2-zeilige Teil-Grids zerlegt (je bis zu MAX_SPALTEN
+  // Felder) - die Hoehen-Garantie gilt dann je Teil-Grid statt fuer die
+  // ganze Sektion, bleibt also innerhalb jeder Teilreihe weiterhin exakt.
+  const MAX_SPALTEN = 3;
+  sektionReihenfolge.forEach(titel => {
+    const felder = sektionFelder[titel];
+    if (!felder || !felder.length) return;
+    const sek = document.createElement('div');
+    sek.className = 'anlage-modal-sektion';
+    if (titel !== FALLBACK_SEKTION) {
+      const h = document.createElement('div');
+      h.className = 'anlage-modal-sektion-titel';
+      h.textContent = titel;
+      sek.appendChild(h);
+    }
+    for (let i = 0; i < felder.length; i += MAX_SPALTEN) {
+      const chunk = felder.slice(i, i + MAX_SPALTEN);
+      const grid = document.createElement('div');
+      grid.className = 'anlage-modal-sektion-grid';
+      grid.style.gridTemplateColumns = 'repeat(' + chunk.length + ', minmax(0, 1fr))';
+      chunk.forEach(f => {
+        const span = document.createElement('span');
+        span.className = 'anlage-variante-lbltext';
+        span.textContent = f.labelText;
+        grid.appendChild(span);
+      });
+      chunk.forEach(f => grid.appendChild(f.control));
+      sek.appendChild(grid);
+    }
+    box.appendChild(sek);
+  });
 }
 const ANLAGE_GRUPPEN_LABEL = {
   touchpanel: 'TouchPanel-Größe', umg_protokoll: 'Messgerät-Protokoll', bus: 'Busanbindung',
@@ -1784,7 +1808,13 @@ const ANLAGE_GRUPPEN_LABEL = {
   // groesseren Abgangsklassen.
   schienenv_messung_protokoll: 'Versorgungsmessung-Protokoll',
   schienenv_abgang_kls_groesse: 'Kompaktleistungsschalter-Baugröße',
-  schienenv_abgang_nh_groesse: 'NH-Trenner-Baugröße'
+  schienenv_abgang_nh_groesse: 'NH-Trenner-Baugröße',
+  // Session 85 Nachtrag (nachgetragene Labels - fehlten bisher, Schluessel
+  // fielen auf den rohen gruppe-Namen als Beschriftung zurueck): Waermepumpen
+  // (420_A00018/020/022/024) und Waermetauscher/Fernwaermeuebergabe/
+  // Kaelteuebertrager (420_A00016/017/037).
+  elektrozaehler: 'Elektroenergiezähler', waermemengenzaehler: 'Wärmemengenzähler',
+  pumpenleistung: 'Pumpenleistung (Primär/Sekundär)'
 };
 // Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
 // (Session 68, erweitert Session 75) - Default-Fallback ist das generische
@@ -1952,7 +1982,46 @@ const ANLAGE_FELD_SEKTION = {
   // MS-Gesamtanlagen (440_A00009-011): Busanbindung fuer sich, Trafo-/
   // Generatorabgaenge mit ihrer Mengenangabe zusammen, Kuppelfeld eigen.
   bus: 'Busanbindung', trafoabgang: 'Trafo-/Generatorabgänge',
-  anzahl_trafos: 'Trafo-/Generatorabgänge', kuppelfeld: 'Kuppelfeld'
+  anzahl_trafos: 'Trafo-/Generatorabgänge', kuppelfeld: 'Kuppelfeld',
+  // Session 85 Nachtrag (Nutzer-Vorgabe "Jetzt gleich ergaenzen" - auch die
+  // kleineren Anlagen mit 1-4 Feldern bekommen Sektionstitel, nicht nur die
+  // grossen/leicht verwechselbaren):
+  // ASP (480_A00002/003/005/006): TouchPanel + Messgeraet-Protokoll sind
+  // beide Teil der Bedienpanel-/Messausstattung der Automationsstation.
+  touchpanel: 'Bedienung & Messung', umg_protokoll: 'Bedienung & Messung',
+  // Heizkreise/Kaeltekreise Verteilung (420_A00001-008/026-031/037) +
+  // Waermetauscher/Fernwaermeuebergabe/Kaelteuebertrager (420_A00016/017):
+  // Waerme-/Kaeltemengenzaehler sowie die Pumpenleistung (primaer+sekundaer)
+  // sind jeweils eigenstaendige Ausstattungsmerkmale ohne Baugroesse-Anzahl-
+  // Paarung - trotzdem eigene Sektion statt unbetitelter Fallback, damit
+  // erkennbar bleibt, wofuer das Feld steht.
+  wmz: 'Wärmemengenzähler', wmz_kaelte: 'Kältemengenzähler',
+  pumpenleistung: 'Pumpenleistung',
+  // Waermepumpen (420_A00018/020/022/024): Zaehlerprotokolle + Sekundaer-
+  // pumpenkonzept gehoeren zur Geraeteausstattung.
+  elektrozaehler: 'Ausstattung & Zähler', waermemengenzaehler: 'Ausstattung & Zähler',
+  pumpenkonzept: 'Ausstattung & Zähler',
+  // Kaeltemaschine/Rueckkuehlwerk (420_A00038-041): Primaerkreis-Ausstattung
+  // + Antriebsspannung gehoeren zusammen; Busanbindung bleibt generisch
+  // (Schluessel 'bus' bereits oben); Befeuchtung+Wasserzaehler gehoeren
+  // zusammen (Befeuchtung verbraucht Wasser); die beiden Mengenfeld-Paare
+  // (Kreuzmultiplikation, Session 77 Folgearbeit) je eigene Sektion.
+  primaerkreis: 'Primärkreis & Antriebe', absperrklappen_spannung: 'Primärkreis & Antriebe',
+  befeuchtung: 'Befeuchtung & Wasserzähler', wasserzaehler: 'Befeuchtung & Wasserzähler',
+  kaeltekreise: 'Kältekreise', verdichterstufen_je_kreis: 'Kältekreise',
+  kuehlreihen: 'Kühlreihen / Ventilatoren', ventilatoren_je_reihe: 'Kühlreihen / Ventilatoren',
+  // RLT-Anlagen (430_A00001-007): Ventilator + sein Filterwaechter gehoeren
+  // zusammen; alle Luftbehandlungs-Register (Vorerhitzer/Kuehler/
+  // Nacherhitzer/WRG/Befeuchter) in einer gemeinsamen Sektion, da sie
+  // alle denselben Luftstrom entlang hintereinander behandeln; die 3
+  // Register-Einzelanlagen (Vorerhitzer/Nacherhitzer/Luftkuehler) haben nur
+  // die Pumpengroesse als einziges Feld.
+  ventilator: 'Ventilatoren', zuluftventilator: 'Ventilatoren',
+  abluftventilator: 'Ventilatoren', filter: 'Ventilatoren',
+  vorerhitzer: 'Luftbehandlung (Register)', kuehler: 'Luftbehandlung (Register)',
+  nacherhitzer: 'Luftbehandlung (Register)', wrg: 'Luftbehandlung (Register)',
+  befeuchter: 'Luftbehandlung (Register)',
+  pumpengroesse: 'Pumpengröße'
 };
 
 // ── Belegung ─────────────────────────────────────────────────────────

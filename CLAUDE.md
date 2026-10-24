@@ -78,10 +78,52 @@
 > Sektionen), UV (`440_A00015`, 2 Sektionen) und Schienenabgangsverteiler
 > (`440_A00019`, 4 Sektionen) sowie den unveränderten Fallback bei kleinen
 > Anlagen (`480_A00002`, 2 Felder ohne Sektionstitel).
-> **Noch offen:** Wärmepumpen-/Kälte-/RLT-/ASP-Anlagen (1–4 Felder) sind
-> bewusst noch nicht mit eigenen Sektionstiteln kuratiert – profitieren aber
-> bereits von der Höhen-Ausrichtungskorrektur. Bei Bedarf in einer
-> Folgesitzung ergänzen, falls dort ebenfalls Verwechslungsgefahr auftritt.
+> **Nachtrag Session 85 Fortsetzung (24.10.2026) – 2 weitere Korrekturrunden
+> direkt im Anschluss, beide per Nutzer-Screenshot gefunden.**
+> **1. Alle restlichen Anlagen kuratiert** (Nutzer-Vorgabe „Jetzt gleich
+> ergänzen"): `ANLAGE_FELD_SEKTION` um Wärmepumpen (`420_A00018`–`024`,
+> Sektion „Ausstattung & Zähler"), Heizkreise/Kälteübertrager (`wmz`/
+> `wmz_kaelte`/`pumpenleistung`), Kältemaschine/Rückkühlwerk (`420_A00038`–
+> `041`, 5 Sektionen: Primärkreis & Antriebe/Kältemengenzähler/Kältekreise/
+> Kühlreihen-Ventilatoren/Befeuchtung & Wasserzähler), RLT-Anlagen
+> (`430_A00001`–`007`, Sektionen „Ventilatoren"/„Luftbehandlung (Register)"),
+> ASP (`480_A00002`/`003`/`005`/`006`, Sektion „Bedienung & Messung")
+> erweitert. Dabei 3 bisher fehlende Beschriftungen nachgetragen
+> (`elektrozaehler`/`waermemengenzaehler`/`pumpenleistung` fielen zuvor auf
+> den rohen Schlüsselnamen zurück, kein `ANLAGE_GRUPPEN_LABEL`-Eintrag
+> vorhanden).
+> **2. Echter Folgefehler gefunden + behoben:** die feste `min-height`-Lösung
+> aus dem ersten Nachtrag reichte nicht, sobald ein Nachbarlabel auf 3+
+> Zeilen umbrach (Nutzer-Screenshot: „Kompaktleistungsschalter-Baugröße"
+> (2 Zeilen) neben „Abgänge Kompaktleistungsschalter (Anzahl)" (3 Zeilen bei
+> schmaler Spalte) – der Select rutschte trotzdem sichtbar nach unten
+> versetzt). **Root Cause:** pro Feld ein eigener Flex-Spalten-Block kann
+> gar keine zeilenübergreifende Höhengleichheit garantieren, egal welche
+> `min-height` gewählt wird. **Echter Fix:** `updateAnlageVariantenUI()`
+> rendert Felder jetzt NICHT mehr sofort, sondern sammelt sie je Sektion
+> (`sektionFelder`); am Ende baut ein eigener Rendering-Durchgang je Sektion
+> ein echtes 2-zeiliges CSS-Grid – ALLE Labels zuerst (Zeile 1), ALLE Selects
+> danach (Zeile 2), `align-items:end`. CSS-Grid-Zeilen sizen sich nativ auf
+> den höchsten Inhalt der ganzen Zeile – das garantiert exakt gleiche
+> Select-Höhe unabhängig von beliebig unterschiedlich langen Nachbarlabels,
+> ohne geschätzten Platzreserve-Wert. **Nebenfund beim Testen (Vollklima-
+> anlage-Baukasten, 5-Felder-Sektion „Luftbehandlung"):** eine feste
+> Spaltenzahl = Feldanzahl sprengte bei vielen Feldern die Modal-Breite
+> (horizontales Scrollen) – behoben durch Aufteilen in mehrere 2-zeilige
+> Teil-Grids zu je max. 3 Feldern (`MAX_SPALTEN`), Höhen-Garantie gilt dann
+> je Teil-Grid statt für die ganze Sektion.
+> **Browser-verifiziert:** `testKatalogScan()` sauber; `testAnlage()` erneut
+> auf allen bereits in Teil 1 geprüften Anlagen (keine Regression: NSHV
+> 45+225+675/3-Batches, UV/IT-UV 72+24+72+72, Schienenabgangsverteiler 30,
+> MS 15+15+30) PLUS den neu kuratierten (`480_A00002` 6, `420_A00018` 108,
+> `420_A00020` 204, `420_A00037` 6, `420_A00001` 2, `430_A00001` 4,
+> `430_A00005` 3, `420_A00038` 112, `430_A00004` Stichprobe 200/2304) –
+> alle `pass:true`, keine Konsolenfehler. Screenshots bestätigen die exakte
+> Höhenausrichtung bei Schienenabgangsverteiler/Kältemaschine (bis zu 3
+> ungleich lange Nachbarlabels) UND die saubere 2-Zeilen-Umbrechung bei der
+> Vollklimaanlage (5 Felder, kein horizontales Scrollen mehr).
+> **Damit sind alle Anlagen mit `gruppe`-/`mengenfeld`-Mitgliedern
+> durchgängig sektioniert, kein Fallback-Rest mehr offen.**
 
 > **Nachtrag Session 84 (24.10.2026) – Anlage „Schienenabgangsverteiler
 > (Rechenzentrum)" (440_A00019), erste UV-Art für RZ-Busbar-Trunking-Systeme

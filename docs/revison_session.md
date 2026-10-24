@@ -1,20 +1,23 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 85 (24.10.2026).** UI-Korrektur am Anlage-Varianten-
-> Modal (Nutzer-Fund per Screenshot): Felder werden jetzt in thematische
-> Sektionen gruppiert (neue Konstante `ANLAGE_FELD_SEKTION`, kuratiert für
-> NSHV/UV/IT-UV/Schienenabgangsverteiler/MS-Gesamtanlagen) statt flach „alle
-> Baugrößen-Dropdowns oben, alle Anzahl-Felder unten" – Baugröße und
-> zugehörige Anzahl stehen jetzt garantiert nebeneinander (z. B.
-> „Kompaktleistungsschalter-Baugröße" direkt neben „Abgänge Kompakt-
-> leistungsschalter (Anzahl)"). Zusätzlich CSS-Fix gegen die „stufige" Optik
-> (Labels reservieren jetzt immer 2 Zeilen Platz, unabhängig vom Umbruch) –
-> wirkt für JEDES Modal, auch unkuratierte. Modal-Breite 640→760px. Browser-
-> verifiziert: alle betroffenen Anlagen vollständig durchgetestet (NSHV
-> 45+225+675, UV/IT-UV 72+24+72+72, MS 15+15+30, Schienenabgangsverteiler
-> 30, Regressionscheck ASP/Wärmepumpe), alle `pass:true`, Screenshots
-> bestätigen die neue Gliederung an 4 Anlagen. Details: `CLAUDE.md` →
-> „Offene Punkte" Nachtrag Session 85.
+> **Stand nach Session 85, 2. Fortsetzung (24.10.2026).** UI-Korrektur am
+> Anlage-Varianten-Modal in 3 Runden (alle per Nutzer-Screenshot gefunden):
+> (1) Felder thematisch sektioniert statt flach „Baugrößen oben, Anzahl
+> unten" – Baugröße+Anzahl stehen jetzt garantiert nebeneinander; (2) ALLE
+> übrigen Anlagen (Wärmepumpen/Kälte/RLT/ASP) ebenfalls kuratiert, kein
+> Fallback-Rest mehr; (3) echter Höhenausrichtungs-Fix – statt einer
+> geschätzten `min-height` baut `updateAnlageVariantenUI()` je Sektion ein
+> echtes 2-zeiliges CSS-Grid (alle Labels Zeile 1, alle Selects Zeile 2),
+> das sich nativ auf den höchsten Inhalt ausrichtet, unabhängig von beliebig
+> unterschiedlich langen Nachbarlabels – plus Aufteilung in Teil-Grids zu je
+> max. 3 Feldern gegen horizontales Überlaufen bei vielfeldrigen Sektionen
+> (z. B. Vollklimaanlage, 5 Luftbehandlungs-Register). Browser-verifiziert:
+> `testKatalogScan()` sauber, alle betroffenen Anlagen (NSHV bis 675
+> Kombinationen, UV/IT-UV, MS, Schienenabgangsverteiler, Wärmepumpen,
+> Kältemaschine, RLT) vollständig bzw. per Stichprobe durchgetestet,
+> durchgängig `pass:true`, keine Konsolenfehler, Screenshots bestätigen
+> exakte Ausrichtung auch bei stark unterschiedlichen Textlängen. Details:
+> `CLAUDE.md` → „Offene Punkte" Nachtrag Session 85 + Fortsetzung.
 
 Vorheriger Stand – Session 84 (24.10.2026).
 
