@@ -16,6 +16,112 @@
 
 ## Offene Punkte (Stand Session 58 – vor Beginn der nächsten Sitzung lesen)
 
+> **Nachtrag Session 83 (24.10.2026) – Anlagengruppe UV (Unterverteilung,
+> 2 Varianten), Anlage-Varianten-Modal (UI-Fix), RS485-Sammelbus-Korrektur
+> + Retrofit der NSHV-Anlagen. Mehrteilige Sitzung mit mehreren
+> Nutzer-Korrekturrunden.**
+> **1. Modal-UI-Fix (Nutzer-Fund per Screenshot):** die NSHV-Anlagen
+> (9 Varianten-Felder) liefen rechts aus dem Bildschirm – die bisherige
+> Inline-Darstellung neben dem Anlagen-Dropdown (Session 67) skaliert nicht
+> auf viele Felder. Ersetzt durch ein zentriertes **Modal** mit Grid-Layout
+> (`modules/modul-04-innenaufbau/index.html`: `#anlage-modal-overlay`,
+> `anlageHatVarianten()`/`openAnlageModal()`/`closeAnlageModal()`/
+> `confirmAnlageModal()`) – öffnet nur für Anlagen mit `gruppe`-/
+> `mengenfeld`-Mitgliedern, sonst fügt „+" wie bisher direkt hinzu.
+> `updateAnlageVariantenUI()` baut jetzt Label+Select als EIN Grid-Feld
+> (vorher zwei parallele Flex-Reihen, bei vielen Feldern fehleranfällig).
+> **Dabei echten Regressionsbug gefunden+behoben:** `testAnlage()` rief
+> intern `addBaugruppe()` auf, das jetzt bei Varianten das Modal öffnet
+> statt direkt hinzuzufügen – Testroutine auf direkten `addAnlage()`-Aufruf
+> umgestellt. Verifiziert an allen 3 NSHV-Anlagen (45/225/675 Kombinationen
+> weiterhin `pass:true`) + der komplexesten Bestandsanlage
+> (`430_A00004` Vollklimaanlage-Baukasten, 7 Dropdown-Achsen, Stichprobe
+> `pass:true`), keine Konsolenfehler.
+> **2. Neue generische Baugruppe `440_000108` „Phasenausfall-/
+> Phasenüberwachung mit Sammelstörmeldung"** – analog zu `440_000107`
+> (Überspannungsschutz), bewusst ohne NSHV-Bezug im Namen (Nutzer-Vorgabe:
+> „die Gruppe benötigen wir auch später noch bei der UV"). Reale Referenz
+> `3UG5616-1CR20` (bereits in `480_000034` für den eigenen Schrank
+> katalogisiert), hier extern. 1× BI.
+> **3. RS485-Sammelbus-Korrektur (wichtiger Nutzer-Fund):** mehrere Modbus-
+> RTU-/M-Bus-Messgeräte **innerhalb derselben** Unterverteilung (NSHV oder
+> UV) werden seriell/daisy-chain verkettet und teilen sich **eine** RS485-
+> Leitung zum ASP – bisher bekam jede Zähler-Instanz eigene Klemmen (RTU 4,
+> M-Bus 2), skalierte also fälschlich mit der Geräteanzahl. Modbus TCP war
+> bereits korrekt (Ethernet-Switch-Ratchet, `KOMM-FB`-Muster, keine eigenen
+> Klemmen). **Lösung (Anlagen-lokal, nicht katalogweit – Nutzer-
+> Entscheidung nach Abwägung Aufwand/Risiko):**
+> - `440_000113`/`440_000114` „RS485-Bus-Sammelzuleitung Modbus RTU/M-Bus"
+>   – feste Klemmen (4/2), keine Datenpunkte, 1× je Anlage/Busabschnitt
+>   (nicht mengenfeld-skaliert).
+> - `440_000115`–`118` „Energiezähler … – gemeinsame Busleitung" (3~/1~ ×
+>   RTU/M-Bus) – **klemmenlose** Varianten nach dem bereits etablierten
+>   `KOMM-FB`-Muster (wie TCP), nur noch AI-Datenpunkte, kein eigener
+>   Klemmenbedarf. Bestehende Standalone-Baugruppen `440_000001–003`
+>   bleiben für Einzelverwendung unverändert (Katalog-Scope-Entscheidung).
+> - **Bekannte, dokumentierte Vereinfachung:** wählt eine Anlage dieselbe
+>   Buslogik sowohl für Einspeisung- als auch für Abgang-Messung, wird die
+>   Sammelzuleitung geringfügig doppelt gezählt (2 statt 1) – DBACS
+>   bilanziert keine reale Bustopologie (gleiches Prinzip wie die bereits
+>   akzeptierten Vereinfachungen bei Kuppelfeld-Verriegelung/Trafoabgang-
+>   Symmetrie), bewusst nicht behoben.
+> - **NSHV-Retrofit:** die bereits fertigen `440_A00012–014` wurden auf das
+>   neue Muster umgestellt (RTU/M-Bus-Zeilen auf die klemmenlosen Varianten
+>   umgeschrieben + Sammelzuleitung ergänzt, dedupliziert je (Anlage,
+>   Gruppe, Label) – 24 umgeschriebene Zeilen, 12 neue Sammelzuleitungs-
+>   Zeilen). Alle 3 Anlagen erneut vollständig getestet (45/225/675
+>   Kombinationen weiterhin `pass:true`).
+> **4. Neue Anlagengruppe UV (Unterverteilung), neue Kategorie
+> „Unterverteilung", 2 Gesamtanlagen:**
+> - `440_A00015` „UV (Unterverteilung), Drehstromeinspeisung" –
+>   Einspeisung-Trennungsart (Hauptschalter `440_000109` [neu, 1× BI] /
+>   LSS-FI `440_000021` / NH-Trenner `440_000099`) getrennt von optionaler
+>   Einspeisung-Messung (3~). Abgänge unabhängig zählbar (LSS/FI + NH-
+>   Trenner), „davon gemessen" pauschal über ein kombiniertes Dropdown
+>   (Netzart 1~/3~ × Protokoll, 6 Optionen, Engine-bedingt als flache
+>   Optionen wie beim MS-Trafoabgang-Muster). Überspannungsschutz +
+>   Phasenausfall fest gebündelt.
+> - `440_A00016` „UV (Unterverteilung), Wechselstromeinspeisung (kleine
+>   UV)" – **kein** NH-Trenner (weder Einspeisung noch Abgang, Nutzer-
+>   Vorgabe: „dort gibt es dann auch keine NH-Trenner"), „davon gemessen"
+>   **nur** 1~-Optionen (ein 1-phasiger Einspeiser kann keine 3-phasigen
+>   Abgänge liefern).
+> - **Neue 1~-Energiezähler-Baugruppen** `440_000110–112`
+>   (Standalone, mit eigenen Klemmen) + `440_000117/118` (klemmenlos, s.o.)
+>   – **7 statt 17 AI**: kein cos φ/Blindleistung (beide hängen an einer
+>   bei Wechselstrom nicht sinnvollen Phasenwinkelmessung, Nutzer-
+>   Klarstellung), nur 1 Spannungs-/1 Stromwert statt je 3+1.
+>   **Nachkorrektur (Nutzer-Fund, noch in derselben Sitzung):** die
+>   1~-Geräte sind KEINE Multifunktions-Netzanalysatoren (wie die
+>   3~-Variante, Janitza UMG), sondern einfache, dedizierte
+>   Energiemessgeräte für Hutschienenmontage – gilt für alle UV-Typen
+>   außer NSHV (dort immer Drehstrom/Multifunktionsgerät). Hersteller-
+>   Referenz auf Schneider Electric Acti9 iEM-Reihe (1-phasig) umgestellt
+>   (bereits als Alternative im Planungsfabrikat dokumentiert), reine
+>   Text-/Hersteller-Korrektur in `feldgeraete.json`, keine
+>   Datenpunktänderung.
+> - Bestehende `440_000001–003` umbenannt zu „… (3~, Einzel-/
+>   Sammelmessung) …" – der Namenszusatz macht klar: dieselbe Baugruppe
+>   deckt sowohl einen Einzel- als auch einen Sammelzähler für mehrere
+>   Abgänge ab (DBACS bilanziert nur die Geräteanzahl, „für die DDC
+>   ausreichend", Nutzer-Vorgabe).
+> **Export:** einzelbauteile unverändert 230, baugruppen 324→**334**,
+> feldgeraete 151→**159**, anlagen 63→**65**. Backups:
+> `ga_komponenten_vor-nshv-uv-baugruppen_20261024_110933.xlsx` (Phasenausfall-
+> Vorarbeit), `ga_komponenten_vor-uv-rs485-sammelbus_20261024_131127.xlsx`
+> (Hauptschritt), `ga_komponenten_vor-1ph-geraetekorrektur_20261024_131457.xlsx`
+> (Nachkorrektur).
+> **Browser-verifiziert:** `testKatalogScan()` durchgängig sauber; alle 10
+> neuen Baugruppen `testBaugruppe()` `pass:true` mit den finalen DP-Werten;
+> **alle 1041 Kombinationen** der 5 betroffenen Anlagen einzeln getestet
+> (NSHV 45/225/675 nach Retrofit weiterhin `pass:true`, UV 72/24 neu
+> `pass:true`) – 0 Fehlschläge; `testKlemmenVarianten()`/
+> `testSwitchRatchet()` weiterhin `pass:true`; keine Konsolenfehler in
+> mehreren Durchläufen.
+> **Noch offen / als Nächstes angekündigt:** 2 IT-UV-Varianten (eine mit
+> interner USV, eine mit Einspeisung aus einer zentralen/großen USV) –
+> Nutzer-Ankündigung, noch nicht begonnen.
+
 > **Nachtrag Session 82 (24.10.2026) – Neue Anlagengruppe NSHV
 > (Niederspannungshauptverteilung), 3 Gesamtanlagen + 1 neue generische
 > Baugruppe, über mehrere Freigabe-Korrekturrunden mit dem Nutzer final

@@ -3572,7 +3572,7 @@
   },
   {
     "id": "440_000001",
-    "name": "Elektro-Energiezaehler / Netzanalysator, Modbus RTU",
+    "name": "Elektro-Energiezähler / Netzanalysator (3~, Einzel-/Sammelmessung), Modbus RTU",
     "gewerk": "440",
     "beschreibung": "Elektro-Energiezaehler / Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung und erhaelt dort seine Spannungsversorgung (Messspannung / Hilfsspannung). Aus dem GA-Schaltschrank wird er NUR kommunikativ ausgelesen, keine physischen Datenpunkte, keine Steuerspannung. 17 Werte kommunikativ (AI), verbrauchen KEINEN Schaltschrankplatz. Schaltschrankseitig 2 Klemmen RS485 (A/B) in der Feldgeraete-Klemmleiste, verdrahtet direkt an einen RS485-Port der Automationsstation - kein Pegelwandler noetig.",
     "bauteile": [
@@ -3603,7 +3603,7 @@
       "elektro",
       "automation"
     ],
-    "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., Modbus RTU (Janitza UMG 96RM / Schneider Acti9 iEM3350)",
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (3~), Modbus RTU",
     "feldgeraet_artikel_nr": "EZ-NA-RTU",
     "automationsanbindung": true,
     "kategorie": "Energie und Zählwerteinrichtungen",
@@ -3611,7 +3611,7 @@
   },
   {
     "id": "440_000002",
-    "name": "Elektro-Energiezaehler / Netzanalysator, M-Bus",
+    "name": "Elektro-Energiezähler / Netzanalysator (3~, Einzel-/Sammelmessung), M-Bus",
     "gewerk": "440",
     "beschreibung": "Elektro-Energiezaehler / Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung und erhaelt dort seine Spannungsversorgung (Messspannung / Hilfsspannung). Aus dem GA-Schaltschrank wird er NUR kommunikativ ausgelesen, keine physischen Datenpunkte, keine Steuerspannung. 17 Werte kommunikativ (AI), verbrauchen KEINEN Schaltschrankplatz. Schaltschrankseitig 2 Klemmen M-Bus (a/b) in der Feldgeraete-Klemmleiste; im GA-Schrank wird automatisch ein M-Bus-Pegelwandler ergaenzt (geteilt ueber alle M-Bus-Zaehler).",
     "bauteile": [
@@ -3632,7 +3632,7 @@
       "elektro",
       "automation"
     ],
-    "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., M-Bus (Janitza UMG 96RM-M / Schneider Acti9 iEM3135)",
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (3~), M-Bus",
     "feldgeraet_artikel_nr": "EZ-NA-MBUS",
     "automationsanbindung": true,
     "kategorie": "Energie und Zählwerteinrichtungen",
@@ -3640,7 +3640,7 @@
   },
   {
     "id": "440_000003",
-    "name": "Elektro-Energiezaehler / Netzanalysator, Modbus TCP / IP",
+    "name": "Elektro-Energiezähler / Netzanalysator (3~, Einzel-/Sammelmessung), Modbus TCP / IP",
     "gewerk": "440",
     "beschreibung": "Elektro-Energiezaehler / Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung und erhaelt dort seine Spannungsversorgung (Messspannung / Hilfsspannung). Aus dem GA-Schaltschrank wird er NUR kommunikativ ausgelesen, keine physischen Datenpunkte, keine Steuerspannung. 17 Werte kommunikativ (AI), verbrauchen KEINEN Schaltschrankplatz. Schaltschrankseitig KEINE Klemme - RJ45 auf einen Ethernet-Switch im GA-Schrank, der mit der Automationsstation verbunden ist (Switch wird automatisch ergaenzt).",
     "bauteile": [
@@ -3656,7 +3656,7 @@
       "elektro",
       "automation"
     ],
-    "betriebsmittel": "Elektro-Energiezaehler/Netzanalysator 3-ph., Modbus TCP/IP (Janitza UMG 96RM-PN)",
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (3~), Modbus TCP / IP",
     "feldgeraet_artikel_nr": "EZ-NA-TCP",
     "automationsanbindung": true,
     "kategorie": "Energie und Zählwerteinrichtungen",
@@ -13690,6 +13690,282 @@
     "feldgeraet_artikel_nr": "3UG5616-1CR20",
     "automationsanbindung": true,
     "kategorie": "Sammelstörmeldungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000109",
+    "name": "Hauptschalter Stellungsmeldung, Feldgerät (fremde Unterverteilung)",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Einfacher Hauptschalter/Lasttrennschalter als Einspeise-Trennorgan einer fremden Unterverteilung (UV) - NUR MONITORING, keine Energieversorgung/kein LSS hier. Stellungsmeldung über 1 Wechsler-Hilfskontakt - liefert EIN Signal (Zustand 0/1 deckt Ein/Aus ab, analog zur Nutzer-Korrektur beim NH-Trenner-Hilfsschalter, Session 81/82). Je Signal 2 Klemmen klemm_f (Regel 14), potentialfrei, kein Koppelrelais. Datenpunktbedarf 1x BI. Einfachste/kleinste Einspeisung-Trennungsart-Option der UV-Anlage (Alternative: LSS/FI mit Meldekontakt 440_000021, oder NH-Trenner 440_000099 bei größeren, drehstromgespeisten UV).",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_bi": 1
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Hauptschalter Stellungsmeldung (fremde Unterverteilung)",
+    "feldgeraet_artikel_nr": "HAUPTSCHALTER-UV-GENERIC",
+    "automationsanbindung": true,
+    "kategorie": "Schaltanlagen-Komponenten",
+    "geprueft": false
+  },
+  {
+    "id": "440_000110",
+    "name": "Elektro-Energiezähler / Netzanalysator (1~, Einzel-/Sammelmessung), Modbus RTU",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Elektro-Energiezaehler/Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung, erhaelt dort seine Spannungsversorgung, aus dem GA-Schaltschrank NUR kommunikativ ausgelesen. Wechselstrom-(1~)-Variante der bestehenden 3~-Baugruppe (440_000001/002) - reduzierter Datenpunktsatz (7 statt 17 AI: nur 1 Spannungs-/1 Stromwert statt je 3+1, UND ohne cos phi/Blindleistung - beide haengen an einer Phasenwinkelmessung, die bei Wechselstrom nicht sinnvoll/verfuegbar ist, Nutzer-Klarstellung Session 83; Scheinleistung bleibt als reines U×I ohne Phasenwinkel berechenbar). Bewusst als 'Einzel-/Sammelmessung' benannt: dieselbe Baugruppe deckt sowohl einen Zaehler fuer einen einzelnen Abgang als auch einen Sammelzaehler fuer mehrere Abgaenge ab. Fuer EINZELVERWENDUNG (eigene Klemmen) - innerhalb einer Anlage mit mehreren Zaehlern am selben Bus stattdessen die klemmenlose Variante '... gemeinsame Busleitung' (440_000117/118) + Sammelzuleitung (440_000113/114) verwenden.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "modbus_rtu"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (1~), Modbus RTU",
+    "feldgeraet_artikel_nr": "EZ-NA-1PH-RTU",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000111",
+    "name": "Elektro-Energiezähler / Netzanalysator (1~, Einzel-/Sammelmessung), M-Bus",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Elektro-Energiezaehler/Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung, erhaelt dort seine Spannungsversorgung, aus dem GA-Schaltschrank NUR kommunikativ ausgelesen. Wechselstrom-(1~)-Variante der bestehenden 3~-Baugruppe (440_000001/002) - reduzierter Datenpunktsatz (7 statt 17 AI: nur 1 Spannungs-/1 Stromwert statt je 3+1, UND ohne cos phi/Blindleistung - beide haengen an einer Phasenwinkelmessung, die bei Wechselstrom nicht sinnvoll/verfuegbar ist, Nutzer-Klarstellung Session 83; Scheinleistung bleibt als reines U×I ohne Phasenwinkel berechenbar). Bewusst als 'Einzel-/Sammelmessung' benannt: dieselbe Baugruppe deckt sowohl einen Zaehler fuer einen einzelnen Abgang als auch einen Sammelzaehler fuer mehrere Abgaenge ab. Fuer EINZELVERWENDUNG (eigene Klemmen) - innerhalb einer Anlage mit mehreren Zaehlern am selben Bus stattdessen die klemmenlose Variante '... gemeinsame Busleitung' (440_000117/118) + Sammelzuleitung (440_000113/114) verwenden.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (1~), M-Bus",
+    "feldgeraet_artikel_nr": "EZ-NA-1PH-MBUS",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000112",
+    "name": "Elektro-Energiezähler / Netzanalysator (1~, Einzel-/Sammelmessung), Modbus TCP / IP",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Elektro-Energiezaehler/Netzanalysator als Feldgeraet - sitzt in der ueberwachten Elektro-(Unter-)Verteilung, erhaelt dort seine Spannungsversorgung, aus dem GA-Schaltschrank NUR kommunikativ ausgelesen. Wechselstrom-(1~)-Variante der bestehenden 3~-Baugruppe (440_000001/002) - reduzierter Datenpunktsatz (7 statt 17 AI: nur 1 Spannungs-/1 Stromwert statt je 3+1, UND ohne cos phi/Blindleistung - beide haengen an einer Phasenwinkelmessung, die bei Wechselstrom nicht sinnvoll/verfuegbar ist, Nutzer-Klarstellung Session 83; Scheinleistung bleibt als reines U×I ohne Phasenwinkel berechenbar). Bewusst als 'Einzel-/Sammelmessung' benannt: dieselbe Baugruppe deckt sowohl einen Zaehler fuer einen einzelnen Abgang als auch einen Sammelzaehler fuer mehrere Abgaenge ab. Fuer EINZELVERWENDUNG (eigene Klemmen) - innerhalb einer Anlage mit mehreren Zaehlern am selben Bus stattdessen die klemmenlose Variante '... gemeinsame Busleitung' (440_000117/118) + Sammelzuleitung (440_000113/114) verwenden.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "modbus_tcp"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (1~), Modbus TCP / IP",
+    "feldgeraet_artikel_nr": "EZ-NA-1PH-TCP",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000113",
+    "name": "RS485-Bus-Sammelzuleitung Modbus RTU (A/B/Common/Schirm), gemeinsame Busleitung für mehrere Messgeräte",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Mehrere Modbus-RTU-Messgeräte innerhalb DERSELBEN fremden Unterverteilung (NSHV/UV) werden seriell/daisy-chain miteinander verkettet und teilen sich EINE gemeinsame RS485-Leitung zum ASP-Schaltschrank - unabhängig von der Geräteanzahl. Diese Baugruppe bildet genau diese EINE Sammelzuleitung ab (4 Klemmen A/B/Common/Schirm, Session-78-Konvention), wird fest 1x je Anlage/Busabschnitt hinzugefügt (nicht mengenfeld-skaliert). Die einzelnen Messgeräte selbst tragen dadurch KEINE eigenen Klemmen mehr - siehe 440_000115/117 ('... gemeinsame Busleitung'). Reine Verdrahtungs-konstruktion ohne eigenes Herstellerprodukt. Datenpunktbedarf 0.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Busanbindung",
+    "geprueft": false
+  },
+  {
+    "id": "440_000114",
+    "name": "RS485-Bus-Sammelzuleitung M-Bus, gemeinsame Busleitung für mehrere Messgeräte",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Wie 440_000113, aber für M-Bus (2-adrig, keine eigene Common-/Schirmklemme nötig). Fest 1x je Anlage/Busabschnitt, nicht mengenfeld-skaliert. Datenpunktbedarf 0.",
+    "bauteile": [
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      },
+      {
+        "artikel_nr": "3209510",
+        "menge": 1,
+        "zone": "klemm_f"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "automationsanbindung": true,
+    "kategorie": "Busanbindung",
+    "geprueft": false
+  },
+  {
+    "id": "440_000115",
+    "name": "Elektro-Energiezähler / Netzanalysator (3~, Einzel-/Sammelmessung), Modbus RTU – gemeinsame Busleitung",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Wie die Standalone-Baugruppe, aber OHNE eigene Busklemmen - für den Einsatz in NSHV-/UV-Gesamtanlagen, wo mehrere Messgeräte serienverkettet EINE gemeinsame RS485-Leitung teilen (siehe 440_000113/114 Sammelzuleitung, dort einmalig je Anlage ergänzt). Diese Baugruppe trägt nur noch die kommunikativen Datenpunkte (17x AI 3~), keinen eigenen Klemmenbedarf - analog zum bereits etablierten Modbus-TCP-Muster ('KOMM-FB'-Träger, Session-58-Systematik), hier auf RTU/M-Bus übertragen. Datenpunktbedarf 17x AI kommunikativ.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (3~), Modbus RTU, gemeinsame Busleitung",
+    "feldgeraet_artikel_nr": "EZ-NA-BUS-RTU",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000116",
+    "name": "Elektro-Energiezähler / Netzanalysator (3~, Einzel-/Sammelmessung), M-Bus – gemeinsame Busleitung",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Wie die Standalone-Baugruppe, aber OHNE eigene Busklemmen - für den Einsatz in NSHV-/UV-Gesamtanlagen, wo mehrere Messgeräte serienverkettet EINE gemeinsame RS485-Leitung teilen (siehe 440_000113/114 Sammelzuleitung, dort einmalig je Anlage ergänzt). Diese Baugruppe trägt nur noch die kommunikativen Datenpunkte (17x AI 3~), keinen eigenen Klemmenbedarf - analog zum bereits etablierten Modbus-TCP-Muster ('KOMM-FB'-Träger, Session-58-Systematik), hier auf RTU/M-Bus übertragen. Datenpunktbedarf 17x AI kommunikativ.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 17,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (3~), M-Bus, gemeinsame Busleitung",
+    "feldgeraet_artikel_nr": "EZ-NA-BUS-MBUS",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000117",
+    "name": "Elektro-Energiezähler / Netzanalysator (1~, Einzel-/Sammelmessung), Modbus RTU – gemeinsame Busleitung",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Wie die Standalone-Baugruppe, aber OHNE eigene Busklemmen - für den Einsatz in NSHV-/UV-Gesamtanlagen, wo mehrere Messgeräte serienverkettet EINE gemeinsame RS485-Leitung teilen (siehe 440_000113/114 Sammelzuleitung, dort einmalig je Anlage ergänzt). Diese Baugruppe trägt nur noch die kommunikativen Datenpunkte (7x AI 1~), keinen eigenen Klemmenbedarf - analog zum bereits etablierten Modbus-TCP-Muster ('KOMM-FB'-Träger, Session-58-Systematik), hier auf RTU/M-Bus übertragen. Datenpunktbedarf 7x AI kommunikativ.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "modbus_rtu"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (1~), Modbus RTU, gemeinsame Busleitung",
+    "feldgeraet_artikel_nr": "EZ-NA-1PH-BUS-RTU",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "geprueft": false
+  },
+  {
+    "id": "440_000118",
+    "name": "Elektro-Energiezähler / Netzanalysator (1~, Einzel-/Sammelmessung), M-Bus – gemeinsame Busleitung",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Wie die Standalone-Baugruppe, aber OHNE eigene Busklemmen - für den Einsatz in NSHV-/UV-Gesamtanlagen, wo mehrere Messgeräte serienverkettet EINE gemeinsame RS485-Leitung teilen (siehe 440_000113/114 Sammelzuleitung, dort einmalig je Anlage ergänzt). Diese Baugruppe trägt nur noch die kommunikativen Datenpunkte (7x AI 1~), keinen eigenen Klemmenbedarf - analog zum bereits etablierten Modbus-TCP-Muster ('KOMM-FB'-Träger, Session-58-Systematik), hier auf RTU/M-Bus übertragen. Datenpunktbedarf 7x AI kommunikativ.",
+    "bauteile": [
+      {
+        "artikel_nr": "KOMM-FB",
+        "menge": 1,
+        "zone": "steuer",
+        "dp_fb_ai": 7,
+        "feldbus_protokoll": "mbus"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro",
+      "automation"
+    ],
+    "betriebsmittel": "Elektro-Energiezähler / Netzanalysator (1~), M-Bus, gemeinsame Busleitung",
+    "feldgeraet_artikel_nr": "EZ-NA-1PH-BUS-MBUS",
+    "automationsanbindung": true,
+    "kategorie": "Energie und Zählwerteinrichtungen",
     "geprueft": false
   }
 ]

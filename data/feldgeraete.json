@@ -1469,5 +1469,84 @@
     "quelle_hinweis": "[Session 83, 24.10.2026] Dasselbe reale Produkt wie bereits in 480_000034 (Session 66) für die Schaltschrankzuleitung verwendet - hier als externes Feldgerät in einer fremden Unterverteilung modelliert, analog zu 952305 (Überspannungsschutz). Kein zusätzlicher Preisfund nötig, siehe 480_000034/einzelbauteile 3UG5616-1CR20 für die bereits dokumentierte Preisrecherche.",
     "ga_liefert_default": false,
     "geprueft": false
+  },
+  {
+    "artikel_nr": "HAUPTSCHALTER-UV-GENERIC",
+    "bezeichnung": "Hauptschalter/Lasttrennschalter, generischer Platzhalter - repräsentativ für den Einspeise-Hauptschalter einer Unterverteilung, keine feste Bestellnummer (hängt von Baugröße/Hersteller ab)",
+    "hersteller": "–",
+    "kategorie": "Schaltanlagen-Komponenten",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Generischer Platzhalter analog zum Muster der bestehenden 3KF-/3WA-Feldgeraete (440_000032ff.).",
+    "ga_liefert_default": false,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EZ-NA-1PH-RTU",
+    "bezeichnung": "Energiemessgerät für Hutschienenmontage, 1-phasig, Modbus RTU - kein Multifunktions-Netzanalysator (anders als die 3~-Variante), sondern dediziertes einfaches Energiemessgerät",
+    "hersteller": "Schneider Electric",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Reduzierter Datenpunktsatz der bereits recherchierten 3~-Referenz (EZ-NA-RTU/MBUS/TCP, Preisrecherche 08/2026 dort) - kein neuer Preisfund fuer die 1-phasige Teilbeschaltung noetig. | [Nachkorrektur Session 83, 24.10.2026] Nutzer-Klarstellung: bei Wechselstrom (1~) ist das Messgerät KEIN Multifunktions-Netzanalysator (wie die 3~-Variante, Janitza UMG), sondern ein einfaches, dediziertes Energiemessgerät für Hutschienenmontage - gilt für alle UV-Typen außer NSHV (dort immer Drehstrom, immer Multifunktionsgerät). Planungsfabrikat Schneider Electric Acti9 iEM-Reihe (1-phasig) als generische Referenz übernommen (bereits als Alternative zu Janitza im bestehenden Katalog-Planungsfabrikat dokumentiert) - exakte Modellnummer je Protokoll nicht einzeln verifiziert, kein neuer Preisfund in diesem Schritt.",
+    "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Frequenz, Spannung L-N, Stromaufnahme I.",
+    "ga_liefert_default": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EZ-NA-1PH-MBUS",
+    "bezeichnung": "Energiemessgerät für Hutschienenmontage, 1-phasig, M-Bus - kein Multifunktions-Netzanalysator, dediziertes einfaches Energiemessgerät",
+    "hersteller": "Schneider Electric",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Reduzierter Datenpunktsatz der bereits recherchierten 3~-Referenz (EZ-NA-RTU/MBUS/TCP, Preisrecherche 08/2026 dort) - kein neuer Preisfund fuer die 1-phasige Teilbeschaltung noetig. | [Nachkorrektur Session 83, 24.10.2026] Nutzer-Klarstellung: bei Wechselstrom (1~) ist das Messgerät KEIN Multifunktions-Netzanalysator (wie die 3~-Variante, Janitza UMG), sondern ein einfaches, dediziertes Energiemessgerät für Hutschienenmontage - gilt für alle UV-Typen außer NSHV (dort immer Drehstrom, immer Multifunktionsgerät). Planungsfabrikat Schneider Electric Acti9 iEM-Reihe (1-phasig) als generische Referenz übernommen (bereits als Alternative zu Janitza im bestehenden Katalog-Planungsfabrikat dokumentiert) - exakte Modellnummer je Protokoll nicht einzeln verifiziert, kein neuer Preisfund in diesem Schritt.",
+    "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Frequenz, Spannung L-N, Stromaufnahme I.",
+    "ga_liefert_default": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EZ-NA-1PH-TCP",
+    "bezeichnung": "Energiemessgerät für Hutschienenmontage, 1-phasig, Modbus TCP/IP - kein Multifunktions-Netzanalysator, dediziertes einfaches Energiemessgerät",
+    "hersteller": "Schneider Electric",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Siehe 1~-RTU/M-Bus-Varianten. | [Nachkorrektur Session 83, 24.10.2026] Nutzer-Klarstellung: bei Wechselstrom (1~) ist das Messgerät KEIN Multifunktions-Netzanalysator (wie die 3~-Variante, Janitza UMG), sondern ein einfaches, dediziertes Energiemessgerät für Hutschienenmontage - gilt für alle UV-Typen außer NSHV (dort immer Drehstrom, immer Multifunktionsgerät). Planungsfabrikat Schneider Electric Acti9 iEM-Reihe (1-phasig) als generische Referenz übernommen (bereits als Alternative zu Janitza im bestehenden Katalog-Planungsfabrikat dokumentiert) - exakte Modellnummer je Protokoll nicht einzeln verifiziert, kein neuer Preisfund in diesem Schritt.",
+    "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Frequenz, Spannung L-N, Stromaufnahme I.",
+    "ga_liefert_default": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EZ-NA-BUS-RTU",
+    "bezeichnung": "Netzanalysator / Energiezaehler 3-phasig, Modbus RTU, Teil einer gemeinsamen RS485-Busleitung mit weiteren Messgeraeten derselben Unterverteilung - gleiches Referenzgeraet wie die Standalone-Variante",
+    "hersteller": "Janitza",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Siehe Standalone-Variante fuer Preisrecherche - identisches Geraet, hier als Teil einer Sammelbus-Verkettung modelliert, kein eigener Klemmenbedarf.",
+    "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Blindleistung, cos phi, Frequenz, Spannung L1-L2, Spannung L2-L3, Spannung L3-L1, Spannung L1-N, Spannung L2-N, Spannung L3-N, Stromaufnahme I1, Stromaufnahme I2, Stromaufnahme I3, Stromaufnahme IN.",
+    "ga_liefert_default": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EZ-NA-BUS-MBUS",
+    "bezeichnung": "Netzanalysator / Energiezaehler 3-phasig, M-Bus, Teil einer gemeinsamen RS485-Busleitung mit weiteren Messgeraeten derselben Unterverteilung - gleiches Referenzgeraet wie die Standalone-Variante",
+    "hersteller": "Janitza",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Siehe Standalone-Variante fuer Preisrecherche - identisches Geraet, hier als Teil einer Sammelbus-Verkettung modelliert, kein eigener Klemmenbedarf.",
+    "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Blindleistung, cos phi, Frequenz, Spannung L1-L2, Spannung L2-L3, Spannung L3-L1, Spannung L1-N, Spannung L2-N, Spannung L3-N, Stromaufnahme I1, Stromaufnahme I2, Stromaufnahme I3, Stromaufnahme IN.",
+    "ga_liefert_default": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EZ-NA-1PH-BUS-RTU",
+    "bezeichnung": "Energiemessgerät für Hutschienenmontage, 1-phasig, Modbus RTU, Teil einer gemeinsamen RS485-Busleitung mit weiteren Messgeräten derselben Unterverteilung - kein Multifunktions-Netzanalysator, dediziertes einfaches Energiemessgerät",
+    "hersteller": "Schneider Electric",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Siehe Standalone-Variante fuer Preisrecherche - identisches Geraet, hier als Teil einer Sammelbus-Verkettung modelliert, kein eigener Klemmenbedarf. | [Nachkorrektur Session 83, 24.10.2026] Nutzer-Klarstellung: bei Wechselstrom (1~) ist das Messgerät KEIN Multifunktions-Netzanalysator (wie die 3~-Variante, Janitza UMG), sondern ein einfaches, dediziertes Energiemessgerät für Hutschienenmontage - gilt für alle UV-Typen außer NSHV (dort immer Drehstrom, immer Multifunktionsgerät). Planungsfabrikat Schneider Electric Acti9 iEM-Reihe (1-phasig) als generische Referenz übernommen (bereits als Alternative zu Janitza im bestehenden Katalog-Planungsfabrikat dokumentiert) - exakte Modellnummer je Protokoll nicht einzeln verifiziert, kein neuer Preisfund in diesem Schritt.",
+    "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Frequenz, Spannung L-N, Stromaufnahme I.",
+    "ga_liefert_default": true,
+    "geprueft": false
+  },
+  {
+    "artikel_nr": "EZ-NA-1PH-BUS-MBUS",
+    "bezeichnung": "Energiemessgerät für Hutschienenmontage, 1-phasig, M-Bus, Teil einer gemeinsamen Busleitung mit weiteren Messgeräten derselben Unterverteilung - kein Multifunktions-Netzanalysator, dediziertes einfaches Energiemessgerät",
+    "hersteller": "Schneider Electric",
+    "kategorie": "Energie und Zählwerteinrichtungen",
+    "quelle_hinweis": "[Session 83, 24.10.2026] Siehe Standalone-Variante fuer Preisrecherche - identisches Geraet, hier als Teil einer Sammelbus-Verkettung modelliert, kein eigener Klemmenbedarf. | [Nachkorrektur Session 83, 24.10.2026] Nutzer-Klarstellung: bei Wechselstrom (1~) ist das Messgerät KEIN Multifunktions-Netzanalysator (wie die 3~-Variante, Janitza UMG), sondern ein einfaches, dediziertes Energiemessgerät für Hutschienenmontage - gilt für alle UV-Typen außer NSHV (dort immer Drehstrom, immer Multifunktionsgerät). Planungsfabrikat Schneider Electric Acti9 iEM-Reihe (1-phasig) als generische Referenz übernommen (bereits als Alternative zu Janitza im bestehenden Katalog-Planungsfabrikat dokumentiert) - exakte Modellnummer je Protokoll nicht einzeln verifiziert, kein neuer Preisfund in diesem Schritt.",
+    "kommunikative_datenpunkte": "AI: Zaehlernummer, kumulierte Energiemenge, Wirkleistung, Scheinleistung, Frequenz, Spannung L-N, Stromaufnahme I.",
+    "ga_liefert_default": true,
+    "geprueft": false
   }
 ]

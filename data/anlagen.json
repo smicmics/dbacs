@@ -4733,14 +4733,14 @@
         "variante_label": "Leistungsschalter 5000A (Siemens 3WA, ohne Messung)"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "einspeisung_zaehler_protokoll",
         "variante_label": "Modbus RTU",
         "ist_default": true
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "einspeisung_zaehler_protokoll",
         "variante_label": "M-Bus"
@@ -4761,7 +4761,7 @@
         "mengenfeld": "abgang_gross"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -4769,7 +4769,7 @@
         "mengenfeld": "abgang_gross_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -4788,7 +4788,7 @@
         "mengenfeld": "abgang_mittel"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -4796,7 +4796,7 @@
         "mengenfeld": "abgang_mittel_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -4815,7 +4815,7 @@
         "mengenfeld": "abgang_klein"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -4823,7 +4823,7 @@
         "mengenfeld": "abgang_klein_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -4840,6 +4840,30 @@
         "bg_id": "440_000098",
         "menge": 1,
         "mengenfeld": "sammelstoerung_gruppen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus RTU"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus"
       }
     ],
     "funktionsbereich": [
@@ -4887,14 +4911,14 @@
         "variante_label": "Leistungsschalter 5000A (Siemens 3WA, ohne Messung)"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 2,
         "gruppe": "einspeisung_zaehler_protokoll",
         "variante_label": "Modbus RTU",
         "ist_default": true
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 2,
         "gruppe": "einspeisung_zaehler_protokoll",
         "variante_label": "M-Bus"
@@ -4946,7 +4970,7 @@
         "mengenfeld": "abgang_gross"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -4954,7 +4978,7 @@
         "mengenfeld": "abgang_gross_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -4973,7 +4997,7 @@
         "mengenfeld": "abgang_mittel"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -4981,7 +5005,7 @@
         "mengenfeld": "abgang_mittel_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -5000,7 +5024,7 @@
         "mengenfeld": "abgang_klein"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -5008,7 +5032,7 @@
         "mengenfeld": "abgang_klein_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -5025,6 +5049,30 @@
         "bg_id": "440_000098",
         "menge": 1,
         "mengenfeld": "sammelstoerung_gruppen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus RTU"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus"
       }
     ],
     "funktionsbereich": [
@@ -5072,14 +5120,14 @@
         "variante_label": "Leistungsschalter 5000A (Siemens 3WA, ohne Messung)"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 2,
         "gruppe": "einspeisung_zaehler_protokoll",
         "variante_label": "Modbus RTU",
         "ist_default": true
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 2,
         "gruppe": "einspeisung_zaehler_protokoll",
         "variante_label": "M-Bus"
@@ -5131,7 +5179,7 @@
         "mengenfeld": "abgang_gross"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -5139,7 +5187,7 @@
         "mengenfeld": "abgang_gross_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -5158,7 +5206,7 @@
         "mengenfeld": "abgang_mittel"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -5166,7 +5214,7 @@
         "mengenfeld": "abgang_mittel_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -5185,7 +5233,7 @@
         "mengenfeld": "abgang_klein"
       },
       {
-        "bg_id": "440_000001",
+        "bg_id": "440_000115",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "Modbus RTU",
@@ -5193,7 +5241,7 @@
         "mengenfeld": "abgang_klein_gemessen"
       },
       {
-        "bg_id": "440_000002",
+        "bg_id": "440_000116",
         "menge": 1,
         "gruppe": "abgang_zaehler_protokoll",
         "variante_label": "M-Bus",
@@ -5254,12 +5302,310 @@
         "gruppe": "ats_abgang",
         "variante_label": "ATyS r/d ab 1000A + 2× Leistungsschalter 3WA Vorschutz",
         "mengenfeld": "anzahl_ats_abgaenge"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Modbus RTU"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "M-Bus"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Modbus RTU"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "M-Bus"
       }
     ],
     "funktionsbereich": [
       "elektro_anlagen"
     ],
     "kategorie": "Niederspannungshauptverteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00015",
+    "name": "UV (Unterverteilung), Drehstromeinspeisung",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Unterverteilung (UV) mit dreiphasiger Einspeisung - Standardfall. Einspeisung-Trennungsart unabhängig von der Messung abgefragt (Hauptschalter/LSS-FI/NH-Trenner, Messung optional 3~). Abgänge in 2 Typen unabhängig zählbar (LSS/FI Standard, NH-Trenner für größere UV), 'davon gemessen' pauschal über ein kombiniertes Dropdown (Netzart 1~/3~ × Protokoll, 6 Optionen - UV-Abgänge sind meist Wechselstrom, können aber bei Drehstrom-Einspeisung auch 3~ sein). Überspannungsschutz UND Phasenausfall-/Phasenüberwachung fest gebündelt (440_000107/108). RS485-Sammelbus-Korrektur: bei Modbus RTU/M-Bus wird zusätzlich eine feste Sammelzuleitung ergänzt (440_000113/114) - mehrere Messgeräte EINER UV teilen sich eine Busleitung zum ASP, seriell verkettet (Nutzer-Klarstellung Session 83); Modbus TCP nutzt weiterhin den bestehenden Ethernet-Switch-Ratchet.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000109",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "Hauptschalter",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "LSS/FI mit Meldekontakt (3-polig B16)"
+      },
+      {
+        "bg_id": "440_000099",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "NH-Trenner (größere UV)"
+      },
+      {
+        "bg_id": "440_000115",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000116",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus TCP",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000107",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000108",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "mengenfeld": "uv_abgang_lss"
+      },
+      {
+        "bg_id": "440_000099",
+        "menge": 1,
+        "mengenfeld": "uv_abgang_nh"
+      },
+      {
+        "bg_id": "440_000117",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000118",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus",
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus"
+      },
+      {
+        "bg_id": "440_000112",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus TCP",
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000115",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU",
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus RTU"
+      },
+      {
+        "bg_id": "440_000116",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus",
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, M-Bus"
+      },
+      {
+        "bg_id": "440_000003",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Drehstrom 3~, Modbus TCP",
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "sammelstoerung_gruppen"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Unterverteilung",
+    "doppeleinspeisung_bindung": "nein",
+    "geprueft": false
+  },
+  {
+    "id": "440_A00016",
+    "name": "UV (Unterverteilung), Wechselstromeinspeisung (kleine UV)",
+    "gewerk": "440",
+    "beschreibung": "[Session 83, 24.10.2026, Nutzer-Freigabe] Unterverteilung (UV) mit einphasiger Einspeisung - kleine UV. Einspeisung-Trennungsart OHNE NH-Trenner-Option (Nutzer-Vorgabe: 'dort gibt es dann auch keine NH-Trenner' - NH-Trenner sind fuer die kleinen Leistungen einer 1~-UV nicht relevant), nur Hauptschalter/LSS-FI. Einspeisung-Messung optional 1~ (reduzierter Datenpunktsatz, siehe 440_000110/111/112). Abgänge NUR LSS/FI (kein NH-Trenner-Abgang, konsistent zur kleinen Baugröße), 'davon gemessen' NUR Wechselstrom-1~-Optionen (ein 1-phasiger Einspeiser kann keine 3-phasigen Abgänge liefern, daher keine 3~-Messoption hier). Überspannungsschutz UND Phasenausfall-/Phasenüberwachung fest gebündelt wie bei der Drehstrom-Variante. RS485-Sammelbus-Korrektur identisch zur Drehstrom-Variante.",
+    "mitglieder": [
+      {
+        "bg_id": "440_000109",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "Hauptschalter",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "gruppe": "einspeisung_trennungsart",
+        "variante_label": "LSS/FI mit Meldekontakt (3-polig B16)"
+      },
+      {
+        "bg_id": "440_000117",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000118",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000112",
+        "menge": 1,
+        "gruppe": "einspeisung_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus TCP",
+        "gruppe_optional": true
+      },
+      {
+        "bg_id": "440_000107",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000108",
+        "menge": 1
+      },
+      {
+        "bg_id": "440_000021",
+        "menge": 1,
+        "mengenfeld": "uv_abgang_lss"
+      },
+      {
+        "bg_id": "440_000117",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "ist_default": true,
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000113",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus RTU",
+        "ist_default": true
+      },
+      {
+        "bg_id": "440_000118",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus",
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000114",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, M-Bus"
+      },
+      {
+        "bg_id": "440_000112",
+        "menge": 1,
+        "gruppe": "abgang_zaehler_protokoll",
+        "variante_label": "Wechselstrom 1~, Modbus TCP",
+        "mengenfeld": "uv_abgang_gemessen"
+      },
+      {
+        "bg_id": "440_000098",
+        "menge": 1,
+        "mengenfeld": "sammelstoerung_gruppen"
+      }
+    ],
+    "funktionsbereich": [
+      "elektro_anlagen"
+    ],
+    "kategorie": "Unterverteilung",
     "doppeleinspeisung_bindung": "nein",
     "geprueft": false
   }

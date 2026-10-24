@@ -1,6 +1,31 @@
 # DBACS – Revisionsstand
 
-> **Stand nach Session 82 (24.10.2026).**
+> **Stand nach Session 83 (24.10.2026).**
+> Mehrteilige Sitzung: **Anlagen-Varianten-Modal** (UI-Fix – 9-Felder-NSHV-
+> Anlagen liefen rechts aus dem Bildschirm, jetzt zentriertes Popup mit
+> Grid-Layout, reusable für jede künftige Anlage mit vielen Optionen) +
+> **RS485-Sammelbus-Korrektur** (mehrere Modbus-RTU-/M-Bus-Messgeräte einer
+> Unterverteilung teilen sich eine Leitung zum ASP statt eigener Klemmen je
+> Gerät – neue Sammelzuleitungs-Baugruppen + klemmenlose Energiezähler-
+> Varianten nach dem bestehenden TCP/KOMM-FB-Muster, die bereits fertigen
+> NSHV-Anlagen retrofittet) + **neue Anlagengruppe UV (Unterverteilung)**:
+> `440_A00015` (Drehstromeinspeisung) und `440_A00016` (Wechselstrom-
+> einspeisung, kleine UV – ohne NH-Trenner, nur 1~-Messoptionen). Neue
+> Baugruppen: Hauptschalter-Feldgerät, Phasenausfall-/Phasenüberwachung
+> (generisch, auch für NSHV nutzbar), 1~-Energiezähler mit reduziertem
+> Datenpunktsatz (7 statt 17 AI – kein cos φ/Blindleistung bei
+> Wechselstrom) und korrigierter Hardware-Referenz (einfaches
+> Hutschienen-Energiemessgerät statt Multifunktions-Netzanalysator).
+> Export: baugruppen 313→**334**, feldgeraete 140→**159**, anlagen 60→**65**
+> (kumulativ über Session 81–83). Vollständig Browser-verifiziert: alle
+> 1041 Kombinationen der 5 betroffenen Anlagen (3× NSHV nach Retrofit, 2×
+> neue UV) einzeln getestet, 0 Fehlschläge, `testKatalogScan()`/
+> `testKlemmenVarianten()`/`testSwitchRatchet()` weiterhin sauber, keine
+> Konsolenfehler. Details: `CLAUDE.md` → „Offene Punkte" Nachtrag
+> Session 83. **Nächster Schritt (angekündigt):** 2 IT-UV-Varianten (interne
+> USV vs. Einspeisung aus zentraler USV) – noch nicht begonnen.
+
+Vorheriger Stand – Session 82 (24.10.2026).
 > Neue Anlagengruppe **NSHV (Niederspannungshauptverteilung)**: 3 fertige
 > Gesamtanlagen (`440_A00012` einfach / `440_A00013` mit 2 Einspeisungen +
 > Sammelschienenkupplung / `440_A00014` zusätzlich mit ATS-Abgang für IT/

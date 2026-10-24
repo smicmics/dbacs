@@ -1688,9 +1688,14 @@ const ANLAGE_GRUPPEN_LABEL = {
   trafoabgang: 'Trafoabgang', kuppelfeld: 'Kuppelfeld',
   // Session 82 (NSHV-Gesamtanlagen 440_A00012-014):
   einspeisung_groesse: 'Einspeisung-Baugröße', kuppelfeld_groesse: 'Kuppelfeld-Baugröße',
-  einspeisung_zaehler_protokoll: 'Protokoll Einspeisung-Energiezähler',
-  abgang_zaehler_protokoll: 'Protokoll Abgangs-Energiezähler',
-  ats_abgang: 'ATS-Abgang'
+  einspeisung_zaehler_protokoll: 'Energiezähler Einspeisung',
+  // abgang_zaehler_protokoll wird seit Session 83 (UV) auch fuer die
+  // kombinierten Netzart×Protokoll-Optionen genutzt (nicht mehr nur
+  // Protokoll) - Label entsprechend generischer.
+  abgang_zaehler_protokoll: 'Energiezähler Abgänge',
+  ats_abgang: 'ATS-Abgang',
+  // Session 83 (UV-Gesamtanlagen 440_A00015/016):
+  einspeisung_trennungsart: 'Einspeisung-Trennungsart'
 };
 // Beschriftung der synthetischen "Ohne"-Option je optionaler Gruppe
 // (Session 68, erweitert Session 75) - Default-Fallback ist das generische
@@ -1729,13 +1734,21 @@ const ANLAGE_MENGENFELD_LABEL = {
   abgang_mittel: 'Abgänge mittel (Anzahl)', abgang_mittel_gemessen: 'davon gemessen mittel (Anzahl)',
   abgang_klein: 'Abgänge klein (Anzahl)', abgang_klein_gemessen: 'davon gemessen klein (Anzahl)',
   sammelstoerung_gruppen: 'Sammelstörmeldung-Gruppen (Anzahl)',
-  anzahl_ats_abgaenge: 'ATS-Abgänge (Anzahl)'
+  anzahl_ats_abgaenge: 'ATS-Abgänge (Anzahl)',
+  // Session 83 (UV-Gesamtanlagen 440_A00015/016): Abgaenge nur 2 Typen
+  // (LSS/FI Standard, NH-Trenner nur bei groesseren/drehstromgespeisten
+  // UV), "davon gemessen" pauschal statt je Groessenklasse (Nutzer-
+  // Vorgabe "das duerfte reichen", einfacher als die NSHV-Aufteilung).
+  uv_abgang_lss: 'Abgänge LSS/FI (Anzahl)',
+  uv_abgang_nh: 'Abgänge NH-Trenner (Anzahl, größere UV)',
+  uv_abgang_gemessen: 'davon gemessen (Anzahl, Einzel-/Sammelmessung)'
 };
 const ANLAGE_MENGENFELD_DEFAULT = {
   kuehlreihen: 1, kaeltekreise: 1, ventilatoren_je_reihe: 4, verdichterstufen_je_kreis: 1,
   anzahl_trafos: 1,
   abgang_gross: 2, abgang_gross_gemessen: 0, abgang_mittel: 4, abgang_mittel_gemessen: 0,
-  abgang_klein: 4, abgang_klein_gemessen: 0, sammelstoerung_gruppen: 0, anzahl_ats_abgaenge: 1
+  abgang_klein: 4, abgang_klein_gemessen: 0, sammelstoerung_gruppen: 0, anzahl_ats_abgaenge: 1,
+  uv_abgang_lss: 8, uv_abgang_nh: 0, uv_abgang_gemessen: 0
 };
 // Erlaubte Festwerte je Mengenfeld (Session 77 Folgearbeit, Nutzer-Vorgabe:
 // "Kühlreihen/Kältekreise 1 oder 2", "Verdichterstufen je Kreis max 8",
@@ -1758,7 +1771,11 @@ const ANLAGE_MENGENFELD_OPTIONS = {
   abgang_klein: Array.from({length: 21}, (_, i) => i),
   abgang_klein_gemessen: Array.from({length: 21}, (_, i) => i),
   sammelstoerung_gruppen: Array.from({length: 11}, (_, i) => i),
-  anzahl_ats_abgaenge: Array.from({length: 7}, (_, i) => i)
+  anzahl_ats_abgaenge: Array.from({length: 7}, (_, i) => i),
+  // UV-Gesamtanlagen (Session 83):
+  uv_abgang_lss: Array.from({length: 31}, (_, i) => i),
+  uv_abgang_nh: Array.from({length: 11}, (_, i) => i),
+  uv_abgang_gemessen: Array.from({length: 21}, (_, i) => i)
 };
 
 // ── Belegung ─────────────────────────────────────────────────────────
